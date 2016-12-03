@@ -434,7 +434,7 @@
                   $.post("proses_selesai_stok_awal.php",{},function(data) {
                 
                   $("#alert-alert").html(data);
-                  $("#result").load("tabel_stok_awal.php");
+                  $("#result").html("");
                   $("#alert_berhasil").show();
                   $("#alert_gagal").show();
                   
