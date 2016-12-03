@@ -273,6 +273,29 @@ $(document).on('click','#lihat_ex',function(e) {
    });     
 </script>
 
+
+
+
+<script type="text/javascript">
+      $(document).ready(function() {
+        var dataTable = $('#table_lap_rj').DataTable( {
+          "processing": true,
+          "serverSide": true,
+          "ajax":{
+            url :"datatable_lap_kunj_all_rj.php", // json datasource
+            type: "post",  // method  , by default get
+            error: function(){  // error handling
+              $(".tbody").html("");
+              $("#table_lap_rj").append('<tbody class="tbody"><tr ><td colspan="3">No data found in the server</td></tr></tbody>');
+              $("#table_rj_processing").css("display","none");
+                
+            }
+          }
+        } );
+      } );                  
+</script> 
+     
+
 <script type="text/javascript">
    $(document).ready(function(){
       $("#show_no_rm").hide();

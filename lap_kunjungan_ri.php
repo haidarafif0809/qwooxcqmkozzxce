@@ -121,6 +121,8 @@ $out_rj = mysqli_fetch_array($select_rj);
 </div><!--Div Countainer-->
 
 
+
+
 <script type="text/javascript">
 //berdasarkan rm
      $(document).ready(function() {
@@ -274,6 +276,26 @@ $(document).on('click','#lihat_ex',function(e) {
         });  
    }); 
 </script>
+
+
+<script type="text/javascript">
+      $(document).ready(function() {
+        var dataTable = $('#table_lap_ri').DataTable( {
+          "processing": true,
+          "serverSide": true,
+          "ajax":{
+            url :"datatable_lap_kunj_all_ri.php", // json datasource
+            type: "post",  // method  , by default get
+            error: function(){  // error handling
+              $(".tbody").html("");
+              $("#table_lap_ri").append('<tbody class="tbody"><tr ><td colspan="3">No data found in the server</td></tr></tbody>');
+              $("#table_ri_processing").css("display","none");
+                
+            }
+          }
+        } );
+      } );                  
+</script> 
 
 <script type="text/javascript">
    $(document).ready(function(){
