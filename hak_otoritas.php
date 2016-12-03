@@ -184,7 +184,7 @@ echo '<button type="button" class="btn btn-info" data-toggle="modal" data-target
 
 <div class="table-responsive"><!-- membuat agar ada garis pada tabel, disetiap kolom -->
 <span id="table_baru">
-		<table id="tableuser" class="table table-bordered table-sm">
+		<table id="table_otoritas" class="table table-bordered table-sm">
 		<thead>
 			<th style='background-color: #4CAF50; color: white'> ID Otoritas </th>
 
@@ -281,13 +281,29 @@ mysqli_close($db);
 </div>
 </div> <!-- tag penutup cantainer -->
 
-<script type="text/javascript">
-	
-  $(document).ready(function() {
-  $(".table").dataTable({ordering :false });
-  });
-
-</script>
+<!-- DATATABLE AJAX -->
+    <script type="text/javascript" language="javascript" >
+      $(document).ready(function() {
+        var dataTable = $('#table_hak').DataTable( {
+          "processing": true,
+          "serverSide": true,
+          "ajax":{
+            url :"datatable_hak.php", // json datasource
+            type: "post",  // method  , by default get
+            error: function(){  // error handling
+              $(".employee-grid-error").html("");
+              $("#table_hak").append('<tbody class="employee-grid-error"><tr><th colspan="3">No data found in the server</th></tr></tbody>');
+              $("#employee-grid_processing").css("display","none");
+              
+            }
+          },
+            "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+              $(nRow).attr('class','tr-id-'+aData[13]+'');
+            },
+        });
+      });
+    </script>
+<!-- / DATATABLE AJAX -->
 
 							
 <script>

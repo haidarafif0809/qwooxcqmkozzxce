@@ -57,6 +57,26 @@ $data = array();
 while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 	$nestedData=array(); 
 
+	if ($registrasi_rj['registrasi_rj_lihat']) {
+          if ($row['status'] == 'menunggu') {
+
+          	$nestedData[] = "
+						<button  class='btn btn-warning pilih1' data-id='".$row['id']."' id='panggil-".$row['id']."' data-status='di panggil' data-urut='". $row['no_urut']."' data-poli='".$row['poli']."'> Panggil  </button>
+						<button style='display:none'  class='btn btn-success pilih00' data-id='".$row['id']."' id='proses-".$row['id']."' data-status='Proses'  data-urut='". $row['no_urut']."'> Masuk </button>
+					";
+
+          	}
+          elseif ($row['status'] == 'di panggil') {
+
+          	$nestedData[] = "
+          				<button  class='btn btn-success pilih00' data-id='".$row['id']."' id='proses-".$row['id']."' data-status='Proses'  data-urut='". $row['no_urut']."'> Masuk </button>
+          				";
+            }
+}
+else{
+  echo $nestedData[] = "";
+}
+
 	if ($registrasi_rj['registrasi_rj_hapus'] > 0) {
             $nestedData[] = "<button class='btn btn-danger btn-floating pilih2' data-id='". $row['id']."' data-reg='". $row['no_reg']."'> <b> X </b> </button>";
         }

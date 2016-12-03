@@ -633,7 +633,7 @@ else{
      $("#demo").hide();
      $("#kembali").hide();
      $("#coba").show();
-
+    window.location.href = 'registrasi_ugd.php';
      $('#table_ugd').DataTable().destroy();
       var dataTable = $('#table_ugd').DataTable( {
           "processing": true,
@@ -651,31 +651,9 @@ else{
             "fnCreatedRow": function( nRow, aData, iDataIndex ) {
               $(nRow).attr('class','tr-id-'+aData[20]+'');
             },
+
+     
         })
-
-     $("#rujukan").val('');
-     $("#token").val('');
-     $("#penjamin").val('');
-     $("#nama_pasien").val('');
-     $("#jenis_kelamin").val('');
-     $("#tanggal_lahir").val('');
-     $("#umur").val('');
-     $("#gol_darah").val('');
-     $("#no_hp").val('');
-     $("#alamat").val('');
-     $("#alergi").val('');
-     $("#kondisi").val('');
-     $("#eye").val('');
-     $("#verbal").val('');
-     $("#motorik").val('');
-     $("#pengantar").val('');
-     $("#hubungan_dengan_pasien").val('');
-     $("#nama_pengantar").val('');
-     $("#alamat_pengantar").val('');
-     $("#hp_pengantar").val('');
-     $("#keterangan").val('');
-     $("#dokter_jaga").val('');
-
      
      });
 
@@ -854,7 +832,7 @@ $(document).on('click', '.rujuk_ri', function (e) {
                     
                      $("#modal_pulang").modal('hide');
                     $.post("proses_pulang_rumah.php",{reg:reg, keterangan:keterangan},function(data){
-
+                      $("#keterangan_pulang").val('');
                     });
                     
         }); 
