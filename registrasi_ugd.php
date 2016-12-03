@@ -655,7 +655,6 @@ else{
 
      $("#rujukan").val('');
      $("#token").val('');
-     $("#penjamin").val('');
      $("#nama_pasien").val('');
      $("#jenis_kelamin").val('');
      $("#tanggal_lahir").val('');
