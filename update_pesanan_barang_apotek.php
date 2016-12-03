@@ -3,6 +3,8 @@
 include 'db.php';
 include 'sanitasi.php';
 
+
+$kode_pelanggan = stringdoang($_POST['kode_pelanggan']);
 $kode_barang = stringdoang($_POST['kode_barang']);
 $jumlah_baru = angkadoang($_POST['jumlah_baru']);
 $jumlah_lama = angkadoang($_POST['jumlah_lama']);
@@ -38,8 +40,7 @@ $query->execute();
     {
 
     }
-
-    $query9 = $db->query("SELECT * FROM tbs_fee_produk WHERE kode_produk = '$kode_barang' AND no_reg = '' ");
+    $query9 = $db->query("SELECT * FROM tbs_fee_produk WHERE kode_produk = '$kode_barang' AND no_reg = '$no_reg' AND no_rm = '$kode_pelanggan' ");
     while($cek9 = mysqli_fetch_array($query9))
     {
 
@@ -57,9 +58,8 @@ $ff = mysqli_fetch_array($select_fee);
         if ($prosentase != 0)
 
             {
-
             $fee_prosentase_produk = $prosentase * $subtotal / 100;
-            $query1 = $db->query("UPDATE tbs_fee_produk SET jumlah_fee = '$fee_prosentase_produk' WHERE nama_petugas = '$nm_pet' AND kode_produk = '$kode_barang' AND no_reg = ''  ");
+            $query1 = $db->query("UPDATE tbs_fee_produk SET jumlah_fee = '$fee_prosentase_produk' WHERE nama_petugas = '$nm_pet' AND kode_produk = '$kode_barang' AND no_reg = '$no_reg' AND no_rm = '$kode_pelanggan'  ");
 
 
             }
@@ -67,9 +67,8 @@ $ff = mysqli_fetch_array($select_fee);
    elseif ($nominal != 0) 
 
             {
-            
             $fee_nominal_produk = $nominal * $jumlah_baru;
-            $query01 = $db->query("UPDATE tbs_fee_produk SET jumlah_fee = '$fee_nominal_produk' WHERE nama_petugas = '$nm_pet' AND kode_produk = '$kode_barang' AND no_reg = '' ");
+            $query01 = $db->query("UPDATE tbs_fee_produk SET jumlah_fee = '$fee_nominal_produk' WHERE nama_petugas = '$nm_pet' AND kode_produk = '$kode_barang' AND no_reg = '$no_reg' AND no_rm = '$kode_pelanggan' ");
 
             }
   }

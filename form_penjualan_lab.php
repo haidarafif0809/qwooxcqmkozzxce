@@ -944,11 +944,12 @@ $data_rj_ri = mysqli_fetch_array($sum_rj_ri);
             <?php else: ?>
 
               <?php if ($jenis_penjualan == 'Rawat Jalan'): ?>
-                  <a href="form_penjualan_kasir.php?no_reg=<?php echo $no_reg; ?>" class="btn btn-warning"> <i class="fa fa-reply-all"></i> Kembali Rawat Jalan </a>
+                  <button class="btn btn-warning" id="raja"> <i class="fa fa-reply-all"></i> Kembali Rawat Jalan </button>
               <?php endif ?>
 
               <?php if ($jenis_penjualan == 'Rawat Inap'): ?>
-                  <a href="form_penjualan_kasir_ranap.php?no_reg=<?php echo $no_reg; ?>" class="btn btn-warning"> <i class="fa fa-reply-all"></i> Kembali Rawat Inap </a>
+                  <button class="btn btn-warning" id="ranap"> <i class="fa fa-reply-all"></i> Kembali Rawat Inap </button>
+
               <?php endif ?>                 
 
             <?php endif ?>
@@ -980,6 +981,27 @@ $(document).ready(function(){
 
 });
 
+</script>
+
+
+<script type="text/javascript">
+  // Rawat jalan
+  $(document).on('click','#raja',function(e){
+    var no_reg = $("#no_reg").val();
+    var analis = $("#apoteker").val()
+
+    window.location.href="form_penjualan_kasir.php?no_reg="+no_reg+"&analis="+analis+"";
+
+  });
+
+  //Rawat Inap
+   $(document).on('click','#ranap',function(e){
+    var no_reg = $("#no_reg").val();
+    var analis = $("#apoteker").val()
+
+    window.location.href="form_penjualan_kasir_ranap.php?no_reg="+no_reg+"&analis="+analis+"";
+
+  });
 </script>
 
 
@@ -1314,7 +1336,7 @@ if (jumlah_barang == ''){
       $("#tax_rp").val(Math.round(hasil_tax));
      $("#kode_barang").focus();
 
-          $.post("proses_tbs_laboratorium.php",{nama_barang:nama_barang,jumlah_barang:jumlah_barang,harga:harga,potongan:potongan,tax:tax,tipe_barang:ber_stok,no_rm:no_rm,apoteker:apoteker,penjamin:penjamin,tax:tax,hargaa:hargaa, kode_barang:kode_barang,no_reg:no_reg},function(data){ 
+          $.post("proses_tbs_laboratorium.php",{nama_barang:nama_barang,jumlah_barang:jumlah_barang,harga:harga,potongan:potongan,tax:tax,tipe_barang:ber_stok,no_rm:no_rm,apoteker:apoteker,penjamin:penjamin,tax:tax,hargaa:hargaa, kode_barang:kode_barang,no_reg:no_reg,dokter:dokter},function(data){ 
      
                  $("#ppn").attr("disabled", true);
                  $("#tbody").prepend(data);
@@ -1491,34 +1513,45 @@ alert("Silakan Bayar Piutang");
   $("#piutang").hide();
   $("#transaksi_baru").show();
 
- $.post("proses_bayar_jual_lab.php",{biaya_admin:biaya_admin,total2:total2,sisa_pembayaran:sisa_pembayaran,kredit:kredit,kode_pelanggan:kode_pelanggan,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,cara_bayar:cara_bayar,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,total_hpp:total_hpp,harga:harga,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,apoteker:apoteker,penjamin:penjamin, nama_pelanggan:nama_pelanggan},function(info) {
+ $.post("cek_subtotal_lab.php",{total2:total2},function(data) {
+
+  if (data == "Oke") 
+  {
+     $.post("proses_bayar_jual_lab.php",{biaya_admin:biaya_admin,total2:total2,sisa_pembayaran:sisa_pembayaran,kredit:kredit,kode_pelanggan:kode_pelanggan,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,cara_bayar:cara_bayar,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,total_hpp:total_hpp,harga:harga,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,apoteker:apoteker,penjamin:penjamin, nama_pelanggan:nama_pelanggan},function(info) {
 
 
-     $("#table-baru").html(info);
-     var no_faktur = info;
-     var kode_pelanggan = $('#kd_pelanggan').val();
-     var kode_pelanggan = kode_pelanggan.substr(0, kode_pelanggan.indexOf('('));
-     $("#cetak_tunai").attr('href', 'cetak_penjualan_tunai.php?no_faktur='+no_faktur+'');
-     $("#cetak_tunai_besar").attr('href', 'cetak_besar_lab.php?no_faktur='+no_faktur+'');
-     $("#alert_berhasil").show();
-     $("#pembayaran_penjualan").val('');
-     $("#sisa_pembayaran_penjualan").val('');
-     $("#kredit").val('');
-     $("#apoteker").val('')
-     $("#no_resep_dokter").val('')
-     $("#resep_dokter").val('')
-     $("#penjamin").val('')
-     $("#apoteker").val('')
-     $("#kd_pelanggan").val('')
-     $("#no_resep_dokter").val('')
-     $("#resep_dokter").val('')
-     $("#penjamin").val('')
-     $("#cetak_tunai").show();
-     $("#cetak_tunai_besar").show('');
-    
-       
-   });
-
+               $("#table-baru").html(info);
+               var no_faktur = info;
+               var kode_pelanggan = $('#kd_pelanggan').val();
+               var kode_pelanggan = kode_pelanggan.substr(0, kode_pelanggan.indexOf('('));
+               $("#cetak_tunai").attr('href', 'cetak_penjualan_tunai.php?no_faktur='+no_faktur+'');
+               $("#cetak_tunai_besar").attr('href', 'cetak_besar_lab.php?no_faktur='+no_faktur+'');
+               $("#alert_berhasil").show();
+               $("#pembayaran_penjualan").val('');
+               $("#sisa_pembayaran_penjualan").val('');
+               $("#kredit").val('');
+               $("#apoteker").val('')
+               $("#no_resep_dokter").val('')
+               $("#resep_dokter").val('')
+               $("#penjamin").val('')
+               $("#apoteker").val('')
+               $("#kd_pelanggan").val('')
+               $("#no_resep_dokter").val('')
+               $("#resep_dokter").val('')
+               $("#penjamin").val('')
+               $("#cetak_tunai").show();
+               $("#cetak_tunai_besar").show('');
+              
+                 
+             });
+  }
+  
+  else{
+    alert("Maaf Subtotal Penjualan Tidak Sesuai, Silakan Tunggu Sebentar!");       
+        window.location.href="form_penjualan_lab.php";
+  }
+          
+});
 
  }
 
@@ -2282,6 +2315,14 @@ $(document).ready(function(){
 $(document).on('click','.btn-hapus-tbs',function(e){
 
       var no_reg = $("#no_reg").val();
+    var kode_pelanggan = $("#kd_pelanggan1").val();
+    if (kode_pelanggan != 'Umum') {
+      var kode_pelanggan = kode_pelanggan.substr(0, kode_pelanggan.indexOf('('));
+    }
+    else
+    {
+        var kode_pelanggan = $("#kd_pelanggan1").val();
+    }
       var nama_barang = $(this).attr("data-barang");
       var id = $(this).attr("data-id");
       var kode_barang = $(this).attr("data-kode-barang");
@@ -2349,7 +2390,7 @@ $(document).on('click','.btn-hapus-tbs',function(e){
 
   $(".tr-id-"+id+"").remove();
 
-    $.post("hapustbs_penjualan_apotek.php",{id:id,kode_barang:kode_barang,no_reg:no_reg},function(data){
+    $.post("hapustbs_penjualan_labora.php",{id:id,kode_barang:kode_barang,no_reg:no_reg,kode_pelanggan:kode_pelanggan},function(data){
 
     $("#total2").val(tandaPemisahTitik(total_akhir1));  
     $("#total1").val(tandaPemisahTitik(total_akhir));      
@@ -2624,7 +2665,7 @@ $(document).ready(function(){
 
                   <script type="text/javascript">
                                  
-                                 $(".edit-jumlah").dblclick(function(){
+                                  $(document).on('dblclick','.edit-jumlah',function(e){
 
                                     var id = $(this).attr("data-id");
 
@@ -2635,7 +2676,8 @@ $(document).ready(function(){
                                  });
 
 
-                                 $(".input_jumlah").blur(function(){
+                                  $(document).on('blur','.input_jumlah',function(e){
+
 
                                     var id = $(this).attr("data-id");
                                     var jumlah_baru = $(this).val();
@@ -2646,8 +2688,15 @@ $(document).ready(function(){
                                     var harga = $(this).attr("data-harga");
                                     var jumlah_lama = $("#text-jumlah-"+id+"").text();
                                     var satuan_konversi = $(this).attr("data-satuan");
-                                    var tipe = $(this).attr("data-tipe");
-                                    var no_rm = $("#kd_pelanggan1").val();
+                                    var tipe = $(this).attr("data-tipe");    
+                                    var kode_pelanggan = $("#kd_pelanggan1").val();
+                                    if (kode_pelanggan != 'Umum') {
+                                      var kode_pelanggan = kode_pelanggan.substr(0, kode_pelanggan.indexOf('('));
+                                    }
+                                    else
+                                    {
+                                        var kode_pelanggan = $("#kd_pelanggan1").val();
+                                    }
    
 
                                     var subtotal_lama = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#text-subtotal-"+id+"").text()))));
@@ -2719,11 +2768,11 @@ $(document).ready(function(){
                                                         $("#potongan_penjualan").val(Math.round(potongaaan));
                                                         $("#total1").val(tandaPemisahTitik(tot_akhr));
                                                         $("#tax_rp").val(tandaPemisahTitik(Math.round(t_tax)));
-                                                       $("#pembayaran_penjualan").val('');
-                                                       $("#sisa_pembayaran_penjualan").val('');
-                                                       $("#kredit").val('');
+                                                        $("#pembayaran_penjualan").val('');
+                                                        $("#sisa_pembayaran_penjualan").val('');
+                                                        $("#kredit").val('');
                                                        
-                                                         $.post("update_pesanan_barang_apotek.php",{jumlah_lama:jumlah_lama,tax:tax,id:id,jumlah_baru:jumlah_baru,kode_barang:kode_barang,potongan:potongan,harga:harga,jumlah_tax:jumlah_tax,subtotal:subtotal},function(info){
+                                                         $.post("update_pesanan_barang_apotek.php",{jumlah_lama:jumlah_lama,tax:tax,id:id,jumlah_baru:jumlah_baru,kode_barang:kode_barang,potongan:potongan,harga:harga,jumlah_tax:jumlah_tax,subtotal:subtotal,kode_pelanggan:kode_pelanggan},function(info){
                                                          });  
 
                                             }
@@ -2759,12 +2808,7 @@ $(document).ready(function(){
                                                        $("#sisa_pembayaran_penjualan").val('');
                                                        $("#kredit").val('');
 
-                                                         $.post("update_pesanan_barang_apotek.php",{jumlah_lama:jumlah_lama,tax:tax,id:id,jumlah_baru:jumlah_baru,kode_barang:kode_barang,potongan:potongan,harga:harga,jumlah_tax:jumlah_tax,subtotal:subtotal},function(info){
-
-                                                        
-                                                        
-
-
+                                                         $.post("update_pesanan_barang_apotek.php",{jumlah_lama:jumlah_lama,tax:tax,id:id,jumlah_baru:jumlah_baru,kode_barang:kode_barang,potongan:potongan,harga:harga,jumlah_tax:jumlah_tax,subtotal:subtotal,kode_pelanggan:kode_pelanggan},function(info){
 
                                                         });
 

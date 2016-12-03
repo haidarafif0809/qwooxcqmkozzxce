@@ -911,8 +911,6 @@ else{
 
      $("#group_bed").val('');
      $("#bed").val('');
-     $("#rujukan").val('');
-     $("#penjamin").val('');
      $("#no_rm").val('');
      $("#nama_lengkap").val('');
      $("#jenis_kelamin").val('');

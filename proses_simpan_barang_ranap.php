@@ -82,6 +82,7 @@ $kode_gudang = stringdoang($_POST['kode_gudang']);
 $ppn_input = stringdoang($_POST['ppn_input']);
 $penjamin = stringdoang($_POST['penjamin']);
 $nama_pasien = stringdoang($_POST['nama_pasien']);
+$analis = stringdoang($_POST['analis']);
 
     $petugas_kasir = stringdoang($_POST['sales']);
     $petugas_paramedik = stringdoang($_POST['petugas_paramedik']);
@@ -115,6 +116,31 @@ $no_jurnal = no_jurnal();
     $ambil_kode_pelanggan = mysqli_fetch_array($select_kode_pelanggan);
 
     
+ // petugas analis
+    $fee_kasir = $db->query("SELECT * FROM fee_faktur WHERE nama_petugas = '$analis' ");
+    $data_fee_kasir = mysqli_fetch_array($fee_kasir);
+    $nominal_kasir = $data_fee_kasir['jumlah_uang'];
+    $prosentase_kasir = $data_fee_kasir['jumlah_prosentase'];
+
+    if ($nominal_kasir != 0) {
+      
+
+      $perintah01 = $db->query("INSERT INTO laporan_fee_faktur (nama_petugas, no_faktur, jumlah_fee, tanggal, jam, status_bayar, no_rm, no_reg) VALUES ('$data_fee_kasir[nama_petugas]', '$no_faktur', '$nominal_kasir', '$tanggal_sekarang', '$jam_sekarang', '', '$no_rm', '$no_reg')");
+
+    }
+
+    elseif ($prosentase_kasir != 0) {
+
+
+     
+      $fee_prosentase = $prosentase_kasir * $total / 100;
+      
+      $perintah01 = $db->query("INSERT INTO laporan_fee_faktur (nama_petugas, no_faktur, jumlah_fee, tanggal, jam, no_rm, no_reg) VALUES ('$data_fee_kasir[nama_petugas]', '$no_faktur', '$fee_prosentase', '$tanggal_sekarang', '$jam_sekarang', '$no_rm', '$no_reg')");
+      
+    }
+
+
+
  // petugas kasir
     $fee_kasir = $db->query("SELECT * FROM fee_faktur WHERE nama_petugas = '$petugas_kasir' ");
     $data_fee_kasir = mysqli_fetch_array($fee_kasir);

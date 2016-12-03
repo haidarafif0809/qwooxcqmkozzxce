@@ -7,8 +7,18 @@ include 'navbar.php';
 include 'db.php';
 include 'sanitasi.php';
 
- 
+
 $no_reg = stringdoang($_GET['no_reg']);
+
+if (isset($_GET['analis'])) {
+  
+$analis = stringdoang($_GET['analis']);
+}
+else
+{
+  $analis = '';
+}
+
 
 $ambil_data = $db->query("SELECT * FROM registrasi WHERE no_reg = '$no_reg'");
 $aray = mysqli_fetch_array($ambil_data);
@@ -560,9 +570,10 @@ Level 7
     <input type="hidden" class="form-control" name="harga_lama" id="harga_lama">
     <input type="hidden" class="form-control" name="harga_baru" id="harga_baru">
     <input type="hidden" class="form-control" name="jumlahbarang" id="jumlahbarang">
-    <input type="hidden" id="satuan_produk" name="satuan" class="form-control" value="" >
+    <input type="text" id="satuan_produk" name="satuan" class="form-control" value="" >
     <input type="hidden" id="harga_produk" name="harga" class="form-control" value="" >
-    <input type="hidden" id="id_produk" name="id_produk" class="form-control" value="" >        
+    <input type="hidden" id="id_produk" name="id_produk" class="form-control" value="" >   
+    <input type="hidden" id="analis" name="analis" class="form-control" value="<?php echo $analis; ?>" >        
 
 </form> <!-- tag penutup form -->
 
@@ -737,6 +748,7 @@ Laboratorium  </button>
 
                 <th> Kode  </th>
                 <th> Nama </th>
+                <th> Nama Petugas</th>
                 <th style="text-align: right" > Jumlah </th>
                 <th style="text-align: right" > Harga </th>
                 <th style="text-align: right" > Subtotal </th>
@@ -754,8 +766,29 @@ Laboratorium  </button>
       
     echo "<tr class='tr-kode-". $data1['kode_barang'] ." tr-id-". $data1['id'] ."' data-kode-barang='".$data1['kode_barang']."'>
                 <td style='font-size:15px'>". $data1['kode_barang'] ."</td>
-                <td style='font-size:15px;'>". $data1['nama_barang'] ."</td>
-                <td style='font-size:15px' align='right' class='edit-jumlah' data-id='".$data1['id']."'><span id='text-jumlah-".$data1['id']."'>". $data1['jumlah_barang'] ."</span> <input type='hidden' id='input-jumlah-".$data1['id']."' value='".$data1['jumlah_barang']."' class='input_jumlah' data-id='".$data1['id']."' autofocus='' data-kode='".$data1['kode_barang']."' data-tipe='".$data1['tipe_barang']."' data-harga='".$data1['harga']."' data-satuan='".$data1['satuan']."' data-tipe='".$data1['tipe_barang']."' > </td>
+                <td style='font-size:15px;'>". $data1['nama_barang'] ."</td>";
+
+                 $kd = $db->query("SELECT f.nama_petugas,u.nama FROM tbs_fee_produk f INNER JOIN user u ON f.nama_petugas = u.id WHERE f.kode_produk = '$data1[kode_barang]'  AND f.jam = '$data1[jam]' ");
+                    $kdD = $db->query("SELECT f.nama_petugas,u.nama FROM tbs_fee_produk f INNER JOIN user u ON f.nama_petugas = u.id WHERE f.kode_produk = '$data1[kode_barang]' AND  f.jam = '$data1[jam]' ");
+                    
+                   $nu = mysqli_fetch_array($kd);
+
+                  if ($nu['nama'] != '')
+                  {
+
+                  echo "<td>";
+                   while($nur = mysqli_fetch_array($kdD))
+                  {
+                    echo $nur['nama']." ,";
+                  }
+                   echo "</td>";
+
+                  }
+                  else
+                  {
+                    echo "<td></td>";
+                  }
+                echo"<td style='font-size:15px' align='right' class='edit-jumlah' data-id='".$data1['id']."'><span id='text-jumlah-".$data1['id']."'>". $data1['jumlah_barang'] ."</span> <input type='hidden' id='input-jumlah-".$data1['id']."' value='".$data1['jumlah_barang']."' class='input_jumlah' data-id='".$data1['id']."' autofocus='' data-kode='".$data1['kode_barang']."' data-tipe='".$data1['tipe_barang']."' data-harga='".$data1['harga']."' data-satuan='".$data1['satuan']."' data-tipe='".$data1['tipe_barang']."' > </td>
                 <td style='font-size:15px' align='right'>". rp($data1['harga']) ."</td>
                 <td style='font-size:15px' align='right'><span id='text-subtotal-".$data1['id']."'>". rp($data1['subtotal']) ."</span></td>
                 <td style='font-size:15px' align='right'><span id='text-potongan-".$data1['id']."'>". rp($data1['potongan']) ."</span></td>
@@ -1308,6 +1341,7 @@ $(document).ready(function(){
         var penjamin = $("#penjamin").val();
         var poli = $("#asal_poli").val();
         var nama_pasien = $("#nama_pasien").val();
+        var analis = $("#analis").val();
         var biaya_admin = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#biaya_admin").val()))));
         if (biaya_admin == '')
         {
@@ -1370,7 +1404,7 @@ alert("Silakan Bayar Piutang");
 
   if (data == "Oke") {
 
- $.post("proses_bayar_kasir_ranap.php",{total2:total2,sisa_pembayaran:sisa_pembayaran,kredit:kredit,no_rm:no_rm,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,cara_bayar:cara_bayar,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,total_hpp:total_hpp,harga:harga,sales:sales,kode_gudang:kode_gudang,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,nama_pasien:nama_pasien,no_reg:no_reg,dokter:dokter,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,penjamin:penjamin,bed:bed,group_bed:group_bed,biaya_admin:biaya_admin},function(info) {
+ $.post("proses_bayar_kasir_ranap.php",{total2:total2,sisa_pembayaran:sisa_pembayaran,kredit:kredit,no_rm:no_rm,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,cara_bayar:cara_bayar,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,total_hpp:total_hpp,harga:harga,sales:sales,kode_gudang:kode_gudang,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,nama_pasien:nama_pasien,no_reg:no_reg,dokter:dokter,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,penjamin:penjamin,bed:bed,group_bed:group_bed,biaya_admin:biaya_admin,analis:analis},function(info) {
 
 
      $("#table-baru").html(info);
@@ -1714,7 +1748,7 @@ kode_barang:kode_barang,nama_barang:nama_barang,jumlah_barang:jumlah_barang,harg
         var pembayaran = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah( $("#pembayaran_penjualan").val() ))));
         var total_hpp = $("#total_hpp").val();
         var kode_gudang = $("#kode_gudang").val();
-        var sales = $("#sales").val();
+        var sales = $("#id_sales").val();
         var keterangan = $("#keterangan").val();   
         var ber_stok = $("#ber_stok").val();   
         var ppn_input = $("#ppn_input").val();
@@ -1728,6 +1762,7 @@ kode_barang:kode_barang,nama_barang:nama_barang,jumlah_barang:jumlah_barang,harg
         var group_bed = $("#kamar").val();
         var penjamin = $("#penjamin").val();
         var poli = $("#asal_poli").val();
+        var analis = $("#analis").val();
         var nama_pasien = $("#nama_pasien").val();
         var biaya_admin = $("#biaya_admin").val();
         if (biaya_admin == '')
@@ -1774,7 +1809,7 @@ kode_barang:kode_barang,nama_barang:nama_barang,jumlah_barang:jumlah_barang,harg
 
   if (data == "Oke") {
 
-$.post("proses_bayar_kasir_ranap.php",{total2:total2,sisa_pembayaran:sisa_pembayaran,kredit:kredit,no_rm:no_rm,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,cara_bayar:cara_bayar,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,total_hpp:total_hpp,sales:sales,kode_gudang:kode_gudang,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,nama_pasien:nama_pasien,no_reg:no_reg,dokter:dokter,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,penjamin:penjamin,bed:bed,group_bed:group_bed,biaya_admin:biaya_admin},function(info) {
+$.post("proses_bayar_kasir_ranap.php",{total2:total2,sisa_pembayaran:sisa_pembayaran,kredit:kredit,no_rm:no_rm,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,cara_bayar:cara_bayar,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,total_hpp:total_hpp,sales:sales,kode_gudang:kode_gudang,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,nama_pasien:nama_pasien,no_reg:no_reg,dokter:dokter,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,penjamin:penjamin,bed:bed,group_bed:group_bed,biaya_admin:biaya_admin,analis:analis},function(info) {
 
             var no_faktur = info;
             $("#cetak_piutang").attr('href', 'cetak_penjualan_piutang.php?no_faktur='+no_faktur+'');
@@ -2752,6 +2787,7 @@ function myFunction(event) {
         var penjamin = $("#penjamin").val();
         var poli = $("#asal_poli").val();
         var nama_pasien = $("#nama_pasien").val();
+        var analis = $("#analis").val();
         var biaya_admin = $("#biaya_admin").val();
 
         if (biaya_admin == '')
@@ -2789,7 +2825,7 @@ function myFunction(event) {
 
   if (data == "Oke") {
 
-       $.post("proses_simpan_barang_ranap.php",{total2:total2,sisa_pembayaran:sisa_pembayaran,kredit:kredit,no_rm:no_rm,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,cara_bayar:cara_bayar,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,total_hpp:total_hpp,sales:sales,kode_gudang:kode_gudang,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,nama_pasien:nama_pasien,no_reg:no_reg,dokter:dokter,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,penjamin:penjamin,biaya_admin:biaya_admin,dokter_pj:dokter_pj},function(info) {
+       $.post("proses_simpan_barang_ranap.php",{total2:total2,sisa_pembayaran:sisa_pembayaran,kredit:kredit,no_rm:no_rm,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,cara_bayar:cara_bayar,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,total_hpp:total_hpp,sales:sales,kode_gudang:kode_gudang,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,nama_pasien:nama_pasien,no_reg:no_reg,dokter:dokter,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,penjamin:penjamin,biaya_admin:biaya_admin,dokter_pj:dokter_pj,analis:analis},function(info) {
 
         
             $("#table-baru").html(info);
@@ -3316,16 +3352,16 @@ $(document).ready(function(){
               $(nRow).attr('harga_level_4', aData[5]);
               $(nRow).attr('harga_level_5', aData[6]);
               $(nRow).attr('harga_level_6', aData[7]);
-              $(nRow).attr('harga_level_7f', aData[8]);
+              $(nRow).attr('harga_level_7', aData[8]);
               $(nRow).attr('jumlah-barang', aData[9]);
-              $(nRow).attr('satuan', aData[10]);
+              $(nRow).attr('satuan', aData[17]);
               $(nRow).attr('kategori', aData[11]);
               $(nRow).attr('status', aData[12]);
               $(nRow).attr('suplier', aData[13]);
               $(nRow).attr('limit_stok', aData[14]);
               $(nRow).attr('ber-stok', aData[15]);
               $(nRow).attr('tipe_barang', aData[16]);
-              $(nRow).attr('id-barang', aData[17]);
+              $(nRow).attr('id-barang', aData[18]);
 
 
 

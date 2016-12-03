@@ -71,6 +71,7 @@ $kode_gudang = stringdoang($_POST['kode_gudang']);
 $ppn_input = stringdoang($_POST['ppn_input']);
 $penjamin = stringdoang($_POST['penjamin']);
 $nama_pasien = stringdoang($_POST['nama_pasien']);
+$analis = stringdoang($_POST['analis']);
 
     $petugas_kasir = stringdoang($_POST['petugas_kasir']);
     $id_user = stringdoang($_POST['id_user']);
@@ -98,7 +99,30 @@ $no_jurnal = no_jurnal();
     $select_kode_pelanggan = $db->query("SELECT nama_pelanggan FROM pelanggan WHERE kode_pelanggan = '$no_rm'");
     $ambil_kode_pelanggan = mysqli_fetch_array($select_kode_pelanggan);
 
-    // petugas kasir
+    // petugas analis
+    $fee_kasir = $db->query("SELECT * FROM fee_faktur WHERE nama_petugas = '$analis'");
+    $data_fee_kasir = mysqli_fetch_array($fee_kasir);
+    $nominal_kasir = $data_fee_kasir['jumlah_uang'];
+    $prosentase_kasir = $data_fee_kasir['jumlah_prosentase'];
+
+    if ($nominal_kasir != 0) {
+      
+
+      $perintah01 = $db->query("INSERT INTO laporan_fee_faktur (nama_petugas, no_faktur, jumlah_fee, tanggal, jam, status_bayar, no_rm, no_reg) VALUES ('$data_fee_kasir[nama_petugas]', '$no_faktur', '$nominal_kasir', '$tanggal_sekarang', '$jam_sekarang', '', '$no_rm', '$no_reg')");
+
+    }
+
+    elseif ($prosentase_kasir != 0) {
+
+
+     
+      $fee_prosentase = $prosentase_kasir * $total / 100;
+      
+      $perintah01 = $db->query("INSERT INTO laporan_fee_faktur (nama_petugas, no_faktur, jumlah_fee, tanggal, jam, no_rm, no_reg) VALUES ('$data_fee_kasir[nama_petugas]', '$no_faktur', '$fee_prosentase', '$tanggal_sekarang', '$jam_sekarang', '$no_rm', '$no_reg')");
+      
+    }
+
+       // petugas kasir
     $fee_kasir = $db->query("SELECT * FROM fee_faktur WHERE nama_petugas = '$id_user'");
     $data_fee_kasir = mysqli_fetch_array($fee_kasir);
     $nominal_kasir = $data_fee_kasir['jumlah_uang'];
@@ -215,7 +239,19 @@ $no_jurnal = no_jurnal();
 
     // FEE PRODUK FEE PRODUK FEE PRODUK FEE PRODUK FEE PRODUK FEE PRODUK 
 
-     // petugas kasir
+     // petugas analis
+              
+    $fee_produk_ksir = $db->query("SELECT * FROM tbs_fee_produk WHERE nama_petugas = '$analis' AND no_reg = '$no_reg'");
+   while  ($data_fee_produk = mysqli_fetch_array($fee_produk_ksir)){
+
+
+
+          $query10 = $db->query("INSERT INTO laporan_fee_produk (nama_petugas, no_faktur, kode_produk, nama_produk, jumlah_fee, tanggal, jam, no_rm, no_reg) VALUES ('$data_fee_produk[nama_petugas]', '$no_faktur', '$data_fee_produk[kode_produk]', '$data_fee_produk[nama_produk]', '$data_fee_produk[jumlah_fee]', '$tanggal_sekarang', '$jam_sekarang', '$no_rm', '$no_reg')");
+
+
+    }
+
+         // petugas kasir
               
     $fee_produk_ksir = $db->query("SELECT * FROM tbs_fee_produk WHERE nama_petugas = '$id_user' AND no_reg = '$no_reg'");
    while  ($data_fee_produk = mysqli_fetch_array($fee_produk_ksir)){

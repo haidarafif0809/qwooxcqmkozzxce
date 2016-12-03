@@ -65,6 +65,51 @@ $id_kasir = $data_id['id'];
 
               $subtotal = $hargaa * $jumlah - $potongan_jadi; 
 
+if ($no_reg != '') {
+ //FEE DOKTER
+
+$dokter = stringdoang($_POST['dokter']);
+    $query9 = $db->query("SELECT jumlah_prosentase,jumlah_uang FROM fee_produk WHERE nama_petugas = '$dokter' AND kode_produk = '$kode'");
+    $cek9 = mysqli_fetch_array($query9);
+    $prosentase = $cek9['jumlah_prosentase'];
+    $nominal = $cek9['jumlah_uang'];
+
+
+    if ($prosentase != 0){
+   
+          $subtotal_prosentase = $harga * $jumlah;
+          
+          $fee_prosentase_produk = $prosentase * $subtotal_prosentase / 100;
+
+          $query10 = "INSERT INTO tbs_fee_produk (nama_petugas, session_id, kode_produk, nama_produk, jumlah_fee, tanggal, jam,waktu,no_rm,no_reg) VALUES ('$dokter', '$session_id', '$kode','$nama', '$fee_prosentase_produk', '$tanggal_sekarang', '$jam_sekarang','$waktu','$no_rm','$no_reg')";
+
+            if ($db->query($query10) === TRUE) 
+                {
+                
+              } 
+            else 
+                {
+                echo "Error: " . $query10 . "<br>" . $db->error;
+                } 
+
+    }
+
+    elseif ($nominal != 0) {
+
+      $fee_nominal_produk = $nominal * $jumlah;
+
+      $query100 = $db->query("INSERT INTO tbs_fee_produk (nama_petugas, session_id, kode_produk, nama_produk, jumlah_fee, tanggal, jam,waktu,no_rm,no_reg) VALUES ('$dokter', '$session_id', '$kode', '$nama', '$fee_nominal_produk', '$tanggal_sekarang', '$jam_sekarang','$waktu','$no_rm','$no_reg')");
+              if ($db->query($query100) === TRUE) 
+                {
+                
+              } 
+            else 
+                {
+                echo "Error: " . $query100. "<br>" . $db->error;
+                } 
+
+    }// END DOKTER
+}
 
 //FEE PETUGAS ANALIS
     $query9 = $db->query("SELECT jumlah_prosentase,jumlah_uang FROM fee_produk WHERE nama_petugas = '$analis' AND kode_produk = '$kode'");
@@ -247,161 +292,4 @@ $id_kasir = $data_id['id'];
 mysqli_close($db);   
     ?>
 
-                 <script type="text/javascript">
-                                 
-                                 $(".edit-jumlah").dblclick(function(){
-
-                                    var id = $(this).attr("data-id");
-
-                                    $("#text-jumlah-"+id+"").hide();
-
-                                    $("#input-jumlah-"+id+"").attr("type", "text");
-
-                                 });
-
-
-                                 $(".input_jumlah").blur(function(){
-
-                                    var id = $(this).attr("data-id");
-                                    var jumlah_baru = $(this).val();
-                                    if (jumlah_baru == '') {
-                                      jumlah_baru = '0';
-                                    }
-                                    var kode_barang = $(this).attr("data-kode");
-                                    var harga = $(this).attr("data-harga");
-                                    var jumlah_lama = $("#text-jumlah-"+id+"").text();
-                                    var tipe = $(this).attr("data-tipe");
-    
-
-                                    var subtotal_lama = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#text-subtotal-"+id+"").text()))));
-                                    var potongan = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#text-potongan-"+id+"").text()))));
-
-                                    var tax = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#text-tax-"+id+"").text()))));
-                                   
-                                    var subtotal = harga * jumlah_baru - potongan;
-
-                                    var subtotal_penjualan = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#total2").val()))));
-
-                                    subtotal_penjualan = subtotal_penjualan - subtotal_lama + subtotal;
-
-                                    var pot_fakt_per = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#potongan_persen").val()))));
-                                    var potongaaan = pot_fakt_per;
-                                          var pos = potongaaan.search("%");
-                                          var potongan_persen = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah(potongaaan))));
-                                              potongan_persen = potongan_persen.replace("%","");
-                                          potongaaan = subtotal_penjualan * potongan_persen / 100;
-                                          $("#potongan_penjualan").val(potongaaan);
-                                    
-                                          var biaya_admin = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#biaya_admin").val()))));
-                                          if (biaya_admin == '')
-                                          {
-                                            biaya_admin = 0;
-                                          }
-                                          var tax_faktur = $("#tax").val();
-                                            if(tax_faktur == '')
-                                            {
-                                              tax_faktur = 0;
-                                            }
-
-                                    var sub_akhir = parseInt(subtotal_penjualan,10) - parseInt(potongaaan,10);
-
-                                     var t_tax = ((parseInt(bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah(sub_akhir,10))))) * parseInt(bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah(tax_faktur)))))) / 100);
-
-                                    //perhitungan total pembayaran terakhir
-                                    var tot_akhr = parseInt(sub_akhir,10) + parseInt(biaya_admin,10) + parseInt(Math.round(t_tax,10));
-                                    //perhitungan total pembayaran terakhir
-
-
-
-                                    var tax_tbs = tax / subtotal_lama * 100;
-                                    var jumlah_tax = Math.round(tax_tbs) * subtotal / 100;
-
-
-                                        if (jumlah_baru == 0) {
-                                          alert("Jumlah Tidak Boleh Kosong atau Nol");
-                                          $("#input-jumlah-"+id+"").val(jumlah_lama);
-                                          $("#text-jumlah-"+id+"").text(jumlah_lama);
-                                          $("#text-jumlah-"+id+"").show();
-                                          $("#input-jumlah-"+id+"").attr("type", "hidden");
-
-                                        }
-                                        else
-                                        {
-
-                                            if (tipe == 'Jasa' || tipe == 'BHP') {
-
-
-                                                      $("#text-jumlah-"+id+"").show();
-                                                        $("#text-jumlah-"+id+"").text(jumlah_baru);
-
-                                                        $("#text-subtotal-"+id+"").text(tandaPemisahTitik(subtotal));
-                                                        $("#btn-hapus-id-"+id+"").attr("data-subtotal",subtotal);
-                                                        $("#text-tax-"+id+"").text(Math.round(jumlah_tax));
-                                                        $("#input-jumlah-"+id+"").attr("type", "hidden"); 
-                                                        $("#total2").val(tandaPemisahTitik(subtotal_penjualan));
-                                                        $("#potongan_penjualan").val(Math.round(potongaaan));
-                                                        $("#total1").val(tandaPemisahTitik(tot_akhr));
-                                                        $("#tax_rp").val(tandaPemisahTitik(Math.round(t_tax)));
-                                                       $("#pembayaran_penjualan").val('');
-                                                       $("#sisa_pembayaran_penjualan").val('');
-                                                       $("#kredit").val('');
-                                                       
-                                                         $.post("update_pesanan_barang_apotek.php",{jumlah_lama:jumlah_lama,tax:tax,id:id,jumlah_baru:jumlah_baru,kode_barang:kode_barang,potongan:potongan,harga:harga,jumlah_tax:jumlah_tax,subtotal:subtotal},function(info){
-                                                         });  
-
-                                            }
-                                            else{
-
-                                              $.post("cek_stok_pesanan_barang.php",{kode_barang:kode_barang,jumlah_baru:jumlah_baru,satuan_konversi:satuan_konversi},function(data){
-
-                                                     if (data < 0) {
-
-                                                     alert ("Jumlah Yang Di Masukan Melebihi Stok !");
-
-                                                      $("#input-jumlah-"+id+"").val(jumlah_lama);
-                                                      $("#text-jumlah-"+id+"").text(jumlah_lama);
-                                                      $("#text-jumlah-"+id+"").show();
-                                                      $("#input-jumlah-"+id+"").attr("type", "hidden");
-                                                  
-                                                      }
-
-                                                    else{
-
-                                                      $("#text-jumlah-"+id+"").show();
-                                                        $("#text-jumlah-"+id+"").text(jumlah_baru);
-
-                                                        $("#text-subtotal-"+id+"").text(tandaPemisahTitik(subtotal));
-                                                        $("#btn-hapus-id-"+id+"").attr("data-subtotal",subtotal);
-                                                        $("#text-tax-"+id+"").text(Math.round(jumlah_tax));
-                                                        $("#input-jumlah-"+id+"").attr("type", "hidden"); 
-                                                        $("#total2").val(tandaPemisahTitik(subtotal_penjualan));
-                                                        $("#potongan_penjualan").val(Math.round(potongaaan));
-                                                        $("#total1").val(tandaPemisahTitik(tot_akhr));
-                                                        $("#tax_rp").val(tandaPemisahTitik(Math.round(t_tax)));
-                                                       $("#pembayaran_penjualan").val('');
-                                                       $("#sisa_pembayaran_penjualan").val('');
-                                                       $("#kredit").val('');
-
-                                                         $.post("update_pesanan_barang_apotek.php",{jumlah_lama:jumlah_lama,tax:tax,id:id,jumlah_baru:jumlah_baru,kode_barang:kode_barang,potongan:potongan,harga:harga,jumlah_tax:jumlah_tax,subtotal:subtotal},function(info){
-
-                                                        
-                                                        
-
-
-
-                                                        });
-
-                                                      }
-
-                                                 });
-
-                                            }
-                                            
-                                            }
-
-                                    $("#kode_barang").focus();
-                                    
-                    });
-
-
-                             </script>
+      
