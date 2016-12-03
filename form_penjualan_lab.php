@@ -47,9 +47,8 @@ $session_id = session_id();
 
 $user = $_SESSION['nama'];
 
-$sum_rj_ri = $db->query("SELECT SUM(subtotal) AS total_rj_ri FROM tbs_penjualan WHERE no_reg = '$no_reg' AND lab IS NULL ");
+$sum_rj_ri = $db->query("SELECT SUM(subtotal) AS total_rj_ri FROM tbs_penjualan WHERE no_reg = '$no_reg' AND no_reg != '' AND lab IS NULL ");
 $data_rj_ri = mysqli_fetch_array($sum_rj_ri);
-
  ?>
 
 <!-- js untuk tombol shortcut -->

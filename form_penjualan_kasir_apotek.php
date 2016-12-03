@@ -218,7 +218,7 @@ $user = $_SESSION['nama'];
 
   </form><!--tag penutup form-->
 
-<button type="button" id="cari_produk_penjualan" class="btn btn-info " data-toggle="modal" data-target="#myModal"><i class='fa  fa-search'> Cari (F1)</i>  </button> 
+<button type="button" id="cari_produk_penjualan" class="btn btn-info " data-toggle="modal" data-target="#myModal"><i class='fa  fa-search'> </i>Cari (F1)  </button> 
 
 
 <!--tampilan modal-->
@@ -3020,16 +3020,16 @@ $.post("cek_level_harga_apotek.php", {level_harga:level_harga,kode_barang:kode_b
               $(nRow).attr('harga_level_4', aData[5]);
               $(nRow).attr('harga_level_5', aData[6]);
               $(nRow).attr('harga_level_6', aData[7]);
-              $(nRow).attr('harga_level_7f', aData[8]);
+              $(nRow).attr('harga_level_7', aData[8]);
               $(nRow).attr('jumlah-barang', aData[9]);
-              $(nRow).attr('satuan', aData[10]);
+              $(nRow).attr('satuan', aData[17]);
               $(nRow).attr('kategori', aData[11]);
               $(nRow).attr('status', aData[12]);
               $(nRow).attr('suplier', aData[13]);
               $(nRow).attr('limit_stok', aData[14]);
               $(nRow).attr('ber-stok', aData[15]);
               $(nRow).attr('tipe_barang', aData[16]);
-              $(nRow).attr('id-barang', aData[17]);
+              $(nRow).attr('id-barang', aData[18]);
 
 
 
