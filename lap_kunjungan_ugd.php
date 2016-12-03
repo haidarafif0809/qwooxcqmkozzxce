@@ -83,6 +83,7 @@ $out_rj = mysqli_fetch_array($select_rj);
 <span id="result"><!--span untuk table-->       
     <table id="table_lap_rj" class="table table-bordered table-sm">
         <thead>
+
 			<th style='background-color: #4CAF50; color:white'> No RM </th>
 			<th style='background-color: #4CAF50; color:white'> No REG </th>
 			<th style='background-color: #4CAF50; color:white'> Nama Pasien </th>
@@ -96,83 +97,190 @@ $out_rj = mysqli_fetch_array($select_rj);
             
            </thead>
 
-        <tbody>
-            
-      </tbody>
      </table>
 </span><!--akhir span untuk table-->
 </div>
+
+
+
+<span id="download_exc">
+<a href='export_excel_kunjungan_pasien_rm_ugd.php' type='submit' id='btn_exc' class='btn btn-warning btn-lg'>Download Excel</a>
+</span>
+
+<span id="download_exc_tanggal">
+<a href='export_excel_kunjungan_pasien_tanggal_ugd.php' type='submit' id='btn_exc_tanggal'  class='btn btn-warning btn-lg'>Download Excel</a>
+</span>
+
+<span id="download_exc_rm_tanggal">
+<a href='export_excel_ex_ugd.php' type='submit' id='btn_exc_rm_tanggal' class='btn btn-warning btn-lg'>Download Excel</a>
+</span>
+
+
 
 </div><!--Div Countainer-->
 
 
 <script type="text/javascript">
-        $("#lihat_rm").click(function(){
+  //berdasarkan no rm
+  $(document).ready(function() {
+$(document).on('click','#lihat_rm',function(e) {
         
-        var no_rm = $("#no_rm").val();        
-        
-        $.post("show_lap_kunjungan_ugd.php", {no_rm:no_rm},function(info){
-        
-        $("#result").html(info);
+         $('#table_lap_rj').DataTable().destroy();
 
+          var no_rm = $("#no_rm").val();
+
+          var dataTable = $('#table_lap_rj').DataTable( {
+          "processing": true,
+          "serverSide": true,
+          "info":     false,
+          "language": {
+        "emptyTable":     "My Custom Message On Empty Table"
+    },
+          "ajax":{
+            url :"datatable_lap_kunj_rm_ugd.php", // json datasource
+             "data": function ( d ) {
+                d.no_rm = $("#no_rm").val();
+                // d.custom = $('#myInput').val();
+                // etc
+            },
+                type: "post",  // method  , by default get
+            error: function(){  // error handling
+              $(".tbody").html("");
+              $("#table_lap_rj").append('<tbody class="tbody"><tr><th colspan="3"></th></tr></tbody>');
+              $("#tableuser_processing").css("display","none");
+              
+            }
+          }
+    
         });
+
+  $("#download_exc").show();
+   $("#download_exc_tanggal").hide();
+  $("#download_exc_rm_tanggal").hide();
+  $("#btn_exc").attr("href", "export_excel_kunjungan_pasien_ugd.php?no_rm="+no_rm+"");
+
         });
         $("form").submit(function(){
         
         return false;
         
-        });
-        
+        });  
+   });   
 </script>
 
 <script type="text/javascript">
-        $("#lihat_tanggal").click(function(){
+//berdasarkan tanggal
+         $(document).ready(function() {
+$(document).on('click','#lihat_tanggal',function(e) {
         
+         $('#table_lap_rj').DataTable().destroy();
+
         var dari_tanggal = $("#dari_tanggal").val();        
-        var sampai_tanggal = $("#sampai_tanggal").val();        
+        var sampai_tanggal = $("#sampai_tanggal").val(); 
 
-        $.post("show_lap_kunjungan_tanggal_ugd.php", {dari_tanggal:dari_tanggal,sampai_tanggal:sampai_tanggal},function(info){
-        
-        $("#result").html(info);
+
+          var dataTable = $('#table_lap_rj').DataTable( {
+          "processing": true,
+          "serverSide": true,
+          "info":     false,
+          "language": {
+        "emptyTable":     "My Custom Message On Empty Table"
+    },
+          "ajax":{
+            url :"datatable_lap_kunj_tanggal_ugd.php", // json datasource
+             "data": function ( d ) {
+                d.dari_tanggal = $("#dari_tanggal").val();
+                d.sampai_tanggal = $("#sampai_tanggal").val();
+                // d.custom = $('#myInput').val();
+                // etc
+            },
+                type: "post",  // method  , by default get
+            error: function(){  // error handling
+              $(".tbody").html("");
+              $("#table_lap_rj").append('<tbody class="tbody"><tr><th colspan="3"></th></tr></tbody>');
+              $("#tableuser_processing").css("display","none");
+              
+            }
+          }
+    
+        });
+
+  $("#download_exc_tanggal").show();
+   $("#download_exc_rm_tanggal").hide();
+    $("#download_exc").hide();
+  $("#btn_exc_tanggal").attr("href", "export_excel_kunjungan_pasien_tanggal_ugd.php?dari_tanggal="+dari_tanggal+"&sampai_tanggal="+sampai_tanggal+"");
 
         });
-        
-        
-        });      
         $("form").submit(function(){
         
         return false;
         
-        });
+        });  
+   });
         
 </script>
 
 <script type="text/javascript">
-        $("#lihat_ex").click(function(){
-        var no_rm_ex = $("#no_rm_ex").val();        
-        var dari_tanggal_ex = $("#dari_tanggal_ex").val();        
-        var sampai_tanggal_ex = $("#sampai_tanggal_ex").val();        
-
-        $.post("show_lap_ex_ugd.php", {dari_tanggal_ex:dari_tanggal_ex,sampai_tanggal_ex:sampai_tanggal_ex,no_rm_ex:no_rm_ex},function(info){
+     //berdasrkan rm dan tanggal
+        $(document).ready(function() {
+$(document).on('click','#lihat_ex',function(e) {
         
-        $("#result").html(info);
+         $('#table_lap_rj').DataTable().destroy();
+
+          var no_rm = $("#no_rm_ex").val();
+        var dari_tanggal = $("#dari_tanggal_ex").val();        
+        var sampai_tanggal = $("#sampai_tanggal_ex").val(); 
+
+
+          var dataTable = $('#table_lap_rj').DataTable( {
+          "processing": true,
+          "serverSide": true,
+          "info":     false,
+          "language": {
+        "emptyTable":     "My Custom Message On Empty Table"
+    },
+          "ajax":{
+            url :"datatable_lap_kunj_ex_ugd.php", // json datasource
+             "data": function ( d ) {
+                 d.no_rm_ex    = $("#no_rm_ex").val();
+                d.dari_tanggal_ex = $("#dari_tanggal_ex").val();
+                d.sampai_tanggal_ex = $("#sampai_tanggal_ex").val();
+                // d.custom = $('#myInput').val();
+                // etc
+            },
+                type: "post",  // method  , by default get
+            error: function(){  // error handling
+              $(".tbody").html("");
+              $("#table_lap_rj").append('<tbody class="tbody"><tr><th colspan="3"></th></tr></tbody>');
+              $("#tableuser_processing").css("display","none");
+              
+            }
+          }
+    
+        });
+
+  $("#download_exc_tanggal").hide();
+   $("#download_exc_rm_tanggal").show();
+    $("#download_exc").hide();
+  $("#btn_exc_rm_tanggal").attr("href", "export_excel_ex_rj.php?no_rm="+no_rm+"&dari_tanggal="+dari_tanggal+"&sampai_tanggal="+sampai_tanggal+"");
 
         });
-        
-        
-        });      
         $("form").submit(function(){
         
         return false;
         
-        });
-        
+        });  
+   });  
 </script>
 <script type="text/javascript">
    $(document).ready(function(){
       $("#show_no_rm").hide();
       $("#show_tanggal").hide();
       $("#show_ex").hide();
+       $("#download_exc").hide();
+      $("#download_exc_tanggal").hide();
+      $("#download_exc_rm_tanggal").hide();
+
 
   });
 </script>
@@ -213,13 +321,6 @@ $('.dropdown-toggle').dropdown()
   });
   </script>
 
-<script>
-// untuk memunculkan data tabel 
-$(document).ready(function() {
-        $('#table_lap_rj').DataTable({"ordering":false});
-    });
-
-</script>
 
 
 <?php 
