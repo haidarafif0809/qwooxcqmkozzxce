@@ -1446,6 +1446,7 @@ if (jumlah_barang == ''){
         var nama_pelanggan = $("#nama_pelanggan").val();
         var ppn_input = $("#ppn_input").val();
         var ppn = $("#ppn").val();
+        var session_id = $("#session_id").val();
         var biaya_admin = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#biaya_admin").val()))));
 
         
@@ -1491,6 +1492,11 @@ alert("Silakan Bayar Piutang");
   $("#piutang").hide();
   $("#transaksi_baru").show();
 
+ $.post("cek_subtotal_apotek.php",{no_reg:no_reg,total2:total2,session_id:session_id},function(data) {
+
+  if (data == "Oke") {
+
+
  $.post("proses_bayar_jual_lab.php",{biaya_admin:biaya_admin,total2:total2,sisa_pembayaran:sisa_pembayaran,kredit:kredit,kode_pelanggan:kode_pelanggan,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,cara_bayar:cara_bayar,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,total_hpp:total_hpp,harga:harga,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,apoteker:apoteker,penjamin:penjamin, nama_pelanggan:nama_pelanggan},function(info) {
 
 
@@ -1518,6 +1524,15 @@ alert("Silakan Bayar Piutang");
     
        
    });
+
+  }
+  else{
+    alert("Maaf Subtotal Penjualan Tidak Sesuai, Silakan Tunggu Sebentar!");       
+        window.location.href="form_penjualan_lab.php";
+  }
+
+ });
+
 
 
  }
@@ -1577,8 +1592,8 @@ alert("Silakan Bayar Piutang");
         if (pembayaran == '') {
           pembayaran = 0;
         }
-        var total_hpp = $("#total_hpp").val();
-        
+        var session_id = $("#session_id").val(); 
+        var total_hpp = $("#total_hpp").val();     
         var keterangan = $("#keterangan").val();   
         var ber_stok = $("#ber_stok").val();
         var ppn_input = $("#ppn_input").val();
@@ -1612,6 +1627,12 @@ alert("Silakan Bayar Piutang");
         $("#penjualan").hide();
         $("#transaksi_baru").show();
         
+ $.post("cek_subtotal_apotek.php",{no_reg:no_reg,total2:total2,session_id:session_id},function(data) {
+
+  if (data == "Oke") {
+
+
+
        $.post("proses_bayar_jual_lab.php",{biaya_admin:biaya_admin,total2:total2,sisa_pembayaran:sisa_pembayaran,kredit:kredit,kode_pelanggan:kode_pelanggan,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,cara_bayar:cara_bayar,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,total_hpp:total_hpp,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,apoteker:apoteker,penjamin:penjamin, nama_pelanggan:nama_pelanggan},function(info) {
 
      $("#table-baru").html(info);
@@ -1632,6 +1653,15 @@ alert("Silakan Bayar Piutang");
        
        
        });
+
+  }
+  else{
+    alert("Maaf Subtotal Penjualan Tidak Sesuai, Silakan Tunggu Sebentar!");       
+        window.location.href="form_penjualan_lab.php";
+  }
+
+ });
+
 
        
        }  

@@ -349,7 +349,7 @@
                  </form>
 
                   <div class="alert alert-success" id="alert_berhasil" style="display:none">
-                  <strong>Success!</strong> Pembayaran Berhasil
+                  <strong>Success!</strong> Stok Opname Berhasil
                   </div>
                   
                   <br>
@@ -550,10 +550,8 @@
                   
                   $.post("proses_selesai_stok_opname.php",{no_faktur:no_faktur,total_selisih_harga:total_selisih_harga},function(info) {
                   
-                  $("#demo").html(info);
-                  $("#total_selisih_harga").val('');
-                   
-  
+                  $("#result").html("");
+                  $("#total_selisih_harga").val('');       
                   $("#alert_berhasil").show();
 
                   

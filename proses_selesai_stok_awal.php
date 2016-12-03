@@ -11,20 +11,20 @@ $session_id = session_id();
 $tahun_sekarang = date('Y');
 $bulan_sekarang = date('m');
 $tanggal_sekarang = date('Y-m-d');
-$jam_sekarang = date('H:i:sa');
+$jam_sekarang = date('H:i:s');
 $tahun_terakhir = substr($tahun_sekarang, 2);
 
 $no_faktur_stok_awal = no_faktur_stok_awal();
 
-    $perintah = $db->query ("INSERT INTO nomor_faktur_stok_awal (no_stok_awal,tanggal) VALUES ('$no_faktur_stok_awal','$tanggal_sekarang')");
+    $perintah_p = $db->query ("INSERT INTO nomor_faktur_stok_awal (no_stok_awal,tanggal) VALUES ('$no_faktur_stok_awal','$tanggal_sekarang')");
 
 
 $query6 = $db->query("SELECT * FROM tbs_stok_awal ");
     while ($data = mysqli_fetch_array($query6))
 {
 
-    $perintah = $db->query ("INSERT INTO stok_awal (no_faktur, kode_barang,nama_barang,jumlah_awal,satuan, harga,total,tanggal,jam, user) 
-VALUES ('$no_faktur_stok_awal','$data[kode_barang]','$data[nama_barang]','$data[jumlah_awal]','$data[satuan]','$data[harga]','$data[total]','$tanggal_sekarang','$jam_sekarang','$user')");
+    $perintah = $db->query ("INSERT INTO stok_awal (no_faktur, kode_barang,nama_barang,jumlah_awal,satuan, harga,total,tanggal,jam, user) VALUES ('$no_faktur_stok_awal','$data[kode_barang]','$data[nama_barang]','$data[jumlah_awal]','$data[satuan]','$data[harga]','$data[total]','$tanggal_sekarang','$jam_sekarang','$user')");
+
 
         if ($db->query($perintah) === TRUE)
         {
