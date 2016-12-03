@@ -7,6 +7,11 @@
         
         $kode_barang = stringdoang($_POST['kode_barang']);
         $hpp = stringdoang($_POST['hpp']);
+        $tahun_sekarang = date('Y');
+        $bulan_sekarang = date('m');
+        $tanggal_sekarang = date('Y-m-d');
+        $jam_sekarang = date('H:i:s');
+        $tahun_terakhir = substr($tahun_sekarang, 2);
 
 
 if ($hpp == "") {
@@ -37,13 +42,14 @@ else{
 
   $harga = $hpp;
 }
-            
 
-            $perintah = $db->prepare("INSERT INTO tbs_stok_awal (session_id, kode_barang, nama_barang, jumlah_awal, satuan, harga, total) 
-            VALUES (?,?,?,?,?,?,?)");
+
             
-            $perintah->bind_param("sssisii",
-              $session_id, $kode_barang, $nama_barang, $jumlah_awal, $satuan, $harga, $total);
+            $perintah = $db->prepare("INSERT INTO tbs_stok_awal (session_id, kode_barang, nama_barang, jumlah_awal, satuan, harga, total, jam, tanggal) 
+            VALUES (?,?,?,?,?,?,?,?,?)");
+            
+            $perintah->bind_param("sssisiiss",
+              $session_id, $kode_barang, $nama_barang, $jumlah_awal, $satuan, $harga, $total, $jam_sekarang, $tanggal_sekarang);
 
             $kode_barang = stringdoang($_POST['kode_barang']);
             $nama_barang = stringdoang($_POST['nama_barang']);
@@ -52,6 +58,8 @@ else{
             $satuan = stringdoang($_POST['satuan']);
             $total = $harga * $jumlah_awal;
 
+       
+          
             $perintah->execute();
 
             if (!$perintah) {
@@ -63,7 +71,6 @@ else{
             }
   
     ?>
-<!-- membuat agar ada garis pada tabel, disetiap kolom -->
  <table id="tableuser" class="table table-bordered">
     <thead>
      

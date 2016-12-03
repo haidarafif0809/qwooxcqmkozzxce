@@ -10,7 +10,7 @@ $analis = stringdoang($_POST['apoteker']);
 $no_rm  = stringdoang($_POST['no_rm']);
 $no_reg  = stringdoang($_POST['no_reg']);
 $petugas = $_SESSION['id'];
-$waktu = date("Y-m-d H:i:sa");
+$waktu = date("Y-m-d H:i:s");
 $bulan_php = date('m');
 $tahun_php = date('Y');
   
@@ -26,8 +26,8 @@ $tahun_php = date('Y');
       $bulan_sekarang = date('m');
       $tanggal_sekarang = date('Y-m-d');
 
-      $waktu = date('Y-m-d H:i:sa');
-      $jam_sekarang = date('H:i:sa');
+      $waktu = date('Y-m-d H:i:s');
+      $jam_sekarang = date('H:i:s');
       $tahun_terakhir = substr($tahun_sekarang, 2);
 
 
