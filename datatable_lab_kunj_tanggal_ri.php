@@ -11,8 +11,8 @@ $bulan_php = date('m');
 $tahun_php = date('Y');
 
 
-$no_rm = stringdoang($_POST['no_rm']);
-
+$dari_tanggal = stringdoang($_POST['dari_tanggal']);
+$sampai_tanggal = stringdoang($_POST['sampai_tanggal']);
 
 // storing  request (ie, get/post) global array to a variable  
 $requestData= $_REQUEST;
@@ -32,15 +32,14 @@ $columns = array(
 	8=> 'tanggal_periksa',
 	9=> 'bed',				 		 										
 	10=> 'kamar',
-	11=> 'lama_menginap'
+	11=> 'lama_menginap'				 		 										
 
 );
 
 
-
 // getting total number records without any search
 $sql = "SELECT id,no_rm,no_reg,nama_pasien,jenis_kelamin,umur_pasien,alamat_pasien,penjamin,hp_pasien,tanggal,bed,group_bed,menginap ";
-$sql.=" FROM registrasi WHERE no_rm = '$no_rm' AND jenis_pasien = 'Rawat inap' ";
+$sql.=" FROM registrasi WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' AND jenis_pasien = 'Rawat Inap' ";
 $query = mysqli_query($conn, $sql) or die("query 1: get employees");
 $totalData = mysqli_num_rows($query);
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
@@ -48,7 +47,7 @@ $totalFiltered = $totalData;  // when there is no search parameter then total nu
 
 $sql = "SELECT id,no_rm,no_reg,nama_pasien,jenis_kelamin,umur_pasien,alamat_pasien,penjamin,hp_pasien,tanggal,bed,group_bed,menginap ";
 
-$sql.=" FROM registrasi WHERE 1=1 AND no_rm = '$no_rm' AND jenis_pasien = 'Rawat Inap' ";
+$sql.=" FROM registrasi WHERE 1=1 AND tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' AND jenis_pasien = 'Rawat Inap' ";
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
 	$sql.=" AND ( no_rm LIKE '".$requestData['search']['value']."%' ";    
 	$sql.=" OR no_reg LIKE '".$requestData['search']['value']."%' ";
@@ -83,7 +82,6 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 	$nestedData[] =	 $row['bed']; 
 	$nestedData[] =	 $row['group_bed']; 
 	$nestedData[] =	 $row['menginap']; 
-
 
  $nestedData[]= "<a href='detail_lap_kunjungan_ri.php?no_rm=".$row['no_rm']."&no_reg=".$row['no_reg']."' class='btn-floating btn-info btn-small'><i class='fa fa-archive'></i> </a>";
 
