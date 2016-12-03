@@ -19,30 +19,34 @@ $no_faktur_stok_awal = no_faktur_stok_awal();
     $perintah_p = $db->query ("INSERT INTO nomor_faktur_stok_awal (no_stok_awal,tanggal) VALUES ('$no_faktur_stok_awal','$tanggal_sekarang')");
 
 
-$query6 = $db->query("SELECT * FROM tbs_stok_awal ");
+$query6 = $db->query("SELECT * FROM tbs_stok_awal WHERE session_id = '$session_id'");
     while ($data = mysqli_fetch_array($query6))
 {
 
-    $perintah = $db->query ("INSERT INTO stok_awal (no_faktur, kode_barang,nama_barang,jumlah_awal,satuan, harga,total,tanggal,jam, user) VALUES ('$no_faktur_stok_awal','$data[kode_barang]','$data[nama_barang]','$data[jumlah_awal]','$data[satuan]','$data[harga]','$data[total]','$tanggal_sekarang','$jam_sekarang','$user')");
+    $perintah = "INSERT INTO stok_awal (no_faktur, kode_barang, nama_barang, jumlah_awal, satuan,  harga, total, tanggal, jam, user)
+        VALUES ('$no_faktur_stok_awal', '$data[kode_barang]', '$data[nama_barang]', '$data[jumlah_awal]', '$data[satuan]', '$data[harga]', '$data[total]', '$tanggal_sekarang', '$jam_sekarang','$user')";
 
+    if ($db->query($perintah) === TRUE) {
+        } 
 
-        if ($db->query($perintah) === TRUE)
-        {
-					echo '<div class="alert alert-danger" id="alert_gagal" style="display:none">
-					<strong>Gagal!</strong> Anda Belum Memasukan Data
-					</div>';
-
+        else {
+        echo "Error: " . $perintah . "<br>" . $db->error;
         }
-        else
-        {
-					echo '<div class="alert alert-success" id="alert_berhasil" style="display:none">
-					<strong>Sukses!</strong> Penambahan Berhasil
-					</div>';
-
-        }
-
 }
 
+$select = $db->query("SELECT * FROM stok_awal WHERE no_faktur = '$no_faktur_stok_awal' ");
+$row = mysqli_num_rows($select);
+if ($row > 0) {
+    
+    echo '<div class="alert alert-success" id="alert_berhasil" style="display:none">
+        <strong>Sukses!</strong> Penambahan Berhasil
+        </div>';
+}
+else{
+    echo '<div class="alert alert-danger" id="alert_gagal" style="display:none">
+        <strong>Gagal!</strong> Anda Belum Memasukan Data
+        </div>';
+}
 
 
 //JURNAL TRANSAKSI
