@@ -192,7 +192,6 @@ echo '<a href="form_stok_opname.php"  class="btn btn-info" > <i class="fa fa-plu
 			<th style='background-color: #4CAF50; color:white'> Tanggal </th>
 			<th style='background-color: #4CAF50; color:white'> Jam </th>
 			<th style='background-color: #4CAF50; color:white'> Status </th>
-			<th style='background-color: #4CAF50; color:white'> Keterangan </th>
 			<th style='background-color: #4CAF50; color:white'> Total Selisih</th>
 			
 			<th style='background-color: #4CAF50; color:white'> User </th>
@@ -230,7 +229,6 @@ if ($stok_opname['stok_opname_hapus'] > 0) {
 			<td>". $data1['tanggal'] ."</td>
 			<td>". $data1['jam'] ."</td>
 			<td>". $data1['status'] ."</td>
-			<td>". $data1['keterangan'] ."</td>
 			<td>". rp($data1['total_selisih']) ."</td>
 			
 			<td>". $data1['user'] ."</td>

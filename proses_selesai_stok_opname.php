@@ -6,7 +6,7 @@
 $tahun_sekarang = date('Y');
 $bulan_sekarang = date('m');
 $tanggal_sekarang = date('Y-m-d');
-$jam_sekarang = date('H:i:sa');
+$jam_sekarang = date('H:i:s');
 $tahun_terakhir = substr($tahun_sekarang, 2);
 
 
@@ -69,7 +69,7 @@ if ($total_tbs < 0) {
     $total0 = $total;
 
 
-ECHO "1";
+
  //PERSEDIAAN    
         $insert_jurnal = "INSERT INTO jurnal_trans (nomor_jurnal,waktu_jurnal,keterangan_jurnal,kode_akun_jurnal,debit,kredit,jenis_transaksi,no_faktur,approved,user_buat) VALUES ('".no_jurnal()."', '$tanggal_sekarang $jam_sekarang', 'Stok Opname -', '$ambil_setting[persediaan]', '0', '$total0', 'Stok Opname', '$no_faktur','1', '$user')";
 if ($db->query($insert_jurnal) === TRUE) {
@@ -93,7 +93,7 @@ if ($db->query($insert_jurnal) === TRUE) {
 else {
     $totals = $total_masuk;
 
-ECHO "2";
+
 
       //PERSEDIAAN    
         $insert_jurnal3 = "INSERT INTO jurnal_trans (nomor_jurnal,waktu_jurnal,keterangan_jurnal,kode_akun_jurnal,debit,kredit,jenis_transaksi,no_faktur,approved,user_buat) VALUES ('".no_jurnal()."', '$tanggal_sekarang $jam_sekarang', 'Stok Opname -', '$ambil_setting[persediaan]', '$total_tbs', '0', 'Stok Opname', '$no_faktur','1', '$user')";
@@ -122,7 +122,6 @@ ECHO "2";
         $query5 = $db->query("DELETE FROM tbs_stok_opname WHERE no_faktur = '$no_faktur'  ");
         
         
-echo "<b><h4>Success</h></b>";
 
 //Untuk Memutuskan Koneksi Ke Database
 mysqli_close($db);   

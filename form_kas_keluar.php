@@ -127,17 +127,20 @@
 <form action="proses_tbs_kas_keluar.php" role="form" method="post" id="formtambahproduk">
 <div class="row">
 
-					<div class="form-group col-sm-2">
+					<div class="form-group col-sm-3">
 					<label> Tanggal </label><br>
 					<input style="height:15px;" type="text" name="tanggal" id="tanggal1" placeholder="Tanggal" value="<?php echo date("Y-m-d"); ?>" class="form-control" required="" >
 					</div>
 
           <input style="height:15px;" type="hidden" name="session_id" id="session_id" class="form-control" readonly="" value="<?php echo $session_id; ?>" required="" >  
 
-     
+          <div class="form-group col-sm-3">
+          <label> User </label><br>
+          <input style="height:15px" type="text" name="user" id="user" placeholder="Tanggal" value="<?php echo $_SESSION['nama']; ?>" class="form-control" required="" >
+          </div>
     
 
-          <div class="form-group col-sm-5">
+          <div class="form-group col-sm-6">
           <label> Keterangan </label><br>
           <textarea style="height:40px;" type="text" name="keterangan" id="keterangan" autocomplete="off" placeholder="Keterangan" class="form-control" > </textarea>
           </div>
@@ -145,9 +148,10 @@
 </div> <!-- tag penutup div row -->
 
 <div class="row">
+     <div class="card card-block">
 
  <?php if ($data_tbs > 0): ?>
-    
+
           <div class="form-group col-sm-3">
           <label> Dari Akun </label><br>
           <select type="text" name="dari_akun" id="dariakun" class="form-control" disabled="true">
@@ -229,7 +233,7 @@
 					<button type="submit" id="submit_produk" class="btn btn-success"> <i class='fa fa-plus'> </i> Tambah </button>
 					</div>
 					
-					
+</div> <!-- div card block-->					
 </div> <!-- tag penutup div row-->
   
 </form>
@@ -313,10 +317,13 @@ mysqli_close($db);
         </span>
 <br>
 
-    <div class="form-group col-sm-2" id="col_sm_6">
-          <label> Jumlah Total </label><br>
-          <input style="height:15px;" type="text" name="jumlah" id="jumlahtotal" readonly="" placeholder="Jumlah Total" class="form-control">
-    </div> <br>  
+<div class="row">
+
+    <div class="form-group col-sm-6" id="col_sm_6">
+          <b><label> Total Akhir </label><br></b>
+          <input style="height:15px;font-size: 25px;" type="text" name="jumlah" id="jumlahtotal" readonly="" placeholder="Total" class="form-control">
+    </div> 
+</div> 
 
   <!--membuat tombol submit bayar & Hutang-->
     <button type="submit" id="submit_kas_keluar" class="btn btn-info"> <i class='fa fa-send'> </i> Submit </a> </button>
@@ -475,6 +482,15 @@ $.post("cek_jumlah_kas_keluar.php",
 
 </script>
 
+
+<script>
+
+// untk menampilkan datatable atau filter seacrh
+$(document).ready(function(){
+    $('#tableuser').DataTable();
+});
+
+</script>
 
 
 

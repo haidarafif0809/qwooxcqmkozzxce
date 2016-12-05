@@ -570,7 +570,7 @@ Level 7
     <input type="hidden" class="form-control" name="harga_lama" id="harga_lama">
     <input type="hidden" class="form-control" name="harga_baru" id="harga_baru">
     <input type="hidden" class="form-control" name="jumlahbarang" id="jumlahbarang">
-    <input type="text" id="satuan_produk" name="satuan" class="form-control" value="" >
+    <input type="hidden" id="satuan_produk" name="satuan" class="form-control" value="" >
     <input type="hidden" id="harga_produk" name="harga" class="form-control" value="" >
     <input type="hidden" id="id_produk" name="id_produk" class="form-control" value="" >   
     <input type="hidden" id="analis" name="analis" class="form-control" value="<?php echo $analis; ?>" >        
