@@ -124,7 +124,7 @@
 					<div class="form-group col-sm-3">
 					<label> Tanggal </label><br>
 					<input style="height:15px" type="text" name="tanggal" id="tanggal1" placeholder="Tanggal" value="<?php echo date("Y-m-d"); ?>" class="form-control" required="" >
-
+          
 			   <!--HIDDEN SESSION-->		
           <input style="height:15px" type="hidden" name="session_id" id="session_id" class="form-control" readonly="" value="<?php echo $session_id; ?>" required="" >
 
