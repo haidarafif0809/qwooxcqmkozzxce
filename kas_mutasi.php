@@ -267,7 +267,7 @@ echo '<button type="button" id="tambah" class="btn btn-info" data-toggle="modal"
 
 <div class="table-responsive"><!--membuat agar ada garis pada tabel disetiap kolom-->
 <span id="tabel_baru">
-<table id="tableuser" class="table table-bordered table-sm">
+<table id="table_mutasi" class="table table-bordered table-sm">
 		<thead>
 			<th style='background-color: #4CAF50; color:white'> Nomor Faktur </th>
 			<th style='background-color: #4CAF50; color:white'> Keterangan </th>
@@ -292,67 +292,37 @@ if ($kas_mutasi['kas_mutasi_edit'] > 0) {
 }
 ?>		
 			
-			
-			
 		</thead>
-		
-		<tbody>
-		<?php
-
-			//menyimpan data sementara yang ada pada $perintah
-			while ($data1 = mysqli_fetch_array($perintah))
-			{
-
-
-$perintah10 = $db->query("SELECT km.id, km.no_faktur, km.keterangan, km.dari_akun, km.jumlah, km.tanggal, km.jam, km.user, da.nama_daftar_akun FROM kas_mutasi km INNER JOIN daftar_akun da ON km.dari_akun = da.kode_daftar_akun WHERE km.dari_akun = '$data1[dari_akun]'");
-$data = mysqli_fetch_array($perintah10);
-$dari_akun = $data['nama_daftar_akun'];
-				//menampilkan data
-			echo 
-			"<tr class='tr-id-".$data1['id']."'>
-			<td>". $data1['no_faktur'] ."</td>
-			<td>". $data1['keterangan'] ."</td>
-			<td>". $dari_akun ."</td>
-			<td>". $data1['nama_daftar_akun'] ."</td>
-			<td>". rp($data1['jumlah']) ."</td>
-			<td>". $data1['tanggal'] ."</td>
-			<td>". $data1['jam'] ."</td>
-			<td>". $data1['user'] ."</td>";
-			
-if ($kas_mutasi['kas_mutasi_hapus'] > 0) {
-
-		
-			echo "<td> <button class='btn btn-danger btn-hapus' data-id='". $data1['id'] ."' data-faktur='". $data1['no_faktur'] ."'> <i class='fa fa-trash'></i> Hapus </button> </td>";
-		}
-
-
-if ($kas_mutasi['kas_mutasi_edit'] > 0) {
-
-			echo "<td> <button class='btn btn-info btn-edit' data-jumlah='". $data1['jumlah'] ."' data-ket='". $data1['keterangan'] ."' data-id='". $data1['id'] ."' data-dari-akun='". $data1['dari_akun'] ."' data-ke-akun='". $data1['ke_akun'] ."' data-jumlah='". $data1['jumlah'] ."' data-tanggal='". $data1['tanggal'] ."' data-faktur='". $data1['no_faktur'] ."'> <i class='fa fa-edit'></i> Edit </button> </td>
-			</tr>";
-			}
-		}
-
-//Untuk Memutuskan Koneksi Ke Database
-mysqli_close($db);   
-		?>
-		</tbody>
 
 	</table>
 </span>
 </div>
 </div><!--end of container-->
 
-<script>
 
-// untk menampilkan datatable atau filter seacrh
-$(document).ready(function(){
-    $('#tableuser').DataTable();
-});
-
-</script>
-
-
+<!-- DATATABLE AJAX -->
+    <script type="text/javascript" language="javascript" >
+      $(document).ready(function() {
+        var dataTable = $('#table_mutasi').DataTable( {
+          "processing": true,
+          "serverSide": true,
+          "ajax":{
+            url :"datatable_kas_mutasi.php", // json datasource
+            type: "post",  // method  , by default get
+            error: function(){  // error handling
+              $(".employee-grid-error").html("");
+              $("#table_mutasi").append('<tbody class="employee-grid-error"><tr><th colspan="3">No data found in the server</th></tr></tbody>');
+              $("#employee-grid_processing").css("display","none");
+              
+            }
+          },
+            "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+              $(nRow).attr('class','tr-id-'+aData[10]+'');
+            },
+        });
+      });
+    </script>
+<!-- / DATATABLE AJAX -->
 
 
 			<!-- Dari Form Kas Mutasi -->
@@ -501,11 +471,11 @@ else{
 		}
 		
 		else if(ke_akun == ""){
-			alert("Silakan Isi Kolom Ke Akun");
+			alert("Silakan Isi Kolom Ke Kas");
 			$("#ke_akun1").focus();
 		}
 		else if(dari_akun == ""){
-			alert("Silakan Isi Kolom Dari Akun");
+			alert("Silakan Isi Kolom Dari Kas");
 			$("#dari_akun1").focus();
 		}
 		else if(jumlah == ""){
@@ -515,38 +485,46 @@ else{
 		}
 		else{
 
-		
 		$.post('proses_kas_mutasi.php',{tanggal:tanggal,no_faktur:no_faktur,keterangan:keterangan,dari_akun:dari_akun,ke_akun:ke_akun,jumlah:jumlah},function(data){
+		
+		$('#table_mutasi').DataTable().destroy();
+		      var dataTable = $('#table_mutasi').DataTable( {
+		          "processing": true,
+		          "serverSide": true,
+		          "ajax":{
+		            url :"datatable_kas_mutasi.php", // json datasource
+		            type: "post",  // method  , by default get
+		            error: function(){  // error handling
+		              $(".employee-grid-error").html("");
+		              $("#table_mutasi").append('<tbody class="employee-grid-error"><tr><th colspan="3">No data found in the server</th></tr></tbody>');
+		              $("#employee-grid_processing").css("display","none");
+		              
+		            }
+		          },
+		            "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+		              $(nRow).attr('class','tr-id-'+aData[10]+'');
+		            },
+		        })
 
-		if (data != '') {
 		$("#tanggal1").val('');
 		$("#tambah_faktur").val('');
-		$("#keterangan").val('');
+		$("#keterangan").val(dari_akun1);
 		$("#dari_akun1").val('');
 		$("#ke_akun1").val('');
 		$("#jumlah2").val('');
 		$(".alert").show('fast');
 		window.location.href = 'kas_mutasi.php';		
 
-		setTimeout(tutupalert, 2000);
+		setTimeout(tutupalert, 100);
 		$(".modal").modal("hide");
-		}
-		
 		
 		});
 
-
 		}
-
-		
-		function tutupmodal() {
-		
+	function tutupmodal() {
 		}
 		}
 		});
-
-
-
 
 		});
 
@@ -564,7 +542,7 @@ else{
 			
 //fungsi hapus data 
 $(document).ready(function(){	
-		$(".btn-hapus").click(function(){
+		$(document).on('click','.btn-hapus',function(e){
 		
 		var id = $(this).attr("data-id");
 		var no_faktur = $(this).attr("data-faktur");
@@ -597,7 +575,7 @@ $(document).ready(function(){
 
 
 //fungsi edit data 
-		$(".btn-edit").click(function(){
+		$(document).on('click','.btn-edit',function(e){
 		
 		$("#modal_edit").modal('show');
 		var nama = $(this).attr("data-satuan"); 

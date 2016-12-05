@@ -179,7 +179,7 @@ tr:nth-child(even){background-color: #f2f2f2}
 
 <div class="table-responsive">
 <span id="table_baru">
-<table id="tableuser" class="table table-bordered table-sm">
+<table id="table_suplier" class="table table-bordered table-sm">
 		<thead>
 			
 			<th style='background-color: #4CAF50; color: white'> Nama Suplier </th>
@@ -210,47 +210,7 @@ $suplier_edit = mysqli_num_rows($pilih_akses_suplier_edit);
 			
 		</thead>
 		
-		<tbody>
-		<?php
-
 		
-			while ($data = mysqli_fetch_array($query))
-			{
-			echo "<tr>
-			
-			<td>". $data['nama'] ."</td>
-			<td>". $data['alamat'] ."</td>
-			<td>". $data['no_telp'] ."</td>";
-
-
-include 'db.php';
-
-$pilih_akses_suplier_hapus = $db->query("SELECT suplier_hapus FROM otoritas_master_data WHERE id_otoritas = '$_SESSION[otoritas_id]' AND suplier_hapus = '1'");
-$suplier_hapus = mysqli_num_rows($pilih_akses_suplier_hapus);
-
-
-    if ($suplier_hapus > 0){
-			echo "<td> <button class='btn btn-danger btn-hapus' data-id='". $data['id'] ."' data-suplier='". $data['nama'] ."'> <span class='glyphicon glyphicon-trash'> </span> Hapus </button> </td>";
-			}
-
-
-include 'db.php';
-
-$pilih_akses_suplier_edit = $db->query("SELECT suplier_edit FROM otoritas_master_data WHERE id_otoritas = '$_SESSION[otoritas_id]' AND suplier_edit = '1'");
-$suplier_edit = mysqli_num_rows($pilih_akses_suplier_edit);
-
-
-    if ($suplier_edit > 0){			
-			echo "<td> <button class='btn btn-info btn-edit' data-suplier='". $data['nama'] ."' data-alamat='". $data['alamat'] ."' data-nomor='". $data['no_telp'] ."' data-id='". $data['id'] ."'> <span class='glyphicon glyphicon-edit'> </span> Edit </button> </td>";
-		}
-
-			echo "</tr>";
-			}
-
-			//Untuk Memutuskan Koneksi Ke Database
-mysqli_close($db);   
-		?>
-		</tbody>
 
 	</table>
 </span>
@@ -279,13 +239,36 @@ var nama = $("#suplier").val();
 </script>
 
 
-<script>
+<!--DATA TABLE MENGGUNAKAN AJAX-->
+<script type="text/javascript" language="javascript" >
+      $(document).ready(function() {
 
-$(document).ready(function(){
-    $('.table').DataTable();
-});
+          var dataTable = $('#table_suplier').DataTable( {
+          "processing": true,
+          "serverSide": true,
+          "ajax":{
+            url :"datatable_suplier.php", //  json datasource
+           
+            type: "post",  // method  , by default get
+            error: function(){  // error handling
+              $(".employee-grid-error").html("");
+              $("#table_suplier").append('<tbody class="employee-grid-error"><tr><th colspan="3">No data found in the server</th></tr></tbody>');
+              $("#employee-grid_processing").css("display","none");
+            }
+        },
+            
+            "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+                $(nRow).attr('class','tr-id-'+aData[5]+'');
+            },
+        });
 
-</script>
+        $("#form").submit(function(){
+        return false;
+        });
+        
+
+      } );
+    </script>
 
 
         <script type="text/javascript">
@@ -368,7 +351,7 @@ $(document).ready(function(){
 					// end fungsi hapus data
 
 				    //fungsi edit data 
-								$(".btn-edit").click(function(){
+								$(document).on('click','.btn-edit',function(e){
 								
 								$("#modal_edit").modal('show');
 								var nama = $(this).attr("data-suplier");
@@ -384,8 +367,7 @@ $(document).ready(function(){
 
 								
 								});
-								
-								$("#submit_edit").click(function(){
+								$(document).on('click','#submit_edit',function(e){
 								var nama = $("#edit_suplier").val();
 								var alamat = $("#edit_alamat").val();
 								var no_telp = $("#edit_nomor").val();
