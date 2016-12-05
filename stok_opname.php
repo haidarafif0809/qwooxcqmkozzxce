@@ -186,7 +186,7 @@ echo '<a href="form_stok_opname.php"  class="btn btn-info" > <i class="fa fa-plu
 
 <div class="table-responsive">
 <span id="tabel_baru">
-<table id="tableuser" class="table table-bordered">
+<table id="table_stok_opname" class="table table-bordered">
 		<thead>
 			<th style='background-color: #4CAF50; color:white'> Nomor Faktur </th>
 			<th style='background-color: #4CAF50; color:white'> Tanggal </th>
@@ -198,76 +198,22 @@ echo '<a href="form_stok_opname.php"  class="btn btn-info" > <i class="fa fa-plu
 			<th style='background-color: #4CAF50; color:white'> Detail </th>
 			<?php 
 
-if ($stok_opname['stok_opname_edit'] > 0) {
-	echo "<th style='background-color: #4CAF50; color:white'> Edit </th>";
-}
-			 ?>
+				if ($stok_opname['stok_opname_edit'] > 0) {
+					echo "<th style='background-color: #4CAF50; color:white'> Edit </th>";
+				}
+							 ?>
 
-<?php
-include 'db.php';
+				<?php
+				include 'db.php';
 
-if ($stok_opname['stok_opname_hapus'] > 0) {
+				if ($stok_opname['stok_opname_hapus'] > 0) {
 
-				echo "<th style='background-color: #4CAF50; color:white'> Hapus </th>";
-			}
-
-?>
-			
-			
+								echo "<th style='background-color: #4CAF50; color:white'> Hapus </th>";
+							}
+			?>
 			
 		</thead>
 		
-		<tbody>
-		<?php
-
-			//menyimpan data sementara yang ada pada $perintah
-			while ($data1 = mysqli_fetch_array($perintah))
-			{
-				//menampilkan data
-			echo "<tr class='tr-id-".$data1['id']."'>
-			<td>". $data1['no_faktur'] ."</td>
-			<td>". $data1['tanggal'] ."</td>
-			<td>". $data1['jam'] ."</td>
-			<td>". $data1['status'] ."</td>
-			<td>". rp($data1['total_selisih']) ."</td>
-			
-			<td>". $data1['user'] ."</td>
-
-			<td> <button class='btn btn-info detail' no_faktur='". $data1['no_faktur'] ."' ><span class='glyphicon glyphicon-th-list'></span> Detail </button> </td>";
-
-if ($stok_opname['stok_opname_edit'] > 0) {
-			echo "<td> <a href='proses_edit_stok_opname.php?no_faktur=". $data1['no_faktur']."&tanggal=". $data1['tanggal']."' class='btn btn-success'> <span class='glyphicon glyphicon-edit'></span> Edit </a> </td>";
-}
-
-if ($stok_opname['stok_opname_hapus'] > 0) {
-
-$pilih = $db->query("SELECT no_faktur FROM hpp_masuk WHERE no_faktur = '$data1[no_faktur]' AND sisa != jumlah_kuantitas");
-$row_alert = mysqli_num_rows($pilih);
-
-	
-	if ($row_alert > 0) {
-
-	echo "<td> <button class='btn btn-danger btn-alert' data-id='". $data1['id'] ."' data-faktur='". $data1['no_faktur'] ."'> <span class='glyphicon glyphicon-trash'> </span> Hapus </button>  </td>";
-	} 
-
-	else {
-
-		echo "<td> <button class='btn btn-danger btn-hapus' data-id='". $data1['id'] ."'  data-faktur='". $data1['no_faktur'] ."'> <span class='glyphicon glyphicon-trash'> </span> Hapus </button> </td>";
-	}
-
-
-				
-}
-			
-			
-			echo "</tr>";
-			}
-
-			//Untuk Memutuskan Koneksi Ke Database
-mysqli_close($db);   
-		?>
-		</tbody>
-
 	</table>
 </span>
 </div>
@@ -278,14 +224,41 @@ mysqli_close($db);
 </div><!--end of container-->
 		<span id="demo"> </span>
 
-<script>
+<!--DATA TABLE MENGGUNAKAN AJAX-->
+<script type="text/javascript" language="javascript" >
+      $(document).ready(function() {
 
-// untk menampilkan datatable atau filter seacrh
-$(document).ready(function(){
-    $('#tableuser').dataTable();
-});
+          var dataTable = $('#table_stok_opname').DataTable( {
+          "processing": true,
+          "serverSide": true,
+          "ajax":{
+            url :"datatable_stok_opname.php", // json datasource
+           
+            type: "post",  // method  , by default get
+            error: function(){  // error handling
+              $(".employee-grid-error").html("");
+              $("#table_stok_opname").append('<tbody class="employee-grid-error"><tr><th colspan="3">No data found in the server</th></tr></tbody>');
+              $("#employee-grid_processing").css("display","none");
+            }
+        },
+            
+            "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+                $(nRow).attr('class','tr-id-'+aData[9]+'');
+            },
+        });
 
-		$(".detail").click(function(){
+        $("#form").submit(function(){
+        return false;
+        });
+        
+
+      } );
+    </script>
+<!--/DATA TABLE MENGGUNAKAN AJAX-->
+
+<script type="text/javascript">
+
+		$(document).on('click','.detail',function(e){
 		var no_faktur = $(this).attr('no_faktur');
 		
 		
@@ -306,7 +279,7 @@ $(document).ready(function(){
 <script type="text/javascript">
 	
 	//fungsi hapus data 
-		$(".btn-hapus").click(function(){
+		$(document).on('click','.btn-hapus',function(e){
 		var no_faktur = $(this).attr("data-faktur");
 		var id = $(this).attr("data-id");
 		
@@ -342,7 +315,7 @@ $(document).ready(function(){
 
 <script type="text/javascript">
 	
-		$(document).on('click', '.btn-alert', function (e) {
+		$(".btn-alert").click(function () {
 		var no_faktur = $(this).attr("data-faktur");
 
 		$.post('modal_alert_hapus_data_stok_opname.php',{no_faktur:no_faktur},function(data){
@@ -358,7 +331,7 @@ $(document).ready(function(){
 
 </script>
 
-<!============>
+
 
 <script>
     $(function() {

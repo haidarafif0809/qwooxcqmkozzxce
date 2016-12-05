@@ -138,7 +138,7 @@
                   </div>
                   
                   
-                  <form class="form-inline" action="proses_tbs_stok_opname.php" role="form" id="formtambahproduk">
+                  <form class="form-inline"  role="form" id="formtambahproduk">
                   
                   <div class="form-group">
                   <input type="text" class="form-control" name="kode_barang" id="kode_barang" placeholder="Ketikkan Kode Produk" autocomplete="off">

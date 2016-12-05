@@ -282,9 +282,6 @@ var nama = $("#suplier").val();
 								var alamat = $("#alamat").val();
 								var nomor = $("#nomor").val();
 
-								$("#suplier").val('');
-								$("#alamat").val('');
-								$("#nomor").val('');
 
 								if (suplier == "") {
 									alert("Nama Suplier harus Diisi");
@@ -296,17 +293,36 @@ var nama = $("#suplier").val();
 									alert("Nomor Telpon harus Diisi");
 								}
 								else {
+
 									$.post('prosessuplier.php', {nama:suplier,alamat:alamat,no_telp:nomor}, function(data){
-								
-								if (data != "") {
-								$("#suplier").val('');
+									$("#suplier").val('');
+									$("#alamat").val('');
+									$("#nomor").val('');
+
+				$('#table_suplier').DataTable().destroy();
+		      	var dataTable = $('#table_suplier').DataTable( {
+		          "processing": true,
+		          "serverSide": true,
+		          "ajax":{
+		            url :"datatable_suplier.php", // json datasource
+		            type: "post",  // method  , by default get
+		            error: function(){  // error handling
+		              $(".employee-grid-error").html("");
+		              $("#table_suplier").append('<tbody class="employee-grid-error"><tr><th colspan="3">No data found in the server</th></tr></tbody>');
+		              $("#employee-grid_processing").css("display","none");
+		              
+		            }
+		          },
+		            "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+		              $(nRow).attr('class','tr-id-'+aData[5]+'');
+		            },
+		        })
+
 
 								$(".alert").show('fast');
-								$("#table_baru").load('tabel-suplier.php');
-								
-								setTimeout(tutupalert, 2000);
+								setTimeout(tutupalert, 100);
 								$(".modal").modal("hide");
-								}
+								
 								
 								
 								});
@@ -336,13 +352,9 @@ var nama = $("#suplier").val();
 								$("#btn_jadi_hapus").click(function(){
 								
 								var id = $("#id_hapus").val();
-								
-								$.post("hapussuplier.php",{id:id},function(data){
-								
-								$("#table_baru").load('tabel-suplier.php');
+								$(".tr-id-"+id).remove();
 								$("#modal_hapus").modal('hide');
-								
-							
+								$.post("hapussuplier.php",{id:id},function(data){
 								
 								
 								});
