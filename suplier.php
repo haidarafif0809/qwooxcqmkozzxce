@@ -247,7 +247,7 @@ var nama = $("#suplier").val();
           "processing": true,
           "serverSide": true,
           "ajax":{
-            url :"datatable_suplier.php", // json datasource
+            url :"datatable_suplier.php", //  json datasource
            
             type: "post",  // method  , by default get
             error: function(){  // error handling
@@ -367,8 +367,7 @@ var nama = $("#suplier").val();
 
 								
 								});
-								
-								$("#submit_edit").click(function(){
+								$(document).on('click','#submit_edit',function(e){
 								var nama = $("#edit_suplier").val();
 								var alamat = $("#edit_alamat").val();
 								var no_telp = $("#edit_nomor").val();
