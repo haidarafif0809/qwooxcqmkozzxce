@@ -502,6 +502,7 @@ $(document).ready(function(){
    	var no_faktur = $("#nomorfaktur1").val();
    	var keterangan = $("#keterangan").val();
    	var dari_akun = $("#dariakun").val();
+    var ke_akun = $("#keakun").val();
     var jumlah = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#jumlahtotal").val()))));
    	var tanggal = $("#tanggal1").val();
     
@@ -511,24 +512,13 @@ $(document).ready(function(){
          $("#keterangan").val('');
          $("#jumlahtotal").val('');
 
-    if (jumlah == "") {
+  $.post("cek_submit_kas_keluar.php", {session_id:session_id}, function(data){
 
-      alert("Tidak Ada Kas Yang Di Keluarkan");
+    if (data == 'kosong')
+    {
+       alert("Anda Belum Memasukan Transaksi ");
+    } 
 
-    }
-    else if(dari_akun == ""){
-
-      alert("Dari Akun Harus Diisi");
-    }
-
-    else
-      {
-
-   $.post("cek_submit_kas_keluar.php", {session_id:session_id}, function(data){
-if (data == 'kosong')
-{
-  alert("Anda Belum Memasukan Transaksi ");
-}
 else{
 
         $("#transaksi_baru").show();
@@ -548,14 +538,12 @@ else{
          $("#form_submit").submit(function(){
          return false;
          });
+     
 
-}
+  }// penutup else cek submit kas keluar
 
-});
-    }      
+});// penutup cek submit kas keluar
 
-
-  
  });
 
      

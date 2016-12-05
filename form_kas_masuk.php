@@ -523,6 +523,7 @@ $(document).ready(function(){
     var no_faktur = $("#nomorfaktur1").val();
    	var keterangan = $("#keterangan").val();
    	var ke_akun = $("#keakun").val();
+    var dari_akun = $("#dariakun").val();
    	var jumlah = $("#jumlahtotal").val();
    	var tanggal = $("#tanggal1").val();
 
@@ -531,23 +532,16 @@ $(document).ready(function(){
     $("#jumlah").val('');
     $("#keterangan").val('');
     $("#jumlahtotal").val('');
-        
-    if (jumlah == "") {
+  
 
-      alert ("Tidak Ada Kas Yang Di Keluarkan")
-    }
-    else if(ke_akun == ""){
-
-      alert("Ke Akun Harus Diisi");
-    }
-    else {
-
-   $.post("cek_submit_kas_masuk.php", {session_id:session_id}, function(data){
+     $.post("cek_submit_kas_masuk.php", {session_id:session_id}, function(data){
 if (data == 'kosong')
 {
-  alert("Anda Belum Memasukan Transaksi ");
+  alert("Anda Belum Memasukan Transaksi");
 }
-else{
+
+else {      
+
 
       $("#submit_kas_masuk").hide();
       $("#transaksi_baru").show();
@@ -566,11 +560,9 @@ $.post("proses_kas_masuk.php", {session_id:session_id,no_faktur:no_faktur,ketera
       $("#form_submit").submit(function(){
         return false;
       });
-  }
-});
 
-}
-
+  }// else cek transaksi kosong
+});// penutup cek submit kas masuk
   
  });
 
@@ -596,13 +588,10 @@ $("#nomorfaktur1").val(data);
 <script>
 	
 $("#keakun").focus(function(){
-
 $("#alert_berhasil").hide();
-
 });
 
 </script>
-
 
 
                                   <script type="text/javascript">
