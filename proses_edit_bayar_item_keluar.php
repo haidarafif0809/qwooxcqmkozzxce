@@ -10,9 +10,9 @@ $no_faktur = stringdoang($_POST['no_faktur']);
 $tahun_sekarang = date('Y');
 $bulan_sekarang = date('m');
 $tanggal_sekarang = date('Y-m-d');
-$jam_sekarang = date('H:i:sa');
+$jam_sekarang = date('H:i:s');
 $tahun_terakhir = substr($tahun_sekarang, 2);
-$waktu = date('Y-m-d H:i:sa');
+$waktu = date('Y-m-d H:i:s');
 
 
  $query5 = $db->query("DELETE FROM detail_item_keluar WHERE no_faktur = '$no_faktur'");
@@ -40,8 +40,8 @@ $waktu = date('Y-m-d H:i:sa');
     while ($data = mysqli_fetch_array($query))
     {
 
-        $query2 = $db->query("INSERT INTO detail_item_keluar (no_faktur, tanggal, kode_barang, nama_barang, jumlah, satuan, harga, subtotal) 
-		VALUES ('$data[no_faktur]',now(),'$data[kode_barang]','$data[nama_barang]','$data[jumlah]','$data[satuan]','$data[harga]','$data[subtotal]')");
+        $query2 = $db->query("INSERT INTO detail_item_keluar (no_faktur, tanggal,jam, kode_barang, nama_barang, jumlah, satuan, harga, subtotal)
+        VALUES ('$no_faktur','$tanggal_sekarang','$jam_sekarang', '$data[kode_barang]','$data[nama_barang]','$data[jumlah]','$data[satuan]','$data[harga]','$data[subtotal]')");
     }
 
 
@@ -63,7 +63,6 @@ $ambil_setting = mysqli_fetch_array($select_setting_akun);
 
 
     $query3 = $db->query("DELETE  FROM tbs_item_keluar WHERE no_faktur = '$no_faktur'");
-    echo "Success";
 
 
 //Untuk Memutuskan Koneksi Ke Database

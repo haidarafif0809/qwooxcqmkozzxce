@@ -42,15 +42,24 @@ $ambil = mysqli_fetch_array($perintah);
           <!-- membuat teks dengan ukuran h3 -->
           <h3> Edit Data Item Keluar </h3><br>
 
-          <label> Tanggal </label><br>
-          <input type="text" value="<?php echo $ambil['tanggal']; ?>" name="tanggal" id="tanggal" placeholder="Tanggal"  class="form-control tgl" required="" >
-          <br>
+          <div class="row">
+            <div class="col-sm-3">
+              <label> Tanggal </label><br>
+                <input type="text" value="<?php echo $ambil['tanggal']; ?>" name="tanggal" id="tanggal" placeholder="Tanggal"  class="form-control tgl" required="" >
+            </div>
+                
+              
 
+            <div class="col-sm-3">
+              <label> No Faktur </label><br>
 
-          <label> No Faktur </label><br>
+                <!-- membuat agar teks tidak bisa di ubah, dan hanya bisa dibaca -->
+                <input type="text" name="no_faktur" id="nomorfaktur" class="form-control" readonly="" value="<?php echo $no_faktur; ?>" required="" >
+            </div>
+                
 
-          <!-- membuat agar teks tidak bisa di ubah, dan hanya bisa dibaca -->
-          <input type="text" name="no_faktur" id="nomorfaktur" class="form-control" readonly="" value="<?php echo $no_faktur; ?>" required="" >
+          </div>
+
           
          </form>
 
@@ -138,7 +147,7 @@ $ambil = mysqli_fetch_array($perintah);
 
   <!--membuat tombol submit bayar & Hutang-->
 
-  <a class="btn btn-primary" href="form_item_keluar.php" id="transaksi_baru" style="display: none"> Transaksi Baru</a>
+  <a class="btn btn-primary" href="item_keluar.php" id="transaksi_baru" style="display: none"> Kembali</a>
 
       <button type="submit" id="pembayaran_item_keluar" class="btn btn-info"><span class='glyphicon glyphicon-ok-sign'> </span> Selesai </a> </button>
       
@@ -464,7 +473,7 @@ else
 $("#demo").html(info);
 
     $("#alert_berhasil").show();
-    $("#result").load("tabel_edit_item_keluar.php?no_faktur=<?php echo $no_faktur; ?>");
+    $("#result").html("");
      $("#total_item_keluar").val('');
      $("#pembayaran_item_keluar").val('');
      
@@ -562,10 +571,12 @@ $.post("cek_total_edit_item_keluar.php",
    $("#jumlah_barang").keyup(function(){
     var jumlah_barang = $("#jumlah_barang").val();
     var jml_barang = $("#jml_barang").val();
+    var sisa_barang = parseInt(jml_barang,10) - parseInt(jumlah_barang,10);
 
-    if (jumlah_barang > jml_barang){
-
+    if (sisa_barang < 0){
       alert ("Jumlah Melebihi Stok!");
+      $("#jumlah_barang").val('');
+      $("#jumlah_barang").focus();
 
     }
 

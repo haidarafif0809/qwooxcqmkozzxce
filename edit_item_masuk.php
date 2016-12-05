@@ -86,7 +86,7 @@ $ambil = mysqli_fetch_array($perintah);
                               
                               
                               <!-- membuat form -->
-                              <form class="form-inline" action="proses_edit_tbs_item_masuk.php" role="form" id="formtambahproduk">
+                              <form class="form" action="proses_edit_tbs_item_masuk.php" role="form" id="formtambahproduk">
                           <div class="row">
                                 <!-- agar tampilan berada pada satu group -->
                               <!-- memasukan teks pada kolom kode barang -->
@@ -150,7 +150,7 @@ $ambil = mysqli_fetch_array($perintah);
                               <!--membuaat link pada tombol batal-->
                               <a href='batal_item_masuk.php?no_faktur=<?php echo $no_faktur;?>' id='batal' class='btn btn-danger'><span class='glyphicon glyphicon-remove-sign'></span> Batal </a>
 
-                              <a class="btn btn-primary" href="form_item_masuk.php" id="transaksi_baru" style="display: none"> Transaksi Baru</a>
+                              <a class="btn btn-primary" href="item_masuk.php" id="transaksi_baru" style="display: none"> Kembali</a>
                               
                               
                               </form><!--tag penutup form-->

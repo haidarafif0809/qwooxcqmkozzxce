@@ -11,14 +11,29 @@ $user = $_SESSION['user_name'];
 $stok_opname = $db->query("SELECT * FROM stok_opname WHERE no_faktur = '$no_faktur'");
 $data_stok_opname = mysqli_fetch_array($stok_opname);
 
-$insert_stok_opname = $db->query("INSERT INTO history_stok_opname (no_faktur, tanggal, jam, status, keterangan, total_selisih,hpp, user, user_hapus) VALUES ('$no_faktur','$data_stok_opname[keterangan]','$data_stok_opname[total_selisih]','$data_stok_opname[status]', '$data_stok_opname[tanggal]','$data_stok_opname[jam]', '$data_stok_opname[hpp]', '$data_stok_opname[user]', '$user')");
+$insert_stok_opname = "INSERT INTO history_stok_opname (no_faktur, keterangan, total_selisih, status, user, tanggal, jam, user_hapus) VALUES ('$no_faktur','$data_stok_opname[keterangan]','$data_stok_opname[total_selisih]','$data_stok_opname[status]', '$data_stok_opname[user]', '$data_stok_opname[tanggal]','$data_stok_opname[jam]', '$user')";
+
+
+ if ($db->query($insert_stok_opname) === TRUE) {
+        } 
+
+        else {
+        echo "Error: " . $insert_stok_opname . "<br>" . $db->error;
+        }
 
 
 // INSERT HISTORY DETAIL STOK OPNAME
 $detail_stok_opname = $db->query("SELECT * FROM detail_stok_opname WHERE no_faktur = '$no_faktur'");
 while($data_detail_stok_opname = mysqli_fetch_array($detail_stok_opname)){
 
-      $insert_stok_opname = $db->query("INSERT INTO history_detail_stok_opname (no_faktur, tanggal, jam, kode_barang, nama_barang, awal, masuk, keluar, stok_sekarang, fisik, selisih_fisik, selisih_harga, harga, hpp, user_hapus) VALUES ('$no_faktur', '$data_detail_stok_opname[tanggal]', '$data_detail_stok_opname[jam]', '$data_detail_stok_opname[kode_barang]', '$data_detail_stok_opname[nama_barang]', '$data_detail_stok_opname[awal]', '$data_detail_stok_opname[masuk]', '$data_detail_stok_opname[keluar]', '$data_detail_stok_opname[stok_sekarang]', '$data_detail_stok_opname[fisik]', '$data_detail_stok_opname[selisih_fisik]', '$data_detail_stok_opname[selisih_harga]', '$data_detail_stok_opname[harga]', '$data_detail_stok_opname[hpp]', '$user')");
+      $insert_detail_stok_opname = "INSERT INTO history_detail_stok_opname (no_faktur, tanggal, jam, kode_barang, nama_barang, awal, masuk, keluar, stok_sekarang, fisik, selisih_fisik, selisih_harga, harga, hpp, user_hapus) VALUES ('$no_faktur', '$data_detail_stok_opname[tanggal]', '$data_detail_stok_opname[jam]', '$data_detail_stok_opname[kode_barang]', '$data_detail_stok_opname[nama_barang]', '$data_detail_stok_opname[awal]', '$data_detail_stok_opname[masuk]', '$data_detail_stok_opname[keluar]', '$data_detail_stok_opname[stok_sekarang]', '$data_detail_stok_opname[fisik]', '$data_detail_stok_opname[selisih_fisik]', '$data_detail_stok_opname[selisih_harga]', '$data_detail_stok_opname[harga]', '$data_detail_stok_opname[hpp]', '$user')";
+
+       if ($db->query($insert_detail_stok_opname) === TRUE) {
+        } 
+
+        else {
+        echo "Error: " . $insert_detail_stok_opname . "<br>" . $db->error;
+        }
 
 } 
 

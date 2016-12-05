@@ -10,9 +10,9 @@ $no_faktur = stringdoang($_POST['no_faktur']);
 $tahun_sekarang = date('Y');
 $bulan_sekarang = date('m');
 $tanggal_sekarang = date('Y-m-d');
-$jam_sekarang = date('H:i:sa');
+$jam_sekarang = date('H:i:s');
 $tahun_terakhir = substr($tahun_sekarang, 2);
-$waktu = date('Y-m-d H:i:sa');
+$waktu = date('Y-m-d H:i:s');
 
 
 $delete_detail_item_masuk = $db->query("DELETE FROM detail_item_masuk WHERE no_faktur = '$no_faktur' ");
@@ -32,7 +32,7 @@ $delete_detail_item_masuk = $db->query("DELETE FROM detail_item_masuk WHERE no_f
     $keterangan = stringdoang($_POST['keterangan']);
     $tanggal = stringdoang($_POST['tanggal']);
     $tanggal_sekarang = date('Y-m-d');
-    $jam_sekarang = date('H:i:sa');
+    $jam_sekarang = date('H:i:s');
 
   // jalankan query
         $stmt->execute();

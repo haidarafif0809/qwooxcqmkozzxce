@@ -125,15 +125,15 @@ include 'db.php';
         
         if ($num_rows == 0) {
         
-        echo $jumlah_hpp = $ambil_barang['harga_beli'];
-        echo "1";
+         $jumlah_hpp = $ambil_barang['harga_beli'];
+        
         
         } 
         
         else {
         
-        echo $jumlah_hpp = $fetc_array['harga'];
-        echo "2";
+         $jumlah_hpp = $fetc_array['harga'];
+
         
         }
         

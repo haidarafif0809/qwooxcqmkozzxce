@@ -10,9 +10,9 @@
 $tahun_sekarang = date('Y');
 $bulan_sekarang = date('m');
 $tanggal_sekarang = date('Y-m-d');
-$jam_sekarang = date('H:i:sa');
+$jam_sekarang = date('H:i:s');
 $tahun_terakhir = substr($tahun_sekarang, 2);
-$waktu = date('Y-m-d H:i:sa');
+$waktu = date('Y-m-d H:i:s');
 
 
 //mengecek jumlah karakter dari bulan sekarang
@@ -67,7 +67,7 @@ $no_faktur = $nomor."/IM/".$data_bulan_terakhir."/".$tahun_terakhir;
 
   // hubungkan "data" dengan prepared statements
         $stmt->bind_param("sissss", 
-        $no_faktur, $total ,  $tanggal_sekarang,  $jam_sekarang, $user, $keterangan);
+        $no_faktur, $total , $tanggal_sekarang,  $jam_sekarang, $user, $keterangan);
 
   // siapkan "data" query
     $total = angkadoang($_POST['total']);
