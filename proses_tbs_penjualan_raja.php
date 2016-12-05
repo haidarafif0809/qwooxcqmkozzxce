@@ -51,7 +51,7 @@ session_start();
               $tax_persen = $x - $hasil_tax2;
 
 $tanggal_sekarang = date('Y-m-d');
-$jam = date('H:i:sa');
+$jam = date('H:i:s');
 
 
 $tbs_penjualan = $db->query("SELECT * FROM tbs_penjualan WHERE kode_barang = '$kode' AND session_id='$session_id'");
