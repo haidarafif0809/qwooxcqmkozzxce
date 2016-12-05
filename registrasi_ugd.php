@@ -633,7 +633,7 @@ else{
      $("#demo").hide();
      $("#kembali").hide();
      $("#coba").show();
-
+    window.location.href = 'registrasi_ugd.php';
      $('#table_ugd').DataTable().destroy();
       var dataTable = $('#table_ugd').DataTable( {
           "processing": true,
@@ -651,6 +651,8 @@ else{
             "fnCreatedRow": function( nRow, aData, iDataIndex ) {
               $(nRow).attr('class','tr-id-'+aData[20]+'');
             },
+<<<<<<< HEAD
+=======
         })
 
      $("#rujukan").val('');
@@ -674,7 +676,10 @@ else{
      $("#hp_pengantar").val('');
      $("#keterangan").val('');
      $("#dokter_jaga").val('');
+>>>>>>> bd3b74559d0c89f6dd1289515b7ea13f6a75adf8
 
+     
+        })
      
      });
 
@@ -853,7 +858,7 @@ $(document).on('click', '.rujuk_ri', function (e) {
                     
                      $("#modal_pulang").modal('hide');
                     $.post("proses_pulang_rumah.php",{reg:reg, keterangan:keterangan},function(data){
-
+                      $("#keterangan_pulang").val('');
                     });
                     
         }); 

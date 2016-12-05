@@ -942,7 +942,7 @@ $("#form_cari").submit(function(){
             }
           },
             "fnCreatedRow": function( nRow, aData, iDataIndex ) {
-              $(nRow).attr('class','tr-id-'+aData[14]+'');
+              $(nRow).attr('class','tr-id-'+aData[13]+'');
             },
         });
       });
