@@ -118,7 +118,7 @@ $perintah = $db->query("SELECT * FROM item_masuk");
                               <?php
                               
                               //menampilkan semua data yang ada pada tabel tbs penjualan dalam DB
-                              $perintah = $db->query("SELECT tim.id,tim.no_faktur,tim.kode_barang,tim.nama_barang,tim.jumlah,tim.harga,tim.subtotal,s.nama FROM tbs_item_masuk tim INNER JOIN satuan s ON tim.satuan = s.id
+                              $perintah = $db->query("SELECT tim.id,tim.kode_barang,tim.nama_barang,tim.jumlah,tim.harga,tim.subtotal,s.nama FROM tbs_item_masuk tim INNER JOIN satuan s ON tim.satuan = s.id
                               WHERE tim.session_id = '$session_id'");
                               
                               //menyimpan data sementara yang ada pada $perintah
@@ -130,7 +130,7 @@ $perintah = $db->query("SELECT * FROM item_masuk");
                               <td>". $data1['kode_barang'] ."</td>
                               <td>". $data1['nama_barang'] ."</td>
 
-                             <td class='edit-jumlah' data-id='".$data1['id']."'><span id='text-jumlah-".$data1['id']."'>". $data1['jumlah'] ."</span> <input type='hidden' id='input-jumlah-".$data1['id']."' value='".$data1['jumlah']."' class='input_jumlah' data-id='".$data1['id']."' autofocus='' data-subtotal='".$data1['subtotal']."' data-harga='".$data1['harga']."' data-faktur='".$data1['no_faktur']."' data-kode='".$data1['kode_barang']."' > </td>
+                             <td class='edit-jumlah' data-id='".$data1['id']."'><span id='text-jumlah-".$data1['id']."'>". $data1['jumlah'] ."</span> <input type='hidden' id='input-jumlah-".$data1['id']."' value='".$data1['jumlah']."' class='input_jumlah' data-id='".$data1['id']."' autofocus='' data-subtotal='".$data1['subtotal']."' data-harga='".$data1['harga']."' data-kode='".$data1['kode_barang']."' > </td>
                              
 
                               <td>". $data1['nama'] ."</td>
@@ -278,13 +278,7 @@ $perintah = $db->query("SELECT * FROM item_masuk");
                               </div><!-- end of container -->
                               
                               
-                              <script>
-                              //untuk menampilkan data tabel
-                              $(document).ready(function(){
-                              $('.table').dataTable();
-                              });
-                              
-                              </script>
+          
                               
                               <!--untuk memasukkan perintah java script-->
                               <script type="text/javascript">

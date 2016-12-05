@@ -69,7 +69,7 @@
     <?php
                               
                               //menampilkan semua data yang ada pada tabel tbs penjualan dalam DB
-                              $perintah = $db->query("SELECT tim.id,tim.no_faktur,tim.kode_barang,tim.nama_barang,tim.jumlah,tim.harga,tim.subtotal,s.nama FROM tbs_item_masuk tim INNER JOIN satuan s ON tim.satuan = s.id WHERE tim.session_id = '$session_id' AND kode_barang = '$kode_barang' ORDER BY tim.id DESC LIMIT 1");
+                              $perintah = $db->query("SELECT tim.id,tim.kode_barang,tim.nama_barang,tim.jumlah,tim.harga,tim.subtotal,s.nama FROM tbs_item_masuk tim INNER JOIN satuan s ON tim.satuan = s.id WHERE tim.session_id = '$session_id' AND kode_barang = '$kode_barang' ORDER BY tim.id DESC LIMIT 1");
                               
                               //menyimpan data sementara yang ada pada $perintah
                               
@@ -79,7 +79,7 @@
                               <td>". $data1['kode_barang'] ."</td>
                               <td>". $data1['nama_barang'] ."</td>
 
-                             <td class='edit-jumlah' data-id='".$data1['id']."'><span id='text-jumlah-".$data1['id']."'>". $data1['jumlah'] ."</span> <input type='hidden' id='input-jumlah-".$data1['id']."' value='".$data1['jumlah']."' class='input_jumlah' data-id='".$data1['id']."' autofocus='' data-subtotal='".$data1['subtotal']."' data-harga='".$data1['harga']."' data-faktur='".$data1['no_faktur']."' data-kode='".$data1['kode_barang']."' > </td>
+                             <td class='edit-jumlah' data-id='".$data1['id']."'><span id='text-jumlah-".$data1['id']."'>". $data1['jumlah'] ."</span> <input type='hidden' id='input-jumlah-".$data1['id']."' value='".$data1['jumlah']."' class='input_jumlah' data-id='".$data1['id']."' autofocus='' data-subtotal='".$data1['subtotal']."' data-harga='".$data1['harga']."' data-kode='".$data1['kode_barang']."' > </td>
                              
 
                               <td>". $data1['nama'] ."</td>
