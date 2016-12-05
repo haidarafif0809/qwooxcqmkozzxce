@@ -125,13 +125,15 @@ include 'db.php';
         
         if ($num_rows == 0) {
         
-        $jumlah_hpp = $ambil_barang['harga_beli'];
+        echo $jumlah_hpp = $ambil_barang['harga_beli'];
+        echo "1";
         
         } 
         
         else {
         
-        $jumlah_hpp = $fetc_array['harga'];
+        echo $jumlah_hpp = $fetc_array['harga'];
+        echo "2";
         
         }
         
@@ -162,9 +164,7 @@ include 'db.php';
 
 
 
-        $query = "INSERT INTO tbs_stok_opname (no_faktur, kode_barang, nama_barang, satuan, awal, masuk, keluar, stok_sekarang, fisik, selisih_fisik, selisih_harga, harga, hpp) 
-        VALUES ('$no_faktur', '$kode_barang','$nama_barang','$satuan','$stok_awal','$hasil_masuk','$hasil_keluar','$jumlah_stok_komputer','$jumlah_fisik','$selisih_fisik','$selisih_harga','$jumlah_hpp','$jumlah_hpp')";
-      
+        $query = "INSERT INTO tbs_stok_opname (no_faktur, kode_barang, nama_barang, satuan, awal, masuk, keluar, stok_sekarang, fisik, selisih_fisik, selisih_harga, harga, hpp) VALUES ('$no_faktur', '$kode_barang','$nama_barang','$satuan','$stok_awal','$hasil_masuk','$hasil_keluar','$jumlah_stok_komputer','$jumlah_fisik','$selisih_fisik','$selisih_harga','$jumlah_hpp','$jumlah_hpp')";      
 
         
         if ($db->query($query) === TRUE)

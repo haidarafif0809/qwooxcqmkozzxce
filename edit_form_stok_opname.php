@@ -340,7 +340,7 @@
                   
                   <button type="submit" id="batal" class="btn btn-danger"> <span class='glyphicon glyphicon-remove'> </span> Batal</button>
 
-                  <a class="btn btn-info" href="form_stok_opname.php" id="transaksi_baru" style="display: none"> <span class="glyphicon glyphicon-repeat"></span> Transaksi Baru</a>
+                  <a class="btn btn-info" href="stok_opname.php" id="transaksi_baru" style="display: none"> <span class="glyphicon glyphicon-repeat"></span> Kembali </a>
                   
 
                  </form>
@@ -404,6 +404,7 @@
                   
                   var no_faktur = $("#nomorfaktur").val();
                   var kode_barang = $("#kode_barang").val();
+                  var kode_barang = kode_barang.substr(0, kode_barang.indexOf('('));
                   var nama_barang = $("#nama_barang").val();
                   var fisik = $("#jumlah_fisik").val();
                   var satuan = $("#satuan").val();
@@ -434,7 +435,7 @@
                   
                   
                   $("#kode_barang").focus();
-                  $("#result").load('tabel_stok_opname.php?no_faktur=<?php echo $no_faktur; ?>');
+                  $("#result").html(info);
                   $("#kode_barang").val('');
                   $("#nama_barang").val('');
                   $("#jumlah_fisik").val('');
@@ -551,7 +552,7 @@
                   $.post("proses_selesai_edit_stok_opname.php",{tanggal:tanggal,no_faktur:no_faktur,total_selisih_harga:total_selisih_harga},function(info) {
                   
                   $("#demo").html(info);
-                  $("#result").load('tabel_stok_opname.php?no_faktur=<?php echo $no_faktur; ?>');
+                  $("#result").html("");
                   $("#total_selisih_harga").val('');
                    
   

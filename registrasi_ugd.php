@@ -651,6 +651,32 @@ else{
             "fnCreatedRow": function( nRow, aData, iDataIndex ) {
               $(nRow).attr('class','tr-id-'+aData[20]+'');
             },
+<<<<<<< HEAD
+=======
+        })
+
+     $("#rujukan").val('');
+     $("#token").val('');
+     $("#nama_pasien").val('');
+     $("#jenis_kelamin").val('');
+     $("#tanggal_lahir").val('');
+     $("#umur").val('');
+     $("#gol_darah").val('');
+     $("#no_hp").val('');
+     $("#alamat").val('');
+     $("#alergi").val('');
+     $("#kondisi").val('');
+     $("#eye").val('');
+     $("#verbal").val('');
+     $("#motorik").val('');
+     $("#pengantar").val('');
+     $("#hubungan_dengan_pasien").val('');
+     $("#nama_pengantar").val('');
+     $("#alamat_pengantar").val('');
+     $("#hp_pengantar").val('');
+     $("#keterangan").val('');
+     $("#dokter_jaga").val('');
+>>>>>>> bd3b74559d0c89f6dd1289515b7ea13f6a75adf8
 
      
         })

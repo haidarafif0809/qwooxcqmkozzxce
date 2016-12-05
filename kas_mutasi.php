@@ -515,7 +515,7 @@ else{
 		$(".alert").show('fast');
 		window.location.href = 'kas_mutasi.php';		
 
-		setTimeout(tutupalert, 1000);
+		setTimeout(tutupalert, 100);
 		$(".modal").modal("hide");
 		
 		});

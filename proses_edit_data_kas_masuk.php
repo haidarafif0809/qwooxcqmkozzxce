@@ -1,13 +1,15 @@
 <?php 
-
 include 'sanitasi.php';
 include 'db.php';
 
-
 $no_faktur = $_GET['no_faktur'];
-$nama_daftar_akun = $_GET['nama_daftar_akun'];
+$kode = $_GET['nama_daftar_akun'];
+$tanggal_sekarang = date('Y-m-d');
+$jam_sekarang = date('H:i:s');
 
-
+$select_nya = $db->query("SELECT nama_daftar_akun FROM daftar_akun WHERE kode_daftar_akun = '$kode'");
+$out = mysqli_fetch_array($select_nya);
+$nama_daftar_akun = $out['nama_daftar_akun'];
 
 $perintah3 = $db->query("SELECT * FROM tbs_kas_masuk WHERE no_faktur = '$no_faktur'");
 $data1 = mysqli_num_rows($perintah3);
@@ -24,7 +26,7 @@ while ($data = mysqli_fetch_array($perintah))
 {
 
 
-$perintah1 = $db->query("INSERT INTO tbs_kas_masuk (no_faktur, keterangan, dari_akun, ke_akun, jumlah, tanggal, jam, user) VALUES ('$data[no_faktur]', '$data[keterangan]', '$data[dari_akun]', '$data[ke_akun]', '$data[jumlah]', now(), now(), '$data[user]')");
+$perintah1 = $db->query("INSERT INTO tbs_kas_masuk (no_faktur, keterangan, dari_akun, ke_akun, jumlah, tanggal, jam, user) VALUES ('$data[no_faktur]', '$data[keterangan]', '$data[dari_akun]', '$data[ke_akun]', '$data[jumlah]','$tanggal_sekarang','$jam_sekarang', '$data[user]')");
 
 
 }

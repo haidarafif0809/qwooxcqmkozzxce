@@ -1,16 +1,14 @@
-]<?php include 'session_login.php';
+<?php include 'session_login.php';
 
  include 'header.php';
  include 'navbar.php';
  include 'db.php';
  include 'sanitasi.php';
 
- 
+ $session_id = session_id();
  
  $query = $db->query("SELECT * FROM kas_masuk ");
  
- $session_id = session_id();
-
  $tbs = $db->query("SELECT tk.dari_akun,tk.ke_akun, da.nama_daftar_akun FROM tbs_kas_masuk tk INNER JOIN daftar_akun da ON tk.ke_akun = da.kode_daftar_akun WHERE tk.session_id = '$session_id' ");
 
  $data_tbs = mysqli_num_rows($tbs);
@@ -131,7 +129,6 @@
           <input style="height:15px" type="hidden" name="session_id" id="session_id" class="form-control" readonly="" value="<?php echo $session_id; ?>" required="" >
 
           </div>
-
           <div class="form-group col-sm-6">
           <label> Keterangan </label><br>
           <input style="height:15px" type="text" name="keterangan" autocomplete="off" id="keterangan" placeholder="Keterangan" class="form-control">
@@ -276,14 +273,14 @@
     <?php
 
     //menampilkan semua data yang ada pada tabel tbs kas masuk dalam DB
-$perintah = $db->query("SELECT km.id, km.session_id, km.no_faktur, km.keterangan, km.ke_akun, km.dari_akun, km.jumlah, km.tanggal, km.jam, km.user, da.nama_daftar_akun FROM tbs_kas_masuk km INNER JOIN daftar_akun da ON km.ke_akun = da.kode_daftar_akun WHERE session_id = '$session_id'");
+$perintah = $db->query("SELECT km.id, km.session_id, km.keterangan, km.ke_akun, km.dari_akun, km.jumlah, km.tanggal, km.jam, km.user, da.nama_daftar_akun FROM tbs_kas_masuk km INNER JOIN daftar_akun da ON km.ke_akun = da.kode_daftar_akun WHERE session_id = '$session_id'");
 
       //menyimpan data sementara yang ada pada $perintah
 
       while ($data1 = mysqli_fetch_array($perintah))
       {
  
-        $perintah1 = $db->query("SELECT km.id, km.session_id, km.no_faktur, km.keterangan, km.dari_akun, km.jumlah, km.tanggal, km.jam, km.user, da.nama_daftar_akun FROM tbs_kas_masuk km INNER JOIN daftar_akun da ON km.dari_akun = da.kode_daftar_akun WHERE km.dari_akun = '$data1[dari_akun]'");
+        $perintah1 = $db->query("SELECT km.id, km.session_id, km.keterangan, km.dari_akun, km.jumlah, km.tanggal, km.jam, km.user, da.nama_daftar_akun FROM tbs_kas_masuk km INNER JOIN daftar_akun da ON km.dari_akun = da.kode_daftar_akun WHERE km.dari_akun = '$data1[dari_akun]'");
         $data10 = mysqli_fetch_array($perintah1);
 
         //menampilkan data
@@ -371,8 +368,7 @@ else
 <script type="text/javascript">
    //perintah javascript yang diambil dari form tbs pembelian dengan id=form tambah produk
 
-  
-   $("#submit_produk").click(function(){
+$(document).on('click', '#submit_produk', function (e) {
 
    	var session_id = $("#session_id").val();
    	var keterangan = $("#keterangan").val();
@@ -383,16 +379,17 @@ else
    	var tanggal = $("#tanggal1").val();
 
 
-if (total == '') 
+if(total == '') 
         {
           total = 0;
         }
-        else if(jumlah == '')
+
+if(jumlah == '')
         {
           jumlah = 0;
-        };
-        var subtotal = parseInt(total,10) + parseInt(jumlah,10);
+        }
 
+var subtotal = parseInt(total,10) + parseInt(jumlah,10);
 
 
 if (ke_akun == "") {
@@ -416,9 +413,7 @@ else {
 
   $("#jumlahtotal").val(tandaPemisahTitik(subtotal))
 
-
-	$.post("proses_tbs_kas_masuk.php", {session_id:session_id, keterangan:keterangan,dari_akun:dari_akun,ke_akun:ke_akun,jumlah:jumlah,tanggal:tanggal}, function(info) {
-
+	$.post("proses_tbs_kas_masuk.php",{session_id:session_id,keterangan:keterangan,dari_akun:dari_akun,ke_akun:ke_akun,jumlah:jumlah,tanggal:tanggal}, function(info) {
 
      $("#result").html(info);
      $("#result").load('tabel_kas_masuk.php');

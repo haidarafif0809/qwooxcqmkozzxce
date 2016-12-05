@@ -4,7 +4,7 @@
 header("Content-type: application/vnd-ms-excel");
  
 // Mendefinisikan nama file ekspor "hasil-export.xls"
-header("Content-Disposition: attachment; filename=data_kunjungan_pasien_rj_berdasarkan_tanggal.xls");
+header("Content-Disposition: attachment; filename=data_kunjungan_pasien_ri_berdasarkan_tanggal.xls");
 
 include 'db.php';
 include 'sanitasi.php';

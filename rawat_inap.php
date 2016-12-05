@@ -421,6 +421,7 @@ opacity: 0.9;
 <div class="form-group" >
  <label for="penjamin">Penjamin:</label>
  <select class="form-control" id="penjamin" name="penjamin"  autocomplete="off">
+ <option value=""> --SILAKAN PILIH--</option>
  <?php 
   $query = $db->query("SELECT nama FROM penjamin ");
   while ( $data = mysqli_fetch_array($query)) {
