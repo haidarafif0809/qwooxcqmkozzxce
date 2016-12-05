@@ -281,13 +281,7 @@ mysqli_close($db);
 </div><!-- end of container -->
 
 
-<script>
-//untuk menampilkan data tabel
-$(document).ready(function(){
-    $('.table').DataTable();
-});
 
-</script>
 
 <!--untuk memasukkan perintah java script-->
 <script type="text/javascript">
@@ -441,7 +435,7 @@ $("#demo").html(info);
      
      $("#alert_berhasil").show();
      
-     $("#result").load("tabel_item_keluar.php");
+     $("#result").html("");
      $("#pembayaran_item_keluar").val('');
      $("#keterangan").val();
      $("#total_item_keluar").val('');

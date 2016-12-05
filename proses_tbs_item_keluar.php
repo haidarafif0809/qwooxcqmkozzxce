@@ -39,24 +39,24 @@
     }
     else
     {
-        $perintah = $db->prepare("INSERT INTO tbs_item_keluar (session_id,kode_barang,nama_barang,jumlah,satuan,harga,subtotal) VALUES (?,?,?,?,?,?,?)");
+        $perintah = $db->prepare("INSERT INTO tbs_item_keluar (session_id, kode_barang, nama_barang, jumlah, satuan, harga, subtotal) VALUES (?,?,?,?,?,?,?)");
 
 
-    $perintah->bind_param("sssisii",
-    $session_id, $kode_barang, $nama_barang, $jumlah, $satuan, $harga, $subtotal);
-    
-   
+        $perintah->bind_param("sssisii",
+        $session_id, $kode_barang, $nama_barang, $jumlah, $satuan, $harga, $subtotal);
+        
+       
 
-    $perintah->execute();
+        $perintah->execute();
 
 
-if (!$perintah) {
-   die('Query Error : '.$db->errno.
-   ' - '.$db->error);
-}
-else {
+        if (!$perintah) {
+           die('Query Error : '.$db->errno.
+           ' - '.$db->error);
+        }
+        else {
 
-}
+        }
 
 
     }

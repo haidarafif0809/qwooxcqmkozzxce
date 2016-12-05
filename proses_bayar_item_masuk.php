@@ -67,7 +67,7 @@ $no_faktur = $nomor."/IM/".$data_bulan_terakhir."/".$tahun_terakhir;
 
   // hubungkan "data" dengan prepared statements
         $stmt->bind_param("sissss", 
-        $no_faktur, $total ,  $tanggal_sekarang,  $jam_sekarang, $user, $keterangan);
+        $no_faktur, $total , $tanggal_sekarang,  $jam_sekarang, $user, $keterangan);
 
   // siapkan "data" query
     $total = angkadoang($_POST['total']);
