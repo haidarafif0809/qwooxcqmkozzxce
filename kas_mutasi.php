@@ -275,7 +275,8 @@ echo '<button type="button" id="tambah" class="btn btn-info" data-toggle="modal"
 			<th style='background-color: #4CAF50; color:white'> Jumlah </th>
 			<th style='background-color: #4CAF50; color:white'> Tanggal </th>
 			<th style='background-color: #4CAF50; color:white'> Jam </th>
-			<th style='background-color: #4CAF50; color:white'> User </th>	
+			<th style='background-color: #4CAF50; color:white'> User </th>
+			<th style='background-color: #4CAF50; color:white'> Waktu Edit </th>	
 
 <?php
 if ($kas_mutasi['kas_mutasi_hapus'] > 0) {
@@ -316,7 +317,7 @@ if ($kas_mutasi['kas_mutasi_edit'] > 0) {
             }
           },
             "fnCreatedRow": function( nRow, aData, iDataIndex ) {
-              $(nRow).attr('class','tr-id-'+aData[10]+'');
+              $(nRow).attr('class','tr-id-'+aData[11]+'');
             },
         });
       });
@@ -501,7 +502,7 @@ else{
 		            }
 		          },
 		            "fnCreatedRow": function( nRow, aData, iDataIndex ) {
-		              $(nRow).attr('class','tr-id-'+aData[10]+'');
+		              $(nRow).attr('class','tr-id-'+aData[11]+'');
 		            },
 		        })
 

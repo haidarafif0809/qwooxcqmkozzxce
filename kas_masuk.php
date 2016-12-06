@@ -159,6 +159,7 @@ echo '<a href="form_kas_masuk.php"  class="btn btn-info"><i class="fa fa-plus"> 
 			<th style='background-color: #4CAF50; color:white'> Tanggal </th>
 			<th style='background-color: #4CAF50; color:white'> Jam </th>
 			<th style='background-color: #4CAF50; color:white'> User </th>
+			<th style='background-color: #4CAF50; color:white'> Waktu Edit </th>
 			<th style='background-color: #4CAF50; color:white'> Detail </th>
 
 <?php
@@ -180,10 +181,6 @@ if ($kas_masuk['kas_masuk_hapus'] > 0) {
 			
 			
 		</thead>
-		
-		<tbody>
-		
-		</tbody>
 
 	</table>
 </span>
@@ -214,7 +211,7 @@ if ($kas_masuk['kas_masuk_hapus'] > 0) {
             }
           },
               "fnCreatedRow": function( nRow, aData, iDataIndex ) {
-              $(nRow).attr('class','tr-id-'+aData[9]+'');
+              $(nRow).attr('class','tr-id-'+aData[10]+'');
             },
 
         } );
