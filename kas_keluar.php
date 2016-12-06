@@ -217,11 +217,9 @@ if ($kas_keluar['kas_keluar_hapus'] > 0) {
 <script>
 		
 		// untk menampilkan datatable atau filter seacrh
-		$(document).ready(function(){
-		$('#tableuser').DataTable();
-		});
 		
-		$(".detail").click(function(){
+		
+		$(".detail").on('click','.detail',function(e){
 		var no_faktur = $(this).attr('no_faktur');
 		
 		
