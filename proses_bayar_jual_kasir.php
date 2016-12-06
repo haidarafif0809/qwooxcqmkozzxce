@@ -6,7 +6,7 @@ include_once 'sanitasi.php';
 $tahun_sekarang = date('Y');
 $bulan_sekarang = date('m');
 $tanggal_sekarang = date('Y-m-d');
-$jam_sekarang = date('H:i:sa');
+$jam_sekarang = date('H:i:s');
 $tahun_terakhir = substr($tahun_sekarang, 2);
 
 try {
@@ -350,7 +350,7 @@ $no_jurnal = no_jurnal();
 
     $sisa = angkadoang($_POST['sisa']);
     $sisa_kredit = angkadoang($_POST['kredit']);
-                $pembayaran = stringdoang($_POST['pembayaran']);
+                $pembayaran = angkadoang($_POST['pembayaran']);
             $total = stringdoang($_POST['total']);
             $tunai_i = $pembayaran - $total;
 
@@ -476,9 +476,9 @@ if ($potongan != "" || $potongan != 0 ) {
               
             {
 
-              $kredit_s = $total - $pembayaran;
-              
-             $stmt = $db->prepare("INSERT INTO penjualan (no_faktur, no_reg, penjamin, apoteker, perawat, petugas_lain, dokter, kode_gudang, kode_pelanggan, total, tanggal, jam, user, sales, status, potongan, tax, kredit, cara_bayar, tunai, status_jual_awal, keterangan, ppn,jenis_penjualan,nama,tanggal_jt,biaya_admin) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,'Piutang',?,?,?,?,?,'Kredit',?,?,?,?,?,?)");
+                $kredit_s = $total - $pembayaran;
+                
+               $stmt = $db->prepare("INSERT INTO penjualan (no_faktur, no_reg, penjamin, apoteker, perawat, petugas_lain, dokter, kode_gudang, kode_pelanggan, total, tanggal, jam, user, sales, status, potongan, tax, kredit, cara_bayar, tunai, status_jual_awal, keterangan, ppn,jenis_penjualan,nama,tanggal_jt,biaya_admin) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,'Piutang',?,?,?,?,?,'Kredit',?,?,?,?,?,?)");
               
     // hubungkan "data" dengan prepared statements
               $stmt->bind_param("sssssssssissssiiisissssss",
