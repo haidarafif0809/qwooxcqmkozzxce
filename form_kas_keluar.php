@@ -278,7 +278,7 @@
 
     //menampilkan semua data yang ada pada tabel tbs kas keluar dalam DB
 
-    $perintah = $db->query("SELECT km.id, km.session_id, km.no_faktur, km.keterangan, km.ke_akun, km.dari_akun, km.jumlah, km.tanggal, km.jam, km.user, da.nama_daftar_akun FROM tbs_kas_keluar km INNER JOIN daftar_akun da ON km.ke_akun = da.kode_daftar_akun WHERE km.session_id = '$session_id' ORDER BY km.id ");
+    $perintah = $db->query("SELECT km.id, km.session_id, km.no_faktur, km.keterangan, km.ke_akun, km.dari_akun, km.jumlah, km.tanggal, km.jam, km.user, da.nama_daftar_akun FROM tbs_kas_keluar km INNER JOIN daftar_akun da ON km.ke_akun = da.kode_daftar_akun WHERE km.session_id = '$session_id' ORDER BY km.id DESC");
 
       //menyimpan data sementara yang ada pada $perintah
 
@@ -405,7 +405,7 @@ mysqli_close($db);
          
          $.post("proses_tbs_kas_keluar.php", {session_id:session_id,keterangan:keterangan,dari_akun:dari_akun,ke_akun:ke_akun,jumlah:jumlah,tanggal:tanggal}, function(info) {
          
-          $("#prepend").prepend(info);
+          $("#result").html(info);
          $("#keakun").val('');
          $("#jumlah").val('');
          

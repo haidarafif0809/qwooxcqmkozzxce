@@ -14,7 +14,7 @@ $kel = mysqli_fetch_array($query);
 $query0 = $db->query("SELECT km.id, km.dari_akun, da.nama_daftar_akun FROM detail_kas_masuk km INNER JOIN daftar_akun da ON km.dari_akun = da.kode_daftar_akun");
 $ambil = mysqli_fetch_array($query0);
 
-$query10 = $db->query("SELECT km.id, km.ke_akun, da.nama_daftar_akun FROM detail_kas_masuk km INNER JOIN daftar_akun da ON km.ke_akun = da.kode_daftar_akun WHERE km.no_faktur = '$no_faktur'");
+$query10 = $db->query("SELECT km.id, km.ke_akun, da.nama_daftar_akun FROM detail_kas_masuk km INNER JOIN daftar_akun da ON km.ke_akun = da.kode_daftar_akun WHERE km.no_faktur = '$no_faktur' ");
 $ambil1 = mysqli_fetch_array($query10);
 
  $tbs = $db->query("SELECT tk.dari_akun,tk.ke_akun, da.nama_daftar_akun FROM tbs_kas_masuk tk INNER JOIN daftar_akun da ON tk.ke_akun = da.kode_daftar_akun WHERE tk.no_faktur = '$no_faktur' ");
@@ -137,7 +137,7 @@ $ambil1 = mysqli_fetch_array($query10);
 
           <div class="form-group col-sm-3">
           <label> Jam </label><br>
-          <input type="text" name="jam" id="jam" placeholder="Tanggal" value="<?php echo $kel['jam']; ?>" class="form-control" required="" >
+          <input type="text" name="jam" id="jam" placeholder="Jam" value="<?php echo $kel['jam']; ?>" class="form-control" required="" >
           </div>
 
 					<div class="form-group col-sm-3">
@@ -429,7 +429,7 @@ else {
 	$.post("proses_edit_tbs_kas_masuk.php", {no_faktur:no_faktur, keterangan:keterangan,dari_akun:dari_akun,ke_akun:ke_akun,jumlah:jumlah,tanggal:tanggal}, function(info) {
 
 
-     $("#prepend").prepend(info);
+     $("#result").html(info);
      $("#dariakun").val('');
      $("#jumlah").val('');
      $("#keterangan").val('');
@@ -520,12 +520,13 @@ alert("Nama Akun Tidak Boleh Sama");
     var jam = $("#jam").val();
 
 
-    if (jumlah == "") {
+     $.post("cek_submit_edit_kas_masuk.php", {no_faktur:no_faktur}, function(data){
+if (data == 'kosong')
+{
+  alert("Anda Belum Memasukan Transaksi");
+}
 
-      alert ("Tidak Ada Kas Yang Di Keluarkan")
-    }
-    else {
-
+else {  
 
         $("#transaksi_baru").show();
         $("#submit_kas_masuk").hide();
@@ -549,7 +550,7 @@ $.post("proses_edit_kas_masuk.php", {no_faktur:no_faktur, keterangan:keterangan,
   
  });
 
-     
+   });  
   
 </script>
 

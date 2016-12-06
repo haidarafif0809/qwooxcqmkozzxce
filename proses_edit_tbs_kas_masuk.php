@@ -31,16 +31,32 @@ else {
 //Untuk Memutuskan Koneksi Ke Database
 
     ?>
-
- <?php
+   <div class="table-responsive">
+      <!--tag untuk membuat garis pada tabel-->     
+  <table id="tableuser" class="table table-bordered table-sm" >
+    <thead>
+      <th> Nomor Faktur </th>
+      <th> Keterangan </th>
+      <th> Dari Akun </th>
+      <th> Ke Akun </th>
+      <th> Jumlah </th>      
+      <th> Tanggal </th>
+      <th> Jam </th>
+      <th> User </th>    
+      <th> Hapus </th>
+      
+    </thead>
+    
+    <tbody id="prepend">
+    <?php
 
     //menampilkan semua data yang ada pada tabel tbs kas masuk dalam DB
-     $perintah = $db->query("SELECT km.id, km.session_id, km.no_faktur, km.keterangan, km.dari_akun, km.ke_akun, km.jumlah, km.tanggal, km.jam, km.user, da.nama_daftar_akun FROM tbs_kas_masuk km INNER JOIN daftar_akun da ON km.dari_akun = da.kode_daftar_akun WHERE km.no_faktur = '$no_faktur' ORDER BY km.id DESC LIMIT 1 ");
+     $perintah = $db->query("SELECT km.id, km.session_id, km.no_faktur, km.keterangan, km.dari_akun, km.ke_akun, km.jumlah, km.tanggal, km.jam, km.user, da.nama_daftar_akun FROM tbs_kas_masuk km INNER JOIN daftar_akun da ON km.dari_akun = da.kode_daftar_akun WHERE km.no_faktur = '$no_faktur' ORDER BY id DESC");
 
       //menyimpan data sementara yang ada pada $perintah
 
-     $data1 = mysqli_fetch_array($perintah);
-      
+      while ($data1 = mysqli_fetch_array($perintah))
+      {
         $perintah0 = $db->query("SELECT km.id, km.session_id, km.no_faktur, km.keterangan, km.ke_akun, km.jumlah, km.tanggal, km.jam, km.user, da.nama_daftar_akun FROM tbs_kas_masuk km INNER JOIN daftar_akun da ON km.ke_akun = da.kode_daftar_akun WHERE km.no_faktur = '$no_faktur'");
         $data0 = mysqli_fetch_array($perintah0);
 
@@ -61,12 +77,27 @@ else {
       <td> <button class='btn btn-danger btn-hapus-tbs' data-id='". $data1['id'] ."' data-faktur='". $data1['no_faktur'] ."' data-jumlah='". $data1['jumlah'] ."' data-ke='". $data1['ke_akun'] ."'> <span class='glyphicon glyphicon-trash'> </span> Hapus </button> </td> 
       
       </tr>";
-      
+      }
 
       //Untuk Memutuskan Koneksi Ke Database
 
 mysqli_close($db); 
     ?>
+    </tbody>
+
+  </table>
+  </div>
+
+
+
+  <script>
+
+// untk menampilkan datatable atau filter seacrh
+$(document).ready(function(){
+    $('#tableuser').DataTable();
+});
+
+</script>
 
   <script type="text/javascript">
                                

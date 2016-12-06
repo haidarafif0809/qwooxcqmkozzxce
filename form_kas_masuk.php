@@ -277,7 +277,7 @@
     <?php
 
     //menampilkan semua data yang ada pada tabel tbs kas masuk dalam DB
-$perintah = $db->query("SELECT km.id, km.session_id, km.keterangan, km.ke_akun, km.dari_akun, km.jumlah, km.tanggal, km.jam, km.user, da.nama_daftar_akun FROM tbs_kas_masuk km INNER JOIN daftar_akun da ON km.ke_akun = da.kode_daftar_akun WHERE km.session_id = '$session_id' ORDER BY km.id DESC");
+$perintah = $db->query("SELECT km.id, km.session_id, km.keterangan, km.ke_akun, km.dari_akun, km.jumlah, km.tanggal, km.jam, km.user, da.nama_daftar_akun FROM tbs_kas_masuk km INNER JOIN daftar_akun da ON km.ke_akun = da.kode_daftar_akun WHERE km.session_id = '$session_id'");
 
       //menyimpan data sementara yang ada pada $perintah
 
@@ -427,9 +427,9 @@ else {
 
   $("#jumlahtotal").val(tandaPemisahTitik(subtotal))
 
-	$.post("proses_tbs_kas_masuk.php",{session_id:session_id,keterangan:keterangan,dari_akun:dari_akun,ke_akun:ke_akun,jumlah:jumlah,tanggal:tanggal}, function(info) {
+	$.post("proses_tbs_kas_masuk.php",{session_id:session_id,keterangan:keterangan,dari_akun:dari_akun,ke_akun:ke_akun,jumlah:jumlah,tanggal:tanggal,total:total}, function(info) {
 
-     $("#prepend").prepend(info);
+     $("#result").html(info);
      $("#dariakun").val('');
      $("#jumlah").val('');
      $("#keterangan").val('');
@@ -625,14 +625,10 @@ $("#alert_berhasil").hide();
 
 
                                   $("#jumlahtotal").val(tandaPemisahTitik(subtotal))
-
-
+                                 
+                                  $(".tr-id-"+id+"").remove();
                                   $.post("hapus_tbs_kas_masuk.php",{id:id},function(data){
 
-                                  if (data != '') {
-                                  $(".tr-id-"+id+"").remove();
-                                  }
-         
                                   });
                                   
                                   });
@@ -657,7 +653,7 @@ $("#alert_berhasil").hide();
                                   }
                                   
                                   </script>
-
+  
 
 
                                   <script type="text/javascript">

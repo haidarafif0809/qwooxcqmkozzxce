@@ -17,6 +17,7 @@
         $dari_akun = stringdoang($_POST['dari_akun']);
         $ke_akun = stringdoang($_POST['ke_akun']);
         $jumlah = angkadoang($_POST['jumlah']);
+        $total = angkadoang($_POST['total']);
         $user = $_SESSION['nama'];
         
         $perintah = $db->prepare("INSERT INTO tbs_kas_masuk (session_id,keterangan,dari_akun,ke_akun, jumlah,tanggal,jam,user) VALUES (?,?,?,?,?,?,?,?)");
@@ -37,13 +38,34 @@ else {
     
 //Untuk Memutuskan Koneksi Ke Database 
     ?>
-<?php
+
+
+
+   <div class="table-responsive">
+      <!--tag untuk membuat garis pada tabel-->     
+  <table id="tableuser" class="table table-bordered table-sm">
+    <thead>
+      <th> Dari Akun </th>
+      <th> Ke Akun </th>
+      <th> Jumlah </th>      
+      <th> Tanggal </th>
+      <th> Jam </th>
+      <th> Keterangan </th>
+      <th> User </th>    
+      <th> Hapus </th>
+      
+    </thead>
+    
+    <tbody id="prepend">
+    <?php
 
     //menampilkan semua data yang ada pada tabel tbs kas masuk dalam DB
-$perintah = $db->query("SELECT km.id, km.session_id, km.keterangan, km.ke_akun, km.dari_akun, km.jumlah, km.tanggal, km.jam, km.user, da.nama_daftar_akun FROM tbs_kas_masuk km INNER JOIN daftar_akun da ON km.ke_akun = da.kode_daftar_akun WHERE km.session_id = '$session_id' ORDER BY km.id DESC LIMIT 1 ");
+$perintah = $db->query("SELECT km.id, km.session_id, km.keterangan, km.ke_akun, km.dari_akun, km.jumlah, km.tanggal, km.jam, km.user, da.nama_daftar_akun FROM tbs_kas_masuk km INNER JOIN daftar_akun da ON km.ke_akun = da.kode_daftar_akun WHERE km.session_id = '$session_id' ORDER BY km.id DESC");
 
       //menyimpan data sementara yang ada pada $perintah
-$data1 = mysqli_fetch_array($perintah);
+
+      while ($data1 = mysqli_fetch_array($perintah))
+      {
  
         $perintah1 = $db->query("SELECT km.id, km.session_id, km.keterangan, km.dari_akun, km.jumlah, km.tanggal, km.jam, km.user, da.nama_daftar_akun FROM tbs_kas_masuk km INNER JOIN daftar_akun da ON km.dari_akun = da.kode_daftar_akun WHERE km.dari_akun = '$data1[dari_akun]'");
         $data10 = mysqli_fetch_array($perintah1);
@@ -63,14 +85,28 @@ $data1 = mysqli_fetch_array($perintah);
       <td> <button class='btn btn-danger btn-hapus-tbs' id='btn-hapus-".$data1['id']."' data-id='". $data1['id'] ."' data-jumlah='".$data1['jumlah']."' data-dari='". $data1['dari_akun'] ."'> <span class='glyphicon glyphicon-trash'> </span> Hapus </button> </td> 
       
       </tr>";
+      }
 
 //Untuk Memutuskan Koneksi Ke Database
 
 mysqli_close($db); 
     ?>
+    </tbody>
+
+  </table>
+  </div>
+
+<script>
+
+// untk menampilkan datatable atau filter seacrh
+$(document).ready(function(){
+    $('#tableuser').DataTable();
+});
+
+</script>
 
 
-    
+
                                   <script type="text/javascript">
                                
                                   $(document).ready(function(){
@@ -103,14 +139,10 @@ mysqli_close($db);
 
 
                                   $("#jumlahtotal").val(tandaPemisahTitik(subtotal))
-
-
+                                 
+                                  $(".tr-id-"+id+"").remove();
                                   $.post("hapus_tbs_kas_masuk.php",{id:id},function(data){
 
-                                  if (data != '') {
-                                  $(".tr-id-"+id+"").remove();
-                                  }
-         
                                   });
                                   
                                   });
@@ -135,7 +167,7 @@ mysqli_close($db);
                                   }
                                   
                                   </script>
-
+  
 
 
                                   <script type="text/javascript">
@@ -187,3 +219,8 @@ mysqli_close($db);
                                     });
                                     
                                     </script>
+
+<?php 
+include 'footer.php';
+ ?>
+
