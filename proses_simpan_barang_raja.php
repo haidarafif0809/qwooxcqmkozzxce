@@ -67,9 +67,9 @@ $no_faktur = $nomor."/JL/".$data_bulan_terakhir."/".$tahun_terakhir;
 $tahun_sekarang = date('Y');
 $bulan_sekarang = date('m');
 $tanggal_sekarang = date('Y-m-d');
-$jam_sekarang = date('H:i:sa');
+$jam_sekarang = date('H:i:s');
 $tahun_terakhir = substr($tahun_sekarang, 2);
-$waktu = date('Y-m-d H:i:sa');
+$waktu = date('Y-m-d H:i:s');
 
 
 $no_rm = stringdoang($_POST['no_rm']);
@@ -138,7 +138,14 @@ $ppn_input = stringdoang($_POST['ppn_input']);
     if ($nominal_kasir != 0) {
       
 
-      $perintah01 = $db->query("INSERT INTO laporan_fee_faktur (nama_petugas, no_faktur, jumlah_fee, tanggal, jam, status_bayar,no_reg,no_rm) VALUES ('$data_fee_kasir[nama_petugas]', '$no_faktur', '$nominal_kasir', '$tanggal_sekarang', '$jam_sekarang', '','$no_reg','$no_rm')");
+      $perintah01 = "INSERT INTO laporan_fee_faktur (nama_petugas, no_faktur, jumlah_fee, tanggal, jam, status_bayar,no_reg,no_rm) VALUES ('$data_fee_kasir[nama_petugas]', '$no_faktur', '$nominal_kasir', '$tanggal_sekarang', '$jam_sekarang', '','$no_reg','$no_rm')";
+
+       if ($db->query($perintah01) === TRUE) {
+        } 
+
+        else {
+        echo "Error: " . $perintah01 . "<br>" . $db->error;
+        }
 
     }
 
@@ -148,7 +155,14 @@ $ppn_input = stringdoang($_POST['ppn_input']);
      
       $fee_prosentase = $prosentase_kasir * $total / 100;
       
-      $perintah01 = $db->query("INSERT INTO laporan_fee_faktur (nama_petugas, no_faktur, jumlah_fee, tanggal, jam,no_reg,no_rm) VALUES ('$data_fee_kasir[nama_petugas]', '$no_faktur', '$fee_prosentase', '$tanggal_sekarang', '$jam_sekarang','$no_reg','$no_rm')");
+      $perintah01 = "INSERT INTO laporan_fee_faktur (nama_petugas, no_faktur, jumlah_fee, tanggal, jam,no_reg,no_rm) VALUES ('$data_fee_kasir[nama_petugas]', '$no_faktur', '$fee_prosentase', '$tanggal_sekarang', '$jam_sekarang','$no_reg','$no_rm')";
+
+       if ($db->query($perintah01) === TRUE) {
+        } 
+
+        else {
+        echo "Error: " . $perintah01 . "<br>" . $db->error;
+        }
       
     }
     
@@ -268,6 +282,8 @@ $ppn_input = stringdoang($_POST['ppn_input']);
 
               
 $stmt = $db->prepare("INSERT INTO penjualan (no_faktur, no_reg, penjamin, apoteker, perawat, petugas_lain, dokter, kode_gudang, kode_pelanggan, tanggal, jam, user, sales, status, potongan, no_pesanan,tax,jenis_penjualan,nama,biaya_admin,total,tunai,sisa,kredit,nilai_kredit,cara_bayar,ppn) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,'Simpan Sementara',?,'1',?,?,?,?,?,?,?,?,?,?,?)");
+
+
               
     // hubungkan "data" dengan prepared statements
               $stmt->bind_param("sssssssssssssiisssiiiiiss",
