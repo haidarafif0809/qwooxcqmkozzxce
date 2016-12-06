@@ -143,7 +143,7 @@ tr:nth-child(even){background-color: #f2f2f2}
 
 <div class="table-responsive">
 <span id="tabel_baru">
-<table id="tableuser" class="table table-bordered">
+<table id="table_repen" class="table table-bordered">
 		<thead>
 			<th style='background-color: #4CAF50; color:white'> Detail </th>
 
@@ -177,68 +177,6 @@ if ($retur_penjualan['retur_penjualan_hapus'] > 0) {
 		</thead>
 
 		
-		<tbody>
-		<?php
-
-			//menyimpan data sementara yang ada pada $perintah
-			while ($data1 = mysqli_fetch_array($perintah))
-			{
-				$query_pel = $db->query("SELECT nama_pelanggan FROM pelanggan WHERE kode_pelanggan = '$data1[kode_pelanggan]' ");
-				$data_pelanggan = mysqli_fetch_array($query_pel);
-
-				//menampilkan data
-			echo "<tr class='tr-id-".$data1['id']."'>
-
-			<td> <button class='btn btn-info detail' no_faktur_retur='". $data1['no_faktur_retur'] ."' ><span class='glyphicon glyphicon-th-list'></span> Detail </button> </td>";
-
-if ($retur_penjualan['retur_penjualan_edit'] > 0) {
-
-			echo "<td> <a href='proses_edit_retur_penjualan.php?no_faktur_retur=". $data1['no_faktur_retur']."' class='btn btn-success'> <span class='glyphicon glyphicon-edit'></span> Edit </a> </td>";
-		}
-
-
-if ($retur_penjualan['retur_penjualan_hapus'] > 0) {
-
-$pilih = $db->query("SELECT no_faktur FROM hpp_masuk WHERE no_faktur = '$data1[no_faktur_retur]' AND sisa != jumlah_kuantitas");
-$row_alert = mysqli_num_rows($pilih);
-
-	if ($row_alert > 0) {
-		
-
-		echo "<td> <button class='btn btn-danger btn-alert' data-id='". $data1['id'] ."' data-faktur='". $data1['no_faktur_retur'] ."' data-pelanggan='". $data1['kode_pelanggan'] ."'> <span class='glyphicon glyphicon-trash'> </span> Hapus </button>  </td>";
-	} 
-
-	else {
-
-		echo "<td> <button class='btn btn-danger btn-hapus' data-id='". $data1['id'] ."' data-faktur='". $data1['no_faktur_retur'] ."' data-pelanggan='". $data1['kode_pelanggan'] ."'> <span class='glyphicon glyphicon-trash'> </span> Hapus </button>  </td>";
-	}
-
-
-			
-}
-			
-			echo "<td> <a href='cetak_lap_retur_penjualan.php?no_faktur_retur=".$data1['no_faktur_retur']."' class='btn btn-primary' target='blank'><span class='glyphicon glyphicon-print'> </span> Cetak Retur</a> </td>
-
-			<td>". $data1['no_faktur_retur'] ."</td>
-			<td>". $data1['kode_pelanggan'] ." ". $data_pelanggan['nama_pelanggan'] ."</td>
-			<td>". rp($data1['total']) ."</td>
-			<td>". rp($data1['potongan']) ."</td>
-			<td>". rp($data1['tax']) ."</td>
-			<td>". $data1['tanggal'] ."</td>
-			<td>". $data1['jam'] ."</td>
-			<td>". $data1['user_buat'] ."</td>
-			<td>". $data1['user_edit'] ."</td>
-			<td>". $data1['tanggal_edit'] ."</td>
-			<td>". rp($data1['tunai']) ."</td>
-			<td>". rp($data1['sisa']) ."</td>
-			
-			</tr>";
-			}
-			
-			//Untuk Memutuskan Koneksi Ke Database
-			mysqli_close($db);   
-		?>
-		</tbody>
 
 	</table>
 </span>
@@ -247,17 +185,44 @@ $row_alert = mysqli_num_rows($pilih);
 	<button type="submit" id="submit_close" class="glyphicon glyphicon-remove btn btn-danger" style="display:none"></button> 
 		<span id="demo"> </span>
 </div><!--end of container-->
-		
+
+		<!--DATA TABLE MENGGUNAKAN AJAX-->
+<script type="text/javascript" language="javascript" >
+      $(document).ready(function() {
+
+          var dataTable = $('#table_repen').DataTable( {
+          "processing": true,
+          "serverSide": true,
+          "ajax":{
+            url :"datatable_repen.php", // json datasource
+           
+            type: "post",  // method  , by default get
+            error: function(){  // error handling
+              $(".employee-grid-error").html("");
+              $("#table_repen").append('<tbody class="employee-grid-error"><tr><th colspan="3">No data found in the server</th></tr></tbody>');
+              $("#employee-grid_processing").css("display","none");
+            }
+        },
+            
+            "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+                $(nRow).attr('class','tr-id-'+aData[16]+'');
+            },
+        });
+
+        $("#form").submit(function(){
+        return false;
+        });
+        
+
+      } );
+    </script>
+<!--/DATA TABLE MENGGUNAKAN AJAX-->
 
 		<!--menampilkan detail penjualan-->
-		<script>
+		<script type="text/javascript">
+				
 		
-		$(document).ready(function(){
-		$('#tableuser').DataTable();
-		});
-		
-		
-		$(".detail").click(function(){
+		$(document).on('click','.detail',function(e){
 		var no_faktur_retur = $(this).attr('no_faktur_retur');
 		
 		
@@ -277,7 +242,7 @@ $row_alert = mysqli_num_rows($pilih);
 				<script type="text/javascript">
 				
 				//fungsi hapus data 
-				$(".btn-hapus").click(function(){
+				$(document).on('click','.btn-hapus',function(e){
 				var kode_pelanggan = $(this).attr("data-pelanggan");
 				var no_faktur_retur = $(this).attr("data-faktur");
 				var id = $(this).attr("data-id");

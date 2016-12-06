@@ -207,7 +207,7 @@ if ($kas_keluar['kas_keluar_hapus'] > 0) {
             }
           },
               "fnCreatedRow": function( nRow, aData, iDataIndex ) {
-              $(nRow).attr('class','tr-id-'+aData[9]+'');
+              $(nRow).attr('class','tr-id-'+aData[10]+'');
             },
 
         } );
