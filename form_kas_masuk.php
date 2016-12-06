@@ -277,7 +277,7 @@
     <?php
 
     //menampilkan semua data yang ada pada tabel tbs kas masuk dalam DB
-$perintah = $db->query("SELECT km.id, km.session_id, km.keterangan, km.ke_akun, km.dari_akun, km.jumlah, km.tanggal, km.jam, km.user, da.nama_daftar_akun FROM tbs_kas_masuk km INNER JOIN daftar_akun da ON km.ke_akun = da.kode_daftar_akun WHERE km.session_id = '$session_id'");
+$perintah = $db->query("SELECT km.id, km.session_id, km.keterangan, km.ke_akun, km.dari_akun, km.jumlah, km.tanggal, km.jam, km.user, da.nama_daftar_akun FROM tbs_kas_masuk km INNER JOIN daftar_akun da ON km.ke_akun = da.kode_daftar_akun WHERE km.session_id = '$session_id' ORDER BY km.id DESC");
 
       //menyimpan data sementara yang ada pada $perintah
 
