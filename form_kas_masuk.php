@@ -171,7 +171,7 @@
 
  <?php if ($data_tbs > 0): ?>
             
-            <div class="form-group col-sm-6">
+            <div class="form-group col-sm-3">
             <label> Ke Akun </label><br>
             <select type="text" name="ke_akun" id="keakun" class="form-control" disabled="true">
             <option value="<?php echo $data_tbs1['ke_akun']; ?>"><?php echo $data_tbs1['nama_daftar_akun']; ?></option>
@@ -273,11 +273,11 @@
       
     </thead>
     
-    <tbody>
+    <tbody id="prepend">
     <?php
 
     //menampilkan semua data yang ada pada tabel tbs kas masuk dalam DB
-$perintah = $db->query("SELECT km.id, km.session_id, km.keterangan, km.ke_akun, km.dari_akun, km.jumlah, km.tanggal, km.jam, km.user, da.nama_daftar_akun FROM tbs_kas_masuk km INNER JOIN daftar_akun da ON km.ke_akun = da.kode_daftar_akun WHERE session_id = '$session_id'");
+$perintah = $db->query("SELECT km.id, km.session_id, km.keterangan, km.ke_akun, km.dari_akun, km.jumlah, km.tanggal, km.jam, km.user, da.nama_daftar_akun FROM tbs_kas_masuk km INNER JOIN daftar_akun da ON km.ke_akun = da.kode_daftar_akun WHERE km.session_id = '$session_id'");
 
       //menyimpan data sementara yang ada pada $perintah
 
@@ -427,10 +427,9 @@ else {
 
   $("#jumlahtotal").val(tandaPemisahTitik(subtotal))
 
-	$.post("proses_tbs_kas_masuk.php",{session_id:session_id,keterangan:keterangan,dari_akun:dari_akun,ke_akun:ke_akun,jumlah:jumlah,tanggal:tanggal}, function(info) {
+	$.post("proses_tbs_kas_masuk.php",{session_id:session_id,keterangan:keterangan,dari_akun:dari_akun,ke_akun:ke_akun,jumlah:jumlah,tanggal:tanggal,total:total}, function(info) {
 
      $("#result").html(info);
-     $("#result").load('tabel_kas_masuk.php');
      $("#dariakun").val('');
      $("#jumlah").val('');
      $("#keterangan").val('');
@@ -626,14 +625,10 @@ $("#alert_berhasil").hide();
 
 
                                   $("#jumlahtotal").val(tandaPemisahTitik(subtotal))
-
-
+                                 
+                                  $(".tr-id-"+id+"").remove();
                                   $.post("hapus_tbs_kas_masuk.php",{id:id},function(data){
 
-                                  if (data != '') {
-                                  $(".tr-id-"+id+"").remove();
-                                  }
-         
                                   });
                                   
                                   });
@@ -658,7 +653,7 @@ $("#alert_berhasil").hide();
                                   }
                                   
                                   </script>
-
+  
 
 
                                   <script type="text/javascript">

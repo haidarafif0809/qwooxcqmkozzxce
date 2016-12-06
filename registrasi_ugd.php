@@ -565,7 +565,7 @@ tr:nth-child(even){background-color: #f2f2f2}
     var dokter_jaga = $("#dokter_jaga").val();
     var cari_migrasi = $("#cari_migrasi").val();
 
-    if ( no_rm == ""){
+       if ( no_rm == ""){
       alert("Pasien Belum Ada!");
       $("#cari_migrasi").focus();
     }
@@ -631,10 +631,9 @@ else{
      $("#kembali").hide();
      $("#coba").show();
      $("#demo").hide();
-
  $.post("proses_ugd.php",{no_rm:no_rm,rujukan:rujukan,token:token,penjamin:penjamin,nama_pasien:nama_pasien,jenis_kelamin:jenis_kelamin,tanggal_lahir:tanggal_lahir,umur:umur,gol_darah:gol_darah,no_hp:no_hp,alamat:alamat,alergi:alergi,kondisi:kondisi,eye:eye,verbal:verbal,motorik:motorik,pengantar:pengantar,hubungan_dengan_pasien:hubungan_dengan_pasien,nama_pengantar:nama_pengantar,alamat_pengantar:alamat_pengantar,hp_pengantar:hp_pengantar,keterangan:keterangan,dokter_jaga:dokter_jaga},function(data){
      
-     
+     window.location.href = 'registrasi_ugd.php';
      $('#table_ugd').DataTable().destroy();
       var dataTable = $('#table_ugd').DataTable( {
           "processing": true,

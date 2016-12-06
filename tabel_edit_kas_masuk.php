@@ -10,7 +10,7 @@
  
 
  ?>
- <table id="tableuser" class="table table-bordered">
+ <table id="tableuser" class="table table-bordered table-sm">
     <thead>
       <th> Nomor Faktur </th>
       <th> Keterangan </th>

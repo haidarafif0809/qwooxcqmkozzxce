@@ -2,10 +2,7 @@
 // memasukan file db.php
 include 'db.php';
 include 'sanitasi.php';
-<<<<<<< HEAD
-=======
 
->>>>>>> c288118a946e339d8598a1ba431ac3d6513bb6ad
 // mengirim data no faktur menggunakan metode POST
  $session_id = session_id();
  $subtotal_tampil = angkadoang($_POST['total2']);

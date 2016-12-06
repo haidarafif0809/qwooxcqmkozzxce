@@ -8,7 +8,9 @@
  $no_faktur = $_GET['no_faktur']; 
  $nama_daftar_akun = $_GET['nama_daftar_akun']; 
  
- $query     = $db->query("SELECT * FROM kas_keluar");
+$query = $db->query("SELECT * FROM kas_keluar WHERE no_faktur = '$no_faktur' ");
+$kel = mysqli_fetch_array($query);
+
  
 $query0 = $db->query("SELECT km.id, km.dari_akun, da.nama_daftar_akun FROM detail_kas_keluar km INNER JOIN daftar_akun da ON km.dari_akun = da.kode_daftar_akun");
 $ambil = mysqli_fetch_array($query0);
@@ -128,30 +130,41 @@ $ambil1 = mysqli_fetch_array($query10);
   </div>
 </div><!-- end of modal edit data  -->
 
-<h3> Edit Kas Keluar </h3>
+<b><h3> Edit Kas Keluar </h3></b><hr>
 <br><br>
 
 <form action="proses_edit_tbs_kas_keluar.php" role="form" method="post" id="formtambahproduk">
 <div class="row">
 
-					<div class="form-group col-sm-6">
+					<div class="form-group col-sm-3">
 					<label> Tanggal </label><br>
-					<input type="text" name="tanggal" id="tanggal1" placeholder="Tanggal" value="<?php echo date("Y/m/d"); ?>" class="form-control" required="" >
+					<input type="text" name="tanggal" id="tanggal1" placeholder="Tanggal" value="<?php echo $kel['tanggal']; ?>" class="form-control" required="" >
 					</div>
 
-					<div class="form-group col-sm-6">
+           <div class="form-group col-sm-3">
+          <label> Jam </label><br>
+          <input type="text" name="jam" id="jam" placeholder="Jam" value="<?php echo $kel['jam']; ?>" class="form-control" required="" >
+          </div>
+
+					<div class="form-group col-sm-3">
 					<label> Nomor Faktur </label><br>
 					<input type="text" name="no_faktur" id="nomorfaktur1" placeholder="Nomor Faktur" class="form-control" readonly="" value="<?php echo $no_faktur; ?>" required="" >
+          </div>
 
-					</div>
+          <div class="form-group col-sm-3">
+          <label> Keterangan </label><br>
+          <textarea  name="keterangan" autocomplete="off" id="keterangan" placeholder="Keterangan" class="form-control"><?php echo $kel['keterangan'];?></textarea>
+          </div>
+
 
 </div> <!-- tag penutup div row -->
 
 <div class="row">
+ <div class="card card-block">
 
 <?php if ($data_tbs > 0): ?>
 
-          <div class="form-group col-sm-6">
+          <div class="form-group col-sm-3">
           <label> Dari Akun </label><br>
           <select type="text" name="dari_akun" id="dariakun" class="form-control" required="" disabled="true">
           <option value="<?php echo $data_tbs1['dari_akun']; ?>"><?php echo $data_tbs1['nama_daftar_akun']; ?></option>
@@ -174,7 +187,7 @@ $ambil1 = mysqli_fetch_array($query10);
 
 <?php else: ?>
 
-					<div class="form-group col-sm-6">
+					<div class="form-group col-sm-3">
 					<label> Dari Akun </label><br>
 					<select type="text" name="dari_akun" id="dariakun" class="form-control" required="">
           <option value="">--SILAHKAN PILIH--</option>
@@ -195,17 +208,6 @@ $ambil1 = mysqli_fetch_array($query10);
    					</div>
 
 <?php endif ?>  
-
-
-   					<div class="form-group col-sm-6" id="col_sm_6">
-					<label> Jumlah Total </label><br>
-					<input type="text" name="jumlah" id="jumlahtotal" readonly="" placeholder="Jumlah Total" class="form-control">
-					</div>
-
-
-
-</div> 
-<div class="row">
 
 					<div class="form-group col-sm-3">
 					<label> Ke Akun </label><br>
@@ -232,18 +234,14 @@ $ambil1 = mysqli_fetch_array($query10);
 					<input type="text" name="jumlah" id="jumlah" onkeydown="return numbersonly(this, event);" onkeyup="javascript:tandaPemisahTitik(this);" autocomplete="off" placeholder="Jumlah" class="form-control" required="" >
 					</div>
 
-					<div class="form-group col-sm-3">
-					<label> Keterangan </label><br>
-					<input type="text" name="keterangan" id="keterangan" autocomplete="off" placeholder="Keterangan" class="form-control">
-					</div>
-
 					
 					<div class="form-group col-sm-3">
           <label><br><br><br></label>
           <button type="submit" id="submit_produk" class="btn btn-success"> <i class='fa fa-plus'> </i> Tambah </button>
           </div>
 					
-					
+			
+</div> <!--div card block -->   		
 </div> <!-- tag penutup div row-->
 
 					
@@ -262,8 +260,7 @@ $ambil1 = mysqli_fetch_array($query10);
 
       
   <!--membuat tombol submit bayar & Hutang-->
-      <button type="submit" id="submit_kas_keluar" class="btn btn-info"> <span class='glyphicon glyphicon-ok-sign'> </span> Submit </a> </button>
-      <a class="btn btn-info" href="form_kas_keluar.php" id="transaksi_baru" style="display: none"> <span class="glyphicon glyphicon-repeat"></span> Transaksi Baru</a>
+
      
 
           </form><!--tag penutup form-->
@@ -276,7 +273,7 @@ $ambil1 = mysqli_fetch_array($query10);
       
 <div class="table-responsive">
       <!--tag untuk membuat garis pada tabel-->     
-  <table id="tableuser" class="table table-bordered">
+  <table id="tableuser" class="table table-bordered table-sm">
     <thead>
       <th> Nomor Faktur </th>
       <th> Keterangan </th>
@@ -292,10 +289,10 @@ $ambil1 = mysqli_fetch_array($query10);
       
     </thead>
     
-    <tbody>
+    <tbody id="prepend">
     <?php
     //menampilkan semua data yang ada pada tabel tbs kas masuk dalam DB
-     $perintah = $db->query("SELECT km.id, km.session_id, km.no_faktur, km.keterangan, km.dari_akun, km.ke_akun, km.jumlah, km.tanggal, km.jam, km.user, da.nama_daftar_akun FROM tbs_kas_keluar km INNER JOIN daftar_akun da ON km.dari_akun = da.kode_daftar_akun WHERE no_faktur = '$no_faktur'");
+     $perintah = $db->query("SELECT km.id, km.session_id, km.no_faktur, km.keterangan, km.dari_akun, km.ke_akun, km.jumlah, km.tanggal, km.jam, km.user, da.nama_daftar_akun FROM tbs_kas_keluar km INNER JOIN daftar_akun da ON km.dari_akun = da.kode_daftar_akun WHERE km.no_faktur = '$no_faktur' ORDER BY km.id DESC ");
 
       //menyimpan data sementara yang ada pada $perintah
 
@@ -331,6 +328,16 @@ mysqli_close($db);
   </div>
         </span>
 
+
+<div class="row">
+            <div class="form-group col-sm-3" id="col_sm_6">
+          <b><label> Jumlah Total </label></b><br>
+          <input type="text" style="font-size: 25px;" name="jumlah" id="jumlahtotal" readonly="" placeholder="Jumlah Total" class="form-control">
+          </div>
+</div>
+
+      <button type="submit" id="submit_kas_keluar" class="btn btn-info"> <span class='glyphicon glyphicon-ok-sign'> </span> Submit </a> </button>
+      <a class="btn btn-info" href="form_kas_keluar.php" id="transaksi_baru" style="display: none"> <span class="glyphicon glyphicon-repeat"></span> Transaksi Baru</a>
 
 </div> <!-- tag penutup div container -->
 
@@ -394,12 +401,10 @@ else {
 
 	$.post("proses_edit_tbs_kas_keluar.php", {no_faktur:no_faktur,keterangan:keterangan,dari_akun:dari_akun,ke_akun:ke_akun,jumlah:jumlah,tanggal:tanggal}, function(info) {
 
-      
-     $("#result").html(info);
+    $("#result").html(info);
      $("#keakun").val('');
      $("#jumlah").val('');
      $("#keterangan").val('');
-     $("#result").load('tabel_edit_kas_keluar.php?no_faktur=<?php echo $no_faktur; ?>');
        
    });
 }
@@ -437,9 +442,7 @@ $.post("cek_jumlah_edit_kas_keluar.php",
 </script>
 
 <script>
- 
 
-  
    $("#submit_kas_keluar").click(function(){
 
    	var no_faktur = $("#nomorfaktur1").val();
@@ -447,20 +450,22 @@ $.post("cek_jumlah_edit_kas_keluar.php",
    	var dari_akun = $("#dariakun").val();
    	var jumlah = $("#jumlahtotal").val();
    	var tanggal = $("#tanggal1").val();
-   	
+    var jam = $("#jam").val();
 
-    if (jumlah == "") {
 
-      alert("Tidak Ada Kas Yang Di Keluarkan");
+  $.post("cek_submit_edit_kas_keluar.php", {no_faktur:no_faktur}, function(data){
 
-    }
+    if (data == 'kosong')
+    {
+       alert("Anda Belum Memasukan Transaksi ");
+    } 
 
-    else
-      {
+else{
+
         $("#transaksi_baru").show();
         $("#submit_kas_keluar").hide();
 
-         $.post("proses_edit_kas_keluar.php", {no_faktur:no_faktur,dari_akun:dari_akun,jumlah:jumlah,tanggal:tanggal}, function(info) {
+  $.post("proses_edit_kas_keluar.php", {no_faktur:no_faktur,dari_akun:dari_akun,jumlah:jumlah,tanggal:tanggal,jam:jam,keterangan:keterangan}, function(info) {
          
          $("#alert_berhasil").show();
          $("#result").html(info);
@@ -470,6 +475,7 @@ $.post("cek_jumlah_edit_kas_keluar.php",
          $("#keterangan").val('');
          $("#jumlahtotal").val('');
          });
+
          $("#form_submit").submit(function(){
          return false;
          });
@@ -477,7 +483,7 @@ $.post("cek_jumlah_edit_kas_keluar.php",
     }      
 
 
-
+});
   
  });
 

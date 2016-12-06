@@ -227,7 +227,6 @@ echo '<button type="button" id="tambah" class="btn btn-info" data-toggle="modal"
 					<label> Tanggal </label><br>
 					<input type="text" name="tanggal_edit" id="tanggal_edit" placeholder="Tanggal" value="<?php echo date("d-m-Y"); ?>" class="form-control tgl" >
 
-					
 						
 					<label> Jumlah Baru </label><br>
 					<input type="text" name="jumlah_baru" id="edit_jumlah" onkeydown="return numbersonly(this, event);" onkeyup="javascript:tandaPemisahTitik(this);" class="form-control">
@@ -586,6 +585,7 @@ $(document).ready(function(){
 		var dari_akun = $(this).attr("data-dari-akun"); 
 		var id  = $(this).attr("data-id");
 		var no_faktur  = $(this).attr("data-faktur");
+
 		$("#nama_edit").val(nama);
 		$("#tanggal_edit").val(tanggal);
 		$("#edit_jumlah_lama").val(jumlah);

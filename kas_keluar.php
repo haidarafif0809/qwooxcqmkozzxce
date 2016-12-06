@@ -157,6 +157,7 @@ echo '<a href="form_kas_keluar.php"  class="btn btn-info"><i class="fa fa-plus">
 			<th style='background-color: #4CAF50; color:white'> Tanggal </th>
 			<th style='background-color: #4CAF50; color:white'> Jam </th>
 			<th style='background-color: #4CAF50; color:white'> User </th>
+			<th style='background-color: #4CAF50; color:white'> Waktu edit </th>
 			<th style='background-color: #4CAF50; color:white'> Detail </th>
 
 <?php
@@ -214,12 +215,12 @@ if ($kas_keluar['kas_keluar_hapus'] > 0) {
     </script>
 <!--end ajax datatable-->
 
-<script>
+<script type="text/javascript">
 		
 		// untk menampilkan datatable atau filter seacrh
 		
 		
-		$(".detail").on('click','.detail',function(e){
+		$(document).on('click','.detail',function(e){
 		var no_faktur = $(this).attr('no_faktur');
 		
 		
@@ -240,7 +241,7 @@ if ($kas_keluar['kas_keluar_hapus'] > 0) {
 <script type="text/javascript">
 			
 //fungsi hapus data 
-		$(".btn-hapus").click(function(){
+		$(document).on('click','.btn-hapus',function(e){
 		var no_faktur = $(this).attr("no-faktur");
 		var id = $(this).attr("data-id");
 		$("#hapus_no_faktur").val(no_faktur);
