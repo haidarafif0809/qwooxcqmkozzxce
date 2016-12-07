@@ -2,8 +2,6 @@
 include 'sanitasi.php';
 include 'db.php';
 
-
-
 $no_faktur = stringdoang($_POST['no_faktur']);
 
 $tahun_sekarang = date('Y');
@@ -12,7 +10,6 @@ $tanggal_sekarang = date('Y-m-d');
 $jam_sekarang = date('H:i:s');
 $tahun_terakhir = substr($tahun_sekarang, 2);
 $tanggal = stringdoang($_POST['tanggal']);
-$user = $_SESSION['user_name'];
 $waktu = date('Y-m-d H:i:s');
 
 
@@ -21,10 +18,10 @@ $hapus_jurnal = $db->query("DELETE FROM jurnal_trans WHERE no_faktur = '$no_fakt
 
 
 
-$query = $db->prepare("UPDATE kas_mutasi SET keterangan = ?, jumlah = ?, tanggal = ?, jam = ? , waktu_edit = ? WHERE id = ?");
+$query = $db->prepare("UPDATE kas_mutasi SET keterangan = ?, jumlah = ?, tanggal = ?, jam = ? , waktu_edit = ?, user_edit = ? WHERE id = ?");
 
-$query->bind_param("sisssi",
-	$keterangan, $jumlah_baru, $tanggal, $jam_sekarang, $waktu , $id);
+$query->bind_param("sissssi",
+	$keterangan, $jumlah_baru, $tanggal, $jam_sekarang, $waktu , $user, $id);
 
 $id = stringdoang($_POST['id']);
 $keterangan = stringdoang($_POST['keterangan']);
@@ -32,7 +29,7 @@ $jumlah = angkadoang($_POST['jumlah']);
 $jumlah_baru = angkadoang($_POST['jumlah_baru']);
 $ke_akun = stringdoang($_POST['ke_akun']);
 $dari_akun = stringdoang($_POST['dari_akun']);
-$tanggal = stringdoang($_POST['tanggal']);
+$user = $_SESSION['user_name'];
 $tanggal = stringdoang($_POST['tanggal']);
 
 

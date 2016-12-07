@@ -1,6 +1,5 @@
 <?php include 'session_login.php';
 
-
 //memasukkan file session login, header, navbar, db.php
 include 'header.php';
 include 'navbar.php';
@@ -219,17 +218,16 @@ echo '<button type="button" id="tambah" class="btn btn-info" data-toggle="modal"
    <div class="form-group">
 
    					
-						<label> Nomor Faktur </label><br>
-						<input type="text" name="no_faktur" id="faktur_edit" placeholder="Nomor Faktur" class="form-control" readonly="" >
+				<label> Nomor Faktur </label><br>
+				<input type="text" name="no_faktur" id="faktur_edit" placeholder="Nomor Faktur" class="form-control" readonly="" >
 						
 					
-
 					<label> Tanggal </label><br>
-					<input type="text" name="tanggal_edit" id="tanggal_edit" placeholder="Tanggal" value="<?php echo date("d-m-Y"); ?>" class="form-control tgl" >
+					<input type="text" name="tanggal_edit" id="tanggal_edit" placeholder="Tanggal" value="<?php echo date("d-m-Y"); ?>" autocomplete="off" class="form-control tgl" >
 
 						
 					<label> Jumlah Baru </label><br>
-					<input type="text" name="jumlah_baru" id="edit_jumlah" onkeydown="return numbersonly(this, event);" onkeyup="javascript:tandaPemisahTitik(this);" class="form-control">
+					<input type="text" name="jumlah_baru" id="edit_jumlah" onkeydown="return numbersonly(this, event);" autocomplete="off" onkeyup="javascript:tandaPemisahTitik(this);" class="form-control">
 
 
 					<input type="hidden" name="jumlah" id="edit_jumlah_lama" value="<?php echo $data['jumlah']; ?>" class="form-control" readonly="">	
@@ -276,6 +274,7 @@ echo '<button type="button" id="tambah" class="btn btn-info" data-toggle="modal"
 			<th style='background-color: #4CAF50; color:white'> Tanggal </th>
 			<th style='background-color: #4CAF50; color:white'> Jam </th>
 			<th style='background-color: #4CAF50; color:white'> User </th>
+			<th style='background-color: #4CAF50; color:white'> Petugas Edit </th>
 			<th style='background-color: #4CAF50; color:white'> Waktu Edit </th>	
 
 <?php
@@ -317,7 +316,7 @@ if ($kas_mutasi['kas_mutasi_edit'] > 0) {
             }
           },
             "fnCreatedRow": function( nRow, aData, iDataIndex ) {
-              $(nRow).attr('class','tr-id-'+aData[11]+'');
+              $(nRow).attr('class','tr-id-'+aData[12]+'');
             },
         });
       });
