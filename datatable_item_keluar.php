@@ -4,39 +4,40 @@ include 'db.php';
 /* Database connection end */
 include 'sanitasi.php';
 
-$pilih_akses_stok_opname = $db->query("SELECT * FROM otoritas_stok_opname WHERE id_otoritas = '$_SESSION[otoritas_id]'");
-$stok_opname = mysqli_fetch_array($pilih_akses_stok_opname);
+$pilih_akses_item_masuk = $db->query("SELECT * FROM otoritas_item_keluar WHERE id_otoritas = '$_SESSION[otoritas_id]'");
+$item_masuk = mysqli_fetch_array($pilih_akses_item_masuk);
 
 // storing  request (ie, get/post) global array to a variable  
 $requestData= $_REQUEST;
-
 
 $columns = array( 
 // datatable column index  => database column name
 	0 =>'no_faktur', 
 	1 => 'tanggal',
 	2 => 'jam',
-	3 => 'status',
-	4 => 'total_selisih',
-  	5 => 'user',
-	6 => 'id'
+	3 => 'user',
+	4 => 'user_edit',
+	5 => 'tanggal_edit',
+  6 => 'keterangan',
+  7 => 'total',
+  8 => 'id'
 );
 
 // getting total number records without any search
 $sql = "SELECT * ";
-$sql.=" FROM stok_opname";
-$query=mysqli_query($conn, $sql) or die("datatable_stok_opname.php: get employees");
+$sql.=" FROM item_keluar";
+$query=mysqli_query($conn, $sql) or die("datatable_item_keluar.php: get employees");
 $totalData = mysqli_num_rows($query);
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
 
 $sql = "SELECT * ";
-$sql.=" FROM stok_opname WHERE 1=1";
+$sql.=" FROM item_keluar WHERE 1=1";
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
-	$sql.=" AND ( no_faktur LIKE '".$requestData['search']['value']."%' ";    
-	$sql.=" OR tanggal LIKE '".$requestData['search']['value']."%' )";
+	$sql.=" AND ( nama LIKE '".$requestData['search']['value']."%' ";    
+	$sql.=" OR no_telp LIKE '".$requestData['search']['value']."%' )";
 }
-$query=mysqli_query($conn, $sql) or die("datatable_stok_opname.php: get employees");
+$query=mysqli_query($conn, $sql) or die("datatable_item_keluar.php: get employees");
 $totalFiltered = mysqli_num_rows($query); // when there is a search parameter then we have to modify total number filtered rows as per search result. 
 $sql.=" ORDER BY ". $columns[$requestData['order'][0]['column']]."   ".$requestData['order'][0]['dir']."  LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
 /* $requestData['order'][0]['column'] contains colmun index, $requestData['order'][0]['dir'] contains order such as asc/desc  */	
@@ -46,32 +47,25 @@ $data = array();
 while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 	$nestedData=array(); 
 
-	$nestedData[] = $row["no_faktur"];
-	$nestedData[] = $row["tanggal"];
-	$nestedData[] = $row["jam"];
-  $nestedData[] = $row["status"];
-  $nestedData[] = $row["total_selisih"];
-  $nestedData[] = $row["user"];
+    	$nestedData[] = $row['no_faktur'];
+      $nestedData[] = $row['tanggal'];
+      $nestedData[] = $row['jam'];
+      $nestedData[] = $row['user'];
+      $nestedData[] = $row['user_edit'];
+      $nestedData[] = $row['tanggal_edit'];
+      $nestedData[] = $row['keterangan'];
+      $nestedData[] = rp($row['total']);
 
-  $nestedData[] = "<button class='btn btn-info detail' no_faktur='". $row['no_faktur'] ."' ><span class='glyphicon glyphicon-th-list'></span> Detail </button>";
+      $nestedData[] = "<button class='btn btn-info detail' no_faktur='". $row['no_faktur'] ."' ><span class='glyphicon glyphicon-th-list'></span> Detail </button>";
 
-  if ($stok_opname['stok_opname_edit'] > 0) {
-      $nestedData[] = "<a href='proses_edit_stok_opname.php?no_faktur=". $row['no_faktur']."&tanggal=". $row['tanggal']."' class='btn btn-success'> <span class='glyphicon glyphicon-edit'></span> Edit </a>";
-  }
+if ($item_masuk['item_keluar_edit'] > 0) {
+        $nestedData[] = "<a href='proses_edit_item_keluar.php?no_faktur=". $row['no_faktur']."' class='btn btn-success'> Edit  </a>";
+       }
 
-  if ($stok_opname['stok_opname_hapus'] > 0) {
+if ($item_masuk['item_keluar_hapus'] > 0) {
 
-      $pilih = $db->query("SELECT no_faktur FROM hpp_masuk WHERE no_faktur = '$row[no_faktur]' AND sisa != jumlah_kuantitas");
-      $row_alert = mysqli_num_rows($pilih);
-
-        
-        if ($row_alert > 0) {
-        $nestedData[] = "<button class='btn btn-danger btn-alert' data-id='". $row['id'] ."' data-faktur='". $row['no_faktur'] ."'> <span class='glyphicon glyphicon-trash'> </span> Hapus </button>";
-        } 
-        else {
-          $nestedData[] = "<button class='btn btn-danger btn-hapus' data-id='". $row['id'] ."'  data-faktur='". $row['no_faktur'] ."'> <span class='glyphicon glyphicon-trash'> </span> Hapus </button>";
-        }
-  }
+      $nestedData[] = "<button class='btn btn-danger btn-hapus' data-item='". $row['no_faktur'] ."' data-id='". $row['id'] ."'> <span class='glyphicon glyphicon-trash'> </span> Hapus </button>"; 
+       } 
 		
 	$nestedData[] = $row["id"];
 	$data[] = $nestedData;
