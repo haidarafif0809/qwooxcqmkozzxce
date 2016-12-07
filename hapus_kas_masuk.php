@@ -8,6 +8,7 @@ include 'db.php';
 	 $no_faktur = $_POST['no_faktur'];
 	 $user = $_SESSION['user_name'];
 
+
 //INSERT HISTORY KAS MASUK
 $kas_masuk = $db->query("SELECT * FROM kas_masuk WHERE no_faktur = '$no_faktur'");
 $data_kas_masuk = mysqli_fetch_array($kas_masuk);

@@ -19,7 +19,6 @@ $columns = array(
 );
 
 // getting total number records without any search
-
 $sql = "SELECT * ";
 $sql.= "FROM kas_masuk ";
 $query=mysqli_query($conn, $sql) or die("1.php: get employees");

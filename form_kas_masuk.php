@@ -316,7 +316,6 @@ mysqli_close($db);
 
 <br>
 
-
 <div class="row">
 
 <div class="form-group col-sm-6" id="col_sm_6">

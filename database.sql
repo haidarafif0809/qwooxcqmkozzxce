@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 05 Des 2016 pada 10.09
+-- Generation Time: 07 Des 2016 pada 03.10
 -- Versi Server: 5.7.14
--- PHP Version: 7.0.10
+-- PHP Version: 5.6.25
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -868,6 +868,13 @@ CREATE TABLE `detail_kas_masuk` (
   `jam` time NOT NULL,
   `user` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data untuk tabel `detail_kas_masuk`
+--
+
+INSERT INTO `detail_kas_masuk` (`id`, `no_faktur`, `keterangan`, `dari_akun`, `ke_akun`, `jumlah`, `tanggal`, `jam`, `user`) VALUES
+(1, '1/KM/12/16', 'on', '4-1100', '1-1119', 50000, '2016-12-07', '09:28:09', 'TEAM #3');
 
 --
 -- Trigger `detail_kas_masuk`
@@ -2022,7 +2029,7 @@ CREATE TABLE `history_detail_kas_masuk` (
   `no_faktur` varchar(100) NOT NULL,
   `keterangan` varchar(100) DEFAULT NULL,
   `dari_akun` varchar(100) NOT NULL,
-  `ke_akun` varchar(100) NOT NULL,
+  `ke_akun` varchar(100) DEFAULT NULL,
   `jumlah` int(100) NOT NULL,
   `tanggal` date NOT NULL,
   `jam` time NOT NULL,
@@ -2041,7 +2048,10 @@ INSERT INTO `history_detail_kas_masuk` (`id`, `no_faktur`, `keterangan`, `dari_a
 (4, '1/KM/11/16', 'ass', '1-1230', '', 5, '2016-11-21', '15:14:31', 'admin', 'admin'),
 (5, '1/KM/11/16', '', '3-1000', '', 5000, '2016-11-23', '14:00:17', 'admin', 'admin'),
 (6, '1/KM/11/16', '', '3-1000', '', 5000, '2016-11-23', '14:07:43', 'admin', 'admin'),
-(7, '1/KM/11/16', '', '3-1000', '', 100, '2016-11-23', '14:09:46', 'admin', 'admin');
+(7, '1/KM/11/16', '', '3-1000', '', 100, '2016-11-23', '14:09:46', 'admin', 'admin'),
+(8, '3/KM/12/16', '', '3-1000', NULL, 10000, '2016-12-07', '09:46:47', 'TEAM #3', 'admin'),
+(9, '3/KM/12/16', '', '5-1100', NULL, 500, '2016-12-07', '09:47:04', 'admin', 'admin'),
+(10, '2/KM/12/16', '', '5-1300', NULL, 150000, '2016-12-07', '09:32:07', 'TEAM #3', 'admin');
 
 --
 -- Trigger `history_detail_kas_masuk`
@@ -2635,21 +2645,18 @@ CREATE TABLE `history_kas_masuk` (
   `tanggal` date NOT NULL,
   `jam` time NOT NULL,
   `user` varchar(100) NOT NULL,
-  `user_hapus` varchar(100) NOT NULL
+  `user_hapus` varchar(100) NOT NULL,
+  `user_edit` varchar(100) DEFAULT NULL,
+  `waktu_edit` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data untuk tabel `history_kas_masuk`
 --
 
-INSERT INTO `history_kas_masuk` (`id`, `no_faktur`, `keterangan`, `ke_akun`, `jumlah`, `tanggal`, `jam`, `user`, `user_hapus`) VALUES
-(1, '2/KM/08/16', '', 'K/001', 5000, '2016-08-27', '14:14:01', 'admin', 'admin'),
-(2, '2/KM/09/16', '', 'K/001', 1000, '2016-09-08', '15:06:54', 'team3', 'team3'),
-(3, '2/KM/09/16', '', '1-1119', 5000, '2016-09-10', '10:16:09', 'team3', 'team3'),
-(4, '1/KM/11/16', '', '1-1120', 5, '2016-11-21', '15:14:34', 'admin', 'admin'),
-(5, '1/KM/11/16', '', '1-1119', 5000, '2016-11-23', '14:00:18', 'admin', 'admin'),
-(6, '1/KM/11/16', '', '1-1119', 5000, '2016-11-23', '14:07:45', 'admin', 'admin'),
-(7, '1/KM/11/16', '', '1-1119', 100, '2016-11-23', '14:09:49', 'admin', 'admin');
+INSERT INTO `history_kas_masuk` (`id`, `no_faktur`, `keterangan`, `ke_akun`, `jumlah`, `tanggal`, `jam`, `user`, `user_hapus`, `user_edit`, `waktu_edit`) VALUES
+(8, '3/KM/12/16', '', '1-1119', 10500, '2016-12-07', '09:32:56', 'admin', 'admin', 'admin', '2016-12-07 09:47:06'),
+(9, '2/KM/12/16', '', '1-1119', 150000, '2016-12-07', '09:32:13', 'admin', 'admin', '', '0000-00-00 00:00:00');
 
 --
 -- Trigger `history_kas_masuk`
@@ -14082,7 +14089,9 @@ INSERT INTO `jurnal_trans` (`id`, `nomor_jurnal`, `waktu_jurnal`, `keterangan_ju
 (179, '14/JR/12/16', '2016-12-05 17:02:17', 'Penjualan Rawat Jalan Tunai - adinda', '1-1120', 17990, 0, 'Penjualan', '2/JL/12/16', 1, 'TEAM #3', NULL),
 (180, '15/JR/12/16', '2016-12-05 17:02:17', 'Penjualan Rawat Jalan Tunai - adinda', '4-1100', 0, 20900, 'Penjualan', '2/JL/12/16', 1, 'TEAM #3', NULL),
 (181, '16/JR/12/16', '2016-12-05 17:02:17', 'Penjualan Rawat Jalan Tunai - adinda', '2-4110', 0, 0, 'Penjualan', '2/JL/12/16', 1, 'TEAM #3', NULL),
-(182, '17/JR/12/16', '2016-12-05 17:02:17', 'Penjualan Rawat Jalan Tunai - adinda', '4-1500', 2910, 0, 'Penjualan', '2/JL/12/16', 1, 'TEAM #3', NULL);
+(182, '17/JR/12/16', '2016-12-05 17:02:17', 'Penjualan Rawat Jalan Tunai - adinda', '4-1500', 2910, 0, 'Penjualan', '2/JL/12/16', 1, 'TEAM #3', NULL),
+(190, '18/JR/12/16', '2016-12-07 09:28:12', 'Transaksi Kas Masuk ke ', '1-1119', 50000, 0, 'Kas Masuk', '1/KM/12/16', 1, 'admin', NULL),
+(191, '19/JR/12/16', '2016-12-07 09:28:12', 'Transaksi Kas Masuk dari Pendapatan Jual', '4-1100', 0, 50000, 'Kas Masuk', '1/KM/12/16', 1, 'admin', NULL);
 
 -- --------------------------------------------------------
 
@@ -14155,9 +14164,17 @@ CREATE TABLE `kas_masuk` (
   `tanggal` date NOT NULL,
   `jam` time NOT NULL,
   `user` varchar(100) NOT NULL,
-  `status_upload` varchar(25) NOT NULL,
-  `waktu_edit` datetime DEFAULT NULL
+  `status_upload` varchar(25) DEFAULT NULL,
+  `waktu_edit` datetime DEFAULT NULL,
+  `user_edit` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data untuk tabel `kas_masuk`
+--
+
+INSERT INTO `kas_masuk` (`id`, `no_faktur`, `keterangan`, `ke_akun`, `jumlah`, `tanggal`, `jam`, `user`, `status_upload`, `waktu_edit`, `user_edit`) VALUES
+(1, '1/KM/12/16', '', '1-1119', 50000, '2016-12-07', '09:28:12', 'admin', NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -16243,8 +16260,8 @@ CREATE TABLE `tbs_kas_keluar` (
 
 CREATE TABLE `tbs_kas_masuk` (
   `id` int(100) NOT NULL,
-  `session_id` varchar(100) NOT NULL,
-  `no_faktur` varchar(100) NOT NULL,
+  `session_id` varchar(100) DEFAULT NULL,
+  `no_faktur` varchar(100) DEFAULT NULL,
   `keterangan` varchar(100) DEFAULT NULL,
   `dari_akun` varchar(100) NOT NULL,
   `ke_akun` varchar(100) NOT NULL,
@@ -16253,6 +16270,13 @@ CREATE TABLE `tbs_kas_masuk` (
   `jam` time NOT NULL,
   `user` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data untuk tabel `tbs_kas_masuk`
+--
+
+INSERT INTO `tbs_kas_masuk` (`id`, `session_id`, `no_faktur`, `keterangan`, `dari_akun`, `ke_akun`, `jumlah`, `tanggal`, `jam`, `user`) VALUES
+(6, NULL, '1/KM/12/16', 'on', '4-1100', '1-1119', 50000, '2016-12-07', '09:33:10', 'TEAM #3');
 
 -- --------------------------------------------------------
 
@@ -17433,7 +17457,7 @@ ALTER TABLE `detail_kas_keluar`
 -- AUTO_INCREMENT for table `detail_kas_masuk`
 --
 ALTER TABLE `detail_kas_masuk`
-  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT for table `detail_operasi`
 --
@@ -17533,7 +17557,7 @@ ALTER TABLE `history_detail_kas_keluar`
 -- AUTO_INCREMENT for table `history_detail_kas_masuk`
 --
 ALTER TABLE `history_detail_kas_masuk`
-  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 --
 -- AUTO_INCREMENT for table `history_detail_pembayaran_hutang`
 --
@@ -17593,7 +17617,7 @@ ALTER TABLE `history_kas_keluar`
 -- AUTO_INCREMENT for table `history_kas_masuk`
 --
 ALTER TABLE `history_kas_masuk`
-  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 --
 -- AUTO_INCREMENT for table `history_kas_mutasi`
 --
@@ -17688,7 +17712,7 @@ ALTER TABLE `jenis`
 -- AUTO_INCREMENT for table `jurnal_trans`
 --
 ALTER TABLE `jurnal_trans`
-  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=190;
+  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=204;
 --
 -- AUTO_INCREMENT for table `kartu_stok`
 --
@@ -17708,7 +17732,7 @@ ALTER TABLE `kas_keluar`
 -- AUTO_INCREMENT for table `kas_masuk`
 --
 ALTER TABLE `kas_masuk`
-  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `kas_mutasi`
 --
@@ -17973,7 +17997,7 @@ ALTER TABLE `tbs_kas_keluar`
 -- AUTO_INCREMENT for table `tbs_kas_masuk`
 --
 ALTER TABLE `tbs_kas_masuk`
-  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 --
 -- AUTO_INCREMENT for table `tbs_operasi`
 --
