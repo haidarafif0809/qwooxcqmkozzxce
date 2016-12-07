@@ -7,8 +7,6 @@ $no_faktur_pembayaran = $_POST['no_faktur_pembayaran'];
 
 $query = $db->query("SELECT * FROM detail_pembayaran_hutang WHERE no_faktur_pembayaran = '$no_faktur_pembayaran'");
 
-
-
 ?>
 					<div class="container">
 					
@@ -19,7 +17,7 @@ $query = $db->query("SELECT * FROM detail_pembayaran_hutang WHERE no_faktur_pemb
 					<th> No Faktur Pembelian </th>
 					<th> Suplier</th>
 					<th> Tanggal </th>
-					<th> Tanggal Jatuh Tempo </th>
+					<th> Jatuh Tempo </th>
 					<th> Kredit </th>
 					<th> Potongan </th>
 					<th> Total </th>
@@ -63,3 +61,10 @@ $query = $db->query("SELECT * FROM detail_pembayaran_hutang WHERE no_faktur_pemb
 					</table>
 					</div>
 					</div>
+<script>
+		
+		// untk menampilkan datatable atau filter seacrh
+		$(document).ready(function(){
+		$('#tableuser').DataTable({"ordering":false});
+		});
+</script>
