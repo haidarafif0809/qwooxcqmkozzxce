@@ -312,7 +312,7 @@ mysqli_close($db);
 
   </table>
   </div>
-        </span>
+</span>
 
 <br>
 
@@ -321,7 +321,7 @@ mysqli_close($db);
 
 <div class="form-group col-sm-6" id="col_sm_6">
     <b><label> Total Akhir </label><br></b>
-    <input style="height:15px;font-size: 25px" type="text" name="jumlah" id="jumlahtotal" readonly="" placeholder="Total" class="form-control">
+    <input style="height:17px;font-size: 20px" type="text" name="jumlah" id="jumlahtotal" readonly="" placeholder="Total" class="form-control">
 </div>
 </div> <!-- tag penutup div row-->
 

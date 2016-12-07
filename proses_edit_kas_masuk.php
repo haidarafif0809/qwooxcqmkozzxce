@@ -16,7 +16,7 @@ $waktu = date('Y-m-d H:i:s');
 $query5 = $db->query("DELETE FROM detail_kas_masuk WHERE no_faktur = '$no_faktur'");  
 
 
-    $perintah = $db->prepare("UPDATE kas_masuk SET no_faktur = ?, keterangan = ?, ke_akun = ?, jumlah = ?, tanggal = ?, jam = ?, user = ?, waktu_edit = ? WHERE no_faktur = ?");
+    $perintah = $db->prepare("UPDATE kas_masuk SET no_faktur = ?, keterangan = ?, ke_akun = ?, jumlah = ?, tanggal = ?, jam = ?, user_edit = ?, waktu_edit = ? WHERE no_faktur = ?");
 
     $perintah->bind_param("sssisssss",
         $no_faktur, $keterangan, $ke_akun , $jumlah, $tanggal, $jam, $user, $waktu,$no_faktur );
