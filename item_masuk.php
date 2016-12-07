@@ -291,12 +291,7 @@ mysqli_close($db);
 		
 
 		<!--menampilkan detail penjualan-->
-		<script>
-		
-		$(document).ready(function(){
-		$('#tableuser').DataTable();
-		});
-		
+<script type="text/javascript">
 		
 		$(".detail").click(function(){
 		var no_faktur = $(this).attr('no_faktur');
