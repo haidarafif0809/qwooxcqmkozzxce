@@ -13,12 +13,12 @@ $columns = array(
 	3 => 'tanggal',
 	4 => 'jam',
 	5 => 'user',
-	5 => 'waktu_edit',
-	6 => 'id'
+	6 => 'user_edit',
+	7 => 'waktu_edit',
+	8 => 'id'
 );
 
 // getting total number records without any search
-
 $sql = "SELECT * ";
 $sql.= "FROM kas_masuk ";
 $query=mysqli_query($conn, $sql) or die("1.php: get employees");
@@ -46,10 +46,14 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 
 	$nestedData[] = $row["no_faktur"];
 	$nestedData[] = $row["ke_akun"];
-	$nestedData[] = $row["jumlah"];	
+	$nestedData[] = rp($row["jumlah"]);	
 	$nestedData[] = $row["tanggal"];
 	$nestedData[] = $row["jam"];
 	$nestedData[] = $row["user"];
+<<<<<<< HEAD
+=======
+	$nestedData[] = $row["user_edit"];
+>>>>>>> d37bc89fd40d65e5b73f86154045c63f9cd06e10
 	$nestedData[] = $row["waktu_edit"];
 
 $pilih_akses_kas_masuk = $db->query("SELECT * FROM otoritas_kas_masuk WHERE id_otoritas = '$_SESSION[otoritas_id]'");

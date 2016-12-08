@@ -64,3 +64,12 @@ mysqli_close($db);
 </div>
 
 </div><!--end of container-->
+
+<script>
+
+// untk menampilkan datatable atau filter seacrh
+$(document).ready(function(){
+    $("#tableuser").DataTable();
+});
+
+</script>

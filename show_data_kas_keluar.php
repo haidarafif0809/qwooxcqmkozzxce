@@ -14,18 +14,19 @@ $columns = array(
 	3 => 'tanggal',
 	4 => 'jam',
 	5 => 'user',
-	6 => 'waktu_edit',
-	7=> 'id'
+	6 => 'user_edit',
+	7 => 'waktu_edit',
+	8=> 'id'
 );
 
 // getting total number records without any search
-$sql = "SELECT km.id, km.no_faktur,km.waktu_edit, km.keterangan, km.dari_akun, km.jumlah, km.tanggal, km.jam, km.user, da.nama_daftar_akun";
+$sql = "SELECT km.user_edit,km.id, km.no_faktur,km.waktu_edit, km.keterangan, km.dari_akun, km.jumlah, km.tanggal, km.jam, km.user, da.nama_daftar_akun";
 $sql.=" FROM kas_keluar km INNER JOIN daftar_akun da ON km.dari_akun = da.kode_daftar_akun";
 $query=mysqli_query($conn, $sql) or die("show_data_kkas_keluar.php: get employees");
 $totalData = mysqli_num_rows($query);
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
-$sql = "SELECT km.id, km.no_faktur, km.waktu_edit, km.keterangan, km.dari_akun, km.jumlah, km.tanggal, km.jam, km.user, da.nama_daftar_akun";
+$sql = "SELECT km.user_edit,km.id, km.no_faktur, km.waktu_edit, km.keterangan, km.dari_akun, km.jumlah, km.tanggal, km.jam, km.user, da.nama_daftar_akun";
 $sql.=" FROM kas_keluar km INNER JOIN daftar_akun da ON km.dari_akun = da.kode_daftar_akun WHERE 1=1";
 
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
@@ -44,11 +45,12 @@ while($row=mysqli_fetch_array($query) ) {  // preparing an array
 	$nestedData=array();
 
 	$nestedData[] = $row["no_faktur"];
-	$nestedData[] = $row["dari_akun"];
-	$nestedData[] = $row["jumlah"];
+	$nestedData[] = $row["nama_daftar_akun"];
+	$nestedData[] = rp($row["jumlah"]);
 	$nestedData[] = $row["tanggal"];
 	$nestedData[] = $row["jam"];
 	$nestedData[] = $row["user"];
+	$nestedData[] = $row["user_edit"];
 	$nestedData[] = $row["waktu_edit"];
 	
 $pilih_akses_kas_keluar = $db->query("SELECT * FROM otoritas_kas_keluar WHERE id_otoritas = '$_SESSION[otoritas_id]'");

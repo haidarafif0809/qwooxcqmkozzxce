@@ -7,7 +7,7 @@ include 'db.php';
 //menampilkan seluruh data yang ada pada tabel pembelian dalan DB
 $session_id = session_id();
 
-$perintah = $db->query("SELECT km.id, km.no_faktur, km.keterangan, km.ke_akun, km.dari_akun, km.jumlah, km.tanggal, km.jam, km.user, da.nama_daftar_akun FROM kas_mutasi km INNER JOIN daftar_akun da ON km.ke_akun = da.kode_daftar_akun");
+$perintah = $db->query("SELECT km.user_edit,km.waktu_edit,km.id, km.no_faktur, km.keterangan, km.ke_akun, km.dari_akun, km.jumlah, km.tanggal, km.jam, km.user, da.nama_daftar_akun FROM kas_mutasi km INNER JOIN daftar_akun da ON km.ke_akun = da.kode_daftar_akun");
  
  
 
@@ -82,6 +82,8 @@ $kas_mutasi = mysqli_fetch_array($pilih_akses_kas_mutasi);
 			<th style='background-color: #4CAF50; color:white'> Tanggal </th>
 			<th style='background-color: #4CAF50; color:white'> Jam </th>
 			<th style='background-color: #4CAF50; color:white'> User </th>	
+			<th style='background-color: #4CAF50; color:white'> Petugas Edit </th>
+			<th style='background-color: #4CAF50; color:white'> Waktu Edit </th>
 
 <?php
 if ($kas_mutasi['kas_mutasi_hapus'] > 0) {
@@ -96,12 +98,11 @@ if ($kas_mutasi['kas_mutasi_edit'] > 0) {
 			echo "<th style='background-color: #4CAF50; color:white'> Edit </th>";
 }
 ?>		
-			
-			
-			
-		</thead>
-		
-		<tbody>
+
+	
+	</thead>
+	<tbody>
+
 		<?php
 
 			//menyimpan data sementara yang ada pada $perintah
@@ -122,7 +123,9 @@ $dari_akun = $data['nama_daftar_akun'];
 			<td>". rp($data1['jumlah']) ."</td>
 			<td>". $data1['tanggal'] ."</td>
 			<td>". $data1['jam'] ."</td>
-			<td>". $data1['user'] ."</td>";
+			<td>". $data1['user'] ."</td>
+			<td>". $data1['user_edit'] ."</td>
+			<td>". $data1['waktu_edit'] ."</td>";
 			
 if ($kas_mutasi['kas_mutasi_hapus'] > 0) {
 

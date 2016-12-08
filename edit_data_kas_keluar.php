@@ -686,7 +686,21 @@ $("#dariakun").val('');
                                     var subtotal = parseInt(total_lama,10) - parseInt(jumlah_lama,10) + parseInt(input_jumlah,10);
                                     
                                     
+ //CEK DAHULU (START)
+$.post("cek_kas_keluar_over.php",{id:id, input_jumlah:input_jumlah,jenis_edit:"jumlah"},function(data){
+
+  if (data < 0)
+  {
+
+        alert ("Jumlah Kas Tidak Mencukupi !");
+        $("#input-jumlah-"+id+"").val(jumlah_lama);
+        $("#text-jumlah-"+id+"").text(jumlah_lama);
+        $("#text-jumlah-"+id+"").show();
+        $("#input-jumlah-"+id+"").attr("type", "hidden");
                                     
+   } 
+   else
+   {
                                     $.post("update_edit_tbs_kas_keluar.php",{id:id, input_jumlah:input_jumlah,jenis_edit:"jumlah"},function(data){
                                     
 
@@ -699,8 +713,8 @@ $("#dariakun").val('');
                                     
                                     });
                                     
-                                    
-                                    
+      }                              
+                              });      
                                     });
 
                                     

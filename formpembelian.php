@@ -1,7 +1,5 @@
 <?php include 'session_login.php';
-
-    
-    //memasukkan file session login, header, navbar, db
+//memasukkan file session login, header, navbar, db
     include 'header.php';
     include 'navbar.php';
     include 'db.php';
@@ -181,7 +179,7 @@ $no_faktur = $nomor."/JL/".$data_bulan_terakhir."/".$tahun_terakhir;
         <div class="modal-content">
         <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Data Barang</h4>
+        <h4 class="modal-title"><center><b>Data Barang</b></center></h4>
         </div>
         <div class="modal-body"> <!--membuat kerangka untuk tempat tabel -->
         
@@ -201,7 +199,7 @@ $no_faktur = $nomor."/JL/".$data_bulan_terakhir."/".$tahun_terakhir;
         <!-- tag pembuka modal footer -->
         <div class="modal-footer">
        
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+       <center><b> <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button></b></center>
         </div> <!--tag penutup moal footer -->
         </div>
         
@@ -725,10 +723,10 @@ $(document).ready(function(){
   alert("Kode Barang Harus Diisi");
   }
     else if (kode_gudang == ''){
-  alert("Kode Gudang Harus Diisi");
+  alert("Gudang Harus Anda Pilih Terlebih Dahulu !!");
   }
-    else if (ppn == ''){
-  alert("PPN Harus Diisi");
+  else if (ppn == ''){
+  alert("PPN Harus Anda Pilih Terlebih Dahulu !!");
   }    else if (tax > 100){
   alert("Tax Tidak Boleh Lebih Dari 100%");
   }
@@ -1721,7 +1719,7 @@ $(document).ready(function(){
           alert('Satuan Yang Anda Pilih Tidak Tersedia Untuk Produk Ini !');
           $("#satuan_konversi").val(prev);
           $("#harga_produk").val('');
-          $("#harga_baru").val('');
+          $("#harga_baru").val(harga_lama);
 
         }
 

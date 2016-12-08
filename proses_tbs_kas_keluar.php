@@ -210,23 +210,40 @@ $(document).ready(function(){
                                     }
                                     
                                     var subtotal = parseInt(total_lama,10) - parseInt(jumlah_lama,10) + parseInt(input_jumlah,10);
+                    //CEK DAHULU (START)
+$.post("cek_kas_keluar_over.php",{id:id, input_jumlah:input_jumlah,jenis_edit:"jumlah"},function(data){
+
+  if (data < 0)
+  {
+
+        alert ("Jumlah Kas Tidak Mencukupi !");
+        $("#input-jumlah-"+id+"").val(jumlah_lama);
+        $("#text-jumlah-"+id+"").text(jumlah_lama);
+        $("#text-jumlah-"+id+"").show();
+        $("#input-jumlah-"+id+"").attr("type", "hidden");
                                     
+   } 
+   else
+   {
+
+$.post("update_tbs_kas_keluar.php",{id:id,input_jumlah:input_jumlah,jenis_edit:"jumlah"},function(data){
+                       
+  $("#input-jumlah-"+id).attr("data-jumlah", input_jumlah);
+  $("#btn-hapus-"+id).attr("data-jumlah", input_jumlah);
+  $("#text-jumlah-"+id+"").show();
+  $("#text-jumlah-"+id+"").text(tandaPemisahTitik(input_jumlah));
+  $("#jumlahtotal").val(tandaPemisahTitik(subtotal));
+  $("#input-jumlah-"+id+"").attr("type", "hidden");           
+                                  
+  });
+
+
+   }
+  
+
+});
+//END CEK (EDING)  
+
+});
                                     
-                                    
-                                    $.post("update_tbs_kas_keluar.php",{id:id, input_jumlah:input_jumlah,jenis_edit:"jumlah"},function(data){
-                                    
-                                    $("#input-jumlah-"+id).attr("data-jumlah", input_jumlah);
-                                    $("#btn-hapus-"+id).attr("data-jumlah", input_jumlah);
-                                    $("#text-jumlah-"+id+"").show();
-                                    $("#text-jumlah-"+id+"").text(tandaPemisahTitik(input_jumlah));
-                                    $("#jumlahtotal").val(tandaPemisahTitik(subtotal));
-                                    $("#jumlah").val(tandaPemisahTitik(subtotal));
-                                    $("#input-jumlah-"+id+"").attr("type", "hidden");           
-                                    
-                                    });
-                                    
-                                    
-                                    
-                                    });
-                                    
-                                    </script>
+</script>
