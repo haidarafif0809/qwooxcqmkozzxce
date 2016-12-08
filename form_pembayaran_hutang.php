@@ -229,6 +229,23 @@ $query = $db->query("SELECT * FROM pembayaran_hutang ORDER BY id DESC");
 <div class="row">
   <div class="col-sm-8">
 
+  <div class="form-group col-sm-2">
+          <label> Suplier </label>
+          <br>
+          <select type="text" name="suplier" id="nama_suplier" class="form-control chosen" required="">
+          <option value="">-Silakan Pilih-</option>
+          
+          <?php 
+          include 'db.php';
+          $take = $db->query("SELECT id,nama FROM suplier");
+          while($data = mysqli_fetch_array($take))
+          {
+          echo "<option value='".$data['id'] ."'>".$data['nama'] ."</option>";
+          }
+          ?>
+          </select>
+  </div>
+
 <div class="form-group col-sm-2">
   <input type="text" class="form-control" name="no_faktur_pembelian" id="nomorfakturbeli" placeholder="Nomor Faktur Beli" readonly="">
   </div>
@@ -261,8 +278,8 @@ $query = $db->query("SELECT * FROM pembayaran_hutang ORDER BY id DESC");
 
     <input value="<?php echo $data01['id']; ?>" type="hidden" name="suplier" id="n_suplier" class="form-control" required="" >
   </div>
-
-  <div class="form-group col-sm-3">
+<br>
+  <div class="form-group col-sm-2">
        <button type="submit" id="submit_tambah" class="btn btn-success"> <i class='fa fa-plus'> </i> Tambah </button>
 </div>
 
@@ -340,25 +357,7 @@ $query = $db->query("SELECT * FROM pembayaran_hutang ORDER BY id DESC");
 
   <div class="col-sm-4">
 <div class="card card-block">
-  <div class="row 1">
-
-          <div class="form-group col-sm-6">
-          <label> Suplier </label>
-          <br>
-          <select type="text" name="suplier" id="nama_suplier" class="form-control chosen" required="">
-          <option value="">-Silakan Pilih-</option>
-          
-          <?php 
-          include 'db.php';
-          $take = $db->query("SELECT id,nama FROM suplier");
-          while($data = mysqli_fetch_array($take))
-          {
-          echo "<option value='".$data['id'] ."'>".$data['nama'] ."</option>";
-          }
-          ?>
-          </select>
-          </div>
-          
+  <div class="row 1">          
           <div class="form-group col-sm-6">
           <label> Tanggal </label><br>
           <input type="text" name="tanggal" id="tanggal" placeholder="Tanggal" style="height: 20px" value="<?php echo date("Y/m/d"); ?>" class="form-control" required="" >
@@ -373,12 +372,6 @@ $query = $db->query("SELECT * FROM pembayaran_hutang ORDER BY id DESC");
 
 
         <div class="row 2">
-          <div class="form-group col-sm-6">
-            <div class="form-group">
-              <label> <b> Total Bayar </b> </label><br>
-              <b><input style="font-size:20px" type="text" name="total_bayar" id="totalbayar" placeholder="Total Bayar" class="form-control" readonly="" required=""></b>
-            </div>
-          </div>
 
           <div class="form-group col-sm-6">
             <label> Cara Bayar </label><br>
@@ -396,7 +389,15 @@ $query = $db->query("SELECT * FROM pembayaran_hutang ORDER BY id DESC");
                ?>
             </select>
           </div>
-        </div>
+          
+          <div class="form-group col-sm-6">
+            <div class="form-group">
+              <label> <b> Total Bayar </b> </label><br>
+              <b><input style="font-size:20px" type="text" name="total_bayar" id="totalbayar" placeholder="Total Bayar" class="form-control" readonly="" required=""></b>
+            </div>
+          </div>
+
+        </div><!--/div class="row 2"-->
 
           <input type="hidden" class="form-control" name="potongan1" id="potongan1" placeholder="Potongan 1" autocomplete="off">
           <input type="hidden" class="form-control" name="faktur" id="faktur" placeholder="Faktur" autocomplete="off">
@@ -589,9 +590,6 @@ $("#nomorfaktur_pembayaran").val(data);
 
 //menyembunyikan notif berhasil
      $("#alert_berhasil").hide();
-
-
-
 
       var suplier = $("#nama_suplier").val();
       if (suplier == "")
