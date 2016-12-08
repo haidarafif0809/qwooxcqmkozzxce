@@ -136,7 +136,7 @@
 
           <div class="form-group col-sm-3">
           <label> User </label><br>
-          <input style="height:15px" type="text" name="user" id="user" placeholder="Tanggal" value="<?php echo $_SESSION['nama']; ?>" class="form-control" required="" >
+          <input style="height:15px" type="text" name="user" id="user" placeholder="Tanggal" value="<?php echo $_SESSION['nama']; ?>" readonly="" class="form-control" required="" >
           </div>
     
 
@@ -321,7 +321,7 @@ mysqli_close($db);
 
     <div class="form-group col-sm-6" id="col_sm_6">
           <b><label> Total Akhir </label><br></b>
-          <input style="height:15px;font-size: 25px;" type="text" name="jumlah" id="jumlahtotal" readonly="" placeholder="Total" class="form-control">
+          <input style="height:20px;font-size: 25px;" type="text" name="jumlah" id="jumlahtotal" readonly="" placeholder="Total" class="form-control">
     </div> 
 </div> 
 
@@ -609,7 +609,19 @@ alert("Nama Akun Tidak Boleh Sama");
 });
 </script>
 
+<script type="text/javascript">
 
+$(document).ready(function(){
+  var dari_akun = $("#dariakun").val();
+      
+      //metode POST untuk mengirim dari file cek_jumlah_kas.php ke dalam variabel "dari akun"
+      $.post('cek_jumlah_kas.php', {dari_akun: dari_akun}, function(data) {
+        data = data.replace(/\s+/g, '');      
+      $("#jumlah_kas").val(data);
+      });
+  });
+
+</script>
                              
 
 
@@ -681,70 +693,69 @@ alert("Nama Akun Tidak Boleh Sama");
                                   </script>
                                     
                                     
-                                    <script type="text/javascript">
-                                    
-                                    $(".edit-jumlah").dblclick(function(){
-                                    
-                                    var id = $(this).attr("data-id");
-                                    
-                                    var input_jumlah = $("#text-jumlah-"+id+"").text();
-                                    
-                                    $("#text-jumlah-"+id+"").hide();
-                                    
-                                    $("#input-jumlah-"+id+"").attr("type", "text");
-                                    
-                                    });
-                                    
-                                    $(".input-jumlah").blur(function(){
-                                    
-                                    var id = $(this).attr("data-id");
-                                    var input_jumlah = $(this).val();
-                                    
-                                    var jumlah_lama = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($(this).attr("data-jumlah")))));
-                                    var total_lama = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#jumlahtotal").val()))));
-                                    
-                                    
-                                    
-                                    if (total_lama == '') 
-                                    {
-                                    total_lama = 0;
-                                    }
-                                    
-                                    var subtotal = parseInt(total_lama,10) - parseInt(jumlah_lama,10) + parseInt(input_jumlah,10);
-                                    
-                                    
-                                    
-                                    $.post("update_tbs_kas_keluar.php",{id:id, input_jumlah:input_jumlah,jenis_edit:"jumlah"},function(data){
-                                    
-                                    $("#input-jumlah-"+id).attr("data-jumlah", input_jumlah);
-                                    $("#btn-hapus-"+id).attr("data-jumlah", input_jumlah);
-                                    $("#text-jumlah-"+id+"").show();
-                                    $("#text-jumlah-"+id+"").text(tandaPemisahTitik(input_jumlah));
-                                    $("#jumlahtotal").val(tandaPemisahTitik(subtotal));
-                                    $("#jumlah").val(tandaPemisahTitik(subtotal));
-                                    $("#input-jumlah-"+id+"").attr("type", "hidden");           
-                                    
-                                    });
-                                    
-                                    
-                                    
-                                    });
-                                    
-                                    </script>
-
 <script type="text/javascript">
+$(".edit-jumlah").dblclick(function(){
+                                    
+  var id = $(this).attr("data-id");
+  var input_jumlah = $("#text-jumlah-"+id+"").text();
+                                    
+    $("#text-jumlah-"+id+"").hide();
+    $("#input-jumlah-"+id+"").attr("type", "text");
+                                    
+});
+                                    
 
-$(document).ready(function(){
-  var dari_akun = $("#dariakun").val();
-      
-      //metode POST untuk mengirim dari file cek_jumlah_kas.php ke dalam variabel "dari akun"
-      $.post('cek_jumlah_kas.php', {dari_akun: dari_akun}, function(data) {
-        data = data.replace(/\s+/g, '');      
-      $("#jumlah_kas").val(data);
-      });
+$(".input-jumlah").blur(function(){
+                                    
+var id = $(this).attr("data-id");
+var input_jumlah = $(this).val();
+var jumlah_lama = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($(this).attr("data-jumlah")))));
+var total_lama = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#jumlahtotal").val()))));
+
+if (total_lama == '') 
+  {
+    total_lama = 0;
+  }
+                                    
+var subtotal = parseInt(total_lama,10) - parseInt(jumlah_lama,10) + parseInt(input_jumlah,10);
+    
+//CEK DAHULU (START)
+$.post("cek_kas_keluar_over.php",{id:id, input_jumlah:input_jumlah,jenis_edit:"jumlah"},function(data){
+
+  if (data < 0)
+  {
+        alert ("Jumlah Kas Tidak Mencukupi !");
+        $("#input-jumlah-"+id+"").val(jumlah_lama);
+        $("#text-jumlah-"+id+"").text(jumlah_lama);
+        $("#text-jumlah-"+id+"").show();
+        $("#input-jumlah-"+id+"").attr("type", "hidden");
+                                    
+   } 
+   else
+   {
+
+    $.post("update_tbs_kas_keluar.php",{id:id, input_jumlah:input_jumlah,jenis_edit:"jumlah"},function(data){
+                       
+  $("#input-jumlah-"+id).attr("data-jumlah", input_jumlah);
+  $("#btn-hapus-"+id).attr("data-jumlah", input_jumlah);
+  $("#text-jumlah-"+id+"").show();
+  $("#text-jumlah-"+id+"").text(tandaPemisahTitik(input_jumlah));
+  $("#jumlahtotal").val(tandaPemisahTitik(subtotal));
+  $("#input-jumlah-"+id+"").attr("type", "hidden");           
+                                  
   });
 
+
+   }
+
+});
+//END CEK (EDING)                                    
+                                   
+});
+
 </script>
+
+
 
 <script>
       

@@ -83,47 +83,12 @@ $query0 = $db->query("SELECT SUM(total) AS total_penjualan FROM penjualan WHERE 
             $jumlah_kas = $kas_1 - $kas_2;
             $input_jumlah = angkadoang($_POST['input_jumlah']);
 
-             $x = $jumlah_kas - $input_jumlah;
 
 
-if ($input_jumlah > $jumlah_kas){
 
-  echo 'tidak';
+   echo $x = $jumlah_kas - $input_jumlah;
 
-}
 
-else{
-
-     $jenis_edit = stringdoang($_POST['jenis_edit']);
-
-if ($jenis_edit == 'jumlah')
-{
-
-$query = $db->prepare("UPDATE tbs_kas_keluar SET jumlah = ? WHERE id = ?");
-
-$query->bind_param("ii",
-    $input_jumlah, $id);
-
-    $input_jumlah = angkadoang($_POST['input_jumlah']);
-    $id = angkadoang($_POST['id']);
-
-$query->execute();
-
-    if (!$query) 
-    {
-    die('Query Error : '.$db->errno.
-    ' - '.$db->error);
-    }
-    else 
-    {
-    echo '<div class="alert alert-info">
-            <strong>SUKSES!</strong> Pengeluaran Berhasil.
-        </div>';
-    }
-
-}
-
-}
 
     //Untuk Memutuskan Koneksi Ke Database
 mysqli_close($db);   

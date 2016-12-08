@@ -1719,7 +1719,7 @@ $(document).ready(function(){
           alert('Satuan Yang Anda Pilih Tidak Tersedia Untuk Produk Ini !');
           $("#satuan_konversi").val(prev);
           $("#harga_produk").val('');
-          $("#harga_baru").val('');
+          $("#harga_baru").val(harga_lama);
 
         }
 

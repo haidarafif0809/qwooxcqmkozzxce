@@ -16,7 +16,7 @@ $waktu = date('Y-m-d H:i:s');
 $query5 = $db->query("DELETE FROM detail_kas_keluar WHERE no_faktur = '$no_faktur'");  
 
 // buat prepared statements
-    $stmt = $db->prepare("UPDATE kas_keluar SET no_faktur = ?, dari_akun = ?, keterangan = ?, jumlah = ?, tanggal = ?, jam = ?, user = ? , waktu_edit = ? WHERE no_faktur = ?");
+    $stmt = $db->prepare("UPDATE kas_keluar SET no_faktur = ?, dari_akun = ?, keterangan = ?, jumlah = ?, tanggal = ?, jam = ?, user_edit = ? , waktu_edit = ? WHERE no_faktur = ?");
 
 // hubungkan "data" dengan prepared statements
         $stmt->bind_param("sssisssss", 
