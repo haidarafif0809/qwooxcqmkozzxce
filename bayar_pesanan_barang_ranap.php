@@ -64,7 +64,7 @@ $user = $_SESSION['nama'];
 
     $dp = $ambil_tanggal['tunai'];
     $nilai_kredit = $ambil_tanggal['nilai_kredit'];
-  
+   $dokter_penj = $ambil_tanggal['dokter']; 
     $tax = $data_penj['tax']; 
     $potongan_p = $data_penj['potongan']; 
     $biaya_adm = $data_penj['biaya_admin']; 
@@ -435,6 +435,9 @@ Level 7
 <button type="button" id="cari_produk_penjualan" class="btn btn-info " data-toggle="modal" data-target="#myModal"><i class='fa  fa-search'> Cari (F1)</i>  </button> 
 
 
+<a href="form_simpan_rj_penjualan_lab.php?no_rm=<?php echo $no_rm;?>&nama=<?php echo $nama_pelanggan;?>&no_reg=<?php echo $no_reg;?>&dokter=<?php echo $dokter_penj;?>&jenis_penjualan=Simpan Rawat Inap" class="btn btn-default"> <i class="fa fa-flask"></i> Rujuk Lab</a>
+
+
 <!--tampilan modal-->
 <div id="myModal" class="modal fade" role="dialog">
   <div class="modal-dialog modal-lg">
@@ -778,6 +781,11 @@ Laboratorium  </button>
 </span>
  </div>
 
+
+<hr>
+<hr>
+
+
  <div class="collapse" id="collapseExampleLab">
 <span id="tabel-lab">
 <div class="table-responsive">
@@ -1046,7 +1054,7 @@ td>
               ?>
 
           <label> Kredit </label><br>
-          <b><input type="text" name="kredit" id="kredit" class="form-control" value="<?php echo rp($kredit); ?>" style="height:10px;font-size:15px"  readonly=""  ></b>
+          <b><input type="text" name="kredit" id="kredit" class="form-control" value="" style="height:10px;font-size:15px"  readonly=""  ></b>
             </div>
           </div> 
           

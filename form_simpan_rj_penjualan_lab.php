@@ -45,7 +45,6 @@ $jenis_penjualan = '';
 
 
 
-
 $select_penjualan = $db->query("SELECT p.status,p.no_faktur,p.nama,p.kode_gudang,g.nama_gudang FROM penjualan p INNER JOIN gudang g ON p.kode_gudang = g.kode_gudang WHERE p.no_reg = '$no_reg' ");
 
 $kel = mysqli_fetch_array($select_penjualan);
@@ -463,7 +462,7 @@ $data_rj_ri = mysqli_fetch_array($sum_rj_ri);
                 <?php
                
                   //menampilkan semua data yang ada pada tabel tbs penjualan dalam DB
-                $perintah = $db->query("SELECT * FROM tbs_penjualan WHERE  session_id = '$session_id' AND no_reg = '$no_reg' AND lab = 'Laboratorium'");
+                $perintah = $db->query("SELECT * FROM tbs_penjualan WHERE no_faktur = '$kel[no_faktur]'  AND no_reg = '$no_reg' AND lab = 'Laboratorium'");
                             
                 
                 //menyimpan data sementara yang ada pada $perintah  
@@ -960,19 +959,19 @@ $data_rj_ri = mysqli_fetch_array($sum_rj_ri);
 
             <?php else: ?>
 
-              <?php if ($jenis_penjualan == 'Rawat Jalan'): ?>
-                  <button class="btn btn-warning" id="raja"> <i class="fa fa-reply-all"></i> Kembali Rawat Jalan </button>
-              <?php endif ?>
 
-              <?php if ($jenis_penjualan == 'Rawat Inap'): ?>
-                  <button class="btn btn-warning" id="ranap"> <i class="fa fa-reply-all"></i> Kembali Rawat Inap </button>
+               <?php if ($jenis_penjualan == 'Simpan Rawat Jalan'): ?>
+                  <button class="btn btn-warning" id="simpan_raja"> <i class="fa fa-reply-all"></i> Kembali Bayar Rawat Jalan </button>
 
               <?php endif ?> 
 
-               <?php if ($jenis_penjualan == 'Simpan Rawat Jalan'): ?>
-                  <button class="btn btn-warning" id="simpan_raja"> <i class="fa fa-reply-all"></i> Kembali Simpan Rawat Jalan </button>
+
+
+               <?php if ($jenis_penjualan == 'Simpan Rawat Inap'): ?>
+                  <button class="btn btn-warning" id="simpan_ranap"> <i class="fa fa-reply-all"></i> Kembali Bayar Rawat Inap </button>
 
               <?php endif ?>                 
+                
 
             <?php endif ?>
             
@@ -1008,25 +1007,8 @@ $(document).ready(function(){
 
 <script type="text/javascript">
   // Rawat jalan
-  $(document).on('click','#raja',function(e){
-    var no_reg = $("#no_reg").val();
-    var analis = $("#apoteker").val();
 
-    window.location.href="form_penjualan_kasir.php?no_reg="+no_reg+"&analis="+analis+"";
-
-  });
-
-  //Rawat Inap
-   $(document).on('click','#ranap',function(e){
-    var no_reg = $("#no_reg").val();
-    var analis = $("#apoteker").val();
-
-    window.location.href="form_penjualan_kasir_ranap.php?no_reg="+no_reg+"&analis="+analis+"";
-
-  });
-
-
-     //Simpan Rawat Jalan
+  //Simpan Rawat Jalan
    $(document).on('click','#simpan_raja',function(e){
     var no_reg = $("#no_reg").val();
      var nama_pasien = $("#nama_pasien").val();
@@ -1038,6 +1020,21 @@ $(document).ready(function(){
     window.location.href="bayar_pesanan_barang_raja.php?no_reg="+no_reg+"&nama_pasien="+nama_pasien+"&nama_gudang="+nama_gudang+"&kode_gudang="+kode_gudang+"&no_rm="+no_rm+"&no_faktur="+no_faktur+"";
 
   });
+
+
+     //Simpan Rawat Jalan
+   $(document).on('click','#simpan_ranap',function(e){
+    var no_reg = $("#no_reg").val();
+     var nama_pasien = $("#nama_pasien").val();
+      var nama_gudang = $("#nama_gudang").val();
+       var kode_gudang = $("#kode_gudang").val();
+       var no_rm = $("#no_rm").val();
+        var no_faktur = $("#no_faktur").val();
+
+    window.location.href="bayar_pesanan_barang_ranap.php?no_reg="+no_reg+"&nama_pelanggan="+nama_pasien+"&nama_gudang="+nama_gudang+"&kode_gudang="+kode_gudang+"&kode_pelanggan="+no_rm+"&no_faktur="+no_faktur+"";
+
+  });
+
 
 </script>
 
@@ -1243,7 +1240,7 @@ data = data.replace(/\s+/g, '');
 
     var penjamin = $("#penjamin").val();
     var tax_faktur = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#tax").val()))));
-
+var no_faktur = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#no_faktur").val()))));
 
 
     var hargaa = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#harga_penjamin").val()))));
@@ -1354,8 +1351,6 @@ if (jumlah_barang == ''){
       alert("Masukkan Dahulu Kode Barang ")
     }
 
-
-
   else 
   {
 
@@ -1373,7 +1368,7 @@ if (jumlah_barang == ''){
       $("#tax_rp").val(Math.round(hasil_tax));
      $("#kode_barang").focus();
 
-          $.post("proses_tbs_laboratorium.php",{nama_barang:nama_barang,jumlah_barang:jumlah_barang,harga:harga,potongan:potongan,tax:tax,tipe_barang:ber_stok,no_rm:no_rm,apoteker:apoteker,penjamin:penjamin,tax:tax,hargaa:hargaa, kode_barang:kode_barang,no_reg:no_reg,dokter:dokter},function(data){ 
+          $.post("proses_simpan_tbs_laboratorium.php",{nama_barang:nama_barang,jumlah_barang:jumlah_barang,harga:harga,potongan:potongan,tax:tax,tipe_barang:ber_stok,no_rm:no_rm,apoteker:apoteker,penjamin:penjamin,tax:tax,hargaa:hargaa, kode_barang:kode_barang,no_reg:no_reg,dokter:dokter,no_faktur:no_faktur},function(data){ 
      
                  $("#ppn").attr("disabled", true);
                  $("#tbody").prepend(data);
@@ -3053,7 +3048,7 @@ if (no_reg == '')
 
 
         if (data1 == 1) {
-                 $.get("cek_total_tbs_form_lab.php",{no_reg:no_reg},function(data){
+                 $.get("cek_total_tbs_form_lab_simpan.php",{no_reg:no_reg},function(data){
                   data = data.replace(/\s+/g, '');
                   if (data == "") {
                     data = 0;
@@ -3102,7 +3097,7 @@ if (no_reg == '')
   else {
 
 
-$.get("cek_total_tbs_form_lab.php",{no_reg:no_reg},function(data){
+$.get("cek_total_tbs_form_lab_simpan.php",{no_reg:no_reg},function(data){
   data = data.replace(/\s+/g, '');
                   if (data == "") {
                     data = 0;

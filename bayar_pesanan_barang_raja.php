@@ -366,6 +366,8 @@ if ($tax != 0) {
 
 
 <button type="button" id="cari_produk_penjualan" class="btn btn-info" data-toggle="modal" data-target="#myModal"><i class='fa fa-search'> </i> Cari (F1)</button>
+<a href="form_simpan_rj_penjualan_lab.php?no_rm=<?php echo $no_rm;?>&nama=<?php echo $nama_pasien;?>&no_reg=<?php echo $no_reg;?>&dokter=<?php echo $dokter;?>&jenis_penjualan=Simpan Rawat Jalan" class="btn btn-default"> <i class="fa fa-flask"></i> Rujuk Lab</a>  
+
 
 
 

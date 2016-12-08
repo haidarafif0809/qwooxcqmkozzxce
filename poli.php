@@ -58,7 +58,7 @@ $poli_tambah = mysqli_num_rows($pilih_akses_poli_tambah);
 <span id="table_baru">  
 <div class="table-responsive">
   <table id="table-pelamar" class="table table-bordered table-sm">
- 
+
     <thead>
       <tr>
 

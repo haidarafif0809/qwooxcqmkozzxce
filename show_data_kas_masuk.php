@@ -50,7 +50,7 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 	$nestedData[] = $row["tanggal"];
 	$nestedData[] = $row["jam"];
 	$nestedData[] = $row["user"];
-$nestedData[] = $row["waktu_edit"];
+	$nestedData[] = $row["waktu_edit"];
 
 $pilih_akses_kas_masuk = $db->query("SELECT * FROM otoritas_kas_masuk WHERE id_otoritas = '$_SESSION[otoritas_id]'");
 $kas_masuk = mysqli_fetch_array($pilih_akses_kas_masuk);
