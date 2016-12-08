@@ -628,12 +628,12 @@ tr:nth-child(even){background-color: #f2f2f2}
 
 else{
 
-  
- $.post("proses_ugd.php",{no_rm:no_rm,rujukan:rujukan,token:token,penjamin:penjamin,nama_pasien:nama_pasien,jenis_kelamin:jenis_kelamin,tanggal_lahir:tanggal_lahir,umur:umur,gol_darah:gol_darah,no_hp:no_hp,alamat:alamat,alergi:alergi,kondisi:kondisi,eye:eye,verbal:verbal,motorik:motorik,pengantar:pengantar,hubungan_dengan_pasien:hubungan_dengan_pasien,nama_pengantar:nama_pengantar,alamat_pengantar:alamat_pengantar,hp_pengantar:hp_pengantar,keterangan:keterangan,dokter_jaga:dokter_jaga},function(data){
-     $("#demo").hide();
      $("#kembali").hide();
      $("#coba").show();
-    window.location.href = 'registrasi_ugd.php';
+     $("#demo").hide();
+ $.post("proses_ugd.php",{no_rm:no_rm,rujukan:rujukan,token:token,penjamin:penjamin,nama_pasien:nama_pasien,jenis_kelamin:jenis_kelamin,tanggal_lahir:tanggal_lahir,umur:umur,gol_darah:gol_darah,no_hp:no_hp,alamat:alamat,alergi:alergi,kondisi:kondisi,eye:eye,verbal:verbal,motorik:motorik,pengantar:pengantar,hubungan_dengan_pasien:hubungan_dengan_pasien,nama_pengantar:nama_pengantar,alamat_pengantar:alamat_pengantar,hp_pengantar:hp_pengantar,keterangan:keterangan,dokter_jaga:dokter_jaga},function(data){
+     
+     window.location.href = 'registrasi_ugd.php';
      $('#table_ugd').DataTable().destroy();
       var dataTable = $('#table_ugd').DataTable( {
           "processing": true,
@@ -650,9 +650,11 @@ else{
           },
             "fnCreatedRow": function( nRow, aData, iDataIndex ) {
               $(nRow).attr('class','tr-id-'+aData[20]+'');
+
             },
 
-        })
+        });
+
 
      $("#rujukan").val('');
      $("#token").val('');
@@ -676,10 +678,6 @@ else{
      $("#keterangan").val('');
      $("#dokter_jaga").val('');
 
-
-     
-      
-     
      });
 
 
@@ -845,19 +843,17 @@ $(document).on('click', '.rujuk_ri', function (e) {
 
 <!--   script untuk detail layanan MERUJUK-->
 <script type="text/javascript">
-     $(document).on('click','#pulang',function(e) {  
+     $("#pulang").click(function() {  
                     var reg = $("#reg2").val();
                     var keterangan = $("#keterangan_pulang").val();
                     var id = $(this).attr("data-id");
                     
                     $('#table_ugd').DataTable().destroy();
-                    $(".tr-id-"+id+"").remove();
                     var table = $('#table_ugd').DataTable(); 
                     table.row( $(this).parents('tr') ).remove().draw();
                     
                      $("#modal_pulang").modal('hide');
                     $.post("proses_pulang_rumah.php",{reg:reg, keterangan:keterangan},function(data){
-                      $("#keterangan_pulang").val('');
                     });
                     
         }); 

@@ -9,7 +9,7 @@ include 'db.php';
 
 
 //menampilkan seluruh data yang ada pada tabel pembelian dalan DB
-$perintah = $db->query("SELECT * FROM stok_awal");
+$perintah = $db->query("SELECT sa.id,sa.kode_barang,sa.nama_barang,sa.no_faktur,sa.harga,sa.jam,sa.user,sa.jumlah_awal,sa.total,sa.tanggal, s.nama FROM stok_awal sa INNER JOIN satuan s ON sa.satuan = s.id ORDER BY sa.id DESC");
 
 
 
@@ -160,7 +160,7 @@ if ($stok_awal['stok_awal_hapus'] > 0) {
         echo "<td class='edit-jumlah' data-id='".$data1['id']."' ><span id='text-jumlah-".$data1['id']."'>". $data1['jumlah_awal'] ."</span> <input type='hidden' id='input-jumlah-".$data1['id']."' value='".$data1['jumlah_awal']."' class='input_jumlah' data-id='".$data1['id']."' autofocus='' data-harga='".$data1['harga']."' data-kode='".$data1['kode_barang']."' > </td>";
        }
 
-			echo "<td>". $data1['satuan'] ."</td>
+			echo "<td>". $data1['nama'] ."</td>
 			<td>". rp($data1['harga']) ."</td>
 			<td><span id='text-total-".$data1['id']."'>". rp($data1['total']) ."</span></td>
 			<td>". tanggal($data1['tanggal']) ."</td>
@@ -204,6 +204,37 @@ $(document).ready(function(){
 
 </script>
 
+<!--DATA TABLE MENGGUNAKAN AJAX-->
+<!--<script type="text/javascript" language="javascript" >
+      $(document).ready(function() {
+
+          var dataTable = $('#table_stok_awal').DataTable( {
+          "processing": true,
+          "serverSide": true,
+          "ajax":{
+            url :"datatable_stok_awal.php", // json datasource
+           
+            type: "post",  // method  , by default get
+            error: function(){  // error handling
+              $(".employee-grid-error").html("");
+              $("#table_stok_awal").append('<tbody class="employee-grid-error"><tr><th colspan="3">No data found in the server</th></tr></tbody>');
+              $("#employee-grid_processing").css("display","none");
+            }
+        },
+            
+            "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+                $(nRow).attr('class','tr-id-'+aData[8]+'');
+            },
+        });
+
+        $("#form").submit(function(){
+        return false;
+        });
+        
+
+      } );
+    </script>-->
+<!--/DATA TABLE MENGGUNAKAN AJAX-->
 
                               <script type="text/javascript">
                                

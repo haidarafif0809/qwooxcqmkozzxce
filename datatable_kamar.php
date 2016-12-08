@@ -10,9 +10,9 @@ $requestData= $_REQUEST;
 
 $columns = array( 
 // datatable column index  => database column name
-	0 =>'id', 
-	1 => 'kelas',
-	2 => 'nama_kamar',
+	0 =>'kelas', 
+	1 => 'nama_kamar',
+	2 => 'sisa_bed',
 	3 => 'group_bed',
 	4 => 'tarif',
 	5 => 'tarif_2',
@@ -23,25 +23,26 @@ $columns = array(
 	10 => 'tarif_7',
 	11 => 'fasilitas',
 	12 => 'jumlah_bed',
-	13 => 'sisa_bed'
+	13 => 'kode_kamar',
+	14 => 'id'
 );
 
 // getting total number records without any search
-$sql = "SELECT b.id,kk.nama AS nama_kelas,b.nama_kamar,b.group_bed,b.tarif,b.tarif_2,b.tarif_3,b.tarif_4,b.tarif_5,b.tarif_6,b.tarif_7,b.fasilitas,b.jumlah_bed,b.sisa_bed ";
+$sql = "SELECT b.id,kk.nama ,b.nama_kamar,b.group_bed,b.tarif,b.tarif_2,b.tarif_3,b.tarif_4,b.tarif_5,b.tarif_6,b.tarif_7,b.fasilitas,b.jumlah_bed,b.sisa_bed ";
 $sql.=" FROM bed b INNER JOIN kelas_kamar kk ON b.kelas = kk.id ";
 $query=mysqli_query($conn, $sql) or die("datatable_kamar.php: get employees");
 $totalData = mysqli_num_rows($query);
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
 
-$sql = "SELECT b.id,kk.nama AS nama_kelas,b.nama_kamar,b.group_bed,b.tarif,b.tarif_2,b.tarif_3,b.tarif_4,b.tarif_5,b.tarif_6,b.tarif_7,b.fasilitas,b.jumlah_bed,b.sisa_bed ";
+$sql = "SELECT b.id,kk.nama ,b.nama_kamar,b.group_bed,b.tarif,b.tarif_2,b.tarif_3,b.tarif_4,b.tarif_5,b.tarif_6,b.tarif_7,b.fasilitas,b.jumlah_bed,b.sisa_bed ";
 $sql.=" FROM bed b INNER JOIN kelas_kamar kk ON b.kelas = kk.id WHERE 1=1";
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
 	$sql.=" AND ( nama_kamar LIKE '".$requestData['search']['value']."%' ";
-	$sql.=" OR kode_kamar LIKE '".$requestData['search']['value']."%' "; 
-	$sql.=" OR nama_kelas LIKE '".$requestData['search']['value']."%' )";
+	$sql.=" OR group_bed LIKE '".$requestData['search']['value']."%' ";
+	$sql.=" OR kelas LIKE '".$requestData['search']['value']."%' )";
 }
-$query=mysqli_query($conn, $sql) or die("datatable_kamar.php: get employees");
+$query=mysqli_query($conn, $sql) or die("datatableee_kamar.php: get employees");
 $totalFiltered = mysqli_num_rows($query); // when there is a search parameter then we have to modify total number filtered rows as per search result. 
 $sql.=" ORDER BY ". $columns[$requestData['order'][0]['column']]."   ".$requestData['order'][0]['dir']."  LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
 /* $requestData['order'][0]['column'] contains colmun index, $requestData['order'][0]['dir'] contains order such as asc/desc  */	
@@ -51,7 +52,7 @@ $data = array();
 while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 	$nestedData=array(); 
 
-	$nestedData[] = $row["nama_kelas"];
+	$nestedData[] = $row["nama"];
 	$nestedData[] = $row["nama_kamar"];
 	$nestedData[] = $row["group_bed"];
 	$nestedData[] = $row["tarif"];

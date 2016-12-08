@@ -3,16 +3,15 @@
     include 'sanitasi.php';
     include 'db.php';
 
-    $id = stringdoang($_POST['id']);
     $nama = stringdoang($_POST['nama']);
     $alamat= stringdoang($_POST['alamat']);
     $no_telp = angkadoang($_POST['no_telp']);
 
-    $perintah = $db->prepare("INSERT INTO suplier (id,nama,alamat,no_telp)
-			VALUES (?,?,?,?)");
+    $perintah = $db->prepare("INSERT INTO suplier (nama,alamat,no_telp)
+			VALUES (?,?,?)");
 
-    $perintah->bind_param("ssss",
-        $id, $nama, $alamat, $no_telp);
+    $perintah->bind_param("sss",
+        $nama, $alamat, $no_telp);
 
 
     $perintah->execute();

@@ -68,9 +68,6 @@ include 'db.php';
             $jumlah_retur_pembelian = $cek5['jumlah_retur_pembelian'];
 
 
- 
-
-
 
 //total barang 2
             $total_2 = $jumlah_penjualan + $jumlah_item_keluar + $jumlah_retur_pembelian;

@@ -114,7 +114,7 @@ tr:nth-child(even){background-color: #f2f2f2}
 
 <div class="table-responsive"><!--membuat agar ada garis pada tabel disetiap kolom-->
 <span id="tabel_baru">
-<table id="tableuser" class="table table-bordered">
+<table id="table_repem" class="table table-bordered">
 		<thead>
 			<th style='background-color: #4CAF50; color:white'> Detail </th>
 
@@ -148,47 +148,7 @@ if ($pembelian['retur_pembelian_hapus'] > 0) {
 			
 		</thead>
 		
-		<tbody>
-		<?php
-
-			//menyimpan data sementara yang ada pada $perintah
-			while ($data1 = mysqli_fetch_array($perintah))
-			{
-				//menampilkan data
-			echo "<tr class='tr-id-".$data1['id']."'>
-
-			<td> <button class='btn btn-info detail' no_faktur_retur='". $data1['no_faktur_retur'] ."' ><span class='glyphicon glyphicon-th-list'></span> Detail </button> </td>";
-
-if ($pembelian['retur_pembelian_edit'] > 0) {
-
-			echo "<td> <a href='proses_edit_retur_pembelian.php?no_faktur_retur=". $data1['no_faktur_retur']."&nama=". $data1['nama']."&cara_bayar=".$data1['cara_bayar']."' class='btn btn-success'> <span class='glyphicon glyphicon-edit'></span> Edit </a> </td> ";
-		}
-
-if ($pembelian['retur_pembelian_hapus'] > 0) {
-
-			echo "<td> <button class='btn btn-danger btn-hapus' data-id='". $data1['id'] ."' data-faktur='". $data1['no_faktur_retur'] ."' data-suplier='". $data1['nama'] ."'> <span class='glyphicon glyphicon-trash'> </span> Hapus </button> </td>";
-		} 
-			
-			echo "<td> <a href='cetak_lap_retur_pembelian.php?no_faktur_retur=".$data1['no_faktur_retur']."&nama_suplier=".$data1['nama']."' class='btn btn-primary' target='blank'><span class='glyphicon glyphicon-print'> </span> Cetak Retur</a> </td>
-			<td>". $data1['no_faktur_retur'] ."</td>
-			<td>". $data1['nama'] ."</td>
-			<td>". rp($data1['total']) ."</td>
-			<td>". rp($data1['potongan']) ."</td>
-			<td>". rp($data1['tax']) ."</td>
-			<td>". $data1['tanggal'] ."</td>
-			<td>". $data1['jam'] ."</td>
-			<td>". $data1['user_buat'] ."</td>
-			<td>". $data1['user_edit'] ."</td>
-			<td>". $data1['tanggal_edit'] ."</td>
-			<td>". rp($data1['tunai']) ."</td>
-			<td>". rp($data1['sisa']) ."</td>
-			
-			</tr>";
-			}
-			//Untuk Memutuskan Koneksi Ke Database
-mysqli_close($db);   
-		?>
-		</tbody>
+		
 
 	</table>
 	</span>
@@ -199,16 +159,43 @@ mysqli_close($db);
 		<span id="demo"> </span>
 </div><!--end of container-->
 		
+<!--DATA TABLE MENGGUNAKAN AJAX-->
+<script type="text/javascript" language="javascript" >
+      $(document).ready(function() {
 
-				<!--menampilkan detail penjualan-->
-				<script>
+          var dataTable = $('#table_repem').DataTable( {
+          "processing": true,
+          "serverSide": true,
+          "ajax":{
+            url :"datatable_repem.php", // json datasource
+           
+            type: "post",  // method  , by default get
+            error: function(){  // error handling
+              $(".employee-grid-error").html("");
+              $("#table_repem").append('<tbody class="employee-grid-error"><tr><th colspan="3">No data found in the server</th></tr></tbody>');
+              $("#employee-grid_processing").css("display","none");
+            }
+        },
+            
+            "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+                $(nRow).attr('class','tr-id-'+aData[16]+'');
+            },
+        });
+
+        $("#form").submit(function(){
+        return false;
+        });
+        
+
+      } );
+    </script>
+<!--/DATA TABLE MENGGUNAKAN AJAX-->
+
+<!--menampilkan detail penjualan-->
+<script type="text/javascript">
+
 				
-				$(document).ready(function(){
-				$('#tableuser').DataTable();
-				});
-				
-				
-		$(".detail").click(function(){
+		$(document).on('click','.detail',function(e){
 		var no_faktur_retur = $(this).attr('no_faktur_retur');
 		
 		
@@ -224,12 +211,12 @@ mysqli_close($db);
 		});
 
 				
-				</script>
+</script>
 				
 				<script type="text/javascript">
 				
 				//fungsi hapus data 
-				$(".btn-hapus").click(function(){
+				$(document).on('click','.btn-hapus',function(e){
 				var kode_suplier = $(this).attr("data-suplier");
 				var no_faktur_retur = $(this).attr("data-faktur");
 				var id = $(this).attr("data-id");

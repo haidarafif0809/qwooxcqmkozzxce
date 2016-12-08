@@ -4,34 +4,40 @@ include 'db.php';
 /* Database connection end */
 include 'sanitasi.php';
 
+$pilih_akses_item_masuk = $db->query("SELECT * FROM otoritas_item_keluar WHERE id_otoritas = '$_SESSION[otoritas_id]'");
+$item_masuk = mysqli_fetch_array($pilih_akses_item_masuk);
+
 // storing  request (ie, get/post) global array to a variable  
 $requestData= $_REQUEST;
 
-
 $columns = array( 
 // datatable column index  => database column name
-	0 => 'id',
-	1 =>'nama', 
-	2 => 'alamat',
-	3 => 'no_telp'
-	
+	0 =>'no_faktur', 
+	1 => 'tanggal',
+	2 => 'jam',
+	3 => 'user',
+	4 => 'user_edit',
+	5 => 'tanggal_edit',
+  6 => 'keterangan',
+  7 => 'total',
+  8 => 'id'
 );
 
 // getting total number records without any search
 $sql = "SELECT * ";
-$sql.=" FROM suplier";
-$query=mysqli_query($conn, $sql) or die("datatable_suplier.php: get employees");
+$sql.=" FROM item_keluar";
+$query=mysqli_query($conn, $sql) or die("datatable_item_keluar.php: get employees");
 $totalData = mysqli_num_rows($query);
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
 
 $sql = "SELECT * ";
-$sql.=" FROM suplier WHERE 1=1";
+$sql.=" FROM item_keluar WHERE 1=1";
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
 	$sql.=" AND ( nama LIKE '".$requestData['search']['value']."%' ";    
 	$sql.=" OR no_telp LIKE '".$requestData['search']['value']."%' )";
 }
-$query=mysqli_query($conn, $sql) or die("datatable_suplier.php: get employees");
+$query=mysqli_query($conn, $sql) or die("datatable_item_keluar.php: get employees");
 $totalFiltered = mysqli_num_rows($query); // when there is a search parameter then we have to modify total number filtered rows as per search result. 
 $sql.=" ORDER BY ". $columns[$requestData['order'][0]['column']]."   ".$requestData['order'][0]['dir']."  LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
 /* $requestData['order'][0]['column'] contains colmun index, $requestData['order'][0]['dir'] contains order such as asc/desc  */	
@@ -41,30 +47,26 @@ $data = array();
 while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 	$nestedData=array(); 
 
-	$nestedData[] = $row["nama"];
-	$nestedData[] = $row["alamat"];
-	$nestedData[] = $row["no_telp"];
+    	$nestedData[] = $row['no_faktur'];
+      $nestedData[] = $row['tanggal'];
+      $nestedData[] = $row['jam'];
+      $nestedData[] = $row['user'];
+      $nestedData[] = $row['user_edit'];
+      $nestedData[] = $row['tanggal_edit'];
+      $nestedData[] = $row['keterangan'];
+      $nestedData[] = rp($row['total']);
 
-	//hapus
-		$pilih_akses_suplier_hapus = $db->query("SELECT suplier_hapus FROM otoritas_master_data WHERE id_otoritas = '$_SESSION[otoritas_id]' AND suplier_hapus = '1'");
-		$suplier_hapus = mysqli_num_rows($pilih_akses_suplier_hapus);
+      $nestedData[] = "<button class='btn btn-info detail' no_faktur='". $row['no_faktur'] ."' ><span class='glyphicon glyphicon-th-list'></span> Detail </button>";
 
+if ($item_masuk['item_keluar_edit'] > 0) {
+        $nestedData[] = "<a href='proses_edit_item_keluar.php?no_faktur=". $row['no_faktur']."' class='btn btn-success'> Edit  </a>";
+       }
 
-    	if ($suplier_hapus > 0){
-			$nestedData[] = "<button class='btn btn-danger btn-hapus' data-id='". $row['id'] ."' data-suplier='". $row['nama'] ."'> <span class='glyphicon glyphicon-trash'> </span> Hapus </button>";
-		}
+if ($item_masuk['item_keluar_hapus'] > 0) {
+
+      $nestedData[] = "<button class='btn btn-danger btn-hapus' data-item='". $row['no_faktur'] ."' data-id='". $row['id'] ."'> <span class='glyphicon glyphicon-trash'> </span> Hapus </button>"; 
+       } 
 		
-	//edit
-		$pilih_akses_suplier_edit = $db->query("SELECT suplier_edit FROM otoritas_master_data WHERE id_otoritas = '$_SESSION[otoritas_id]' AND suplier_edit = '1'");
-		$suplier_edit = mysqli_num_rows($pilih_akses_suplier_edit);
-
-
-    	if ($suplier_edit > 0){			
-			$nestedData[] = "<button class='btn btn-info btn-edit' data-suplier='". $row['nama'] ."' data-alamat='". $row['alamat'] ."' data-nomor='". $row['no_telp'] ."' data-id='". $row['id'] ."'> <span class='glyphicon glyphicon-edit'> </span> Edit </button>";
-		}
-
-		
-
 	$nestedData[] = $row["id"];
 	$data[] = $nestedData;
 }
@@ -81,3 +83,4 @@ $json_data = array(
 echo json_encode($json_data);  // send data as json format
 
 ?>
+

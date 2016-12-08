@@ -108,7 +108,7 @@ echo '<a href="form_pembayaran_hutang.php"  class="btn btn-info" > <i class="fa 
 
 <div class="table-responsive"><!--membuat agar ada garis pada tabel disetiap kolom-->
 <span id="table_baru">
-<table id="tableuser" class="table table-bordered table-sm">
+<table id="table_pembayaran_hutang" class="table table-bordered table-sm">
 		<thead>
 			<th style="background-color: #4CAF50; color:white"> Detail </th>
 
@@ -141,53 +141,6 @@ if ($pembayaran_hutang['pembayaran_hutang_hapus'] > 0) {
 			
 			
 		</thead>
-		
-		<tbody>
-		<?php
-
-			//menyimpan data sementara yang ada pada $perintah
-			while ($data1 = mysqli_fetch_array($perintah))
-			{
-				//menampilkan data
-			echo "<tr class='tr-id-".$data1['id']."'>
-
-			<td> <button class=' btn btn-info detail' no_faktur_pembayaran='". $data1['no_faktur_pembayaran'] ."'> Detail  </button> </td>";
-
-
-
-
-if ($pembayaran_hutang['pembayaran_hutang_edit'] > 0) {
-
-		echo "<td> <a href='proses_edit_pembayaran_hutang.php?no_faktur_pembayaran=". $data1['no_faktur_pembayaran']."&nama=". $data1['nama']."&cara_bayar=". $data1['dari_kas']."' class='btn btn-success'> Edit  </a> </td>";
-
-	}
-
-
-
-if ($pembayaran_hutang['pembayaran_hutang_hapus'] > 0) {
-
-			echo "<td> <button class='btn btn-danger btn-hapus' data-id='". $data1['id'] ."' data-suplier='". $data1['nama'] ."' data-no_faktur_pembayaran='". $data1['no_faktur_pembayaran'] ."'> Hapus  </button> </td>";
-			} 
-
-			echo "<td> <a href='cetak_lap_pembayaran_hutang.php?no_faktur_pembayaran=".$data1['no_faktur_pembayaran']."&nama_suplier=".$data1['nama']."' class='btn btn-primary' target='blank'>Cetak Hutang  </a> </td>
-			<td>". $data1['no_faktur_pembayaran'] ."</td>
-			<td>". $data1['tanggal'] ."</td>
-			<td>". $data1['jam'] ."</td>
-			<td>". $data1['keterangan'] ."</td>
-			<td>". rp($data1['total']) ."</td>
-			<td>". $data1['user_buat'] ."</td>
-			<td>". $data1['user_edit'] ."</td>
-			<td>". $data1['tanggal_edit'] ."</td>
-			<td>". $data1['nama_daftar_akun'] ."</td>
-			
-			</tr>";
-			}
-
-//Untuk Memutuskan Koneksi Ke Database
-mysqli_close($db);   
-			
-		?>
-		</tbody>
 
 	</table>
 </span>
@@ -198,15 +151,41 @@ mysqli_close($db);
 		<span id="demo"> </span>
 </div><!--end of container-->
 
-<script>
-		
-		// untk menampilkan datatable atau filter seacrh
-		$(document).ready(function(){
-		$('#tableuser').DataTable({"ordering":false});
-		});
+<!--DATA TABLE MENGGUNAKAN AJAX-->
+<script type="text/javascript" language="javascript" >
+      $(document).ready(function() {
 
-		
-		$(".detail").click(function(){
+          var dataTable = $('#table_pembayaran_hutang').DataTable( {
+          "processing": true,
+          "serverSide": true,
+          "ajax":{
+            url :"datatable_pembayaran_hutang.php", // json datasource
+           
+            type: "post",  // method  , by default get
+            error: function(){  // error handling
+              $(".employee-grid-error").html("");
+              $("#table_pembayaran_hutang").append('<tbody class="employee-grid-error"><tr><th colspan="3">No data found in the server</th></tr></tbody>');
+              $("#employee-grid_processing").css("display","none");
+            }
+        },
+            
+            "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+                $(nRow).attr('class','tr-id-'+aData[13]+'');
+            },
+        });
+
+        $("#form").submit(function(){
+        return false;
+        });
+        
+
+      } );
+    </script>
+<!--/DATA TABLE MENGGUNAKAN AJAX-->
+
+<script type="text/javascript">
+
+		$(document).on('click','.detail',function(e){
 		var no_faktur_pembayaran = $(this).attr('no_faktur_pembayaran');
 		
 		
@@ -226,7 +205,7 @@ mysqli_close($db);
  <script type="text/javascript">
 			
 //fungsi hapus data 
-		$(".btn-hapus").click(function(){
+		$(document).on('click','.btn-hapus',function(e){
 		var suplier = $(this).attr("data-suplier");
 		var no_faktur_pembayaran = $(this).attr("data-no_faktur_pembayaran");
 		var id = $(this).attr("data-id");
@@ -258,8 +237,6 @@ mysqli_close($db);
 		
 		
 		});
-
-
 
 
 		</script>

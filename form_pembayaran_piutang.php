@@ -158,10 +158,32 @@ $no_faktur_penjualan = $data50['no_faktur_penjualan'];
 <div class="row">
 
   
-  <div class="col-sm-8">
-  
+<div class="col-sm-8">
+  <div class="form-group col-sm-2">
+                <label>No RM</label>
+                <br>
+                <select type="text" name="kode_pelanggan" id="kd_pelanggan" class="form-control chosen" required="">
+                <option value="">-Silahkan Pilih-</option>
+                <?php 
+                include 'db.php';
+                
+                // menampilkan data yang ada pada tabel suplier
+                $query = $db->query("SELECT kode_pelanggan,nama FROM penjualan WHERE status = 'Piutang' GROUP BY kode_pelanggan");
+                
+                // menyimpan data sementara yang ada pada $query
+                while($data = mysqli_fetch_array($query))
+                {
+                
+                echo "<option value='".$data['kode_pelanggan'] ."'> ".$data['kode_pelanggan'] ." - ".$data['nama'] ." </option>";
+                }
+                
+                
+                ?>
+                </select>
+  </div>
+
 <div class="form-group col-sm-2">
-  <input type="text" class="form-control" name="no_faktur_penjualan" id="nomorfakturbeli" placeholder="Nomor Faktur Jual" readonly="">
+  <input type="text" class="form-control" name="no_faktur_penjualan" id="nomorfakturbeli" placeholder="No Faktur Jual" readonly="">
   </div>
   
   <div class="form-group col-sm-2">
@@ -255,31 +277,7 @@ $no_faktur_penjualan = $data50['no_faktur_penjualan'];
   <div class="col-sm-4">
 <div class="card card-block">
     <div class="row 1">
-        <div class="form-group col-sm-6">
-                <label>No RM</label>
-                <br>
-                <select type="text" name="kode_pelanggan" id="kd_pelanggan" class="form-control chosen" required="">
-                <option value="">-Silahkan Pilih-</option>
-                <?php 
-                include 'db.php';
-                
-                // menampilkan data yang ada pada tabel suplier
-                $query = $db->query("SELECT kode_pelanggan,nama FROM penjualan WHERE status = 'Piutang' GROUP BY kode_pelanggan");
-                
-                // menyimpan data sementara yang ada pada $query
-                while($data = mysqli_fetch_array($query))
-                {
-                
-                echo "<option value='".$data['kode_pelanggan'] ."'> ".$data['kode_pelanggan'] ." - ".$data['nama'] ." </option>";
-                }
-                
-                
-                ?>
-                </select>
-                </div>
-
-
-                
+        
                 <div class="form-group col-sm-6">
                 <label> Tanggal </label><br>
                 <input type="text" name="tanggal" id="tanggal" placeholder="Tanggal" style="height: 20px" value="<?php echo date("Y/m/d"); ?>" class="form-control" required="" >

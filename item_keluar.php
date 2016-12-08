@@ -159,7 +159,7 @@ tr:nth-child(even){background-color: #f2f2f2}
 
 <div class="table-responsive"><!--membuat agar ada garis pada tabel disetiap kolom-->
 <span id="tabel_baru">
-<table id="tableuser" class="table table-bordered">
+<table id="table_item_keluar" class="table table-bordered">
 		<thead>
 			<th style='background-color: #4CAF50; color:white'> Nomor Faktur </th>
 			<th style='background-color: #4CAF50; color:white'> Tanggal </th>
@@ -186,46 +186,6 @@ if ($item_masuk['item_keluar_hapus'] > 0) {
 ?>
 		
 		</thead>
-		
-		<tbody>
-		<?php
-
-			//menyimpan data sementara yang ada pada $perintah
-			while ($data1 = mysqli_fetch_array($perintah))
-			{
-
-			echo "<tr class='tr-id-".$data1['id']."'>
-			<td>". $data1['no_faktur'] ."</td>
-			<td>". $data1['tanggal'] ."</td>
-			<td>". $data1['jam'] ."</td>
-			<td>". $data1['user'] ."</td>
-			<td>". $data1['user_edit'] ."</td>
-			<td>". $data1['tanggal_edit'] ."</td>
-			<td>". $data1['keterangan'] ."</td>
-			<td>". rp($data1['total']) ."</td>
-
-			<td> <button class='btn btn-info detail' no_faktur='". $data1['no_faktur'] ."' ><span class='glyphicon glyphicon-th-list'></span> Detail </button> </td>";
-
-include 'db.php';
-
-if ($item_masuk['item_keluar_edit'] > 0) {
-			 	echo "<td> <a href='proses_edit_item_keluar.php?no_faktur=". $data1['no_faktur']."' class='btn btn-success'> Edit  </a> </td>";
-			 }
-
-if ($item_masuk['item_keluar_hapus'] > 0) {
-
-			echo "<td> <button class='btn btn-danger btn-hapus' data-item='". $data1['no_faktur'] ."' data-id='". $data1['id'] ."'> <span class='glyphicon glyphicon-trash'> </span> Hapus </button> </td> 
-			
-			</tr>";
-			 } 
-
-			
-			}
-
-			//Untuk Memutuskan Koneksi Ke Database
-			mysqli_close($db);   
-		?>
-		</tbody>
 
 	</table>
 </span>
@@ -235,16 +195,41 @@ if ($item_masuk['item_keluar_hapus'] > 0) {
 		<span id="demo"> </span>
 </div><!--end of container-->
 		
+<!--DATA TABLE MENGGUNAKAN AJAX-->
+<script type="text/javascript" language="javascript" >
+      $(document).ready(function() {
+
+          var dataTable = $('#table_item_keluar').DataTable( {
+          "processing": true,
+          "serverSide": true,
+          "ajax":{
+            url :"datatable_item_keluar.php", // json datasource
+           
+            type: "post",  // method  , by default get
+            error: function(){  // error handling
+              $(".employee-grid-error").html("");
+              $("#table_item_keluar").append('<tbody class="employee-grid-error"><tr><th colspan="3">No data found in the server</th></tr></tbody>');
+              $("#employee-grid_processing").css("display","none");
+            }
+        },
+            
+            "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+                $(nRow).attr('class','tr-id-'+aData[11]+'');
+            },
+        });
+
+        $("#form").submit(function(){
+        return false;
+        });
+        
+
+      } );
+    </script>
+<!--/DATA TABLE MENGGUNAKAN AJAX-->
 
 		<!--menampilkan detail penjualan-->
-		<script>
-		
-		$(document).ready(function(){
-		$('#tableuser').DataTable();
-		});
-		
-		
-		$(".detail").click(function(){
+	<script type="text/javascript">
+		$(document).on('click','.detail',function(e){
 		var no_faktur = $(this).attr('no_faktur');
 		
 		
@@ -261,10 +246,10 @@ if ($item_masuk['item_keluar_hapus'] > 0) {
 
 		</script>
 
-		<script>
+		<script type="text/javascript">
 			
 	//fungsi hapus data 
-		$(".btn-hapus").click(function(){
+		$(document).on('click','.btn-hapus',function(e){
 		var nama_item = $(this).attr("data-item");
 		var id = $(this).attr("data-id");
 		$("#data_faktur").val(nama_item);
@@ -296,8 +281,8 @@ if ($item_masuk['item_keluar_hapus'] > 0) {
 // end fungsi hapus data
 
 		</script>
-<!=======H>
 
+		
 <script>
     $(function() {
     $( "#dari_tanggal" ).datepicker({dateFormat: "yy-mm-dd"});

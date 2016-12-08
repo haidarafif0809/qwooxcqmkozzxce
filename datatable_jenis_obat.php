@@ -13,12 +13,8 @@ $requestData= $_REQUEST;
 
 $columns = array( 
 // datatable column index  => database column name
-	0 =>'nama', 
-	1 => 'alamat',
-	2 => 'no_telp',
-	3 => 'harga',
-	4 => 'jatuh_tempo',
-	5  => 'id'
+	0 =>'nama',
+	1 => 'id'
 );
 
 // getting total number records without any search
