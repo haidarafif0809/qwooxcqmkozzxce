@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 07 Des 2016 pada 03.10
+-- Generation Time: 08 Des 2016 pada 07.14
 -- Versi Server: 5.7.14
 -- PHP Version: 5.6.25
 
@@ -496,9 +496,9 @@ INSERT INTO `bed` (`id`, `nama_kamar`, `group_bed`, `tarif`, `tarif_2`, `tarif_3
 (28, 'BED II', 'Melati 02', 100, 200, 300, 400, 500, 600, 700, 'ac, kemar tidur, tabung o2, kipas angin, kulkas, kamar mandi , handuk, baju, spray, kaca dan pelayan', NULL, '', '17', 1, 0),
 (29, '12a', 'adwadaw', 50, 100, 150, 200, 250, 300, 350, 'ASWDAWDA', NULL, '', '17', 12, 10),
 (33, '00123', 'Mawar', 400000, 450000, 455000, 460000, 470000, 480000, 490000, 'AC, Refrigerator, TV', NULL, '', '17', 2, 2),
-(35, '12388', 'Kamar Raflesia I', 1200000, 1500000, 1750000, 0, 0, 0, 0, 'Lengkap + Ruang Tamu', NULL, '', '15', 100000000, 100000002),
+(35, '12388', 'Kamar Raflesia I', 1200000, 1500000, 1750000, 0, 0, 0, 0, 'Lengkap + Ruang Tamu', NULL, '', '15', 100000000, 100000001),
 (37, '201020', 'Kaktus I', 400000, 450000, 475000, 0, 0, 0, 0, 'Kamar Mandi, Kipas Angin dan TV Jamaah', NULL, '', '12', 50000, 49999),
-(40, '8888', 'Tes Again', 1000, 0, 0, 0, 0, 0, 0, 'ac', NULL, '', '6', 15000, 14997),
+(40, '8888', 'Tes Again', 1000, 0, 0, 0, 0, 0, 0, 'ac', NULL, '', '6', 15000, 14998),
 (42, 'BED BOBO I', 'BOBO ', 1000, 2000, 0, 0, 0, 0, 0, 'ac', NULL, '', '6', 123, 126);
 
 -- --------------------------------------------------------
@@ -667,13 +667,6 @@ CREATE TABLE `detail_item_keluar` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `detail_item_keluar`
---
-
-INSERT INTO `detail_item_keluar` (`id`, `no_faktur`, `tanggal`, `jam`, `kode_barang`, `nama_barang`, `gudang_item_keluar`, `jumlah`, `satuan`, `harga`, `subtotal`) VALUES
-(5, '1/IK/12/16', '2016-12-05', '10:19:15', 'B2', 'Panadol Extra', NULL, 10, '125', 1000, 10000);
-
---
 -- Trigger `detail_item_keluar`
 --
 DELIMITER $$
@@ -787,13 +780,6 @@ CREATE TABLE `detail_item_masuk` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `detail_item_masuk`
---
-
-INSERT INTO `detail_item_masuk` (`id`, `no_faktur`, `tanggal`, `kode_barang`, `nama_barang`, `gudang_item_masuk`, `jumlah`, `satuan`, `harga`, `subtotal`, `jam`, `waktu`) VALUES
-(4, '1/IM/12/16', '2016-12-05', 'B3', 'Ice Dobokky', NULL, 20, '125', 1250, 25000, '09:56:22', '2016-12-05 09:56:22');
-
---
 -- Trigger `detail_item_masuk`
 --
 DELIMITER $$
@@ -844,6 +830,14 @@ CREATE TABLE `detail_kas_keluar` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
+-- Dumping data untuk tabel `detail_kas_keluar`
+--
+
+INSERT INTO `detail_kas_keluar` (`id`, `no_faktur`, `keterangan`, `dari_akun`, `ke_akun`, `jumlah`, `tanggal`, `jam`, `user`) VALUES
+(5, '1/KK/12/16', ' ', '1-1119', '4-1100', 5000, '2016-12-08', '13:39:28', 'admin'),
+(6, '1/KK/12/16', ' ', '1-1119', '5-2100', 10000, '2016-12-08', '13:39:28', 'admin');
+
+--
 -- Trigger `detail_kas_keluar`
 --
 DELIMITER $$
@@ -874,7 +868,7 @@ CREATE TABLE `detail_kas_masuk` (
 --
 
 INSERT INTO `detail_kas_masuk` (`id`, `no_faktur`, `keterangan`, `dari_akun`, `ke_akun`, `jumlah`, `tanggal`, `jam`, `user`) VALUES
-(1, '1/KM/12/16', 'on', '4-1100', '1-1119', 50000, '2016-12-07', '09:28:09', 'TEAM #3');
+(9, '1/KM/12/16', '', '3-1000', '1-1119', 50000, '2016-12-08', '10:00:36', 'TEAM #3');
 
 --
 -- Trigger `detail_kas_masuk`
@@ -1029,7 +1023,7 @@ CREATE TABLE `detail_pembelian` (
   `subtotal` int(50) NOT NULL,
   `potongan` int(50) NOT NULL,
   `tax` int(50) NOT NULL,
-  `status` varchar(100) NOT NULL,
+  `status` varchar(100) DEFAULT NULL,
   `sisa` int(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -1099,18 +1093,6 @@ CREATE TABLE `detail_penjualan` (
   `dosis` varchar(100) DEFAULT NULL,
   `lab` varchar(25) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data untuk tabel `detail_penjualan`
---
-
-INSERT INTO `detail_penjualan` (`id`, `no_faktur`, `kode_meja`, `tanggal`, `jam`, `kode_barang`, `nama_barang`, `jumlah_barang`, `satuan`, `harga`, `subtotal`, `potongan`, `tax`, `status`, `hpp`, `sisa`, `no_pesanan`, `komentar`, `asal_satuan`, `no_reg`, `no_rm`, `tipe_produk`, `dosis`, `lab`) VALUES
-(16, '1/JL/12/16', NULL, '2016-12-05', '15:18:04', 'B2', 'Panadol Extra', '5', '125', 3000, 15000, 0, 0, NULL, NULL, 5, NULL, NULL, '125', '13-REG-12-16', '1', 'Obat Obatan', NULL, ''),
-(18, '2/JL/12/16', NULL, '2016-12-05', '17:02:17', 'B3', 'Ice Dobokky', '15', '125', 300, 4400, 100, 0, NULL, NULL, 15, NULL, NULL, '125', '14-REG-12-16', '3', 'Barang', NULL, ''),
-(19, '2/JL/12/16', NULL, '2016-12-05', '17:02:17', 'B2', 'Panadol Extra', '5', '125', 3000, 15000, 0, 0, NULL, NULL, 5, NULL, NULL, '125', '14-REG-12-16', '3', 'Obat Obatan', NULL, ''),
-(21, '3/JL/12/16', NULL, '2016-12-05', '17:04:16', 'B2', 'Panadol Extra', '5', '125', 4000, 19500, 500, 0, NULL, NULL, 5, NULL, NULL, '125', '15-REG-12-16', '', 'Obat Obatan', NULL, ''),
-(22, '3/JL/12/16', NULL, '2016-12-05', '17:04:16', 'B3', 'Ice Dobokky', '5', '125', 400, 2000, 0, 0, NULL, NULL, 5, NULL, NULL, '125', '15-REG-12-16', '', 'Barang', NULL, ''),
-(23, '3/JL/12/16', NULL, '2016-12-05', '17:04:16', 'J1', 'Suntik DBD', '5', '125', 4000, 19900, 100, 0, NULL, NULL, 5, NULL, NULL, '125', '15-REG-12-16', '', 'Jasa', NULL, '');
 
 --
 -- Trigger `detail_penjualan`
@@ -1855,7 +1837,9 @@ INSERT INTO `hapus_transaksi_db` (`id`, `nama`, `waktu`) VALUES
 (19, 'Riko', '2016-11-29 13:32:03'),
 (20, 'Riko', '2016-11-29 14:38:23'),
 (21, 'rizal', '2016-12-02 10:55:17'),
-(22, 'Rama', '2016-12-03 09:41:46');
+(22, 'Rama', '2016-12-03 09:41:46'),
+(23, 'hendri', '2016-12-07 14:06:49'),
+(24, 'hendri', '2016-12-08 09:59:46');
 
 -- --------------------------------------------------------
 
@@ -2008,7 +1992,9 @@ CREATE TABLE `history_detail_kas_keluar` (
 
 INSERT INTO `history_detail_kas_keluar` (`id`, `no_faktur`, `keterangan`, `dari_akun`, `ke_akun`, `jumlah`, `tanggal`, `jam`, `user`, `user_hapus`) VALUES
 (1, '1/KK/11/16', 'ada', '1-1120', '1-1410', 5, '2016-11-21', '15:13:28', 'admin', 'admin'),
-(2, '1/KK/11/16', '', '1-1119', '1-1140', 10000, '2016-11-22', '13:03:20', 'admin', 'admin');
+(2, '1/KK/11/16', '', '1-1119', '1-1140', 10000, '2016-11-22', '13:03:20', 'admin', 'admin'),
+(3, '1/KK/12/16', ' ', '1-1119', '5-1200', 5000, '2016-12-08', '10:01:10', 'admin', 'admin'),
+(4, '2/KK/12/16', ' ', '1-1119', '4-1100', 10000, '2016-12-08', '13:41:45', 'admin', 'admin');
 
 --
 -- Trigger `history_detail_kas_keluar`
@@ -2085,29 +2071,7 @@ CREATE TABLE `history_detail_pembayaran_hutang` (
 --
 
 INSERT INTO `history_detail_pembayaran_hutang` (`id`, `no_faktur_pembayaran`, `no_faktur_pembelian`, `tanggal`, `tanggal_jt`, `kredit`, `potongan`, `total`, `jumlah_bayar`, `user_hapus`) VALUES
-(1, '1/PH/10/16', '2/BL/10/16', '2016-10-03', '2016-10-29', 15000, 0, 15000, 15000, 'admin'),
-(2, '1/PH/10/16', '2/BL/10/16', '2016-10-03', '2016-10-29', 15000, 0, 15000, 15000, 'admin'),
-(3, '1/PH/10/16', '1/BL/10/16', '2016-10-31', '2016-10-31', 35000, 0, 35000, 5000, 'admin'),
-(4, '2/PH/10/16', '1/BL/10/16', '2016-10-31', '2016-10-31', 35000, 0, 35000, 5000, 'admin'),
-(5, '1/PH/10/16', '1/BL/10/16', '2016-10-31', '2016-10-31', 35000, 0, 35000, 5000, 'admin'),
-(6, '2/PH/10/16', '1/BL/10/16', '2016-10-31', '2016-10-31', 35000, 0, 35000, 5000, 'admin'),
-(7, '1/PH/10/16', '1/BL/10/16', '2016-10-31', '2016-10-31', 35000, 0, 35000, 5000, 'admin'),
-(8, '1/PH/11/16', '1/BL/11/16', '2016-11-01', '2016-11-30', 10000, 0, 10000, 100, 'admin'),
-(9, '1/PH/11/16', '1/BL/11/16', '2016-11-01', '2016-11-30', 10000, 0, 10000, 1000, 'admin'),
-(10, '1/PH/11/16', '2/BL/11/16', '2016-11-01', '2016-11-23', 10000, 0, 10000, 1000, 'admin'),
-(11, '1/PH/11/16', '1/BL/11/16', '2016-11-01', '2016-11-23', 10000, 0, 10000, 1000, 'admin'),
-(12, '3/PH/11/16', '3/BL/11/16', '2016-11-01', '2016-11-29', 990, 0, 990, 1, 'admin'),
-(13, '3/PH/11/16', '2/BL/11/16', '2016-11-01', '2016-11-23', 9999, 0, 9999, 999, 'admin'),
-(14, '3/PH/11/16', '3/BL/11/16', '2016-11-01', '2016-11-29', 990, 0, 990, 190, 'admin'),
-(15, '3/PH/11/16', '1/BL/11/16', '2016-11-01', '2016-11-23', 9000, 0, 9000, 4000, 'admin'),
-(16, '1/PH/11/16', '2/BL/11/16', '2016-11-01', '2016-11-23', 10000, 0, 10000, 1, 'admin'),
-(17, '1/PH/11/16', '3/BL/11/16', '2016-11-01', '2016-11-29', 1000, 0, 1000, 10, 'admin'),
-(18, '2/PH/11/16', '1/BL/11/16', '2016-11-01', '2016-11-23', 10000, 0, 10000, 1000, 'admin'),
-(19, '1/PH/11/16', '3/BL/11/16', '2016-11-01', '2016-11-29', 1000, 0, 1000, 1000, 'admin'),
-(20, '1/PH/11/16', '1/BL/11/16', '2016-11-01', '2016-11-23', 10000, 0, 10000, 1000, 'admin'),
-(21, '1/PH/11/16', '3/BL/11/16', '2016-11-01', '2016-11-29', 1000, 0, 1000, 100, 'admin'),
-(22, '1/PH/11/16', '1/BL/11/16', '2016-11-01', '2016-11-23', 10000, 0, 10000, 1000, 'admin'),
-(23, '1/PH/11/16', '2/BL/11/16', '2016-11-01', '2016-11-23', 10000, 0, 10000, 5000, 'admin');
+(24, '1/PH/12/16', '1/BL/12/16', '2016-12-07', '2016-12-14', 7250, 0, 7250, 1000, 'admin');
 
 --
 -- Trigger `history_detail_pembayaran_hutang`
@@ -2135,45 +2099,6 @@ CREATE TABLE `history_detail_pembayaran_piutang` (
   `jumlah_bayar` int(100) NOT NULL,
   `user_hapus` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data untuk tabel `history_detail_pembayaran_piutang`
---
-
-INSERT INTO `history_detail_pembayaran_piutang` (`id`, `no_faktur_pembayaran`, `no_faktur_penjualan`, `tanggal`, `tanggal_jt`, `kredit`, `potongan`, `total`, `jumlah_bayar`, `user_hapus`) VALUES
-(1, '1/PP/10/16', '1/JL/10/16', '2016-10-03', '2016-10-04', 8000, 0, 8000, 8000, 'admin'),
-(2, '1/PP/10/16', '1/JL/10/16', '2016-10-31', '2016-11-02', 1000, 0, 1000, 100, 'sri'),
-(3, '1/PP/11/16', '5/JL/11/16', '2016-11-01', '2016-11-05', 2000, 0, 2000, 1000, 'admin'),
-(4, '1/PP/11/16', '5/JL/11/16', '2016-11-01', '2016-11-05', 3000, 0, 3000, 1000, 'admin'),
-(5, '2/PP/11/16', '4/JL/11/16', '2016-11-01', '2016-11-05', 18000, 0, 18000, 3000, 'admin'),
-(6, '3/PP/11/16', '5/JL/11/16', '2016-11-01', '2016-11-05', 4000, 0, 4000, 1000, 'admin'),
-(7, '3/PP/11/16', '4/JL/11/16', '2016-11-01', '2016-11-05', 15000, 0, 15000, 1000, 'admin'),
-(8, '1/PP/11/16', '4/JL/11/16', '2016-11-01', '2016-11-05', 18000, 0, 18000, 3000, 'admin'),
-(9, '1/PP/11/16', '5/JL/11/16', '2016-11-01', '2016-11-05', 2000, 0, 2000, 1000, 'admin'),
-(10, '1/PP/11/16', '4/JL/11/16', '2016-11-01', '2016-11-05', 18000, 0, 18000, 3000, 'admin'),
-(11, '1/PP/11/16', '5/JL/11/16', '2016-11-01', '2016-11-05', 2000, 0, 2000, 1000, 'admin'),
-(12, '1/PP/11/16', '4/JL/11/16', '2016-11-01', '2016-11-05', 18000, 0, 18000, 3000, 'admin'),
-(13, '1/PP/11/16', '5/JL/11/16', '2016-11-01', '2016-11-05', 2000, 0, 2000, 1000, 'admin'),
-(14, '1/PP/11/16', '4/JL/11/16', '2016-11-01', '2016-11-05', 18000, 0, 18000, 3000, 'admin'),
-(15, '1/PP/11/16', '5/JL/11/16', '2016-11-01', '2016-11-05', 2000, 0, 2000, 1000, 'admin'),
-(16, '1/PP/11/16', '4/JL/11/16', '2016-11-01', '2016-11-05', 18000, 0, 18000, 3000, 'admin'),
-(17, '1/PP/11/16', '5/JL/11/16', '2016-11-01', '2016-11-05', 2000, 0, 2000, 1000, 'admin'),
-(18, '1/PP/11/16', '5/JL/11/16', '2016-11-01', '2016-11-05', 2000, 0, 2000, 1000, 'admin'),
-(19, '1/PP/11/16', '7/JL/11/16', '2016-11-01', '2016-11-02', 1100, 0, 4100, 100, 'admin'),
-(20, '1/PP/11/16', '4/JL/11/16', '2016-11-01', '2016-11-05', 18000, 0, 4100, 3000, 'admin'),
-(21, '1/PP/11/16', '5/JL/11/16', '2016-11-01', '2016-11-05', 2000, 0, 4100, 1000, 'admin'),
-(22, '1/PP/11/16', '5/JL/11/16', '2016-11-01', '2016-11-05', 2000, 0, 2100, 1000, 'admin'),
-(23, '1/PP/11/16', '4/JL/11/16', '2016-11-01', '2016-11-05', 18000, 0, 2100, 1000, 'admin'),
-(24, '1/PP/11/16', '7/JL/11/16', '2016-11-01', '2016-11-02', 1100, 0, 2100, 100, 'admin'),
-(25, '1/PP/11/16', '4/JL/11/16', '2016-11-01', '2016-11-05', 18000, 0, 4500, 3000, 'admin'),
-(26, '1/PP/11/16', '5/JL/11/16', '2016-11-01', '2016-11-05', 2000, 0, 4500, 1000, 'admin'),
-(27, '1/PP/11/16', '7/JL/11/16', '2016-11-01', '2016-11-02', 1000, 0, 4500, 500, 'admin'),
-(28, '1/PP/11/16', '7/JL/11/16', '2016-11-01', '2016-11-02', 1100, 0, 2100, 100, 'admin'),
-(29, '1/PP/11/16', '4/JL/11/16', '2016-11-01', '2016-11-05', 18000, 0, 2100, 1000, 'admin'),
-(30, '1/PP/11/16', '5/JL/11/16', '2016-11-01', '2016-11-05', 2000, 0, 2100, 1000, 'admin'),
-(31, '1/PP/11/16', '7/JL/11/16', '2016-11-01', '2016-11-02', 1100, 0, 3600, 100, 'admin'),
-(32, '1/PP/11/16', '4/JL/11/16', '2016-11-01', '2016-11-05', 18000, 0, 3600, 3000, 'admin'),
-(33, '1/PP/11/16', '5/JL/11/16', '2016-11-01', '2016-11-05', 2000, 0, 3600, 500, 'admin');
 
 --
 -- Trigger `history_detail_pembayaran_piutang`
@@ -2247,7 +2172,8 @@ INSERT INTO `history_detail_pembelian` (`id`, `no_faktur`, `tanggal`, `jam`, `wa
 (32, '1/BL/11/16', '2016-11-01', '10:41:29', '2016-11-01 10:41:29', 'B1', 'BJBJ', '1000', '125', 10, 10000, 0, 0, '', 1000, 'admin'),
 (33, '4/BL/11/16', '2016-11-01', '10:59:22', '2016-11-01 10:59:22', 'B1', 'BJBJ', '1', '125', 10, 10, 0, 0, '', 1, 'admin'),
 (34, '1/BL/11/16', '2016-11-05', '13:41:07', '2016-11-05 13:41:07', 'B2', 'Panadol Extra', '12', '125', 1000, 12000, 0, 0, '', 12, 'admin'),
-(35, '2/BL/11/16', '2016-11-28', '13:32:00', '2016-11-28 13:32:00', 'B2', 'Panadol Extra', '10', '125', 1000, 10000, 0, 0, '', 10, 'admin');
+(35, '2/BL/11/16', '2016-11-28', '13:32:00', '2016-11-28 13:32:00', 'B2', 'Panadol Extra', '10', '125', 1000, 10000, 0, 0, '', 10, 'admin'),
+(36, '2/BL/12/16', '2016-12-07', '11:44:12', '2016-12-07 11:44:12', 'B3', 'Ice Dobokky', '1', '125', 1250, 1250, 0, 0, '', 1, 'admin');
 
 --
 -- Trigger `history_detail_pembelian`
@@ -2611,16 +2537,20 @@ CREATE TABLE `history_kas_keluar` (
   `tanggal` date NOT NULL,
   `jam` time NOT NULL,
   `user` varchar(100) NOT NULL,
-  `user_hapus` varchar(100) NOT NULL
+  `user_hapus` varchar(100) NOT NULL,
+  `user_edit` varchar(100) DEFAULT NULL,
+  `waktu_edit` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data untuk tabel `history_kas_keluar`
 --
 
-INSERT INTO `history_kas_keluar` (`id`, `no_faktur`, `keterangan`, `dari_akun`, `jumlah`, `tanggal`, `jam`, `user`, `user_hapus`) VALUES
-(1, '1/KK/11/16', '', '1-1120', 5, '2016-11-21', '15:13:30', 'admin', 'admin'),
-(2, '1/KK/11/16', '', '1-1119', 10000, '2016-11-22', '13:03:23', 'admin', 'admin');
+INSERT INTO `history_kas_keluar` (`id`, `no_faktur`, `keterangan`, `dari_akun`, `jumlah`, `tanggal`, `jam`, `user`, `user_hapus`, `user_edit`, `waktu_edit`) VALUES
+(1, '1/KK/11/16', '', '1-1120', 5, '2016-11-21', '15:13:30', 'admin', 'admin', NULL, NULL),
+(2, '1/KK/11/16', '', '1-1119', 10000, '2016-11-22', '13:03:23', 'admin', 'admin', NULL, NULL),
+(3, '1/KK/12/16', '', '1-1119', 500000, '2016-12-08', '10:06:33', 'admin', 'admin', NULL, NULL),
+(4, '2/KK/12/16', '', '1-1119', 10000, '2016-12-08', '13:38:10', 'admin', 'admin', 'admin', '2016-12-08 13:41:55');
 
 --
 -- Trigger `history_kas_keluar`
@@ -2682,42 +2612,17 @@ CREATE TABLE `history_kas_mutasi` (
   `tanggal` date NOT NULL,
   `jam` time NOT NULL,
   `user` varchar(100) NOT NULL,
-  `user_hapus` varchar(100) NOT NULL
+  `user_hapus` varchar(100) NOT NULL,
+  `user_edit` varchar(100) DEFAULT NULL,
+  `waktu_edit` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data untuk tabel `history_kas_mutasi`
 --
 
-INSERT INTO `history_kas_mutasi` (`id`, `no_faktur`, `keterangan`, `dari_akun`, `ke_akun`, `jumlah`, `tanggal`, `jam`, `user`, `user_hapus`) VALUES
-(15, '1/KMT/08/16	', 'Tes History', 'K/001', 'K/005', 1000, '2016-08-27', '17:10:24', 'admin', 'admin'),
-(16, '		1/KMT/11/16	', 'adalah', '1-1120', '1-1119', 5, '2016-11-21', '15:16:53', 'admin', 'admin'),
-(17, '3/KMT/11/16', '', '1-1119', '1-1121', 500000000, '2016-11-22', '15:17:44', 'admin', 'admin'),
-(18, '2/KMT/11/16', '', '1-1119', '1-1120', 500, '2016-11-22', '15:17:09', 'admin', 'admin'),
-(19, '2/KMT/11/16', '', '1-1119', '1-1120', 2000, '2016-11-23', '10:26:36', 'admin', 'admin'),
-(20, '2/KMT/11/16', '', '1-1119', '1-1121', 2000, '2016-11-23', '10:28:07', 'admin', 'admin'),
-(21, '2/KMT/11/16', 'fhdfh', '1-1119', '1-1120', 87050, '2016-11-23', '14:34:27', 'admin', 'admin'),
-(22, '1/KMT/11/16', 'dsgsdg', '1-1120', '1-1119', 80850, '2016-11-23', '14:33:51', 'admin', 'admin'),
-(23, '1/KMT/11/16', 'ghghk', '1-1119', '1-1140', 6200, '2016-11-23', '14:35:32', 'admin', 'admin'),
-(24, '2/KMT/11/16', 'ghkghk', '1-1140', '1-1119', 6200, '2016-11-23', '14:36:23', 'admin', 'admin'),
-(25, '1/KMT/11/16', 'dsdsgdsg', '1-1119', '1-1140', 6200, '2016-11-23', '14:36:07', 'admin', 'admin'),
-(26, '1/KMT/11/16', 'dsfdsg', '1-1119', '1-1140', 3200, '2016-11-23', '14:37:14', 'admin', 'admin'),
-(27, '1/KMT/11/16', 'fdhfdh', '1-1119', '1-1140', 6200, '2016-11-23', '14:37:47', 'admin', 'admin'),
-(28, '2/KMT/11/16', 'gjgjgfj', '1-1140', '1-1119', 6200, '2016-11-23', '14:38:06', 'admin', 'admin'),
-(29, '1/KMT/11/16', 'dgdg', '1-1119', '1-1140', 6200, '2016-11-23', '14:44:09', 'admin', 'admin'),
-(30, '2/KMT/11/16', 'fdhdfh', '1-1140', '1-1119', 6200, '2016-11-23', '14:45:24', 'admin', 'admin'),
-(31, '1/KMT/11/16', 'ad', '1-1119', '1-1140', 6200, '2016-11-23', '14:55:18', 'admin', 'admin'),
-(32, '2/KMT/11/16', 'gfdsgds', '1-1140', '1-1119', 6200, '2016-11-23', '14:56:09', 'admin', 'admin'),
-(33, '1/KMT/11/16', 'ok', '1-1119', '1-1140', 67000000, '2016-11-23', '15:04:34', 'admin', 'admin'),
-(34, '1/KMT/11/16', '', '1-1119', '1-1140', 2147483647, '2016-11-23', '15:06:03', 'admin', 'admin'),
-(35, '1/KMT/11/16', 'sadasd', '1-1119', '1-1140', 654646796, '2016-11-23', '15:11:51', 'admin', 'admin'),
-(36, '1/KMT/11/16', 'sadasd', '1-1119', '1-1140', 2147483647, '2016-11-23', '15:15:26', 'admin', 'admin'),
-(37, '1/KMT/11/16', 'safasf', '1-1119', '1-1140', 7000, '2016-11-23', '15:16:05', 'admin', 'admin'),
-(38, '1/KMT/11/16', 'asdasd', '1-1119', '1-1140', 7000, '2016-11-23', '15:17:15', 'admin', 'admin'),
-(39, '1/KMT/11/16', 'dsfdsfdsfds', '1-1119', '1-1140', 13434, '2016-11-23', '16:20:11', 'admin', 'admin'),
-(40, '1/KMT/11/16', 'ds', '1-1119', '1-1140', 5, '2016-11-23', '16:22:15', 'admin', 'admin'),
-(41, '1/KMT/11/16', 'sadas', '1-1119', '1-1140', 6700, '2016-11-23', '16:25:18', 'admin', 'admin'),
-(42, '1/KMT/11/16', 'asdsad', '1-1120', '1-1120', 10000, '2016-11-23', '16:27:34', 'admin', 'admin');
+INSERT INTO `history_kas_mutasi` (`id`, `no_faktur`, `keterangan`, `dari_akun`, `ke_akun`, `jumlah`, `tanggal`, `jam`, `user`, `user_hapus`, `user_edit`, `waktu_edit`) VALUES
+(43, '1/KMT/12/16', 'tes 1', '1-1119', '1-1120', 850, '2016-12-07', '13:31:27', 'admin', 'admin', 'admin', '2016-12-07 13:31:27');
 
 --
 -- Trigger `history_kas_mutasi`
@@ -2742,8 +2647,8 @@ CREATE TABLE `history_pembayaran_hutang` (
   `keterangan` varchar(100) DEFAULT NULL,
   `total` int(100) NOT NULL,
   `user_buat` varchar(100) NOT NULL,
-  `user_edit` varchar(100) NOT NULL,
-  `tanggal_edit` date NOT NULL,
+  `user_edit` varchar(100) DEFAULT NULL,
+  `tanggal_edit` date DEFAULT NULL,
   `dari_kas` varchar(100) NOT NULL,
   `user_hapus` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -2753,22 +2658,7 @@ CREATE TABLE `history_pembayaran_hutang` (
 --
 
 INSERT INTO `history_pembayaran_hutang` (`id`, `no_faktur_pembayaran`, `tanggal`, `jam`, `nama_suplier`, `keterangan`, `total`, `user_buat`, `user_edit`, `tanggal_edit`, `dari_kas`, `user_hapus`) VALUES
-(1, '1/PH/10/16', '2016-10-03', '13:25:36', '23', '', 15000, 'admin', '', '0000-00-00', '1-1120', 'admin'),
-(2, '1/PH/10/16', '2016-10-03', '14:04:34', '23', '', 15000, 'admin', '', '0000-00-00', '1-1120', 'admin'),
-(3, '1/PH/10/16', '2016-10-31', '14:22:59', '26', '5k', 5000, 'admin', '', '0000-00-00', '1-1120', 'admin'),
-(4, '2/PH/10/16', '2016-10-31', '14:29:35', '26', '5K', 5000, 'admin', '', '0000-00-00', '1-1120', 'admin'),
-(5, '1/PH/10/16', '2016-10-31', '14:22:59', '26', '5k', 5000, 'admin', '', '0000-00-00', '1-1120', 'admin'),
-(6, '2/PH/10/16', '2016-10-31', '14:29:35', '26', '5K', 5000, 'admin', '', '0000-00-00', '1-1120', 'admin'),
-(7, '1/PH/10/16', '2016-10-31', '14:22:59', '26', '5k', 5000, 'admin', '', '0000-00-00', '1-1120', 'admin'),
-(8, '1/PH/11/16', '2016-11-01', '09:12:21', '24', 'bayar 1', 100, 'admin', '', '0000-00-00', '1-1120', 'admin'),
-(9, '1/PH/11/16', '2016-11-01', '10:12:10', '24', '1k and 10prk', 1010, 'admin', '', '0000-00-00', '1-1121', 'admin'),
-(10, '1/PH/11/16', '2016-11-01', '10:46:47', '32', '2 produk, dan 1k masing masing', 2000, 'admin', '', '0000-00-00', '1-1120', 'admin'),
-(11, '3/PH/11/16', '2016-11-01', '14:37:27', '32', 'ok 1k', 1000, 'admin', '', '0000-00-00', '1-1120', 'admin'),
-(12, '3/PH/11/16', '2016-11-01', '14:38:22', '32', '1', 4190, 'admin', '', '0000-00-00', '1-1120', 'admin'),
-(13, '1/PH/11/16', '2016-11-01', '11:21:15', '23', '11prk', 11, 'admin', '', '0000-00-00', '1-1120', 'admin'),
-(14, '2/PH/11/16', '2016-11-01', '14:35:09', '29', 'ok', 1090, 'admin', '', '0000-00-00', '1-1120', 'admin'),
-(15, '1/PH/11/16', '2016-11-01', '14:56:06', '32', '2k', 2000, 'admin', '', '0000-00-00', '1-1120', 'admin'),
-(16, '1/PH/11/16', '2016-11-01', '15:06:31', '32', '          1.1k          ', 6100, 'admin', 'admin', '2016-11-01', '1-1120', 'admin');
+(17, '1/PH/12/16', '2016-12-07', '14:43:57', '1', 'ok          ', 1000, 'admin', 'admin', '2016-12-07', '1-1120', 'admin');
 
 --
 -- Trigger `history_pembayaran_hutang`
@@ -2793,8 +2683,8 @@ CREATE TABLE `history_pembayaran_piutang` (
   `keterangan` varchar(100) DEFAULT NULL,
   `total` int(100) NOT NULL,
   `user_buat` varchar(100) NOT NULL,
-  `user_edit` varchar(100) NOT NULL,
-  `tanggal_edit` date NOT NULL,
+  `user_edit` varchar(100) DEFAULT NULL,
+  `tanggal_edit` date DEFAULT NULL,
   `dari_kas` varchar(100) NOT NULL,
   `user_hapus` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -2804,23 +2694,7 @@ CREATE TABLE `history_pembayaran_piutang` (
 --
 
 INSERT INTO `history_pembayaran_piutang` (`id`, `no_faktur_pembayaran`, `tanggal`, `jam`, `nama_suplier`, `keterangan`, `total`, `user_buat`, `user_edit`, `tanggal_edit`, `dari_kas`, `user_hapus`) VALUES
-(1, '1/PP/10/16', '2016-10-03', '11:53:39', '01', '', 9000, 'admin', '', '0000-00-00', '1-1120', 'admin'),
-(2, '1/PP/10/16', '2016-10-31', '16:27:38', '10-10-16', '', 100, 'sri', '', '0000-00-00', '1-1120', 'sri'),
-(3, '1/PP/11/16', '2016-11-01', '11:50:05', '55-11-16', '', 6000, 'admin', '', '0000-00-00', '1-1120', 'admin'),
-(4, '1/PP/11/16', '2016-11-01', '13:58:14', '10-10-16', '1k', 1000, 'admin', '', '0000-00-00', '1-1120', 'admin'),
-(5, '2/PP/11/16', '2016-11-01', '14:06:07', '55-11-16', '-', 3000, 'admin', '', '0000-00-00', '1-1120', 'admin'),
-(6, '3/PP/11/16', '2016-11-01', '14:10:47', '55-11-16', '', 1000, 'admin', '', '0000-00-00', '1-1120', 'admin'),
-(7, '1/PP/11/16', '2016-11-01', '14:19:47', '10-10-16', '', 4000, 'admin', '', '0000-00-00', '1-1120', 'admin'),
-(8, '1/PP/11/16', '2016-11-01', '14:27:13', '10-10-16', '', 4000, 'admin', '', '0000-00-00', '1-1120', 'admin'),
-(9, '1/PP/11/16', '2016-11-01', '14:29:38', '10-10-16', '', 4000, 'admin', '', '0000-00-00', '1-1120', 'admin'),
-(10, '1/PP/11/16', '2016-11-01', '14:32:34', '10-10-16', '', 4000, 'admin', '', '0000-00-00', '1-1120', 'admin'),
-(11, '1/PP/11/16', '2016-11-01', '14:42:24', '10-10-16', '', 4000, 'admin', '', '0000-00-00', '1-1120', 'admin'),
-(12, '1/PP/11/16', '2016-11-01', '14:42:56', '55-11-16', '', 1000, 'admin', '', '0000-00-00', '1-1120', 'admin'),
-(13, '1/PP/11/16', '2016-11-01', '15:01:58', '10-10-16', ' \n          ', 4100, 'admin', 'admin', '2016-11-01', '1-1120', 'admin'),
-(14, '1/PP/11/16', '2016-11-01', '16:05:45', '10-10-16', ' \n          ', 2100, 'admin', 'admin', '2016-11-01', '1-1120', 'admin'),
-(15, '1/PP/11/16', '2016-11-01', '16:07:29', '10-10-16', ' \n          ', 4500, 'admin', 'admin', '2016-11-01', '1-1120', 'admin'),
-(16, '1/PP/11/16', '2016-11-01', '16:12:17', '10-10-16', ' \n          ', 2100, 'admin', 'admin', '2016-11-01', '1-1120', 'admin'),
-(17, '1/PP/11/16', '2016-11-01', '16:26:47', '10-10-16', ' \n          ', 3600, 'admin', 'admin', '2016-11-01', '1-1120', 'admin');
+(18, '1/PP/12/16', '2016-12-07', '15:07:00', '22', ' \n          ', 4300, 'admin', 'admin', '2016-12-07', '1-1120', 'admin');
 
 --
 -- Trigger `history_pembayaran_piutang`
@@ -2898,7 +2772,8 @@ INSERT INTO `history_pembelian` (`id`, `no_faktur`, `kode_gudang`, `suplier`, `t
 (32, '1/BL/11/16', 'GD001', '23', 12000, '2016-11-05', '2016-11-15', '13:41:07', 'admin', 'Hutang', 0, 0, 0, 12000, 12000, '1-1120', 0, 'Kredit', 'Include', 'admin'),
 (33, '2/BL/11/16', 'GD001', '2', 10000, '2016-11-28', '0000-00-00', '13:32:00', 'admin', 'Lunas', 0, 0, 0, 0, 0, '1-1120', 10000, 'Tunai', 'Include', 'admin'),
 (34, '3/BL/12/16', 'GD002', '4', 47250, '2016-12-01', '2016-12-28', '14:07:24', 'admin', 'Hutang', 5000, 2250, 0, 42250, 42250, '1-1120', 5000, 'Kredit', 'Exclude', 'admin'),
-(35, '2/BL/12/16', 'GD001', '2', 5000, '2016-12-01', '2016-12-28', '14:06:55', 'admin', 'Hutang', 0, 0, 0, 4800, 4800, '1-1120', 200, 'Kredit', 'Exclude', 'admin');
+(35, '2/BL/12/16', 'GD001', '2', 5000, '2016-12-01', '2016-12-28', '14:06:55', 'admin', 'Hutang', 0, 0, 0, 4800, 4800, '1-1120', 200, 'Kredit', 'Exclude', 'admin'),
+(36, '2/BL/12/16', 'GD001', '2', 1250, '2016-12-07', '2016-12-14', '11:44:12', 'admin', 'Hutang', 0, 0, 0, 1250, 1250, '1-1120', 0, 'Kredit', 'Exclude', 'admin');
 
 --
 -- Trigger `history_pembelian`
@@ -3231,18 +3106,6 @@ CREATE TABLE `hpp_keluar` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `hpp_keluar`
---
-
-INSERT INTO `hpp_keluar` (`id`, `no_faktur`, `no_faktur_hpp_masuk`, `kode_barang`, `jenis_transaksi`, `jumlah_kuantitas`, `harga_unit`, `total_nilai`, `tanggal`, `jam`, `waktu`, `sisa_barang`, `jenis_hpp`) VALUES
-(8, '1/IK/12/16', '8/SA/12/16', 'B2', 'Item Keluar', 10, 1000, 10000, '2016-12-05', '10:19:15', '0000-00-00 00:00:00', 10, 0),
-(24, '1/JL/12/16', '8/SA/12/16', 'B2', 'Penjualan', 5, 1000, 5000, '2016-12-05', '15:18:04', '0000-00-00 00:00:00', 5, 0),
-(26, '2/JL/12/16', '1/IM/12/16', 'B3', 'Penjualan', 15, 1250, 18750, '2016-12-05', '17:02:17', '0000-00-00 00:00:00', 15, 0),
-(27, '2/JL/12/16', '8/SA/12/16', 'B2', 'Penjualan', 5, 1000, 5000, '2016-12-05', '17:02:17', '0000-00-00 00:00:00', 5, 0),
-(29, '3/JL/12/16', '8/SA/12/16', 'B2', 'Penjualan', 5, 1000, 5000, '2016-12-05', '17:04:16', '0000-00-00 00:00:00', 5, 0),
-(30, '3/JL/12/16', '1/IM/12/16', 'B3', 'Penjualan', 5, 1250, 6250, '2016-12-05', '17:04:16', '0000-00-00 00:00:00', 5, 0);
-
---
 -- Trigger `hpp_keluar`
 --
 DELIMITER $$
@@ -3280,14 +3143,6 @@ CREATE TABLE `hpp_masuk` (
   `waktu` datetime NOT NULL,
   `jenis_hpp` int(10) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data untuk tabel `hpp_masuk`
---
-
-INSERT INTO `hpp_masuk` (`id`, `no_faktur`, `no_faktur_hpp_keluar`, `no_faktur_hpp_masuk`, `kode_barang`, `jenis_transaksi`, `jumlah_kuantitas`, `harga_unit`, `sisa_harga`, `total_nilai`, `sisa`, `sisa_retur`, `tanggal`, `jam`, `waktu`, `jenis_hpp`) VALUES
-(32, '8/SA/12/16', '', NULL, 'B2', 'Stok Awal', 100, 1000, 0, 100000, 75, 0, '2016-12-03', '11:34:52', '0000-00-00 00:00:00', 1),
-(52, '1/IM/12/16', '', NULL, 'B3', 'Item Masuk', 20, 1250, 0, 25000, 0, 0, '2016-12-05', '09:56:22', '2016-12-05 09:56:22', 1);
 
 -- --------------------------------------------------------
 
@@ -13884,13 +13739,6 @@ CREATE TABLE `item_keluar` (
   `total` int(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Dumping data untuk tabel `item_keluar`
---
-
-INSERT INTO `item_keluar` (`id`, `no_faktur`, `kode_gudang`, `tanggal`, `jam`, `user`, `user_edit`, `tanggal_edit`, `keterangan`, `total`) VALUES
-(3, '1/IK/12/16', NULL, '2016-12-05', '10:19:15', 'admin', NULL, NULL, '', 10000);
-
 -- --------------------------------------------------------
 
 --
@@ -13909,13 +13757,6 @@ CREATE TABLE `item_masuk` (
   `keterangan` varchar(100) DEFAULT NULL,
   `total` int(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data untuk tabel `item_masuk`
---
-
-INSERT INTO `item_masuk` (`id`, `no_faktur`, `kode_gudang`, `tanggal`, `jam`, `user`, `user_edit`, `tanggal_edit`, `keterangan`, `total`) VALUES
-(2, '1/IM/12/16', NULL, '2016-12-05', '09:56:22', 'admin', NULL, NULL, '', 25000);
 
 -- --------------------------------------------------------
 
@@ -14070,28 +13911,12 @@ CREATE TABLE `jurnal_trans` (
 --
 
 INSERT INTO `jurnal_trans` (`id`, `nomor_jurnal`, `waktu_jurnal`, `keterangan_jurnal`, `kode_akun_jurnal`, `debit`, `kredit`, `jenis_transaksi`, `no_faktur`, `approved`, `user_buat`, `user_edit`) VALUES
-(17, '3/JR/12/16', '2016-12-03 14:25:51', 'Stok Awal -', '1-1301', 50000, 0, 'Stok Awal', '12/SA/12/16', 1, 'admin', NULL),
-(18, '4/JR/12/16', '2016-12-03 14:25:51', 'Stok Awal -', '5-2200', 0, 50000, 'Stok Awal', '12/SA/12/16', 1, 'admin', NULL),
-(19, '5/JR/12/16', '2016-12-03 14:28:34', 'Stok Awal -', '1-1301', 100000, 0, 'Stok Awal', '13/SA/12/16', 1, 'admin', NULL),
-(20, '6/JR/12/16', '2016-12-03 14:28:34', 'Stok Awal -', '5-2200', 0, 100000, 'Stok Awal', '13/SA/12/16', 1, 'admin', NULL),
-(43, '7/JR/12/16', '2016-12-05 09:56:22', 'Persediaan -', '1-1301', 25000, 0, 'Item Masuk', '1/IM/12/16', 1, 'admin', NULL),
-(44, '8/JR/12/16', '2016-12-05 09:56:22', 'Item Masuk -', '5-2201', 0, 25000, 'Item Masuk', '1/IM/12/16', 1, 'admin', NULL),
-(51, '9/JR/12/16', '2016-12-05 10:19:15', 'Persediaan -', '1-1301', 0, 10000, 'Item Keluar', '1/IK/12/16', 1, 'admin', NULL),
-(52, '10/JR/12/16', '2016-12-05 10:19:15', 'Item Keluar -', '5-2202', 10000, 0, 'Item Masuk', '1/IK/12/16', 1, 'admin', NULL),
-(164, '11/JR/12/16', '2016-12-05 15:18:04', 'Penjualan Rawat Jalan Tunai - Toujo Basara', '1-1301', 0, 5000, 'Penjualan', '1/JL/12/16', 1, 'TEAM #3', NULL),
-(165, '11/JR/12/16', '2016-12-05 15:18:04', 'Penjualan Rawat Jalan Tunai - Toujo Basara', '5-1100', 5000, 0, 'Penjualan', '1/JL/12/16', 1, 'TEAM #3', NULL),
-(166, '11/JR/12/16', '2016-12-05 15:18:04', 'Penjualan Rawat Jalan Tunai - Toujo Basara', '1-1120', 15000, 0, 'Penjualan', '1/JL/12/16', 1, 'TEAM #3', NULL),
-(167, '11/JR/12/16', '2016-12-05 15:18:04', 'Penjualan Rawat Jalan Tunai - Toujo Basara', '4-1100', 0, 15000, 'Penjualan', '1/JL/12/16', 1, 'TEAM #3', NULL),
-(168, '11/JR/12/16', '2016-12-05 15:18:04', 'Penjualan Rawat Jalan Tunai - Toujo Basara', '2-4110', 0, 0, 'Penjualan', '1/JL/12/16', 1, 'TEAM #3', NULL),
-(169, '11/JR/12/16', '2016-12-05 15:18:04', 'Penjualan Rawat Jalan Tunai - Toujo Basara', '4-1500', 0, 0, 'Penjualan', '1/JL/12/16', 1, 'TEAM #3', NULL),
-(177, '12/JR/12/16', '2016-12-05 17:02:17', 'Penjualan Rawat Jalan Tunai - adinda', '1-1301', 0, 23750, 'Penjualan', '2/JL/12/16', 1, 'TEAM #3', NULL),
-(178, '13/JR/12/16', '2016-12-05 17:02:17', 'Penjualan Rawat Jalan Tunai - adinda', '5-1100', 23750, 0, 'Penjualan', '2/JL/12/16', 1, 'TEAM #3', NULL),
-(179, '14/JR/12/16', '2016-12-05 17:02:17', 'Penjualan Rawat Jalan Tunai - adinda', '1-1120', 17990, 0, 'Penjualan', '2/JL/12/16', 1, 'TEAM #3', NULL),
-(180, '15/JR/12/16', '2016-12-05 17:02:17', 'Penjualan Rawat Jalan Tunai - adinda', '4-1100', 0, 20900, 'Penjualan', '2/JL/12/16', 1, 'TEAM #3', NULL),
-(181, '16/JR/12/16', '2016-12-05 17:02:17', 'Penjualan Rawat Jalan Tunai - adinda', '2-4110', 0, 0, 'Penjualan', '2/JL/12/16', 1, 'TEAM #3', NULL),
-(182, '17/JR/12/16', '2016-12-05 17:02:17', 'Penjualan Rawat Jalan Tunai - adinda', '4-1500', 2910, 0, 'Penjualan', '2/JL/12/16', 1, 'TEAM #3', NULL),
-(190, '18/JR/12/16', '2016-12-07 09:28:12', 'Transaksi Kas Masuk ke ', '1-1119', 50000, 0, 'Kas Masuk', '1/KM/12/16', 1, 'admin', NULL),
-(191, '19/JR/12/16', '2016-12-07 09:28:12', 'Transaksi Kas Masuk dari Pendapatan Jual', '4-1100', 0, 50000, 'Kas Masuk', '1/KM/12/16', 1, 'admin', NULL);
+(317, '1/JR/12/16', '2016-12-08 10:00:39', 'Transaksi Kas Masuk ke ', '1-1119', 50000, 0, 'Kas Masuk', '1/KM/12/16', 1, 'admin', NULL),
+(318, '2/JR/12/16', '2016-12-08 10:00:39', 'Transaksi Kas Masuk dari ', '3-1000', 0, 50000, 'Kas Masuk', '1/KM/12/16', 1, 'admin', NULL),
+(327, '9/JR/12/16', '2016-12-08 13:40:12', 'Transaksi Kas Keluar dari KAS KECIL', '1-1119', 0, 5000, 'Kas Keluar', '1/KK/12/16', 1, 'admin', 'admin'),
+(328, '10/JR/12/16', '2016-12-08 13:40:12', 'Transaksi Kas Keluar ke Pendapatan Jual', '4-1100', 5000, 0, 'Kas Keluar', '1/KK/12/16', 1, 'admin', 'admin'),
+(329, '11/JR/12/16', '2016-12-08 13:40:12', 'Transaksi Kas Keluar dari KAS KECIL', '1-1119', 0, 10000, 'Kas Keluar', '1/KK/12/16', 1, 'admin', 'admin'),
+(330, '12/JR/12/16', '2016-12-08 13:40:12', 'Transaksi Kas Keluar ke ', '5-2100', 10000, 0, 'Kas Keluar', '1/KK/12/16', 1, 'admin', 'admin');
 
 -- --------------------------------------------------------
 
@@ -14146,8 +13971,16 @@ CREATE TABLE `kas_keluar` (
   `tanggal` date NOT NULL,
   `jam` time NOT NULL,
   `user` varchar(100) NOT NULL,
-  `waktu_edit` datetime DEFAULT NULL
+  `waktu_edit` datetime DEFAULT NULL,
+  `user_edit` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data untuk tabel `kas_keluar`
+--
+
+INSERT INTO `kas_keluar` (`id`, `no_faktur`, `keterangan`, `dari_akun`, `jumlah`, `tanggal`, `jam`, `user`, `waktu_edit`, `user_edit`) VALUES
+(2, '1/KK/12/16', '', '1-1119', 15000, '2016-12-08', '13:26:37', 'admin', '2016-12-08 13:40:12', NULL);
 
 -- --------------------------------------------------------
 
@@ -14174,7 +14007,7 @@ CREATE TABLE `kas_masuk` (
 --
 
 INSERT INTO `kas_masuk` (`id`, `no_faktur`, `keterangan`, `ke_akun`, `jumlah`, `tanggal`, `jam`, `user`, `status_upload`, `waktu_edit`, `user_edit`) VALUES
-(1, '1/KM/12/16', '', '1-1119', 50000, '2016-12-07', '09:28:12', 'admin', NULL, NULL, NULL);
+(5, '1/KM/12/16', '', '1-1119', 50000, '2016-12-08', '10:00:39', 'admin', NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -14192,7 +14025,8 @@ CREATE TABLE `kas_mutasi` (
   `tanggal` date NOT NULL,
   `jam` time NOT NULL,
   `user` varchar(100) NOT NULL,
-  `waktu_edit` datetime DEFAULT NULL
+  `waktu_edit` datetime DEFAULT NULL,
+  `user_edit` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -14264,21 +14098,6 @@ CREATE TABLE `laporan_fee_faktur` (
   `no_reg` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Dumping data untuk tabel `laporan_fee_faktur`
---
-
-INSERT INTO `laporan_fee_faktur` (`id`, `nama_petugas`, `no_faktur`, `jumlah_fee`, `tanggal`, `jam`, `status_bayar`, `no_rm`, `no_reg`) VALUES
-(1, '123', '1/JL/12/16', 2573, '2016-12-05', '15:09:55', NULL, '1', '13-REG-12-16'),
-(2, '123', '1/JL/12/16', 3848, '2016-12-05', '15:11:15', NULL, '1', '13-REG-12-16'),
-(3, '123', '1/JL/12/16', 1256, '2016-12-05', '15:14:30', NULL, '1', '13-REG-12-16'),
-(4, '123', '1/JL/12/16', 1387, '2016-12-05', '15:15:12', NULL, '1', '13-REG-12-16'),
-(5, '121 ', '1/JL/12/16', 1500, '2016-12-05', '15:18:04', NULL, '1', '13-REG-12-16'),
-(6, '123', '1/JL/12/16', 1500, '2016-12-05', '15:18:04', NULL, '1', '13-REG-12-16'),
-(8, '121 ', '2/JL/12/16', 1799, '2016-12-05', '17:02:17', NULL, '3', '14-REG-12-16'),
-(9, '123', '2/JL/12/16', 1799, '2016-12-05', '17:02:17', NULL, '3', '14-REG-12-16'),
-(11, '123', '3/JL/12/16', 3735, '2016-12-05', '17:04:16', NULL, '', '15-REG-12-16');
-
 -- --------------------------------------------------------
 
 --
@@ -14298,25 +14117,6 @@ CREATE TABLE `laporan_fee_produk` (
   `no_rm` varchar(100) DEFAULT NULL,
   `no_reg` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data untuk tabel `laporan_fee_produk`
---
-
-INSERT INTO `laporan_fee_produk` (`id`, `nama_petugas`, `no_faktur`, `kode_produk`, `nama_produk`, `jumlah_fee`, `tanggal`, `jam`, `status_bayar`, `no_rm`, `no_reg`) VALUES
-(1, '123', '1/JL/12/16', 'B2', 'Panadol Extra', 2175, '2016-12-05', '15:11:15', NULL, '1', '13-REG-12-16'),
-(2, '123', '1/JL/12/16', 'B2', 'Panadol Extra', 700, '2016-12-05', '15:14:30', NULL, '1', '13-REG-12-16'),
-(3, '123', '1/JL/12/16', 'B2', 'Panadol Extra', 695, '2016-12-05', '15:15:12', NULL, '1', '13-REG-12-16'),
-(4, '123', '1/JL/12/16', 'B2', 'Panadol Extra', 2175, '2016-12-05', '15:18:04', NULL, '1', '13-REG-12-16'),
-(5, '123', '1/JL/12/16', 'B2', 'Panadol Extra', 700, '2016-12-05', '15:18:04', NULL, '1', '13-REG-12-16'),
-(6, '123', '1/JL/12/16', 'B2', 'Panadol Extra', 695, '2016-12-05', '15:18:04', NULL, '1', '13-REG-12-16'),
-(7, '123', '1/JL/12/16', 'B2', 'Panadol Extra', 750, '2016-12-05', '15:18:04', NULL, '1', '13-REG-12-16'),
-(9, '121', '2/JL/12/16', 'B3', 'Ice Dobokky', 440, '2016-12-05', '17:02:17', NULL, '3', '14-REG-12-16'),
-(10, '123', '2/JL/12/16', 'B2', 'Panadol Extra', 750, '2016-12-05', '17:02:17', NULL, '3', '14-REG-12-16'),
-(12, '123', '3/JL/12/16', 'B2', 'Panadol Extra', 975, '2016-12-05', '17:04:16', NULL, '', '15-REG-12-16'),
-(13, '121', '3/JL/12/16', 'B3', 'Ice Dobokky', 200, '2016-12-05', '17:04:16', NULL, '', '15-REG-12-16'),
-(14, '125', '3/JL/12/16', 'J1', 'Suntik DBD', 2985, '2016-12-05', '17:04:16', NULL, '', '15-REG-12-16'),
-(15, '121', '3/JL/12/16', 'J1', 'Suntik DBD', 1990, '2016-12-05', '17:04:16', NULL, '', '15-REG-12-16');
 
 -- --------------------------------------------------------
 
@@ -15114,11 +14914,11 @@ CREATE TABLE `pelanggan` (
 INSERT INTO `pelanggan` (`id`, `no_rm`, `nama_pelanggan`, `kode_pelanggan`, `e_mail`, `wilayah`, `level_harga`, `tempat_lahir`, `tgl_lahir`, `umur`, `alamat_sekarang`, `alamat_ktp`, `no_telp`, `no_ktp`, `nama_suamiortu`, `pekerjaan_suamiortu`, `nama_penanggungjawab`, `hubungan_dengan_pasien`, `alamat_penanggung`, `no_hp_penanggung`, `jenis_kelamin`, `pendidikan_terakhir`, `status_kawin`, `agama`, `penjamin`, `gol_darah`, `provinsi`, `kabupaten`, `kecamatan`, `kelurahan`, `tanggal`, `alergi`, `no_kk`, `nama_kk`, `no_rm_lama`) VALUES
 (28654, NULL, 'Toujo Basara', 1, NULL, NULL, NULL, '-', '2000-11-08', '16 Tahun', '-', '-', '085385235', '0', '-', 'dsfsd', 'r', 'Orang Tua', 'dsfds', '4534534', 'laki - Laki', '-', '-', '-', 'PERSONAL', '-', NULL, NULL, NULL, NULL, '2016-11-24', NULL, '0', '-', NULL),
 (28655, NULL, 'dobo', 2, NULL, NULL, NULL, 'se rang', '1983-11-07', '33 Tahun', 'gak tau dimana', 'serang', '2342', '12345', 'patrio', '-', '-', 'Orang Tua', '-', '0123', 'perempuan', '-', '-', '-', 'PERSONAL', '-', NULL, NULL, NULL, NULL, '2016-11-24', NULL, '0', '-', NULL),
-(28656, NULL, 'adinda', 3, NULL, NULL, NULL, '-', '2008-11-04', '8 Tahun', 'papua', '-', '0', '0', '-', '-', '-', 'Orang Tua', '-', '0123456', 'perempuan', '-', '-', '-', 'PERSONAL', '-', NULL, NULL, NULL, NULL, '2016-11-24', NULL, '0', '-', NULL),
+(28656, NULL, 'adinda', 3, NULL, NULL, NULL, '-', '2008-11-04', '8 Tahun', 'papua', '-', '0', '0', '-', 'awdad', 'awda', 'Orang Tua', 'adwad', '2342', 'perempuan', '-', '-', '-', 'PERSONAL', '-', NULL, NULL, NULL, NULL, '2016-11-24', NULL, '0', '-', NULL),
 (28657, NULL, 'yolanda', 4, NULL, NULL, NULL, '-', '2016-11-24', '0 Bulan', '-', '-', '0', '0', '-', '-', '-', 'Orang Tua', '-', '54664556546546', 'laki - Laki', '-', '-', '-', 'PERSONAL', '-', NULL, NULL, NULL, NULL, '2016-11-24', NULL, '0', '-', NULL),
 (28658, NULL, 'Rias Gremory', 5, NULL, NULL, NULL, '-', '2002-11-05', '14 Tahun', '-', '-', '087921354862', '0', '-', 'adw', 'as', 'Orang Tua', 'as', '2', 'laki - Laki', '-', '-', '-', 'PERSONAL', '-', NULL, NULL, NULL, NULL, '2016-11-25', NULL, '0', '-', NULL),
 (28661, NULL, 'asder', 6, NULL, NULL, NULL, '----', '1997-11-18', '19 Tahun', 'o', '', '76856785756', '', '', 'sdasd', 'sdad', 'Orang Tua', 'asdas', '4564654', 'laki-laki', '-', '-', '-', 'PERSONAL', '-', NULL, NULL, NULL, NULL, '2016-11-25', 'Tidak Ada', '', '', NULL),
-(28662, NULL, 'Charlie', 7, NULL, NULL, NULL, '-', '1997-11-06', '19 Tahun', '-', '-', '', '', '-', '-', '-', 'Orang Tua', '-', '66565656', 'laki-laki', '-', '-', '-', 'PERSONAL', '-', NULL, NULL, NULL, NULL, '2016-11-26', 'Tidak Ada', '-', '-', NULL),
+(28662, NULL, 'Charlie', 7, NULL, NULL, NULL, '-', '1997-11-06', '19 Tahun', '-', '-', '23423', '', '-', 'awdawdad', 'adwa', 'Orang Tua', 'adawd', '2324', 'laki-laki', '-', '-', '-', 'PERSONAL', '-', NULL, NULL, NULL, NULL, '2016-11-26', 'Tidak Ada', '-', '-', NULL),
 (28664, NULL, 'SRI LESTARI', 9, NULL, NULL, NULL, 'Lampung', '1997-11-26', '19 Tahun', 'perempuan', '78', '085383550858', '56', '90', 'dsas', 'swd', 'Orang Tua', 'dsad', '232', 'perempuan', '-', '-', '-', 'PT Andaglos Global Teknologi', '-', NULL, NULL, NULL, NULL, '2016-11-26', 'Tidak Ada', '12', '34', '4592'),
 (28665, NULL, 'Rizal Ramli', 10, NULL, NULL, NULL, 'Bandar Lampung', '1984-11-07', '32 Tahun', '-', '-', '25', '5', 'dsgdsg', '-', '-', 'Orang Tua', '-', '01212121212', 'laki-laki', '-', '-', 'islam', 'PERSONAL', '-', NULL, NULL, NULL, NULL, '2016-11-26', 'Tidak Ada', '5', '5', NULL),
 (28666, NULL, 'Sudin', 11, NULL, NULL, NULL, 'Kampungan', '1997-11-13', '19 Tahun', '-', '11', '45', '121', '', '-', '-', 'Orang Tua', '-', '0213456789', 'laki-laki', '-', '-', '', 'PERSONAL', '-', NULL, NULL, NULL, NULL, '2016-11-26', 'Tidak Ada', '21', '1212', NULL),
@@ -15174,7 +14974,7 @@ CREATE TABLE `pembayaran_hutang` (
   `keterangan` varchar(100) DEFAULT NULL,
   `total` int(100) NOT NULL,
   `user_buat` varchar(100) NOT NULL,
-  `user_edit` varchar(100) NOT NULL,
+  `user_edit` varchar(100) DEFAULT NULL,
   `tanggal_edit` date DEFAULT NULL,
   `dari_kas` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -15208,7 +15008,7 @@ CREATE TABLE `pembayaran_piutang` (
   `keterangan` varchar(100) DEFAULT NULL,
   `total` int(100) NOT NULL,
   `user_buat` varchar(100) NOT NULL,
-  `user_edit` varchar(100) NOT NULL,
+  `user_edit` varchar(100) DEFAULT NULL,
   `tanggal_edit` date DEFAULT NULL,
   `dari_kas` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -15362,15 +15162,6 @@ CREATE TABLE `penjualan` (
   `waktu_edit` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Dumping data untuk tabel `penjualan`
---
-
-INSERT INTO `penjualan` (`id`, `no_faktur`, `no_reg`, `nama`, `dokter`, `penjamin`, `no_resep`, `resep_dokter`, `analis`, `apoteker`, `perawat`, `petugas_lain`, `biaya_admin`, `kode_gudang`, `kode_pelanggan`, `kode_meja`, `total`, `tanggal`, `tanggal_jt`, `jam`, `user`, `sales`, `status`, `potongan`, `tax`, `sisa`, `kredit`, `nilai_kredit`, `total_hpp`, `cara_bayar`, `tunai`, `ppn`, `no_pesanan`, `status_jual_awal`, `keterangan`, `jenis_penjualan`, `petugas_edit`, `waktu_edit`) VALUES
-(10, '1/JL/12/16', '13-REG-12-16', 'Toujo Basara', '125', 'PERSONAL', NULL, NULL, NULL, '134', '123', '', 0, 'GD001', '1', NULL, 15000, '2016-12-05', NULL, '15:18:04', 'TEAM #3', 'TEAM #3', 'Lunas', 0, 0, 0, NULL, NULL, NULL, '1-1120', 15000, 'Include', NULL, 'Tunai', ' \n           ', 'Rawat Jalan', NULL, NULL),
-(11, '2/JL/12/16', '14-REG-12-16', 'adinda', '125', 'PERSONAL', NULL, NULL, NULL, '134', '123', '', 1500, 'GD001', '3', NULL, 17990, '2016-12-05', NULL, '17:02:17', 'TEAM #3', '121', 'Lunas', 2910, 0, 2010, 5240, 5240, NULL, '1-1120', 20000, 'Include', 1, 'Tunai', ' \n          ', 'Rawat Jalan', NULL, NULL),
-(12, '3/JL/12/16', '15-REG-12-16', 'SRI LESTARI', '125', 'PT Andaglos Global Teknologi', NULL, NULL, NULL, '134', '123', 'undefined', 0, 'GD001', '9', NULL, 19500, '2016-12-05', NULL, '17:03:31', 'TEAM #3', 'TEAM #3', 'Simpan Sementara', 0, 0, -19500, 19500, 19500, NULL, '1-1120', 0, 'Include', 1, NULL, NULL, 'Rawat Jalan', NULL, NULL);
-
 -- --------------------------------------------------------
 
 --
@@ -15499,27 +15290,6 @@ CREATE TABLE `registrasi` (
   `petugas_lain` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Dumping data untuk tabel `registrasi`
---
-
-INSERT INTO `registrasi` (`id`, `no_reg`, `no_rm`, `nama_pasien`, `alamat_pasien`, `hp_pasien`, `umur_pasien`, `jenis_kelamin`, `jenis_pasien`, `penjamin`, `tanggal`, `jam`, `tanggal_masuk`, `tanggal_keluar`, `kondisi`, `pengantar_pasien`, `nama_pengantar`, `alamat_pengantar`, `hp_pengantar`, `hubungan_dengan_pasien`, `penanggung_jawab`, `alamat_penanggung_jawab`, `hp_penanggung_jawab`, `pekerjaan_penanggung_jawab`, `status`, `keterangan`, `dokter`, `petugas`, `bed`, `group_bed`, `menginap`, `keadaan_pulang`, `poli`, `no_urut`, `rujukan`, `kelurahan`, `kecamatan`, `kabupaten`, `provinsi`, `dokter_jaga`, `dokter_pengirim`, `status_nikah`, `pekerjaan_pasien`, `gol_darah`, `surat_jaminan`, `alergi`, `no_kk`, `nama_kk`, `eye`, `verbal`, `motorik`, `petugas_lain`) VALUES
-(1, '1-REG-12-16', '1', 'Toujo Basara', '-', '085385235', '16 Tahun', 'laki - Laki', 'Rawat Jalan', 'PERSONAL', '2016-12-05', '11:14:56', NULL, NULL, 'Tampak Normal', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Sudah Pulang', NULL, 'Dokter Ana', 'admin', NULL, NULL, NULL, NULL, 'Organ Dalam', 1, 'Non Rujukan', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Tidak Ada', NULL, NULL, NULL, NULL, NULL, NULL),
-(2, '2-REG-12-16', '26', 'Hyodou Issei', '-', NULL, '18 Tahun', 'laki-laki', 'Rawat Jalan', 'PERSONAL', '2016-12-05', '11:17:19', NULL, NULL, 'Tampak Normal', NULL, NULL, NULL, NULL, NULL, '-', '-', '', NULL, 'Sudah Pulang', NULL, 'Dokter Ana', 'TEAM #3', NULL, NULL, NULL, NULL, 'Organ Dalam', 2, 'Non Rujukan', NULL, NULL, NULL, NULL, NULL, NULL, '-', '-', '-', NULL, '-', '789456123', '-', NULL, NULL, NULL, NULL),
-(3, '3-REG-12-16', '2', 'dobo', 'gak tau dimana', '2342', '33 Tahun', 'perempuan', 'UGD', 'PERSONAL', '2016-12-05', '11:18:17', NULL, NULL, 'Tampak Normal', 'Datang Sendiri', '', '', '', '', NULL, NULL, NULL, NULL, 'Masuk Ruang UGD', '', 'Dokter Ana', 'TEAM #3', NULL, NULL, NULL, NULL, NULL, NULL, 'Non Rujukan', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Tidak Ada', NULL, NULL, 'Tidak ada Respon Meski Dicubit', 'Tidak ada Suara', 'Tidak Ada flasid', NULL),
-(4, '4-REG-12-16', '27', 'Udin Sedunia', '-', '456231484', '50 Tahun', 'laki-laki', 'UGD', 'PERSONAL', '2016-12-05', '11:19:23', NULL, NULL, 'Tampak Normal', 'Datang Sendiri', '', '', '', '', NULL, NULL, NULL, NULL, 'Masuk Ruang UGD', '-', 'Dokter Ana', 'admin', NULL, NULL, NULL, NULL, NULL, NULL, 'Non Rujukan', NULL, NULL, NULL, NULL, NULL, NULL, '-', '-', '-', NULL, '-', NULL, NULL, 'Tidak ada Respon Meski Dicubit', 'Tidak ada Suara', 'Tidak Ada flasid', NULL),
-(5, '5-REG-12-16', '7', 'Charlie', '-', '', '19 Tahun', 'laki-laki', 'Rawat Inap', 'PERSONAL', '2016-12-05', '11:20:11', '2016-12-05', NULL, 'Tampak Normal', NULL, NULL, NULL, NULL, 'Orang Tua', '-', '-', '66565656', '-', 'menginap', NULL, 'Dokter Ana', 'admin', '8888', 'Tes Again', NULL, NULL, 'Organ Dalam', NULL, 'Non Rujukan', NULL, NULL, NULL, NULL, NULL, 'Dokter Ana', NULL, NULL, NULL, NULL, 'Tidak Ada', NULL, NULL, NULL, NULL, NULL, NULL),
-(6, '6-REG-12-16', '28', 'Awaludin Wal Akhirudin', '-', '7', '44 Tahun', 'laki-laki', 'Rawat Inap', 'PERSONAL', '2016-12-05', '11:21:20', '2016-12-05', NULL, 'Tampak Normal', NULL, NULL, NULL, NULL, 'Orang Tua', '', '-', '', '', 'Batal Rawat Inap', 'ad', 'Dokter Ana', 'admin', 'BED BOBO I', 'BOBO ', '1', NULL, 'Organ Dalam', NULL, 'Non Rujukan', NULL, NULL, NULL, NULL, NULL, 'Dokter Ana', NULL, NULL, NULL, NULL, 'Tidak Ada', NULL, NULL, NULL, NULL, NULL, NULL),
-(7, '7-REG-12-16', '24', 'number phone', 'adwa', '55550000', '46 Tahun', 'laki-laki', 'Rawat Jalan', 'PERSONAL', '2016-12-05', '13:29:06', NULL, NULL, 'Tampak Normal', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Sudah Pulang', NULL, 'Dokter Ana', 'admin', NULL, NULL, NULL, NULL, 'Organ Dalam', 3, 'Non Rujukan', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Tidak Ada', NULL, NULL, NULL, NULL, NULL, NULL),
-(8, '8-REG-12-16', '2', 'dobo', 'gak tau dimana', '2342', '33 Tahun', 'perempuan', 'Rawat Jalan', 'PERSONAL', '2016-12-05', '14:01:08', NULL, NULL, 'Tampak Normal', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Sudah Pulang', NULL, 'Dokter Ana', 'admin', NULL, NULL, NULL, NULL, 'Organ Dalam', 4, 'Non Rujukan', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Tidak Ada', NULL, NULL, NULL, NULL, NULL, NULL),
-(9, '9-REG-12-16', '4', 'yolanda', '-', '0', '0 Bulan', 'laki - Laki', 'Rawat Jalan', 'PERSONAL', '2016-12-05', '14:50:03', NULL, NULL, 'Tampak Normal', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Sudah Pulang', NULL, 'Dokter Ana', 'admin', NULL, NULL, NULL, NULL, 'Organ Dalam', 5, 'Non Rujukan', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Tidak Ada', NULL, NULL, NULL, NULL, NULL, NULL),
-(10, '10-REG-12-16', '5', 'Rias Gremory', '-', '087921354862', '14 Tahun', 'laki - Laki', 'Rawat Jalan', 'PERSONAL', '2016-12-05', '14:56:31', NULL, NULL, 'Tampak Normal', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Sudah Pulang', NULL, 'Dokter Ana', 'admin', NULL, NULL, NULL, NULL, 'Organ Dalam', 6, 'Non Rujukan', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Tidak Ada', NULL, NULL, NULL, NULL, NULL, NULL),
-(11, '11-REG-12-16', '7', 'Charlie', '-', '', '19 Tahun', 'laki-laki', 'Rawat Jalan', 'PERSONAL', '2016-12-05', '15:00:31', NULL, NULL, 'Tampak Normal', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Sudah Pulang', NULL, 'Dokter Ana', 'admin', NULL, NULL, NULL, NULL, 'Organ Dalam', 7, 'Non Rujukan', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Tidak Ada', NULL, NULL, NULL, NULL, NULL, NULL),
-(12, '12-REG-12-16', '11', 'Sudin', '-', '45', '19 Tahun', 'laki-laki', 'Rawat Jalan', 'PERSONAL', '2016-12-05', '15:03:42', NULL, NULL, 'Tampak Normal', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Sudah Pulang', NULL, 'Dokter Ana', 'admin', NULL, NULL, NULL, NULL, 'Organ Dalam', 8, 'Non Rujukan', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Tidak Ada', NULL, NULL, NULL, NULL, NULL, NULL),
-(13, '13-REG-12-16', '1', 'Toujo Basara', '-', '085385235', '16 Tahun', 'laki - Laki', 'Rawat Jalan', 'PERSONAL', '2016-12-05', '15:05:13', NULL, NULL, 'Tampak Normal', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Sudah Pulang', NULL, 'Dokter Ana', 'admin', NULL, NULL, NULL, NULL, 'Organ Dalam', 9, 'Non Rujukan', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Tidak Ada', NULL, NULL, NULL, NULL, NULL, NULL),
-(14, '14-REG-12-16', '3', 'adinda', 'papua', '0', '8 Tahun', 'perempuan', 'Rawat Jalan', 'PERSONAL', '2016-12-05', '15:18:42', NULL, NULL, 'Tampak Normal', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Sudah Pulang', NULL, 'Dokter Ana', 'admin', NULL, NULL, NULL, NULL, 'Organ Dalam', 10, 'Non Rujukan', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Tidak Ada', NULL, NULL, NULL, NULL, NULL, NULL),
-(15, '15-REG-12-16', '9', 'SRI LESTARI', 'perempuan', '085383550858', '19 Tahun', 'perempuan', 'Rawat Jalan', 'PT Andaglos Global Teknologi', '2016-12-05', '17:03:05', NULL, NULL, 'Tampak Normal', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Sudah Pulang', NULL, 'Dokter Ana', 'admin', NULL, NULL, NULL, NULL, 'Organ Dalam', 11, 'Non Rujukan', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Tidak Ada', NULL, NULL, NULL, NULL, NULL, NULL);
-
 -- --------------------------------------------------------
 
 --
@@ -15534,12 +15304,12 @@ CREATE TABLE `rekam_medik` (
   `alamat` text NOT NULL,
   `umur` varchar(100) NOT NULL,
   `jenis_kelamin` varchar(100) NOT NULL,
-  `sistole_distole` varchar(100) NOT NULL,
-  `suhu` varchar(100) NOT NULL,
-  `berat_badan` varchar(100) NOT NULL,
-  `tinggi_badan` varchar(100) NOT NULL,
-  `nadi` varchar(100) NOT NULL,
-  `respiratory` varchar(100) NOT NULL,
+  `sistole_distole` varchar(100) DEFAULT NULL,
+  `suhu` varchar(100) DEFAULT NULL,
+  `berat_badan` varchar(100) DEFAULT NULL,
+  `tinggi_badan` varchar(100) DEFAULT NULL,
+  `nadi` varchar(100) DEFAULT NULL,
+  `respiratory` varchar(100) DEFAULT NULL,
   `poli` varchar(100) NOT NULL,
   `anamnesa` varchar(100) DEFAULT NULL,
   `pemeriksaan_fisik` varchar(100) DEFAULT NULL,
@@ -15551,8 +15321,8 @@ CREATE TABLE `rekam_medik` (
   `icd_komplikasi` varchar(100) DEFAULT NULL,
   `kode_utama` varchar(100) DEFAULT NULL,
   `kode_penyerta` varchar(100) DEFAULT NULL,
-  `kode_penyerta_tambahan` varchar(100) NOT NULL,
-  `icd_penyerta_tambahan` varchar(100) NOT NULL,
+  `kode_penyerta_tambahan` varchar(100) DEFAULT NULL,
+  `icd_penyerta_tambahan` varchar(100) DEFAULT NULL,
   `kode_komplikasi` varchar(100) DEFAULT NULL,
   `tanggal_periksa` varchar(100) NOT NULL,
   `jam` time NOT NULL,
@@ -15579,12 +15349,12 @@ CREATE TABLE `rekam_medik_inap` (
   `alamat` text NOT NULL,
   `umur` varchar(100) NOT NULL,
   `jenis_kelamin` varchar(100) NOT NULL,
-  `sistole_distole` varchar(100) NOT NULL,
-  `suhu` varchar(100) NOT NULL,
-  `berat_badan` varchar(100) NOT NULL,
-  `tinggi_badan` varchar(100) NOT NULL,
-  `nadi` varchar(100) NOT NULL,
-  `respiratory` varchar(100) NOT NULL,
+  `sistole_distole` varchar(100) DEFAULT NULL,
+  `suhu` varchar(100) DEFAULT NULL,
+  `berat_badan` varchar(100) DEFAULT NULL,
+  `tinggi_badan` varchar(100) DEFAULT NULL,
+  `nadi` varchar(100) DEFAULT NULL,
+  `respiratory` varchar(100) DEFAULT NULL,
   `poli` varchar(100) NOT NULL,
   `anamnesa` varchar(100) DEFAULT NULL,
   `pemeriksaan_fisik` varchar(100) DEFAULT NULL,
@@ -15593,11 +15363,11 @@ CREATE TABLE `rekam_medik_inap` (
   `kesadaran` varchar(100) DEFAULT NULL,
   `icd_utama` varchar(100) DEFAULT NULL,
   `icd_penyerta` varchar(100) DEFAULT NULL,
-  `icd_penyerta_tambahan` varchar(100) NOT NULL,
+  `icd_penyerta_tambahan` varchar(100) DEFAULT NULL,
   `icd_komplikasi` varchar(100) DEFAULT NULL,
   `kode_utama` varchar(100) DEFAULT NULL,
   `kode_penyerta` varchar(100) DEFAULT NULL,
-  `kode_penyerta_tambahan` varchar(100) NOT NULL,
+  `kode_penyerta_tambahan` varchar(100) DEFAULT NULL,
   `kode_komplikasi` varchar(100) DEFAULT NULL,
   `tanggal_periksa` date NOT NULL,
   `jam` time NOT NULL,
@@ -15657,14 +15427,6 @@ CREATE TABLE `rekam_medik_ugd` (
   `motorik` varchar(100) DEFAULT NULL,
   `status` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data untuk tabel `rekam_medik_ugd`
---
-
-INSERT INTO `rekam_medik_ugd` (`id`, `no_reg`, `no_rm`, `nama`, `alamat`, `umur`, `jenis_kelamin`, `sistole_distole`, `suhu`, `berat_badan`, `tinggi_badan`, `nadi`, `respiratory`, `poli`, `anamnesa`, `pemeriksaan_fisik`, `keadaan_umum`, `kondisi_keluar`, `kesadaran`, `icd_utama`, `icd_penyerta`, `icd_penyerta_tambahan`, `icd_komplikasi`, `kode_utama`, `kode_penyerta`, `kode_penyerta_tambahan`, `kode_komplikasi`, `jam`, `tanggal`, `dokter`, `kondisi`, `rujukan`, `pengantar`, `alergi`, `eye`, `verbal`, `motorik`, `status`) VALUES
-(1, '3-REG-12-16', '2', 'dobo', 'gak tau dimana', '33 Tahun', 'perempuan', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Tampak Normal', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '11:18:17', '2016-12-05', 'Dokter Ana', NULL, 'Non Rujukan', 'Datang Sendiri', 'Tidak Ada', 'Tidak ada Respon Meski Dicubit', 'Tidak ada Suara', 'Tidak Ada flasid', NULL),
-(2, '4-REG-12-16', '27', 'Udin Sedunia', 'Mars', '50 Tahun', 'laki-laki', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Tampak Normal', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '11:19:23', '2016-12-05', 'Dokter Ana', NULL, 'Non Rujukan', 'Datang Sendiri', '-', 'Tidak ada Respon Meski Dicubit', 'Tidak ada Suara', 'Tidak Ada flasid', NULL);
 
 -- --------------------------------------------------------
 
@@ -15984,13 +15746,6 @@ CREATE TABLE `stok_awal` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `stok_awal`
---
-
-INSERT INTO `stok_awal` (`id`, `no_faktur`, `kode_barang`, `nama_barang`, `jumlah_awal`, `satuan`, `harga`, `total`, `gudang`, `tanggal`, `jam`, `user`, `tanggal_edit`, `user_edit`) VALUES
-(1, '8/SA/12/16', 'B2', 'Panadol Extra', 100, '125', 1000, 100000, NULL, '2016-12-03', '11:34:52', 'admin', NULL, NULL);
-
---
 -- Trigger `stok_awal`
 --
 DELIMITER $$
@@ -16152,15 +15907,6 @@ CREATE TABLE `tbs_fee_produk` (
   `no_rm` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Dumping data untuk tabel `tbs_fee_produk`
---
-
-INSERT INTO `tbs_fee_produk` (`id`, `session_id`, `nama_petugas`, `no_faktur`, `kode_produk`, `nama_produk`, `jumlah_fee`, `tanggal`, `waktu`, `jam`, `no_reg`, `no_rm`) VALUES
-(23, NULL, '123', '1/JL/12/16', 'B2', 'Panadol Extra', 2175, '2016-12-05', NULL, '15:11:15', '13-REG-12-16', '1'),
-(24, NULL, '123', '1/JL/12/16', 'B2', 'Panadol Extra', 700, '2016-12-05', NULL, '15:14:30', '13-REG-12-16', '1'),
-(25, NULL, '123', '1/JL/12/16', 'B2', 'Panadol Extra', 695, '2016-12-05', NULL, '15:15:12', '13-REG-12-16', '1');
-
 -- --------------------------------------------------------
 
 --
@@ -16241,8 +15987,8 @@ CREATE TABLE `tbs_jurnal_trans` (
 
 CREATE TABLE `tbs_kas_keluar` (
   `id` int(100) NOT NULL,
-  `session_id` varchar(100) NOT NULL,
-  `no_faktur` varchar(100) NOT NULL,
+  `session_id` varchar(100) DEFAULT NULL,
+  `no_faktur` varchar(100) DEFAULT NULL,
   `keterangan` varchar(100) DEFAULT NULL,
   `dari_akun` varchar(100) NOT NULL,
   `ke_akun` varchar(100) NOT NULL,
@@ -16271,13 +16017,6 @@ CREATE TABLE `tbs_kas_masuk` (
   `user` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Dumping data untuk tabel `tbs_kas_masuk`
---
-
-INSERT INTO `tbs_kas_masuk` (`id`, `session_id`, `no_faktur`, `keterangan`, `dari_akun`, `ke_akun`, `jumlah`, `tanggal`, `jam`, `user`) VALUES
-(6, NULL, '1/KM/12/16', 'on', '4-1100', '1-1119', 50000, '2016-12-07', '09:33:10', 'TEAM #3');
-
 -- --------------------------------------------------------
 
 --
@@ -16304,8 +16043,8 @@ CREATE TABLE `tbs_operasi` (
 
 CREATE TABLE `tbs_pembayaran_hutang` (
   `id` int(100) NOT NULL,
-  `session_id` varchar(100) NOT NULL,
-  `no_faktur_pembayaran` varchar(100) NOT NULL,
+  `session_id` varchar(100) DEFAULT NULL,
+  `no_faktur_pembayaran` varchar(100) DEFAULT NULL,
   `no_faktur_pembelian` varchar(100) NOT NULL,
   `tanggal` date NOT NULL,
   `tanggal_jt` date NOT NULL,
@@ -16324,8 +16063,8 @@ CREATE TABLE `tbs_pembayaran_hutang` (
 
 CREATE TABLE `tbs_pembayaran_piutang` (
   `id` int(100) NOT NULL,
-  `session_id` varchar(100) NOT NULL,
-  `no_faktur_pembayaran` varchar(100) NOT NULL,
+  `session_id` varchar(100) DEFAULT NULL,
+  `no_faktur_pembayaran` varchar(100) DEFAULT NULL,
   `no_faktur_penjualan` varchar(100) NOT NULL,
   `tanggal` date NOT NULL,
   `tanggal_jt` date NOT NULL,
@@ -16344,7 +16083,7 @@ CREATE TABLE `tbs_pembayaran_piutang` (
 
 CREATE TABLE `tbs_pembelian` (
   `id` int(50) NOT NULL,
-  `session_id` varchar(100) NOT NULL,
+  `session_id` varchar(100) DEFAULT NULL,
   `no_faktur` varchar(50) NOT NULL,
   `kode_barang` varchar(50) NOT NULL,
   `nama_barang` varchar(50) NOT NULL,
@@ -16355,6 +16094,14 @@ CREATE TABLE `tbs_pembelian` (
   `potongan` int(50) DEFAULT NULL,
   `tax` int(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data untuk tabel `tbs_pembelian`
+--
+
+INSERT INTO `tbs_pembelian` (`id`, `session_id`, `no_faktur`, `kode_barang`, `nama_barang`, `jumlah_barang`, `satuan`, `harga`, `subtotal`, `potongan`, `tax`) VALUES
+(45, '15eio1jeael2tov6doo757tpm4', '', 'B2', 'Panadol Extra', 100000, '125', 1000, 100000000, 0, 0),
+(46, '15eio1jeael2tov6doo757tpm4', '', 'B4', 'slei', 1, '125', 1000, 1000, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -17447,17 +17194,17 @@ ALTER TABLE `detail_item_keluar`
 -- AUTO_INCREMENT for table `detail_item_masuk`
 --
 ALTER TABLE `detail_item_masuk`
-  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT for table `detail_kas_keluar`
 --
 ALTER TABLE `detail_kas_keluar`
-  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT for table `detail_kas_masuk`
 --
 ALTER TABLE `detail_kas_masuk`
-  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 --
 -- AUTO_INCREMENT for table `detail_operasi`
 --
@@ -17467,22 +17214,22 @@ ALTER TABLE `detail_operasi`
 -- AUTO_INCREMENT for table `detail_pembayaran_hutang`
 --
 ALTER TABLE `detail_pembayaran_hutang`
-  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `detail_pembayaran_piutang`
 --
 ALTER TABLE `detail_pembayaran_piutang`
-  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `detail_pembelian`
 --
 ALTER TABLE `detail_pembelian`
-  MODIFY `id` int(25) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(25) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 --
 -- AUTO_INCREMENT for table `detail_penjualan`
 --
 ALTER TABLE `detail_penjualan`
-  MODIFY `id` int(25) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id` int(25) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
 --
 -- AUTO_INCREMENT for table `detail_retur_pembelian`
 --
@@ -17527,7 +17274,7 @@ ALTER TABLE `hak_otoritas`
 -- AUTO_INCREMENT for table `hapus_transaksi_db`
 --
 ALTER TABLE `hapus_transaksi_db`
-  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 --
 -- AUTO_INCREMENT for table `hasil_detail_operasi`
 --
@@ -17552,7 +17299,7 @@ ALTER TABLE `history_detail_item_masuk`
 -- AUTO_INCREMENT for table `history_detail_kas_keluar`
 --
 ALTER TABLE `history_detail_kas_keluar`
-  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `history_detail_kas_masuk`
 --
@@ -17562,17 +17309,17 @@ ALTER TABLE `history_detail_kas_masuk`
 -- AUTO_INCREMENT for table `history_detail_pembayaran_hutang`
 --
 ALTER TABLE `history_detail_pembayaran_hutang`
-  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 --
 -- AUTO_INCREMENT for table `history_detail_pembayaran_piutang`
 --
 ALTER TABLE `history_detail_pembayaran_piutang`
-  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 --
 -- AUTO_INCREMENT for table `history_detail_pembelian`
 --
 ALTER TABLE `history_detail_pembelian`
-  MODIFY `id` int(25) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `id` int(25) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 --
 -- AUTO_INCREMENT for table `history_detail_penjualan`
 --
@@ -17612,7 +17359,7 @@ ALTER TABLE `history_jurnal_manual`
 -- AUTO_INCREMENT for table `history_kas_keluar`
 --
 ALTER TABLE `history_kas_keluar`
-  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `history_kas_masuk`
 --
@@ -17622,22 +17369,22 @@ ALTER TABLE `history_kas_masuk`
 -- AUTO_INCREMENT for table `history_kas_mutasi`
 --
 ALTER TABLE `history_kas_mutasi`
-  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
+  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
 --
 -- AUTO_INCREMENT for table `history_pembayaran_hutang`
 --
 ALTER TABLE `history_pembayaran_hutang`
-  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 --
 -- AUTO_INCREMENT for table `history_pembayaran_piutang`
 --
 ALTER TABLE `history_pembayaran_piutang`
-  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 --
 -- AUTO_INCREMENT for table `history_pembelian`
 --
 ALTER TABLE `history_pembelian`
-  MODIFY `id` int(25) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `id` int(25) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 --
 -- AUTO_INCREMENT for table `history_penjualan`
 --
@@ -17677,12 +17424,12 @@ ALTER TABLE `hpp_barang`
 -- AUTO_INCREMENT for table `hpp_keluar`
 --
 ALTER TABLE `hpp_keluar`
-  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
 --
 -- AUTO_INCREMENT for table `hpp_masuk`
 --
 ALTER TABLE `hpp_masuk`
-  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
+  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=72;
 --
 -- AUTO_INCREMENT for table `item_keluar`
 --
@@ -17692,7 +17439,7 @@ ALTER TABLE `item_keluar`
 -- AUTO_INCREMENT for table `item_masuk`
 --
 ALTER TABLE `item_masuk`
-  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `jabatan`
 --
@@ -17712,7 +17459,7 @@ ALTER TABLE `jenis`
 -- AUTO_INCREMENT for table `jurnal_trans`
 --
 ALTER TABLE `jurnal_trans`
-  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=204;
+  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=333;
 --
 -- AUTO_INCREMENT for table `kartu_stok`
 --
@@ -17727,17 +17474,17 @@ ALTER TABLE `kas`
 -- AUTO_INCREMENT for table `kas_keluar`
 --
 ALTER TABLE `kas_keluar`
-  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `kas_masuk`
 --
 ALTER TABLE `kas_masuk`
-  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT for table `kas_mutasi`
 --
 ALTER TABLE `kas_mutasi`
-  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `kategori`
 --
@@ -17752,12 +17499,12 @@ ALTER TABLE `kelas_kamar`
 -- AUTO_INCREMENT for table `laporan_fee_faktur`
 --
 ALTER TABLE `laporan_fee_faktur`
-  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 --
 -- AUTO_INCREMENT for table `laporan_fee_produk`
 --
 ALTER TABLE `laporan_fee_produk`
-  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 --
 -- AUTO_INCREMENT for table `meja`
 --
@@ -17877,17 +17624,17 @@ ALTER TABLE `pelanggan`
 -- AUTO_INCREMENT for table `pembayaran_hutang`
 --
 ALTER TABLE `pembayaran_hutang`
-  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `pembayaran_piutang`
 --
 ALTER TABLE `pembayaran_piutang`
-  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `pembelian`
 --
 ALTER TABLE `pembelian`
-  MODIFY `id` int(25) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(25) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT for table `penjamin`
 --
@@ -17897,7 +17644,7 @@ ALTER TABLE `penjamin`
 -- AUTO_INCREMENT for table `penjualan`
 --
 ALTER TABLE `penjualan`
-  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 --
 -- AUTO_INCREMENT for table `perujuk`
 --
@@ -17912,22 +17659,22 @@ ALTER TABLE `poli`
 -- AUTO_INCREMENT for table `registrasi`
 --
 ALTER TABLE `registrasi`
-  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 --
 -- AUTO_INCREMENT for table `rekam_medik`
 --
 ALTER TABLE `rekam_medik`
-  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `rekam_medik_inap`
 --
 ALTER TABLE `rekam_medik_inap`
-  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `rekam_medik_ugd`
 --
 ALTER TABLE `rekam_medik_ugd`
-  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `retur_pembelian`
 --
@@ -17977,7 +17724,7 @@ ALTER TABLE `tbs_detail_operasi`
 -- AUTO_INCREMENT for table `tbs_fee_produk`
 --
 ALTER TABLE `tbs_fee_produk`
-  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
 --
 -- AUTO_INCREMENT for table `tbs_item_keluar`
 --
@@ -17987,17 +17734,17 @@ ALTER TABLE `tbs_item_keluar`
 -- AUTO_INCREMENT for table `tbs_item_masuk`
 --
 ALTER TABLE `tbs_item_masuk`
-  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 --
 -- AUTO_INCREMENT for table `tbs_kas_keluar`
 --
 ALTER TABLE `tbs_kas_keluar`
-  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
 --
 -- AUTO_INCREMENT for table `tbs_kas_masuk`
 --
 ALTER TABLE `tbs_kas_masuk`
-  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 --
 -- AUTO_INCREMENT for table `tbs_operasi`
 --
@@ -18007,22 +17754,22 @@ ALTER TABLE `tbs_operasi`
 -- AUTO_INCREMENT for table `tbs_pembayaran_hutang`
 --
 ALTER TABLE `tbs_pembayaran_hutang`
-  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `tbs_pembayaran_piutang`
 --
 ALTER TABLE `tbs_pembayaran_piutang`
-  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `tbs_pembelian`
 --
 ALTER TABLE `tbs_pembelian`
-  MODIFY `id` int(50) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
 --
 -- AUTO_INCREMENT for table `tbs_penjualan`
 --
 ALTER TABLE `tbs_penjualan`
-  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
 --
 -- AUTO_INCREMENT for table `tbs_retur_pembelian`
 --
