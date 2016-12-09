@@ -11,10 +11,12 @@
     $tahun_sekarang = date('Y');
     $bulan_sekarang = date('m');
     $tanggal_sekarang = date('Y-m-d');
-    $jam_sekarang = date('H:i:sa');
+    $jam_sekarang = date('H:i:s');
     $tahun_terakhir = substr($tahun_sekarang, 2);
 
     
+
+
     $perintah1 = $db->query("DELETE FROM detail_retur_penjualan WHERE no_faktur_retur = '$no_faktur_retur'");
 
 
@@ -63,6 +65,12 @@
     while ($data = mysqli_fetch_array($query))
     {
 
+      $update_sisa_barang_in_hpp = $db->query("UPDATE hpp_keluar SET sisa_barang = jumlah_kuantitas WHERE no_faktur = '$data[no_faktur_penjualan]' AND kode_barang = '$data[kode_barang]'");
+
+      $hasil_sisa = $data['jumlah_beli'] - $data['jumlah_retur'];
+
+    $update_detail_penjualan = $db->query("UPDATE detail_penjualan SET sisa = '$hasil_sisa' WHERE no_faktur = '$data[no_faktur_penjualan]' AND kode_barang = '$data[kode_barang]'");
+
       $pilih_konversi = $db->query("SELECT  sk.konversi * $data[jumlah_retur] AS jumlah_konversi, $data[subtotal] / ($data[jumlah_retur] * sk.konversi) AS harga_konversi, sk.id_satuan, b.satuan FROM satuan_konversi sk INNER JOIN barang b ON sk.id_produk = b.id  WHERE sk.id_satuan = '$data[satuan]' AND sk.kode_produk = '$data[kode_barang]'");
       $data_konversi = mysqli_fetch_array($pilih_konversi);
 
@@ -84,6 +92,8 @@
             }
 
     }
+
+
 
 
 

@@ -147,12 +147,12 @@ else{
 // untuk bedakan satuan dalam sisa barang
 if ($penentu_satuan == 0)
 {
-       echo "<td>". $sisa_barang_tampil ." ". $data['satuan_real']."</td>";
+       echo "<td>". $data['sisa'] ." ". $data['satuan_real']."</td>";
 
 }
 else
 {
-     echo "<td>". $sisa_barang_tampil ." ". $data['satuan_asli']."</td>
+     echo "<td>". $data['sisa'] ." ". $data['satuan_asli']."</td>
       </tr>";
 } // END untuk bedakan satuan dalam sisa barang
 

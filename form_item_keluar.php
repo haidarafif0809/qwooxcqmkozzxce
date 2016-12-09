@@ -80,9 +80,9 @@ $session_id = session_id();
     <input style="height: 20px" type="text" class="form-control"  name="kode_barang" id="kode_barang" autocomplete="off" placeholder="Ketikkan Kode Produk">
   </div>
 
-
+ <div class="col-sm-1">
   <input type="hidden" class="form-control" name="nama_barang" id="nama_barang" readonly="" >
-
+</div>
 
 
   <div class="col-sm-2">
@@ -281,7 +281,15 @@ mysqli_close($db);
 </div><!-- end of container -->
 
 
+                              
+<script>
+// untuk memunculkan data tabel 
+$(document).ready(function() {
+        $('#tableuser').DataTable({"ordering":false});
+    });
 
+</script>                 
+          
 
 <!--untuk memasukkan perintah java script-->
 <script type="text/javascript">
