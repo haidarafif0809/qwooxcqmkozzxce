@@ -24,14 +24,12 @@ $query=mysqli_query($conn, $sql) or die("show_data_laporan_fee_produk.php: get e
 $totalData = mysqli_num_rows($query);
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
-
 $sql = "SELECT f.nama_petugas, f.no_faktur, f.kode_produk, f.nama_produk, f.jumlah_fee, f.tanggal, f.jam, u.nama ";
 $sql.=" FROM laporan_fee_produk f INNER JOIN user u ON f.nama_petugas = u.id";
 $sql.=" WHERE 1=1";
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
 	$sql.=" AND ( u.nama LIKE '".$requestData['search']['value']."%' ";    
 	$sql.=" OR f.no_faktur LIKE '".$requestData['search']['value']."%' ";
-
 	$sql.=" OR f.tanggal LIKE '".$requestData['search']['value']."%' )";
 }
 $query=mysqli_query($conn, $sql) or die("show_data_laporan_fee_produk.php: get employees");
@@ -53,7 +51,6 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 	$nestedData[] = $row["jam"];	           
 	$data[] = $nestedData;
 }
-
 
 
 $json_data = array(

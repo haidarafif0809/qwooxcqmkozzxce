@@ -69,6 +69,7 @@ $perintah = $db->query("SELECT f.nama_petugas, f.no_faktur, f.kode_produk, f.nam
       } );
     </script>
 <!--end ajax datatable-->
+
 <?php 
 include 'footer.php';
  ?>
