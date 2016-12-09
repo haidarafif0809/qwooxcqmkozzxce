@@ -21,7 +21,7 @@ $columns = array(
   3 => 'dokter',
   4=> 'poli',
   5=> 'id'
-
+  
 );
 
 switch ($cari_berdasarkan) {

@@ -14,14 +14,14 @@ $requestData= $_REQUEST;
 
 $columns = array( 
 // datatable column index  => database column name
-  0 =>'no_reg', 
+  0 =>'no_reg',  
   1 => 'nama',
   2=> 'tanggal_periksa',
   3 => 'dokter',
   4=> 'poli',
   5=> 'id'
 
-);
+); 
 
 switch ($cari_berdasarkan) {
     case "nama":

@@ -139,12 +139,11 @@ $(document).on('click','#submit',function(e) {
                 // d.custom = $('#myInput').val();
                 // etc
             },
-                type: "post",  // method  , by default get
+                 type: "post",  // method  , by default get
             error: function(){  // error handling
               $(".tbody").html("");
               $("#table-group").append('<tbody class="tbody"><tr><th colspan="3"></th></tr></tbody>');
-              $("#table-group_processing").css("display","none");
-              
+              $("#table-group_processing").css("display","none");              
             }
           },
 
