@@ -183,7 +183,7 @@ $(document).on('click','#lihat_tanggal',function(e) {
           "serverSide": true,
           "info":     false,
           "language": {
-        "emptyTable":     "My Custom Message On Empty Table"
+        "emptyTable":    "My Custom Message On Empty Table"
     },
           "ajax":{
             url :"proses_table_lab_kunj_tgl_rj.php", // json datasource
