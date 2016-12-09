@@ -19,8 +19,9 @@ $perintah = $db->query("SELECT f.nama_petugas, f.no_faktur, f.kode_produk, f.nam
 
 
 <div class="table-responsive">
-<table id="tableuser" class="table table-bordered">
+<table id="table_lap_fee_produk" class="table table-bordered">
             <thead>
+
                   <th style="background-color: #4CAF50; color: white;"> Nama Petugas </th>
                   <th style="background-color: #4CAF50; color: white;"> Nomor Faktur </th>
                   <th style="background-color: #4CAF50; color: white;"> Kode Produk </th>
@@ -38,27 +39,7 @@ $perintah = $db->query("SELECT f.nama_petugas, f.no_faktur, f.kode_produk, f.nam
             </thead>
             
             <tbody>
-            <?php
-
-                  //menyimpan data sementara yang ada pada $perintah
-                  while ($data1 = mysqli_fetch_array($perintah))
-
-                  {
-                  
-                  echo "<tr>
-                  <td>". $data1['nama'] ."</td>
-                  <td>". $data1['no_faktur'] ."</td>
-                  <td>". $data1['kode_produk'] ."</td>
-                  <td>". $data1['nama_produk'] ."</td>
-                  <td>". rp($data1['jumlah_fee']) ."</td>
-                  <td>". tanggal($data1['tanggal']) ."</td>
-                  <td>". $data1['jam'] ."</td>
-                  </tr>";
-                  }
-
-                  //Untuk Memutuskan Koneksi Ke Database
-                  mysqli_close($db);   
-            ?>
+           
             </tbody>
 
       </table>
@@ -66,19 +47,28 @@ $perintah = $db->query("SELECT f.nama_petugas, f.no_faktur, f.kode_produk, f.nam
 </div>
 </div>
 
-            <script>
-            
-            $(document).ready(function(){
-            $('#tableuser').DataTable(
-                  {"ordering": false});
-            });
-            </script>
+<!--start ajax datatable-->
+<script type="text/javascript" language="javascript" >
+      $(document).ready(function() {
+        var dataTable = $('#table_lap_fee_produk').DataTable( {
+          "processing": true,
+          "serverSide": true,
+          "ajax":{
+            url :"show_data_laporan_fee_produk.php", // json datasource
+            type: "post",  // method  , by default get
+            error: function(){  // error handling
+              $(".tbody").html("");
 
+             $("#table_lap_fee_produk").append('<tbody class="tbody"><tr><th colspan="3">Tidak Ada Data Yang Ditemukan</th></tr></tbody>');
 
-
-
-
-
+              $("#table_lap_fee_produk_processing").css("display","none");
+              
+            }
+          }
+        } );
+      } );
+    </script>
+<!--end ajax datatable-->
 <?php 
 include 'footer.php';
  ?>
