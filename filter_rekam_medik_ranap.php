@@ -22,7 +22,7 @@ include_once 'sanitasi.php';
 
 <div class="card card-block">
 
- 		<form role="form" action="tampil_rekam_medik_inap.php" id="formcari" method="post">
+ 		<form role="form" id="formcari" >
 
 
 <div class="form-group">
@@ -64,27 +64,19 @@ tr:nth-child(even){background-color: #f2f2f2}
 </style>
 
 <div class="col-sm-10">
-<span id="result">
 	<div class="table-responsive">
  <table id="table-group" class="table table-bordered table-sm">
  
     <thead>
-      <tr>
-
          <th style='background-color: #4CAF50; color: white'>No Reg </th>
          <th style='background-color: #4CAF50; color: white'>Nama Pasien</th>
          <th style='background-color: #4CAF50; color: white'>Tanggal Periksa</th>
          <th style='background-color: #4CAF50; color: white'>Nama Dokter</th>
          <th style='background-color: #4CAF50; color: white'>Poli</th>
-
-    </tr>
     </thead>
-    <tbody>
-  
-  </tbody>
+
  </table>
 </div>
- </span>
  	
 
   <span id="result1">  <!-- span awal 1-->
@@ -96,9 +88,6 @@ tr:nth-child(even){background-color: #f2f2f2}
 </div><!-- akhir div row form -->
 
 </div><!-- akhir div container -->
-
-
-</div><!-- akhir container -->
 
 
 
@@ -117,28 +106,64 @@ tr:nth-child(even){background-color: #f2f2f2}
 <!--end script datepicker-->
 
 
-<!--  MODAL FORM CARI 01 -->
-<script type="text/javascript">
-
-$("#submit").click(function() {
-    $.post($("#formcari").attr("action"), $("#formcari :input").serializeArray(), function(info) { $("#result").html(info); });
-    clearInput();
-});
-
-$("#formcari").submit(function(){
-    return false;
-});
-
-function clearInput(){
-    $("#formcari :input").each(function(){
-        $(this).val('');
-    });
-};
 
 
+<script type="text/javascript" language="javascript" >
+      $(document).ready(function() {
+$(document).on('click','#submit',function(e) {
+     $('#table-group').DataTable().destroy();
 
-</script>
-<!-- END MODAL FORM CARI 01  -->
+          var dataTable = $('#table-group').DataTable( {
+          "processing": true,
+          "serverSide": true,
+          "info":     false,
+          "language": {
+        "emptyTable":     "My Custom Message On Empty Table"
+    },
+          "ajax":{
+            url :"tampil_rekam_medik_inap.php", // json datasource
+             "data": function ( d ) {
+                d.dari_tanggal = $('#dari_tanggal').val();
+                d.sampai_tanggal = $('#sampai_tanggal').val();
+                d.cari_berdasarkan  = $('#cari_berdasarkan').val();
+                d.pencarian  = $('#pencarian').val();
+                // d.custom = $('#myInput').val();
+                // etc
+            },
+                type: "post",  // method  , by default get
+            error: function(){  // error handling
+              $(".tbody").html("");
+              $("#table-group").append('<tbody class="tbody"><tr><th colspan="3"></th></tr></tbody>');
+              $("#table-group_processing").css("display","none");
+              
+            }
+          },
+
+           "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+
+              $(nRow).attr('class','rekam-medik-inap');
+              $(nRow).attr('data-no', aData[5]);           
+
+          }
+    
+
+
+        } );
+
+   } );  
+  $("#formcari").submit(function(){
+      return false;
+  });
+  function clearInput(){
+      $("#formcari :input").each(function(){
+          $(this).val('');
+      });
+  };
+  } );
+    </script>
+
+
+
 
 <!-- LIHAT REKAM MEDIK  -->
 <script type="text/javascript">
@@ -155,15 +180,6 @@ function clearInput(){
 </script>
 <!--  LIHAT REKAM MEDIK -->
 
-
-<!--dtatable-->
- <script type="text/javascript">
-
-  $(function () {
-  $("#table-group").dataTable({ordering : false });
-  });
-  </script>
-<!--end dtatable-->
 
 
 <?php 

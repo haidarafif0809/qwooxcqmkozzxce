@@ -19,37 +19,37 @@ include_once 'db.php';
 </div>
 
 <div class="row">
- 	<div class="col-sm-2">
+   <div class="col-sm-2">
 
 <div class="card card-block">
  
- 		<form role="form"  id="formcari" method="post">
+     <form role="form"  id="formcari" method="post">
 
 <div class="form-group">
-	<label>Dari Tanggal</label>
-	<input style="height: 15px" type="text" id="dari_tanggal" class="form-control" autocomplete="off" name="dari_tanggal">
-</div>	
+  <label>Dari Tanggal</label>
+  <input style="height: 15px" type="text" id="dari_tanggal" class="form-control" autocomplete="off" name="dari_tanggal">
+</div>  
 
 <div class="form-group">
-	<label>Sampai Tanggal</label>
-	<input style="height: 15px" type="text" id="sampai_tanggal" class="form-control" autocomplete="off" name="sampai_tanggal">
-</div>	
+  <label>Sampai Tanggal</label>
+  <input style="height: 15px" type="text" id="sampai_tanggal" class="form-control" autocomplete="off" name="sampai_tanggal">
+</div>  
 
 
 
 <div class="form-group">
-	<label>Cari Berdasarkan :</label>
-	 <select id="cari_berdasarkan" class="form-control" autocomplete="off" name="cari_berdasarkan">
-		<option value="">Silakan Pilih </option>
-		<option value="no_rm">No RM</option>
-		<option value="nama">Nama</option>
-	</select> 
-</div>	
+  <label>Cari Berdasarkan :</label>
+   <select id="cari_berdasarkan" class="form-control" autocomplete="off" name="cari_berdasarkan">
+    <option value="">Silakan Pilih </option>
+    <option value="no_rm">No RM</option>
+    <option value="nama">Nama</option>
+  </select> 
+</div>  
 
 <div class="form-group">
-	<label>Pencarian</label>
-	<input style="height: 15px" type="text" id="pencarian" autocomplete="off" class="form-control" name="pencarian">
-</div>	
+  <label>Pencarian</label>
+  <input style="height: 15px" type="text" id="pencarian" autocomplete="off" class="form-control" name="pencarian">
+</div>  
 
 <button type="submit" class="btn btn-info" id="submit" > <i class="fa fa-search"></i>  Cari</button>
 
@@ -59,7 +59,7 @@ include_once 'db.php';
 
 <br>
 
- </div><!-- akhir div col-sm-3 form data pasien -->
+ </div><!—- akhir div col-sm-3 form data pasien -->
  <div class="col-sm-10">
    
 <span id="result">
@@ -101,12 +101,12 @@ tr:nth-child(even){background-color: #f2f2f2}
 
  </div>
 
- 	
+   
 
 
 
 
-</div><!-- akhir container -->
+</div>
 
 <script>
   $(document).ready(function() {
@@ -123,61 +123,70 @@ tr:nth-child(even){background-color: #f2f2f2}
 <!--end script datepicker-->
 
 
-<!--   datatable  -->
- <script type="text/javascript">
 
-  $(document).ready(function () {
-  $("#table-group").dataTable();
+    <script type="text/javascript" language="javascript" >
+      $(document).ready(function() {
+$(document).on('click','#submit',function(e) {
+     $('#table-group').DataTable().destroy();
+
+var dataTable = $('#table-group').DataTable( {
+          "processing": true,
+          "serverSide": true,
+          "info":     false,
+          "language": {
+        "emptyTable":     "My Custom Message On Empty Table"
+    },
+          "ajax":{
+            url :"tampil_rekam_medik.php", // json datasource
+             "data": function ( d ) {
+                d.dari_tanggal = $('#dari_tanggal').val();
+                d.sampai_tanggal = $('#sampai_tanggal').val();
+                d.cari_berdasarkan  = $('#cari_berdasarkan').val();
+                d.pencarian  = $('#pencarian').val();
+                // d.custom = $('#myInput').val();
+                // etc
+            },
+                type: "post",  // method  , by default get
+            error: function(){  // error handling
+              $(".tbody").html("");
+              $("#table-group").append('<tbody class="tbody"><tr><th colspan="3"></th></tr></tbody>');
+              $("#table-group_processing").css("display","none");
+              
+            }
+          },
+              "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+              $(nRow).attr('class','rekam-medik');
+              $(nRow).attr('data-no',aData[5]);
+    },
+    
+
+
+        } );
+
+   } );  
+  $("#formcari").submit(function(){
+      return false;
   });
-  </script>
-<!--   end table  -->
+  function clearInput(){
+      $("#formcari :input").each(function(){
+          $(this).val('');
+      });
+  };
+  } );
+    </script>
 
-<!-- modal form caeri  -->
-<script type="text/javascript">
-
-$("#submit").click(function() {
-
-    var dari_tanggal = $('#dari_tanggal').val();
-    var sampai_tanggal = $('#sampai_tanggal').val();
-    var cari_berdasarkan  = $('#cari_berdasarkan').val();
-    var pencarian  = $('#pencarian').val();
-    $.post("tampil_rekam_medik.php",{dari_tanggal:dari_tanggal,sampai_tanggal:sampai_tanggal,cari_berdasarkan:cari_berdasarkan,pencarian:pencarian},function(info) { 
-
-      $("#result").html(info); 
-
-
-    });
-    clearInput();
-});
-
-$("#formcari").submit(function(){
-    return false;
-});
-
-function clearInput(){
-    $("#formcari :input").each(function(){
-        $(this).val('');
-    });
-};
-</script>
-<!-- end modal form cari  -->
-
-
-
-<!-- modal tampil rm  -->
 <script type="text/javascript">
 //            jika dipilih, nim akan masuk ke input dan modal di tutup
             $(document).on('click', '.rekam-medik', function (e) {
                 var id = $(this).attr('data-no');
 
                $.post("tampil_data_rekam_medik.php",{id:id},function(info){
-               	$("#result1").html(info);
+                 $("#result1").html(info);
 
                });
             });
       
 </script>
-<!--  end mdoal RM -->
 
 <?php 
 include 'footer.php';

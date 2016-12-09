@@ -67,6 +67,10 @@ $sql.=" ORDER BY id ".$requestData['order'][0]['dir']."  LIMIT ".$requestData['s
 /* $requestData['order'][0]['column'] contains colmun index, $requestData['order'][0]['dir'] contains order such as asc/desc  */	
 $query=mysqli_query($conn, $sql) or die("query 3: get employees");
 
+
+
+
+
 $data = array();
 while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 	$nestedData=array(); 

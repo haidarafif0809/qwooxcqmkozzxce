@@ -25,7 +25,7 @@ include_once 'sanitasi.php';
 <div class="col-sm-2">
 
 <div class="card card-block">
- 		<form role="form" id="formcari" method="post">
+ 		<form role="form" id="formcari" >
 
 
 <div class="form-group">
@@ -74,19 +74,13 @@ tr:nth-child(even){background-color: #f2f2f2}
  <table id="table-group" class="table table-bordered table-sm">
  
     <thead>
-      <tr>
-
          <th style ='background-color: #4CAF50; color: white' >No Reg </th>
          <th style ='background-color: #4CAF50; color: white' >Nama Pasien</th>
          <th style ='background-color: #4CAF50; color: white' >Tanggal Periksa</th>
          <th style ='background-color: #4CAF50; color: white' >Jam Periksa</th>        
          <th style ='background-color: #4CAF50; color: white' >Nama Dokter</th>
-        
-    </tr>
     </thead>
-    <tbody>
 
-  </tbody>
  </table>
 </div>
  </span>
@@ -101,7 +95,6 @@ tr:nth-child(even){background-color: #f2f2f2}
 </div><!-- akhir div row form -->
 
 
-</div><!-- akhir div layout form rm jalan -->
 
 </div><!-- akhir container -->
 
@@ -122,41 +115,69 @@ tr:nth-child(even){background-color: #f2f2f2}
 <!--end script datepicker-->
 
 
-<!--  MODAL FORM CARI 01 -->
-<script type="text/javascript">
-$("#submit").click(function() {
-
-    var dari_tanggal = $('#dari_tanggal').val();
-    var sampai_tanggal = $('#sampai_tanggal').val();
-    var cari_berdasarkan  = $('#cari_berdasarkan').val();
-    var pencarian  = $('#pencarian').val();
-
-  $.post("tampil_rekam_medik_ugd.php",{dari_tanggal:dari_tanggal,sampai_tanggal:sampai_tanggal,cari_berdasarkan:cari_berdasarkan,pencarian:pencarian},function(info) { 
-
-      $("#result").html(info); 
 
 
-    });
-    clearInput();
-});
+<script type="text/javascript" language="javascript" >
+      $(document).ready(function() {
+$(document).on('click','#submit',function(e) {
+     $('#table-group').DataTable().destroy();
 
-$("#formcari").submit(function(){
-    return false;
-});
+          var dataTable = $('#table-group').DataTable( {
+          "processing": true,
+          "serverSide": true,
+          "info":     false,
+          "language": {
+        "emptyTable":     "My Custom Message On Empty Table"
+    },
+          "ajax":{
+            url :"tampil_rekam_medik_ugd.php", // json datasource
+             "data": function ( d ) {
+                d.dari_tanggal = $('#dari_tanggal').val();
+                d.sampai_tanggal = $('#sampai_tanggal').val();
+                d.cari_berdasarkan  = $('#cari_berdasarkan').val();
+                d.pencarian  = $('#pencarian').val();
+                // d.custom = $('#myInput').val();
+                // etc
+            },
+                type: "post",  // method  , by default get
+            error: function(){  // error handling
+              $(".tbody").html("");
+              $("#table-group").append('<tbody class="tbody"><tr><th colspan="3"></th></tr></tbody>');
+              $("#table-group_processing").css("display","none");
+              
+            }
+          },
 
-function clearInput(){
-    $("#formcari :input").each(function(){
-        $(this).val('');
-    });
-};
-</script>
-<!-- end modal form cari  -->
+           "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+
+              $(nRow).attr('class','rekam-medik-ugd');
+              $(nRow).attr('data-no', aData[5]);           
+
+          }
+    
+
+
+        } );
+
+   } );  
+  $("#formcari").submit(function(){
+      return false;
+  });
+  function clearInput(){
+      $("#formcari :input").each(function(){
+          $(this).val('');
+      });
+  };
+  } );
+    </script>
+
+
 
 <!-- LIHAT REKAM MEDIK  -->
 <script type="text/javascript">
 
 //            jika dipilih, nim akan masuk ke input dan modal di tutup
-            $(document).on('click', '.rekam-medik-inap', function (e) {
+            $(document).on('click', '.rekam-medik-ugd', function (e) {
                 var id = $(this).attr('data-no');
 
                $.post("tampil_data_rm_ugd.php",{id:id},function(info){
@@ -167,13 +188,6 @@ function clearInput(){
 </script>
 <!--  LIHAT REKAM MEDIK -->
 
-<script type="text/javascript">
-
-  $(function () {
-  $("#table-group").dataTable();
-  });
-  
-  </script>
 
 
 <?php 
