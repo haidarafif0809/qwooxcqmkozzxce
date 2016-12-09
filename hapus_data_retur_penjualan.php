@@ -19,7 +19,7 @@ include 'db.php';
 
 	$update = $db->query("UPDATE detail_penjualan SET sisa = '$sisa' WHERE no_faktur = '$ambil[no_faktur_penjualan]'");
 
-	
+	$update = $db->query("UPDATE hpp_keluar SET sisa_barang = '$sisa' WHERE no_faktur = '$ambil[no_faktur_penjualan]'");
 
 
  // INSERT HISTORY RETUR PENJUALAN

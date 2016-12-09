@@ -1,6 +1,5 @@
 <?php include 'session_login.php';
 
-
 //memasukkan file session login, header, navbar, db.php
 include 'header.php';
 include 'navbar.php';
