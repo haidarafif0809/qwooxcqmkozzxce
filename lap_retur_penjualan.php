@@ -78,7 +78,7 @@ $perintah = $db->query("SELECT pel.nama_pelanggan,p.no_faktur_retur,p.tanggal,p.
 
 <br>
  <div class="table-responsive"><!--membuat agar ada garis pada tabel disetiap kolom-->
-<span id="table-baru">
+<span id="table_rekap">
 <table id="table_lap_repen" class="table table-bordered">
 		<thead>
 			<th style="background-color: #4CAF50; color: white;"> Nomor Faktur Retur </th>
@@ -89,11 +89,26 @@ $perintah = $db->query("SELECT pel.nama_pelanggan,p.no_faktur_retur,p.tanggal,p.
 			<th style="background-color: #4CAF50; color: white;"> Potongan </th>
 			<th style="background-color: #4CAF50; color: white;"> Tax </th>
 			<th style="background-color: #4CAF50; color: white;"> Tunai </th>
-
 		</thead>
+</table>
+</span>
+</div> <!--/ responsive-->
 
-
-	</table>
+<div class="table-responsive"><!--membuat agar ada garis pada tabel disetiap kolom-->
+<span id="table_detail" style="display: none;">
+<table id="table_lap_repen_detail" class="table table-bordered">
+    <thead>
+      <th style="background-color: #4CAF50; color: white;"> Nomor Faktur </th>
+      <th style="background-color: #4CAF50; color: white;"> Tanggal </th>         
+      <th style="background-color: #4CAF50; color: white;"> Kode Barang </th>
+      <th style="background-color: #4CAF50; color: white;"> Nama Barang </th>
+      <th style="background-color: #4CAF50; color: white;"> Jumlah Retur </th>
+      <th style="background-color: #4CAF50; color: white;"> Satuan </th>
+      <th style="background-color: #4CAF50; color: white;"> Harga </th>
+      <th style="background-color: #4CAF50; color: white;"> Potongan </th>
+      <th style="background-color: #4CAF50; color: white;"> Subtotal </th>
+    </thead>
+</table>
 </span>
 </div> <!--/ responsive-->
 
@@ -173,6 +188,8 @@ $(document).ready(function(){
         });
 
     $("#cetak_excell").show();
+    $("#table_rekap").show();
+    $("#table_detail").hide();
     $("#cetak_excell_detail").hide();
   $("#btn-rekap").attr("href", "cetak_lap_retur_penjualan_rekap.php?dari_tanggal="+dari_tanggal+"&sampai_tanggal="+sampai_tanggal+"");
 
@@ -191,13 +208,13 @@ $(document).ready(function(){
 	$(document).ready(function() {
 	$(document).on('click','#lihat_detail',function(e) {
         
-         $('#table_lap_repen').DataTable().destroy();
+         $('#table_lap_repen_detail').DataTable().destroy();
 
         var dari_tanggal = $("#dari_tanggal").val();        
         var sampai_tanggal = $("#sampai_tanggal").val(); 
 
 
-          var dataTable = $('#table_lap_repen').DataTable( {
+          var dataTable = $('#table_lap_repen_detail').DataTable( {
           "processing": true,
           "serverSide": true,
           "info":     false,
@@ -215,7 +232,7 @@ $(document).ready(function(){
                 type: "post",  // method  , by default get
             error: function(){  // error handling
               $(".tbody").html("");
-              $("#table_lap_repen").append('<tbody class="tbody"><tr><th colspan="3"></th></tr></tbody>');
+              $("#table_lap_repen_detail").append('<tbody class="tbody"><tr><th colspan="3"></th></tr></tbody>');
               $("#tableuser_processing").css("display","none");
               
             }
@@ -224,6 +241,8 @@ $(document).ready(function(){
         });
 
     $("#cetak_excell_detail").show();
+    $("#table_detail").show();
+    $("#table_rekap").hide();
     $("#cetak_excell").hide();
   $("#btn-detail").attr("href", "cetak_lap_retur_penjualan_detail.php?dari_tanggal="+dari_tanggal+"&sampai_tanggal="+sampai_tanggal+"");
 

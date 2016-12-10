@@ -75,14 +75,14 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 }
 
 $nestedData = array();
-		$nestedData[] = "<b style='color:black' >Total Seluruh:</b>";
+		$nestedData[] = "<b style='color:black' >Periode :</b>";
+		$nestedData[] = "<b style='color:black' >$dari_tanggal</b>";
+		$nestedData[] = "<b style='color:black' >s/d</b>";
+		$nestedData[] = "<b style='color:black' >$sampai_tanggal</b>";
 		$nestedData[] = "";
 		$nestedData[] = "";
 		$nestedData[] = "";
-		$nestedData[] = "";
-		$nestedData[] = "";
-		$nestedData[] = "";
-		$nestedData[] = "";
+		$nestedData[] = "<b style='color:black' >Total Seluruh :</b>";
 		$nestedData[] = "<b style='color:black' >$total_akhir</b>";
 		$data[] = $nestedData;
 
