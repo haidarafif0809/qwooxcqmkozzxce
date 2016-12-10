@@ -66,11 +66,10 @@
      
      $jumlah_beli = $data_konversi['jumlah_beli'];
      }
-     else{ 
+     else{
      
      $jumlah_beli = $data['jumlah_barang'];
      }
-
 
    $perintah = $db->prepare("INSERT INTO tbs_retur_pembelian (session_id,no_faktur_pembelian,kode_barang,nama_barang,jumlah_beli,jumlah_retur,harga,subtotal,potongan,tax,satuan,satuan_beli) VALUES (?,?,?,?,'$jumlah_beli',?,'$harga',?,?,?,?,?)");
 
@@ -85,7 +84,6 @@
     $satuan_beli = stringdoang($_POST['satuan_beli']);
 
    $perintah->execute();
-
  
 if (!$perintah) {
    die('Query Error : '.$db->errno.
@@ -94,9 +92,6 @@ if (!$perintah) {
 else {
 
 }
-
-
-
 
    
     //untuk menampilkan semua data yang ada pada tabel tbs pembelian dalam DB

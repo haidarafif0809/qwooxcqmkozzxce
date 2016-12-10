@@ -288,9 +288,11 @@ var nama = $("#suplier").val();
 								}
 								else if (alamat == "") {
 									alert("Alamat harus Diisi");
+			 						$("#alamat").focus();
 								}
 								else if (nomor == "") {
 									alert("Nomor Telpon harus Diisi");
+			 						$("#nomor").focus();
 								}
 								else {
 
