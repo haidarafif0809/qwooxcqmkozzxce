@@ -1,12 +1,9 @@
-<?php 
+<?php session_start();
     // memasukan file yang ada pada db.php
     include 'sanitasi.php';
     include 'db.php';
-    session_start();
 
-    $session_id = session_id();
-
-    
+  $session_id = session_id();
   $kode_barang = stringdoang($_POST['kode_barang']);
   $harga = angkadoang($_POST['harga']);
   $no_faktur_pembelian = stringdoang($_POST['no_faktur_pembelian']);
@@ -46,10 +43,10 @@
     $subtotal = $harga * $jumlah_retur - $potongan_jadi;
 
    
-   $query9 = $db->prepare("UPDATE detail_pembelian SET sisa = sisa - ? WHERE no_faktur = ?  ");
+   $query9 = $db->prepare("UPDATE detail_pembelian SET sisa = sisa - ? WHERE no_faktur = ? AND kode_barang = ?  ");
 
-   $query9->bind_param("is",
-    $jumlah_retur, $no_faktur_pembelian);
+   $query9->bind_param("iss",
+    $jumlah_retur, $no_faktur_pembelian, $kode_barang);
     
     $jumlah_retur = angkadoang($_POST['jumlah_retur']);
     $no_faktur_pembelian = stringdoang($_POST['no_faktur_pembelian']);

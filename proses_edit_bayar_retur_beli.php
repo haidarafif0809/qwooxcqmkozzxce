@@ -1,18 +1,15 @@
 <?php session_start();
 
-
-    include 'sanitasi.php';
-    include 'db.php';
-
+include 'sanitasi.php';
+include 'db.php';
 
 $tahun_sekarang = date('Y');
 $bulan_sekarang = date('m');
 $tanggal_sekarang = date('Y-m-d');
-$jam_sekarang = date('H:i:sa');
+$jam_sekarang = date('H:i:s');
 $tahun_terakhir = substr($tahun_sekarang, 2);
 
     $tanggal = stringdoang($_POST['tanggal']);
-
     $no_faktur_retur = stringdoang($_POST['no_faktur_retur']);
 
     $total1 = angkadoang($_POST['total1']);
@@ -28,9 +25,6 @@ $tahun_terakhir = substr($tahun_sekarang, 2);
     $user_buat = $datauser['user_buat'];
 
     $perintah1 = $db->query("DELETE FROM detail_retur_pembelian WHERE no_faktur_retur = '$no_faktur_retur'");
-
-
-
 
   // buat prepared statements
         $stmt = $db->prepare("UPDATE retur_pembelian SET no_faktur_retur = ?, tanggal = ?, jam = ?, tanggal_edit = ?, nama_suplier = ?,
@@ -53,7 +47,6 @@ $tahun_terakhir = substr($tahun_sekarang, 2);
     $cara_bayar = stringdoang($_POST['cara_bayar']);
     $tanggal = stringdoang($_POST['tanggal']);
     $user_edit = $_SESSION['user_name'];
-
     $_SESSION['no_faktur_retur'] = $no_faktur_retur;
 
 
@@ -79,6 +72,14 @@ $tahun_terakhir = substr($tahun_sekarang, 2);
 
      $pilih_konversi = $db->query("SELECT  sk.konversi * $data[jumlah_retur] AS jumlah_konversi, $data[subtotal] / ($data[jumlah_retur] * sk.konversi) AS harga_konversi, sk.id_satuan, b.satuan FROM satuan_konversi sk INNER JOIN barang b ON sk.id_produk = b.id  WHERE sk.id_satuan = '$data[satuan]' AND sk.kode_produk = '$data[kode_barang]'");
       $data_konversi = mysqli_fetch_array($pilih_konversi);
+
+    // untuk update sisa di detail pembelian
+    $hasil_sisa = $data['jumlah_beli'] - $data['jumlah_retur'];
+
+    $update_detail_penjualan = $db->query("UPDATE detail_pembelian SET sisa = '$hasil_sisa' WHERE no_faktur = '$data[no_faktur_pembelian]' AND kode_barang = '$data[kode_barang]'");
+
+    // end untuk update sisa
+
 
       if ($data_konversi['harga_konversi'] != 0 || $data_konversi['harga_konversi'] != "") {
         $harga = $data_konversi['harga_konversi'];
@@ -174,7 +175,7 @@ $ambil_tbs = mysqli_fetch_array($select_pot_pemb);
                     else {
                     
                     //ppn == Exclude
-                      $pajak = $tax_jadi;
+                    $pajak = $tax_jadi;
                     $persediaan = $total_hpp;                
                     $total_akhir = $total;
                     
@@ -188,8 +189,6 @@ $ambil_tbs = mysqli_fetch_array($select_pot_pemb);
                     }
                     
                     }
-
-
 
 
 
