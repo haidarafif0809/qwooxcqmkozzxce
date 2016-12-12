@@ -43,13 +43,13 @@ $session_id = session_id();
           <?php 
           
           // menampilkan seluruh data yang ada pada tabel suplier
-          $query = $db->query("SELECT * FROM pelanggan");
+          $query = $db->query("SELECT kode_pelanggan,nama FROM penjualan");
           
           // menyimpan data sementara yang ada pada $query
           while($data = mysqli_fetch_array($query))
           {
           
-          echo "<option value='".$data['kode_pelanggan'] ."' >".$data['kode_pelanggan'] ." - ".$data['nama_pelanggan'] ."</option>";
+          echo "<option value='".$data['kode_pelanggan'] ."' >".$data['kode_pelanggan'] ." - ".$data['nama'] ."</option>";
           
           }
           
@@ -569,6 +569,13 @@ $session_id = session_id();
    
   </script> <!--tag penutup perintah java script-->
 
+<script>
+// untuk memunculkan data tabel 
+$(document).ready(function() {
+        $('#table').DataTable({"ordering":false});
+    });
+
+</script>
 
    <script>
    //perintah javascript yang diambil dari form tbs penjualan dengan id=form tambah produk

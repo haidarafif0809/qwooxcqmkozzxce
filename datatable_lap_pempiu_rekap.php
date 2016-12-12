@@ -36,9 +36,12 @@ $totalFiltered = $totalData;  // when there is no search parameter then total nu
 $sql = "SELECT dpp.id, dpp.no_faktur_pembayaran, dpp.no_faktur_penjualan, dpp.tanggal, dpp.tanggal_jt, dpp.kredit, dpp.potongan, dpp.total, dpp.jumlah_bayar, dpp.kode_pelanggan, p.nama_pelanggan, pp.dari_kas, pp.total, da.nama_daftar_akun ";
 $sql.=" FROM detail_pembayaran_piutang dpp INNER JOIN pelanggan p ON dpp.kode_pelanggan = p.kode_pelanggan INNER JOIN pembayaran_piutang pp ON dpp.no_faktur_pembayaran = pp.no_faktur_pembayaran INNER JOIN daftar_akun da ON pp.dari_kas = da.kode_daftar_akun WHERE dpp.tanggal >= '$dari_tanggal' AND dpp.tanggal <= '$sampai_tanggal' AND 1=1 ";
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
-	$sql.=" AND ( no_faktur_pembayaran LIKE '".$requestData['search']['value']."%' ";
-	$sql.="  OR no_faktur_penjualan LIKE '".$requestData['search']['value']."%' ";
-	$sql.="  OR tanggal LIKE '".$requestData['search']['value']."%' )";
+	$sql.=" AND ( dpp.no_faktur_pembayaran LIKE '".$requestData['search']['value']."%' ";
+	$sql.="  OR dpp.no_faktur_penjualan LIKE '".$requestData['search']['value']."%' ";
+	$sql.="  OR dpp.tanggal LIKE '".$requestData['search']['value']."%' ";
+	$sql.="  OR dpp.kode_pelanggan LIKE '".$requestData['search']['value']."%' ";
+	$sql.="  OR p.nama_pelanggan LIKE '".$requestData['search']['value']."%' ";
+	$sql.="  OR da.nama_daftar_akun LIKE '".$requestData['search']['value']."%' )";
 }
 $query=mysqli_query($conn, $sql) or die("datatablee_lap_pempiu_rekap.php: get employees");
 $totalFiltered = mysqli_num_rows($query); // when there is a search parameter then we have to modify total number filtered rows as per search result. 

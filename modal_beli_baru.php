@@ -21,12 +21,10 @@
         <tbody> <!-- tag pembuka tbody, yang digunakan untuk menampilkan data yang ada di database --> 
 <?php
 
-
+$perintah = $db->query("SELECT b.id, b.kode_barang, b.nama_barang, b.harga_beli, b.satuan, b.kategori, b.suplier, b.over_stok, b.stok_barang, sk.harga_pokok, s.nama FROM barang b LEFT JOIN satuan_konversi sk ON b.id = sk.id_produk LEFT JOIN satuan s ON b.satuan = s.id WHERE b.berkaitan_dgn_stok = 'Barang' || b.berkaitan_dgn_stok = '' ORDER BY b.kode_barang ");
         
-        $perintah = $db->query("SELECT b.id, b.kode_barang, b.nama_barang, b.harga_beli, b.satuan, b.kategori, b.suplier, b.over_stok, b.stok_barang, sk.harga_pokok, s.nama FROM barang b LEFT JOIN satuan_konversi sk ON b.id = sk.id_produk LEFT JOIN satuan s ON b.satuan = s.id WHERE b.berkaitan_dgn_stok = 'Barang' || b.berkaitan_dgn_stok = '' GROUP BY b.kode_barang ");
-        
-        //menyimpan data sementara yang ada pada $perintah
-        while ($data1 = mysqli_fetch_array($perintah))
+        //menyimpan data sementara yang ada pada 
+        while($data1 = mysqli_fetch_array($perintah))
         {
         
         // mencari jumlah Barang
@@ -53,8 +51,6 @@
             $total_1 = $jumlah_pembelian + $jumlah_item_masuk + $jumlah_retur_penjualan + $jumlah_stok_awal + $jumlah_fisik;
 
 
- 
-
             $query3 = $db->query("SELECT SUM(jumlah_barang) AS jumlah_penjualan FROM detail_penjualan WHERE kode_barang = '$data1[kode_barang]'");
             $cek3 = mysqli_fetch_array($query3);
             $jumlah_penjualan = $cek3['jumlah_penjualan'];
@@ -69,14 +65,8 @@
             $jumlah_retur_pembelian = $cek5['jumlah_retur_pembelian'];
 
 
- 
-
-
-
 //total barang 2
             $total_2 = $jumlah_penjualan + $jumlah_item_keluar + $jumlah_retur_pembelian;
-
-
 
             $stok_barang = $total_1 - $total_2;
             
@@ -103,7 +93,7 @@ mysqli_close($db);
         </tbody> <!--tag penutup tbody-->
         
         </table> <!-- tag penutup table-->
-        </div>
+     
         
 <script type="text/javascript">
   $(function () {

@@ -109,7 +109,12 @@ $(document).ready(function(){
 
         var dari_tanggal = $("#dari_tanggal_rekap").val();        
         var sampai_tanggal = $("#sampai_tanggal_rekap").val(); 
-        	
+        	if (dari_tanggal == '') {
+        		alert("Silakan dari tanggal diisi terlebih dahulu.");
+        		$("#dari_tanggal_rekap").focus();
+        	}
+        	else
+        	{
           		var dataTable = $('#table_lap_pempiu_rekap').DataTable( {
 			          "processing": true,
 			          "serverSide": true,
@@ -142,6 +147,7 @@ $(document).ready(function(){
   	$("#cetak_rekap").attr("href", "cetak_lap_pembayaran_piutang_rekap.php?dari_tanggal="+dari_tanggal+"&sampai_tanggal="+sampai_tanggal+"");
 
 	$("#download_excell").attr("href", "download_lap_pembayaran_piutang.php?dari_tanggal="+dari_tanggal+"&sampai_tanggal="+sampai_tanggal+"");
+}//end else
         });
         $("form").submit(function(){
         

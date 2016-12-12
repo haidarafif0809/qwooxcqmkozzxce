@@ -12,15 +12,9 @@ include 'db.php';
 	$select = $db->query("SELECT no_faktur_penjualan,jumlah_retur,no_faktur_retur,kode_barang FROM detail_retur_penjualan ");
 	$ambil = mysqli_fetch_array($select);
 
-	$select0 = $db->query("SELECT sisa FROM detail_penjualan WHERE no_faktur = '$ambil[no_faktur_penjualan]' AND kode_barang = '$ambil[kode_barang]'");
-	$ambil0 = mysqli_fetch_array($select0);
 
-	$sisa = $ambil0['sisa'] + $ambil['jumlah_retur'];
-
-	$update = $db->query("UPDATE detail_penjualan SET sisa = '$sisa' WHERE no_faktur = '$ambil[no_faktur_penjualan]'");
 
 	
-
 
  // INSERT HISTORY RETUR PENJUALAN
 $retur_penjualan = $db->query("SELECT * FROM retur_penjualan WHERE no_faktur_retur = '$no_faktur_retur'");
@@ -32,6 +26,12 @@ $insert_retur_penjualan = $db->query("INSERT INTO history_retur_penjualan (no_fa
 // INSERT HISTORY DETAIL RETUR PENJUALAN
 $detail_retur_penjualan = $db->query("SELECT * FROM detail_retur_penjualan WHERE no_faktur_retur = '$no_faktur_retur'");
 while($data_detail_retur_penjualan = mysqli_fetch_array($detail_retur_penjualan)){
+
+
+	$update_detail = $db->query("UPDATE detail_penjualan SET sisa = sisa + '$data_detail_retur_penjualan[jumlah_retur]' WHERE no_faktur = '$data_detail_retur_penjualan[no_faktur_penjualan]' AND kode_barang = '$data_detail_retur_penjualan[kode_barang]'");
+
+	$update_hpp = $db->query("UPDATE hpp_keluar SET sisa_barang = sisa_barang + '$data_detail_retur_penjualan[jumlah_retur]' WHERE no_faktur = '$data_detail_retur_penjualan[no_faktur_penjualan]' AND kode_barang = '$data_detail_retur_penjualan[kode_barang]'");
+
 
       $insert_retur_penjualan = "INSERT INTO history_detail_retur_penjualan (no_faktur_retur, no_faktur_penjualan, tanggal, jam, waktu, kode_barang, nama_barang, jumlah_beli, jumlah_retur, harga, subtotal, potongan, tax, user_hapus) VALUES ('$no_faktur_retur', '$data_detail_retur_penjualan[no_faktur_penjualan]', '$data_detail_retur_penjualan[tanggal]', '$data_detail_retur_penjualan[jam]', '$data_detail_retur_penjualan[waktu]', '$data_detail_retur_penjualan[kode_barang]', '$data_detail_retur_penjualan[nama_barang]', '$data_detail_retur_penjualan[jumlah_beli]', '$data_detail_retur_penjualan[jumlah_retur]', '$data_detail_retur_penjualan[harga]', '$data_detail_retur_penjualan[subtotal]', '$data_detail_retur_penjualan[potongan]', '$data_detail_retur_penjualan[tax]', '$user')";
 

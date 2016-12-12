@@ -357,7 +357,13 @@ $no_faktur_penjualan = $data50['no_faktur_penjualan'];
 <span id="demo"> </span>
 </div>
 </div><!-- end of container -->
-
+<script>
+    
+    // untk menampilkan datatable atau filter seacrh
+    $(document).ready(function(){
+    $('#tableuser').DataTable({"ordering":false});
+    });
+</script>
 
 <!-- untuk memasukan perintah javascript -->
 <script type="text/javascript">

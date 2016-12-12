@@ -4,6 +4,7 @@ include 'db.php';
 /* Database connection end */
 include 'sanitasi.php';
 
+
 // storing  request (ie, get/post) global array to a variable  
 $requestData= $_REQUEST;
 
@@ -15,25 +16,25 @@ $columns = array(
 	2 => 'nama_daftar_akun',
 	3 => 'potongan',
 	4 => 'total',
-	5 => 'id'
+	5  => 'id'
 );
 
 // getting total number records without any search
-$sql = "SELECT p.nama_pelanggan,da.nama_daftar_akun,pp.id,pp.no_faktur_pembayaran,pp.tanggal,pp.nama_suplier,pp.dari_kas,pp.total ";
-$sql.=" FROM pembayaran_piutang pp INNER JOIN daftar_akun da ON pp.dari_kas = da.kode_daftar_akun INNER JOIN pelanggan p ON pp.nama_suplier = p.kode_pelanggan ";
-$query=mysqli_query($conn, $sql) or die("datatable_lap_pempiu.php: get employees");
+$sql = "SELECT da.nama_daftar_akun,p.id,p.no_faktur_pembayaran,p.tanggal,p.nama_suplier,p.dari_kas,p.total,s.nama ";
+$sql.=" FROM pembayaran_hutang p INNER JOIN suplier s ON p.nama_suplier = s.id INNER JOIN daftar_akun da ON p.dari_kas = da.kode_daftar_akun ";
+$query=mysqli_query($conn, $sql) or die("datatable_lap_pemhut.php.php: get employees");
 $totalData = mysqli_num_rows($query);
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
 
-$sql = "SELECT p.nama_pelanggan,da.nama_daftar_akun,pp.id,pp.no_faktur_pembayaran,pp.tanggal,pp.nama_suplier,pp.dari_kas,pp.total ";
-$sql.=" FROM pembayaran_piutang pp INNER JOIN daftar_akun da ON pp.dari_kas = da.kode_daftar_akun INNER JOIN pelanggan p ON pp.nama_suplier = p.kode_pelanggan WHERE 1=1 ";
+$sql = "SELECT da.nama_daftar_akun,p.id,p.no_faktur_pembayaran,p.tanggal,p.nama_suplier,p.dari_kas,p.total,s.nama ";
+$sql.=" FROM pembayaran_hutang p INNER JOIN suplier s ON p.nama_suplier = s.id INNER JOIN daftar_akun da ON p.dari_kas = da.kode_daftar_akun WHERE 1=1";
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
-	$sql.=" AND ( pp.no_faktur_pembayaran LIKE '".$requestData['search']['value']."%' ";
-	$sql.=" OR pp.tanggal  LIKE '".$requestData['search']['value']."%' ";
-	$sql.=" OR da.nama_daftar_akun LIKE '".$requestData['search']['value']."%' )";
+	$sql.=" AND ( da.nama_daftar_akun LIKE '".$requestData['search']['value']."%' ";    
+	$sql.=" OR p.no_faktur_pembayaran LIKE '".$requestData['search']['value']."%' "; 
+  $sql.=" OR p.tanggal LIKE '".$requestData['search']['value']."%' )";
 }
-$query=mysqli_query($conn, $sql) or die("datatablee_lap_pempiu.php: get employees");
+$query=mysqli_query($conn, $sql) or die("datatablee_lap_pemhut.php.php: get employees");
 $totalFiltered = mysqli_num_rows($query); // when there is a search parameter then we have to modify total number filtered rows as per search result. 
 $sql.=" ORDER BY ". $columns[$requestData['order'][0]['column']]."   ".$requestData['order'][0]['dir']."  LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
 /* $requestData['order'][0]['column'] contains colmun index, $requestData['order'][0]['dir'] contains order such as asc/desc  */	
@@ -43,17 +44,16 @@ $data = array();
 while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 	$nestedData=array(); 
 
-
-			$perintah0 = $db->query("SELECT * FROM detail_pembayaran_piutang WHERE no_faktur_pembayaran = '$row[no_faktur_pembayaran]'");
-			$cek = mysqli_fetch_array($perintah0);
-
-			$nestedData[] = $row['no_faktur_pembayaran'];
-			$nestedData[] = $row['tanggal'];
-			$nestedData[] = $row['nama_daftar_akun'];
-			$nestedData[] = $cek['potongan'];
-			$nestedData[] = rp($row['total']);
-
-	$nestedData[] = $row["id"];
+      $perintah0 = $db->query("SELECT * FROM detail_pembayaran_hutang WHERE no_faktur_pembayaran = '$row[no_faktur_pembayaran]'");
+      $cek = mysqli_fetch_array($perintah0);
+      
+      $nestedData[] = $row['no_faktur_pembayaran'];
+      $nestedData[] = $row['tanggal'];
+      $nestedData[] = $row['nama_daftar_akun'];
+      $nestedData[] = $cek['potongan'];
+      $nestedData[] = rp($row['total']);
+		
+	$nestedData[] = $row['id'];
 	$data[] = $nestedData;
 }
 
@@ -69,4 +69,3 @@ $json_data = array(
 echo json_encode($json_data);  // send data as json format
 
 ?>
-

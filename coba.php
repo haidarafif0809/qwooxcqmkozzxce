@@ -885,7 +885,8 @@ alert("Silakan Bayar Hutang");
        $("#alert_berhasil").show();
        $("#result").html();
        $("#cetak_tunai").show();
-       
+        $("#result").hide();
+
        
        });
  }
@@ -974,7 +975,7 @@ else
        {
 
         alert ("Tanggal Jatuh Tempo Harus Di Isi");
-
+      $("#tanggal_jt").focus();
        }
        
  else if (jumlah_bayar_lama == 0 || x <= total)
@@ -990,6 +991,7 @@ else
 
        
        $("#alert_berhasil").show();
+        $("#result").hide();
        $("#result").html(info);
        $("#cetak_hutang").show();
        $("#sisa_pembayaran_pembelian").val('');
@@ -1332,6 +1334,8 @@ $("#pembayaran_pembelian").keyup(function(){
       }
 
       var potongan_rp = ((total * potongan_persen) / 100);
+
+
       var sisa_potongan = total - potongan_rp;
       var kredit = parseInt(sisa_potongan, 10) - parseInt(pembayaran,10);
       var kembalian = parseInt(pembayaran,10) - parseInt(sisa_potongan, 10);
@@ -1358,7 +1362,9 @@ $("#pembayaran_pembelian").keyup(function(){
              }
              
       $("#total_pembelian").val(hasil_akhir);
-      $("#potongan_pembelian").val(potongan_rp);
+            var pot_rupiah = parseInt(potongan_rp,10);
+
+      $("#potongan_pembelian").val(pot_rupiah);
 
       });
       });
@@ -1793,7 +1799,7 @@ $(document).ready(function(){
           alert('Satuan Yang Anda Pilih Tidak Tersedia Untuk Produk Ini !');
           $("#satuan_konversi").val(prev);
           $("#harga_produk").val('');
-          $("#harga_baru").val('');
+          $("#harga_baru").val(harga_lama);
 
         }
 

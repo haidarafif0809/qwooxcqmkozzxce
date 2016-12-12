@@ -30,7 +30,7 @@ $total_akhir = $out['total_akhir'];
 
 <div class='container'>
   
-<h3><center><b>Data Pembayaran Hutang <br>Dari Tanggal (<?php echo $dari_tanggal ?>) Sampai Tanggal (<?php echo $sampai_tanggal ?>)</b></center></h3>
+<h3><center><b>Data Pembayaran Hutang  Tanggal <?php echo $dari_tanggal ?> s/d <?php echo $sampai_tanggal ?></b></center></h3>
 <div class="table-responsive">
 <table id="tableuser" class="table table-bordered table-sm">
     <thead>

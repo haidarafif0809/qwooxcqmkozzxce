@@ -8,12 +8,13 @@ include 'db.php';
 	 $no_faktur = $_POST['no_faktur'];
 	 $user = $_SESSION['user_name'];
 
- // INSERT HISTORY KAS MASUK
+
+//INSERT HISTORY KAS MASUK
 $kas_masuk = $db->query("SELECT * FROM kas_masuk WHERE no_faktur = '$no_faktur'");
 $data_kas_masuk = mysqli_fetch_array($kas_masuk);
 
-$insert_kas_masuk = $db->query("INSERT INTO history_kas_masuk (no_faktur, keterangan, ke_akun, jumlah, tanggal, jam, user, user_hapus) VALUES ('$no_faktur','$data_kas_masuk[keterangan]','$data_kas_masuk[ke_akun]','$data_kas_masuk[jumlah]', '$data_kas_masuk[tanggal]','$data_kas_masuk[jam]','$data_kas_masuk[user]', '$user')");
-
+$insert_kas_masuk = $db->query("INSERT INTO history_kas_masuk (no_faktur, keterangan, ke_akun, jumlah, tanggal, jam, user, user_hapus,user_edit,waktu_edit) VALUES ('$no_faktur','$data_kas_masuk[keterangan]','$data_kas_masuk[ke_akun]','$data_kas_masuk[jumlah]', '$data_kas_masuk[tanggal]','$data_kas_masuk[jam]','$data_kas_masuk[user]','$user','$data_kas_masuk[user_edit]',
+	'$data_kas_masuk[waktu_edit]')");
 
 // INSERT HISTORY DETAIL KAS MASUK
 $detail_kas_masuk = $db->query("SELECT * FROM detail_kas_masuk WHERE no_faktur = '$no_faktur'");

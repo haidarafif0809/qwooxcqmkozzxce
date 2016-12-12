@@ -35,7 +35,7 @@ $perintah = $db->query("SELECT * FROM item_masuk");
                               
                               <!-- Tampilan Modal -->
                               <div id="myModal" class="modal fade" role="dialog">
-                              <div class="modal-dialog">
+                              <div class="modal-dialog modal-lg">
                               
                               <!-- Isi Modal-->
                               <div class="modal-content">
@@ -277,7 +277,13 @@ $perintah = $db->query("SELECT * FROM item_masuk");
                               
                               </div><!-- end of container -->
                               
-                              
+<script>
+// untuk memunculkan data tabel 
+$(document).ready(function() {
+        $('#tableuser').DataTable({"ordering":false});
+    });
+
+</script>                 
           
                               
                               <!--untuk memasukkan perintah java script-->

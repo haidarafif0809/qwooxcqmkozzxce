@@ -20,17 +20,17 @@ $data = mysqli_fetch_array($cek);
 
 <div class="form-group">
   <label for="sel1">Nama </label>
-  <input type="text" class="form-control" id="nama" name="nama" value="<?php echo $data['nama']; ?>">
+  <input type="text" class="form-control" required="" id="nama" name="nama" value="<?php echo $data['nama']; ?>">
 </div>
 
 <div class="form-group">
   <label for="sel1">Alamat</label>
-  <input type="text" class="form-control" id="alamat" name="alamat" value="<?php echo $data['alamat']; ?>">
+  <input type="text" class="form-control" required="" id="alamat" name="alamat" value="<?php echo $data['alamat']; ?>">
 </div>
 
 <div class="form-group">
   <label for="sel1">No Telp</label>
-  <input type="text" class="form-control" id="no_telp" name="no_telp" value="<?php echo $data['no_telp']; ?>">
+  <input type="text" class="form-control" required="" id="no_telp" name="no_telp" value="<?php echo $data['no_telp']; ?>">
 </div>
 
 <!--  open hidden  -->

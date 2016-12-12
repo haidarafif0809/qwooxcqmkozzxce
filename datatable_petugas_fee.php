@@ -10,30 +10,30 @@ $requestData= $_REQUEST;
 
 $columns = array( 
 // datatable column index  => database column name
-	0 =>'no_faktur_pembayaran', 
-	1 => 'tanggal',
-	2 => 'nama_daftar_akun',
-	3 => 'potongan',
-	4 => 'total',
-	5 => 'id'
+	0 =>'username', 
+	1 => 'nama',
+	2 => 'alamat',
+	3 => 'jabatan',
+	4 => 'otoritas',
+  5 => 'status',
+	6 => 'id'
 );
 
 // getting total number records without any search
-$sql = "SELECT p.nama_pelanggan,da.nama_daftar_akun,pp.id,pp.no_faktur_pembayaran,pp.tanggal,pp.nama_suplier,pp.dari_kas,pp.total ";
-$sql.=" FROM pembayaran_piutang pp INNER JOIN daftar_akun da ON pp.dari_kas = da.kode_daftar_akun INNER JOIN pelanggan p ON pp.nama_suplier = p.kode_pelanggan ";
-$query=mysqli_query($conn, $sql) or die("datatable_lap_pempiu.php: get employees");
+$sql = "SELECT u.username,u.nama,u.alamat,u.otoritas,u.status,u.id,j.nama AS jabtan  ";
+$sql.=" FROM user u INNER JOIN jabatan j ON u.jabatan = j.id ";
+$query=mysqli_query($conn, $sql) or die("datatable_petugas_fee.php: get employees");
 $totalData = mysqli_num_rows($query);
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
 
-$sql = "SELECT p.nama_pelanggan,da.nama_daftar_akun,pp.id,pp.no_faktur_pembayaran,pp.tanggal,pp.nama_suplier,pp.dari_kas,pp.total ";
-$sql.=" FROM pembayaran_piutang pp INNER JOIN daftar_akun da ON pp.dari_kas = da.kode_daftar_akun INNER JOIN pelanggan p ON pp.nama_suplier = p.kode_pelanggan WHERE 1=1 ";
+$sql = "SELECT u.username,u.nama,u.alamat,u.otoritas,u.status,u.id,j.nama AS jabtan ";
+$sql.=" FROM user u INNER JOIN jabatan j ON u.jabatan = j.id WHERE 1=1";
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
-	$sql.=" AND ( pp.no_faktur_pembayaran LIKE '".$requestData['search']['value']."%' ";
-	$sql.=" OR pp.tanggal  LIKE '".$requestData['search']['value']."%' ";
-	$sql.=" OR da.nama_daftar_akun LIKE '".$requestData['search']['value']."%' )";
+	$sql.=" AND ( u.username LIKE '".$requestData['search']['value']."%' ";    
+	$sql.=" OR u.nama  LIKE '".$requestData['search']['value']."%' )";
 }
-$query=mysqli_query($conn, $sql) or die("datatablee_lap_pempiu.php: get employees");
+$query=mysqli_query($conn, $sql) or die("datatablee_petugas_fee.php: get employees");
 $totalFiltered = mysqli_num_rows($query); // when there is a search parameter then we have to modify total number filtered rows as per search result. 
 $sql.=" ORDER BY ". $columns[$requestData['order'][0]['column']]."   ".$requestData['order'][0]['dir']."  LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
 /* $requestData['order'][0]['column'] contains colmun index, $requestData['order'][0]['dir'] contains order such as asc/desc  */	
@@ -43,18 +43,14 @@ $data = array();
 while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 	$nestedData=array(); 
 
-
-			$perintah0 = $db->query("SELECT * FROM detail_pembayaran_piutang WHERE no_faktur_pembayaran = '$row[no_faktur_pembayaran]'");
-			$cek = mysqli_fetch_array($perintah0);
-
-			$nestedData[] = $row['no_faktur_pembayaran'];
-			$nestedData[] = $row['tanggal'];
-			$nestedData[] = $row['nama_daftar_akun'];
-			$nestedData[] = $cek['potongan'];
-			$nestedData[] = rp($row['total']);
-
-	$nestedData[] = $row["id"];
-	$data[] = $nestedData;
+	  $nestedData[] = $row['username'];
+    $nestedData[] = $row['nama'];
+    $nestedData[] = $row['alamat'];
+    $nestedData[] = $row['jabtan'];
+    $nestedData[] = $row['otoritas'];
+    $nestedData[] = $row['status'];
+	  $nestedData[] = $row['id'];
+	  $data[] = $nestedData;
 }
 
 

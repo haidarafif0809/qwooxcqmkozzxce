@@ -26,23 +26,20 @@ $total_akhir = $out['total_akhir'];
 
  ?>
 <div class="container">
+                 <center><h3> <b> LAPORAN PEMBAYARAN HUTANG REKAP </b></h3><hr></center>
  <div class="row"><!--row1-->
         <div class="col-sm-2">
-        <br><br>
                 <img src='save_picture/<?php echo $data1['foto']; ?>' class='img-rounded' alt='Cinque Terre' width='160' height='140`'> 
         </div><!--penutup colsm2-->
 
         <div class="col-sm-6">
-                 <h3> <b> LAPORAN PEMBAYARAN HUTANG REKAP </b></h3>
-                 <hr>
                  <h4> <b> <?php echo $data1['nama_perusahaan']; ?> </b> </h4> 
                  <p> <?php echo $data1['alamat_perusahaan']; ?> </p> 
                  <p> No.Telp:<?php echo $data1['no_telp']; ?> </p> 
                  
         </div><!--penutup colsm4-->
 
-        <div class="col-sm-4">
-         <br><br>                 
+        <div class="col-sm-4">          
 <table>
   <tbody>
 

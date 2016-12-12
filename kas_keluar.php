@@ -115,7 +115,11 @@ include 'db.php';
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
+<<<<<<< HEAD
         <h4 class="modal-title">Detail Kas Keluar </h4>
+=======
+        <h4 class="modal-title"><center><b>Detail Kas Masuk </b></center></h4>
+>>>>>>> e83f98556daf2fddef7ffbde43513964101b3462
       </div>
 
       <div class="modal-body">
@@ -127,7 +131,7 @@ include 'db.php';
 
       <div class="modal-footer">
         
-        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+       <center> <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button></center>
       </div>
     </div>
 
@@ -157,6 +161,7 @@ echo '<a href="form_kas_keluar.php"  class="btn btn-info"><i class="fa fa-plus">
 			<th style='background-color: #4CAF50; color:white'> Tanggal </th>
 			<th style='background-color: #4CAF50; color:white'> Jam </th>
 			<th style='background-color: #4CAF50; color:white'> User </th>
+			<th style='background-color: #4CAF50; color:white'> Petugas edit </th>
 			<th style='background-color: #4CAF50; color:white'> Waktu edit </th>
 			<th style='background-color: #4CAF50; color:white'> Detail </th>
 
@@ -207,7 +212,7 @@ if ($kas_keluar['kas_keluar_hapus'] > 0) {
             }
           },
               "fnCreatedRow": function( nRow, aData, iDataIndex ) {
-              $(nRow).attr('class','tr-id-'+aData[10]+'');
+              $(nRow).attr('class','tr-id-'+aData[11]+'');
             },
 
         } );

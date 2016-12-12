@@ -1,6 +1,5 @@
 <?php include 'session_login.php';
 
-
 //memasukkan file session login, header, navbar, db
 include 'header.php';
 include 'navbar.php';
@@ -13,6 +12,10 @@ $nama = $_GET['nama'];
 
 $perintah = $db->query("SELECT * FROM retur_pembelian WHERE no_faktur_retur = '$no_faktur_retur'");
 $ambil = mysqli_fetch_array($perintah);  
+
+$selects = $db->query("SELECT nama FROM suplier WHERE id = '$ambil[nama_suplier]'");
+$outs = mysqli_fetch_array($selects);
+$name_suplier = $outs['nama'];
 
     $data_potongan = $db->query("SELECT potongan, tax, ppn FROM retur_pembelian WHERE no_faktur_retur = '$no_faktur_retur'");
     $ambil_potongan = mysqli_fetch_array($data_potongan);
@@ -48,9 +51,9 @@ $data_tbs = mysqli_num_rows($tbs);
    }
 </style>
 
-<!— js untuk tombol shortcut —>
+<!-- js untuk tombol shortcut -->
  <script src="shortcut.js"></script>
-<!— js untuk tombol shortcut —>
+<!-- js untuk tombol shortcut -->
 
 <!--membuat tampilan form agar terlihat rapih dalam satu tempat-->
 <div style="padding-right:5%; padding-left:5%;">
@@ -69,8 +72,7 @@ $data_tbs = mysqli_num_rows($tbs);
           <div class="col-sm-3">
               <label><font class='satu'> <b>Suplier</b> </font></label><br><br>
               <select  data-placeholder="--SILAHKAN PILIH--" name="suplier" id="nama_suplier" class="form-control chosen" required="" >
-              
-              
+          <option value="<?php echo $ambil['nama_suplier']; ?>"><?php echo $name_suplier; ?></option>
               <?php 
               
               // menampilkan seluruh data yang ada pada tabel suplier
@@ -288,10 +290,10 @@ $data_tbs = mysqli_num_rows($tbs);
                 </div>
 
                 <div class="col-sm-6">
-                    <label><b> <font class='satu'>Total Akhir</font> </b></label><br>
-                    <!--readonly = agar tek yang ada kolom total tidak bisa diubah hanya bisa dibaca-->
-                    <b> <input style="height: 20px; font-size: 25px;" type="text" name="total" id="total_retur_pembelian" class="form-control" placeholder="Total" readonly="" > </b>
+                    <label><b> <font class='satu'>Tax (%)</font> </b></label><br>
+                    <input style="height: 20px" type="text" name="tax" id="tax" class="form-control" value="<?php echo $hasil_tax; ?>"  placeholder="Tax" data-pajak="" autocomplete="off">
                 </div>
+
           </div>
                
           <div class="row 2">
@@ -308,11 +310,12 @@ $data_tbs = mysqli_num_rows($tbs);
           </div>
 
             <div class="row 3">
-              <div class="col-sm-6">
-                    <label><b> <font class='satu'>Tax (%)</font> </b></label><br>
-                    <input style="height: 20px" type="text" name="tax" id="tax" class="form-control" value="<?php echo $hasil_tax; ?>"  placeholder="Tax" data-pajak="" autocomplete="off">
+             
+ <div class="col-sm-6">
+                    <label><b> <font class='satu'>Total Akhir</font> </b></label><br>
+                    <!--readonly = agar tek yang ada kolom total tidak bisa diubah hanya bisa dibaca-->
+                    <b> <input style="height: 20px; font-size: 25px;" type="text" name="total" id="total_retur_pembelian" class="form-control" placeholder="Total" readonly="" > </b>
                 </div>
-
                 <div class="col-sm-6">
                        <label> <font class='satu'><b>Cara Bayar (F4)</b></font></label><br>
                        <select type="text" name="cara_bayar" id="carabayar1" class="form-control" >

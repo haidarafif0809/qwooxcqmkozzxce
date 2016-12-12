@@ -1,6 +1,5 @@
 <?php include 'session_login.php';
 
-
 //memasukkan file session login, header, navbar, db
 include 'header.php';
 include 'navbar.php';
@@ -19,6 +18,9 @@ $ambil = mysqli_fetch_array($perintah);
     $tax = $ambil_potongan['tax'];
     $ppn = $ambil_potongan['ppn'];
 
+$select_nama = $db->query("SELECT nama_pelanggan FROM pelanggan WHERE kode_pelanggan = '$ambil[kode_pelanggan]'");
+$out = mysqli_fetch_array($select_nama);
+$nama = $out['nama_pelanggan'];
 
     $data_potongan_persen = $db->query("SELECT SUM(subtotal) AS subtotal FROM detail_retur_penjualan WHERE no_faktur_retur = '$no_faktur'");
     $ambil_potongan_persen = mysqli_fetch_array($data_potongan_persen);
@@ -55,9 +57,9 @@ $ambil = mysqli_fetch_array($perintah);
 <div class="col-sm-8">
   <!-- membuat form menjadi beberpa bagian -->
   <form enctype="multipart/form-data" role="form" action="form_retur_penjualan.php" method="post ">
-					
+          
           <!-- membuat teks dengan ukuran h3 -->
-    			<h3> <u> FORM EDIT RETUR PENJUALAN </u> </h3><br> 
+          <h3> <u> FORM EDIT RETUR PENJUALAN </u> </h3><br> 
 
 
   <div class="row">
@@ -67,22 +69,19 @@ $ambil = mysqli_fetch_array($perintah);
     <div class="col-sm-3">
           <label> No. RM / Nama Pasien </label><br><br>
           <select data-placeholder="--SILAHKAN PILIH--" name="kode_pelanggan" id="kd_pelanggan" class="form-control chosen"  >
-          <option value="<?php echo $ambil['kode_pelanggan']; ?>"><?php echo $ambil['kode_pelanggan']; ?></option>
+          <option value="<?php echo $ambil['kode_pelanggan']; ?>">(<?php echo $ambil['kode_pelanggan']; ?>) <?php echo $nama; ?></option>
           <option value="Umum">Umum</option>
           <?php 
-          
           // menampilkan seluruh data yang ada pada tabel suplier
-          $query = $db->query("SELECT * FROM pelanggan");
+          $query = $db->query("SELECT kode_pelanggan,nama FROM penjualan");
           
           // menyimpan data sementara yang ada pada $query
           while($data = mysqli_fetch_array($query))
           {
           
-          echo "<option value='".$data['kode_pelanggan'] ."'>".$data['kode_pelanggan'] ." - ".$data['nama_pelanggan'] ."</option>";
+          echo "<option value='".$data['kode_pelanggan'] ."'>".$data['kode_pelanggan'] ." - ".$data['nama'] ."</option>";
           
           }
-          
-          
           ?>
           </select>
     </div>
@@ -95,8 +94,8 @@ $ambil = mysqli_fetch_array($perintah);
 
     <div class="col-sm-2">
           <label> No Faktur </label><br>
-					<input style="height: 25px;" type="text" name="no_faktur_retur" id="nomorfaktur" class="form-control" readonly="" value="<?php echo $no_faktur; ?>"  >
-		</div>			
+          <input style="height: 25px;" type="text" name="no_faktur_retur" id="nomorfaktur" class="form-control" readonly="" value="<?php echo $no_faktur; ?>"  >
+    </div>      
 
 
 
@@ -118,7 +117,7 @@ $ambil = mysqli_fetch_array($perintah);
 </div>
     </form> <!-- tag penutup form -->
 
-				
+        
 
 
 
@@ -196,7 +195,7 @@ $ambil = mysqli_fetch_array($perintah);
   </table> <!-- tag penutup table-->
 
 </div>
-        	</span>
+          </span>
       </div> <!-- tag penutup modal body -->
 
       <!-- tag pembuka modal footer -->
@@ -384,9 +383,9 @@ else{
 
   </div>
 
-									
+                  
 
-	</div><!-- end of col sm 8 --> <!--tag penutup col sm 8-->
+  </div><!-- end of col sm 8 --> <!--tag penutup col sm 8-->
 
   <div class="col-sm-4"> <!--tag pembuka col sm 4-->
 <div class="card card-block" style="width: 75%;">
@@ -495,11 +494,11 @@ mysqli_close($db);
   
   
 
-		
+    
       <input type="hidden" name="tanggal" id="tanggal_hidden" class="form-control tgl" value="<?php echo $ambil['tanggal']; ?>" >
                               
       <!--membuat tombol submit bayar & Hutang-->
-			<button type="submit" id="pembayaran" class="btn btn-info"> <i class='fa fa-send'> </i> Bayar (F8)</button>
+      <button type="submit" id="pembayaran" class="btn btn-info"> <i class='fa fa-send'> </i> Bayar (F8)</button>
       
       <a class="btn btn-info" href="form_retur_penjualan.php" id="transaksi_baru" style="display: none"> <i class="fa fa-refresh"></i> Transaksi Baru</a>
 
@@ -511,7 +510,7 @@ mysqli_close($db);
       <a href='cetak_retur_penjualan.php' id="cetak_retur" style="display: none;" class="btn btn-success" target="blank"><span class="fa fa-print"> </span> Cetak Retur Penjualan </a>
      
 
-					</form><!--tag penutup form-->
+          </form><!--tag penutup form-->
 <div class="alert alert-success" id="alert_berhasil" style="display:none">
   <strong>Success!</strong> Pembayaran Berhasil
 </div>
@@ -559,7 +558,7 @@ mysqli_close($db);
 
   </div>
 </div><!-- end of modal hapus data  -->
-			
+      
 
 <!-- Modal edit data -->
 <div id="modal_edit" class="modal fade" role="dialog">
@@ -1060,33 +1059,49 @@ $.post("cek_total_edit_retur_penjualan.php",
 
 </script>
 
-<script type="text/javascript">
-  
+
+<script type="text/javascript"> 
   // untuk memunculkan sisa pembayaran secara otomatis
-  $(document).ready(function(){
+$(document).ready(function(){
 $("#potongan_pembelian").keyup(function(){
 
-        var potongan_pembelian =  bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah( $("#potongan_pembelian").val() ))));
-        var total = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#total_retur_pembelian1").val()))));
-        var potongan_persen = ((potongan_pembelian / total) * 100);
-        var tax = $("#tax").val();
+var potongan_pembelian =  bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah( $("#potongan_pembelian").val() ))));
+var total = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#total_retur_pembelian1").val()))));
+
+if (potongan_pembelian == "")
+  {
+    potongan_pembelian = 0;
+
+  }
+
+var potongan_persen = ((potongan_pembelian / total) * 100);
+if (potongan_persen > 100)
+  {
+    alert("Potongan %, Tidak Boleh Lebih Dari 100%");
+    potongan_pembelian = 0;
+    $("#potongan_pembelian").val(0);
+    potongan_persen = 0;
+  }
+
+var tax = $("#tax").val();
 
         if (tax == "") {
         tax = 0;
         }
 
-        if (potongan_pembelian != ""){
+        if (potongan_pembelian != "")
+        {
              $("#potongan_pembelian").attr("readonly", false);
               $("#potongan_persen").attr("readonly", true);
 
-             }
+        }
 
         else{
               $("#potongan_persen").attr("readonly", true);
              $("#potongan_pembelian").attr("readonly", false);
              }
 
-             
+     
              var sisa_potongan = total - potongan_pembelian;
              
              var t_tax = ((parseInt(sisa_potongan,10) * parseInt(tax,10)) / 100);
@@ -1110,11 +1125,17 @@ $("#potongan_pembelian").keyup(function(){
 
         var potongan_persen = $("#potongan_persen").val();
         var total = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah( $("#total_retur_pembelian1").val() ))));
+
         var potongan_rupiah = ((total * potongan_persen) / 100);
         var tax = $("#tax").val();
 
         if (tax == "") {
         tax = 0;
+        }
+  if (potongan_persen > 100) {
+          alert ("Potongan %, Tidak Boleh Lebih Dari 100% ");
+          $("#potongan_persen").val(0);
+          potongan_rupiah = 0;
         }
 
         if (potongan_persen != ""){
@@ -1131,15 +1152,10 @@ $("#potongan_pembelian").keyup(function(){
              var sisa_potongan = total - potongan_rupiah;             
              var t_tax = ((parseInt(sisa_potongan,10) * parseInt(tax,10)) / 100);
              var hasil_akhir = parseInt(sisa_potongan, 10) + parseInt(t_tax,10);
-        
-        if (potongan_persen > 100) {
-          alert ("Potongan %, Tidak Boleh Lebih Dari 100%");
-        }
 
-        
-        
-        $("#total_retur_pembelian").val(tandaPemisahTitik(parseInt(hasil_akhir)));
         $("#potongan_pembelian").val(tandaPemisahTitik(parseInt(potongan_rupiah)));
+
+        $("#total_retur_pembelian").val(tandaPemisahTitik(parseInt(hasil_akhir)));
 
       });
 
@@ -1148,10 +1164,7 @@ $("#potongan_pembelian").keyup(function(){
 </script>
 
 <script type="text/javascript">
-      
-      $(document).ready(function(){
-
-
+$(document).ready(function(){
       $("#tax").keyup(function(){
 
         var potongan_rupiah = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#potongan_pembelian").val() ))));
@@ -1673,6 +1686,8 @@ $("#pembayaran_pembelian").focus(function(){
         
         if (potongan_persen > 100) {
           alert ("Potongan %, Tidak Boleh Lebih Dari 100%");
+             $("#potongan_persen").val(0);
+          $("#potongan_pembelian").val(0);
         }
 
         
