@@ -75,9 +75,18 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 
 	$query_z = $db->query("SELECT status,no_faktur,nama,kode_gudang FROM penjualan WHERE no_reg = '$row[no_reg]' ");
     $data_z = mysqli_fetch_array($query_z);
+    $sttus = mysqli_num_rows($query_z);
 
     if ($registrasi_ugd['registrasi_ugd_hapus'] > 0) {
-  	$nestedData[] = "<button type='button' data-reg='".$row['no_reg']."'  data-id='".$row['id']."'  class='btn btn-floating btn-small btn-info pulang_rumah' ><b> X </b></button>";
+    	  if ($sttus > 0 )
+		{
+  			$nestedData[] = "";
+		}
+	else
+		{
+ 		$nestedData[] = "<button type='button' data-reg='".$row['no_reg']."'  data-id='".$row['id']."'  class='btn btn-floating btn-small btn-info pulang_rumah' ><b> X </b></button>";
+		}
+
 	}
 	else{
 	  $nestedData[] = "";

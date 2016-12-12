@@ -1546,6 +1546,7 @@ $(document).ready(function(){
         var total_hpp = $("#total_hpp").val();
         var harga = $("#harga_produk").val();
         var kode_gudang = $("#kode_gudang").val();
+        var nama_gudang = '<?php echo $nama_gudang;?>'
         var dokter = $("#dokter").val();
         var petugas_kasir = $("#petugas_kasir").val();   
         var petugas_paramedik = $("#petugas_paramedik").val();
@@ -1616,6 +1617,12 @@ alert("Silakan Bayar Piutang");
 
  {
 
+
+ $.post("cek_simpan_subtotal_penjualan.php",{total2:total2,no_reg:no_reg,no_faktur:no_faktur},function(data) {
+
+  if (data == "Oke") {
+
+
   $("#penjualan").hide();
   $("#simpan_sementara").hide();
   $("#batal_penjualan").hide(); 
@@ -1641,6 +1648,16 @@ alert("Silakan Bayar Piutang");
     
        
    });
+
+}
+  else{
+    alert("Maaf Subtotal Penjualan Tidak Sesuai, Silakan Tunggu Sebentar!");       
+        window.location.href="bayar_pesanan_barang_ugd.php?no_reg="+no_reg+"&kode_pelanggan="+no_rm+"&kode_gudang="+kode_gudang+"&nama_gudang="+nama_gudang+"&nama_pelanggan="+nama_pasien+"&no_faktur="+no_faktur+"";
+  }
+
+
+
+ });
 
 
  }
@@ -1692,6 +1709,8 @@ alert("Silakan Bayar Piutang");
         var total_hpp = $("#total_hpp").val();
         var harga = $("#harga_produk").val();
         var kode_gudang = $("#kode_gudang").val();
+        var nama_gudang = '<?php echo $nama_gudang;?>'
+ 
         var dokter = $("#dokter").val();
         var petugas_kasir = $("#petugas_kasir").val();   
         var petugas_paramedik = $("#petugas_paramedik").val();
@@ -1738,6 +1757,12 @@ alert("Silakan Bayar Piutang");
 
  {
 
+
+ $.post("cek_simpan_subtotal_penjualan.php",{total2:total2,no_reg:no_reg,no_faktur:no_faktur},function(data) {
+
+  if (data == "Oke") {
+
+
   $("#penjualan").hide();
   $("#simpan_sementara").hide();
   $("#batal_penjualan").hide(); 
@@ -1764,6 +1789,14 @@ alert("Silakan Bayar Piutang");
        
    });
 
+  }
+    else{
+    alert("Maaf Subtotal Penjualan Tidak Sesuai, Silakan Tunggu Sebentar!");       
+        window.location.href="bayar_pesanan_barang_ugd.php?no_reg="+no_reg+"&kode_pelanggan="+no_rm+"&kode_gudang="+kode_gudang+"&nama_gudang="+nama_gudang+"&nama_pelanggan="+nama_pasien+"&no_faktur="+no_faktur+"";
+  }
+
+
+  });
 
  }
 

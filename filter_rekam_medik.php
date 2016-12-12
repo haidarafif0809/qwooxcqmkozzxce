@@ -123,7 +123,6 @@ tr:nth-child(even){background-color: #f2f2f2}
 <!--end script datepicker-->
  
 
-
     <script type="text/javascript" language="javascript" >
       $(document).ready(function() {
 $(document).on('click','#submit',function(e) {

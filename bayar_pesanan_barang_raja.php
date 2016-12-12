@@ -120,6 +120,10 @@ if ($tax != 0) {
        <input type="hidden" name="nama_pasien" id="nama_pasien" class="form-control" autofocus="" readonly="" value="<?php echo $nama_pasien; ?>">
       </div>
 
+
+       <input type="hidden" name="nama_gudang" id="nama_gudang" class="form-control" autofocus="" readonly="" value="<?php echo $nama_gudang; ?>">
+
+
      <div class="form-group  col-sm-2">
           <label> Gudang </label><br><br>
           
@@ -1962,6 +1966,7 @@ $("#cari_produk_penjualan").click(function(){
         var total_hpp = $("#total_hpp").val();
         var harga = $("#harga_produk").val();
         var kode_gudang = $("#kode_gudang").val();
+        var nama_gudang  = $("#nama_gudang").val();
         var dokter = $("#dokter").val();
         var petugas_kasir = $("#id_user").val();   
         var petugas_paramedik = $("#petugas_paramedik").val();
@@ -2020,6 +2025,13 @@ alert("Silakan Bayar Piutang");
  {
 
 
+
+
+
+ $.post("cek_simpan_subtotal_penjualan.php",{total2:total2,no_reg:no_reg,no_faktur:no_faktur},function(data) {
+
+  if (data == "Oke") {
+           
 $("#transaksi_baru").show();
 $("#cetak_tunai").show();
 $("#cetak_tunai_besar").show();
@@ -2027,8 +2039,6 @@ $("#cetak_tunai_kategori").show();
 $("#penjualan").hide();
 $("#piutang").hide();
 
-
-            
  $.post("proses_bayar_pesanan_barang_raja.php",{no_faktur:no_faktur,sisa_pembayaran:sisa_pembayaran, kredit:kredit,no_rm:no_rm,no_reg:no_reg,tanggal_jt:tanggal_jt,total:total,total2:total2,potongan:potongan,potongan_persen:potongan_persen,tax:tax,cara_bayar:cara_bayar,pembayaran:pembayaran,total_hpp:total_hpp,harga:harga,kode_gudang:kode_gudang,dokter:dokter,petugas_kasir:petugas_kasir,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,sisa:sisa,ppn:ppn,penjamin:penjamin,nama_pasien:nama_pasien,jenis_penjualan:jenis_penjualan,biaya_adm:biaya_adm,sisa_kredit:sisa_kredit},function(info) {
 
             
@@ -2044,10 +2054,19 @@ $("#piutang").hide();
      $("#sisa_pembayaran_penjualan").val('');
      $("#kredit").val('');
 
+
        
    });
 
+  }
+  else{
+    alert("Maaf Subtotal Penjualan Tidak Sesuai, Silakan Tunggu Sebentar!");       
+        window.location.href="bayar_pesanan_barang_raja.php?no_reg="+no_reg+"&no_rm="+no_rm+"&kode_gudang="+kode_gudang+"&nama_gudang="+nama_gudang+"&nama_pasien="+nama_pasien+"&no_faktur="+no_faktur+"";
+  }
 
+
+
+ });
 
  }
 
@@ -2098,6 +2117,7 @@ $("#piutang").hide();
         var total_hpp = $("#total_hpp").val();
         var harga = $("#harga_produk").val();
         var kode_gudang = $("#kode_gudang").val();
+        var nama_gudang  = $("#nama_gudang").val();
         var dokter = $("#dokter").val();
         var petugas_kasir = $("#petugas_kasir").val();   
         var petugas_paramedik = $("#petugas_paramedik").val();
@@ -2149,7 +2169,11 @@ $("#piutang").hide();
 
  {
 
-  $("#penjualan").hide();
+ $.post("cek_simpan_subtotal_penjualan.php",{total2:total2,no_reg:no_reg,no_faktur:no_faktur},function(data) {
+
+  if (data == "Oke") {
+
+      $("#penjualan").hide();
   $("#simpan_sementara").hide();
   $("#batal_penjualan").hide(); 
   $("#piutang").hide();
@@ -2175,6 +2199,15 @@ $("#piutang").hide();
        
    });
 
+ }
+  else{
+    alert("Maaf Subtotal Penjualan Tidak Sesuai, Silakan Tunggu Sebentar!");       
+        window.location.href="bayar_pesanan_barang_raja.php?no_reg="+no_reg+"&no_rm="+no_rm+"&kode_gudang="+kode_gudang+"&nama_gudang="+nama_gudang+"&nama_pasien="+nama_pasien+"&no_faktur="+no_faktur+"";
+  }
+
+
+
+ });
 
  }
 

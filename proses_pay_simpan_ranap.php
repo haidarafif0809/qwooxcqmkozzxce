@@ -351,7 +351,7 @@ $total_tax = $jumlah_tax['total_tax'];
 
 
 if ($ppn_input == "Non") {
-echo"non";
+
     $total_penjualan = $total2 + $biaya_admin;
 
 
@@ -363,7 +363,7 @@ echo"non";
 
 else if ($ppn_input == "Include") {
 //ppn == Include
-echo"1";
+
   $total_penjualan = ($total2 + $biaya_admin) - $total_tax ;
 
 
@@ -382,7 +382,7 @@ if ($pajak != "" || $pajak != 0 ) {
 
 else {
   //ppn == Exclude
-  echo"2";
+
   $total_penjualan = $total2 + $biaya_admin;
   $pajak = $tax;
 

@@ -1362,6 +1362,7 @@ else{
         var ppn = $("#ppn").val();
         var biaya_admin = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#biaya_admin").val()))));
 
+$("#keterangan").val(total2);
         
         var sisa = pembayaran - total;
         
@@ -1419,7 +1420,7 @@ alert("Silakan Bayar Piutang");
 
  $.post("cek_subtotal_apotek.php",{total2:total2},function(data) {
 
-  if (data == "Oke") {
+  if (data == "1") {
 
 
  $.post("proses_bayar_jual_apotek.php",{biaya_admin:biaya_admin,total2:total2,sisa_pembayaran:sisa_pembayaran,kredit:kredit,kode_pelanggan:kode_pelanggan,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,cara_bayar:cara_bayar,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,total_hpp:total_hpp,harga:harga,kode_gudang:kode_gudang,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,apoteker:apoteker,no_resep_dokter:no_resep_dokter,resep_dokter:resep_dokter,penjamin:penjamin},function(info) {

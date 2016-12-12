@@ -1426,6 +1426,8 @@ $(document).ready(function(){
         var total_hpp = $("#total_hpp").val();
         var harga = $("#harga_produk").val();
         var kode_gudang = $("#kode_gudang").val();
+        var nama_gudang = '<?php echo $nama_gudang;?>'
+        var no_faktur = '<?php echo $no_faktur;?>'
         var sales = $("#id_sales").val();
         var keterangan = $("#keterangan").val();   
         var ber_stok = $("#ber_stok").val();   
@@ -1479,7 +1481,7 @@ alert(" Kode Gudang Harus Diisi ");
 alert("Silakan Bayar Piutang");
 
  }
-                else if (total ==  0 || total == "") 
+          else if (total ==  0 || total == "") 
         {
         
         alert("Anda Belum Melakukan Pemesanan");
@@ -1490,13 +1492,21 @@ alert("Silakan Bayar Piutang");
 
  {
 
+
+
+
+
+
+ $.post("cek_simpan_subtotal_penjualan.php",{total2:total2,no_reg:no_reg,no_faktur:no_faktur},function(data) {
+
+  if (data == "Oke") {
+
   $("#penjualan").hide();
   $("#simpan_sementara").hide();
   $("#batal_penjualan").hide();
   $("#piutang").hide();
   $("#tabel-operasi").hide();
   $("#tabel-lab").hide();
-  
   $("#transaksi_baru").show();
 
  $.post("proses_pay_simpan_ranap.php",{total2:total2,sisa_pembayaran:sisa_pembayaran,kredit:kredit,no_rm:no_rm,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,cara_bayar:cara_bayar,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,total_hpp:total_hpp,harga:harga,sales:sales,kode_gudang:kode_gudang,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,nama_pasien:nama_pasien,no_reg:no_reg,dokter:dokter,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,penjamin:penjamin,bed:bed,group_bed:group_bed,biaya_admin:biaya_admin,no_faktur:'<?php echo $no_faktur; ?>'},function(info) {
@@ -1518,6 +1528,17 @@ alert("Silakan Bayar Piutang");
     
        
    });
+
+ }
+  else{
+    alert("Maaf Subtotal Penjualan Tidak Sesuai, Silakan Tunggu Sebentar!");       
+        window.location.href="bayar_pesanan_barang_ranap.php?no_reg="+no_reg+"&kode_pelanggan="+no_rm+"&kode_gudang="+kode_gudang+"&nama_gudang="+nama_gudang+"&nama_pelanggan="+nama_pasien+"&no_faktur="+no_faktur+"";
+  }
+
+
+ });
+
+
 
 
  }
@@ -1822,6 +1843,9 @@ kode_barang:kode_barang,nama_barang:nama_barang,jumlah_barang:jumlah_barang,harg
         var pembayaran = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah( $("#pembayaran_penjualan").val() ))));
         var total_hpp = $("#total_hpp").val();
         var kode_gudang = $("#kode_gudang").val();
+        var nama_gudang = '<?php echo $nama_gudang;?>'
+        var no_faktur = '<?php echo $no_faktur;?>'
+
         var sales = $("#id_sales").val();
         var keterangan = $("#keterangan").val();   
         var ber_stok = $("#ber_stok").val();   
@@ -1869,6 +1893,13 @@ kode_barang:kode_barang,nama_barang:nama_barang,jumlah_barang:jumlah_barang,harg
        {
 
 
+
+ $.post("cek_simpan_subtotal_penjualan.php",{total2:total2,no_reg:no_reg,no_faktur:no_faktur},function(data) {
+
+  if (data == "Oke") {
+
+
+
         $("#piutang").hide();
         $("#simpan_sementara").hide();
         $("#batal_penjualan").hide();
@@ -1896,8 +1927,16 @@ kode_barang:kode_barang,nama_barang:nama_barang,jumlah_barang:jumlah_barang,harg
        
        });
 
-       
-       }  
+}
+  else{
+    alert("Maaf Subtotal Penjualan Tidak Sesuai, Silakan Tunggu Sebentar!");       
+        window.location.href="bayar_pesanan_barang_ranap.php?no_reg="+no_reg+"&kode_pelanggan="+no_rm+"&kode_gudang="+kode_gudang+"&nama_gudang="+nama_gudang+"&nama_pelanggan="+nama_pasien+"&no_faktur="+no_faktur+"";
+  }
+
+
+ });
+
+  }  
        //mengambil no_faktur pembelian agar berurutan
 
        });
@@ -2813,6 +2852,8 @@ function myFunction(event) {
        
 
 
+
+
         var sisa_pembayaran = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah( $("#sisa_pembayaran_penjualan").val() ))));
         var kredit = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah( $("#kredit").val() )))); 
         var no_rm = $("#no_rm").val();
@@ -2829,6 +2870,8 @@ function myFunction(event) {
         var pembayaran = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah( $("#pembayaran_penjualan").val() ))));
         var total_hpp = $("#total_hpp").val();
         var kode_gudang = $("#kode_gudang").val();
+       var nama_gudang = '<?php echo $nama_gudang;?>'
+        var no_faktur = '<?php echo $no_faktur;?>'  
         var sales = $("#id_sales").val();
         var keterangan = $("#keterangan").val();   
         var ber_stok = $("#ber_stok").val();   
@@ -2867,6 +2910,11 @@ function myFunction(event) {
        else
        {
 
+
+$.post("cek_simpan_subtotal_penjualan.php",{total2:total2,no_reg:no_reg,no_faktur:no_faktur},function(data) {
+
+  if (data == "Oke") {
+
         $("#pembayaran_penjualan").val('');
         $("#sisa_pembayaran_penjualan").val('');
         $("#kredit").val('');
@@ -2895,6 +2943,14 @@ function myFunction(event) {
        
        
        });
+}
+  else{
+    alert("Maaf Subtotal Penjualan Tidak Sesuai, Silakan Tunggu Sebentar!");       
+        window.location.href="bayar_pesanan_barang_ranap.php?no_reg="+no_reg+"&kode_pelanggan="+no_rm+"&kode_gudang="+kode_gudang+"&nama_gudang="+nama_gudang+"&nama_pelanggan="+nama_pasien+"&no_faktur="+no_faktur+"";
+  }
+
+
+ });
 
        
        }  
