@@ -372,12 +372,15 @@ $(document).on('click','#submit_tambah',function(e){
 
 		var nama = $("#nama_jabatan").val();
 		var wewenang = $("#wewenang").val();
-
-		$("#nama_jabatan").val('');
 		
-
 		if (nama == ""){
 			alert("Nama Harus Diisi");
+			 $("#nama_jabatan").focus();
+		}
+		else if(wewenang == "")
+		{
+			alert("Wewenang Harus Diisi");
+			 $("#wewenang").focus();
 		}
 		
 		else {

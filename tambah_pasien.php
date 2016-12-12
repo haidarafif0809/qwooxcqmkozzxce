@@ -148,12 +148,12 @@ include_once 'sanitasi.php';
 
 <div class="form-group">
     <label for="nama_suamiortu">Nama KK :</label>
-    <input style="height: 20px" type="text" class="form-control" id="nama_kk" name="nama_kk" autocomplete="off" required="">
+    <input style="height: 20px" type="text" class="form-control" id="nama_kk" name="nama_kk" autocomplete="off" >
 </div>
 
 <div class="form-group">
     <label for="nama_suamiortu">No Keluarga :</label>
-    <input style="height: 20px" type="text" class="form-control" id="no_kk" name="no_kk" autocomplete="off" required="">
+    <input style="height: 20px" type="text" class="form-control" id="no_kk" name="no_kk" autocomplete="off">
 </div>
 
 
@@ -163,18 +163,18 @@ include_once 'sanitasi.php';
 <div class="col-sm-4"> <!-- Col SM 3 -->
 
 <div class="form-group">
-    <label for="nama_suamiortu">Nama Suami / Orangtua :</label>
+    <label for="nama_suamiortu">Nama Keluarga / Orangtua :</label>
     <input style="height: 20px" type="text" class="form-control" id="nama_suamiortu" name="nama_suamiortu" autocomplete="off" >
 </div>
 
 <div class="form-group">
     <label for="pekerjaan_pasien">Pekerjaan Pasien/Ortu :</label>
-    <input style="height: 20px" type="text" class="form-control" id="pekerjaan_suamiortu" name="pekerjaan_suamiortu" autocomplete="off" required="">
+    <input style="height: 20px" type="text" class="form-control" id="pekerjaan_suamiortu" name="pekerjaan_suamiortu" autocomplete="off">
 </div>
 
 <div class="form-group">
     <label for="pekerjaan_pasien">Nama Penganggung Jawab :</label>
-    <input style="height: 20px" type="text" class="form-control" id="nama_penanggungjawab" name="nama_penanggungjawab" autocomplete="off" required="">
+    <input style="height: 20px" type="text" class="form-control" id="nama_penanggungjawab" name="nama_penanggungjawab" autocomplete="off">
 </div>
 
 
@@ -193,12 +193,12 @@ include_once 'sanitasi.php';
 
 <div class="form-group">
     <label for="no_hp_penanggung">No Hp Penganggung Jawab :</label>
-    <input style="height: 20px" type="text" class="form-control" id="no_hp_penanggung" name="no_hp_penanggung" autocomplete="off" required="">
+    <input style="height: 20px" type="text" class="form-control" id="no_hp_penanggung" name="no_hp_penanggung" autocomplete="off" >
 </div>
 
 <div class="form-group">
     <label for="alamat_penanggung">Alamat Penanggung Jawab:</label>
-    <textarea class="form-control" id="alamat_penanggung" name="alamat_penanggung" autocomplete="off" required=""></textarea>
+    <textarea class="form-control" id="alamat_penanggung" name="alamat_penanggung" autocomplete="off" ></textarea>
 </div>
 
 

@@ -9,23 +9,21 @@ $columns = array(
 // datatable column index  => database column name
 	0 =>'nama_petugas', 
 	1 => 'no_faktur',
-	2 => 'kode_produk',
-	3 => 'nama_produk',
-	4 => 'jumlah_fee',
-	5 => 'tanggal',
-	6 => 'jam'
+	2 => 'jumlah_fee',
+	3 => 'tanggal',
+	4 => 'jam'
 );
 
 // getting total number records without any search
-$sql = "SELECT f.nama_petugas, f.no_faktur, f.kode_produk, f.nama_produk, f.jumlah_fee, f.tanggal, f.jam, u.nama ";
-$sql.=" FROM laporan_fee_produk f INNER JOIN user u ON f.nama_petugas = u.id";
+$sql = "SELECT f.nama_petugas, f.no_faktur, f.jumlah_fee, f.tanggal, f.jam, u.nama ";
+$sql.=" FROM laporan_fee_faktur f INNER JOIN user u ON f.nama_petugas = u.id";
 
 $query=mysqli_query($conn, $sql) or die("show_data_laporan_fee_produk.php: get employees");
 $totalData = mysqli_num_rows($query);
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
-$sql = "SELECT f.nama_petugas, f.no_faktur, f.kode_produk, f.nama_produk, f.jumlah_fee, f.tanggal, f.jam, u.nama ";
-$sql.=" FROM laporan_fee_produk f INNER JOIN user u ON f.nama_petugas = u.id";
+$sql = "SELECT f.nama_petugas, f.no_faktur, f.jumlah_fee, f.tanggal, f.jam, u.nama ";
+$sql.=" FROM laporan_fee_faktur f INNER JOIN user u ON f.nama_petugas = u.id";
 $sql.=" WHERE 1=1";
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
 	$sql.=" AND ( u.nama LIKE '".$requestData['search']['value']."%' ";    
@@ -44,8 +42,6 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 
 	$nestedData[] = $row["nama"];
 	$nestedData[] = $row["no_faktur"];
-	$nestedData[] = $row["kode_produk"];
-	$nestedData[] = $row["nama_produk"];
 	$nestedData[] = rp($row["jumlah_fee"]);
 	$nestedData[] = $row["tanggal"];
 	$nestedData[] = $row["jam"];	           

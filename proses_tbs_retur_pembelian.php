@@ -1,12 +1,9 @@
-<?php 
+<?php session_start();
     // memasukan file yang ada pada db.php
     include 'sanitasi.php';
     include 'db.php';
-    session_start();
 
-    $session_id = session_id();
-
-    
+  $session_id = session_id();
   $kode_barang = stringdoang($_POST['kode_barang']);
   $harga = angkadoang($_POST['harga']);
   $no_faktur_pembelian = stringdoang($_POST['no_faktur_pembelian']);
@@ -46,10 +43,10 @@
     $subtotal = $harga * $jumlah_retur - $potongan_jadi;
 
    
-   $query9 = $db->prepare("UPDATE detail_pembelian SET sisa = sisa - ? WHERE no_faktur = ?  ");
+   $query9 = $db->prepare("UPDATE detail_pembelian SET sisa = sisa - ? WHERE no_faktur = ? AND kode_barang = ?  ");
 
-   $query9->bind_param("is",
-    $jumlah_retur, $no_faktur_pembelian);
+   $query9->bind_param("iss",
+    $jumlah_retur, $no_faktur_pembelian, $kode_barang);
     
     $jumlah_retur = angkadoang($_POST['jumlah_retur']);
     $no_faktur_pembelian = stringdoang($_POST['no_faktur_pembelian']);
@@ -69,11 +66,10 @@
      
      $jumlah_beli = $data_konversi['jumlah_beli'];
      }
-     else{ 
+     else{
      
      $jumlah_beli = $data['jumlah_barang'];
      }
-
 
    $perintah = $db->prepare("INSERT INTO tbs_retur_pembelian (session_id,no_faktur_pembelian,kode_barang,nama_barang,jumlah_beli,jumlah_retur,harga,subtotal,potongan,tax,satuan,satuan_beli) VALUES (?,?,?,?,'$jumlah_beli',?,'$harga',?,?,?,?,?)");
 
@@ -88,7 +84,6 @@
     $satuan_beli = stringdoang($_POST['satuan_beli']);
 
    $perintah->execute();
-
  
 if (!$perintah) {
    die('Query Error : '.$db->errno.
@@ -97,9 +92,6 @@ if (!$perintah) {
 else {
 
 }
-
-
-
 
    
     //untuk menampilkan semua data yang ada pada tabel tbs pembelian dalam DB

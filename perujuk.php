@@ -84,18 +84,18 @@ tr:nth-child(even){background-color: #f2f2f2}
 
 <div class="form-group">
   <label for="sel1">Nama </label>
-  <input type="text" class="form-control" id="nama" name="nama" autocomplete="off">
+  <input type="text" class="form-control" id="nama" required="" name="nama" autocomplete="off">
 </div>
 
 <div class="form-group">
   <label for="sel1">Alamat</label>
-  <input type="text" class="form-control" id="alamat" name="alamat" autocomplete="off">
+  <input type="text" class="form-control" id="alamat" required="" name="alamat" autocomplete="off">
 </div>
 
 
 <div class="form-group">
   <label for="sel1">No Telp</label>
-  <input type="decimal" class="form-control" id="no_telp" name="no_telp" autocomplete="off">
+  <input type="decimal" class="form-control" id="no_telp" required="" name="no_telp" autocomplete="off">
 </div>
 
 <button type="submit" class="btn btn-info"><i class="fa fa-plus"></i> Tambah</button>
