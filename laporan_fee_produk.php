@@ -7,8 +7,7 @@ include 'navbar.php';
 include 'sanitasi.php';
 include 'db.php';
 
-//menampilkan seluruh data yang ada pada tabel penjualan
-$perintah = $db->query("SELECT f.nama_petugas, f.no_faktur, f.kode_produk, f.nama_produk, f.jumlah_fee, f.tanggal, f.jam, u.nama FROM laporan_fee_produk f INNER JOIN user u ON f.nama_petugas = u.id ORDER BY f.id DESC");
+
 
  ?>
 

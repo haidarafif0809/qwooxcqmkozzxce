@@ -28,6 +28,7 @@ $sql.=" WHERE 1=1";
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
 	$sql.=" AND ( u.nama LIKE '".$requestData['search']['value']."%' ";    
 	$sql.=" OR f.no_faktur LIKE '".$requestData['search']['value']."%' ";
+	$sql.=" OR f.jumlah_fee LIKE '".$requestData['search']['value']."%' ";
 	$sql.=" OR f.tanggal LIKE '".$requestData['search']['value']."%' )";
 }
 $query=mysqli_query($conn, $sql) or die("show_data_laporan_fee_produk.php: get employees");

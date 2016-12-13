@@ -14,7 +14,7 @@ $potongan = angkadoang($_POST['potongan']);
 $tax = angkadoang($_POST['tax']);
 
 
-$subtotal_tampil = ($total + $potongan) - ($tax + $biaya_admin);
+		$subtotal_tampil = ($total + $potongan) - ($tax + $biaya_admin);
 
 
 // menampilakn hasil penjumlah subtotal ALIAS total penjualan dari tabel tbs_penjualan berdasarkan data no faktur
