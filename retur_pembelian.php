@@ -8,9 +8,6 @@ include 'sanitasi.php';
 include 'db.php';
 
 
-//menampilkan seluruh data yang ada pada tabel pembelian dalan DB
-$perintah = $db->query("SELECT p.id,p.no_faktur_retur,p.keterangan,p.total,p.nama_suplier,p.tanggal,p.tanggal_edit,p.jam,p.user_buat,p.user_edit,p.potongan,p.tax,p.tunai,p.sisa,p.cara_bayar,s.nama FROM retur_pembelian p INNER JOIN suplier s ON p.nama_suplier = s.id ORDER BY p.id DESC");
-
  ?>
 
 

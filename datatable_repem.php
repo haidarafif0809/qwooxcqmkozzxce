@@ -40,9 +40,9 @@ $totalFiltered = $totalData;  // when there is no search parameter then total nu
 $sql = "SELECT p.id,p.no_faktur_retur,p.keterangan,p.total,p.nama_suplier,p.tanggal,p.tanggal_edit,p.jam,p.user_buat,p.user_edit,p.potongan,p.tax,p.tunai,p.sisa,p.cara_bayar,s.nama  ";
 $sql.=" FROM retur_pembelian p INNER JOIN suplier s ON p.nama_suplier = s.id WHERE 1=1";
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
-	$sql.=" AND ( no_faktur_retur LIKE '".$requestData['search']['value']."%' ";    
-	$sql.=" OR nama_suplier LIKE '".$requestData['search']['value']."%' ";
-  $sql.=" OR tanggal LIKE '".$requestData['search']['value']."%' )";
+	$sql.=" AND ( p.no_faktur_retur LIKE '".$requestData['search']['value']."%' ";    
+	$sql.=" OR s.nama LIKE '".$requestData['search']['value']."%' ";
+  $sql.=" OR p.tanggal LIKE '".$requestData['search']['value']."%' )";
 }
 $query=mysqli_query($conn, $sql) or die("datatable_repem.php: get employees");
 $totalFiltered = mysqli_num_rows($query); // when there is a search parameter then we have to modify total number filtered rows as per search result. 
