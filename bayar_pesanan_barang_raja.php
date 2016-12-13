@@ -3037,7 +3037,7 @@ $(document).on('click', '.pilih', function (e) {
               $(nRow).attr('harga_level_6', aData[7]);
               $(nRow).attr('harga_level_7f', aData[8]);
               $(nRow).attr('jumlah-barang', aData[9]);
-              $(nRow).attr('satuan', aData[10]);
+              $(nRow).attr('satuan', aData[16]);
               $(nRow).attr('kategori', aData[11]);
               $(nRow).attr('status', aData[12]);
               $(nRow).attr('suplier', aData[13]);

@@ -173,7 +173,7 @@ $no_faktur = $nomor."/JL/".$data_bulan_terakhir."/".$tahun_terakhir;
         <br><br>
         <!-- Tampilan Modal -->
         <div id="myModal" class="modal fade" role="dialog">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog">
         
         <!-- Isi Modal-->
         <div class="modal-content">
@@ -183,16 +183,25 @@ $no_faktur = $nomor."/JL/".$data_bulan_terakhir."/".$tahun_terakhir;
         </div>
         <div class="modal-body"> <!--membuat kerangka untuk tempat tabel -->
         
-       <div class="table-responsive">
-         
-       
-        <!--perintah agar modal update-->
-        <span class="modal_baru">
+<span class="modal_baru">
+<div class="table-resposive">
+<center>
+  <table id="tabel_cari" class="table table-bordered table-sm">
+        <thead> <!-- untuk memberikan nama pada kolom tabel -->
         
-
-
+            <th> Kode Barang </th>
+            <th> Nama Barang </th>
+            <th> Harga Beli </th>
+            <th> Jumlah Barang </th>
+            <th> Satuan </th>
+            <th> Kategori </th>
+            <th> Suplier </th>
+        
+        </thead> <!-- tag penutup tabel -->
+  </table>
+  </center>
+  </div>
 </span>
-</div>
           
 </div> <!-- tag penutup modal body -->
         
@@ -343,15 +352,15 @@ $no_faktur = $nomor."/JL/".$data_bulan_terakhir."/".$tahun_terakhir;
 
           <input type="hidden" class="form-control"  name="over_stok" id="over_stok" autocomplete="off" placeholder="Over Stok">
 
-          <input type="hidden" id="harga_produk" name="harga" class="form-control" placeholder="Harga Lama" required="">
+          <input type="hidden" id="harga_produk" name="harga" class="form-control" placeholder="Harga Produk" required="">
 
-          <input type="hidden" id="harga_lama" name="harga_lama" class="form-control" required="">
+          <input type="hidden" id="harga_lama" name="harga_lama" class="form-control" placeholder="Harga Lama" required="">
 
-          <input type="hidden" class="form-control" name="jumlahbarang" id="jumlahbarang">
+          <input type="hidden" class="form-control" name="jumlahbarang" id="jumlahbarang" placeholder="Jumah Barang">
 
-          <input type="hidden" id="satuan_produk" name="satuan" class="form-control" value="" required="">
+          <input type="hidden" id="satuan_produk" name="satuan" class="form-control" value="" placeholder="Satuan Produk" required="">
 
-          <input type="hidden" id="id_produk" name="id_produk" class="form-control" value="" required="">
+          <input type="hidden" id="id_produk" name="id_produk" class="form-control" value="" placeholder="Id Produk" required="">
 
         
         
@@ -580,14 +589,6 @@ $no_faktur = $nomor."/JL/".$data_bulan_terakhir."/".$tahun_terakhir;
 </div><!-- end of container -->
 
 
-    
-<script>
-//untuk menampilkan data tabel
-$(document).ready(function(){
-    $('#tableuser').DataTable();
-});
-
-</script>
 
 
 <!-- untuk memasukan perintah javascript -->
@@ -772,18 +773,8 @@ $(document).ready(function(){
 
      //menyembunyikan notif berhasil
      $("#alert_berhasil").hide();
-     /* Act on the event */
-
-     var suplier = $("#nama_suplier").val();
-     
-     $.post("modal_beli_baru.php",{suplier:suplier},function(data) {
-     
-     $(".modal_baru").html(data);
      $("#cetak_tunai").hide('');
      $("#cetak_hutang").hide('');
-     
-     
-     });
      
      });
 
@@ -1857,6 +1848,49 @@ $.post('cek_jumlah_kas1.php', {cara_bayar : cara_bayar}, function(data) {
 
    
 </script>
+
+
+<script type="text/javascript" language="javascript" >
+   $(document).ready(function() {
+
+
+
+        var dataTable = $('#tabel_cari').DataTable( {
+          "processing": true,
+          "serverSide": true,
+          "ajax":{
+            url :"modal_beli_baru.php", // json datasource
+            type: "post",  // method  , by default get
+            error: function(){  // error handling
+              $(".employee-grid-error").html("");
+              $("#tabel_cari").append('<tbody class="employee-grid-error"><tr><th colspan="3">Data Tidak Ditemukan.. !!</th></tr></tbody>');
+              $("#employee-grid_processing").css("display","none");
+              
+            }
+          },
+
+          "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+
+              $(nRow).attr('class', "pilih");
+              $(nRow).attr('data-kode', aData[0]+"("+aData[1]+")");
+              $(nRow).attr('nama-barang', aData[1]);
+              $(nRow).attr('over_stok', aData[7]);
+              $(nRow).attr('satuan', aData[7]);
+              $(nRow).attr('harga', aData[2]);
+              $(nRow).attr('id-barang', aData[8]);
+              $(nRow).attr('jumlah-barang', aData[3]);
+              $(nRow).attr('kategori', aData[5]);
+              $(nRow).attr('suplier', aData[6]);
+
+            }
+
+        });  
+
+     
+  });
+ 
+ </script>
+
 
 
 <!-- memasukan file footer.php -->
