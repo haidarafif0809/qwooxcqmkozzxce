@@ -1484,7 +1484,7 @@ alert("Silakan Bayar Piutang");
   $("#transaksi_baru").show();
 
 
- $.post("cek_subtotal_penjualan.php",{total2:total2,no_reg:no_reg},function(data) {
+ $.post("cek_subtotal_penjualan.php",{total:total,no_reg:no_reg,potongan:potongan,tax:tax,biaya_adm:biaya_adm},function(data) {
 
   if (data == "Oke") {
 
@@ -2665,7 +2665,7 @@ $(function() {
 
 
 
- $.post("cek_subtotal_penjualan.php",{total2:total2,no_reg:no_reg},function(data) {
+ $.post("cek_subtotal_penjualan.php",{total:total,no_reg:no_reg,potongan:potongan,tax:tax,biaya_adm:biaya_adm},function(data) {
 
   if (data == "Oke") {
 

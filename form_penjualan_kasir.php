@@ -1564,7 +1564,7 @@ alert("Silakan Bayar Piutang");
   $("#piutang").hide();
   $("#transaksi_baru").show();
 
- $.post("cek_subtotal_penjualan.php",{total2:total2,no_reg:no_reg},function(data) {
+ $.post("cek_subtotal_penjualan.php",{total:total,no_reg:no_reg,potongan:potongan,tax:tax,biaya_adm:biaya_adm},function(data) {
 
   if (data == "Oke") {
 
@@ -1699,7 +1699,7 @@ alert("Silakan Bayar Piutang");
   $("#piutang").hide();
   $("#transaksi_baru").show();
 
- $.post("cek_subtotal_penjualan.php",{total2:total2,no_reg:no_reg},function(data) {
+ $.post("cek_subtotal_penjualan.php",{total:total,no_reg:no_reg,potongan:potongan,tax:tax,biaya_adm:biaya_adm},function(data) {
 
   if (data == "Oke") {
 
@@ -2767,7 +2767,7 @@ $(function() {
         $("#transaksi_baru").show();
         $("#total1").val('');
 
- $.post("cek_subtotal_penjualan.php",{total2:total2,no_reg:no_reg},function(data) {
+ $.post("cek_subtotal_penjualan.php",{total:total,no_reg:no_reg,potongan:potongan,tax:tax,biaya_adm:biaya_adm},function(data) {
 
   if (data == "Oke") {
 
