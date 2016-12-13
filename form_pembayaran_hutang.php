@@ -19,7 +19,7 @@ $query = $db->query("SELECT * FROM pembayaran_hutang ORDER BY id DESC");
 }
 </style>
       
-      <script>
+      <script type="text/javascript">
       $(function() {
       $( "#tanggal" ).datepicker({dateFormat: "yy-mm-dd"});
       });

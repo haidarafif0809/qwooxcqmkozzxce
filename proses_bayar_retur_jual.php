@@ -59,10 +59,6 @@ $no_faktur_retur = $nomor."/RJ/".$data_bulan_terakhir."/".$tahun_terakhir;
  }
 
 
-
-
-
-
   // buat prepared statements
         $stmt = $db->prepare("INSERT INTO retur_penjualan (no_faktur_retur, tanggal, jam, kode_pelanggan,
                 total, potongan, tax, user_buat, cara_bayar, tunai, sisa, ppn)

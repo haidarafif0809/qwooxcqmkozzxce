@@ -121,7 +121,7 @@ $no_faktur_penjualan = $data50['no_faktur_penjualan'];
 
 <form action="proses_tbs_pembayaran_piutang.php" role="form" method="post" id="formtambahproduk">
 
-<button type="button" class="btn btn-info" id="cari_produk_penjualan" data-toggle="modal" data-target="#myModal"> <i class='fa fa-search'> </i> Cari</button>
+<button type="button" class="btn btn-info" id="cari_produk_penjualan" data-placement="top" data-toggle="modal" data-target="#myModal" title="Pastikan anda mengisi NO RM terlebih dahulu sebelum klik tombol cari."> <i class='fa fa-search'> </i> Cari</button>
 <br>
 
 <!-- Tampilan Modal -->
@@ -201,7 +201,7 @@ $no_faktur_penjualan = $data50['no_faktur_penjualan'];
     <input type="text" class="form-control" name="jumlah_bayar" onkeydown="return numbersonly(this, event);" id="jumlah_bayar" placeholder="Jumlah Bayar" autocomplete="off">
   </div>
 
-  <div class="form-group col-sm-2">
+  <div class="form-group col-sm-2"><br>
       <button type="submit" id="submit_tambah" class="btn btn-success"> <i class='fa fa-plus'> </i> Tambah </button>
   </div>
 
@@ -378,11 +378,18 @@ $no_faktur_penjualan = $data50['no_faktur_penjualan'];
   $('#myModal').modal('hide');
   });
    
-
-   
   </script> <!--tag penutup perintah java script-->
 
-<script>
+<script type="text/javascript">
+    $(document).ready(function(){
+    // Tooltips Initialization
+    $(function () {
+    $('[data-toggle="tooltip"]').tooltip()
+    });
+    });
+</script>
+
+<script type="text/javascript">
    //perintah javascript yang diambil dari form tbs pembelian dengan id=form tambah produk
 
   
