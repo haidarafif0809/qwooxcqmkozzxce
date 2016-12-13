@@ -1417,7 +1417,7 @@ alert("Silakan Bayar Piutang");
 
 
 
- $.post("cek_subtotal_apotek.php",{total2:total2},function(data) {
+ $.post("cek_subtotal_apotek.php",{total:total,biaya_admin:biaya_admin,potongan:potongan,tax:tax},function(data) {
 
   if (data == "Oke") {
 
@@ -1542,7 +1542,7 @@ alert("Silakan Bayar Piutang");
         $("#penjualan").hide();
         $("#transaksi_baru").show();
      
- $.post("cek_subtotal_apotek.php",{total2:total2},function(data) {
+ $.post("cek_subtotal_apotek.php",{total:total,biaya_admin:biaya_admin,potongan:potongan,tax:tax},function(data) {
 
   if (data == "Oke") {
 

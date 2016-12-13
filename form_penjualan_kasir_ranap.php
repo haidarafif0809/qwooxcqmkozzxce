@@ -1342,10 +1342,10 @@ $(document).ready(function(){
         var poli = $("#asal_poli").val();
         var nama_pasien = $("#nama_pasien").val();
         var analis = $("#analis").val();
-        var biaya_admin = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#biaya_admin").val()))));
-        if (biaya_admin == '')
+        var biaya_adm = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#biaya_admin").val()))));
+        if (biaya_adm == '')
         {
-          biaya_admin = 0;
+          biaya_adm = 0;
         }
         var sisa = pembayaran - total;
         
@@ -1400,11 +1400,11 @@ alert("Silakan Bayar Piutang");
   $("#transaksi_baru").show();
 
 
- $.post("cek_subtotal_penjualan.php",{total2:total2,no_reg:no_reg},function(data) {
+ $.post("cek_subtotal_penjualan.php",{total:total,no_reg:no_reg,potongan:potongan,tax:tax,biaya_adm:biaya_adm},function(data) {
 
   if (data == "Oke") {
 
- $.post("proses_bayar_kasir_ranap.php",{total2:total2,sisa_pembayaran:sisa_pembayaran,kredit:kredit,no_rm:no_rm,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,cara_bayar:cara_bayar,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,total_hpp:total_hpp,harga:harga,sales:sales,kode_gudang:kode_gudang,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,nama_pasien:nama_pasien,no_reg:no_reg,dokter:dokter,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,penjamin:penjamin,bed:bed,group_bed:group_bed,biaya_admin:biaya_admin,analis:analis},function(info) {
+ $.post("proses_bayar_kasir_ranap.php",{total2:total2,sisa_pembayaran:sisa_pembayaran,kredit:kredit,no_rm:no_rm,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,cara_bayar:cara_bayar,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,total_hpp:total_hpp,harga:harga,sales:sales,kode_gudang:kode_gudang,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,nama_pasien:nama_pasien,no_reg:no_reg,dokter:dokter,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,penjamin:penjamin,bed:bed,group_bed:group_bed,biaya_adm:biaya_adm,analis:analis},function(info) {
 
 
      $("#table-baru").html(info);
@@ -1764,10 +1764,10 @@ kode_barang:kode_barang,nama_barang:nama_barang,jumlah_barang:jumlah_barang,harg
         var poli = $("#asal_poli").val();
         var analis = $("#analis").val();
         var nama_pasien = $("#nama_pasien").val();
-        var biaya_admin = $("#biaya_admin").val();
-        if (biaya_admin == '')
+        var biaya_adm = $("#biaya_admin").val();
+        if (biaya_adm == '')
         {
-          biaya_admin = 0;
+          biaya_adm = 0;
         }
         var sisa = pembayaran - total;
         
@@ -1805,11 +1805,11 @@ kode_barang:kode_barang,nama_barang:nama_barang,jumlah_barang:jumlah_barang,harg
         
 
 
- $.post("cek_subtotal_penjualan.php",{total2:total2,no_reg:no_reg},function(data) {
+ $.post("cek_subtotal_penjualan.php",{total:total,no_reg:no_reg,potongan:potongan,tax:tax,biaya_adm:biaya_adm},function(data) {
 
   if (data == "Oke") {
 
-$.post("proses_bayar_kasir_ranap.php",{total2:total2,sisa_pembayaran:sisa_pembayaran,kredit:kredit,no_rm:no_rm,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,cara_bayar:cara_bayar,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,total_hpp:total_hpp,sales:sales,kode_gudang:kode_gudang,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,nama_pasien:nama_pasien,no_reg:no_reg,dokter:dokter,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,penjamin:penjamin,bed:bed,group_bed:group_bed,biaya_admin:biaya_admin,analis:analis},function(info) {
+$.post("proses_bayar_kasir_ranap.php",{total2:total2,sisa_pembayaran:sisa_pembayaran,kredit:kredit,no_rm:no_rm,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,cara_bayar:cara_bayar,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,total_hpp:total_hpp,sales:sales,kode_gudang:kode_gudang,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,nama_pasien:nama_pasien,no_reg:no_reg,dokter:dokter,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,penjamin:penjamin,bed:bed,group_bed:group_bed,biaya_adm:biaya_adm,analis:analis},function(info) {
 
             var no_faktur = info;
             $("#cetak_piutang").attr('href', 'cetak_penjualan_piutang.php?no_faktur='+no_faktur+'');
@@ -2788,11 +2788,11 @@ function myFunction(event) {
         var poli = $("#asal_poli").val();
         var nama_pasien = $("#nama_pasien").val();
         var analis = $("#analis").val();
-        var biaya_admin = $("#biaya_admin").val();
+        var biaya_adm = $("#biaya_admin").val();
 
-        if (biaya_admin == '')
+        if (biaya_adm == '')
         {
-          biaya_admin = 0;
+          biaya_adm = 0;
         }
 
         var sisa = pembayaran - total;
@@ -2821,11 +2821,11 @@ function myFunction(event) {
         $("#transaksi_baru").show();
         $("#total1").val('');
 
- $.post("cek_subtotal_penjualan.php",{total2:total2,no_reg:no_reg},function(data) {
+ $.post("cek_subtotal_penjualan.php",{total:total,no_reg:no_reg,potongan:potongan,tax:tax,biaya_adm:biaya_adm},function(data) {
 
   if (data == "Oke") {
 
-       $.post("proses_simpan_barang_ranap.php",{total2:total2,sisa_pembayaran:sisa_pembayaran,kredit:kredit,no_rm:no_rm,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,cara_bayar:cara_bayar,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,total_hpp:total_hpp,sales:sales,kode_gudang:kode_gudang,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,nama_pasien:nama_pasien,no_reg:no_reg,dokter:dokter,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,penjamin:penjamin,biaya_admin:biaya_admin,dokter_pj:dokter_pj,analis:analis},function(info) {
+       $.post("proses_simpan_barang_ranap.php",{total2:total2,sisa_pembayaran:sisa_pembayaran,kredit:kredit,no_rm:no_rm,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,cara_bayar:cara_bayar,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,total_hpp:total_hpp,sales:sales,kode_gudang:kode_gudang,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,nama_pasien:nama_pasien,no_reg:no_reg,dokter:dokter,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,penjamin:penjamin,biaya_adm:biaya_adm,dokter_pj:dokter_pj,analis:analis},function(info) {
 
         
             $("#table-baru").html(info);
