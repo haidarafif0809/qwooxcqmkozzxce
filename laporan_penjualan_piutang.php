@@ -59,14 +59,14 @@ include 'db.php';
 </div> <!--/ responsive-->
 </div> <!--/ container-->
 
-<!--
-		<script>
+<script>
 		
 		$(document).ready(function(){
 		$('#tableuser').DataTable();
 		});
 		</script>
-
+<!--
+		
 		
 		<script type="text/javascript">
 		$("#submit_tgl").click(function(){

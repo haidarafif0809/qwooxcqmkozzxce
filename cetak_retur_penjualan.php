@@ -28,6 +28,7 @@ $no_faktur_retur = $_SESSION['no_faktur_retur'];
 
 <div class="container">
     
+                 <center><h3> <b> BUKTI RETUR PENJUALAN </b></h3><hr></center>
     <div class="row"><!--row1-->
         <div class="col-sm-2">
         <br><br>
@@ -35,8 +36,6 @@ $no_faktur_retur = $_SESSION['no_faktur_retur'];
         </div><!--penutup colsm2-->
 
         <div class="col-sm-4">
-                 <h3> <b> BUKTI RETUR PENJUALAN </b></h3>
-                 <hr>
                  <h4> <b> <?php echo $data1['nama_perusahaan']; ?> </b> </h4> 
                  <p> <?php echo $data1['alamat_perusahaan']; ?> </p> 
                  <p> No.Telp:<?php echo $data1['no_telp']; ?> </p> 
@@ -44,7 +43,6 @@ $no_faktur_retur = $_SESSION['no_faktur_retur'];
         </div><!--penutup colsm4-->
 
         <div class="col-sm-4">
-                          <br><br><br><br><br>
 <table>
   <tbody>
     <tr><td>No Faktur</td> <td>:&nbsp;</td><td><?php echo $data0['no_faktur_retur']; ?></td></tr>
@@ -57,7 +55,6 @@ $no_faktur_retur = $_SESSION['no_faktur_retur'];
         </div><!--penutup colsm4-->
 
         <div class="col-sm-2">
-                <br><br><br><br><br>
                 User: <?php echo $_SESSION['user_name']; ?>  <br>
 
         </div><!--penutup colsm4-->
@@ -71,9 +68,8 @@ $no_faktur_retur = $_SESSION['no_faktur_retur'];
 <br>
 <div class="container">
 
-<table id="tableuser" class="table table-bordered">
+<table id="tableuser" class="table table-bordered table-sm">
         <thead>
-
            <th> Kode Barang </th>
            <th> Nama Barang </th>
            <th> Jumlah Retur </th>
@@ -82,9 +78,7 @@ $no_faktur_retur = $_SESSION['no_faktur_retur'];
            <th> Potongan </th>
            <th> Total </th>
            <th> Subtotal </th>
-           <th> Tax </th>
-           
-            
+           <th> Tax </th>            
         </thead>
         
         <tbody>

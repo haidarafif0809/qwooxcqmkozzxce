@@ -121,7 +121,7 @@ $no_faktur_penjualan = $data50['no_faktur_penjualan'];
 
 <form action="proses_tbs_pembayaran_piutang.php" role="form" method="post" id="formtambahproduk">
 
-<button type="button" class="btn btn-info" id="cari_produk_penjualan" data-toggle="modal" data-target="#myModal"> <i class='fa fa-search'> </i> Cari</button>
+<button type="button" class="btn btn-info" id="cari_produk_penjualan" data-placement="top" data-toggle="modal" data-target="#myModal" title="Pastikan anda mengisi NO RM terlebih dahulu sebelum klik tombol cari."> <i class='fa fa-search'> </i> Cari</button>
 <br>
 
 <!-- Tampilan Modal -->
@@ -158,10 +158,32 @@ $no_faktur_penjualan = $data50['no_faktur_penjualan'];
 <div class="row">
 
   
-  <div class="col-sm-8">
-  
+<div class="col-sm-8">
+  <div class="form-group col-sm-2">
+                <label>No RM</label>
+                <br>
+                <select type="text" name="kode_pelanggan" id="kd_pelanggan" class="form-control chosen" required="">
+                <option value="">-Silahkan Pilih-</option>
+                <?php 
+                include 'db.php';
+                
+                // menampilkan data yang ada pada tabel suplier
+                $query = $db->query("SELECT kode_pelanggan,nama FROM penjualan WHERE status = 'Piutang' GROUP BY kode_pelanggan");
+                
+                // menyimpan data sementara yang ada pada $query
+                while($data = mysqli_fetch_array($query))
+                {
+                
+                echo "<option value='".$data['kode_pelanggan'] ."'> ".$data['kode_pelanggan'] ." - ".$data['nama'] ." </option>";
+                }
+                
+                
+                ?>
+                </select>
+  </div>
+
 <div class="form-group col-sm-2">
-  <input type="text" class="form-control" name="no_faktur_penjualan" id="nomorfakturbeli" placeholder="Nomor Faktur Jual" readonly="">
+  <input type="text" class="form-control" name="no_faktur_penjualan" id="nomorfakturbeli" placeholder="No Faktur Jual" readonly="">
   </div>
   
   <div class="form-group col-sm-2">
@@ -179,7 +201,7 @@ $no_faktur_penjualan = $data50['no_faktur_penjualan'];
     <input type="text" class="form-control" name="jumlah_bayar" onkeydown="return numbersonly(this, event);" id="jumlah_bayar" placeholder="Jumlah Bayar" autocomplete="off">
   </div>
 
-  <div class="form-group col-sm-2">
+  <div class="form-group col-sm-2"><br>
       <button type="submit" id="submit_tambah" class="btn btn-success"> <i class='fa fa-plus'> </i> Tambah </button>
   </div>
 
@@ -255,31 +277,7 @@ $no_faktur_penjualan = $data50['no_faktur_penjualan'];
   <div class="col-sm-4">
 <div class="card card-block">
     <div class="row 1">
-        <div class="form-group col-sm-6">
-                <label>No RM</label>
-                <br>
-                <select type="text" name="kode_pelanggan" id="kd_pelanggan" class="form-control chosen" required="">
-                <option value="">-Silahkan Pilih-</option>
-                <?php 
-                include 'db.php';
-                
-                // menampilkan data yang ada pada tabel suplier
-                $query = $db->query("SELECT kode_pelanggan,nama FROM penjualan WHERE status = 'Piutang' GROUP BY kode_pelanggan");
-                
-                // menyimpan data sementara yang ada pada $query
-                while($data = mysqli_fetch_array($query))
-                {
-                
-                echo "<option value='".$data['kode_pelanggan'] ."'> ".$data['kode_pelanggan'] ." - ".$data['nama'] ." </option>";
-                }
-                
-                
-                ?>
-                </select>
-                </div>
-
-
-                
+        
                 <div class="form-group col-sm-6">
                 <label> Tanggal </label><br>
                 <input type="text" name="tanggal" id="tanggal" placeholder="Tanggal" style="height: 20px" value="<?php echo date("Y/m/d"); ?>" class="form-control" required="" >
@@ -380,11 +378,18 @@ $no_faktur_penjualan = $data50['no_faktur_penjualan'];
   $('#myModal').modal('hide');
   });
    
-
-   
   </script> <!--tag penutup perintah java script-->
 
-<script>
+<script type="text/javascript">
+    $(document).ready(function(){
+    // Tooltips Initialization
+    $(function () {
+    $('[data-toggle="tooltip"]').tooltip()
+    });
+    });
+</script>
+
+<script type="text/javascript">
    //perintah javascript yang diambil dari form tbs pembelian dengan id=form tambah produk
 
   

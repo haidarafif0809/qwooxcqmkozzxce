@@ -204,6 +204,37 @@ $(document).ready(function(){
 
 </script>
 
+<!--DATA TABLE MENGGUNAKAN AJAX-->
+<!--<script type="text/javascript" language="javascript" >
+      $(document).ready(function() {
+
+          var dataTable = $('#table_stok_awal').DataTable( {
+          "processing": true,
+          "serverSide": true,
+          "ajax":{
+            url :"datatable_stok_awal.php", // json datasource
+           
+            type: "post",  // method  , by default get
+            error: function(){  // error handling
+              $(".employee-grid-error").html("");
+              $("#table_stok_awal").append('<tbody class="employee-grid-error"><tr><th colspan="3">No data found in the server</th></tr></tbody>');
+              $("#employee-grid_processing").css("display","none");
+            }
+        },
+            
+            "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+                $(nRow).attr('class','tr-id-'+aData[8]+'');
+            },
+        });
+
+        $("#form").submit(function(){
+        return false;
+        });
+        
+
+      } );
+    </script>-->
+<!--/DATA TABLE MENGGUNAKAN AJAX-->
 
                               <script type="text/javascript">
                                

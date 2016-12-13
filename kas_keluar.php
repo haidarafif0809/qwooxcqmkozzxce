@@ -115,7 +115,11 @@ include 'db.php';
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
+<<<<<<< HEAD
+        <h4 class="modal-title">Detail Kas Keluar </h4>
+=======
         <h4 class="modal-title"><center><b>Detail Kas Masuk </b></center></h4>
+>>>>>>> e83f98556daf2fddef7ffbde43513964101b3462
       </div>
 
       <div class="modal-body">

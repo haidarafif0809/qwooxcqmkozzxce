@@ -73,7 +73,6 @@ $nestedData[] = "<button class='btn btn-warning btn-reset' data-reset-id='". $ro
 
 
 	$nestedData[] = $row['username'];
-	$nestedData[] = $row['password'];
 	$nestedData[] = $row['nama'];
 	$nestedData[] = $row['alamat'];
 	$nestedData[] = $row['nama_jabatan'];

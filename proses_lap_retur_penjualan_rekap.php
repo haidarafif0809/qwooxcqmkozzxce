@@ -12,9 +12,6 @@ $sampai_tanggal = stringdoang($_POST['sampai_tanggal']);
 $perintah = $db->query("SELECT pel.nama_pelanggan,p.no_faktur_retur,p.tanggal,p.kode_pelanggan,p.total,p.potongan,p.tax,p.tunai FROM retur_penjualan p INNER JOIN pelanggan pel ON p.kode_pelanggan = pel.kode_pelanggan WHERE p.tanggal >= '$dari_tanggal' AND p.tanggal <= '$sampai_tanggal'");
 
 
-
-
-
  ?>
 
  <style>
