@@ -1617,6 +1617,7 @@ $(document).ready(function(){
         var total = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah( $("#total1").val() )))); 
         var total2 = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah( $("#total2").val() )))); 
         var potongan =  bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah( $("#potongan_penjualan").val() ))));
+        potongan = Math.round(potongan);
         var potongan_persen = $("#potongan_persen").val();
         var tax = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#tax_rp").val()))));
         var cara_bayar = $("#carabayar1").val();
@@ -1694,6 +1695,12 @@ alert("Silakan Bayar Piutang");
 
  {
 
+
+ $.post("cek_simpan_subtotal_penjualan.php",{total:total,no_reg:no_reg,no_faktur:no_faktur,tax:tax,potongan:potongan,biaya_adm:biaya_adm},function(data) {
+
+  if (data == "Oke") {
+
+
   $("#penjualan").hide();
   $("#simpan_sementara").hide();
   $("#batal_penjualan").hide(); 
@@ -1719,6 +1726,17 @@ alert("Silakan Bayar Piutang");
     
        
    });
+
+
+}
+  else{
+    alert("Maaf Subtotal Penjualan Tidak Sesuai, Silakan Tunggu Sebentar!");       
+        window.location.href="form_edit_penjualan_ugd.php?no_reg="+no_reg+"&no_rm="+no_rm+"&kode_gudang="+kode_gudang+"&nama_pasien="+nama_pasien+"&no_faktur="+no_faktur+"";
+  }
+
+
+
+ });
 
 
  }
@@ -1763,6 +1781,7 @@ alert("Silakan Bayar Piutang");
         var total = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah( $("#total1").val() )))); 
         var total2 = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah( $("#total2").val() )))); 
         var potongan =  bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah( $("#potongan_penjualan").val() ))));
+        potongan = Math.round(potongan);
         var potongan_persen = $("#potongan_persen").val();
         var tax = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#tax_rp").val()))));
         var cara_bayar = $("#carabayar1").val();
@@ -1816,6 +1835,11 @@ alert("Silakan Bayar Piutang");
 
  {
 
+ $.post("cek_simpan_subtotal_penjualan.php",{total:total,no_reg:no_reg,no_faktur:no_faktur,tax:tax,potongan:potongan,biaya_adm:biaya_adm},function(data) {
+
+  if (data == "Oke") {
+
+
   $("#penjualan").hide();
   $("#simpan_sementara").hide();
   $("#batal_penjualan").hide(); 
@@ -1842,6 +1866,16 @@ alert("Silakan Bayar Piutang");
        
    });
 
+
+}
+  else{
+    alert("Maaf Subtotal Penjualan Tidak Sesuai, Silakan Tunggu Sebentar!");       
+        window.location.href="form_edit_penjualan_ugd.php?no_reg="+no_reg+"&no_rm="+no_rm+"&kode_gudang="+kode_gudang+"&nama_pasien="+nama_pasien+"&no_faktur="+no_faktur+"";
+  }
+
+
+
+ });
 
  }
 
