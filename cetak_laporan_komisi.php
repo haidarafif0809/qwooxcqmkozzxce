@@ -10,7 +10,7 @@ $nama_petugas = $_GET['nama_petugas'];
 $dari_tanggal = $_GET['dari_tanggal'];
 $sampai_tanggal = $_GET['sampai_tanggal'];
 
-    $query0 = $db->query("SELECT * FROM laporan_fee_faktur WHERE nama_petugas = '$nama_petugas' AND tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal'");
+    $query0 = $db->query("SELECT u.nama,lff.id,lff.tanggal FROM laporan_fee_faktur lff INNER JOIN user u ON lff.nama_petugas = u.id WHERE nama_petugas = '$nama_petugas' AND tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal'");
     $data0 = mysqli_fetch_array($query0);
 
     $query1 = $db->query("SELECT * FROM perusahaan ");
@@ -47,7 +47,7 @@ $sampai_tanggal = $_GET['sampai_tanggal'];
 <table>
   <tbody>
   
-      <tr><td  width="40%">Nama Petugas</td> <td> :&nbsp;</td> <td> <?php echo $data0['nama_petugas']; ?></td></tr>
+      <tr><td  width="40%">Nama Petugas</td> <td> :&nbsp;</td> <td> <?php echo $data0['nama']; ?></td></tr>
       <tr><td  width="40%">Tanggal</td> <td> :&nbsp;</td> <td> <?php echo tanggal($data0['tanggal']); ?> </td>
       </tr>
       <tr><td  width="40%">Periode</td> <td> :&nbsp;</td> <td> <?php echo tanggal($dari_tanggal); ?> s/d <?php echo tanggal($sampai_tanggal); ?> </td></tr>
@@ -80,12 +80,12 @@ $sampai_tanggal = $_GET['sampai_tanggal'];
             
             <tbody>
             <?php
-                $query10 = $db->query("SELECT * FROM laporan_fee_produk WHERE nama_petugas = '$nama_petugas' ");
+                $query10 = $db->query("SELECT u.nama,lfp.nama_petugas,lfp.no_faktur,lfp.kode_produk,lfp.nama_produk,lfp.jumlah_fee,lfp.tanggal,lfp.jam FROM laporan_fee_produk lfp INNER JOIN user u ON lfp.nama_petugas = u.id WHERE nama_petugas = '$nama_petugas' ");
                 while ($data10 = mysqli_fetch_array($query10))
                 {
                   
                   echo "<tr>
-                  <td>". $data10['nama_petugas'] ."</td>
+                  <td>". $data10['nama'] ."</td>
                   <td>". $data10['no_faktur'] ."</td>
                   <td>". $data10['kode_produk'] ."</td>
                   <td>". $data10['nama_produk'] ."</td>
@@ -117,12 +117,12 @@ $sampai_tanggal = $_GET['sampai_tanggal'];
             
             <tbody>
             <?php
-                $query13 = $db->query("SELECT * FROM laporan_fee_faktur WHERE nama_petugas = '$nama_petugas' ");
+                $query13 = $db->query("SELECT u.nama,lff.nama_petugas,lff.no_faktur,lff.jumlah_fee,lff.tanggal,lff.jam FROM laporan_fee_faktur lff INNER JOIN user u ON lff.nama_petugas = u.id WHERE nama_petugas = '$nama_petugas' ");
                 while ($data13 = mysqli_fetch_array($query13))
                 {
                   
                   echo "<tr>
-                  <td>". $data13['nama_petugas'] ."</td>
+                  <td>". $data13['nama'] ."</td>
                   <td>". $data13['no_faktur'] ."</td>
                   <td>". $data13['jumlah_fee'] ."</td>
                   <td>". tanggal($data13['tanggal']) ."</td>

@@ -10,18 +10,7 @@ include 'db.php';
 
 
  ?>
-    <script>
-    $(function() {
-    $( "#dari_tanggal" ).datepicker({dateFormat: "yy-mm-dd"});
-    });
-    </script>
-
-
-    <script>
-    $(function() {
-    $( "#sampai_tanggal" ).datepicker({dateFormat: "yy-mm-dd"});
-    });
-    </script>
+  
 
 
 <div style="padding-right: 5%; padding-left: 5%;">
@@ -45,7 +34,7 @@ include 'db.php';
         <!--perintah agar modal update-->
 <span class="modal_baru">
  <div class="table-responsive">       
-<table id="tableuser" class="table table-bordered">
+<table id="table_fee_petugas" class="table table-bordered">
     <thead>
       <th> Username </th></th>
       <th> Nama Lengkap </th>
@@ -53,31 +42,7 @@ include 'db.php';
       <th> Jabatan </th>
       <th> Otoritas </th>
       <th> Status </th>
-
-      
     </thead>
-    
-    <tbody>
-    <?php
-
-      $perintah0 = $db->query("SELECT * FROM user");
-      while ($data1 = mysqli_fetch_array($perintah0))
-      {
-      echo "<tr  class='pilih' data-petugas='". $data1['nama'] ."' data-petugas-value='". $data1['id'] ."'>
-      <td>". $data1['username'] ."</td>
-      <td>". $data1['nama'] ."</td>
-      <td>". $data1['alamat'] ."</td>
-      <td>". $data1['jabatan'] ."</td>
-      <td>". $data1['otoritas'] ."</td>
-      <td>". $data1['status'] ."</td>
-
-      </tr>";
-      }
-
-      //Untuk Memutuskan Koneksi Ke Database
-mysqli_close($db);   
-    ?>
-    </tbody>
 
   </table>
 </div>
@@ -100,7 +65,7 @@ mysqli_close($db);
               
                   <div class="form-group"> 
 
-                  <input type="hidden" name="nama_petugas" id="nama_petugas" class="form-control" placeholder="Nama Petugas" required="">
+                  <input type="hidden" name="nama_petugas" id="nama_petugas" class="form-control" placeholder="Nama Petugas">
 
                   <input type="text" name="nama_petugas_value" id="nama_petugas_value" class="form-control" placeholder="Nama Petugas" required="">
 
@@ -108,12 +73,12 @@ mysqli_close($db);
 
                   <div class="form-group"> 
 
-                  <input type="text" name="dari_tanggal" id="dari_tanggal" class="form-control" placeholder="Dari Tanggal" required="">
+                  <input type="text" name="dari_tanggal" id="dari_tanggal" class="form-control tanggal_cari" placeholder="Dari Tanggal" required="">
                   </div>
 
                   <div class="form-group"> 
 
-                  <input type="text" name="sampai_tanggal" id="sampai_tanggal" class="form-control" placeholder="Sampai Tanggal" required="">
+                  <input type="text" name="sampai_tanggal" id="sampai_tanggal" class="form-control tanggal_cari" placeholder="Sampai Tanggal" required="">
                   </div>
 
                   <button type="submit" name="submit" id="submit" class="btn btn-primary" > <i class="fa fa-send"></i>Submit </button>
@@ -124,7 +89,7 @@ mysqli_close($db);
 <br>
 <div class="table-responsive">
 <span id="result">
-<table id="tableuser" class="table table-bordered">
+<table id="table_petugas" class="table table-bordered">
             <thead>
                   <th style="background-color: #4CAF50; color: white;"> Nama Petugas </th>
                   <th style="background-color: #4CAF50; color: white;"> Nomor Faktur </th>
@@ -133,32 +98,56 @@ mysqli_close($db);
                   <th style="background-color: #4CAF50; color: white;"> Jumlah Komisi </th>
                   <th style="background-color: #4CAF50; color: white;"> Tanggal </th>
                   <th style="background-color: #4CAF50; color: white;"> Jam </th>
-
-
-                  
             </thead>
-            
-            <tbody>
-
-     
-            </tbody>
-
-      </table>
-
-      
+</table>
 </span>
 </div>
+<span id="cetak" style="display: none;">
+  <a href='cetak_lap_jumlah_fee_produk.php' target="blank" id="cetak_lap" class='btn btn-success'><i class='fa fa-print'> </i> Cetak Komisi / Petugas</a>
+</span>
 </div>
 
-<script>
-// untuk memunculkan data tabel 
-$(document).ready(function(){
-    $('.table').DataTable();
-
-
-});
-  
+<script type="text/javascript">
+//PICKERDATE
+  $(function() {
+  $( ".tanggal_cari" ).pickadate({ selectYears: 100, format: 'yyyy-mm-dd'});
+  });
+  // /PICKERDATE
 </script>
+
+<script type="text/javascript" language="javascript" >
+   $(document).ready(function() {
+        var dataTable = $('#table_fee_petugas').DataTable( {
+          "processing": true,
+          "serverSide": true,
+          "ajax":{
+            url :"datatable_fee_petugas.php", // json datasource
+            type: "post",  // method  , by default get
+            error: function(){  // error handling
+              $(".employee-grid-error").html("");
+              $("#table_fee_petugas").append('<tbody class="employee-grid-error"><tr><th colspan="3">Data Tidak Ditemukan.. !!</th></tr></tbody>');
+              $("#employee-grid_processing").css("display","none");
+              
+            }
+          },
+
+          "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+
+              $(nRow).attr('class', "pilih");
+              $(nRow).attr('username', aData[0]);
+              $(nRow).attr('data-petugas', aData[1]);
+              $(nRow).attr('alamat', aData[2]);
+              $(nRow).attr('jabatan', aData[3]);
+              $(nRow).attr('otoritas', aData[4]);
+              $(nRow).attr('status', aData[5]);
+              $(nRow).attr('data-petugas-value', aData[6]);
+          },
+
+        });    
+     
+  });
+ 
+ </script>
 
 <script type="text/javascript">
 
@@ -176,31 +165,67 @@ $(document).ready(function(){
   </script> <!--tag penutup perintah java script-->
 
 <script type="text/javascript">
-$("#submit").click(function(){
+// FEE PRODUK per PETUGAS DATATABLE MENGGUNAKAN AJAX
+  $(document).ready(function() {
+  $(document).on('click','#submit',function(e) {
 
-      var nama_petugas = $("#nama_petugas").val();
-      var dari_tanggal = $("#dari_tanggal").val();
-      var sampai_tanggal = $("#sampai_tanggal").val();
-
-
-$.post("proses_lap_jumlah_fee.php", {nama_petugas:nama_petugas,dari_tanggal:dari_tanggal,sampai_tanggal:sampai_tanggal},function(info){
-
- $("#result").html(info);
-
-});
-
-
-});      
-$("form").submit(function(){
-
-return false;
-
-});
-
+        $('#table_petugas').DataTable().destroy();
+        var nama_petugas = $("#nama_petugas").val();
+        var dari_tanggal = $("#dari_tanggal").val();        
+        var sampai_tanggal = $("#sampai_tanggal").val();
+          if (nama_petugas == '') {
+            alert("Silakan nama petugas diisi terlebih dahulu.");
+            $("#cari_petugas").focus();
+          } 
+          else if (dari_tanggal == '') {
+            alert("Silakan dari tanggal diisi terlebih dahulu.");
+            $("#dari_tanggal").focus();
+          }
+          else if (sampai_tanggal == '') {
+            alert("Silakan sampai tanggal diisi terlebih dahulu.");
+            $("#sampai_tanggal").focus();
+          }
+            else{ 
+              //TABLE KOMISI PRODUK
+              var dataTable = $('#table_petugas').DataTable( {
+                "processing": true,
+                "serverSide": true,
+                "info":     false,
+                "language": {
+              "emptyTable":   "My Custom Message On Empty Table"
+          },
+                "ajax":{
+                  url :"datatable_petugas_per_produk.php", // json datasource
+                   "data": function ( d ) {
+                      d.nama_petugas = $("#nama_petugas").val();
+                      d.dari_tanggal = $("#dari_tanggal").val();
+                      d.sampai_tanggal = $("#sampai_tanggal").val();
+                      // d.custom = $('#myInput').val();
+                      // etc
+                  },
+                      type: "post",  // method  , by default get
+                  error: function(){  // error handling
+                    $(".tbody").html("");
+                    $("#table_petugas").append('<tbody class="tbody"><tr><th colspan="3"></th></tr></tbody>');
+                    $("#tableuser_processing").css("display","none");
+                    
+                  }
+                }
+          
+              });
+    
+    $("#cetak").show();
+    $("#cetak_lap").attr("href", "cetak_lap_jumlah_fee_produk.php?nama_petugas="+nama_petugas+"&dari_tanggal="+dari_tanggal+"&sampai_tanggal="+sampai_tanggal+"");
+}//end else
+        });
+        $("form").submit(function(){
+        
+        return false;
+        
+        });  
+   });  
+   // /FEE PRODUK per PETUGAS DATATABLE MENGGUNAKAN AJAX
 </script>
-
-
-
 
 <?php 
 include 'footer.php';

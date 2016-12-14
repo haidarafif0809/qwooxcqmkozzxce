@@ -43,14 +43,14 @@ $data = array();
 while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 	$nestedData=array(); 
 
-	  $nestedData[] = $row['username'];
+	$nestedData[] = $row['username'];
     $nestedData[] = $row['nama'];
     $nestedData[] = $row['alamat'];
     $nestedData[] = $row['jabtan'];
     $nestedData[] = $row['otoritas'];
     $nestedData[] = $row['status'];
-	  $nestedData[] = $row['id'];
-	  $data[] = $nestedData;
+	$nestedData[] = $row['id'];
+	$data[] = $nestedData;
 }
 
 
