@@ -402,15 +402,10 @@ $(document).on('click', '#btn_jadi_hapus', function (e) {
 		$("#modal_reset").modal('hide');
 		
 		}
-
-		
+	
 		});
-		
-		
+			
 		});
-
-
-
 
 		</script>       
 
