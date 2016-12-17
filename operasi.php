@@ -118,9 +118,12 @@ tr:nth-child(even){background-color: #f2f2f2}
    $query = $db->query("SELECT * FROM operasi ORDER BY id_operasi DESC");
    while($data = mysqli_fetch_array($query))      
       {
-      echo "<tr class='tr-id-".$data['id_operasi']."'>
+      echo "<tr class='tr-id-".$data['id_operasi']."'>";
 
-      <td>". $data['kode_operasi'] ."</td>";
+     echo "<td class='edit-kode' data-id='".$data['id_operasi']."'>
+      <span id='text-nama-".$data['id_operasi']."'>". $data['kode_operasi'] ."</span>
+      <input type='hidden' id='input-kode-".$data['id_operasi']."' value='".$data['kode_operasi']."' class='input_kode' data-kode='".$data['kode_operasi']."' data-id='".$data['id_operasi']."' autofocus=''> </td>";
+
 
       if ($operasi['operasi_edit'] > 0) {
         echo "<td class='edit-nama' data-id='".$data['id_operasi']."'>
@@ -170,6 +173,7 @@ tr:nth-child(even){background-color: #f2f2f2}
 
         if(data == 1){
           alert('Kode operasi yang anda masukkan sudah ada.');
+           $("#kode").val('');
           $("#kode").focus();
         }
         else{
@@ -248,6 +252,56 @@ $.post('delete_operasi.php',{id:id},function(data){
 });
 </script>
 <!--  end modal confirmasi delete lanjutan  -->
+
+<!--EDIT KODE START-->
+<script type="text/javascript">      
+$(document).on('dblclick','.edit-kode',function(e){
+
+    var id = $(this).attr("data-id");
+
+   $("#text-nama-"+id+"").hide();
+   $("#input-kode-"+id+"").attr("type", "text");
+
+});
+
+$(document).on('blur','.input_kode',function(e){
+
+var id = $(this).attr("data-id");
+var input_kode = $(this).val();
+var kode_lama = $(this).attr("data-kode");
+
+$.post("cek_kode_operasi_edit.php",{input_kode:input_kode},function(data){
+
+  if(data == 1)
+  {
+      alert('Kode operasi yang anda masukkan sudah ada.');
+     
+        $("#input-kode-"+id).attr("data-kode", kode_lama);
+        $("#text-nama-"+id+"").show();
+        $("#text-nama-"+id+"").text(kode_lama);
+        $("#input-kode-"+id+"").attr("type", "hidden");
+        $("#input-kode-"+id+"").val(kode_lama); 
+                                        
+  }
+  else
+  {
+
+    $.post("update_kode_operasi.php",{id:id, input_kode:input_kode,jenis_edit:"kode_operasi"},function(data){
+
+      $("#text-nama-"+id+"").show();
+      $("#text-nama-"+id+"").text(input_kode);
+      $("#input-kode-"+id+"").attr("type", "hidden");           
+
+          });
+  }         
+
+});
+
+
+});
+
+</script>
+<!--EDIT KODE -->
 
 <script type="text/javascript">      
 $(document).on('dblclick','.edit-nama',function(e){
