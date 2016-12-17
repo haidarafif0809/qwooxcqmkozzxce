@@ -1,21 +1,21 @@
 <?php 
 
-//memasukkan file db.php
 include 'db.php';
 include 'sanitasi.php';
 
-	//mengirim data sesuai dengan variabel dengan metode POST
 
+//masukan data ke database satuan
+$perintah = $db->prepare("INSERT INTO satuan (nama,nama_cetak,dari_satuan,qty)
+			VALUES (?,?,?,?)");
 
-// menambah data yang ada pada tabel satuan berdasarka id dan nama
-$perintah = $db->prepare("INSERT INTO satuan (nama)
-			VALUES (?)");
-
-$perintah->bind_param("s",
-	$nama);
+$perintah->bind_param("sssi",
+	$nama,$nama_cetak,$satuan,$qty);
 
 	
 	$nama = stringdoang($_POST['nama']);
+	$nama_cetak = stringdoang($_POST['nama_cetak']);
+	$satuan = stringdoang($_POST['satuan']);
+	$qty = stringdoang($_POST['qty']);
 
 $perintah->execute();
 

@@ -686,7 +686,8 @@ $("#alert_berhasil").hide();
                                     
                                     var subtotal = parseInt(total_lama,10) - parseInt(jumlah_lama,10) + parseInt(input_jumlah,10);
                                     
-                                    
+                              
+
                                     $.post("update_tbs_kas_masuk.php",{id:id,input_jumlah:input_jumlah,jenis_edit:"jumlah"},function(data){
                                    
                                     $("#input-jumlah-"+id).attr("data-jumlah", input_jumlah);

@@ -376,7 +376,8 @@ $(document).on('click', '#btn_jadi_hapus', function (e) {
 
 		<script>
 //fungsi reset password data 
-		$(".btn-reset").click(function(){
+		$(document).on('click', '.btn-reset', function (e) {
+
 		var reset_user_name = $(this).attr("data-reset-user");
 		var reset_id = $(this).attr("data-reset-id");
 		$("#reset_user_name").val(reset_user_name);
@@ -397,8 +398,8 @@ $(document).on('click', '#btn_jadi_hapus', function (e) {
 		var id = $("#reset_id_hapus").val();
 		$.post("reset_password.php",{id:id},function(data){
 		if (data != "") {
-		$("#table-baru").load('tabel-user.php');
 		$(".alert-success").show();
+		$("#table-baru").load('tabel-user.php');
 		$("#modal_reset").modal('hide');
 		
 		}

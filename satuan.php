@@ -1,18 +1,13 @@
-	s<?php include 'session_login.php';
+<?php include 'session_login.php';
 
 include 'header.php';
 include 'navbar.php';
 include 'sanitasi.php';
 include 'db.php';
 
-
 $query = $db->query("SELECT * FROM satuan");
 
-
-
  ?>
-
-
 
 <div class="container">
 
@@ -60,7 +55,7 @@ echo '<button type="button" class="btn btn-info " data-toggle="modal" data-targe
 					<div class="form-group">
 					<label> Nama Cetak </label>
 					<br>
-					<input type="text" id="nama_cetak" name="nama_cetak" class="form-control" required="">
+					<input type="text"  autocomplete="off" id="nama_cetak" name="nama_cetak" class="form-control" required="">
 
 					</div>
 
@@ -299,21 +294,35 @@ var nama = $("#nama_satuan").val();
 
 <script>
 $(document).ready(function(){
-
-//fungsi untuk menambahkan data
 $(document).on('click','#submit_tambah',function(e){
 
 		var nama = $("#nama_satuan").val();
+		var nama_cetak = $("#nama_cetak").val();
+		var satuan = $("#dari_satuan").val();
+		var qty = $("#qty").val();
 
+		if (nama == "")
+			{
+				alert("Satuan Harus Diisi");
+			}
 
-
-		if (nama == ""){
-			alert("Nama Harus Diisi");
-		}
+		else if (nama_cetak = "") 
+			{
+				alert("Nama Cetak Harus Diisi");
+          		$("#nama_cetak").focus();
+			}
+		else if (satuan = "") 
+			{
+				alert("Satuan Harus Diisi");
+			}
+		else if (qty = "") 
+			{
+				alert("Quantity Harus Diisi");
+			}
 
 		else{
 
-		$.post('prosessatuan.php',{nama:nama},function(data){
+		$.post('prosessatuan.php',{nama:nama,nama_cetak:nama_cetak,satuan:satuan,qty:qty},function(data){
 
 		if (data != '') {
 		$("#nama_satuan").val('');
