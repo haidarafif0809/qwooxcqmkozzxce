@@ -1,4 +1,4 @@
-  <?php include_once 'session_login.php';
+<?php include_once 'session_login.php';
  
 
 // memasukan file session login,  header, navbar, db.php,
@@ -41,6 +41,16 @@ $pasien_rm = $nama;
 $no_reg = '';
 $jenis_penjualan = '';
 }
+
+
+
+
+
+$select_penjualan = $db->query("SELECT p.status,p.no_faktur,p.nama,p.kode_gudang,g.nama_gudang FROM penjualan p INNER JOIN gudang g ON p.kode_gudang = g.kode_gudang WHERE p.no_reg = '$no_reg' ");
+
+$kel = mysqli_fetch_array($select_penjualan);
+
+
 
 
 $session_id = session_id();
@@ -119,6 +129,14 @@ $data_rj_ri = mysqli_fetch_array($sum_rj_ri);
   <input  name="nama_pelanggan" type="hidden" style="height:15px;" id="nama_pelanggan" class="form-control" required="" autofocus="" value="Umum" >
   <input  name="kode_pelanggan1" type="text" style="height:15px;" id="kd_pelanggan1" class="form-control" required="" autofocus="" value="<?php echo $pasien; ?>" >
 </div>
+
+  <input  name="nama_pasien" type="hidden" style="height:15px;" id="nama_pasien" class="form-control" required="" autofocus="" value="<?php echo $kel['nama']; ?>" >
+  <input  name="nama_gudang" type="hidden" style="height:15px;" id="nama_gudang" class="form-control" required="" autofocus="" value="<?php echo $kel['nama_gudang']; ?>" >
+
+    <input  name="kode_gudang" type="hidden" style="height:15px;" id="kode_gudang" class="form-control" required="" autofocus="" value="<?php echo $kel['kode_gudang']; ?>" >
+
+<input  name="no_rm" type="hidden" style="height:15px;" id="no_rm" class="form-control" required="" autofocus="" value="<?php echo $no_rm; ?>" >
+<input  name="no_faktur" type="hidden" style="height:15px;" id="no_faktur" class="form-control" required="" autofocus="" value="<?php echo $kel['no_faktur']; ?>" >
 
 
   <input  name="no_reg" type="hidden" style="height:15px;" id="no_reg" class="form-control" required="" autofocus="" value="<?php echo $no_reg; ?>" >
@@ -445,7 +463,7 @@ $data_rj_ri = mysqli_fetch_array($sum_rj_ri);
                 <?php
                
                   //menampilkan semua data yang ada pada tabel tbs penjualan dalam DB
-                $perintah = $db->query("SELECT * FROM tbs_penjualan WHERE session_id = '$session_id' AND no_reg = '$no_reg' AND lab = 'Laboratorium'");
+                $perintah = $db->query("SELECT * FROM tbs_penjualan WHERE  session_id = '$session_id' AND no_reg = '$no_reg' AND lab = 'Laboratorium'");
                             
                 
                 //menyimpan data sementara yang ada pada $perintah  
@@ -949,6 +967,11 @@ $data_rj_ri = mysqli_fetch_array($sum_rj_ri);
               <?php if ($jenis_penjualan == 'Rawat Inap'): ?>
                   <button class="btn btn-warning" id="ranap"> <i class="fa fa-reply-all"></i> Kembali Rawat Inap </button>
 
+              <?php endif ?> 
+
+               <?php if ($jenis_penjualan == 'Simpan Rawat Jalan'): ?>
+                  <button class="btn btn-warning" id="simpan_raja"> <i class="fa fa-reply-all"></i> Kembali Simpan Rawat Jalan </button>
+
               <?php endif ?>                 
 
             <?php endif ?>
@@ -987,7 +1010,7 @@ $(document).ready(function(){
   // Rawat jalan
   $(document).on('click','#raja',function(e){
     var no_reg = $("#no_reg").val();
-    var analis = $("#apoteker").val()
+    var analis = $("#apoteker").val();
 
     window.location.href="form_penjualan_kasir.php?no_reg="+no_reg+"&analis="+analis+"";
 
@@ -996,11 +1019,26 @@ $(document).ready(function(){
   //Rawat Inap
    $(document).on('click','#ranap',function(e){
     var no_reg = $("#no_reg").val();
-    var analis = $("#apoteker").val()
+    var analis = $("#apoteker").val();
 
     window.location.href="form_penjualan_kasir_ranap.php?no_reg="+no_reg+"&analis="+analis+"";
 
   });
+
+
+     //Simpan Rawat Jalan
+   $(document).on('click','#simpan_raja',function(e){
+    var no_reg = $("#no_reg").val();
+     var nama_pasien = $("#nama_pasien").val();
+      var nama_gudang = $("#nama_gudang").val();
+       var kode_gudang = $("#kode_gudang").val();
+       var no_rm = $("#no_rm").val();
+        var no_faktur = $("#no_faktur").val();
+
+    window.location.href="bayar_pesanan_barang_raja.php?no_reg="+no_reg+"&nama_pasien="+nama_pasien+"&nama_gudang="+nama_gudang+"&kode_gudang="+kode_gudang+"&no_rm="+no_rm+"&no_faktur="+no_faktur+"";
+
+  });
+
 </script>
 
 
@@ -1514,41 +1552,7 @@ alert("Silakan Bayar Piutang");
   $("#transaksi_baru").show();
 
 
- $.post("cek_subtotal_lab.php",{total2:total2},function(data) {
-
-  if (data == "Oke") 
-  {
-     $.post("proses_bayar_jual_lab.php",{biaya_admin:biaya_admin,total2:total2,sisa_pembayaran:sisa_pembayaran,kredit:kredit,kode_pelanggan:kode_pelanggan,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,cara_bayar:cara_bayar,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,total_hpp:total_hpp,harga:harga,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,apoteker:apoteker,penjamin:penjamin, nama_pelanggan:nama_pelanggan},function(info) {
-
-
-               $("#table-baru").html(info);
-               var no_faktur = info;
-               var kode_pelanggan = $('#kd_pelanggan').val();
-               var kode_pelanggan = kode_pelanggan.substr(0, kode_pelanggan.indexOf('('));
-               $("#cetak_tunai").attr('href', 'cetak_penjualan_tunai.php?no_faktur='+no_faktur+'');
-               $("#cetak_tunai_besar").attr('href', 'cetak_besar_lab.php?no_faktur='+no_faktur+'');
-               $("#alert_berhasil").show();
-               $("#pembayaran_penjualan").val('');
-               $("#sisa_pembayaran_penjualan").val('');
-               $("#kredit").val('');
-               $("#apoteker").val('')
-               $("#no_resep_dokter").val('')
-               $("#resep_dokter").val('')
-               $("#penjamin").val('')
-               $("#apoteker").val('')
-               $("#kd_pelanggan").val('')
-               $("#no_resep_dokter").val('')
-               $("#resep_dokter").val('')
-               $("#penjamin").val('')
-               $("#cetak_tunai").show();
-               $("#cetak_tunai_besar").show('');
-              
-                 
-             });
-  }
-  
-
- $.post("cek_subtotal_apotek.php",{no_reg:no_reg,total2:total2,session_id:session_id},function(data) {
+ $.post("cek_subtotal_lab.php",{total:total,potongan:potongan,tax:tax,biaya_admin:biaya_admin},function(data) {
 
   if (data == "Oke") {
 
@@ -1580,21 +1584,14 @@ alert("Silakan Bayar Piutang");
     
        
    });
-
-  }
+}
   else{
     alert("Maaf Subtotal Penjualan Tidak Sesuai, Silakan Tunggu Sebentar!");       
         window.location.href="form_penjualan_lab.php";
   }
-          
-});
-
-
- });
-
 
   
- }
+ }};
 
  $("form").submit(function(){
     return false;
@@ -1647,6 +1644,7 @@ alert("Silakan Bayar Piutang");
         var nama_pelanggan = $("#nama_pelanggan").val();
         var tax = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#tax_rp").val()))));
         var cara_bayar = $("#carabayar1").val();
+        var biaya_admin = $("#biaya_admin").val();
         var pembayaran = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#pembayaran_penjualan").val()))));
         if (pembayaran == '') {
           pembayaran = 0;
@@ -1686,10 +1684,12 @@ alert("Silakan Bayar Piutang");
         $("#penjualan").hide();
         $("#transaksi_baru").show();
         
- $.post("cek_subtotal_apotek.php",{no_reg:no_reg,total2:total2,session_id:session_id},function(data) {
 
-  if (data == "Oke") {
+ $.post("cek_subtotal_lab.php",{total:total,potongan:potongan,tax:tax,biaya_admin:biaya_admin},function(data) {
 
+
+  if (data == "1") 
+  {
 
 
        $.post("proses_bayar_jual_lab.php",{biaya_admin:biaya_admin,total2:total2,sisa_pembayaran:sisa_pembayaran,kredit:kredit,kode_pelanggan:kode_pelanggan,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,cara_bayar:cara_bayar,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,total_hpp:total_hpp,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,apoteker:apoteker,penjamin:penjamin, nama_pelanggan:nama_pelanggan},function(info) {

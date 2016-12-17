@@ -110,7 +110,7 @@ echo '<a href="form_pembayaran_piutang.php" class="btn btn-info"> <i class="fa f
 
 <div class="table-responsive"><!--membuat agar ada garis pada tabel disetiap kolom-->
 <span id="tabel-baru">
-<table id="tableuser" class="table table-bordered table-sm">
+<table id="table_pembayaran_piutang" class="table table-bordered table-sm">
 		<thead>
 			<th style="background-color: #4CAF50; color:white"> Detail </th>
 
@@ -138,58 +138,8 @@ if ($pembayaran_piutang['pembayaran_piutang_hapus'] > 0) {
 			<th style="background-color: #4CAF50; color:white"> User Edit </th>
 			<th style="background-color: #4CAF50; color:white"> Tanggal Edit </th>
 			<th style="background-color: #4CAF50; color:white"> Ke Kas </th>
-			
-
-			
-			
-		</thead>
 		
-		<tbody>
-		<?php
-
-			//menyimpan data sementara yang ada pada $perintah
-			while ($data1 = mysqli_fetch_array($query_piutang))
-			{
-
-				$perintah5 = $db->query("SELECT * FROM detail_pembayaran_piutang");
-				$data5 = mysqli_fetch_array($perintah5);
-
-				//menampilkan data
-			echo "<tr class='tr-id-".$data1['id']."'>
-			<td> <button class='btn btn-info detail' no_faktur_pembayaran='". $data1['no_faktur_pembayaran'] ."' ><span class='glyphicon glyphicon-th-list'></span> Detail </button> </td>"; 
-
-
-if ($pembayaran_piutang['pembayaran_piutang_edit'] > 0) {
-			echo "<td> <a href='proses_edit_pembayaran_piutang.php?no_faktur_pembayaran=". $data1['no_faktur_pembayaran']."&no_faktur_penjualan=". $data5['no_faktur_penjualan']."' class='btn btn-success'> <span class='glyphicon glyphicon-edit'></span> Edit </a> </td>";
-		}
-
-if ($pembayaran_piutang['pembayaran_piutang_hapus'] > 0) {		
-
-			echo "<td> <button class='btn btn-danger btn-hapus' data-id='". $data1['id'] ."' data-suplier='". $data1['nama_suplier'] ."' data-no-faktur='". $data1['no_faktur_pembayaran'] ."'> <span class='glyphicon glyphicon-trash'> </span> Hapus </button> </td>";
-}
-
-		echo "<td> <a href='cetak_lap_pembayaran_piutang.php?no_faktur_pembayaran=".$data1['no_faktur_pembayaran']."'  class='btn btn-primary' target='blank'><span class='glyphicon glyphicon-print'> </span> Cetak Piutang </a> </td>";
-
-
-
-			echo "<td>". $data1['no_faktur_pembayaran'] ."</td>
-			<td>". $data1['tanggal'] ."</td>
-			<td>". $data1['jam'] ."</td>";
-
-		echo "<td>". $data1['keterangan'] ."</td>
-			<td>". rp($data1['total']) ."</td>
-			<td>". $data1['user_buat'] ."</td>
-			<td>". $data1['user_edit'] ."</td>
-			<td>". $data1['tanggal_edit'] ."</td>
-			<td>". $data1['nama_daftar_akun'] ."</td>
-
-			</tr>";
-			}
-
-			//Untuk Memutuskan Koneksi Ke Database
-			mysqli_close($db);   
-		?>
-		</tbody>
+		</thead>
 
 	</table>
 </span>
@@ -200,14 +150,41 @@ if ($pembayaran_piutang['pembayaran_piutang_hapus'] > 0) {
 		<span id="demo"> </span>
 </div><!--end of container-->
 
-<script>
+<!--DATA TABLE MENGGUNAKAN AJAX-->
+<script type="text/javascript" language="javascript" >
+      $(document).ready(function() {
+
+          var dataTable = $('#table_pembayaran_piutang').DataTable( {
+          "processing": true,
+          "serverSide": true,
+          "ajax":{
+            url :"datatable_pembayaran_piutang.php", // json datasource
+           
+            type: "post",  // method  , by default get
+            error: function(){  // error handling
+              $(".employee-grid-error").html("");
+              $("#table_pembayaran_piutang").append('<tbody class="employee-grid-error"><tr><th colspan="3">No data found in the server</th></tr></tbody>');
+              $("#employee-grid_processing").css("display","none");
+            }
+        },
+            
+            "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+                $(nRow).attr('class','tr-id-'+aData[13]+'');
+            },
+        });
+
+        $("#form").submit(function(){
+        return false;
+        });
+        
+
+      } );
+    </script>
+<!--/DATA TABLE MENGGUNAKAN AJAX-->
+
+<script type="text/javascript">
 		
-		// untk menampilkan datatable atau filter seacrh
-		$(document).ready(function(){
-		$('#tableuser').DataTable({"ordering":false});
-		});
-		
-		$(".detail").click(function(){
+		$(document).on('click','.detail',function(e){
 		var no_faktur_pembayaran = $(this).attr('no_faktur_pembayaran');
 		
 		
@@ -227,7 +204,7 @@ if ($pembayaran_piutang['pembayaran_piutang_hapus'] > 0) {
  <script type="text/javascript">
 			
 //fungsi hapus data 
-		$(".btn-hapus").click(function(){
+		$(document).on('click','.btn-hapus',function(e){
 		var pelanggan = $(this).attr("data-suplier");
 		var id = $(this).attr("data-id");
 		var no_faktur_pembayaran = $(this).attr("data-no-faktur");

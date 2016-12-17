@@ -8,8 +8,6 @@ include 'sanitasi.php';
 include 'db.php';
 
 
-//menampilkan seluruh data yang ada pada tabel pembelian dalan DB
-/*$perintah = $db->query("SELECT km.id, km.no_faktur, km.keterangan, km.dari_akun, km.jumlah, km.tanggal, km.jam, km.user, da.nama_daftar_akun FROM kas_keluar km INNER JOIN daftar_akun da ON km.dari_akun = da.kode_daftar_akun");*/
 
  ?>
 
@@ -115,7 +113,10 @@ include 'db.php';
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title"><center><b>Detail Kas Masuk </b></center></h4>
+
+        <h4 class="modal-title">Detail Kas Keluar </h4>
+
+
       </div>
 
       <div class="modal-body">

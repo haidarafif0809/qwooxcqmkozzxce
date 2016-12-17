@@ -10,18 +10,6 @@ include 'db.php';
 
 
  ?>
-    <script>
-    $(function() {
-    $( "#dari_tanggal" ).datepicker({dateFormat: "yy-mm-dd"});
-    });
-    </script>
-
-
-    <script>
-    $(function() {
-    $( "#sampai_tanggal" ).datepicker({dateFormat: "yy-mm-dd"});
-    });
-    </script>
 
 
 <div style="padding-right: 5%; padding-left: 5%;">
@@ -32,20 +20,20 @@ include 'db.php';
         <br><br>
         <!-- Tampilan Modal -->
         <div id="myModal" class="modal fade" role="dialog">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog">
         
         <!-- Isi Modal-->
         <div class="modal-content">
         <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Data User</h4>
+        <h4 class="modal-title">Daftar Petugas</h4>
         </div>
         <div class="modal-body"> <!--membuat kerangka untuk tempat tabel -->
         
         <!--perintah agar modal update-->
 <span class="modal_baru">
  <div class="table-responsive">       
-<table id="tableuser" class="table table-bordered">
+<table id="table_petugas_fee" class="table table-bordered">
     <thead>
       <th> Username </th></th>
       <th> Nama Lengkap </th>
@@ -53,36 +41,7 @@ include 'db.php';
       <th> Jabatan </th>
       <th> Otoritas </th>
       <th> Status </th>
-
-      
     </thead>
-    
-    <tbody>
-    <?php
-
-      $perintah0 = $db->query("SELECT * FROM user");
-      while ($data1 = mysqli_fetch_array($perintah0))
-      {
-
-        $data_j = $db->query("SELECT j.nama AS jabatan FROM jabatan j INNER JOIN user u ON j.id = u.jabatan WHERE j.id = '$data1[jabatan]' ");
-      $data = mysqli_fetch_array($data_j);
-
-      echo "<tr  class='pilih' data-petugas='". $data1['nama'] ."' data-petugas-value='". $data1['id'] ."'>
-      <td>". $data1['username'] ."</td>
-      <td>". $data1['nama'] ."</td>
-      <td>". $data1['alamat'] ."</td>
-      <td>". $data['jabatan'] ."</td>
-      <td>". $data1['otoritas'] ."</td>
-      <td>". $data1['status'] ."</td>
-
-      </tr>";
-      }
-
-//Untuk Memutuskan Koneksi Ke Database
-mysqli_close($db);   
-    ?>
-    </tbody>
-
   </table>
 </div>
 </span>
@@ -112,12 +71,12 @@ mysqli_close($db);
 
                   <div class="form-group"> 
 
-                  <input type="text" name="dari_tanggal" id="dari_tanggal" class="form-control" placeholder="Dari Tanggal" required="">
+                  <input type="text" name="dari_tanggal" id="dari_tanggal" class="form-control tanggal_cari" placeholder="Dari Tanggal" required="">
                   </div>
 
                   <div class="form-group"> 
 
-                  <input type="text" name="sampai_tanggal" id="sampai_tanggal" class="form-control" placeholder="Sampai Tanggal" required="">
+                  <input type="text" name="sampai_tanggal" id="sampai_tanggal" class="form-control tanggal_cari" placeholder="Sampai Tanggal" required="">
                   </div>
 
                   <button type="submit" name="submit" id="submit" class="btn btn-primary" > <i class="fa fa-send"></i> Submit </button>
@@ -140,16 +99,7 @@ mysqli_close($db);
                   <th style="background-color: #4CAF50; color: white;"> Jumlah Komisi </th>
                   <th style="background-color: #4CAF50; color: white;"> Tanggal </th>
                   <th style="background-color: #4CAF50; color: white;"> Jam </th>
-
-
-                  
             </thead>
-            
-            <tbody>
-
-     
-            </tbody>
-
       </table>
 </div>
 <br><br>
@@ -163,14 +113,7 @@ mysqli_close($db);
                   <th style="background-color: #4CAF50; color: white;"> Jumlah Komisi </th>
                   <th style="background-color: #4CAF50; color: white;"> Tanggal </th>
                   <th style="background-color: #4CAF50; color: white;"> Jam </th>
-
-                  
             </thead>
-            
-            <tbody>
-
-            </tbody>
-
       </table>
 </div>
 
@@ -178,18 +121,59 @@ mysqli_close($db);
 </span>
 </div>
 
+<script type="text/javascript">
+//PICKERDATE
+  $(function() {
+  $( ".tanggal_cari" ).pickadate({ selectYears: 100, format: 'yyyy-mm-dd'});
+  });
+  // /PICKERDATE
+</script>
+
 <script>
 // untuk memunculkan data tabel 
 $(document).ready(function(){
-    $('.table').DataTable();
+    $('#tableuser').DataTable();
 
 
 });
   
 </script>
 
-<script type="text/javascript">
+<script type="text/javascript" language="javascript" >
+   $(document).ready(function() {
+        var dataTable = $('#table_petugas_fee').DataTable( {
+          "processing": true,
+          "serverSide": true,
+          "ajax":{
+            url :"datatable_petugas_fee.php", // json datasource
+            type: "post",  // method  , by default get
+            error: function(){  // error handling
+              $(".employee-grid-error").html("");
+              $("#table_petugas_fee").append('<tbody class="employee-grid-error"><tr><th colspan="3">Data Tidak Ditemukan.. !!</th></tr></tbody>');
+              $("#employee-grid_processing").css("display","none");
+              
+            }
+          },
 
+          "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+
+              $(nRow).attr('class', "pilih");
+              $(nRow).attr('username', aData[0]);
+              $(nRow).attr('data-petugas', aData[1]);
+              $(nRow).attr('alamat', aData[2]);
+              $(nRow).attr('jabatan', aData[3]);
+              $(nRow).attr('otoritas', aData[4]);
+              $(nRow).attr('status', aData[5]);
+              $(nRow).attr('data-petugas-value', aData[6]);
+          },
+
+        });    
+     
+  });
+ 
+ </script>
+
+<script type="text/javascript">
 // jika dipilih, nim akan masuk ke input dan modal di tutup
   $(document).on('click', '.pilih', function (e) {
   document.getElementById("nama_petugas_value").value = $(this).attr('data-petugas');
@@ -197,10 +181,6 @@ $(document).ready(function(){
 
   $('#myModal').modal('hide');
   });
-   
-
-
-   
   </script> <!--tag penutup perintah java script-->
 
 <script type="text/javascript">
@@ -210,14 +190,26 @@ $("#submit").click(function(){
       var dari_tanggal = $("#dari_tanggal").val();
       var sampai_tanggal = $("#sampai_tanggal").val();
 
-
+if (nama_petugas == '') {
+  alert("silakan nama petugas terlebih dahulu.");
+  $("#nama_petugas").focus();
+}
+else if (dari_tanggal == '') {
+alert("silakan dari tanggal terlebih dahulu.");
+$("#dari_tanggal").focus();
+}
+else if (sampai_tanggal == '') {
+alert("silakan sampai tanggal terlebih dahulu.");
+$("#sampai_tanggal").focus();
+}
+else{
 $.post("proses_laporan_jumlah_total_fee.php", {nama_petugas:nama_petugas,dari_tanggal:dari_tanggal,sampai_tanggal:sampai_tanggal},function(info){
 
  $("#result").html(info);
 
 });
 
-
+}// end else
 });      
 $("form").submit(function(){
 

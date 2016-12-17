@@ -18,8 +18,8 @@ $columns = array(
 	2 => 'jam',
 	3 => 'status',
 	4 => 'total_selisih',
-  5  => 'user',
-	6  => 'id'
+  	5 => 'user',
+	6 => 'id'
 );
 
 // getting total number records without any search

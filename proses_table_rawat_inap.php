@@ -91,14 +91,24 @@ $data = array();
 while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 	$nestedData=array(); 
 
-  	if ($registrasi_ri['registrasi_ri_hapus']) {
-         $nestedData[] = "<button  class='btn btn-floating btn-small btn-info' id='batal_ranap' data-reg='". $row['no_reg']. "' data-id='". $row['id']. "'><i class='fa fa-remove'></i> </button>";
-        }
-        else{
+$penjual = $db->query("SELECT status FROM penjualan WHERE no_reg = '$row[no_reg]' ");
+$sttus = mysqli_num_rows($penjual);
 
-          $nestedData[] = "";
-          
-        }
+
+  if ($registrasi_ri['registrasi_ri_hapus'])
+  	{
+
+		if ($sttus == 0) {
+         $nestedData[] = "<button  class='btn btn-floating btn-small btn-info' id='batal_ranap' data-reg='". $row['no_reg']. "' data-id='". $row['id']. "'><i class='fa fa-remove'></i> </button>";
+		}
+		else {
+			$nestedData[] = "";
+		}
+	}	
+        
+ else{
+        $nestedData[] = "";     
+     }
 
         if ($penjualan['penjualan_tambah'] > 0) {
                  
@@ -125,8 +135,20 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 
            $nestedData[] = "<a href='registrasi_operasi.php?no_reg=".$row['no_reg']."&no_rm=".$row['no_rm']."&bed=".$row['bed']."&kamar=".$row['group_bed']."' class='btn btn-floating btn-small btn-danger'><i class='fa fa-plus-circle'></i></a>";
 
-          $nestedData[] = "<a href='form_penjualan_lab.php?no_rm=".$row['no_rm']."&nama=".$row['nama_pasien']."&no_reg=".$row['no_reg']."&dokter=".$row['dokter']."&jenis_penjualan=Rawat Inap' class='btn btn-floating btn-small btn-info'><i class='fa fa-stethoscope'></i></a>
+
+if ($data_z['status'] == 'Simpan Sementara') {
+
+          $nestedData[] = "<a href='form_simpan_rj_penjualan_lab.php?no_rm=".$row['no_rm']."&nama=".$row['nama_pasien']."&no_reg=".$row['no_reg']."&dokter=".$row['dokter']."&jenis_penjualan=Simpan Rawat Inap' class='btn btn-floating btn-small btn-info'><i class='fa fa-stethoscope'></i></a>
 		   ";
+}
+
+else {
+
+	 $nestedData[] = "<a href='form_penjualan_lab.php?no_rm=".$row['no_rm']."&nama=".$row['nama_pasien']."&no_reg=".$row['no_reg']."&dokter=".$row['dokter']."&jenis_penjualan=Rawat Inap' class='btn btn-floating btn-small btn-info'><i class='fa fa-stethoscope'></i></a>
+		   ";
+}
+
+
         }
         else
         {

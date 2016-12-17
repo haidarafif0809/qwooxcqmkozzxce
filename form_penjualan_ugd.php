@@ -471,12 +471,12 @@ Level 7
 
   <div class="col-sm-2">
           
-          <select style="font-size:15px; height:40px" type="text" name="satuan_konversi" id="satuan_konversi" class="form-control"  >
+          <select style="font-size:15px; height:40px" name="satuan_konversi" id="satuan_konversi" class="form-control"  >
           
           <?php 
           
           
-          $query = $db->query("SELECT id, nama  FROM satuan");
+          $query = $db->query("SELECT id,nama  FROM satuan");
           while($data = mysqli_fetch_array($query))
           {
           
@@ -1484,7 +1484,7 @@ alert("Silakan Bayar Piutang");
   $("#transaksi_baru").show();
 
 
- $.post("cek_subtotal_penjualan.php",{total2:total2,no_reg:no_reg},function(data) {
+ $.post("cek_subtotal_penjualan.php",{total:total,no_reg:no_reg,potongan:potongan,tax:tax,biaya_adm:biaya_adm},function(data) {
 
   if (data == "Oke") {
 
@@ -2438,8 +2438,6 @@ $(function() {
         $('#harga_produk').val('');
         $('#harga_lama').val('');
         $('#harga_baru').val('');
-        $('#satuan_produk').val('');
-        $('#satuan_konversi').val('');
         $('#id_produk').val('');
         $('#ber_stok').val('');
 
@@ -2667,7 +2665,7 @@ $(function() {
 
 
 
- $.post("cek_subtotal_penjualan.php",{total2:total2,no_reg:no_reg},function(data) {
+ $.post("cek_subtotal_penjualan.php",{total:total,no_reg:no_reg,potongan:potongan,tax:tax,biaya_adm:biaya_adm},function(data) {
 
   if (data == "Oke") {
 
@@ -3133,16 +3131,16 @@ $(document).ready(function(){
               $(nRow).attr('harga_level_4', aData[5]);
               $(nRow).attr('harga_level_5', aData[6]);
               $(nRow).attr('harga_level_6', aData[7]);
-              $(nRow).attr('harga_level_7f', aData[8]);
+              $(nRow).attr('harga_level_7', aData[8]);
               $(nRow).attr('jumlah-barang', aData[9]);
-              $(nRow).attr('satuan', aData[10]);
+              $(nRow).attr('satuan', aData[17]);
               $(nRow).attr('kategori', aData[11]);
               $(nRow).attr('status', aData[12]);
               $(nRow).attr('suplier', aData[13]);
               $(nRow).attr('limit_stok', aData[14]);
               $(nRow).attr('ber-stok', aData[15]);
               $(nRow).attr('tipe_barang', aData[16]);
-              $(nRow).attr('id-barang', aData[17]);
+              $(nRow).attr('id-barang', aData[18]);
 
 
 

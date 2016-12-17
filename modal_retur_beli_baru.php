@@ -3,7 +3,7 @@
 include 'sanitasi.php';
 include 'db.php';
 
-echo$suplier = $_POST['suplier'];
+$suplier = $_POST['suplier'];
 ?>
 <div class="table-responsive">
 

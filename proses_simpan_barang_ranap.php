@@ -102,7 +102,7 @@ $kredit = angkadoang($_POST['sisa_kredit']);
 $sisa = angkadoang($_POST['sisa']);
 $cara_bayar = stringdoang($_POST['cara_bayar']);
 $pembayaran = angkadoang($_POST['pembayaran']);
-$biaya_admin = angkadoang($_POST['biaya_admin']);
+$biaya_admin = angkadoang($_POST['biaya_adm']);
 
 
 

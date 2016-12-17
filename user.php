@@ -277,7 +277,6 @@ $ambil_otoritas = $db->query("SELECT * FROM hak_otoritas");
 
 			<th style='background-color: #4CAF50; color: white'> Reset Password </th>
 			<th style='background-color: #4CAF50; color: white'> Username </th>
-			<th style='background-color: #4CAF50; color: white'> Password </th>
 			<th style='background-color: #4CAF50; color: white'> Nama Lengkap </th>
 			<th style='background-color: #4CAF50; color: white'> Alamat </th>
 			<th style='background-color: #4CAF50; color: white'> Jabatan </th>
@@ -359,7 +358,7 @@ $(document).on('click', '#btn_jadi_hapus', function (e) {
           },
 
            "fnCreatedRow": function( nRow, aData, iDataIndex ) {
-              $(nRow).attr('class','tr-id-'+aData[12]+'');
+              $(nRow).attr('class','tr-id-'+aData[11]+'');
 			},
        });
 

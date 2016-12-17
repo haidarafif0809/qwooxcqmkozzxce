@@ -95,7 +95,7 @@ opacity: 0.9;
 
       </span>
     </div>
-    <div class="modal-footer">    
+    <div class="modal-foter">    
         <button type="button" class="btn btn-danger" data-dismiss="modal">Closed</button>
     </div>
     </div>
@@ -650,9 +650,11 @@ else{
           },
             "fnCreatedRow": function( nRow, aData, iDataIndex ) {
               $(nRow).attr('class','tr-id-'+aData[20]+'');
-            }
+
+            },
 
         });
+
 
      $("#rujukan").val('');
      $("#token").val('');
@@ -676,7 +678,6 @@ else{
      $("#keterangan").val('');
      $("#dokter_jaga").val('');
 
-     
      });
 
 

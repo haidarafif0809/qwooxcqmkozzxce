@@ -52,6 +52,7 @@ $sql.=" FROM registrasi WHERE 1=1 AND jenis_pasien = 'Rawat Jalan' AND (status =
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
 	$sql.=" AND ( no_urut LIKE '".$requestData['search']['value']."%' ";    
 	$sql.=" OR no_rm LIKE '".$requestData['search']['value']."%' ";
+  $sql.=" OR no_reg LIKE '".$requestData['search']['value']."%' ";
 	$sql.=" OR nama_pasien LIKE '".$requestData['search']['value']."%' ";
 	$sql.=" OR penjamin LIKE '".$requestData['search']['value']."%' )";
 
@@ -124,8 +125,19 @@ else
   $nestedData[] = "
 		   <button class='btn btn-floating btn-small btn-info rujuk_ri' data-reg='".$row['no_reg']."'><i class='fa fa-hotel'></i></button>
 		   ";
-  $nestedData[] = "<a href='form_penjualan_lab.php?no_rm=".$row['no_rm']."&nama=".$row['nama_pasien']."&no_reg=".$row['no_reg']."&dokter=".$row['dokter']."&jenis_penjualan=Rawat Jalan' class='btn btn-floating btn-small btn-info'><i class='fa fa-stethoscope'></i></a>
-		   ";
+
+ if ($data_z['status'] == 'Simpan Sementara') {
+
+    $nestedData[] = "<a href='form_simpan_rj_penjualan_lab.php?no_rm=".$row['no_rm']."&nama=".$row['nama_pasien']."&no_reg=".$row['no_reg']."&dokter=".$row['dokter']."&jenis_penjualan=Simpan Rawat Jalan' class='btn btn-floating btn-small btn-info'><i class='fa fa-stethoscope'></i></a>
+       ";
+}
+else
+{
+    $nestedData[] = "<a href='form_penjualan_lab.php?no_rm=".$row['no_rm']."&nama=".$row['nama_pasien']."&no_reg=".$row['no_reg']."&dokter=".$row['dokter']."&jenis_penjualan=Rawat Jalan' class='btn btn-floating btn-small btn-info'><i class='fa fa-stethoscope'></i></a>
+       ";
+}
+
+
 
 }
 

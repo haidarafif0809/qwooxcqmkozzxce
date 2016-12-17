@@ -1,6 +1,7 @@
 <?php include 'session_login.php';
 /* Database connection start */
 include 'db.php';
+include "sanitasi.php";
 
 /* Database connection end */
 
@@ -48,7 +49,6 @@ if( !empty($requestData['search']['value']) ) {   // if there is a search parame
 	$sql.=" AND ( p.no_faktur LIKE '".$requestData['search']['value']."%' "; 
 	$sql.=" OR s.nama LIKE '".$requestData['search']['value']."%' ";
 	$sql.=" OR g.nama_gudang LIKE '".$requestData['search']['value']."%' ";
-	$sql.=" OR p.jam LIKE '".$requestData['search']['value']."%' ";
 	$sql.=" OR p.total LIKE '".$requestData['search']['value']."%' ";
 	$sql.=" OR p.tanggal LIKE '".$requestData['search']['value']."%' )";
 }
@@ -122,7 +122,7 @@ $pembelian_hapus = mysqli_num_rows($pilih_akses_pembelian_hapus);
 			$nestedData[] = $row["no_faktur"];
 			$nestedData[] = $row["nama_gudang"];
 			$nestedData[] = $row["nama"];
-			$nestedData[] = $row["total"];
+			$nestedData[] = rp($row["total"]);
 			$nestedData[] = $row["tanggal"];
 			$nestedData[] = $row["tanggal_jt"];	
 			$nestedData[] = $row["jam"];
@@ -131,7 +131,7 @@ $pembelian_hapus = mysqli_num_rows($pilih_akses_pembelian_hapus);
 			$nestedData[] = $row["potongan"];
 			$nestedData[] = $row["tax"];
 			$nestedData[] = $row["sisa"];	
-			$nestedData[] = $row["kredit"];
+			$nestedData[] = rp($row["kredit"]);
 			$nestedData[] = $row["id"];
 
 

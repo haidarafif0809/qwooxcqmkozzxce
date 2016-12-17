@@ -23,14 +23,15 @@ $columns = array(
     6=>'harga_jual5',
     7=>'harga_jual6',
     8=>'harga_jual7',
-    9=>'satuan', 
+    9=>'nama', 
     10=>'kategori',
     11=>'status',
     12=>'suplier',
     13=>'limit_stok', 
     14=>'berkaitan_dgn_stok',
-    15=>'tipe_barang',
-    16=>'id'
+    15=>'satuan',
+    16=>'tipe_barang',
+    17=>'id'
 
 
 );
@@ -179,12 +180,13 @@ while( $row=mysqli_fetch_array($query) ) {
         $nestedData[] = "$sisa_barang";
         }
 
-    $nestedData[] = $row["satuan"];
+    $nestedData[] = $row["nama"];
     $nestedData[] = $row["kategori"];
     $nestedData[] = $row["suplier"];
     $nestedData[] = $row["limit_stok"];
     $nestedData[] = $row["berkaitan_dgn_stok"];
     $nestedData[] = $row["tipe_barang"];
+    $nestedData[] = $row["satuan"];
     $nestedData[] = $row["status"];
     $nestedData[] = $row["id"];
     

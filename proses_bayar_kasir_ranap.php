@@ -89,7 +89,7 @@ $sisa_kredit = angkadoang($_POST['kredit']);
 $sisa = angkadoang($_POST['sisa']);
 $cara_bayar = stringdoang($_POST['cara_bayar']);
 $pembayaran = angkadoang($_POST['pembayaran']);
-$biaya_admin = angkadoang($_POST['biaya_admin']);
+$biaya_admin = angkadoang($_POST['biaya_adm']);
 $bed = stringdoang($_POST['bed']);
 $group_bed = stringdoang($_POST['group_bed']);
 
