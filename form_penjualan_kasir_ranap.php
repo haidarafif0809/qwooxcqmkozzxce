@@ -400,8 +400,6 @@ Level 7
       </div>
       <div class="modal-body">
 
-
-
 <div class="table-resposive">
 <span class="modal_baru">
   <table id="tabel_cari" class="table table-bordered table-sm">
@@ -416,7 +414,7 @@ Level 7
             <th> Harga Jual Level 5</th>
             <th> Harga Jual Level 6</th>
             <th> Harga Jual Level 7</th>
-            <th> Jumlah Barang </th>
+            <th> Jumlah </th>
             <th> Satuan </th>
             <th> Kategori </th>
             <th> Suplier </th>
