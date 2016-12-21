@@ -98,6 +98,10 @@ $nestedData[] = "<button class='btn btn-warning btn-reset' data-reset-id='". $ro
          {
         $nestedData[] =  "<p>Lain Lain</p>";
          }
+            elseif ($row['tipe'] == '0' || $row['tipe'] == '')
+         {
+        $nestedData[] =  "<p>-</p>";
+         }
 
          $nestedData[] = $row['status'];
 
