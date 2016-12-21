@@ -65,7 +65,7 @@ include 'db.php';
 
                   <input type="hidden" name="nama_petugas" id="nama_petugas" class="form-control" placeholder="Nama Petugas" required="">
 
-                  <input type="text" name="nama_petugas_value" id="nama_petugas_value" class="form-control" placeholder="Nama Petugas" required="">
+                  <input type="text" name="nama_petugas_value" id="nama_petugas_value" class="form-control" placeholder="Nama Petugas" required="" autocomplete="off">
 
                   </div>                  
 
@@ -84,13 +84,11 @@ include 'db.php';
 </form>
 
 
-<br>
-
 <span id="result">
-
+<div class="row 1">
 <h3><center><b>Komisi Faktur / Petugas</b></center></h3><br><br>
 <div class="table-responsive">
-<table id="tableuser" class="table table-bordered table-sm">
+<table id="table_komisi_faktur" class="table table-bordered table-sm">
             <thead>
                   <th style="background-color: #4CAF50; color: white;"> Nama Petugas </th>
                   <th style="background-color: #4CAF50; color: white;"> Nomor Faktur </th>
@@ -102,11 +100,14 @@ include 'db.php';
             </thead>
       </table>
 </div>
-<br><br>
+</div><!--/div class="row"-->
 
+<br>
+
+<div class="row 2">
 <h3><center><b>Komisi Produk / Petugas</b></center></h3><br><br>
 <div class="table-responsive">
-<table id="tableuser" class="table table-bordered table-sm">
+<table id="table_komisi_produk" class="table table-bordered table-sm">
             <thead>
                   <th style="background-color: #4CAF50; color: white;"> Nama Petugas </th>
                   <th style="background-color: #4CAF50; color: white;"> Nomor Faktur </th>
@@ -116,8 +117,10 @@ include 'db.php';
             </thead>
       </table>
 </div>
-
-      
+</div><!--/div class="row"-->
+</span>
+<span id="cetak" style="display: none;">
+  <a href='cetak_laporan_komisi.php' id="cetak_lap" target="blank" class='btn btn-success'><i class='fa fa-print'> </i> Cetak Komisi / Petugas</a>
 </span>
 </div>
 
@@ -127,16 +130,6 @@ include 'db.php';
   $( ".tanggal_cari" ).pickadate({ selectYears: 100, format: 'yyyy-mm-dd'});
   });
   // /PICKERDATE
-</script>
-
-<script>
-// untuk memunculkan data tabel 
-$(document).ready(function(){
-    $('#tableuser').DataTable();
-
-
-});
-  
 </script>
 
 <script type="text/javascript" language="javascript" >
@@ -183,44 +176,98 @@ $(document).ready(function(){
   });
   </script> <!--tag penutup perintah java script-->
 
+
 <script type="text/javascript">
-$("#submit").click(function(){
+// FEE PRODUK per PETUGAS DATATABLE MENGGUNAKAN AJAX
+  $(document).ready(function() {
+  $(document).on('click','#submit',function(e) {
 
-      var nama_petugas = $("#nama_petugas").val();
-      var dari_tanggal = $("#dari_tanggal").val();
-      var sampai_tanggal = $("#sampai_tanggal").val();
+         $('#table_komisi_produk').DataTable().destroy();
+         $('#table_komisi_faktur').DataTable().destroy();
+        var nama_petugas = $("#nama_petugas").val();
+        var dari_tanggal = $("#dari_tanggal").val();        
+        var sampai_tanggal = $("#sampai_tanggal").val();
+          if (nama_petugas == '') {
+            alert("Silakan nama petugas diisi terlebih dahulu.");
+            $("#nama_petugas").focus();
+          } 
+          else if (dari_tanggal == '') {
+            alert("Silakan dari tanggal diisi terlebih dahulu.");
+            $("#dari_tanggal").focus();
+          }
+          else if (sampai_tanggal == '') {
+            alert("Silakan sampai tanggal diisi terlebih dahulu.");
+            $("#sampai_tanggal").focus();
+          }
+            else{ 
+              //TABLE KOMISI PRODUK
+              var dataTable = $('#table_komisi_produk').DataTable( {
+                "processing": true,
+                "serverSide": true,
+                "info":     false,
+                "language": {
+              "emptyTable":   "My Custom Message On Empty Table"
+          },
+                "ajax":{
+                  url :"datatable_komisi_produk_per_petugas.php", // json datasource
+                   "data": function ( d ) {
+                      d.nama_petugas = $("#nama_petugas").val();
+                      d.dari_tanggal = $("#dari_tanggal").val();
+                      d.sampai_tanggal = $("#sampai_tanggal").val();
+                      // d.custom = $('#myInput').val();
+                      // etc
+                  },
+                      type: "post",  // method  , by default get
+                  error: function(){  // error handling
+                    $(".tbody").html("");
+                    $("#table_komisi_produk").append('<tbody class="tbody"><tr><th colspan="3"></th></tr></tbody>');
+                    $("#tableuser_processing").css("display","none");
+                    
+                  }
+                }
+          
+              });
 
-if (nama_petugas == '') {
-  alert("silakan nama petugas terlebih dahulu.");
-  $("#nama_petugas").focus();
-}
-else if (dari_tanggal == '') {
-alert("silakan dari tanggal terlebih dahulu.");
-$("#dari_tanggal").focus();
-}
-else if (sampai_tanggal == '') {
-alert("silakan sampai tanggal terlebih dahulu.");
-$("#sampai_tanggal").focus();
-}
-else{
-$.post("proses_laporan_jumlah_total_fee.php", {nama_petugas:nama_petugas,dari_tanggal:dari_tanggal,sampai_tanggal:sampai_tanggal},function(info){
-
- $("#result").html(info);
-
-});
-
-}// end else
-});      
-$("form").submit(function(){
-
-return false;
-
-});
-
+              ////TABLE KOMISI FAKTUR
+              var dataTable = $('#table_komisi_faktur').DataTable( {
+                "processing": true,
+                "serverSide": true,
+                "info":     false,
+                "language": {
+              "emptyTable":   "My Custom Message On Empty Table"
+          },
+                "ajax":{
+                  url :"datatable_komisi_faktur_per_petugas.php", // json datasource
+                   "data": function ( d ) {
+                      d.nama_petugas = $("#nama_petugas").val();
+                      d.dari_tanggal = $("#dari_tanggal").val();
+                      d.sampai_tanggal = $("#sampai_tanggal").val();
+                      // d.custom = $('#myInput').val();
+                      // etc
+                  },
+                      type: "post",  // method  , by default get
+                  error: function(){  // error handling
+                    $(".tbody").html("");
+                    $("#table_komisi_faktur").append('<tbody class="tbody"><tr><th colspan="3"></th></tr></tbody>');
+                    $("#tableuser_processing").css("display","none");
+                    
+                  }
+                }
+          
+              });
+    
+    $("#cetak").show();
+    $("#cetak_lap").attr("href", "cetak_laporan_komisi.php?nama_petugas="+nama_petugas+"&dari_tanggal="+dari_tanggal+"&sampai_tanggal="+sampai_tanggal+"");
+}//end else
+        });
+        $("form").submit(function(){
+        
+        return false;
+        
+        });  
+   });  
+   // /FEE PRODUK per PETUGAS DATATABLE MENGGUNAKAN AJAX
 </script>
-
-
-
 
 <?php 
 include 'footer.php';

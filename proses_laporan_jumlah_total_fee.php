@@ -16,13 +16,13 @@ $perintah1 = $db->query("SELECT lff.nama_petugas, lff.no_faktur, lff.jumlah_fee,
 
 $query01 = $db->query("SELECT SUM(jumlah_fee) AS total_fee FROM laporan_fee_produk WHERE nama_petugas = '$nama_petugas' AND tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal'");
 $cek01 = mysqli_fetch_array($query01);
-$total_fee1 = $cek01['total_fee'];
+$total_fee1 = rp($cek01['total_fee']);
 
 $query0 = $db->query("SELECT SUM(jumlah_fee) AS total_fee FROM laporan_fee_faktur WHERE nama_petugas = '$nama_petugas' AND tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal'");
 $cek0 = mysqli_fetch_array($query0);
 $total_fee2 = $cek0['total_fee'];
 
-$total_komisi = $total_fee1 + $total_fee2;
+$total_komisi = round($total_fee1,2) + round($total_fee2,2);
 
  ?>
 
@@ -34,7 +34,7 @@ $total_komisi = $total_fee1 + $total_fee2;
 
 <div class="card card-block">
 
-<h3><center><b>Komisi Produk / Petugas</b></center></h3><br>
+<h3><center><b>Komisi Faktur / Petugas</b></center></h3><br>
 <div class="table-responsive">
  <table id="tableuser" class="table table-bordered table-sm">
             <thead>
@@ -82,7 +82,7 @@ $total_komisi = $total_fee1 + $total_fee2;
 <br><br>
 
 <div class="card card-block">
-<h3><center><b>Komisi Faktur / Petugas</b></center></h3><br>
+<h3><center><b>Komisi Produk / Petugas</b></center></h3><br>
 <div class="table-responsive">
  <table id="tableuser" class="table table-bordered table-sm">
             <thead>

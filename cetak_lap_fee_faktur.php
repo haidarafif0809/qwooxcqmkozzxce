@@ -10,7 +10,7 @@ $nama_petugas = stringdoang($_GET['nama_petugas']);
 $dari_tanggal = stringdoang($_GET['dari_tanggal']);
 $sampai_tanggal = stringdoang($_GET['sampai_tanggal']);
 
-    $query0 = $db->query("SELECT * FROM laporan_fee_faktur WHERE nama_petugas = '$nama_petugas' AND tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal'");
+    $query0 = $db->query("SELECT u.nama,lff.tanggal,lff.jam FROM laporan_fee_faktur lff INNER JOIN user u ON lff.nama_petugas = u.id WHERE nama_petugas = '$nama_petugas' AND tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal'");
     $data0 = mysqli_fetch_array($query0);
 
     $query1 = $db->query("SELECT * FROM perusahaan ");
@@ -42,7 +42,7 @@ $sampai_tanggal = stringdoang($_GET['sampai_tanggal']);
 <table>
   <tbody>
   
-      <tr><td  width="40%">Nama Petugas</td> <td> :&nbsp;</td> <td> <?php echo $data0['nama_petugas']; ?></td></tr>
+      <tr><td  width="40%">Nama Petugas</td> <td> :&nbsp;</td> <td> <?php echo $data0['nama']; ?></td></tr>
       <tr><td  width="40%">Tanggal</td> <td> :&nbsp;</td> <td> <?php echo tanggal($data0['tanggal']); ?> </td>
       </tr>
       <tr><td  width="40%">Periode</td> <td> :&nbsp;</td> <td> <?php echo tanggal($dari_tanggal); ?> s/d <?php echo tanggal($sampai_tanggal); ?> </td></tr>
@@ -79,12 +79,12 @@ $sampai_tanggal = stringdoang($_GET['sampai_tanggal']);
             
             <tbody>
             <?php
-                $query10 = $db->query("SELECT * FROM laporan_fee_faktur WHERE nama_petugas = '$nama_petugas' ");
+                $query10 = $db->query("SELECT u.nama,lff.no_faktur,lff.jumlah_fee,lff.tanggal,lff.jam FROM laporan_fee_faktur lff INNER JOIN user u ON lff.nama_petugas = u.id WHERE nama_petugas = '$nama_petugas' ");
                 while ($data10 = mysqli_fetch_array($query10))
                 {
                   
                   echo "<tr>
-                  <td>". $data10['nama_petugas'] ."</td>
+                  <td>". $data10['nama'] ."</td>
                   <td>". $data10['no_faktur'] ."</td>
                   <td>". $data10['jumlah_fee'] ."</td>
                   <td>". tanggal($data10['tanggal']) ."</td>

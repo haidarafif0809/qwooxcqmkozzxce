@@ -356,9 +356,8 @@ Level 7
       </div>
       <div class="modal-body">
 
-
+<div class="table-responsive">
 <span class="modal_baru">
-<div class="table-resposive">
   <table id="tabel_cari" class="table table-bordered table-sm">
         <thead> <!-- untuk memberikan nama pada kolom tabel -->
         
@@ -378,8 +377,8 @@ Level 7
         
         </thead> <!-- tag penutup tabel -->
   </table>
-  </div>
 </span>
+  </div>
 </div> <!-- tag penutup modal-body-->
       <div class="modal-footer">
        <center> <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button></center>

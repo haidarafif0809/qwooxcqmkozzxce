@@ -8,7 +8,7 @@ $nama_petugas = $_GET['nama_petugas'];
 $dari_tanggal = $_GET['dari_tanggal'];
 $sampai_tanggal = $_GET['sampai_tanggal'];
 
-    $query0 = $db->query("SELECT * FROM laporan_fee_produk WHERE nama_petugas = '$nama_petugas' AND tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal'");
+    $query0 = $db->query("SELECT lfp.id,lfp.tanggal,u.nama FROM laporan_fee_produk lfp INNER JOIN user u ON lfp.nama_petugas = u.id WHERE lfp.nama_petugas = '$nama_petugas' AND lfp.tanggal >= '$dari_tanggal' AND lfp.tanggal <= '$sampai_tanggal'");
     $data0 = mysqli_fetch_array($query0);
 
     $query1 = $db->query("SELECT * FROM perusahaan ");
@@ -16,7 +16,7 @@ $sampai_tanggal = $_GET['sampai_tanggal'];
 
     $query10 = $db->query("SELECT SUM(jumlah_fee) AS total_fee FROM laporan_fee_produk WHERE nama_petugas = '$nama_petugas' AND tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal'");
     $cek0 = mysqli_fetch_array($query10);
-    $total_fee = $cek0['total_fee'];
+    $total_fee = rp($cek0['total_fee']);
     
  ?>
 
@@ -39,7 +39,7 @@ $sampai_tanggal = $_GET['sampai_tanggal'];
 <table>
   <tbody>
   
-      <tr><td  width="40%">Nama Petugas</td> <td> :&nbsp;</td> <td> <?php echo $data0['nama_petugas']; ?></td></tr>
+      <tr><td  width="40%">Nama Petugas</td> <td> :&nbsp;</td> <td> <?php echo $data0['nama']; ?></td></tr>
       <tr><td  width="40%">Tanggal</td> <td> :&nbsp;</td> <td> <?php echo tanggal($data0['tanggal']); ?> </td>
       </tr>
       <tr><td  width="40%">Periode</td> <td> :&nbsp;</td> <td> <?php echo tanggal($dari_tanggal); ?> s/d <?php echo tanggal($sampai_tanggal); ?> </td></tr>
@@ -78,12 +78,12 @@ $sampai_tanggal = $_GET['sampai_tanggal'];
             
             <tbody>
             <?php
-                $query10 = $db->query("SELECT * FROM laporan_fee_produk WHERE nama_petugas = '$nama_petugas' ");
+                $query10 = $db->query("SELECT lfp.nama_petugas,lfp.no_faktur,lfp.kode_produk,lfp.nama_produk,lfp.jumlah_fee,lfp.tanggal,lfp.jam ,u.nama FROM laporan_fee_produk lfp INNER JOIN user u ON lfp.nama_petugas = u.id  WHERE lfp.nama_petugas = '$nama_petugas' ");
                 while ($data10 = mysqli_fetch_array($query10))
                 {
                   
                   echo "<tr>
-                  <td>". $data10['nama_petugas'] ."</td>
+                  <td>". $data10['nama'] ."</td>
                   <td>". $data10['no_faktur'] ."</td>
                   <td>". $data10['kode_produk'] ."</td>
                   <td>". $data10['nama_produk'] ."</td>

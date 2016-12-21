@@ -4,34 +4,43 @@ include 'db.php';
 /* Database connection end */
 include 'sanitasi.php';
 
+$nama_petugas = stringdoang($_POST['nama_petugas']);
+$dari_tanggal = stringdoang($_POST['dari_tanggal']);
+$sampai_tanggal = stringdoang($_POST['sampai_tanggal']);
+
+
+$query0 = $db->query("SELECT SUM(jumlah_fee) AS total_fee FROM laporan_fee_faktur WHERE nama_petugas = '$nama_petugas' AND tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal'");
+$cek0 = mysqli_fetch_array($query0);
+$total_fee = rp($cek0['total_fee']);
+
 // storing  request (ie, get/post) global array to a variable  
 $requestData= $_REQUEST;
 
 
 $columns = array( 
 // datatable column index  => database column name
-	0 =>'username', 
-	1 => 'nama',
-	2 => 'alamat',
-	3 => 'jabatan',
-	4 => 'otoritas',
-  	5 => 'status',
-	6 => 'id'
+	0 =>'nama', 
+	1 => 'no_faktur',
+	2 => 'jumlah_fee',
+	3 => 'tanggal',
+	4 => 'jam',
+  	5 => 'id'
 );
 
 // getting total number records without any search
-$sql = "SELECT u.username,u.nama,u.alamat,u.otoritas,u.status,u.id,j.nama AS jabtan  ";
-$sql.=" FROM user u INNER JOIN jabatan j ON u.jabatan = j.id ";
+$sql = "SELECT u.nama,lff.no_faktur,lff.jumlah_fee,lff.tanggal,lff.jam,lff.id ";
+$sql.=" FROM laporan_fee_faktur lff INNER JOIN user u ON lff.nama_petugas = u.id WHERE nama_petugas = '$nama_petugas' AND tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' ";
 $query=mysqli_query($conn, $sql) or die("datatable_petugas_fee.php: get employees");
 $totalData = mysqli_num_rows($query);
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
 
-$sql = "SELECT u.username,u.nama,u.alamat,u.otoritas,u.status,u.id,j.nama AS jabtan ";
-$sql.=" FROM user u INNER JOIN jabatan j ON u.jabatan = j.id WHERE 1=1";
+$sql = "SELECT u.nama,lff.no_faktur,lff.jumlah_fee,lff.tanggal,lff.jam,lff.id ";
+$sql.=" FROM laporan_fee_faktur lff INNER JOIN user u ON lff.nama_petugas = u.id WHERE nama_petugas = '$nama_petugas' AND tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' AND 1=1";
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
-	$sql.=" AND ( u.username LIKE '".$requestData['search']['value']."%' ";    
-	$sql.=" OR u.nama  LIKE '".$requestData['search']['value']."%' )";
+	$sql.=" AND ( u.nama LIKE '".$requestData['search']['value']."%' ";    
+	$sql.=" OR lff.no_faktur LIKE '".$requestData['search']['value']."%' ";
+	$sql.=" OR lff.tanggal LIKE '".$requestData['search']['value']."%' )";
 }
 $query=mysqli_query($conn, $sql) or die("datatablee_petugas_fee.php: get employees");
 $totalFiltered = mysqli_num_rows($query); // when there is a search parameter then we have to modify total number filtered rows as per search result. 
@@ -43,16 +52,23 @@ $data = array();
 while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 	$nestedData=array(); 
 
-	  $nestedData[] = $row['username'];
-    $nestedData[] = $row['nama'];
-    $nestedData[] = $row['alamat'];
-    $nestedData[] = $row['jabtan'];
-    $nestedData[] = $row['otoritas'];
-    $nestedData[] = $row['status'];
-	  $nestedData[] = $row['id'];
-	  $data[] = $nestedData;
+	$nestedData[] = $row['nama'];
+    $nestedData[] = $row['no_faktur'];
+    $nestedData[] = rp($row['jumlah_fee']);
+    $nestedData[] = tanggal($row['tanggal']);
+    $nestedData[] = $row['jam'];
+	$nestedData[] = $row['id'];
+	$data[] = $nestedData;
 }
 
+$nestedData=array(); 
+	$nestedData[] = "<b style='color: black'> Periode : $dari_tanggal s/d $sampai_tanggal</b>";
+    $nestedData[] = "<b style='color: black'>Total Seluruh :</b>";
+    $nestedData[] = "<b style='color: black'>$total_fee</b>";
+    $nestedData[] = "<b style='color: black'></b>";
+    $nestedData[] = "<b style='color: black'></b>";
+	$nestedData[] = $row['id'];
+	$data[] = $nestedData;
 
 
 $json_data = array(
