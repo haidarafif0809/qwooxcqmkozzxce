@@ -400,7 +400,7 @@ Level 7
       </div>
       <div class="modal-body">
 
-<div class="table-resposive">
+<div class="table-responsive">
 <span class="modal_baru">
   <table id="tabel_cari" class="table table-bordered table-sm">
         <thead> <!-- untuk memberikan nama pada kolom tabel -->
@@ -414,7 +414,7 @@ Level 7
             <th> Harga Jual Level 5</th>
             <th> Harga Jual Level 6</th>
             <th> Harga Jual Level 7</th>
-            <th> Jumlah </th>
+            <th> Jumlah Barang </th>
             <th> Satuan </th>
             <th> Kategori </th>
             <th> Suplier </th>
