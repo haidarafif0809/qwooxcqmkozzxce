@@ -16,7 +16,17 @@ include 'sanitasi.php';
  $query = $db->query("SELECT SUM(subtotal) AS total_penjualan FROM tbs_penjualan WHERE session_id = '$session_id' AND no_reg = '$no_reg'");
  $data = mysqli_fetch_array($query);
  $total = $data['total_penjualan'];
- $total_tbs = ($total - $diskon) + ($biaya_admin + $pajak);
+
+
+// menampilakn hasil penjumlah subtotal ALIAS total penjualan dari tabel tbs_penjualan berdasarkan data no faktur
+ $query2 = $db->query("SELECT harga_jual FROM tbs_operasi WHERE no_reg = '$no_reg'");
+ $data2 = mysqli_fetch_array($query2);
+ $total2 = $data2['harga_jual'];
+
+ $total_sum = ($total + $total2);
+
+
+$total_tbs = ($total_sum - $diskon) + ($biaya_admin + $pajak);
 
 if ($total_akhir == $total_tbs) {
 		echo "Oke";
