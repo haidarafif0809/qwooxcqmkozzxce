@@ -756,7 +756,7 @@ Laboratorium  </button>
 
   </tr>
   </thead>
-  <tbody>
+  <tbody >
   
    <?php 
    $utama = $db->query("SELECT * FROM tbs_penjualan  WHERE no_reg = '$no_reg' AND lab = 'Laboratorium'");
@@ -1415,7 +1415,7 @@ alert("Silakan Bayar Piutang");
      $("#alert_berhasil").show();
      $("#pembayaran_penjualan").val('');
      $("#sisa_pembayaran_penjualan").val('');
-     $("#kredit").val();
+     $("#kredit").val('');
      $("#cetak_tunai").show();
      $("#cetak_tunai_kategori").show();
      $("#cetak_tunai_besar").show();
