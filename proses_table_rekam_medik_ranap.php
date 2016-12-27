@@ -41,7 +41,7 @@ $sql.="  FROM rekam_medik_inap INNER JOIN registrasi ON rekam_medik_inap.no_reg 
 $sql.=" WHERE registrasi.status != 'Batal Rawat Inap' AND rekam_medik_inap.status IS NULL ";
 $sql.=" ORDER BY rekam_medik_inap.id DESC ";
 
-$query = mysqli_query($conn, $sql) or die("proses_table_rekam_medik_ranap.php: get employees");
+$query = mysqli_query($conn, $sql) or die("proses_table_rekam_medik_ranap.php: get employees 1");
 $totalData = mysqli_num_rows($query);
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
@@ -64,11 +64,11 @@ if( !empty($requestData['search']['value']) ) {   // if there is a search parame
 }
 
 
-$query=mysqli_query($conn, $sql) or die("proses_table_rekam_medik_ranap.php: get employees");
+$query=mysqli_query($conn, $sql) or die("proses_table_rekam_medik_ranap.php: get employees 2");
 $totalFiltered = mysqli_num_rows($query); // when there is a search parameter then we have to modify total number filtered rows as per search result. 
-$sql.=" ORDER BY ". $columns[$requestData['order'][0]['column']]."   ".$requestData['order'][0]['dir']."  LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
+$sql.=" ORDER BY rekam_medik_inap.id  DESC ";
 /* $requestData['order'][0]['column'] contains colmun index, $requestData['order'][0]['dir'] contains order such as asc/desc  */		
-$query=mysqli_query($conn, $sql) or die("proses_table_rekam_medik_ranap.php: get employees");
+$query=mysqli_query($conn, $sql) or die("proses_table_rekam_medik_ranap.php: get employees 3");
 
 $data = array();
 while( $row=mysqli_fetch_array($query) ) {  // preparing an array
