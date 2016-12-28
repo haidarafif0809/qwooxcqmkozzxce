@@ -205,7 +205,7 @@ $detail_sub_operasi = mysqli_fetch_array($pilih_akses_detail_sub_operasi);
     <tbody id="tbody">
     
    <?php 
-   $query = $db->query("SELECT * FROM detail_operasi WHERE id_sub_operasi = '$id_sub_operasi'");
+   $query = $db->query("SELECT * FROM detail_operasi WHERE id_sub_operasi = '$id_sub_operasi' ORDER BY id_detail_operasi");
    while($data = mysqli_fetch_array($query))      
       {
 
