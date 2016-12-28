@@ -6,13 +6,13 @@ $id_operasi = stringdoang($_POST['id_operasi']);
 $id_sub_operasi = stringdoang($_POST['id_sub_operasi']);
 $nama_operasi = stringdoang($_POST['nama_operasi']);
 $jabatan = stringdoang($_POST['jabatan']);
-$persentase = angkadoang($_POST['persentase']);
+$persentase = stringdoang($_POST['persentase']);
 
 
 $query = $db->prepare("INSERT INTO detail_operasi (id_sub_operasi,nama_detail_operasi,id_jabatan,
   jumlah_persentase,id_operasi) VALUES (?,?,?,?,?) ");
 
-$query->bind_param("sssii", $id_sub_operasi,$nama_operasi,$jabatan,$persentase,$id_operasi);
+$query->bind_param("ssssi", $id_sub_operasi,$nama_operasi,$jabatan,$persentase,$id_operasi);
 
 $query->execute();
 
