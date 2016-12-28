@@ -286,7 +286,7 @@ else
     $("#nama_operasi").val('');
     $("#persentase").val('');
   
-  $("#tbody").prepend(data);
+  $("#tbody").append(data);
   
   });
 }
