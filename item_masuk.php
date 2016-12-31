@@ -12,7 +12,7 @@ include 'db.php';
 $perintah = $db->query("SELECT * FROM item_masuk");
 
 
-
+ 
 
  ?>
 
