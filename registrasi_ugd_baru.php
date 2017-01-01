@@ -420,11 +420,11 @@ $ss = mysqli_fetch_array($qertu);
 </div> <!--container-->
 
 
-<!--script chossen-->
+<!--script chossen
 <script>
 $("select").chosen({no_results_text: "Oops, Tidak Ada !"});
 </script>
-<!--script end chossen-->
+script end chossen-->
 
 
 <script type="text/javascript">
