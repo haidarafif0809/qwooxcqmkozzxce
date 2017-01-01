@@ -75,7 +75,7 @@ if ($keluar['nama_pasien'] == $nama_lengkap AND $keluar['no_rm'] == $no_rm)
 else{
 
 // START NO. RM PASIEN
-$ambil_rm = $db_pasien->query("SELECT kode_pelanggan FROM pelanggan ORDER BY kode_pelanggan DESC LIMIT 1 ");
+$ambil_rm = $db_pasien->query("SELECT kode_pelanggan FROM pelanggan ORDER BY id DESC LIMIT 1 ");
 $no_ter = mysqli_fetch_array($ambil_rm);
 $no_rm = $no_ter['kode_pelanggan'] + 1;
 
@@ -149,7 +149,7 @@ $sql9 = $db_pasien->prepare("INSERT INTO pelanggan (alergi,kode_pelanggan,nama_p
   status_kawin,agama,penjamin,gol_darah,tanggal,no_rm_lama)
    VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
-$sql9->bind_param("ssssssssssssssssssssssss",$alergi,$provinsi,$kabupaten,$kecamatan,$kelurahan,$no_rm,$nama_lengkap,$tempat_lahir,
+$sql9->bind_param("ssssssssssssssssssssssss",$alergi,$no_rm,$nama_lengkap,$tempat_lahir,
   $tanggal_lahir,$umur,$alamat_sekarang,$alamat_ktp,$no_telepon,$no_ktp,$nama_suamiortu,
   $pekerjaan_pasien,$jenis_kelamin,$pendidikan_terakhir,$status_kawin,$agama,
   $penjamin,$gol_darah,$tanggal_sekarang,$no_rm_lama);
