@@ -215,6 +215,13 @@ $harga_kamar7 = $kamar_luar['tarif_7'];
 //end bahan untuk kamar
 
 
+
+// DI NON AKTIFKAN KARENA PENAMBAHAN KAMAR NANTNYA AKAN INPUT DI TRANSAKSI PENJUALAN LANGSUNG -- DARI SINI --
+// DI NON AKTIFKAN KARENA PENAMBAHAN KAMAR NANTNYA AKAN INPUT DI TRANSAKSI PENJUALAN LANGSUNG -- DARI SINI --
+
+/*
+
+
 // harga_1 (pertama)
 if ($level_harga == 'harga_1')
   {
@@ -381,7 +388,10 @@ $query65 = "INSERT INTO tbs_penjualan(session_id,no_reg,kode_barang,nama_barang,
 // harga_7 (pertama)
 
 
- 
+ */
+
+// DI NON AKTIFKAN KARENA PENAMBAHAN KAMAR NANTNYA AKAN INPUT DI TRANSAKSI PENJUALAN LANGSUNG -- SAMPAI SINI --
+// DI NON AKTIFKAN KARENA PENAMBAHAN KAMAR NANTNYA AKAN INPUT DI TRANSAKSI PENJUALAN LANGSUNG -- SAMPAI SINI --
 
 
 } // biar gak double pasiennya
