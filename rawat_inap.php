@@ -237,7 +237,21 @@ opacity: 0.9;
       </div>
       <div class="modal-body">
       <span id="hasil_migrasi"></span>
-      
+       <table id="pasien_lama" class="table table-sm table-bordered">
+          <thead>
+            <tr>
+              <th style='background-color: #4CAF50; color: white' >No. RM </th>
+              <th style='background-color: #4CAF50; color: white' >Nama Lengkap</th>
+              <th style='background-color: #4CAF50; color: white' >Jenis Kelamin</th>
+              <th style='background-color: #4CAF50; color: white' >Alamat Sekarang </th>
+              <th style='background-color: #4CAF50; color: white' >Tanggal Lahir </th>
+              <th style='background-color: #4CAF50; color: white' >No HP</th>
+              <th style='background-color: #4CAF50; color: white' >Tanggal Terdaftar </th>
+            
+
+            </tr>
+          </thead>
+         </table>
       </div>
       <div class="modal-footer">
       <center> <button type="button" accesskey="e" class="btn btn-danger" data-dismiss="modal">Clos<u>e</u></button></center> 
@@ -734,7 +748,7 @@ tr:nth-child(even){background-color: #f2f2f2}
 
 <script type="text/javascript">
   
-  $("#submit_cari").click(function(){
+    $(document).on('click','#submit_cari',function() {
   
     var cari = $("#cari_migrasi").val();
     if (cari == '') {
@@ -745,12 +759,48 @@ tr:nth-child(even){background-color: #f2f2f2}
     else
     {
             $("#myModal").modal('show');
-      $("#hasil_migrasi").html('Loading..');
-   $.post("show_data_pasien.php",{cari:cari},function(data){
-      $("#hasil_migrasi").html(data);
-  
-    });
-  
+        $('#pasien_lama').DataTable().destroy();
+
+          var dataTable = $('#pasien_lama').DataTable( {
+          "processing": true,
+          "serverSide": true,
+          "info":     false,
+          "language": {
+        "emptyTable":     "My Custom Message On Empty Table"
+    },
+          "ajax":{
+            url :"show_data_pasien.php", // json datasource
+             "data": function ( d ) {
+                d.cari = $("#cari_migrasi").val();
+                // d.custom = $('#myInput').val();
+                // etc
+            },
+                type: "post",  // method  , by default get
+            error: function(){  // error handling
+              $(".tbody").html("");
+              $("#pasien_lama").append('<tbody class="tbody"><tr><th colspan="3"></th></tr></tbody>');
+              $("#pasien_lama_processing").css("display","none");
+              
+            }
+          },
+              "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+
+              $(nRow).attr('class', "pilih tr-id-"+aData[9]+"");
+              $(nRow).attr('data-no', aData[0]);
+              $(nRow).attr('data-nama', aData[1]);
+              $(nRow).attr('data-jenis-kelamin', aData[2]);
+              $(nRow).attr('data-alamat', aData[3]);
+              $(nRow).attr('data-lahir', aData[4]);
+              $(nRow).attr('data-darah', aData[7]);
+              $(nRow).attr('data-hp', aData[5]);
+              $(nRow).attr('data-penjamin', aData[8]);
+
+          } 
+
+        } );
+
+
+          
     }
    
   

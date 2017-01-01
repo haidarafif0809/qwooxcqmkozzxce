@@ -1,81 +1,93 @@
-<?php 
+<?php
+/* Database connection start */
 include 'db.php';
 include 'sanitasi.php';
+
 $cari = stringdoang($_POST['cari']);
 
-
-$query = $db->query("SELECT id,kode_pelanggan,nama_pelanggan,jenis_kelamin,alamat_sekarang,tgl_lahir,no_telp,gol_darah,tanggal,penjamin FROM pelanggan WHERE (kode_pelanggan LIKE '%$cari%' OR nama_pelanggan LIKE '%$cari%' OR alamat_sekarang LIKE '%$cari%')");
-
-
- ?>
-<div class="table-responsive">
- <table id="pasien_lama" class="table table-sm table-bordered">
- 	<thead>
- 		<tr>
- 			<th style='background-color: #4CAF50; color: white' >No. RM </th>
- 			<th style='background-color: #4CAF50; color: white' >Nama Lengkap</th>
- 			<th style='background-color: #4CAF50; color: white' >Jenis Kelamin</th>
- 			<th style='background-color: #4CAF50; color: white' >Alamat Sekarang </th>
- 			<th style='background-color: #4CAF50; color: white' >Tanggal Lahir </th>
- 			<th style='background-color: #4CAF50; color: white' >No HP</th>
- 			<th style='background-color: #4CAF50; color: white' >Tanggal Terdaftar </th>
-      <th style='background-color: #4CAF50; color: white' >Hapus</th>
-      <th style='background-color: #4CAF50; color: white' >Edit</th>
-
- 		</tr>
- 	</thead>
- 	<tbody>
- 		<?php
- 		while ($data = mysqli_fetch_array($query)) {
- 			# code...
- 			echo "<tr class='pilih tr-id-".$data['id']."'
- 			data-darah='". $data['gol_darah']."'
- 			data-no='". $data['kode_pelanggan']."'
-         data-nama='".$data['nama_pelanggan']."'
-         data-lahir='". tanggal_terbalik($data['tgl_lahir'])."'
-         data-alamat='". $data['alamat_sekarang']."' 
-         data-jenis-kelamin='". $data['jenis_kelamin']. "'
-         data-hp ='". $data['no_telp']."'
-                  data-penjamin ='". $data['penjamin']."'
-
- 			><td>".$data['kode_pelanggan']."</td>
- 			<td>".$data['nama_pelanggan']."</td>
- 			<td>".$data['jenis_kelamin']."</td>
- 			<td>".$data['alamat_sekarang']."</td>
- 			<td>".tanggal($data['tgl_lahir'])."</td>
- 			<td>". $data['no_telp']."</td>
- 			<td>".tanggal($data['tanggal'])."</td>
-      
-      <td><button data-id='".$data['id']."' class='btn btn-danger delete'><i class='fa fa-trash'></i> Hapus </button></td>
-
-      <td><a href='edit_data_pasien.php?id=".$data['id']."'class='btn btn-warning'><i class='fa fa-edit'></i> Edit </a></td>
-      
-      </tr>
- 			";
- 		}
+// storing  request (ie, get/post) global array to a variable  
+$requestData= $_REQUEST;
 
 
- 		?>
- 	</tbody>
- </table>
- </div>
-<script type="text/javascript">
-  $(function () {
-  $("#pasien_lama").dataTable({"ordering": false});
-  });  
-</script>
-
-<script type="text/javascript">
-$(document).on('click', '.delete', function (e) {
-
-  var id = $(this).attr('data-id');
-
-$("#modale-delete").modal('show');
-$("#id2").val(id);  
-
-});
+$columns = array( 
+// datatable column index  => database column name
+  0 =>'kode_pelanggan', 
+  1 => 'nama_pelanggan',
+  2 => 'jenis_kelamin',
+  3 => 'alamat_sekarang',
+  4 => 'tgl_lahir',
+  5 => 'no_telp',
+  6 => 'tanggal',
+  7 => 'hapus',
+  8=> 'edit'
 
 
-</script>
+);     
 
 
+
+
+$sql = "SELECT id,kode_pelanggan,nama_pelanggan,jenis_kelamin,alamat_sekarang,tgl_lahir,no_telp,gol_darah,tanggal,penjamin   ";
+$sql.=" FROM pelanggan ";
+$sql.=" WHERE (kode_pelanggan LIKE '%$cari%' ";
+$sql.=" OR nama_pelanggan LIKE '%$cari%'  ";
+$sql.=" OR alamat_sekarang LIKE '%$cari%') "; 
+$sql.=" AND kode_pelanggan != '' ";
+
+$query=mysqli_query($conn_pasien, $sql) or die("Eror 1");
+$totalData = mysqli_num_rows($query);
+$totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
+
+
+$sql = "SELECT id,kode_pelanggan,nama_pelanggan,jenis_kelamin,alamat_sekarang,tgl_lahir,no_telp,gol_darah,tanggal,penjamin ";
+$sql.=" FROM pelanggan WHERE 1=1";
+$sql.=" AND (kode_pelanggan LIKE '%$cari%' ";
+$sql.=" OR nama_pelanggan LIKE '%$cari%' ";
+$sql.=" OR alamat_sekarang LIKE '%$cari%') "; 
+$sql.=" AND kode_pelanggan != '' ";
+
+if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
+  $sql.=" AND ( kode_pelanggan LIKE '".$requestData['search']['value']."%' ";    
+  $sql.=" OR nama_pelanggan LIKE '".$requestData['search']['value']."%' ";
+  $sql.=" OR penjamin LIKE '".$requestData['search']['value']."%' )";
+}
+
+$query=mysqli_query($conn_pasien, $sql) or die("Eror 2");
+$totalFiltered = mysqli_num_rows($query); // when there is a search parameter then we have to modify total number filtered rows as per search result. 
+
+$sql.=" ORDER BY ". $columns[$requestData['order'][0]['column']]."   ".$requestData['order'][0]['dir']."  LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
+
+
+/* $requestData['order'][0]['column'] contains colmun index, $requestData['order'][0]['dir'] contains order such as asc/desc  */  
+$query=mysqli_query($conn_pasien, $sql) or die("eror 3");
+
+$data = array();
+while( $row=mysqli_fetch_array($query) ) {  // preparing an array
+  $nestedData=array(); 
+
+  $nestedData[] = $row["kode_pelanggan"];
+  $nestedData[] = $row["nama_pelanggan"];
+  $nestedData[] = $row["jenis_kelamin"];  
+  $nestedData[] = $row["alamat_sekarang"];
+  $nestedData[] = tanggal_terbalik($row["tgl_lahir"]); 
+  $nestedData[] = $row["no_telp"];
+  $nestedData[] = tanggal_terbalik($row["tanggal"]);
+  
+  $nestedData[] = "<button data-id='".$row['id']."' class='btn btn-danger delete'><i class='fa fa-trash'></i> Hapus </button>";
+  $nestedData[] = "<a href='edit_data_pasien.php?id=".$row['id']."'class='btn btn-warning'><i class='fa fa-edit'></i> Edit </a>";
+
+  $data[] = $nestedData;
+}
+
+
+
+$json_data = array(
+      "draw"            => intval( $requestData['draw'] ),   // for every request/draw by clientside , they send a number as a parameter, when they recieve a response/data they first check the draw number, so we are sending same number in draw. 
+      "recordsTotal"    => intval( $totalData ),  // total number of records
+      "recordsFiltered" => intval( $totalFiltered ), // total number of records after searching, if there is no searching then totalFiltered = totalData
+      "data"            => $data   // total data array
+      );
+
+echo json_encode($json_data);  // send data as json format
+
+?>
