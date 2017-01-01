@@ -188,12 +188,12 @@ $sql0->execute();
 
 // UPDATE PASIEN NYA
 $update_pasien = "UPDATE pelanggan SET pekerjaan_suamiortu = '$pekerjaan', no_hp_penanggung = '$no_hp_penanggung', hubungan_dengan_pasien = '$hubungan_dengan_pasien', alamat_penanggung = '$alamat_penanggung', nama_penanggungjawab = '$penanggung_jawab', umur = '$umur',no_telp = '$hp_pasien', alamat_sekarang = '$alamat', penjamin = '$penjamin' WHERE kode_pelanggan = '$no_rm'";
-if ($db->query($update_pasien) === TRUE) 
+if ($db_pasien->query($update_pasien) === TRUE) 
   {
 } 
 else 
     {
-    echo "Error: " . $update_pasien . "<br>" . $db->error;
+    echo "Error: " . $update_pasien . "<br>" . $db_pasien->error;
     } 
 
 // UPDATE KAMAR

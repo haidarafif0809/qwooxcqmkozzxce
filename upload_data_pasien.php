@@ -29,12 +29,12 @@ else {
 
             VALUES ('$data[0]','$data[1]','$data[2]','$data[3]','$data[4]','$data[5]')"; //data array sesuaikan dengan jumlah kolom pada CSV anda mulai dari “0” bukan “1”
             //Melakukan Import
-            if ($db->query($import) === TRUE)  
+            if ($db_pasien->query($import) === TRUE)  
             {
             } 
             else 
             {
-            echo "Error: " . $import . "<br>" . $db->error;
+            echo "Error: " . $import . "<br>" . $db_pasien->error;
             }
 
         }
