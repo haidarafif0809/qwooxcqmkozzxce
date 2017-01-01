@@ -302,7 +302,7 @@ opacity: 0.9;
  <?php 
     
     //untuk menampilkan semua data pada tabel pelanggan dalam DB
-    $query01 = $db->query("SELECT nama FROM user WHERE otoritas = 'Dokter'");
+    $query01 = $db->query("SELECT nama FROM user WHERE tipe = '1'");
 
     //untuk menyimpan data sementara yang ada pada $query
     while($data01 = mysqli_fetch_array($query01))

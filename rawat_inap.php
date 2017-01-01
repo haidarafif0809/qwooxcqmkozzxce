@@ -573,7 +573,7 @@ opacity: 0.9;
            <option value="<?php echo $ss['nama_dokter'];?>"><?php echo $ss['nama_dokter'];?></option>
                    <option value="Tidak Ada">Tidak Ada</option>
                   <?php 
-                  $query = $db->query("SELECT nama FROM user WHERE otoritas = 'Dokter' ");
+                  $query = $db->query("SELECT nama FROM user WHERE tipe = '1' ");
                   while ( $data = mysqli_fetch_array($query)) {
                   echo "<option value='".$data['nama']."'>".$data['nama']."</option>";
                   }
@@ -601,7 +601,7 @@ opacity: 0.9;
           <option value="<?php echo $ss['nama_dokter'];?>"><?php echo $ss['nama_dokter'];?></option>
                   <option value="Tidak Ada">Tidak Ada</option>
     <?php 
-    $query = $db->query("SELECT nama FROM user WHERE otoritas = 'Dokter' ");
+    $query = $db->query("SELECT nama FROM user WHERE tipe = '1' ");
     while ( $data = mysqli_fetch_array($query)) {
     echo "<option value='".$data['nama']."'>".$data['nama']."</option>";
     }
