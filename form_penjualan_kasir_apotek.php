@@ -100,7 +100,7 @@ $user = $_SESSION['nama'];
         
 
          <?php 
-         $query09 = $db->query("SELECT nama,id FROM user WHERE otoritas = 'Petugas Farmasi' ");
+         $query09 = $db->query("SELECT nama,id FROM user WHERE tipe = '3' OR tipe = '2' ");
          while ( $data09 = mysqli_fetch_array($query09)) {
          
          $petugas = $db->query("SELECT nama_farmasi FROM penetapan_petugas WHERE nama_farmasi = '$data01[nama]'");

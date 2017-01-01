@@ -153,7 +153,7 @@ $data_rj_ri = mysqli_fetch_array($sum_rj_ri);
          <select type="text" class="form-control chosen" id="apoteker" autocomplete="off">        
 
          <?php 
-         $query09 = $db->query("SELECT nama,id FROM user WHERE otoritas = 'Petugas Analis' ");
+         $query09 = $db->query("SELECT nama,id FROM user WHERE tipe = '2' ");
          while ( $data09 = mysqli_fetch_array($query09)) {
 
           echo "<option value='".$data09['id'] ."'>".$data09['nama'] ."</option>";
@@ -174,7 +174,7 @@ $data_rj_ri = mysqli_fetch_array($sum_rj_ri);
           <select name="dokter" id="dokter" class="form-control chosen" required="" >
           <?php 
         //untuk menampilkan semua data pada tabel pelanggan dalam DB
-    $query01 = $db->query("SELECT nama,id FROM user WHERE otoritas = 'Dokter'");
+    $query01 = $db->query("SELECT nama,id FROM user WHERE tipe = '1'");
 
     //untuk menyimpan data sementara yang ada pada $query
     while($data01 = mysqli_fetch_array($query01))

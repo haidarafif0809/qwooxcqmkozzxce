@@ -432,11 +432,11 @@ $datasett = mysqli_fetch_array($settt);
 
 
 
-<!--script chossen-->
+<!--script chossen
 <script>
 $(".ss").chosen({no_results_text: "Oops, Tidak Ada !"});
 </script>
-<!--script end chossen-->
+script end chossen-->
 
 
 

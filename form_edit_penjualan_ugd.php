@@ -373,7 +373,7 @@ if ($tax != 0) {
          <?php 
             
             //untuk menampilkan semua data pada tabel pelanggan dalam DB
-            $query01 = $db->query("SELECT nama,id FROM user WHERE otoritas = 'Dokter'");
+            $query01 = $db->query("SELECT nama,id FROM user WHERE tipe = '1'");
 
             //untuk menyimpan data sementara yang ada pada $query
             while($data01 = mysqli_fetch_array($query01))
@@ -407,7 +407,7 @@ if ($tax != 0) {
  <?php 
     
     //untuk menampilkan semua data pada tabel pelanggan dalam DB
-    $query01 = $db->query("SELECT nama, id FROM user WHERE otoritas = 'Petugas Paramedik'");
+    $query01 = $db->query("SELECT nama, id FROM user WHERE tipe = '2'");
 
     //untuk menyimpan data sementara yang ada pada $query
     while($data01 = mysqli_fetch_array($query01))
@@ -503,7 +503,7 @@ Level 7
   <?php 
     
     //untuk menampilkan semua data pada tabel pelanggan dalam DB
-    $query01 = $db->query("SELECT nama, id FROM user WHERE otoritas = 'Petugas Farmasi'");
+    $query01 = $db->query("SELECT nama, id FROM user WHERE tipe = '3'");
 
     //untuk menyimpan data sementara yang ada pada $query
     while($data01 = mysqli_fetch_array($query01))
@@ -535,7 +535,7 @@ Level 7
   <?php 
     
     //untuk menampilkan semua data pada tabel pelanggan dalam DB
-    $query01 = $db->query("SELECT nama, id FROM user WHERE otoritas = 'Petugas Lain'");
+    $query01 = $db->query("SELECT nama, id FROM user WHERE tipe = '5'");
 
     //untuk menyimpan data sementara yang ada pada $query
     while($data01 = mysqli_fetch_array($query01))
