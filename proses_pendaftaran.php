@@ -80,7 +80,7 @@ header('location:rawat_jalan_lama.php');
 }
 else{
 
-$ambil_rm = $db_pasien->query("SELECT kode_pelanggan FROM pelanggan ORDER BY kode_pelanggan DESC LIMIT 1 ");
+$ambil_rm = $db_pasien->query("SELECT kode_pelanggan FROM pelanggan ORDER BY id DESC LIMIT 1 ");
 $no_ter = mysqli_fetch_array($ambil_rm);
 $no_rm = $no_ter['kode_pelanggan'] + 1;
 
