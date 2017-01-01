@@ -173,7 +173,7 @@ padding-right: 5%;
   <?php 
     
     
-    $query01 = $db->query("SELECT nama,id FROM user WHERE otoritas = 'Dokter'");
+    $query01 = $db->query("SELECT nama,id FROM user WHERE tipe_user = '1'");
 
     
     while($data01 = mysqli_fetch_array($query01))
@@ -202,7 +202,7 @@ padding-right: 5%;
      <?php 
     
     //untuk menampilkan semua data pada tabel pelanggan dalam DB
-    $queri_para = $db->query("SELECT nama,id FROM user WHERE otoritas = 'Petugas Paramedik'");
+    $queri_para = $db->query("SELECT nama,id FROM user WHERE tipe_user = '2'");
 
     //untuk menyimpan data sementara yang ada pada $query
     while($data_paramedik = mysqli_fetch_array($queri_para))
@@ -235,7 +235,7 @@ padding-right: 5%;
 <select style="font-size:15px; height:35px" name="dokter_pj" id="dokter_pj" class="form-control chosen" >
   <?php 
 
-    $query01 = $db->query("SELECT nama,id FROM user WHERE otoritas = 'Dokter'");
+    $query01 = $db->query("SELECT nama,id FROM user WHERE tipe_user = '1'");
     
     while($data01 = mysqli_fetch_array($query01))
     { 
@@ -324,7 +324,7 @@ Level 7
   <?php 
     
     //untuk menampilkan semua data pada tabel pelanggan dalam DB
-    $query01 = $db->query("SELECT nama,id FROM user WHERE otoritas = 'Petugas Farmasi'");
+    $query01 = $db->query("SELECT nama,id FROM user WHERE tipe_user = '3'");
 
     //untuk menyimpan data sementara yang ada pada $query
     while($data01 = mysqli_fetch_array($query01))

@@ -9,7 +9,7 @@ $penjamin = stringdoang($_POST['penjamin']);
 $apoteker = stringdoang($_POST['apoteker']);
 $no_rm  = stringdoang($_POST['no_rm']);
 $petugas = $_SESSION['nama'];
-$waktu = date("Y-m-d H:i:sa");
+$waktu = date("Y-m-d H:i:s");
 $bulan_php = date('m');
 $tahun_php = date('Y');
   
