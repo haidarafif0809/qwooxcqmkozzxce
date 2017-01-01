@@ -166,6 +166,7 @@ $data_rj_ri = mysqli_fetch_array($sum_rj_ri);
   </div>
 
 
+  <div class="col-sm-2">
           <label> Dokter Pengirim </label><br>
           
           <select name="dokter" id="dokter" class="form-control chosen" required="" >
@@ -190,6 +191,7 @@ $data_rj_ri = mysqli_fetch_array($sum_rj_ri);
 ?>
   </select>
 </div>
+
 
 
 
