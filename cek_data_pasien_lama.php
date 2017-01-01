@@ -19,7 +19,8 @@ $columns = array(
   5 => 'no_telp',
   6 => 'tanggal',
   7 => 'hapus',
-  8=> 'edit'
+  8=> 'edit',
+  9=> 'id'
 
 
 );     
@@ -76,6 +77,7 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
   $nestedData[] = "<button data-id='".$row['id']."' class='btn btn-danger delete'><i class='fa fa-trash'></i> Hapus </button>";
   $nestedData[] = "<a href='edit_data_pasien.php?id=".$row['id']."'class='btn btn-warning'><i class='fa fa-edit'></i> Edit </a>";
 
+  $nestedData[] = $row["id"];
   $data[] = $nestedData;
 }
 

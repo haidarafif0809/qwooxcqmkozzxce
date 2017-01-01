@@ -193,6 +193,12 @@ $( "#tanggal_lahir" ).datepicker({
               $("#pasien_lama_processing").css("display","none");
               
             }
+          },
+
+          "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+
+              $(nRow).attr('class', "tr-id-"+aData[9]+"");
+
           }
 
         } );
