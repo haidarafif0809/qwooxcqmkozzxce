@@ -3,12 +3,12 @@
 $servername = "localhost";
 $username = "klinikko";
 $password = "a9%nReXGbw";
-$dbname = "sim_";
+$dbname = "sim_urip";
 
 $conn = mysqli_connect($servername, $username, $password, $dbname) or die("Connection failed: " . mysqli_connect_error());
 
 // perintah untuk mengkoneksikan php ke database mysql
-$db = new mysqli('localhost','klinikko','a9%nReXGbw','sim_');
+$db = new mysqli('localhost','klinikko','a9%nReXGbw','sim_urip');
 
 
 // Check connection
