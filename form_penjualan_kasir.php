@@ -160,7 +160,7 @@ $data_lab = mysqli_fetch_array($sum_lab);
  <?php 
     
     //untuk menampilkan semua data pada tabel pelanggan dalam DB
-    $query01 = $db->query("SELECT nama,id FROM user WHERE tipe_user = '1' ");
+    $query01 = $db->query("SELECT nama,id FROM user WHERE tipe = '1' ");
 
     //untuk menyimpan data sementara yang ada pada $query
     while($data01 = mysqli_fetch_array($query01))
@@ -194,7 +194,7 @@ $data_lab = mysqli_fetch_array($sum_lab);
  <?php 
     
     //untuk menampilkan semua data pada tabel pelanggan dalam DB
-    $query01 = $db->query("SELECT nama,id FROM user WHERE tipe_user = '2' ");
+    $query01 = $db->query("SELECT nama,id FROM user WHERE tipe = '2' ");
 
     //untuk menyimpan data sementara yang ada pada $query
     while($data01 = mysqli_fetch_array($query01))
@@ -284,7 +284,7 @@ Level 7
   <?php 
     
     //untuk menampilkan semua data pada tabel pelanggan dalam DB
-    $query01 = $db->query("SELECT nama,id FROM user WHERE tipe_user = '3'");
+    $query01 = $db->query("SELECT nama,id FROM user WHERE tipe = '3'");
 
     //untuk menyimpan data sementara yang ada pada $query
     while($data01 = mysqli_fetch_array($query01))
@@ -317,7 +317,7 @@ Level 7
   <?php 
     
     //untuk menampilkan semua data pada tabel pelanggan dalam DB
-    $query01 = $db->query("SELECT nama,id FROM user WHERE tipe_user != '5'");
+    $query01 = $db->query("SELECT nama,id FROM user WHERE tipe != '5'");
 
     //untuk menyimpan data sementara yang ada pada $query
     while($data01 = mysqli_fetch_array($query01))
