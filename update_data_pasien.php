@@ -30,7 +30,7 @@ $tanggal_lahir = tanggal_mysql($tanggal_lahir);
 $tanggal_sekarang = date("Y-m-d");
 
 
-$perintah = $db->prepare("UPDATE pelanggan SET  nama_pelanggan = ?, jenis_kelamin = ?, tgl_lahir = ?, umur = ?, tempat_lahir = ?, alamat_sekarang = ?, no_ktp = ?, alamat_ktp = ?, no_telp = ?, status_kawin = ?, pendidikan_terakhir = ?, agama = ?, nama_suamiortu = ?, pekerjaan_suamiortu = ?, nama_penanggungjawab = ?, hubungan_dengan_pasien = ?, no_hp_penanggung = ?, alamat_penanggung = ?, no_kk = ?, nama_kk = ?, gol_darah = ?, tanggal = ? WHERE id = ? ");
+$perintah = $db_pasien->prepare("UPDATE pelanggan SET  nama_pelanggan = ?, jenis_kelamin = ?, tgl_lahir = ?, umur = ?, tempat_lahir = ?, alamat_sekarang = ?, no_ktp = ?, alamat_ktp = ?, no_telp = ?, status_kawin = ?, pendidikan_terakhir = ?, agama = ?, nama_suamiortu = ?, pekerjaan_suamiortu = ?, nama_penanggungjawab = ?, hubungan_dengan_pasien = ?, no_hp_penanggung = ?, alamat_penanggung = ?, no_kk = ?, nama_kk = ?, gol_darah = ?, tanggal = ? WHERE id = ? ");
 
 
 $perintah->bind_param("ssssssisisssssssssisssi",
@@ -43,8 +43,8 @@ $perintah->execute();
 
     if (!$perintah) 
     {
-    die('Query Error : '.$db->errno.
-    ' - '.$db->error);
+    die('Query Error : '.$db_pasien->errno.
+    ' - '.$db_pasien->error);
     }
     else 
     {   
