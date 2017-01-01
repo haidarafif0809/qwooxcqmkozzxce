@@ -27,14 +27,14 @@ $columns = array(
 // getting total number records without any search
 
 $sql = "SELECT penjamin,kode_pelanggan,nama_pelanggan,jenis_kelamin,alamat_sekarang,tgl_lahir,no_telp,gol_darah ";
-$sql.=" FROM pelanggan";
+$sql.=" FROM pelanggan WHERE kode_pelanggan != '' ";
 $query=mysqli_query($conn_pasien, $sql) or die("cek_pasien_lama_reg.php: get employees");
 $totalData = mysqli_num_rows($query);
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
 
 $sql = "SELECT penjamin,kode_pelanggan,nama_pelanggan,jenis_kelamin,alamat_sekarang,tgl_lahir,no_telp,gol_darah ";
-$sql.=" FROM pelanggan WHERE 1=1";
+$sql.=" FROM pelanggan WHERE 1=1 AND kode_pelanggan != '' ";
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
 	$sql.=" AND ( kode_pelanggan LIKE '".$requestData['search']['value']."%' ";    
 	$sql.=" OR nama_pelanggan LIKE '".$requestData['search']['value']."%' ";
