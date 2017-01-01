@@ -165,10 +165,7 @@ $data_rj_ri = mysqli_fetch_array($sum_rj_ri);
         </select> 
   </div>
 
-<?php if ($no_reg == ""): ?>
 
-<?php else: ?>
-  <div class="col-sm-2">
           <label> Dokter Pengirim </label><br>
           
           <select name="dokter" id="dokter" class="form-control chosen" required="" >
@@ -194,9 +191,6 @@ $data_rj_ri = mysqli_fetch_array($sum_rj_ri);
   </select>
 </div>
 
-
-
-<?php endif ?>
 
 
 </div>  <!-- END ROW dari kode pelanggan - ppn -->
