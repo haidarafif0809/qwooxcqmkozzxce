@@ -47,7 +47,10 @@ $sql.=" AND kode_pelanggan != '' ";
 
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
   $sql.=" AND ( kode_pelanggan LIKE '".$requestData['search']['value']."%' ";    
-  $sql.=" OR nama_pelanggan LIKE '".$requestData['search']['value']."%' ";
+  $sql.=" OR nama_pelanggan LIKE '".$requestData['search']['value']."%' ";   
+  $sql.=" OR tgl_lahir LIKE '".$requestData['search']['value']."%' ";   
+  $sql.=" OR alamat_sekarang LIKE '".$requestData['search']['value']."%' ";
+  $sql.=" OR tanggal LIKE '".$requestData['search']['value']."%' ";
   $sql.=" OR penjamin LIKE '".$requestData['search']['value']."%' )";
 }
 
