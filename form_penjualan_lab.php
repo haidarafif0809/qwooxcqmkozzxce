@@ -2515,6 +2515,31 @@ $(function() {
   });
 </script>
 
+<!--cek jatuh tempo keyup-->
+<script type="text/javascript">
+  $(document).ready(function(){
+    $("#penjamin").change(function(){
+      
+      var penjamin = $("#penjamin").val();
+
+      $.post("cek_jatuh_tempo.php",
+        {penjamin:penjamin},function(data){
+
+if (data != '1970-01-01' )
+    {
+      $("#tanggal_jt").val(data);
+    }
+    else
+    {
+     $("#tanggal_jt").val('');
+    }
+
+      });
+    });
+  });
+</script>
+<!--end cek jatuh tempo keyup-->
+
 <script type="text/javascript">
   $("#penjamin").change(function(){
     var jumlah_barang = $("#jumlah_barang").val();

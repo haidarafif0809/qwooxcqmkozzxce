@@ -25,9 +25,19 @@ $aray = mysqli_fetch_array($ambil_data);
 
 
 
-$ss = $db->query("SELECT harga FROM penjamin WHERE nama = '$aray[penjamin]' ");
+$ss = $db->query("SELECT harga,jatuh_tempo FROM penjamin WHERE nama = '$aray[penjamin]' ");
 $data_level = mysqli_fetch_array($ss);
 $level_harga = $data_level['harga'];
+
+$hari = $data_level['jatuh_tempo'];
+$now = strtotime(date("Y-m-d"));
+
+$take_jt = date('Y-m-d', strtotime('+ '.$hari.' day', $now));
+      if ($take_jt == '1970-01-01' )
+      {
+        $take_jt = "";
+      }
+
 
 $sum_op = $db->query("SELECT SUM(harga_jual) AS total_operasi FROM tbs_operasi WHERE no_reg = '$no_reg' ");
 $data_op = mysqli_fetch_array($sum_op);
@@ -885,8 +895,8 @@ Laboratorium  </button>
            
            <div class="col-sm-6">
              
-           <label> Tanggal</label>
-           <input type="text" name="tanggal_jt" id="tanggal_jt"  value="" style="height:10px;font-size:15px" placeholder="Tanggal JT" class="form-control" >
+           <label> Tanggal Jatuh Tempo</label>
+           <input type="text" name="tanggal_jt" id="tanggal_jt"  value="<?php echo $take_jt ?>" style="height:10px;font-size:15px" placeholder="Tanggal JT" class="form-control" >
            </div>
 
         <div class="col-sm-6">

@@ -15,9 +15,18 @@ $registrasi = $db->query("SELECT * FROM registrasi WHERE no_reg = '$no_reg' ");
 $data_reg = mysqli_fetch_array($registrasi);
 
 
-$level_harga = $db->query("SELECT harga FROM penjamin WHERE nama = '$data_reg[penjamin]' ");
+$level_harga = $db->query("SELECT harga,jatuh_tempo FROM penjamin WHERE nama = '$data_reg[penjamin]' ");
 $data_level = mysqli_fetch_array($level_harga);
 $level_harga = $data_level['harga'];
+
+$hari = $data_level['jatuh_tempo'];
+$now = strtotime(date("Y-m-d"));
+
+$take_jt = date('Y-m-d', strtotime('+ '.$hari.' day', $now));
+      if ($take_jt == '1970-01-01' )
+      {
+        $take_jt = "";
+      }
 
 $session_id = session_id();
 $user = $_SESSION['nama'];
@@ -684,8 +693,8 @@ Level 7
            
            <div class="col-sm-6">
              
-           <label> Tanggal</label>
-           <input type="text" name="tanggal_jt" id="tanggal_jt"  value="" style="height:10px;font-size:15px" placeholder="Tanggal JT" class="form-control" >
+           <label> Tanggal Jatuh Tempo</label>
+           <input type="text" name="tanggal_jt" id="tanggal_jt"  value="<?php echo $take_jt ?>" style="height:10px;font-size:15px" placeholder="Tanggal JT" class="form-control" >
 
            </div>
 
