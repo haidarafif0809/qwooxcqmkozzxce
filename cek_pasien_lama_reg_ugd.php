@@ -37,7 +37,9 @@ $sql = "SELECT penjamin,kode_pelanggan,nama_pelanggan,jenis_kelamin,alamat_sekar
 $sql.=" FROM pelanggan WHERE 1=1 AND kode_pelanggan != ''";
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
 	$sql.=" AND ( kode_pelanggan LIKE '".$requestData['search']['value']."%' ";    
-	$sql.=" OR nama_pelanggan LIKE '".$requestData['search']['value']."%' ";
+	$sql.=" OR nama_pelanggan LIKE '".$requestData['search']['value']."%' ";  
+	$sql.=" OR tgl_lahir LIKE '".$requestData['search']['value']."%' ";  
+	$sql.=" OR alamat_sekarang LIKE '".$requestData['search']['value']."%' ";
 	$sql.=" OR penjamin LIKE '".$requestData['search']['value']."%' )";
 }
 $query=mysqli_query($conn_pasien, $sql) or die("cek_pasien_lama_reg_ugd.php: get employees");
