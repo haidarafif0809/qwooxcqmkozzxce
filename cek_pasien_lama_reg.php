@@ -28,7 +28,7 @@ $columns = array(
 
 $sql = "SELECT penjamin,kode_pelanggan,nama_pelanggan,jenis_kelamin,alamat_sekarang,tgl_lahir,no_telp,gol_darah ";
 $sql.=" FROM pelanggan WHERE kode_pelanggan != '' ";
-$query=mysqli_query($conn_pasien, $sql) or die("cek_pasien_lama_reg.php: get employees");
+$query=mysqli_query($conn_pasien, $sql) or die("eror 1");
 $totalData = mysqli_num_rows($query);
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
@@ -37,14 +37,16 @@ $sql = "SELECT penjamin,kode_pelanggan,nama_pelanggan,jenis_kelamin,alamat_sekar
 $sql.=" FROM pelanggan WHERE 1=1 AND kode_pelanggan != '' ";
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
 	$sql.=" AND ( kode_pelanggan LIKE '".$requestData['search']['value']."%' ";    
-	$sql.=" OR nama_pelanggan LIKE '".$requestData['search']['value']."%' ";
+	$sql.=" OR nama_pelanggan LIKE '".$requestData['search']['value']."%' ";  
+	$sql.=" OR alamat_sekarang LIKE '".$requestData['search']['value']."%' ";  
+	$sql.=" OR tgl_lahir LIKE '".$requestData['search']['value']."%' ";
 	$sql.=" OR penjamin LIKE '".$requestData['search']['value']."%' )";
 }
-$query=mysqli_query($conn_pasien, $sql) or die("cek_pasien_lama_reg.php: get employees");
+$query=mysqli_query($conn_pasien, $sql) or die("eror 2");
 $totalFiltered = mysqli_num_rows($query); // when there is a search parameter then we have to modify total number filtered rows as per search result. 
 $sql.=" ORDER BY ". $columns[$requestData['order'][0]['column']]."   ".$requestData['order'][0]['dir']."  LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
 /* $requestData['order'][0]['column'] contains colmun index, $requestData['order'][0]['dir'] contains order such as asc/desc  */	
-$query=mysqli_query($conn_pasien, $sql) or die("cek_pasien_lama_reg.php: get employees");
+$query=mysqli_query($conn_pasien, $sql) or die("eror 3");
 
 $data = array();
 while( $row=mysqli_fetch_array($query) ) {  // preparing an array
