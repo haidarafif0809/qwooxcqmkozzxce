@@ -51,7 +51,7 @@ tr:nth-child(even){background-color: #f2f2f2}
 			echo '<option>-</option>';
 			
 			
-			$query2 = $db->query("SELECT nama FROM user WHERE otoritas = 'Dokter'");
+			$query2 = $db->query("SELECT nama FROM user WHERE tipe = '1' ");
 
 			while($data2 = mysqli_fetch_array($query2))
 			{
@@ -69,7 +69,7 @@ tr:nth-child(even){background-color: #f2f2f2}
 			echo '<option>-</option>';
 			
 			
-			$query2 = $db->query("SELECT nama FROM user WHERE otoritas = 'Petugas Paramedik'");
+			$query2 = $db->query("SELECT nama FROM user WHERE tipe = '2'");
 
 			while($data2 = mysqli_fetch_array($query2))
 			{
@@ -88,7 +88,7 @@ tr:nth-child(even){background-color: #f2f2f2}
 			echo '<option>-</option>';
 			
 			
-			$query2 = $db->query("SELECT nama FROM user WHERE otoritas = 'Petugas Farmasi'");
+			$query2 = $db->query("SELECT nama FROM user WHERE tipe = '3'");
 
 			while($data2 = mysqli_fetch_array($query2))
 			{
