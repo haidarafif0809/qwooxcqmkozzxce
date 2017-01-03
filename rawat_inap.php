@@ -93,7 +93,7 @@ opacity: 0.9;
           },
 
            "fnCreatedRow": function( nRow, aData, iDataIndex ) {
-              $(nRow).attr('class','tr-id-'+aData[20]+'');         
+              $(nRow).attr('class','tr-id-'+aData[21]+'');         
 },
         } );
       } );
@@ -713,9 +713,8 @@ tr:nth-child(even){background-color: #f2f2f2}
  
     <thead>
       <tr>
-
-          <th style='background-color: #4CAF50; color: white'>Batal</th>
-          <th style='background-color: #4CAF50; color: white'>Transaksi Penjualan</th>
+      <th style='background-color: #4CAF50; color: white'>Batal</th>
+         <th style='background-color: #4CAF50; color: white'>Transaksi Penjualan</th>
           <th style='background-color: #4CAF50; color: white'>Pindah Kamar</th>
           <th style='background-color: #4CAF50; color: white'>Operasi</th>
           <th style='background-color:#4CAF50; color: white'> Rujuk Lab</th>
@@ -955,7 +954,7 @@ else{
           },
 
            "fnCreatedRow": function( nRow, aData, iDataIndex ) {
-              $(nRow).attr('class','tr-id-'+aData[20]+'');
+              $(nRow).attr('class','tr-id-'+aData[21]+'');
 
 },
         } );
@@ -1183,7 +1182,7 @@ return val;
           },
 
            "fnCreatedRow": function( nRow, aData, iDataIndex ) {
-              $(nRow).attr('class','tr-id-'+aData[20]+'');
+              $(nRow).attr('class','tr-id-'+aData[21]+'');
 
 },
         });

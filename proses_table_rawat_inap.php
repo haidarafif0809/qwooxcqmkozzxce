@@ -126,11 +126,15 @@ $sttus = mysqli_num_rows($penjual);
 
         }
         else{
-          $nestedData[] =  "";
+        	
           $nestedData[] =  "";
         }
 
         if ($registrasi_ri['registrasi_ri_lihat']) {
+
+ $query_z = $db->query("SELECT status,no_faktur,nama,kode_gudang FROM penjualan WHERE no_reg = '$row[no_reg]' ");
+       $data_z = mysqli_fetch_array($query_z);
+
           $nestedData[] = "<button type='button' data-reg='".$row['no_reg']."' data-bed='".$row['bed']."' data-group-bed='".$row['group_bed']."' data-id='".$row['id']."' data-reg='".$row['no_reg']."'  class='btn btn-floating btn-small btn-info pindah'><i class='fa fa-reply'></i></button>";
 
            $nestedData[] = "<a href='registrasi_operasi.php?no_reg=".$row['no_reg']."&no_rm=".$row['no_rm']."&bed=".$row['bed']."&kamar=".$row['group_bed']."' class='btn btn-floating btn-small btn-danger'><i class='fa fa-plus-circle'></i></a>";

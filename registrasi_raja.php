@@ -442,9 +442,8 @@ tr:nth-child(even){background-color: #f2f2f2}
 <table id="table_rawat_jalan" class="display table table-bordered table-sm">
     <thead>
       <tr>
-
-              <th style='background-color: #4CAF50; color: white'>Aksi</th>
-             <th style='background-color: #4CAF50; color: white'>Hapus</th>
+             <th style='background-color: #4CAF50; color: white'>Aksi</th>
+             <th style='background-color: #4CAF50; color: white'>Batal </th>
              <th style='background-color: #4CAF50; color: white'>No REG</th>
              <th style='background-color: #4CAF50; color: white'>No RM </th>
              <th style='background-color: #4CAF50; color: white'>Tanggal</th>       

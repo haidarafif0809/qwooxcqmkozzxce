@@ -2586,6 +2586,7 @@ $(function() {
 
     
     shortcut.add("f10", function() {
+
         // Do something
 
         $("#simpan_sementara").click();

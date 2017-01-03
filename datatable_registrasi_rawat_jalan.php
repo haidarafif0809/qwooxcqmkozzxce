@@ -8,8 +8,6 @@ $tanggal = date("Y-m-d");
 
 $pilih_akses_registrasi_rj = $db->query("SELECT registrasi_rj_lihat, registrasi_rj_tambah, registrasi_rj_edit, registrasi_rj_hapus FROM otoritas_registrasi WHERE id_otoritas = '$_SESSION[otoritas_id]'");
 $registrasi_rj = mysqli_fetch_array($pilih_akses_registrasi_rj);
-
-
 // storing  request (ie, get/post) global array to a variable  
 $requestData= $_REQUEST;
 
@@ -28,7 +26,8 @@ $columns = array(
 	9 => 'dokter',
 	10 => 'poli',
 	11 => 'no_urut',
-	12=> 'id'
+	12 => 'status',
+	13 => 'id'
 	
 
 
@@ -85,31 +84,29 @@ if ($registrasi_rj['registrasi_rj_lihat']) {
             }
 }
 else{
-
+  echo $nestedData[] = "";
 }
-?>
 
-<?php
 
 if ($registrasi_rj['registrasi_rj_hapus'] > 0) {     
-     $nestedData[] = "<button class='btn btn-danger btn-floating pilih2' data-id='". $data_reg['id']."' data-reg='". $data_reg['no_reg']."'> <b> X </b> </button>";
+     $nestedData[] = "<button class='btn btn-danger btn-floating pilih2' data-id='". $data_reg['id']."' data-reg='". $data_reg['no_reg']."'> <b> X </b> </button></td>";
 }
 
 else{
-	$nestedData[] = '';
+	 $nestedData = "";
 }	
 
-	$nestedData[] = $row['no_reg'];
-	$nestedData[] = $row['no_rm'];
-	$nestedData[] = $row['tanggal'];	
-	$nestedData[] = $row['nama_pasien'];
-	$nestedData[] = $row['penjamin'];
-	$nestedData[] = $row['umur_pasien'];	
-	$nestedData[] = $row['jenis_kelamin'];
-	$nestedData[] = $row['dokter'];	
-	$nestedData[] = $row['poli'];
-	$nestedData[] = $row['no_urut'];
-	$nestedData[] = $row['id'];
+	$nestedData[] = $row["no_reg"];
+	$nestedData[] = $row["no_rm"];
+	$nestedData[] = $row["tanggal"];	
+	$nestedData[] = $row["nama_pasien"];
+	$nestedData[] = $row["penjamin"];
+	$nestedData[] = $row["umur_pasien"];	
+	$nestedData[] = $row["jenis_kelamin"];
+	$nestedData[] = $row["dokter"];	
+	$nestedData[] = $row["poli"];
+	$nestedData[] = $row["no_urut"];
+	$nestedData[] = $row["id"];
 
 	
 	$data[] = $nestedData;
