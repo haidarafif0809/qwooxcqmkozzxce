@@ -2,7 +2,7 @@
     include 'db.php';
     include_once 'sanitasi.php';
 
-$select_detail_penjualan = $db->query("SELECT * FROM detail_penjualan WHERE no_faktur = '1/JL/07/16'");
+$select_detail_penjualan = $db->query("SELECT * FROM detail_penjualan WHERE no_faktur = '2/JL/07/16'");
 while ($dp = mysqli_fetch_array($select_detail_penjualan)) {
 
     $delete_detail_penjualan = $db->query("DELETE FROM detail_penjualan WHERE id = '$dp[id]' ");
