@@ -300,7 +300,8 @@ tr:nth-child(even){background-color: #f2f2f2}
       <th style="background-color: #4CAF50; color: white;"> Nama </th>
       <th style="background-color: #4CAF50; color: white;"> Dokter </th>
 			<th style="background-color: #4CAF50; color: white;"> Penjamin </th>
-			<th style="background-color: #4CAF50; color: white;"> Tanggal </th>
+      <th style="background-color: #4CAF50; color: white;"> Tanggal </th>
+      <th style="background-color: #4CAF50; color: white;"> Jam </th>
 			<th style="background-color: #4CAF50; color: white;"> Petugas </th>
 			<th style="background-color: #4CAF50; color: white;"> Total Penjualan </th>
       <th style="background-color: #4CAF50; color: white;"> Jenis Penjualan </th>
