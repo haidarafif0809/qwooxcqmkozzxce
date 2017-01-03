@@ -35,6 +35,7 @@ else
 {
 
 $nama = 'Umum';
+$no_rm = "Umum";
 $dokter = "";
 $pasien = $nama;
 $pasien_rm = $nama;

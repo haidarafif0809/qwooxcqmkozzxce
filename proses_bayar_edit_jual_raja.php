@@ -48,6 +48,10 @@ $no_jurnal = no_jurnal();
 
      $quer10 = $db->query("DELETE  FROM laporan_fee_produk WHERE no_reg = '$no_reg' ");
 
+
+
+     $quer10000 = $db->query("DELETE  FROM jurnal_trans WHERE no_faktur = '$nomor_faktur' ");
+
       $quer100 = $db->query("DELETE  FROM laporan_fee_faktur WHERE no_reg = '$no_reg' ");
 
     // petugas kasir

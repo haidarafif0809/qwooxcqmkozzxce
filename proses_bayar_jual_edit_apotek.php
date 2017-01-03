@@ -60,6 +60,9 @@ $id_kasir = $data_id['id'];
 
 
 
+    $quersad = $db->query("DELETE  FROM jurnal_trans WHERE no_faktur = '$no_faktur' ");
+
+
     $query3 = $db->query("DELETE  FROM laporan_fee_faktur WHERE no_faktur = '$no_faktur' ");
 
     if ($nominal != 0) {
@@ -103,7 +106,7 @@ $id_kasir = $data_id['id'];
 
     $query3 = $db->query("DELETE  FROM laporan_fee_produk WHERE no_faktur = '$no_faktur' ");
 
-  $query0 = $db->query("SELECT * FROM tbs_fee_produk WHERE nama_petugas = '$id_kasir'");
+  $query0 = $db->query("SELECT * FROM tbs_fee_produk WHERE nama_petugas = '$id_kasir' AND no_faktur = '$no_faktur' ");
    while  ($cek0 = mysqli_fetch_array($query0)){
 
 
@@ -113,7 +116,7 @@ $id_kasir = $data_id['id'];
 
     }
               
-    $query0 = $db->query("SELECT * FROM tbs_fee_produk WHERE nama_petugas = '$apoteker'");
+    $query0 = $db->query("SELECT * FROM tbs_fee_produk WHERE nama_petugas = '$apoteker' AND no_faktur = '$no_faktur'");
    while  ($cek0 = mysqli_fetch_array($query0)){
 
 
