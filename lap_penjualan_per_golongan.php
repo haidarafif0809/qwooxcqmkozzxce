@@ -113,7 +113,7 @@ $(document).on('click','#btntgl',function(e) {
           var dataTable = $('#table_lap').DataTable( {
           "processing": true,
           "serverSide": true,
-          "info":     false,
+          "info":     true,
           "language": {
         "emptyTable":     "My Custom Message On Empty Table"
     },

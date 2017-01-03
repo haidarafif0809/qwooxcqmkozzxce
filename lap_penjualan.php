@@ -330,6 +330,7 @@ tr:nth-child(even){background-color: #f2f2f2}
         var dataTable = $('#tableuser').DataTable( {
           "processing": true,
           "serverSide": true,
+          "ordering": false,
           "ajax":{
             url :"show_data_penjualan.php", // json datasource
             type: "post",  // method  , by default get
