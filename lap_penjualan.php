@@ -151,12 +151,13 @@ tr:nth-child(even){background-color: #f2f2f2}
 <div class="dropdown">
              <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" style="width:150px"> Jenis Laporan <span class="caret"></span></button>
 
-             <ul class="dropdown-menu dropdown-ins">
-			<li><a class="dropdown-item" href="lap_penjualan_rekap.php"> Laporan Penjualan Rekap </a></li> 
-			<li><a class="dropdown-item" href="lap_penjualan_detail.php"> Laporan Penjualan Detail </a></li>
-			<li><a class="dropdown-item" href="lap_penjualan_harian.php"> Laporan Penjualan Harian </a></li>
-      <li><a class="dropdown-item" href="lap_operasi.php"> Laporan Operasi </a></li>
-      <li><a  class="dropdown-item" href="lap_detail_operasi.php"> Laporan Detail Operasi </a></li>
+            <ul class="dropdown-menu dropdown-ins">
+      			<li><a class="dropdown-item" href="lap_penjualan_rekap.php"> Laporan Penjualan Rekap </a></li> 
+      			<li><a class="dropdown-item" href="lap_penjualan_detail.php"> Laporan Penjualan Detail </a></li>
+      			<li><a class="dropdown-item" href="lap_penjualan_harian.php"> Laporan Penjualan Harian </a></li>
+            <li><a class="dropdown-item" href="lap_operasi.php"> Laporan Operasi </a></li>
+            <li><a class="dropdown-item" href="lap_detail_operasi.php"> Laporan Detail Operasi </a></li>
+            <li><a class="dropdown-item" href="lap_penjualan_per_golongan.php"> Laporan Penjualan / Golongan </a></li>
 
 				<!--
 				

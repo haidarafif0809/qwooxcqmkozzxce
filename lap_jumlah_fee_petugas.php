@@ -238,7 +238,8 @@ include 'db.php';
               });
     
     $("#cetak").show();
-    $("#cetak_lap").attr("href", "cetak_lap_jumlah_fee_produk.php?nama_petugas="+nama_petugas+"&dari_tanggal="+dari_tanggal+"&sampai_tanggal="+sampai_tanggal+"");
+
+          $("#cetak_lap").attr("href", "cetak_lap_jumlah_fee_produk.php?dari_tanggal="+dari_tanggal+"&sampai_tanggal="+sampai_tanggal+"");
 }//end else
         });
         $("form").submit(function(){
