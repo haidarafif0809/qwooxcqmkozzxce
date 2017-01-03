@@ -6,7 +6,7 @@ $dari_tanggal = stringdoang($_POST['dari_tanggal']);
 $sampai_tanggal = stringdoang($_POST['sampai_tanggal']);
 
 //menampilkan seluruh data yang ada pada tabel penjualan
-$penjualan = $db->query("SELECT p.id,p.no_faktur,p.total,p.kode_pelanggan,p.tanggal,p.tanggal_jt,p.jam,p.user,p.sales,p.kode_meja,p.status,p.potongan,p.tax,p.sisa,p.kredit,pl.nama_pelanggan FROM penjualan p INNER JOIN pelanggan pl ON p.kode_pelanggan = pl.kode_pelanggan WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' ORDER BY p.id DESC");
+$penjualan = $db->query("SELECT p.id,p.no_faktur,p.total,p.kode_pelanggan,p.tanggal,p.tanggal_jt,p.jam,p.user,p.sales,p.kode_meja,p.status,p.potongan,p.tax,p.sisa,p.kredit,pl.nama_pelanggan FROM penjualan p INNER JOIN pelanggan pl ON p.kode_pelanggan = pl.kode_pelanggan WHERE p.tanggal >= '$dari_tanggal' AND p.tanggal <= '$sampai_tanggal' ORDER BY p.id DESC");
 
 
 
@@ -34,7 +34,7 @@ th {
 <div class="card card-block">
 
 <div class="table-responsive">
- <table id="tableuser" class="table table-hover">
+ <table id="tableuser" class="table table-hover table-sm">
             <thead>
 			<th style="text-align: center"> Nomor Transaksi </th>
 			<th style="text-align: center"> Tanggal </th>
@@ -94,7 +94,7 @@ th {
 <br><br>
 
        <a href='cetak_laporan_laba_kotor.php?dari_tanggal=<?php echo $dari_tanggal; ?>&sampai_tanggal=<?php echo $sampai_tanggal; ?>'
-       class='btn btn-warning' target='blank'><i class='fa fa-print'> </i> Cetak Laporan Laba Kotor </a>
+       class='btn btn-warning' target='blank'><i class='fa fa-print'> </i> Cetak Laporan</a>
 
 </div>
 
