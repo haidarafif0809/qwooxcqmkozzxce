@@ -141,21 +141,12 @@ else
 
 }
 
-else{
-  $nestedData[] = "";
-  $nestedData[] = "";
-  $nestedData[] = "";
-  $nestedData[] = "";
-}
-
 
 if ($rekam_medik['rekam_medik_rj_lihat'] > 0) {
   $nestedData[] = " <a href='rekam_medik_raja.php' class='btn btn-floating btn-small btn-info penjualan' ><i class='fa fa-medkit'></i></a>
   ";
 }
-else{
-  $nestedData[] = "";
-}
+
   
  
 
@@ -172,9 +163,7 @@ else
 }
 
 }
-else{
-  $nestedData[] = "";
-} 
+
 
 	$nestedData[] = $row["no_urut"];
 	$nestedData[] = $row["poli"];

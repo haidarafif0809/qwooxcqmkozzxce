@@ -153,18 +153,43 @@ opacity: 0.9;
 
 <div style="padding-left:5%; padding-right:5%;">
 
-<h3>DATA PASIEN REGISTRASI RAWAT JALAN</h3><hr>
+<?php 
+if ($registrasi_rj['registrasi_rj_lihat'] > 0) {
 
+  echo "<h3>DATA PASIEN REGISTRASI RAWAT JALAN</h3><hr>";
 
+}
+else
+{
+    echo "<h3>DATA PENJUALAN RAWAT JALAN</h3><hr>";
 
+}
+?>
 <!-- Nav tabs -->
 
 <ul class="nav nav-tabs yellow darken-4" role="tablist">
-        <li class="nav-item"><a class="nav-link active" href='registrasi_raja.php'> Antrian Pasien R. Jalan </a></li>
-        <li class="nav-item"><a class="nav-link" href='pasien_sudah_panggil.php' > Pasien Dipanggil </a></li>
-        <li class="nav-item"><a class="nav-link" href='pasien_sudah_masuk.php' > Pasien Masuk R.Dokter </a></li>
-        <li class="nav-item"><a class="nav-link" href='pasien_batal_rujuk.php' > Pasien Batal / Rujuk Ke Luar </a></li>
-        <li class="nav-item"><a class="nav-link" href='pasien_registrasi_rj_belum_selesai.php' >Pasien Belum Selesai Registrasi </a></li>
+<?php 
+if ($registrasi_rj['registrasi_rj_lihat'] > 0) {
+        echo "<li class='nav-item'><a class='nav-link active' href='registrasi_raja.php'> Antrian Pasien R. Jalan </a></li>";
+        echo "<li class='nav-item'><a class='nav-link' href='pasien_sudah_panggil.php' > Pasien Dipanggil </a></li>";
+      }
+      else{
+      echo "<li></li>";
+      echo "<li></li>";
+      }
+ ?> 
+       <li class="nav-item"><a class="nav-link" href='pasien_sudah_masuk.php' > Pasien Masuk R.Dokter </a></li>
+
+ <?php 
+if ($registrasi_rj['registrasi_rj_lihat'] > 0) {
+        echo "<li class='nav-item'><a class='nav-link' href='pasien_batal_rujuk.php' > Pasien Batal / Rujuk Ke Luar </a></li>
+        <li class='nav-item'><a class='nav-link' href='pasien_registrasi_rj_belum_selesai.php' >Pasien Belum Selesai Registrasi </a></li>";
+}
+      else{
+      echo "<li></li>";
+      echo "<li></li>";
+      }
+        ?>
 </ul>
 <br><br>
 

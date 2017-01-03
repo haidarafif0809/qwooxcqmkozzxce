@@ -105,10 +105,7 @@ $sttus = mysqli_num_rows($penjual);
 			$nestedData[] = "";
 		}
 	}	
-        
- else{
-        $nestedData[] = "";     
-     }
+
 
 $query_z = $db->query("SELECT status,no_faktur,nama,kode_gudang FROM penjualan WHERE no_reg = '$row[no_reg]' ");
 $data_z = mysqli_fetch_array($query_z);
@@ -162,22 +159,13 @@ else {
 
 
         }
-        else
-        {
-           $nestedData[] =  "";
-           $nestedData[] =  "";
-           $nestedData[] =  "";
-        }          
+        
 
         if ($rekam_medik['rekam_medik_ri_lihat']) 
         {
            $nestedData[] =  "<a href='rekam_medik_ranap.php' class='btn btn-floating btn-small btn-danger'><i class='fa fa-medkit'></i></a>";
         }
 
-        else
-        {          
-           $nestedData[] = "";
-        }
 
 	$nestedData[] = $row["no_rm"];
 	$nestedData[] = $row["no_reg"];
