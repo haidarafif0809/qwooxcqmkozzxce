@@ -348,22 +348,20 @@ $no_faktur = $nomor."/JL/".$data_bulan_terakhir."/".$tahun_terakhir;
           <br><br>
           </div>
           
-          <input type="text" class="form-control" name="nama_barang" id="nama_barang" placeholder="Nama Barang" readonly="">
+          <input type="hidden" class="form-control" name="nama_barang" id="nama_barang" placeholder="Nama Barang" readonly="">
 
-          <input type="text" class="form-control"  name="over_stok" id="over_stok" autocomplete="off" placeholder="Over Stok">
+          <input type="hidden" class="form-control"  name="over_stok" id="over_stok" autocomplete="off" placeholder="Over Stok">
 
-          <input type="text" id="harga_produk" name="harga" class="form-control" placeholder="Harga Produk" required="">
+          <input type="hidden" id="harga_produk" name="harga" class="form-control" placeholder="Harga Produk" required="">
 
-          <input type="text" id="harga_lama" name="harga_lama" class="form-control" placeholder="Harga Lama" required="">
+          <input type="hidden" id="harga_lama" name="harga_lama" class="form-control" placeholder="Harga Lama" required="">
 
-          <input type="text" class="form-control" name="jumlahbarang" id="jumlahbarang" placeholder="Jumah Barang">
+          <input type="hidden" class="form-control" name="jumlahbarang" id="jumlahbarang" placeholder="Jumah Barang">
 
-          <input type="text" id="satuan_produk" name="satuan" class="form-control" value="" placeholder="Satuan Produk" required="">
+          <input type="hidden" id="satuan_produk" name="satuan" class="form-control" value="" placeholder="Satuan Produk" required="">
 
-          <input type="text" id="id_produk" name="id_produk" class="form-control" value="" placeholder="Id Produk" required="">
-
-        
-        
+          <input type="hidden" id="id_produk" name="id_produk" class="form-control" value="" placeholder="Id Produk" required="">
+ 
   </form>
       
 
