@@ -31,7 +31,7 @@ $columns = array(
 
  
 // getting total number records without any search
-$sql =" SELECT dp.nama_barang, SUM(dp.jumlah_barang) AS jumlah, SUM(dp.subtotal) AS total ";
+$sql =" SELECT dp.kode_barang, dp.nama_barang, SUM(dp.jumlah_barang) AS jumlah, SUM(dp.subtotal) AS total ";
 $sql.=" FROM detail_penjualan dp INNER JOIN barang p ON dp.kode_barang = p.kode_barang  WHERE p.golongan_barang = '$golongan' AND dp.waktu >= '$dari_waktu' AND dp.waktu <= '$sampai_waktu'  ";
 $query=mysqli_query($conn, $sql) or die("1: get employees");
 $totalData = mysqli_num_rows($query);
@@ -41,11 +41,11 @@ $totalFiltered = $totalData;  // when there is no search parameter then total nu
 $sql =" SELECT dp.nama_barang, SUM(dp.jumlah_barang) AS jumlah, SUM(dp.subtotal) AS total ";
 $sql.=" FROM detail_penjualan dp INNER JOIN barang p ON dp.kode_barang = p.kode_barang  WHERE p.golongan_barang = '$golongan' AND dp.waktu >= '$dari_waktu' AND dp.waktu <= '$sampai_waktu' ";
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
-  $sql.=" AND ( nama_barang LIKE '".$requestData['search']['value']."%' )";
+$sql.=" AND ( dp.nama_barang LIKE '".$requestData['search']['value']."%' )";
 }
 $query=mysqli_query($conn, $sql) or die("2: get employees");
 $totalFiltered = mysqli_num_rows($query); // when there is a search parameter then we have to modify total number filtered rows as per search result. 
-$sql.=" GROUP BY dp.kode_barang ORDER BY dp.id ".$requestData['order'][0]['dir']."  LIMIT ".$requestData['start']." ,".$requestData['length']."  ";
+$sql.=" GROUP BY dp.kode_barang ORDER BY dp.id ".$requestData['order'][0]['dir']."  LIMIT ".$requestData['start']." ,".$requestData['length']." ";
 /* $requestData['order'][0]['column'] contains colmun index, $requestData['order'][0]['dir'] contains order such as asc/desc  */  
 $query=mysqli_query($conn, $sql) or die("3: get employees");
 
@@ -53,16 +53,12 @@ $data = array();
 while( $row=mysqli_fetch_array($query) ) {  // preparing an array
   $nestedData=array(); 
 
-
-  $jumlah_akhir = $row['jumlah'];
-  $total_akhir = $row['total'];
-
-  $jumlah_jual_awal = $jumlah_akhir + $jumlah_jual_awal;        
-  $jumlah_beli_awal = $total_akhir + $jumlah_beli_awal;
+      $jumlah_jual_awal = $row['jumlah'] + $jumlah_jual_awal;        
+      $jumlah_beli_awal = $row['total'] + $jumlah_beli_awal;
 
       $nestedData[] = $row['nama_barang'];
-$nestedData[] = rp($jumlah_akhir);
-$nestedData[] = rp($total_akhir);
+      $nestedData[] = rp($row['jumlah']);
+      $nestedData[] = rp($row['total']);
 
   $data[] = $nestedData;
 }

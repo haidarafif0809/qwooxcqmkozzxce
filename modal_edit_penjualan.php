@@ -14,7 +14,7 @@ $requestData= $_REQUEST;
 $columns = array( 
 // datatable column index  => database column name
 
-    0=>'kode_barang', 
+   0=>'kode_barang', 
     1=>'nama_barang',
     2=>'harga_jual',
     3=>'harga_jual2',
@@ -23,21 +23,21 @@ $columns = array(
     6=>'harga_jual5',
     7=>'harga_jual6',
     8=>'harga_jual7',
-    9=>'nama', 
-    10=>'kategori',
-    11=>'status',
+    9=>'jumlah_barang', 
+    10=>'nama',
+    11=>'kategori',
     12=>'suplier',
     13=>'limit_stok', 
     14=>'berkaitan_dgn_stok',
     15=>'satuan',
     16=>'tipe_barang',
-    17=>'id'
-
+    17=>'status',
+    18=>'id'
 
 );
 
 // getting total number records without any search
-$sql = "SELECT s.nama,b.kode_barang,b.tipe_barang,b.nama_barang,b.harga_beli,b.harga_jual,b.harga_jual2,b.harga_jual3,b.harga_jual4,b.harga_jual5,b.harga_jual6,b.harga_jual7,b.kategori,b.status,b.suplier,b.limit_stok,b.satuan,b.id,b.berkaitan_dgn_stok";
+$sql = "SELECT s.nama,b.kode_barang,b.tipe_barang,b.nama_barang,b.harga_beli,b.harga_jual,b.harga_jual2,b.harga_jual3,b.harga_jual4,b.harga_jual5,b.harga_jual6,b.harga_jual7,b.kategori,b.status,b.suplier,b.limit_stok,b.satuan ,b.id,b.berkaitan_dgn_stok";
 $sql.=" FROM barang b INNER JOIN satuan s ON b.satuan = s.id ";
 $sql.=" ";
 
@@ -177,7 +177,7 @@ while( $row=mysqli_fetch_array($query) ) {
         $nestedData[] = "0";
         }
     else{
-        $nestedData[] = "$sisa_barang";
+        $nestedData[] = $sisa_barang;
         }
 
     $nestedData[] = $row["nama"];
@@ -185,8 +185,8 @@ while( $row=mysqli_fetch_array($query) ) {
     $nestedData[] = $row["suplier"];
     $nestedData[] = $row["limit_stok"];
     $nestedData[] = $row["berkaitan_dgn_stok"];
-    $nestedData[] = $row["tipe_barang"];
     $nestedData[] = $row["satuan"];
+    $nestedData[] = $row["tipe_barang"];
     $nestedData[] = $row["status"];
     $nestedData[] = $row["id"];
     

@@ -253,7 +253,7 @@ $no_jurnal = no_jurnal();
 
     // petugas analis
               
-    $fee_produk_ksir = $db->query("SELECT * FROM tbs_fee_produk WHERE nama_petugas = '$analis'");
+    $fee_produk_ksir = $db->query("SELECT * FROM tbs_fee_produk WHERE nama_petugas = '$analis'  AND no_reg = '$no_reg' ");
    while  ($data_fee_produk = mysqli_fetch_array($fee_produk_ksir)){
 
 
@@ -265,7 +265,7 @@ $no_jurnal = no_jurnal();
 
 
     // petugas kasir
-    $fee_produk_ksir = $db->query("SELECT * FROM tbs_fee_produk WHERE nama_petugas = '$petugas_kasir'");
+    $fee_produk_ksir = $db->query("SELECT * FROM tbs_fee_produk WHERE nama_petugas = '$petugas_kasir'  AND no_reg = '$no_reg'");
    while  ($data_fee_produk = mysqli_fetch_array($fee_produk_ksir)){
 
 
@@ -278,7 +278,7 @@ $no_jurnal = no_jurnal();
 
 // petugas paramedik
        
-    $fee_produk_paramedik = $db->query("SELECT * FROM tbs_fee_produk WHERE nama_petugas = '$petugas_paramedik'");
+    $fee_produk_paramedik = $db->query("SELECT * FROM tbs_fee_produk WHERE nama_petugas = '$petugas_paramedik'  AND no_reg = '$no_reg'");
    while  ($data_fee_produk = mysqli_fetch_array($fee_produk_paramedik)){
 
 
@@ -290,7 +290,7 @@ $no_jurnal = no_jurnal();
 
 // petugas farmasi
        
-    $fee_produk_farmasi = $db->query("SELECT * FROM tbs_fee_produk WHERE nama_petugas = '$petugas_farmasi'");
+    $fee_produk_farmasi = $db->query("SELECT * FROM tbs_fee_produk WHERE nama_petugas = '$petugas_farmasi'  AND no_reg = '$no_reg'");
    while  ($data_fee_produk = mysqli_fetch_array($fee_produk_farmasi)){
 
 
@@ -302,7 +302,7 @@ $no_jurnal = no_jurnal();
 
 // petugas lain
        
-    $fee_produk_lain = $db->query("SELECT * FROM tbs_fee_produk WHERE nama_petugas = '$petugas_lain'");
+    $fee_produk_lain = $db->query("SELECT * FROM tbs_fee_produk WHERE nama_petugas = '$petugas_lain'  AND no_reg = '$no_reg'");
    while  ($data_fee_produk = mysqli_fetch_array($fee_produk_lain)){
 
 
@@ -314,7 +314,7 @@ $no_jurnal = no_jurnal();
 
 //dokter 
        
-    $fee_produk_dokter = $db->query("SELECT * FROM tbs_fee_produk WHERE nama_petugas = '$dokter'");
+    $fee_produk_dokter = $db->query("SELECT * FROM tbs_fee_produk WHERE nama_petugas = '$dokter'  AND no_reg = '$no_reg'");
    while  ($data_fee_produk = mysqli_fetch_array($fee_produk_dokter)){
 
 

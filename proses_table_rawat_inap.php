@@ -110,10 +110,11 @@ $sttus = mysqli_num_rows($penjual);
         $nestedData[] = "";     
      }
 
-        if ($penjualan['penjualan_tambah'] > 0) {
-                 
-             $query_z = $db->query("SELECT status,no_faktur,nama,kode_gudang FROM penjualan WHERE no_reg = '$row[no_reg]' ");
-                 $data_z = mysqli_fetch_array($query_z);
+$query_z = $db->query("SELECT status,no_faktur,nama,kode_gudang FROM penjualan WHERE no_reg = '$row[no_reg]' ");
+$data_z = mysqli_fetch_array($query_z);
+
+        if ($penjualan['penjualan_tambah'] > 0) {                
+             
                  
                  if ($data_z['status'] == 'Simpan Sementara') {
                  
@@ -126,8 +127,15 @@ $sttus = mysqli_num_rows($penjual);
 
         }
         else{
-        	
-          $nestedData[] =  "";
+
+          if ($data_z['status'] == 'Simpan Sementara') {
+                 
+                 $nestedData[] =  ""; 
+                 }
+                 
+                 else {
+                 $nestedData[] =  "";
+                 }
         }
 
         if ($registrasi_ri['registrasi_ri_lihat']) {

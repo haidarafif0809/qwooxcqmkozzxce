@@ -43,7 +43,7 @@ if( !empty($requestData['search']['value']) ) {   // if there is a search parame
 $sql = "SELECT no_faktur";
 $sql.=" FROM jurnal_trans ";
 $sql.=" WHERE  ";
-$sql.="  DATE(waktu_jurnal) >= '$dari_tanggal'";
+$sql.=" DATE(waktu_jurnal) >= '$dari_tanggal'";
 $sql.=" AND DATE(waktu_jurnal) <= '$sampai_tanggal'";
 
 	$sql.=" AND ( no_faktur LIKE '".$requestData['search']['value']."%' "; 
