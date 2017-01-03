@@ -31,7 +31,7 @@ $columns = array(
 
  
 // getting total number records without any search
-$sql =" SELECT dp.nama_barang, SUM(dp.jumlah_barang) AS jumlah, SUM(dp.subtotal) AS total ";
+$sql =" SELECT dp.kode_barang, dp.nama_barang, SUM(dp.jumlah_barang) AS jumlah, SUM(dp.subtotal) AS total ";
 $sql.=" FROM detail_penjualan dp INNER JOIN barang p ON dp.kode_barang = p.kode_barang  WHERE p.golongan_barang = '$golongan' AND dp.waktu >= '$dari_waktu' AND dp.waktu <= '$sampai_waktu'  ";
 $query=mysqli_query($conn, $sql) or die("1: get employees");
 $totalData = mysqli_num_rows($query);
@@ -53,16 +53,12 @@ $data = array();
 while( $row=mysqli_fetch_array($query) ) {  // preparing an array
   $nestedData=array(); 
 
-
-  $jumlah_akhir = $row['jumlah'];
-  $total_akhir = $row['total'];
-
-  $jumlah_jual_awal = $jumlah_akhir + $jumlah_jual_awal;        
-  $jumlah_beli_awal = $total_akhir + $jumlah_beli_awal;
+      $jumlah_jual_awal = $row['jumlah'] + $jumlah_jual_awal;        
+      $jumlah_beli_awal = $row['total'] + $jumlah_beli_awal;
 
       $nestedData[] = $row['nama_barang'];
-$nestedData[] = rp($jumlah_akhir);
-$nestedData[] = rp($total_akhir);
+      $nestedData[] = rp($row['jumlah']);
+      $nestedData[] = rp($row['total']);
 
   $data[] = $nestedData;
 }

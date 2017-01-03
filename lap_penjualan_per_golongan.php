@@ -9,7 +9,7 @@ include 'db.php';
 
 <h3> LAPORAN PENJUALAN REKAP PER GOLONGAN BARANG </h3><hr>
 
-<form id="perhari" class="form" action="proses_lap_golongan_barang_rekap.php" method="POST" role="form">
+<form id="perhari" class="form" role="form">
 
 <div class="col-sm-2"> 
 <select name="golongan" id="golongan" autocomplete="off" class="form-control" placeholder="Golongan" required="">
@@ -95,72 +95,74 @@ tr:nth-child(even){background-color: #f2f2f2}
 
 <!--  end date and time picker  -->
 
+<script type="text/javascript">
+// FEE PRODUK per PETUGAS DATATABLE MENGGUNAKAN AJAX
+  $(document).ready(function() {
+  $(document).on('click','#btntgl',function(e) {
 
-
-
-<script type="text/javascript" language="javascript" >
-      $(document).ready(function() {
-$(document).on('click','#btntgl',function(e) {
-     $('#table_lap').DataTable().destroy();
-
-
+        $('#table_lap').DataTable().destroy();
         var golongan = $("#golongan").val();
         var dari_tanggal = $("#dari_tanggal").val();        
         var sampai_tanggal = $("#sampai_tanggal").val();
         var dari_jam = $("#dari_jam").val();        
         var sampai_jam = $("#sampai_jam").val();
-
-          var dataTable = $('#table_lap').DataTable( {
-          "processing": true,
-          "serverSide": true,
-          "info":     true,
-          "language": {
-        "emptyTable":     "My Custom Message On Empty Table"
-    },
-          "ajax":{
-            url :"proses_lap_golongan_barang_rekap.php", // json datasource
-             "data": function ( d ) {
-                d.dari_tanggal = $("#dari_tanggal").val();
-                d.dari_jam = $("#dari_jam").val();
-                d.sampai_tanggal = $("#sampai_tanggal").val();
-                d.sampai_jam = $("#sampai_jam").val();
-                d.golongan = $("#golongan").val();
-                                                                                // d.custom = $('#myInput').val();
-                // etc
-            },
-                type: "post",  // method  , by default get
-            error: function(){  // error handling
-              $(".tbody").html("");
-              $("#table_lap").append('<tbody class="tbody"><tr><th colspan="3"></th></tr></tbody>');
-              $("#tableuser_processing").css("display","none");
-              
-            }
+          if (golongan == '') {
+            alert("Silakan Pilih Golongan terlebih dahulu.");
+            $("#golongan").focus();
+          } 
+          else if (dari_tanggal == '') {
+            alert("Silakan dari tanggal diisi terlebih dahulu.");
+            $("#dari_tanggal").focus();
           }
+          else if (sampai_tanggal == '') {
+            alert("Silakan sampai tanggal diisi terlebih dahulu.");
+            $("#sampai_tanggal").focus();
+          }
+            else{ 
+              //TABLE KOMISI PRODUK
+              var dataTable = $('#table_lap').DataTable( {
+                "processing": true,
+                "serverSide": true,
+                "info":     true,
+                "language": {
+              "emptyTable":   "My Custom Message On Empty Table"
+          },
+                "ajax":{
+                  url :"proses_lap_golongan_barang_rekap.php", // json datasource
+                   "data": function ( d ) {
+                      d.golongan = $("#golongan").val();
+                      d.dari_tanggal = $("#dari_tanggal").val();
+                      d.sampai_tanggal = $("#sampai_tanggal").val();
+                      d.dari_jam = $("#dari_jam").val();
+                      d.sampai_jam = $("#sampai_jam").val();
+                      // d.custom = $('#myInput').val();
+                      // etc
+                  },
+                      type: "post",  // method  , by default get
+                  error: function(){  // error handling
+                    $(".tbody").html("");
+                    $("#table_lap").append('<tbody class="tbody"><tr><th colspan="3"></th></tr></tbody>');
+                    $("#tableuser_processing").css("display","none");
+                    
+                  }
+                }
+          
+              });
     
-
-
-        });
-
-          $("#result").show()
           $("#cetak").show();
           $("#cetak_lap").attr("href", "cetak_penjualan_rekap_golongan.php?golongan="+golongan+"&dari_tanggal="+dari_tanggal+"&sampai_tanggal="+sampai_tanggal+"&dari_jam="+dari_jam+"&sampai_jam="+sampai_jam+"");
 
           $("#export_lap").attr("href", "export_lap_penjualan_golongan.php?golongan="+golongan+"&dari_tanggal="+dari_tanggal+"&sampai_tanggal="+sampai_tanggal+"&dari_jam="+dari_jam+"&sampai_jam="+sampai_jam+"");
-
-
-   });
-
-  $("#perhari").submit(function(){
-      return false;
-  });
-  function clearInput(){
-      $("#perhari :input").each(function(){
-          $(this).val('');
-      });
-  };
-  } );
-    </script>
-
+}//end else
+        });
+        $("form").submit(function(){
+        
+        return false;
+        
+        });  
+   });  
+   // /FEE PRODUK per PETUGAS DATATABLE MENGGUNAKAN AJAX
+</script>
 
 <?php 
 include 'footer.php';
