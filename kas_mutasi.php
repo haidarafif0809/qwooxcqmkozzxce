@@ -266,6 +266,7 @@ echo '<button type="button" id="tambah" class="btn btn-info" data-toggle="modal"
 <span id="tabel_baru">
 <table id="table_mutasi" class="table table-bordered table-sm">
 		<thead>
+			<th style='background-color: #4CAF50; color:white'> Cetak </th>
 			<th style='background-color: #4CAF50; color:white'> Nomor Faktur </th>
 			<th style='background-color: #4CAF50; color:white'> Keterangan </th>
 			<th style='background-color: #4CAF50; color:white'> Dari Akun </th>
@@ -316,7 +317,7 @@ if ($kas_mutasi['kas_mutasi_edit'] > 0) {
             }
           },
             "fnCreatedRow": function( nRow, aData, iDataIndex ) {
-              $(nRow).attr('class','tr-id-'+aData[12]+'');
+              $(nRow).attr('class','tr-id-'+aData[13]+'');
             },
         });
       });

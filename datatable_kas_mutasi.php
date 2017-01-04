@@ -28,7 +28,7 @@ $columns = array(
 // getting total number records without any search
 $sql = "SELECT km.user_edit,km.waktu_edit,km.id, km.no_faktur, km.keterangan, km.ke_akun, km.dari_akun, km.jumlah, km.tanggal, km.jam, km.user, da.nama_daftar_akun,da.kode_daftar_akun ";
 $sql.=" FROM kas_mutasi km INNER JOIN daftar_akun da ON km.ke_akun = da.kode_daftar_akun ";
-$query=mysqli_query($conn, $sql) or die("datatable_kas_mutasi.php: get employees");
+$query=mysqli_query($conn, $sql) or die("datatabble_kas_mutasi.php: get employees");
 $totalData = mysqli_num_rows($query);
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
@@ -43,7 +43,7 @@ if( !empty($requestData['search']['value']) ) {   // if there is a search parame
 	$sql.=" OR  dari_akun LIKE '".$requestData['search']['value']."%' "; 
 	$sql.=" OR tanggal LIKE '".$requestData['search']['value']."%' )";
 }
-$query=mysqli_query($conn, $sql) or die("datatable_kas_mutasi.php: get employees");
+$query=mysqli_query($conn, $sql) or die("datatableee_kas_mutasi.php: get employees");
 $totalFiltered = mysqli_num_rows($query); // when there is a search parameter then we have to modify total number filtered rows as per search result. 
 $sql.=" ORDER BY ". $columns[$requestData['order'][0]['column']]."   ".$requestData['order'][0]['dir']."  LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
 /* $requestData['order'][0]['column'] contains colmun index, $requestData['order'][0]['dir'] contains order such as asc/desc  */	
@@ -56,6 +56,8 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 	$perintah10 = $db->query("SELECT km.id, km.no_faktur, km.keterangan, km.dari_akun, km.jumlah, km.tanggal, km.jam, km.user, da.nama_daftar_akun FROM daftar_akun da INNER JOIN kas_mutasi km ON da.kode_daftar_akun = km.dari_akun WHERE da.kode_daftar_akun = '$row[dari_akun]'");
 	$data1 = mysqli_fetch_array($perintah10);
 
+	$nestedData[] = "<a href='cetak_kas_mutasi.php?id=".$row['id']."' target='blank' class='btn btn-primary' data-target='blank'> <i class='fa fa-print'></i> Cetak </a>";
+	
 	$nestedData[] = $row["no_faktur"];
 	$nestedData[] = $row["keterangan"];
 	$nestedData[] = $data1["nama_daftar_akun"];

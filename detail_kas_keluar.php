@@ -24,7 +24,7 @@ include 'db.php';
       <th> Tanggal </th>
       <th> Jam </th>
       <th> Keterangan </th>
-      <th> User </th>
+      <th> Petugas </th>
       
     </thead>
     
