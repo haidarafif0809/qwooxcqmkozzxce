@@ -151,12 +151,13 @@ tr:nth-child(even){background-color: #f2f2f2}
 <div class="dropdown">
              <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" style="width:150px"> Jenis Laporan <span class="caret"></span></button>
 
-             <ul class="dropdown-menu dropdown-ins">
-			<li><a class="dropdown-item" href="lap_penjualan_rekap.php"> Laporan Penjualan Rekap </a></li> 
-			<li><a class="dropdown-item" href="lap_penjualan_detail.php"> Laporan Penjualan Detail </a></li>
-			<li><a class="dropdown-item" href="lap_penjualan_harian.php"> Laporan Penjualan Harian </a></li>
-      <li><a class="dropdown-item" href="lap_operasi.php"> Laporan Operasi </a></li>
-      <li><a  class="dropdown-item" href="lap_detail_operasi.php"> Laporan Detail Operasi </a></li>
+            <ul class="dropdown-menu dropdown-ins">
+      			<li><a class="dropdown-item" href="lap_penjualan_rekap.php"> Laporan Penjualan Rekap </a></li> 
+      			<li><a class="dropdown-item" href="lap_penjualan_detail.php"> Laporan Penjualan Detail </a></li>
+      			<li><a class="dropdown-item" href="lap_penjualan_harian.php"> Laporan Penjualan Harian </a></li>
+            <li><a class="dropdown-item" href="lap_operasi.php"> Laporan Operasi </a></li>
+            <li><a class="dropdown-item" href="lap_detail_operasi.php"> Laporan Detail Operasi </a></li>
+            <li><a class="dropdown-item" href="lap_penjualan_per_golongan.php"> Laporan Penjualan / Golongan </a></li>
 
 				<!--
 				
@@ -299,7 +300,8 @@ tr:nth-child(even){background-color: #f2f2f2}
       <th style="background-color: #4CAF50; color: white;"> Nama </th>
       <th style="background-color: #4CAF50; color: white;"> Dokter </th>
 			<th style="background-color: #4CAF50; color: white;"> Penjamin </th>
-			<th style="background-color: #4CAF50; color: white;"> Tanggal </th>
+      <th style="background-color: #4CAF50; color: white;"> Tanggal </th>
+      <th style="background-color: #4CAF50; color: white;"> Jam </th>
 			<th style="background-color: #4CAF50; color: white;"> Petugas </th>
 			<th style="background-color: #4CAF50; color: white;"> Total Penjualan </th>
       <th style="background-color: #4CAF50; color: white;"> Jenis Penjualan </th>
@@ -328,6 +330,7 @@ tr:nth-child(even){background-color: #f2f2f2}
         var dataTable = $('#tableuser').DataTable( {
           "processing": true,
           "serverSide": true,
+          "ordering": false,
           "ajax":{
             url :"show_data_penjualan.php", // json datasource
             type: "post",  // method  , by default get

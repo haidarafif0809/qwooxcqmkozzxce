@@ -29,6 +29,8 @@ $waktu = $tanggal_sekarang." ".$jam_sekarang;
     $ambil_kode_pelanggan = mysqli_fetch_array($select_kode_pelanggan);
 
 $delete = $db->query("DELETE FROM laporan_fee_produk WHERE no_faktur = '$nomor_faktur' AND no_reg = '$no_reg'");
+
+$delete1 = $db->query("DELETE FROM jurnal_trans WHERE no_faktur = '$nomor_faktur' ");
     
     $perintah0 = $db->query("SELECT * FROM fee_faktur WHERE nama_petugas = '$sales'");
     $cek = mysqli_fetch_array($perintah0);

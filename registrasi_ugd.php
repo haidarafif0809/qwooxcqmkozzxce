@@ -188,9 +188,14 @@ opacity: 0.9;
 <!--modal end Layanan RUJUK KE RS-->
 
 <div class="container">
+<?php if ($registrasi_ugd['registrasi_ugd_lihat'] > 0){ ?>
   <h3> DATA PASIEN UGD</h3><hr>
-<?php if ($registrasi_ugd['registrasi_ugd_lihat'] > 0): ?>
+<?php }else{ ?>
+  <h3> DATA PENJUALAN UGD</h3><hr>
+<?php } ?>
 
+
+<?php if ($registrasi_ugd['registrasi_ugd_lihat'] > 0): ?>
   <button id="coba" data-toggle="collapse" accesskey="u"  class="btn btn-primary"><i class="fa fa-plus"></i> Daftar <u>U</u>GD</button>
     
   <button id="kembali" style="display:none" data-toggle="collapse" accesskey="k"  class="btn btn-primary"><i class="fa fa-reply"></i> <u>K</u>embali</button>
@@ -500,12 +505,20 @@ tr:nth-child(even){background-color: #f2f2f2}
  
     <thead>
       <tr>
+<?php if ($registrasi_ugd['registrasi_ugd_hapus'] > 0):?>  
       <th style='background-color: #4CAF50; color: white'>Batal</th>
-
+    <?php endif; ?>
       <th style='background-color: #4CAF50; color: white'>Transaksi Penjualan</th>
+<?php if ($registrasi_ugd['registrasi_ugd_lihat'] > 0):?>  
+
       <th style='background-color: #4CAF50; color: white'>Rujuk Tempat Lain</th>
       <th style='background-color: #4CAF50; color: white'>Rujuk Rawat Inap</th>
-      <th style='background-color: #4CAF50; color: white'>Rekam medik</th> 
+<?php endif ?>
+
+<?php  if ($rekam_medik['rekam_medik_ugd_lihat'] > 0):?>
+
+<th style='background-color: #4CAF50; color: white'>Rekam medik</th> 
+      <?php endif; ?>
 
       <th style='background-color: #4CAF50; color: white'>No REG</th>
       <th style='background-color: #4CAF50; color: white'>No RM </th>	

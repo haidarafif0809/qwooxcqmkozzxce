@@ -1121,6 +1121,7 @@ $.post("cek_level_harga_barang.php", {level_harga:level_harga, kode_barang:kode_
       var satuan_konversi = $("#satuan_konversi").val();
       var kode_barang = $("#kode_barang").val();
       
+     var ber_stok = $("#ber_stok").val();
   var kode_barang = kode_barang.substr(0, kode_barang.indexOf('('));
       var id_produk = $("#id_produk").val();
       var prev = $("#satuan_produk").val();
@@ -1129,10 +1130,23 @@ $.post("cek_level_harga_barang.php", {level_harga:level_harga, kode_barang:kode_
         {jumlah_barang:jumlah_barang,satuan_konversi:satuan_konversi,kode_barang:kode_barang,
         id_produk:id_produk},function(data){
 
-          if (data < 0) {
-            alert("Jumlah Melebihi Stok");
-            $("#jumlah_barang").val('');
-          $("#satuan_konversi").val(prev);
+          if (data < 0) 
+          {
+
+                      if (ber_stok == 'Jasa' || ber_stok == 'BHP') {
+           
+                      }
+                      else
+                      {
+
+                alert("Jumlah Melebihi Stok");
+                $("#jumlah_barang").val('');
+              $("#satuan_konversi").val(prev);
+
+                      }
+         
+
+
 
           }
 
@@ -2861,14 +2875,14 @@ $.post("cek_level_harga_apotek.php", {level_harga:level_harga,kode_barang:kode_b
               $(nRow).attr('harga_level_6', aData[7]);
               $(nRow).attr('harga_level_7f', aData[8]);
               $(nRow).attr('jumlah-barang', aData[9]);
-              $(nRow).attr('satuan', aData[10]);
+              $(nRow).attr('satuan', aData[15]);
               $(nRow).attr('kategori', aData[11]);
-              $(nRow).attr('status', aData[12]);
-              $(nRow).attr('suplier', aData[13]);
-              $(nRow).attr('limit_stok', aData[14]);
-              $(nRow).attr('ber-stok', aData[15]);
+              $(nRow).attr('status', aData[17]);
+              $(nRow).attr('suplier', aData[12]);
+              $(nRow).attr('limit_stok', aData[13]);
+              $(nRow).attr('ber-stok', aData[14]);
               $(nRow).attr('tipe_barang', aData[16]);
-              $(nRow).attr('id-barang', aData[17]);
+              $(nRow).attr('id-barang', aData[18]);
 
 
 

@@ -26,8 +26,7 @@ $columns = array(
 	9 => 'dokter',
 	10 => 'poli',
 	11 => 'no_urut',
-	12 => 'status',
-	13 => 'id'
+	12 => 'id'
 	
 
 
@@ -84,7 +83,6 @@ if ($registrasi_rj['registrasi_rj_lihat']) {
             }
 }
 else{
-  echo $nestedData[] = "";
 }
 
 
@@ -93,7 +91,10 @@ if ($registrasi_rj['registrasi_rj_hapus'] > 0) {
 }
 
 else{
-	 $nestedData = "";
+
+		$nestedData[] = "";
+
+
 }	
 
 	$nestedData[] = $row["no_reg"];

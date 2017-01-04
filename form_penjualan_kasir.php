@@ -123,7 +123,7 @@ $data_lab = mysqli_fetch_array($sum_lab);
           while($data = mysqli_fetch_array($query))
           {
 
-            if ($data['default_sett'] == '1') {
+            if ($data['default_set'] == '1') {
 
                 echo "<option selected value='".$data['kode_gudang'] ."'>".$data['nama_gudang'] ."</option>";
               
@@ -167,8 +167,9 @@ $data_lab = mysqli_fetch_array($sum_lab);
 <div class="col-sm-3">
 <label>Dokter Pelaksana</label>
 <select style="font-size:15px; height:35px" name="dokter" id="dokter" class="form-control chosen">
-<option value="">Cari Dokter</option>
+
  <?php 
+
     
     //untuk menampilkan semua data pada tabel pelanggan dalam DB
     $query01 = $db->query("SELECT nama,id FROM user WHERE tipe = '1' ");
@@ -177,10 +178,8 @@ $data_lab = mysqli_fetch_array($sum_lab);
     while($data01 = mysqli_fetch_array($query01))
     {
     
-        $petugas = $db->query("SELECT nama_dokter FROM penetapan_petugas WHERE nama_dokter = '$data01[nama]'");
-        $data_petugas = mysqli_fetch_array($petugas);
-
-    if ($data01['nama'] == $data_petugas['nama_dokter']) {
+      
+    if ($data01['nama'] == $data_reg['dokter']) {
      echo "<option selected value='".$data01['id'] ."'>".$data01['nama'] ."</option>";
     }
     else{
@@ -244,9 +243,20 @@ $data_lab = mysqli_fetch_array($sum_lab);
     <input style="height:20px" type="text" class="form-control"  id="no_reg" name="no_reg" value="<?php echo $no_reg; ?>" readonly="">   
 </div>
 
- <div class="col-sm-2">
-    <label> Penjamin :</label>
-    <input style="height:20px;" type="text" class="form-control"  id="penjamin" name="penjamin" placeholder="Penjamin " readonly="" autocomplete="off" value="<?php echo $data_reg['penjamin']; ?>">   
+
+  <div class="form-group col-sm-2">
+    <label for="email">Penjamin:</label>
+    <select class="form-control" id="penjamin" name="penjamin" required="">
+    <option value='<?php  echo$data_reg['penjamin']; ?>'><?php  echo $data_reg['penjamin'];  ?></option>
+      <?php    
+     
+      $query = $db->query("SELECT nama FROM penjamin");
+      while ( $icd = mysqli_fetch_array($query))
+      {
+      echo "<option value='".$icd['nama']."'>".$icd['nama']."</option>";
+      }
+      ?>
+    </select>
 </div>
 
  <div class="col-sm-2">
@@ -2586,6 +2596,7 @@ $(function() {
 
     
     shortcut.add("f10", function() {
+
         // Do something
 
         $("#simpan_sementara").click();

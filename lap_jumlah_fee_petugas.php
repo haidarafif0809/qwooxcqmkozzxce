@@ -2,15 +2,12 @@
 
 
 //memasukkan file session login, header, navbar, db.php
-include 'header.php';
 include 'navbar.php';
+include 'header.php';
 include 'sanitasi.php';
 include 'db.php';
 
-
-
- ?>
-  
+?>
 
 
 <div style="padding-right: 5%; padding-left: 5%;">
@@ -62,27 +59,42 @@ include 'db.php';
 
 <br>      
 <form class="form-inline" role="form">
-              
-                  <div class="form-group"> 
-
+       <div class="row">       
+                  <div class="col-sm-2"> 
                   <input type="hidden" name="nama_petugas" id="nama_petugas" class="form-control" placeholder="Nama Petugas">
 
-                  <input type="text" name="nama_petugas_value" id="nama_petugas_value" class="form-control" placeholder="Nama Petugas" required="">
+                  <input type="text" name="nama_petugas_value" style="font-size:15px; height:15px" id="nama_petugas_value" class="form-control" placeholder="Nama Petugas" required="" >
 
                   </div>                  
 
-                  <div class="form-group"> 
+<div class="col-sm-1"> 
+</div>
+                  <div class="col-sm-2"> 
 
-                  <input type="text" name="dari_tanggal" id="dari_tanggal" class="form-control tanggal_cari" placeholder="Dari Tanggal" required="">
+                  <input type="text" name="dari_tanggal" style="font-size:15px; height:15px" id="dari_tanggal" class="form-control tanggal_cari" placeholder="Dari Tanggal" required="">
                   </div>
 
-                  <div class="form-group"> 
 
-                  <input type="text" name="sampai_tanggal" id="sampai_tanggal" class="form-control tanggal_cari" placeholder="Sampai Tanggal" required="">
+                  <div class="col-sm-1"> 
+
+                  <input type="text" name="dari_jam" style="font-size:15px; height:15px"  id="dari_jam" class="form-control jam_cari" placeholder="Dari Jam" required="">
                   </div>
 
-                  <button type="submit" name="submit" id="submit" class="btn btn-primary" > <i class="fa fa-send"></i>Submit </button>
+<div class="col-sm-1"> 
+</div>
+                  <div class="col-sm-2"> 
 
+                  <input type="text" name="sampai_tanggal"  style="font-size:15px; height:15px" id="sampai_tanggal" class="form-control tanggal_cari" placeholder="Sampai Tanggal" required="">
+                  </div>
+
+                  <div class="col-sm-1"> 
+
+                  <input type="text" name="sampai_jam" style="font-size:15px; height:15px" id="sampai_jam" class="form-control jam_cari" placeholder="Sampai Jam" required="">
+                  </div>
+
+        <button type="submit" name="submit" id="submit" class="btn btn-primary" > <i class="fa fa-send"></i>Submit </button>
+
+          </div>
 </form>
 
 
@@ -107,13 +119,20 @@ include 'db.php';
 </span>
 </div>
 
+
+
 <script type="text/javascript">
 //PICKERDATE
   $(function() {
   $( ".tanggal_cari" ).pickadate({ selectYears: 100, format: 'yyyy-mm-dd'});
   });
+
+ $(function() {
+    $( ".jam_cari" ).pickatime({format: 'hh:ii:ss', twelvehour: false });
+  }); 
   // /PICKERDATE
 </script>
+
 
 <script type="text/javascript" language="javascript" >
    $(document).ready(function() {
@@ -200,6 +219,8 @@ include 'db.php';
                       d.nama_petugas = $("#nama_petugas").val();
                       d.dari_tanggal = $("#dari_tanggal").val();
                       d.sampai_tanggal = $("#sampai_tanggal").val();
+                      d.dari_jam = $("#dari_jam").val();
+                      d.sampai_jam = $("#sampai_jam").val();
                       // d.custom = $('#myInput').val();
                       // etc
                   },
@@ -215,7 +236,8 @@ include 'db.php';
               });
     
     $("#cetak").show();
-    $("#cetak_lap").attr("href", "cetak_lap_jumlah_fee_produk.php?nama_petugas="+nama_petugas+"&dari_tanggal="+dari_tanggal+"&sampai_tanggal="+sampai_tanggal+"");
+
+          $("#cetak_lap").attr("href", "cetak_lap_jumlah_fee_produk.php?dari_tanggal="+dari_tanggal+"&sampai_tanggal="+sampai_tanggal+"");
 }//end else
         });
         $("form").submit(function(){

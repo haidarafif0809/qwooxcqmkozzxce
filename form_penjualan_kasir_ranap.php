@@ -181,20 +181,24 @@ padding-right: 5%;
 <select style="font-size:15px; height:35px" name="dokter" id="dokter" class="form-control chosen" >
 
   <?php 
-    
-    
-    $query01 = $db->query("SELECT nama,id FROM user WHERE tipe_user = '1'");
 
     
+    //untuk menampilkan semua data pada tabel pelanggan dalam DB
+    $query01 = $db->query("SELECT nama,id FROM user WHERE tipe = '1' ");
+
+    //untuk menyimpan data sementara yang ada pada $query
     while($data01 = mysqli_fetch_array($query01))
-    { 
-    if ($aray['dokter'] == $data01['nama']) {
-    echo "<option selected value='".$data01['id'] ."'>".$data01['nama'] ."</option>";
+    {
+    
+      
+    if ($data01['nama'] == $aray['dokter']) {
+     echo "<option selected value='".$data01['id'] ."'>".$data01['nama'] ."</option>";
     }
     else{
-    echo "<option value='".$data01['id'] ."'>".$data01['nama'] ."</option>";      
+      echo "<option value='".$data01['id'] ."'>".$data01['nama'] ."</option>";
     }
 
+    
     }
     
     
@@ -243,19 +247,25 @@ padding-right: 5%;
 <div class="col-sm-3">
 <label>Dokter Penanggung Jawab</label>
 <select style="font-size:15px; height:35px" name="dokter_pj" id="dokter_pj" class="form-control chosen" >
-  <?php 
+ <?php 
 
-    $query01 = $db->query("SELECT nama,id FROM user WHERE tipe_user = '1'");
     
+    //untuk menampilkan semua data pada tabel pelanggan dalam DB
+    $query01 = $db->query("SELECT nama,id FROM user WHERE tipe = '1' ");
+
+    //untuk menyimpan data sementara yang ada pada $query
     while($data01 = mysqli_fetch_array($query01))
-    { 
-    if ($aray['dokter_pengirim'] == $data01['nama']) {
-      echo "<option selected value='".$data01['id'] ."'>".$data01['nama'] ."</option>";
+    {
+    
+      
+    if ($data01['nama'] == $aray['dokter_pengirim']) {
+     echo "<option selected value='".$data01['id'] ."'>".$data01['nama'] ."</option>";
     }
     else{
       echo "<option value='".$data01['id'] ."'>".$data01['nama'] ."</option>";
     }
 
+    
     }
     
     
@@ -276,10 +286,21 @@ padding-right: 5%;
     <input style="height:20px" readonly="" type="text" class="form-control" value="<?php echo $no_reg;?>" id="no_reg" name="no_reg" placeholder="No reg" autocomplete="off" >   
 </div>
 
- <div class="col-sm-2">
-    <label> Penjamin :</label>
-    <input style="height:20px;" readonly="" type="text" class="form-control" value="<?php echo $aray['penjamin'];?>" id="penjamin" name="penjamin" placeholder="Penjamin " autocomplete="off" >   
+    <div class="form-group col-sm-2">
+    <label for="email">Penjamin:</label>
+    <select class="form-control" id="penjamin" name="penjamin" required="">
+    <option value='<?php echo $aray['penjamin'];?>'><?php echo $aray['penjamin'];?></option>
+      <?php    
+     
+      $query = $db->query("SELECT nama FROM penjamin");
+      while ( $icd = mysqli_fetch_array($query))
+      {
+      echo "<option value='".$icd['nama']."'>".$icd['nama']."</option>";
+      }
+      ?>
+    </select>
 </div>
+
 
  <div class="col-sm-1">
     <label> Poli :</label>

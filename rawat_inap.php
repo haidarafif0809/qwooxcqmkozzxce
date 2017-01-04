@@ -93,7 +93,7 @@ opacity: 0.9;
           },
 
            "fnCreatedRow": function( nRow, aData, iDataIndex ) {
-              $(nRow).attr('class','tr-id-'+aData[20]+'');         
+              $(nRow).attr('class','tr-id-'+aData[21]+'');         
 },
         } );
       } );
@@ -220,8 +220,16 @@ opacity: 0.9;
 </div>
 <!--modal end batal ranap-->
 
+<?php if ($registrasi_ri['registrasi_ri_lihat'] > 0)
+{
 
-<h3>DATA PASIEN RAWAT INAP </h3>
+echo "<h3>DATA PASIEN RAWAT INAP </h3>";
+}
+else
+{
+  echo "<h3>DATA PENJUALAN RAWAT INAP </h3>";
+}
+?>
 <hr>
 
 
@@ -359,8 +367,10 @@ opacity: 0.9;
 
 <ul class="nav nav-tabs yellow darken-4" role="tablist">
         <li class="nav-item"><a class="nav-link active" href='rawat_inap.php' data-placement='top' >Daftar Pasien <u>R</u>awat Inap</a></li>
+        <?php if ($registrasi_ri['registrasi_ri_lihat'] > 0): ?>
         <li class="nav-item"><a class="nav-link" href='daftar_pasien_rawat_inap_batal.php' data-placement='top' title='Klik untuk melihat pasien batal rawat inap.'>  Pasien Batal Rawat Inap </a></li>
         <li class="nav-item"><a class="nav-link" href='daftar_pasien_rawat_inap_pulang.php' data-placement='top' title='Klik untuk melihat pasien sudah pulang dari rawat inap.'> Pasien Rawat Inap Pulang </a></li>
+      <?php endif?>
 </ul>
 
 <br><br>
@@ -482,7 +492,7 @@ opacity: 0.9;
 
 
 <div class="form-group">
-    <label for="alamat">No Hp:</label><input style="height: 20px;" type="text" onkeypress="return isNumberKey(event)"  class="form-control" id="hp_pasien" name="hp_pasien"  >
+    <label for="alamat">No Hp:</label><input style="height: 20px;" type="text"   class="form-control" id="hp_pasien" name="hp_pasien"  >
 </div>
 
 </div>
@@ -654,32 +664,32 @@ opacity: 0.9;
 <center><h4>Tanda Tanda Vital</h4></center>
 <div class="form-group">
  <label >Sistole /Diastole (mmHg):</label>
- <input style="height: 20px;" type="text" onkeypress="return isNumberKey(event)" class="form-control" id="sistole_distole"  name="sistole_distole"  autocomplete="off" >
+ <input style="height: 20px;" type="text"  class="form-control" id="sistole_distole"  name="sistole_distole"  autocomplete="off" >
 </div>
 
 <div class="form-group ">
   <label >Frekuensi Pernapasan (kali/menit):</label>
-  <input style="height: 20px;" type="text" onkeypress="return isNumberKey(event)" class="form-control" id="respiratory_rate"  name="respiratory_rate"  autocomplete="off" > 
+  <input style="height: 20px;" type="text"  class="form-control" id="respiratory_rate"  name="respiratory_rate"  autocomplete="off" > 
 </div>
 
 <div class="form-group">
   <label >Suhu  (°C):</label>
-  <input style="height: 20px;" type="text" onkeypress="return isNumberKey(event)" class="form-control" id="suhu" name="suhu"  autocomplete="off"  > 
+  <input style="height: 20px;" type="text"  class="form-control" id="suhu" name="suhu"  autocomplete="off"  > 
 </div>   
 
 <div class="form-group ">
  <label >Nadi (kali/menit):</label>
- <input style="height: 20px;" type="text" onkeypress="return isNumberKey(event)" class="form-control" id="nadi" name="nadi"  autocomplete="off"> 
+ <input style="height: 20px;" type="text"  class="form-control" id="nadi" name="nadi"  autocomplete="off"> 
 </div>
 
 <div class="form-group ">
   <label >Berat Badan (kg):</label>
-  <input style="height: 20px;" type="text" onkeypress="return isNumberKey(event)" class="form-control" id="berat_badan"  name="berat_badan" autocomplete="off"> 
+  <input style="height: 20px;" type="text"  class="form-control" id="berat_badan"  name="berat_badan" autocomplete="off"> 
 </div>
 
 <div class="form-group ">
  <label >Tinggi Badan (cm):</label>
- <input style="height: 20px;" type="text" onkeypress="return isNumberKey(event)" class="form-control" id="tinggi_badan"  name="tinggi_badan"autocomplete="off"> 
+ <input style="height: 20px;" type="text"  class="form-control" id="tinggi_badan"  name="tinggi_badan"autocomplete="off"> 
 </div>
 
 <br>
@@ -714,12 +724,22 @@ tr:nth-child(even){background-color: #f2f2f2}
     <thead>
       <tr>
 
-          <th style='background-color: #4CAF50; color: white'>Batal</th>
-          <th style='background-color: #4CAF50; color: white'>Transaksi Penjualan</th>
+  <?php if ($registrasi_ri['registrasi_ri_hapus']):?>    
+      <th style='background-color: #4CAF50; color: white'>Batal</th>
+    <?php endif ?>
+
+         <th style='background-color: #4CAF50; color: white'>Transaksi Penjualan</th>
+
+  <?php if ($registrasi_ri['registrasi_ri_lihat']):?>      
           <th style='background-color: #4CAF50; color: white'>Pindah Kamar</th>
           <th style='background-color: #4CAF50; color: white'>Operasi</th>
           <th style='background-color:#4CAF50; color: white'> Rujuk Lab</th>
+  <?php endif ?>
+
+  <?php if ($rekam_medik['rekam_medik_ri_lihat']):?>         
           <th style='background-color: #4CAF50; color: white' >Rekam Medik</th>
+   <?php endif ?>
+        
           <th style='background-color: #4CAF50; color: white'>No RM</th>
           <th style='background-color: #4CAF50; color: white'>No REG </th>
           <th style='background-color: #4CAF50; color: white'>Status</th>
@@ -955,7 +975,7 @@ else{
           },
 
            "fnCreatedRow": function( nRow, aData, iDataIndex ) {
-              $(nRow).attr('class','tr-id-'+aData[20]+'');
+              $(nRow).attr('class','tr-id-'+aData[21]+'');
 
 },
         } );
@@ -1183,7 +1203,7 @@ return val;
           },
 
            "fnCreatedRow": function( nRow, aData, iDataIndex ) {
-              $(nRow).attr('class','tr-id-'+aData[20]+'');
+              $(nRow).attr('class','tr-id-'+aData[21]+'');
 
 },
         });
