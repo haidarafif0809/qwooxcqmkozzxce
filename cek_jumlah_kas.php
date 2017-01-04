@@ -1,5 +1,6 @@
 <?php 
     // memasukan file db.php
+    include 'sanitasi.php';    // memasukan file db.php
     include 'db.php';
     // mengirim data no faktur menggunakan metode POST
     $nama = stringdoang($_POST['dari_akun']);
