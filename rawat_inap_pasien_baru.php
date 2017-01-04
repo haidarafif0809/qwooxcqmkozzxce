@@ -210,7 +210,7 @@ $dq = mysqli_fetch_array($q);
   <select class="form-control ss" id="penjamin" name="penjamin" required="" autocomplete="off">
 
  <?php 
-  $query = $db->query("SELECT nama FROM penjamin ");
+  $query = $db->query("SELECT nama FROM penjamin ORDER BY id ASC");
   while ( $data = mysqli_fetch_array($query)) 
   {
   echo "<option value='".$data['nama']."'>".$data['nama']."</option>";
@@ -287,7 +287,7 @@ $dq = mysqli_fetch_array($q);
 
 <div class="form-group">
     <label for="no_telepon">No Telpon / HP:</label>
-    <input style="height: 20px;" type="text" required="" onkeypress="return isNumberKey(event)" class="form-control" id="no_telepon" name="no_telepon" autocomplete="off">
+    <input style="height: 20px;" type="text" required=""  class="form-control" id="no_telepon" name="no_telepon" autocomplete="off">
 </div>
 
 
@@ -529,36 +529,36 @@ $dq = mysqli_fetch_array($q);
 <center><h4>Tanda Tanda Vital</h4></center>
 <div class="form-group">
  <label >Sistole / Diastole (mmHg)</label>
-  <input style="height: 20px;" type="text" onkeypress="return isNumberKey(event)" class="form-control" id="sistole_distole" name="sistole_distole" autocomplete="off"> 
+  <input style="height: 20px;" type="text"  class="form-control" id="sistole_distole" name="sistole_distole" autocomplete="off"> 
 </div>
 
 
 <div class="form-group ">
   <label >Frekuensi Pernapasan (kali/menit)</label>
-  <input style="height: 20px;" type="text" onkeypress="return isNumberKey(event)" class="form-control" id="respiratory_rate" name="respiratory_rate" autocomplete="off"> 
+  <input style="height: 20px;" type="text"  class="form-control" id="respiratory_rate" name="respiratory_rate" autocomplete="off"> 
 </div>
  
 
 <div class="form-group">
   <label >Suhu (°C)</label>
-  <input style="height: 20px;" type="text" onkeypress="return isNumberKey(event)" class="form-control" id="suhu" name="suhu" autocomplete="off"> 
+  <input style="height: 20px;" type="text"  class="form-control" id="suhu" name="suhu" autocomplete="off"> 
 </div>
   
 
 <div class="form-group ">
    <label >Nadi (kali/menit)</label>
-  <input style="height: 20px;" type="text" onkeypress="return isNumberKey(event)" class="form-control" id="nadi" name="nadi" autocomplete="off"> 
+  <input style="height: 20px;" type="text"  class="form-control" id="nadi" name="nadi" autocomplete="off"> 
 </div>
 
 
 <div class="form-group ">
   <label >Berat Badan (kg)</label>
-  <input style="height: 20px;" type="text" onkeypress="return isNumberKey(event)" class="form-control" id="berat_badan" name="berat_badan" autocomplete="off"> 
+  <input style="height: 20px;" type="text"  class="form-control" id="berat_badan" name="berat_badan" autocomplete="off"> 
 </div>
 
 <div class="form-group ">
   <label >Tinggi Badan (cm)</label>
-  <input style="height: 20px;" type="text" onkeypress="return isNumberKey(event)" class="form-control" id="tinggi_badan" name="tinggi_badan" autocomplete="off"> 
+  <input style="height: 20px;" type="text"  class="form-control" id="tinggi_badan" name="tinggi_badan" autocomplete="off"> 
 </div>
 
 
@@ -580,17 +580,6 @@ $dq = mysqli_fetch_array($q);
 </div> <!--row utama--> 
 </div> <!--container-->
 
-<!--script datepicker-->
-<script>
-  $(function() {
-  $( "#tanggal_lahir" ).pickadate({ selectYears: 100, format: 'dd-mm-yyyy'});
-  });
-  </script>
-<!--end script datepicker-->
-  
-
-
-
 <!--script chossen
 <script>
 $(".ss").chosen({no_results_text: "Oops, Tidak Ada !"});
@@ -598,11 +587,7 @@ $(".ss").chosen({no_results_text: "Oops, Tidak Ada !"});
 script end chossen-->
 
 
- <script type="text/javascript">
-          $("#umur").focus(function(){
-          $("#tanggal_lahir").focus();    
-        });
-</script>
+
 
 <script type="text/javascript">
     $(document).ready(function(){
@@ -707,7 +692,7 @@ return val;
 
 <script type="text/javascript">
 
-$("#tanggal_lahir").change(function(){
+$("#tanggal_lahir").blur(function(){
 
 function hitung_umur(tanggal_input){
 
@@ -747,10 +732,17 @@ return val;
 }
 
 
-
     var tanggal_lahir = $("#tanggal_lahir").val();
-    var umur = hitung_umur(tanggal_lahir);
-    if (tanggal_lahir == '')
+    var date = new Date(tanggal_lahir);
+    var tanggal = (date.getMonth() + 1) + '-' + date.getDate() + '-' +  date.getFullYear();
+
+    var umur = hitung_umur(tanggal);
+    if (umur == "NaN Tahun" || umur == "NaN Bulan") {
+      var tanggal_lahir = $("#tanggal_lahir").val();
+      var umur = hitung_umur(tanggal_lahir);
+      $("#umur").val(umur);
+    }
+    else if (tanggal_lahir == '')
     {
     
     }
@@ -760,6 +752,29 @@ return val;
     }
 
 });
+</script>
+
+<script type="text/javascript">
+  
+  $("#umur").blur(function(){
+    var umur = $("#umur").val();
+    var tahun = new Date();
+    var tahun_sekarang = tahun.getFullYear();
+    var hari_sekarang = tahun.getDate();
+    var bulan_sekarang = tahun.getMonth() + 1;
+
+    var tahun_lahir = parseInt(tahun_sekarang,10) - parseInt(umur,10);
+    if (hari_sekarang < 10) {
+      var hari_sekarang = '0' + hari_sekarang;
+    }
+    if (bulan_sekarang < 10) {
+      var bulan_sekarang = '0' + bulan_sekarang;
+    }
+    var tanggal_lahir = hari_sekarang + '-' + bulan_sekarang + '-' +  tahun_lahir;
+    $("#tanggal_lahir").val(tanggal_lahir);
+
+  });
+
 </script>
 
 <!--   script untuk detail layanan PERUSAHAAN PENJAMIN-->

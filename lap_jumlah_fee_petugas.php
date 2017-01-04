@@ -7,9 +7,7 @@ include 'header.php';
 include 'sanitasi.php';
 include 'db.php';
 
-
-
- ?>
+?>
 
 
 <div style="padding-right: 5%; padding-left: 5%;">
