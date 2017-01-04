@@ -301,7 +301,7 @@ $no_faktur = $nomor."/JL/".$data_bulan_terakhir."/".$tahun_terakhir;
         
 
        <div class="col-sm-3">
-         <input  style="height:20px" type="text" class="form-control" name="kode_barang" accesskey="k" id="kode_barang" placeholder="Kode Produk" autocomplete="off">
+         <input  style="height:20px" type="text" class="form-control" name="kode_barang" accesskey="k" id="kode_barang" placeholder="Ketik Kode/Nama Produk" autocomplete="off">
        </div>
         
 
@@ -361,9 +361,7 @@ $no_faktur = $nomor."/JL/".$data_bulan_terakhir."/".$tahun_terakhir;
           <input type="hidden" id="satuan_produk" name="satuan" class="form-control" value="" placeholder="Satuan Produk" required="">
 
           <input type="hidden" id="id_produk" name="id_produk" class="form-control" value="" placeholder="Id Produk" required="">
-
-        
-        
+ 
   </form>
       
 
@@ -618,9 +616,6 @@ $no_faktur = $nomor."/JL/".$data_bulan_terakhir."/".$tahun_terakhir;
 
 
 
-
-
-
    <script>
    //perintah javascript yang diambil dari form tbs pembelian dengan id=form tambah produk
     
@@ -667,7 +662,7 @@ $no_faktur = $nomor."/JL/".$data_bulan_terakhir."/".$tahun_terakhir;
 
 
     
-    var subtotal = parseInt(jumlah_barang, 10) *  parseInt(harga, 10) - parseInt(potongan, 10);
+    var subtotal = parseInt(jumlah_barang, 10) *  parseInt(harga_baru, 10) - parseInt(potongan, 10);
 
     var tax_faktur = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#tax").val()))));
     if (tax_faktur == '') {
@@ -910,19 +905,15 @@ alert(" Kode Gudang Harus Diisi ");
 
 
  }
+ 
 
+});
 
-
-    
-
-  });
    $("form").submit(function(){
     return false;
 });
             
-  
-      
-  </script>
+</script>
 
    <script>
        //perintah javascript yang diambil dari form proses_bayar_beli.php dengan id=form_beli
@@ -1462,11 +1453,10 @@ $(function() {
 <script type="text/javascript">
   
         $(document).ready(function(){
-        $("#kode_barang").keyup(function(){
+        $("#kode_barang").blur(function(){
 
           var kode_barang = $("#kode_barang").val();
           var kode_barang = kode_barang.substr(0, kode_barang.indexOf('('));
-
           var session_id = $("#session_id").val();
           
           $.post("cek_barang_pembelian.php",
@@ -1506,16 +1496,18 @@ $(function() {
         $('#harga_produk').val(json.harga_beli);
         $('#satuan_produk').val(json.satuan);
         $('#harga_baru').val(json.harga_beli);
+        $('#harga_lama').val(json.harga_beli);
+        $('#satuan_konversi').val(json.satuan);
       }
                                               
         });
         
         });
         });
-
-      
-      
 </script>
+
+
+
 
 <script>
 /* Membuat Tombol Shortcut */
@@ -1709,7 +1701,6 @@ $(document).ready(function(){
         else if (info.jumlah_total == 0) {
           alert('Satuan Yang Anda Pilih Tidak Tersedia Untuk Produk Ini !');
           $("#satuan_konversi").val(prev);
-          $("#harga_produk").val('');
           $("#harga_baru").val(harga_lama);
 
         }

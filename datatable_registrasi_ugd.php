@@ -88,9 +88,7 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 		}
 
 	}
-	else{
-	  $nestedData[] = "";
-	}
+
 
 
 	if ($penjualan['penjualan_tambah'] > 0) {
@@ -115,17 +113,12 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 
 	    $nestedData[] = "<button  type='button' data-reg='".$row['no_reg']."' class='btn btn-floating btn-small btn-info rujuk_ri' ><i class='fa fa-hotel'></i>   </button>";
 	}
-	else{
-	  $nestedData[] = "";
-	  $nestedData[] = "";
-	}
+	
 
-	if ($rekam_medik['rekam_medik_ugd_lihat']) {
+	if ($rekam_medik['rekam_medik_ugd_lihat'] > 0) {
 	  $nestedData[] = "<a href='rekam_medik_ugd.php' class='btn btn-floating btn-small btn-info penjualan' ><i class='fa fa-medkit'></i></a>";
 	}
-	else{
-	  $nestedData[] = "";
-	}
+
 
 	
 	$nestedData[] = $row["no_reg"];

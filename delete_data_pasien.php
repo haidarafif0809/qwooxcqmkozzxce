@@ -4,7 +4,7 @@ include 'sanitasi.php';
 
 $id = angkadoang($_POST['id']);
 
-$query = $db->query("DELETE FROM pelanggan WHERE id = '$id'");
+$query = $db_pasien->query("DELETE FROM pelanggan WHERE id = '$id'");
 
 
 if ($query == TRUE)

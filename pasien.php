@@ -78,7 +78,27 @@ include 'db.php';
 </form>
 <br>
 <br>
-<span id="hasil_migrasi"></span>
+<span id="hasil_migrasi" style="display: none">
+  
+ <table id="pasien_lama" class="table table-sm table-bordered">
+  <thead>
+    <tr>
+      <th style='background-color: #4CAF50; color: white' >No. RM </th>
+      <th style='background-color: #4CAF50; color: white' >Nama Lengkap</th>
+      <th style='background-color: #4CAF50; color: white' >Jenis Kelamin</th>
+      <th style='background-color: #4CAF50; color: white' >Alamat Sekarang </th>
+      <th style='background-color: #4CAF50; color: white' >Tanggal Lahir </th>
+      <th style='background-color: #4CAF50; color: white' >No HP</th>
+      <th style='background-color: #4CAF50; color: white' >Tanggal Terdaftar </th>
+      <th style='background-color: #4CAF50; color: white' >Hapus</th>
+      <th style='background-color: #4CAF50; color: white' >Edit</th>
+
+    </tr>
+  </thead>
+
+ </table>
+
+</span>
 
 </div><!--DIV CONTAINER-->
 
@@ -149,11 +169,41 @@ $( "#tanggal_lahir" ).datepicker({
     }
     else
     {
-      $("#hasil_migrasi").html('Loading..');
-   $.post("cek_data_pasien_lama.php",{cari:cari},function(data){
-      $("#hasil_migrasi").html(data);
-  
-    });
+
+        $('#pasien_lama').DataTable().destroy();
+
+          var dataTable = $('#pasien_lama').DataTable( {
+          "processing": true,
+          "serverSide": true,
+          "info":     false,
+          "language": {
+        "emptyTable":     "My Custom Message On Empty Table"
+    },
+          "ajax":{
+            url :"cek_data_pasien_lama.php", // json datasource
+             "data": function ( d ) {
+                d.cari = $("#cari_migrasi").val();
+                // d.custom = $('#myInput').val();
+                // etc
+            },
+                type: "post",  // method  , by default get
+            error: function(){  // error handling
+              $(".tbody").html("");
+              $("#pasien_lama").append('<tbody class="tbody"><tr><th colspan="3"></th></tr></tbody>');
+              $("#pasien_lama_processing").css("display","none");
+              
+            }
+          },
+
+          "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+
+              $(nRow).attr('class', "tr-id-"+aData[9]+"");
+
+          }
+
+        } );
+$("#hasil_migrasi").show();
+
   
     }
    

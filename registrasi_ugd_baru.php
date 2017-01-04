@@ -356,7 +356,7 @@ $ss = mysqli_fetch_array($qertu);
       <option value="<?php echo $ss['nama_dokter'];?>"><?php echo $ss['nama_dokter'];?></option>
               <option value="Tidak Ada">Tidak Ada</option>
         <?php 
-        $query = $db->query("SELECT nama FROM user WHERE otoritas = 'Dokter' ");
+        $query = $db->query("SELECT nama FROM user WHERE tipe = '1' ");
         while ( $data = mysqli_fetch_array($query)) 
         {
           echo "<option value='".$data['nama']."'>".$data['nama']."</option>";
@@ -420,11 +420,11 @@ $ss = mysqli_fetch_array($qertu);
 </div> <!--container-->
 
 
-<!--script chossen-->
+<!--script chossen
 <script>
 $("select").chosen({no_results_text: "Oops, Tidak Ada !"});
 </script>
-<!--script end chossen-->
+script end chossen-->
 
 
 <script type="text/javascript">

@@ -93,7 +93,7 @@ opacity: 0.9;
           },
 
            "fnCreatedRow": function( nRow, aData, iDataIndex ) {
-              $(nRow).attr('class','tr-id-'+aData[20]+'');         
+              $(nRow).attr('class','tr-id-'+aData[21]+'');         
 },
         } );
       } );
@@ -220,8 +220,16 @@ opacity: 0.9;
 </div>
 <!--modal end batal ranap-->
 
+<?php if ($registrasi_ri['registrasi_ri_lihat'] > 0)
+{
 
-<h3>DATA PASIEN RAWAT INAP </h3>
+echo "<h3>DATA PASIEN RAWAT INAP </h3>";
+}
+else
+{
+  echo "<h3>DATA PENJUALAN RAWAT INAP </h3>";
+}
+?>
 <hr>
 
 
@@ -237,7 +245,21 @@ opacity: 0.9;
       </div>
       <div class="modal-body">
       <span id="hasil_migrasi"></span>
-      
+       <table id="pasien_lama" class="table table-sm table-bordered">
+          <thead>
+            <tr>
+              <th style='background-color: #4CAF50; color: white' >No. RM </th>
+              <th style='background-color: #4CAF50; color: white' >Nama Lengkap</th>
+              <th style='background-color: #4CAF50; color: white' >Jenis Kelamin</th>
+              <th style='background-color: #4CAF50; color: white' >Alamat Sekarang </th>
+              <th style='background-color: #4CAF50; color: white' >Tanggal Lahir </th>
+              <th style='background-color: #4CAF50; color: white' >No HP</th>
+              <th style='background-color: #4CAF50; color: white' >Tanggal Terdaftar </th>
+            
+
+            </tr>
+          </thead>
+         </table>
       </div>
       <div class="modal-footer">
       <center> <button type="button" accesskey="e" class="btn btn-danger" data-dismiss="modal">Clos<u>e</u></button></center> 
@@ -345,8 +367,10 @@ opacity: 0.9;
 
 <ul class="nav nav-tabs yellow darken-4" role="tablist">
         <li class="nav-item"><a class="nav-link active" href='rawat_inap.php' data-placement='top' >Daftar Pasien <u>R</u>awat Inap</a></li>
+        <?php if ($registrasi_ri['registrasi_ri_lihat'] > 0): ?>
         <li class="nav-item"><a class="nav-link" href='daftar_pasien_rawat_inap_batal.php' data-placement='top' title='Klik untuk melihat pasien batal rawat inap.'>  Pasien Batal Rawat Inap </a></li>
         <li class="nav-item"><a class="nav-link" href='daftar_pasien_rawat_inap_pulang.php' data-placement='top' title='Klik untuk melihat pasien sudah pulang dari rawat inap.'> Pasien Rawat Inap Pulang </a></li>
+      <?php endif?>
 </ul>
 
 <br><br>
@@ -559,7 +583,7 @@ opacity: 0.9;
            <option value="<?php echo $ss['nama_dokter'];?>"><?php echo $ss['nama_dokter'];?></option>
                    <option value="Tidak Ada">Tidak Ada</option>
                   <?php 
-                  $query = $db->query("SELECT nama FROM user WHERE otoritas = 'Dokter' ");
+                  $query = $db->query("SELECT nama FROM user WHERE tipe = '1' ");
                   while ( $data = mysqli_fetch_array($query)) {
                   echo "<option value='".$data['nama']."'>".$data['nama']."</option>";
                   }
@@ -587,7 +611,7 @@ opacity: 0.9;
           <option value="<?php echo $ss['nama_dokter'];?>"><?php echo $ss['nama_dokter'];?></option>
                   <option value="Tidak Ada">Tidak Ada</option>
     <?php 
-    $query = $db->query("SELECT nama FROM user WHERE otoritas = 'Dokter' ");
+    $query = $db->query("SELECT nama FROM user WHERE tipe = '1' ");
     while ( $data = mysqli_fetch_array($query)) {
     echo "<option value='".$data['nama']."'>".$data['nama']."</option>";
     }
@@ -700,12 +724,22 @@ tr:nth-child(even){background-color: #f2f2f2}
     <thead>
       <tr>
 
-          <th style='background-color: #4CAF50; color: white'>Batal</th>
-          <th style='background-color: #4CAF50; color: white'>Transaksi Penjualan</th>
+  <?php if ($registrasi_ri['registrasi_ri_hapus']):?>    
+      <th style='background-color: #4CAF50; color: white'>Batal</th>
+    <?php endif ?>
+
+         <th style='background-color: #4CAF50; color: white'>Transaksi Penjualan</th>
+
+  <?php if ($registrasi_ri['registrasi_ri_lihat']):?>      
           <th style='background-color: #4CAF50; color: white'>Pindah Kamar</th>
           <th style='background-color: #4CAF50; color: white'>Operasi</th>
           <th style='background-color:#4CAF50; color: white'> Rujuk Lab</th>
+  <?php endif ?>
+
+  <?php if ($rekam_medik['rekam_medik_ri_lihat']):?>         
           <th style='background-color: #4CAF50; color: white' >Rekam Medik</th>
+   <?php endif ?>
+        
           <th style='background-color: #4CAF50; color: white'>No RM</th>
           <th style='background-color: #4CAF50; color: white'>No REG </th>
           <th style='background-color: #4CAF50; color: white'>Status</th>
@@ -734,7 +768,7 @@ tr:nth-child(even){background-color: #f2f2f2}
 
 <script type="text/javascript">
   
-  $("#submit_cari").click(function(){
+    $(document).on('click','#submit_cari',function() {
   
     var cari = $("#cari_migrasi").val();
     if (cari == '') {
@@ -745,12 +779,48 @@ tr:nth-child(even){background-color: #f2f2f2}
     else
     {
             $("#myModal").modal('show');
-      $("#hasil_migrasi").html('Loading..');
-   $.post("show_data_pasien.php",{cari:cari},function(data){
-      $("#hasil_migrasi").html(data);
-  
-    });
-  
+        $('#pasien_lama').DataTable().destroy();
+
+          var dataTable = $('#pasien_lama').DataTable( {
+          "processing": true,
+          "serverSide": true,
+          "info":     false,
+          "language": {
+        "emptyTable":     "My Custom Message On Empty Table"
+    },
+          "ajax":{
+            url :"show_data_pasien.php", // json datasource
+             "data": function ( d ) {
+                d.cari = $("#cari_migrasi").val();
+                // d.custom = $('#myInput').val();
+                // etc
+            },
+                type: "post",  // method  , by default get
+            error: function(){  // error handling
+              $(".tbody").html("");
+              $("#pasien_lama").append('<tbody class="tbody"><tr><th colspan="3"></th></tr></tbody>');
+              $("#pasien_lama_processing").css("display","none");
+              
+            }
+          },
+              "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+
+              $(nRow).attr('class', "pilih tr-id-"+aData[9]+"");
+              $(nRow).attr('data-no', aData[0]);
+              $(nRow).attr('data-nama', aData[1]);
+              $(nRow).attr('data-jenis-kelamin', aData[2]);
+              $(nRow).attr('data-alamat', aData[3]);
+              $(nRow).attr('data-lahir', aData[4]);
+              $(nRow).attr('data-darah', aData[7]);
+              $(nRow).attr('data-hp', aData[5]);
+              $(nRow).attr('data-penjamin', aData[8]);
+
+          } 
+
+        } );
+
+
+          
     }
    
   
@@ -905,7 +975,7 @@ else{
           },
 
            "fnCreatedRow": function( nRow, aData, iDataIndex ) {
-              $(nRow).attr('class','tr-id-'+aData[20]+'');
+              $(nRow).attr('class','tr-id-'+aData[21]+'');
 
 },
         } );
@@ -1133,7 +1203,7 @@ return val;
           },
 
            "fnCreatedRow": function( nRow, aData, iDataIndex ) {
-              $(nRow).attr('class','tr-id-'+aData[20]+'');
+              $(nRow).attr('class','tr-id-'+aData[21]+'');
 
 },
         });

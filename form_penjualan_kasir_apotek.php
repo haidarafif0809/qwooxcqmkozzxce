@@ -100,7 +100,7 @@ $user = $_SESSION['nama'];
         
 
          <?php 
-         $query09 = $db->query("SELECT nama,id FROM user WHERE otoritas = 'Petugas Farmasi' ");
+         $query09 = $db->query("SELECT nama,id FROM user WHERE tipe = '3' OR tipe = '2' ");
          while ( $data09 = mysqli_fetch_array($query09)) {
          
          $petugas = $db->query("SELECT nama_farmasi FROM penetapan_petugas WHERE nama_farmasi = '$data01[nama]'");
@@ -917,6 +917,30 @@ $.post("cek_level_harga_barang.php", {level_harga:level_harga, kode_barang:kode_
 </script>
 <!-- cek stok satuan konversi keyup-->
 
+<!--cek jatuh tempo keyup-->
+<script type="text/javascript">
+  $(document).ready(function(){
+    $("#penjamin").change(function(){
+      
+      var penjamin = $("#penjamin").val();
+
+      $.post("cek_jatuh_tempo.php",
+        {penjamin:penjamin},function(data){
+
+if (data != '1970-01-01' )
+    {
+      $("#tanggal_jt").val(data);
+    }
+    else
+    {
+     $("#tanggal_jt").val('');
+    }
+
+      });
+    });
+  });
+</script>
+<!--end cek jatuh tempo keyup-->
 
 
 <script>
@@ -1420,7 +1444,7 @@ alert("Silakan Bayar Piutang");
 
  $.post("cek_subtotal_apotek.php",{total:total,biaya_admin:biaya_admin,potongan:potongan,tax:tax},function(data) {
 
-  if (data == "1") {
+  if (data == "Oke") {
 
 
  $.post("proses_bayar_jual_apotek.php",{biaya_admin:biaya_admin,total2:total2,sisa_pembayaran:sisa_pembayaran,kredit:kredit,kode_pelanggan:kode_pelanggan,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,cara_bayar:cara_bayar,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,total_hpp:total_hpp,harga:harga,kode_gudang:kode_gudang,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,apoteker:apoteker,no_resep_dokter:no_resep_dokter,resep_dokter:resep_dokter,penjamin:penjamin},function(info) {

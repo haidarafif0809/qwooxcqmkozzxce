@@ -35,6 +35,7 @@ else
 {
 
 $nama = 'Umum';
+$no_rm = "Umum";
 $dokter = "";
 $pasien = $nama;
 $pasien_rm = $nama;
@@ -153,7 +154,7 @@ $data_rj_ri = mysqli_fetch_array($sum_rj_ri);
          <select type="text" class="form-control chosen" id="apoteker" autocomplete="off">        
 
          <?php 
-         $query09 = $db->query("SELECT nama,id FROM user WHERE otoritas = 'Petugas Analis' ");
+         $query09 = $db->query("SELECT nama,id FROM user WHERE tipe = '2' ");
          while ( $data09 = mysqli_fetch_array($query09)) {
 
           echo "<option value='".$data09['id'] ."'>".$data09['nama'] ."</option>";
@@ -165,16 +166,14 @@ $data_rj_ri = mysqli_fetch_array($sum_rj_ri);
         </select> 
   </div>
 
-<?php if ($no_reg == ""): ?>
 
-<?php else: ?>
   <div class="col-sm-2">
           <label> Dokter Pengirim </label><br>
           
           <select name="dokter" id="dokter" class="form-control chosen" required="" >
           <?php 
         //untuk menampilkan semua data pada tabel pelanggan dalam DB
-    $query01 = $db->query("SELECT nama,id FROM user WHERE otoritas = 'Dokter'");
+    $query01 = $db->query("SELECT nama,id FROM user WHERE tipe = '1'");
 
     //untuk menyimpan data sementara yang ada pada $query
     while($data01 = mysqli_fetch_array($query01))
@@ -195,8 +194,6 @@ $data_rj_ri = mysqli_fetch_array($sum_rj_ri);
 </div>
 
 
-
-<?php endif ?>
 
 
 </div>  <!-- END ROW dari kode pelanggan - ppn -->
@@ -2518,6 +2515,31 @@ $(function() {
 
   });
 </script>
+
+<!--cek jatuh tempo keyup-->
+<script type="text/javascript">
+  $(document).ready(function(){
+    $("#penjamin").change(function(){
+      
+      var penjamin = $("#penjamin").val();
+
+      $.post("cek_jatuh_tempo.php",
+        {penjamin:penjamin},function(data){
+
+if (data != '1970-01-01' )
+    {
+      $("#tanggal_jt").val(data);
+    }
+    else
+    {
+     $("#tanggal_jt").val('');
+    }
+
+      });
+    });
+  });
+</script>
+<!--end cek jatuh tempo keyup-->
 
 <script type="text/javascript">
   $("#penjamin").change(function(){

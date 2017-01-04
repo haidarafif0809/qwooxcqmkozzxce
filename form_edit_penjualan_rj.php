@@ -250,10 +250,22 @@ if ($tax != 0) {
     </div>
 
 
-   <div class="col-sm-2">
-      <label> Penjamin :</label>
-      <input style="height:20px;" type="text" class="form-control"  id="penjamin" name="penjamin" placeholder="Penjamin " autocomplete="off" value="<?php echo $penjamin; ?>">   
-  </div>
+
+    <div class="form-group col-sm-2">
+    <label for="email">Penjamin:</label>
+    <select class="form-control" id="penjamin" name="penjamin" required="">
+    <option value='<?php  echo$penjamin; ?>'><?php  echo $penjamin;  ?></option>
+      <?php    
+     
+      $query = $db->query("SELECT nama FROM penjamin");
+      while ( $icd = mysqli_fetch_array($query))
+      {
+      echo "<option value='".$icd['nama']."'>".$icd['nama']."</option>";
+      }
+      ?>
+    </select>
+</div>
+
 
    <div class="col-sm-2">
       <label> Asal Poli :</label>
@@ -2884,14 +2896,14 @@ $(document).ready(function(){ //UNTUK MENETUKAN APAKAH PPN NYA  INCLUDE ATAU EXC
               $(nRow).attr('harga_level_6', aData[7]);
               $(nRow).attr('harga_level_7f', aData[8]);
               $(nRow).attr('jumlah-barang', aData[9]);
-              $(nRow).attr('satuan', aData[10]);
+              $(nRow).attr('satuan', aData[15]);
               $(nRow).attr('kategori', aData[11]);
-              $(nRow).attr('status', aData[12]);
-              $(nRow).attr('suplier', aData[13]);
-              $(nRow).attr('limit_stok', aData[14]);
-              $(nRow).attr('ber-stok', aData[15]);
+              $(nRow).attr('status', aData[17]);
+              $(nRow).attr('suplier', aData[12]);
+              $(nRow).attr('limit_stok', aData[13]);
+              $(nRow).attr('ber-stok', aData[14]);
               $(nRow).attr('tipe_barang', aData[16]);
-              $(nRow).attr('id-barang', aData[17]);
+              $(nRow).attr('id-barang', aData[18]);
 
 
 

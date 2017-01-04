@@ -188,12 +188,12 @@ $sql0->execute();
 
 // UPDATE PASIEN NYA
 $update_pasien = "UPDATE pelanggan SET pekerjaan_suamiortu = '$pekerjaan', no_hp_penanggung = '$no_hp_penanggung', hubungan_dengan_pasien = '$hubungan_dengan_pasien', alamat_penanggung = '$alamat_penanggung', nama_penanggungjawab = '$penanggung_jawab', umur = '$umur',no_telp = '$hp_pasien', alamat_sekarang = '$alamat', penjamin = '$penjamin' WHERE kode_pelanggan = '$no_rm'";
-if ($db->query($update_pasien) === TRUE) 
+if ($db_pasien->query($update_pasien) === TRUE) 
   {
 } 
 else 
     {
-    echo "Error: " . $update_pasien . "<br>" . $db->error;
+    echo "Error: " . $update_pasien . "<br>" . $db_pasien->error;
     } 
 
 // UPDATE KAMAR
@@ -218,7 +218,10 @@ $harga_kamar7 = $kamar_luar['tarif_7'];
 //end bahan untuk kamar
 
 
+// DI NON AKTIFKAN KARENA PENAMBAHAN KAMAR NANTNYA AKAN INPUT DI TRANSAKSI PENJUALAN LANGSUNG -- DARI SINI --
+// DI NON AKTIFKAN KARENA PENAMBAHAN KAMAR NANTNYA AKAN INPUT DI TRANSAKSI PENJUALAN LANGSUNG -- DARI SINI --
 
+/*
 
 // harga_1 (pertama)
 if ($level_harga == 'harga_1')
@@ -367,7 +370,10 @@ $query65 = "INSERT INTO tbs_penjualan (session_id,no_reg,kode_barang,nama_barang
 }
 // harga_7 (pertama)
 
+*/
 
+// DI NON AKTIFKAN KARENA PENAMBAHAN KAMAR NANTNYA AKAN INPUT DI TRANSAKSI PENJUALAN LANGSUNG -- SAMPAI SINI --
+// DI NON AKTIFKAN KARENA PENAMBAHAN KAMAR NANTNYA AKAN INPUT DI TRANSAKSI PENJUALAN LANGSUNG -- SAMPAI SINI --
 
 
 

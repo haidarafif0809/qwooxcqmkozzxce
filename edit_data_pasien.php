@@ -6,7 +6,7 @@ include_once 'sanitasi.php';
 
 $id = angkadoang($_GET['id']);
 
-$query = $db->query("SELECT * FROM pelanggan WHERE id ='$id'");
+$query = $db_pasien->query("SELECT * FROM pelanggan WHERE id ='$id'");
 $data = $query->fetch_object();
 
 

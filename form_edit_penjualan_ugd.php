@@ -373,7 +373,7 @@ if ($tax != 0) {
          <?php 
             
             //untuk menampilkan semua data pada tabel pelanggan dalam DB
-            $query01 = $db->query("SELECT nama,id FROM user WHERE otoritas = 'Dokter'");
+            $query01 = $db->query("SELECT nama,id FROM user WHERE tipe = '1'");
 
             //untuk menyimpan data sementara yang ada pada $query
             while($data01 = mysqli_fetch_array($query01))
@@ -407,7 +407,7 @@ if ($tax != 0) {
  <?php 
     
     //untuk menampilkan semua data pada tabel pelanggan dalam DB
-    $query01 = $db->query("SELECT nama, id FROM user WHERE otoritas = 'Petugas Paramedik'");
+    $query01 = $db->query("SELECT nama, id FROM user WHERE tipe = '2'");
 
     //untuk menyimpan data sementara yang ada pada $query
     while($data01 = mysqli_fetch_array($query01))
@@ -503,7 +503,7 @@ Level 7
   <?php 
     
     //untuk menampilkan semua data pada tabel pelanggan dalam DB
-    $query01 = $db->query("SELECT nama, id FROM user WHERE otoritas = 'Petugas Farmasi'");
+    $query01 = $db->query("SELECT nama, id FROM user WHERE tipe = '3'");
 
     //untuk menyimpan data sementara yang ada pada $query
     while($data01 = mysqli_fetch_array($query01))
@@ -535,7 +535,7 @@ Level 7
   <?php 
     
     //untuk menampilkan semua data pada tabel pelanggan dalam DB
-    $query01 = $db->query("SELECT nama, id FROM user WHERE otoritas = 'Petugas Lain'");
+    $query01 = $db->query("SELECT nama, id FROM user WHERE tipe = '5'");
 
     //untuk menyimpan data sementara yang ada pada $query
     while($data01 = mysqli_fetch_array($query01))
@@ -3401,14 +3401,14 @@ $(document).ready(function(){
               $(nRow).attr('harga_level_6', aData[7]);
               $(nRow).attr('harga_level_7f', aData[8]);
               $(nRow).attr('jumlah-barang', aData[9]);
-              $(nRow).attr('satuan', aData[10]);
+              $(nRow).attr('satuan', aData[15]);
               $(nRow).attr('kategori', aData[11]);
-              $(nRow).attr('status', aData[12]);
-              $(nRow).attr('suplier', aData[13]);
-              $(nRow).attr('limit_stok', aData[14]);
-              $(nRow).attr('ber-stok', aData[15]);
+              $(nRow).attr('status', aData[17]);
+              $(nRow).attr('suplier', aData[12]);
+              $(nRow).attr('limit_stok', aData[13]);
+              $(nRow).attr('ber-stok', aData[14]);
               $(nRow).attr('tipe_barang', aData[16]);
-              $(nRow).attr('id-barang', aData[17]);
+              $(nRow).attr('id-barang', aData[18]);
 
 
 

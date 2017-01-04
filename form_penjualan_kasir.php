@@ -20,13 +20,24 @@ else
 }
 
 
+
 $registrasi = $db->query("SELECT * FROM registrasi WHERE no_reg = '$no_reg' ");
 $data_reg = mysqli_fetch_array($registrasi);
 
 
-$level_harga = $db->query("SELECT harga FROM penjamin WHERE nama = '$data_reg[penjamin]' ");
+$level_harga = $db->query("SELECT harga,jatuh_tempo FROM penjamin WHERE nama = '$data_reg[penjamin]' ");
 $data_level = mysqli_fetch_array($level_harga);
 $level_harga = $data_level['harga'];
+
+$hari = $data_level['jatuh_tempo'];
+$now = strtotime(date("Y-m-d"));
+
+$take_jt = date('Y-m-d', strtotime('+ '.$hari.' day', $now));
+      if ($take_jt == '1970-01-01' )
+      {
+        $take_jt = "";
+      }
+     
 
 $session_id = session_id();
 $user = $_SESSION['nama'];
@@ -112,7 +123,7 @@ $data_lab = mysqli_fetch_array($sum_lab);
           while($data = mysqli_fetch_array($query))
           {
 
-            if ($data['default_sett'] == '1') {
+            if ($data['default_set'] == '1') {
 
                 echo "<option selected value='".$data['kode_gudang'] ."'>".$data['nama_gudang'] ."</option>";
               
@@ -156,20 +167,19 @@ $data_lab = mysqli_fetch_array($sum_lab);
 <div class="col-sm-3">
 <label>Dokter Pelaksana</label>
 <select style="font-size:15px; height:35px" name="dokter" id="dokter" class="form-control chosen">
-<option value="">Cari Dokter</option>
+
  <?php 
+
     
     //untuk menampilkan semua data pada tabel pelanggan dalam DB
-    $query01 = $db->query("SELECT nama,id FROM user WHERE otoritas = 'Dokter'");
+    $query01 = $db->query("SELECT nama,id FROM user WHERE tipe = '1' ");
 
     //untuk menyimpan data sementara yang ada pada $query
     while($data01 = mysqli_fetch_array($query01))
     {
     
-        $petugas = $db->query("SELECT nama_dokter FROM penetapan_petugas WHERE nama_dokter = '$data01[nama]'");
-        $data_petugas = mysqli_fetch_array($petugas);
-
-    if ($data01['nama'] == $data_petugas['nama_dokter']) {
+      
+    if ($data01['nama'] == $data_reg['dokter']) {
      echo "<option selected value='".$data01['id'] ."'>".$data01['nama'] ."</option>";
     }
     else{
@@ -194,7 +204,7 @@ $data_lab = mysqli_fetch_array($sum_lab);
  <?php 
     
     //untuk menampilkan semua data pada tabel pelanggan dalam DB
-    $query01 = $db->query("SELECT nama,id FROM user WHERE otoritas = 'Petugas Paramedik'");
+    $query01 = $db->query("SELECT nama,id FROM user WHERE tipe = '2' ");
 
     //untuk menyimpan data sementara yang ada pada $query
     while($data01 = mysqli_fetch_array($query01))
@@ -233,9 +243,20 @@ $data_lab = mysqli_fetch_array($sum_lab);
     <input style="height:20px" type="text" class="form-control"  id="no_reg" name="no_reg" value="<?php echo $no_reg; ?>" readonly="">   
 </div>
 
- <div class="col-sm-2">
-    <label> Penjamin :</label>
-    <input style="height:20px;" type="text" class="form-control"  id="penjamin" name="penjamin" placeholder="Penjamin " readonly="" autocomplete="off" value="<?php echo $data_reg['penjamin']; ?>">   
+
+  <div class="form-group col-sm-2">
+    <label for="email">Penjamin:</label>
+    <select class="form-control" id="penjamin" name="penjamin" required="">
+    <option value='<?php  echo$data_reg['penjamin']; ?>'><?php  echo $data_reg['penjamin'];  ?></option>
+      <?php    
+     
+      $query = $db->query("SELECT nama FROM penjamin");
+      while ( $icd = mysqli_fetch_array($query))
+      {
+      echo "<option value='".$icd['nama']."'>".$icd['nama']."</option>";
+      }
+      ?>
+    </select>
 </div>
 
  <div class="col-sm-2">
@@ -284,7 +305,7 @@ Level 7
   <?php 
     
     //untuk menampilkan semua data pada tabel pelanggan dalam DB
-    $query01 = $db->query("SELECT nama,id FROM user WHERE otoritas = 'Petugas Farmasi'");
+    $query01 = $db->query("SELECT nama,id FROM user WHERE tipe = '3'");
 
     //untuk menyimpan data sementara yang ada pada $query
     while($data01 = mysqli_fetch_array($query01))
@@ -317,7 +338,7 @@ Level 7
   <?php 
     
     //untuk menampilkan semua data pada tabel pelanggan dalam DB
-    $query01 = $db->query("SELECT nama,id FROM user WHERE otoritas = 'Petugas Lain'");
+    $query01 = $db->query("SELECT nama,id FROM user WHERE tipe != '5'");
 
     //untuk menyimpan data sementara yang ada pada $query
     while($data01 = mysqli_fetch_array($query01))
@@ -770,8 +791,8 @@ Laboratorium  </button>
            
            <div class="col-sm-6">
              
-           <label> Tanggal</label>
-           <input type="text" name="tanggal_jt" id="tanggal_jt"  value="" style="height:15px;font-size:15px" placeholder="Tanggal JT" class="form-control" >
+           <label> Tanggal Jatuh Tempo</label>
+           <input type="text" name="tanggal_jt" id="tanggal_jt"  value="<?php echo $take_jt ?>" style="height:15px;font-size:15px" placeholder="Tanggal JT" class="form-control" >
 
            </div>
 
@@ -2575,6 +2596,7 @@ $(function() {
 
     
     shortcut.add("f10", function() {
+
         // Do something
 
         $("#simpan_sementara").click();

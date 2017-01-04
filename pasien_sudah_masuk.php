@@ -6,6 +6,20 @@ include_once 'sanitasi.php';
 
 $tanggal = date("Y-m-d");
 
+
+$sett_registrasi= $db->query("SELECT * FROM setting_registrasi ");
+$data_sett = mysqli_fetch_array($sett_registrasi);
+
+$pilih_akses_registrasi_rj = $db->query("SELECT registrasi_rj_lihat, registrasi_rj_tambah, registrasi_rj_edit, registrasi_rj_hapus FROM otoritas_registrasi WHERE id_otoritas = '$_SESSION[otoritas_id]'");
+$registrasi_rj = mysqli_fetch_array($pilih_akses_registrasi_rj);
+
+$pilih_akses_penjualan = $db->query("SELECT penjualan_tambah FROM otoritas_penjualan WHERE id_otoritas = '$_SESSION[otoritas_id]'");
+$penjualan = mysqli_fetch_array($pilih_akses_penjualan);
+
+
+$pilih_akses_rekam_medik = $db->query("SELECT rekam_medik_rj_lihat FROM otoritas_rekam_medik WHERE id_otoritas = '$_SESSION[otoritas_id]'");
+$rekam_medik = mysqli_fetch_array($pilih_akses_rekam_medik);
+
 ?>
 
 <style>
@@ -173,17 +187,45 @@ opacity: 0.9;
 
 <div style="padding-left: 5%; padding-right: 5%">
 
-<h3>DATA PASIEN REGISTRASI RAWAT JALAN</h3><hr>
+<?php 
+if ($registrasi_rj['registrasi_rj_lihat'] > 0) {
+
+  echo "<h3>DATA PASIEN REGISTRASI RAWAT JALAN</h3><hr>";
+
+}
+else
+{
+    echo "<h3>DATA PENJUALAN RAWAT JALAN</h3><hr>";
+
+}
+?>
+<!-- Nav tabs -->
 
 <ul class="nav nav-tabs yellow darken-4" role="tablist">
-        <li class="nav-item"><a class="nav-link" href='registrasi_raja.php'> Antrian Pasien R. Jalan </a></li>
-        <li class="nav-item"><a class="nav-link" href='pasien_sudah_panggil.php' > Pasien Dipanggil </a></li>
-        <li class="nav-item"><a class="nav-link active" href='pasien_sudah_masuk.php' > Pasien Masuk R.Dokter </a></li>
-        <li class="nav-item"><a class="nav-link" href='pasien_batal_rujuk.php' > Pasien Batal / Rujuk Ke Luar </a></li>
-        <li class="nav-item"><a class="nav-link" href='pasien_registrasi_rj_belum_selesai.php' >Pasien Belum Selesai Pembayaran </a></li>
+<?php 
+if ($registrasi_rj['registrasi_rj_lihat'] > 0) {
+        echo "<li class='nav-item'><a class='nav-link active' href='registrasi_raja.php'> Antrian Pasien R. Jalan </a></li>";
+        echo "<li class='nav-item'><a class='nav-link' href='pasien_sudah_panggil.php' > Pasien Dipanggil </a></li>";
+      }
+      else{
+      echo "<li></li>";
+      echo "<li></li>";
+      }
+ ?> 
+       <li class="nav-item"><a class="nav-link" href='pasien_sudah_masuk.php' > Pasien Masuk R.Dokter </a></li>
+
+ <?php 
+if ($registrasi_rj['registrasi_rj_lihat'] > 0) {
+        echo "<li class='nav-item'><a class='nav-link' href='pasien_batal_rujuk.php' > Pasien Batal / Rujuk Ke Luar </a></li>
+        <li class='nav-item'><a class='nav-link' href='pasien_registrasi_rj_belum_selesai.php' >Pasien Belum Selesai Registrasi </a></li>";
+}
+      else{
+      echo "<li></li>";
+      echo "<li></li>";
+      }
+        ?>
 </ul>
 <br><br>
-
 
 <style>
 
@@ -199,12 +241,18 @@ tr:nth-child(even){background-color: #f2f2f2}
     <thead>
       <tr>
              <th style='background-color: #4CAF50; color: white' >Transaksi Penjualan</th>
+<?php if ($registrasi_rj['registrasi_rj_lihat'] > 0): ?>         
              <th style='background-color: #4CAF50; color: white' >Rujuk Dengan Penanganan</th>
              <th style='background-color: #4CAF50; color: white' >Rujuk Tanpa Penanganan </th>
              <th style='background-color: #4CAF50; color: white' >Rujuk Rawat Inap</th>
              <th style='background-color: #4CAF50; color: white' >Rujuk Lab</th>
+<?php endif?>
+<?php if ($rekam_medik['rekam_medik_rj_lihat'] > 0): ?>                      
              <th style='background-color: #4CAF50; color: white' >Rekam Medik</th>
-             <th style='background-color: #4CAF50; color: white' >Batal</th>               
+<?php endif?>
+<?php if ($registrasi_rj['registrasi_rj_hapus'] > 0): ?>         
+             <th style='background-color: #4CAF50; color: white' >Batal</th> 
+<?php endif?>                  
              <th style='background-color: #4CAF50; color: white' >No Urut</th>
              <th style='background-color: #4CAF50; color: white' >Poli</th> 
              <th style='background-color: #4CAF50; color: white' >Dokter</th>   

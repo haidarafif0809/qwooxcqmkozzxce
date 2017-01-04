@@ -10,7 +10,7 @@ include 'sanitasi.php';
  $total_akhir = angkadoang($_POST['total']);
  $pajak = angkadoang($_POST['tax']);
  $diskon = angkadoang($_POST['potongan']);
- $biaya_admin = angkadoang($_POST['biaya_adm']);
+ $biaya_admin = angkadoang($_POST['biaya_admin']);
 
 
 

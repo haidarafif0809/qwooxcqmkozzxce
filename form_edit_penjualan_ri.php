@@ -899,7 +899,7 @@ value='".$data1['jumlah_barang']."' class='input_jumlah' data-id='".$data1['id']
         <div class="col-sm-6">
           
            <label style="font-size:15px"> <b> Subtotal </b></label><br>
-      <input style="height:10px;font-size:15px" type="text" name="total" id="total2" class="form-control" placeholder="Total" readonly="" >
+      <input style="height:15px;font-size:15px" type="text" name="total" id="total2" class="form-control" placeholder="Total" readonly="" >
 
         </div>
 
@@ -907,7 +907,7 @@ value='".$data1['jumlah_barang']."' class='input_jumlah' data-id='".$data1['id']
 
         <div class="col-sm-6">
            <label> Biaya Admin (Rp) </label>
-           <input type="text" name="biaya_admin" id="biaya_admin" style="height:10px;font-size:15px"  style="height:10px;font-size:15px" class="form-control" autocomplete="off" onkeydown="return numbersonly(this, event);" onkeyup="javascript:tandaPemisahTitik(this);" value="<?php echo rp($data_penj['biaya_admin']); ?>" >
+           <input type="text" name="biaya_admin" id="biaya_admin" style="height:15px;font-size:15px"  style="height:15px;font-size:15px" class="form-control" autocomplete="off" onkeydown="return numbersonly(this, event);" onkeyup="javascript:tandaPemisahTitik(this);" value="<?php echo rp($data_penj['biaya_admin']); ?>" >
            </div>
 
       </div>
@@ -968,17 +968,17 @@ value='".$data1['jumlah_barang']."' class='input_jumlah' data-id='".$data1['id']
             ?>
             <div class="col-sm-4">
            <label> Diskon ( Rp )</label><br>
-          <input type="text" name="potongan" style="height:10px;font-size:15px" id="potongan_penjualan" v class="form-control" placeholder="" autocomplete="off" value="<?php echo rp($total_potongan); ?>" onkeydown="return numbersonly(this, event);" onkeyup="javascript:tandaPemisahTitik(this);">
+          <input type="text" name="potongan" style="height:15px;font-size:15px" id="potongan_penjualan" v class="form-control" placeholder="" autocomplete="off" value="<?php echo rp($total_potongan); ?>" onkeydown="return numbersonly(this, event);" onkeyup="javascript:tandaPemisahTitik(this);">
           </div>
 
           <div class="col-sm-4">
             <label> Diskon ( % )</label><br>
-          <input type="text" name="potongan_persen" style="height:10px;font-size:15px" id="potongan_persen"  class="form-control" placeholder="" value="<?php echo round($potongan); ?>" autocomplete="off" >
+          <input type="text" name="potongan_persen" style="height:15px;font-size:15px" id="potongan_persen"  class="form-control" placeholder="" value="<?php echo round($potongan); ?>" autocomplete="off" >
           </div>
 
             <div class="col-sm-4">
            <label> Pajak (%)</label>
-           <input type="text" name="tax" id="tax" style="height:10px;font-size:15px"  style="height:10px;font-size:15px" class="form-control" value="<?php echo round($pajak); ?>" autocomplete="off" >
+           <input type="text" name="tax" id="tax" style="height:15px;font-size:15px"  style="height:15px;font-size:15px" class="form-control" value="<?php echo round($pajak); ?>" autocomplete="off" >
            </div>
 
              
@@ -997,7 +997,7 @@ value='".$data1['jumlah_barang']."' class='input_jumlah' data-id='".$data1['id']
            <div class="col-sm-6">
              
            <label> Tanggal</label>
-           <input type="text" name="tanggal_jt" id="tanggal_jt"  value="" style="height:10px;font-size:15px" placeholder="Tanggal JT" class="form-control" >
+           <input type="text" name="tanggal_jt" id="tanggal_jt"  value="" style="height:15px;font-size:15px" placeholder="Tanggal JT" class="form-control" >
            </div>
 
         <div class="col-sm-6">
@@ -1071,7 +1071,7 @@ value='".$data1['jumlah_barang']."' class='input_jumlah' data-id='".$data1['id']
               ?>
 
            <label> Kembalian </label><br>
-           <b><input type="text" name="sisa_pembayaran"  id="sisa_pembayaran_penjualan"  style="height:10px;font-size:15px" class="form-control"  readonly="" value="0" ></b>
+           <b><input type="text" name="sisa_pembayaran"  id="sisa_pembayaran_penjualan"  style="height:15px;font-size:15px" class="form-control"  readonly="" value="0" ></b>
             </div>
 
             <div class="col-sm-6">
@@ -1088,7 +1088,7 @@ value='".$data1['jumlah_barang']."' class='input_jumlah' data-id='".$data1['id']
               ?>
 
           <label> Kredit </label><br>
-          <b><input type="text" name="kredit" id="kredit" class="form-control" value="0" style="height:10px;font-size:15px"  readonly=""  ></b>
+          <b><input type="text" name="kredit" id="kredit" class="form-control" value="0" style="height:15px;font-size:15px"  readonly=""  ></b>
             </div>
           </div> 
           
@@ -3227,14 +3227,14 @@ $(document).ready(function(){
               $(nRow).attr('harga_level_6', aData[7]);
               $(nRow).attr('harga_level_7f', aData[8]);
               $(nRow).attr('jumlah-barang', aData[9]);
-              $(nRow).attr('satuan', aData[10]);
+              $(nRow).attr('satuan', aData[15]);
               $(nRow).attr('kategori', aData[11]);
-              $(nRow).attr('status', aData[12]);
-              $(nRow).attr('suplier', aData[13]);
-              $(nRow).attr('limit_stok', aData[14]);
-              $(nRow).attr('ber-stok', aData[15]);
+              $(nRow).attr('status', aData[17]);
+              $(nRow).attr('suplier', aData[12]);
+              $(nRow).attr('limit_stok', aData[13]);
+              $(nRow).attr('ber-stok', aData[14]);
               $(nRow).attr('tipe_barang', aData[16]);
-              $(nRow).attr('id-barang', aData[17]);
+              $(nRow).attr('id-barang', aData[18]);
 
 
 

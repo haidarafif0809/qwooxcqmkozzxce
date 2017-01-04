@@ -11,7 +11,7 @@ $waktu = date("Y-m-d H:i:s");
 $bulan_php = date('m');
 $tahun_php = date('Y');
 
-$ambil_rm = $db->query("SELECT kode_pelanggan FROM pelanggan ORDER BY kode_pelanggan DESC LIMIT 1 ");
+$ambil_rm = $db_pasien->query("SELECT kode_pelanggan FROM pelanggan ORDER BY kode_pelanggan DESC LIMIT 1 ");
 $no_ter = mysqli_fetch_array($ambil_rm);
 $no_rm = $no_ter['kode_pelanggan'] + 1;
 
@@ -39,7 +39,7 @@ $gol_darah = stringdoang($_POST['gol_darah']);
 $penjamin = stringdoang($_POST['penjamin']);
 $tanggal_lahir = tanggal_mysql($tanggal_lahir);
 
-$perintah = $db->prepare("INSERT INTO pelanggan (
+$perintah = $db_pasien->prepare("INSERT INTO pelanggan (
   kode_pelanggan,
   nama_pelanggan,
   jenis_kelamin,
@@ -97,8 +97,8 @@ $perintah->execute();
 
     if (!$perintah) 
     {
-    die('Query Error : '.$db->errno.
-    ' - '.$db->error);
+    die('Query Error : '.$db_pasien->errno.
+    ' - '.$db_pasien->error);
     }
     else 
     {   
@@ -110,7 +110,7 @@ $perintah->execute();
 
 
 //Untuk Memutuskan Koneksi Ke Database
-mysqli_close($db);   
+mysqli_close($db_pasien);   
 
     ?>
 
