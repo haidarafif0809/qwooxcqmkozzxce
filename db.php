@@ -17,4 +17,20 @@ if ($db->connect_error) {
 }
 
 
+$servername_pasien = "localhost";
+$username_pasien = "root";
+$password_pasien = "";
+$dbname_pasien = "db_pasien";
+
+$conn_pasien = mysqli_connect($servername_pasien, $username_pasien, $password_pasien, $dbname_pasien) or die("Connection failed: " . mysqli_connect_error());
+
+// perintah untuk mengkoneksikan php ke database mysql
+$db_pasien = new mysqli('localhost','root','','db_pasien');
+
+
+// Check connection
+if ($db_pasien->connect_error) {
+    die("Connection failed: " . $db_pasien->connect_error);
+}
+
 ?>
