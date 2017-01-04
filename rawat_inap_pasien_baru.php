@@ -210,7 +210,7 @@ $dq = mysqli_fetch_array($q);
   <select class="form-control ss" id="penjamin" name="penjamin" required="" autocomplete="off">
 
  <?php 
-  $query = $db->query("SELECT nama FROM penjamin ");
+  $query = $db->query("SELECT nama FROM penjamin ORDER BY id ASC");
   while ( $data = mysqli_fetch_array($query)) 
   {
   echo "<option value='".$data['nama']."'>".$data['nama']."</option>";
@@ -580,17 +580,6 @@ $dq = mysqli_fetch_array($q);
 </div> <!--row utama--> 
 </div> <!--container-->
 
-<!--script datepicker-->
-<script>
-  $(function() {
-  $( "#tanggal_lahir" ).pickadate({ selectYears: 100, format: 'dd-mm-yyyy'});
-  });
-  </script>
-<!--end script datepicker-->
-  
-
-
-
 <!--script chossen
 <script>
 $(".ss").chosen({no_results_text: "Oops, Tidak Ada !"});
@@ -707,7 +696,7 @@ return val;
 
 <script type="text/javascript">
 
-$("#tanggal_lahir").change(function(){
+$("#tanggal_lahir").blur(function(){
 
 function hitung_umur(tanggal_input){
 
@@ -747,10 +736,17 @@ return val;
 }
 
 
-
     var tanggal_lahir = $("#tanggal_lahir").val();
-    var umur = hitung_umur(tanggal_lahir);
-    if (tanggal_lahir == '')
+    var date = new Date(tanggal_lahir);
+    var tanggal = (date.getMonth() + 1) + '-' + date.getDate() + '-' +  date.getFullYear();
+
+    var umur = hitung_umur(tanggal);
+    if (umur == "NaN Tahun" || umur == "NaN Bulan") {
+      var tanggal_lahir = $("#tanggal_lahir").val();
+      var umur = hitung_umur(tanggal_lahir);
+      $("#umur").val(umur);
+    }
+    else if (tanggal_lahir == '')
     {
     
     }
