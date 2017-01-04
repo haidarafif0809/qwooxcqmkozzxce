@@ -322,7 +322,6 @@ if ($registrasi_rj['registrasi_rj_lihat'] > 0) {
 <div class="form-group">
 <label> Dokter </label>
 <select style="font-size:15px; height:35px" name="petugas_dokter" id="petugas_dokter" class="form-control" >
-<option value="">Cari Petugas</option>
  <?php 
     
     //untuk menampilkan semua data pada tabel pelanggan dalam DB

@@ -2,7 +2,7 @@
     // memasukan file db.php
     include 'db.php';
     // mengirim data no faktur menggunakan metode POST
-    $nama = $_POST['dari_akun'];
+    $nama = stringdoang($_POST['dari_akun']);
     // menampilakn hasil penjumlahan subtotal dengan ALIAS total pembelian, pada tabel tbs pembelian
     // berdasarkan no faktur
 // MENCARI JUMLAH KAS
