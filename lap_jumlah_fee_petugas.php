@@ -127,9 +127,7 @@ include 'db.php';
   $( ".tanggal_cari" ).pickadate({ selectYears: 100, format: 'yyyy-mm-dd'});
   });
 
- $(function() {
-    $( ".jam_cari" ).pickatime({format: 'hh:ii:ss', twelvehour: false });
-  }); 
+ 
   // /PICKERDATE
 </script>
 
