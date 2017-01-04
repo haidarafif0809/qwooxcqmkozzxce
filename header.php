@@ -38,6 +38,7 @@
     	<script type="text/javascript" src="js/jquery-2.2.3.min.js"></script>		<script src="my.js"></script>
 		<script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
 		<script src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap4.min.js"></script>
+<script type="text/javascript" src="jquery.ui.timepicker.js?v=0.3.3"></script>
 		
 
 		<script src="chosen/chosen.jquery.js"></script>
