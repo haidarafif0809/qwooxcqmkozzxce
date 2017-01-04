@@ -234,9 +234,8 @@ opacity: 0.9;
 <div class="form-group">
   <label for="sel1">Penjamin</label>
   <select class="form-control" id="penjamin" name="penjamin"  autocomplete="off">
- <option value=""> --SILAKAN PILIH--</option>
   <?php 
-  $query = $db->query("SELECT nama FROM penjamin ");
+  $query = $db->query("SELECT nama FROM penjamin ORDER BY id ASC ");
   while ( $data = mysqli_fetch_array($query)) 
   {
   echo "<option value='".$data['nama']."'>".$data['nama']."</option>";
@@ -261,7 +260,7 @@ opacity: 0.9;
    
 <div class="form-group">
     <label for="alamat">Tanggal Lahir</label>
-    <input style="height: 20px;" type="text" class="form-control" id="tanggal_lahir" name="tanggal_lahir"  autocomplete="off">
+    <input style="height: 20px;" type="date" class="form-control" id="tanggal_lahir" name="tanggal_lahir"  autocomplete="off">
 </div>
 
 <div class="form-group" >
@@ -506,6 +505,7 @@ tr:nth-child(even){background-color: #f2f2f2}
 
      
 </script>
+
 
 <!--  end script untuk akhir detail layanan PERUSAHAAN -->
 
@@ -813,19 +813,29 @@ else{
 <!--end script panggil pasien-->
 
 
+<!--<script type="text/javascript">
+//tanggal_lahir
+ $(function() {
+   
+$( "#tanggal_lahir" ).datepicker({
+  dateFormat: "dd-mm-yy", changeYear: true ,  yearRange: "1800:2500"
+});
+});
+//end tanggal_LAHIR
+</script>
+
 <script>
+//tanggal_lahir
   $(function() {
   $( "#tanggal_lahir" ).pickadate({ selectYears: 100, format: 'dd-mm-yyyy'});
   });
-  </script>
-<!--end script datepicker-->
+  </script>-->
 
+<script type="text/javascript">
 
-<script>
+$("#tanggal_lahir").blur(function(){
 
 function hitung_umur(tanggal_input){
-
-
 
 var now = new Date(); //Todays Date   
 var birthday = tanggal_input;
@@ -833,7 +843,7 @@ birthday=birthday.split("-");
 
 var dobDay = birthday[0]; 
 var dobMonth = birthday[1];
-var dobYear = birthday[2];
+var dobYear= birthday[2];
 
 var nowDay= now.getDate();
 var nowMonth = now.getMonth() + 1;  //jan=0 so month+1
@@ -863,18 +873,24 @@ return val;
 }
 
 
-$( "#tanggal_lahir" ).change(function(){
     var tanggal_lahir = $("#tanggal_lahir").val();
-    var umur = hitung_umur(tanggal_lahir);
-if (tanggal_lahir == '')
-{
+    var date = new Date(tanggal_lahir);
+    var tanggal = (date.getMonth() + 1) + '-' + date.getDate() + '-' +  date.getFullYear();
 
-}
-else
-{
-  $("#umur").val(umur);
-
-}
+    var umur = hitung_umur(tanggal);
+    if (umur == "NaN Tahun" || umur == "NaN Bulan") {
+      var tanggal_lahir = $("#tanggal_lahir").val();
+      var umur = hitung_umur(tanggal_lahir);
+      $("#umur").val(umur);
+    }
+    else if (tanggal_lahir == '')
+    {
+    
+    }
+    else
+    {
+    $("#umur").val(umur);
+    }
 
 });
 </script>
