@@ -63,7 +63,7 @@ include 'db.php';
                   <div class="col-sm-2"> 
                   <input type="hidden" name="nama_petugas" id="nama_petugas" class="form-control" placeholder="Nama Petugas">
 
-                  <input type="text" name="nama_petugas_value" style="font-size:15px; height:15px" id="nama_petugas_value" class="form-control" placeholder="Nama Petugas" required="" >
+                  <input type="text" name="nama_petugas_value" style="font-size:15px; height:15px" id="nama_petugas_value" class="form-control" placeholder="Nama Petugas" required="" > 
 
                   </div>                  
 

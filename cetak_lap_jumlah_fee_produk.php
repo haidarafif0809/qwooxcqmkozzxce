@@ -12,7 +12,7 @@ $sampai_jam = stringdoang($_GET['sampai_jam']);
 
 $waktu_dari = $dari_tanggal." ".$dari_jam;
 $waktu_sampai = $sampai_tanggal." ".$sampai_jam;
-
+  
 
     $query0 = $db->query("SELECT lfp.id,lfp.tanggal,u.nama FROM laporan_fee_produk lfp INNER JOIN user u ON lfp.nama_petugas = u.id WHERE lfp.nama_petugas = '$nama_petugas' AND lfp.waktu >= '$waktu_dari' AND lfp.waktu <= '$waktu_sampai'");
     $data0 = mysqli_fetch_array($query0);
