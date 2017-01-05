@@ -84,7 +84,7 @@ echo '<button type="button" class="btn btn-info" data-toggle="modal" data-target
 
 					<div class="form-group">
 					<label> Password </label><br>
-					<input type="text" name="password" id="password" class="form-control" required="" autocomplete="off">
+					<input type="password" name="password" id="password" class="form-control" required="" autocomplete="off">
 					</div>
 
 					<div class="form-group">

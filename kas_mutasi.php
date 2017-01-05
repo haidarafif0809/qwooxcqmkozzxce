@@ -266,6 +266,7 @@ echo '<button type="button" id="tambah" class="btn btn-info" data-toggle="modal"
 <span id="tabel_baru">
 <table id="table_mutasi" class="table table-bordered table-sm">
 		<thead>
+			<th style='background-color: #4CAF50; color:white'> Cetak </th>
 			<th style='background-color: #4CAF50; color:white'> Nomor Faktur </th>
 			<th style='background-color: #4CAF50; color:white'> Keterangan </th>
 			<th style='background-color: #4CAF50; color:white'> Dari Akun </th>
@@ -316,7 +317,7 @@ if ($kas_mutasi['kas_mutasi_edit'] > 0) {
             }
           },
             "fnCreatedRow": function( nRow, aData, iDataIndex ) {
-              $(nRow).attr('class','tr-id-'+aData[12]+'');
+              $(nRow).attr('class','tr-id-'+aData[13]+'');
             },
         });
       });
@@ -512,7 +513,6 @@ else{
 		$("#ke_akun1").val('');
 		$("#jumlah2").val('');
 		$(".alert").show('fast');
-		window.location.href = 'kas_mutasi.php';		
 
 		setTimeout(tutupalert, 100);
 		$(".modal").modal("hide");
@@ -630,14 +630,40 @@ $(document).ready(function(){
 			$.post("update_kas_mutasi.php",{no_faktur:no_faktur,tanggal:tanggal,jumlah_baru:jumlah_baru,jumlah:jumlah,ke_akun:ke_akun,dari_akun:dari_akun,keterangan:keterangan,id:id},function(data){
 
 		
-			$(".alert").show('fast');
-			$("#edit_jumlah").val('');
-			$("#tabel_baru").load('tabel_kas_mutasi.php');
-			setTimeout(tutupalert, 2000);
-			$(".modal").modal("hide");
+			$('#table_mutasi').DataTable().destroy();
+		      var dataTable = $('#table_mutasi').DataTable( {
+		          "processing": true,
+		          "serverSide": true,
+		          "ajax":{
+		            url :"datatable_kas_mutasi.php", // json datasource
+		            type: "post",  // method  , by default get
+		            error: function(){  // error handling
+		              $(".employee-grid-error").html("");
+		              $("#table_mutasi").append('<tbody class="employee-grid-error"><tr><th colspan="3">No data found in the server</th></tr></tbody>');
+		              $("#employee-grid_processing").css("display","none");
+		              
+		            }
+		          },
+		            "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+		              $(nRow).attr('class','tr-id-'+aData[13]+'');
+		            },
+		        })
 
+		$("#tanggal1").val('');
+		$("#tambah_faktur").val('');
+		$("#keterangan").val(dari_akun1);
+		$("#dari_akun1").val('');
+		$("#ke_akun1").val('');
+		$("#jumlah2").val('');
+		$(".alert").show('fast');
+
+		setTimeout(tutupalert, 100);
+		$(".modal").modal("hide");
+		
 		});
 
+		}
+	function tutupmodal() {
 		}
 
 		});

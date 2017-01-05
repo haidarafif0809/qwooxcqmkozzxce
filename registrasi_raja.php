@@ -259,9 +259,8 @@ if ($registrasi_rj['registrasi_rj_lihat'] > 0) {
 <div class="form-group">
   <label for="sel1">Penjamin</label>
   <select class="form-control" id="penjamin" name="penjamin"  autocomplete="off">
- <option value=""> --SILAKAN PILIH--</option>
   <?php 
-  $query = $db->query("SELECT nama FROM penjamin ");
+  $query = $db->query("SELECT nama FROM penjamin ORDER BY id ASC ");
   while ( $data = mysqli_fetch_array($query)) 
   {
   echo "<option value='".$data['nama']."'>".$data['nama']."</option>";
@@ -286,7 +285,7 @@ if ($registrasi_rj['registrasi_rj_lihat'] > 0) {
    
 <div class="form-group">
     <label for="alamat">Tanggal Lahir</label>
-    <input style="height: 20px;" type="text" class="form-control" id="tanggal_lahir" name="tanggal_lahir"  autocomplete="off">
+    <input style="height: 20px;" type="date" class="form-control" id="tanggal_lahir" name="tanggal_lahir"  autocomplete="off">
 </div>
 
 <div class="form-group" >
@@ -312,7 +311,7 @@ if ($registrasi_rj['registrasi_rj_lihat'] > 0) {
 
 <div class="form-group" >
   <label for="umur">No Telp</label>
-  <input style="height: 20px;" type="text" onkeypress="return isNumberKey(event)" class="form-control " id="hp" name="hp" autocomplete="off">
+  <input style="height: 20px;" type="text"  class="form-control " id="hp" name="hp" autocomplete="off">
 </div>
 
 </div>
@@ -323,7 +322,6 @@ if ($registrasi_rj['registrasi_rj_lihat'] > 0) {
 <div class="form-group">
 <label> Dokter </label>
 <select style="font-size:15px; height:35px" name="petugas_dokter" id="petugas_dokter" class="form-control" >
-<option value="">Cari Petugas</option>
  <?php 
     
     //untuk menampilkan semua data pada tabel pelanggan dalam DB
@@ -404,32 +402,32 @@ if ($registrasi_rj['registrasi_rj_lihat'] > 0) {
 <div class="form-group">
 
   <label >Sistole / Diastole (mmHg)</label>
-  <input style="height: 20px;" type="text" onkeypress="return isNumberKey(event)" class="form-control" id="sistole_distole" name="sistole_distole"  autocomplete="off"> 
+  <input style="height: 20px;" type="text"  class="form-control" id="sistole_distole" name="sistole_distole"  autocomplete="off"> 
 </div>
 
 <div class="form-group">
   <label >Frekuensi Pernapasan (kali/menit)</label>
-  <input style="height: 20px;" type="text" onkeypress="return isNumberKey(event)" class="form-control" id="respiratory_rate" name="respiratory_rate"  autocomplete="off"> 
+  <input style="height: 20px;" type="text"  class="form-control" id="respiratory_rate" name="respiratory_rate"  autocomplete="off"> 
 </div>
 
 <div class="form-group">
   <label >Suhu (°C)</label>
-  <input style="height: 20px;" type="text" onkeypress="return isNumberKey(event)" class="form-control" id="suhu" name="suhu" autocomplete="off"> 
+  <input style="height: 20px;" type="text"  class="form-control" id="suhu" name="suhu" autocomplete="off"> 
 </div>
 
 <div class="form-group ">
    <label >Nadi (kali/menit)</label>
-   <input style="height: 20px;" type="text" onkeypress="return isNumberKey(event)" class="form-control" id="nadi" name="nadi"  autocomplete="off"> 
+   <input style="height: 20px;" type="text"  class="form-control" id="nadi" name="nadi"  autocomplete="off"> 
 </div>
 
 <div class="form-group ">
   <label >Berat Badan (kg)</label>
-  <input style="height: 20px;" type="text" onkeypress="return isNumberKey(event)" class="form-control" id="berat_badan" name="berat_badan"  autocomplete="off"> 
+  <input style="height: 20px;" type="text"  class="form-control" id="berat_badan" name="berat_badan"  autocomplete="off"> 
 </div>
 
 <div class="form-group ">
   <label >Tinggi Badan (cm)</label>
-  <input style="height: 20px;" type="text" onkeypress="return isNumberKey(event)" sclass="form-control" id="tinggi_badan" name="tinggi_badan"  autocomplete="off"> 
+  <input style="height: 20px;" type="text"  sclass="form-control" id="tinggi_badan" name="tinggi_badan"  autocomplete="off"> 
 </div>
 
 
@@ -468,6 +466,7 @@ tr:nth-child(even){background-color: #f2f2f2}
     <thead>
       <tr>
              <th style='background-color: #4CAF50; color: white'>Aksi</th>
+             <th style='background-color: #4CAF50; color: white'>Edit</th>
              <th style='background-color: #4CAF50; color: white'>Batal </th>
              <th style='background-color: #4CAF50; color: white'>No REG</th>
              <th style='background-color: #4CAF50; color: white'>No RM </th>
@@ -496,7 +495,7 @@ tr:nth-child(even){background-color: #f2f2f2}
 
 
 
-<!--   script untuk detail layanan PERUSAHAAN PENJAMIN-->
+<!--   script untuk Batal-->
 <script type="text/javascript">
      $(document).on('click', '.pilih2', function (e) {  
                var reg = $(this).attr('data-reg');
@@ -521,9 +520,27 @@ tr:nth-child(even){background-color: #f2f2f2}
                     
                     $("#detail2").modal('hide');
                     
-                    $(".tr-id-"+id+"").remove();
                     $.post("proses_keterangan_batal.php",{reg:reg, keterangan:keterangan},function(data){
-                      
+                      $('#table_rawat_jalan').DataTable().destroy();
+     
+                  var dataTable = $('#table_rawat_jalan').DataTable( {
+                      "processing": true,
+                      "serverSide": true,
+                      "ajax":{
+                        url :"datatable_registrasi_rawat_jalan.php", // json datasource
+                        type: "post",  // method  , by default get
+                        error: function(){  // error handling
+                          $(".employee-grid-error").html("");
+                          $("#table_rawat_jalan").append('<tbody class="employee-grid-error"><tr><th colspan="3">No data found in the server</th></tr></tbody>');
+                          $("#employee-grid_processing").css("display","none");
+                          }
+                      },
+                         "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+
+                          $(nRow).attr('class','tr-id-'+aData[12]+'');         
+
+                      }
+                    });
                     });
 
                     
@@ -531,8 +548,7 @@ tr:nth-child(even){background-color: #f2f2f2}
 
      
 </script>
-
-<!--  end script untuk akhir detail layanan PERUSAHAAN -->
+<!--  end script untuk batal-->
 
 <!--script ambil data pasien modal-->
 <script type="text/javascript">
@@ -838,19 +854,29 @@ else{
 <!--end script panggil pasien-->
 
 
+<!--<script type="text/javascript">
+//tanggal_lahir
+ $(function() {
+   
+$( "#tanggal_lahir" ).datepicker({
+  dateFormat: "dd-mm-yy", changeYear: true ,  yearRange: "1800:2500"
+});
+});
+//end tanggal_LAHIR
+</script>
+
 <script>
+//tanggal_lahir
   $(function() {
   $( "#tanggal_lahir" ).pickadate({ selectYears: 100, format: 'dd-mm-yyyy'});
   });
-  </script>
-<!--end script datepicker-->
+  </script>-->
 
+<script type="text/javascript">
 
-<script>
+$("#tanggal_lahir").blur(function(){
 
 function hitung_umur(tanggal_input){
-
-
 
 var now = new Date(); //Todays Date   
 var birthday = tanggal_input;
@@ -858,7 +884,7 @@ birthday=birthday.split("-");
 
 var dobDay = birthday[0]; 
 var dobMonth = birthday[1];
-var dobYear = birthday[2];
+var dobYear= birthday[2];
 
 var nowDay= now.getDate();
 var nowMonth = now.getMonth() + 1;  //jan=0 so month+1
@@ -888,18 +914,24 @@ return val;
 }
 
 
-$( "#tanggal_lahir" ).change(function(){
     var tanggal_lahir = $("#tanggal_lahir").val();
-    var umur = hitung_umur(tanggal_lahir);
-if (tanggal_lahir == '')
-{
+    var date = new Date(tanggal_lahir);
+    var tanggal = (date.getMonth() + 1) + '-' + date.getDate() + '-' +  date.getFullYear();
 
-}
-else
-{
-  $("#umur").val(umur);
-
-}
+    var umur = hitung_umur(tanggal);
+    if (umur == "NaN Tahun" || umur == "NaN Bulan") {
+      var tanggal_lahir = $("#tanggal_lahir").val();
+      var umur = hitung_umur(tanggal_lahir);
+      $("#umur").val(umur);
+    }
+    else if (tanggal_lahir == '')
+    {
+    
+    }
+    else
+    {
+    $("#umur").val(umur);
+    }
 
 });
 </script>

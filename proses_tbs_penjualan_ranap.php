@@ -24,7 +24,17 @@ session_start();
  $apoteker = stringdoang($_POST['petugas_farmasi']);
  $petugas_lain = stringdoang($_POST['petugas_lain']);
 
-$session_id = session_id();
+ $session_id = session_id();
+
+$select_produk = $db->query("SELECT nama_barang FROM barang WHERE kode_barang = '$kode' ");
+$data_produk = mysqli_fetch_array($select_produk);
+
+if ($nama == "") {
+  $nama = $data_produk['nama_barang'];
+}
+else{  
+ $nama = stringdoang($_POST['nama_barang']);
+}
 
 
  if(strpos($diskon, "%") !== false)

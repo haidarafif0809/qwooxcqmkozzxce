@@ -107,6 +107,19 @@ $sttus = mysqli_num_rows($penjual);
 	}	
 
 
+if ($registrasi_ri['registrasi_ri_edit'])
+  	{
+
+		if ($sttus == 0) {
+         $nestedData[] = "<a href='edit_registrasi_rawat_inap.php?no_reg=". $row['no_reg']."' class='btn btn-floating btn-small btn-info' ><i class='fa fa-edit'></i> </a>";
+		}
+		else {
+			$nestedData[] = "";
+		}
+	}	
+
+
+
 $query_z = $db->query("SELECT status,no_faktur,nama,kode_gudang FROM penjualan WHERE no_reg = '$row[no_reg]' ");
 $data_z = mysqli_fetch_array($query_z);
 

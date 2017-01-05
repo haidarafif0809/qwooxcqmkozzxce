@@ -43,7 +43,7 @@ $query=mysqli_query($conn, $sql) or die("show_data_kas_keluar.php: get employees
 $data = array();
 while($row=mysqli_fetch_array($query) ) {  // preparing an array
 	$nestedData=array();
-
+	$nestedData[] = "<a href='cetak_kas_keluar.php?no_faktur=".$row['no_faktur']."' target='blank' class='btn btn-primary' data-target='blank'> <i class='fa fa-print'></i> Cetak </a>";
 	$nestedData[] = $row["no_faktur"];
 	$nestedData[] = $row["nama_daftar_akun"];
 	$nestedData[] = rp($row["jumlah"]);

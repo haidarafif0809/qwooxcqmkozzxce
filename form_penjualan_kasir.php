@@ -2436,6 +2436,7 @@ $(function() {
           var kode_barang = $(this).val();
           var level_harga = $("#level_harga").val();
           var session_id = $("#session_id").val();
+          var no_reg = $("#no_reg").val();
           var kode_barang = kode_barang.substr(0, kode_barang.indexOf('('));
           
 
@@ -2444,7 +2445,7 @@ $(function() {
           $("#jumlahbarang").val(data);
           });
 
-          $.post('cek_kode_barang_tbs_penjualan.php',{kode_barang:kode_barang,session_id:session_id}, function(data){
+          $.post('cek_kode_barang_tbs_penjualan.php',{kode_barang:kode_barang,no_reg:no_reg}, function(data){
           
           if(data == 1){
           alert("Anda Tidak Bisa Menambahkan Barang Yang Sudah Ada, Silakan Edit atau Pilih Barang Yang Lain !");
