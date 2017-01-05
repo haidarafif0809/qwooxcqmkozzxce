@@ -546,7 +546,7 @@ Level 7
 </div>
 
     <input type="hidden" class="form-control" name="limit_stok" autocomplete="off" id="limit_stok" placeholder="Limit Stok" >
-    <input type="text" class="form-control" name="ber_stok" id="ber_stok" placeholder="Ber Stok" >
+    <input type="hidden" class="form-control" name="ber_stok" id="ber_stok" placeholder="Ber Stok" >
     <input type="hidden" class="form-control" name="harga_lama" id="harga_lama" placeholder="harga lama">
     <input type="hidden" class="form-control" name="harga_baru" id="harga_baru" placeholder="harga baru">
     <input type="hidden" class="form-control" name="jumlahbarang" id="jumlahbarang">
