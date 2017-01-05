@@ -48,7 +48,7 @@ $waktu_sampai = $sampai_tanggal." ".$sampai_jam;
       <tr><td  width="40%">Nama Petugas</td> <td> :&nbsp;</td> <td> <?php echo $data0['nama']; ?></td></tr>
       <tr><td  width="40%">Tanggal</td> <td> :&nbsp;</td> <td> <?php echo tanggal($data0['tanggal']); ?> </td>
       </tr>
-      <tr><td  width="40%">Periode</td> <td> :&nbsp;</td> <td> <?php echo tanggal($dari_tanggal); ?> s/d <?php echo tanggal($sampai_tanggal); ?> </td></tr>
+      <tr><td  width="40%">Periode</td> <td> :&nbsp;</td> <td> <?php echo $waktu_dari; ?> s/d <?php echo $waktu_sampai; ?> </td></tr>
       <tr><td  width="40%">User</td> <td> :&nbsp;</td> <td> <?php echo $_SESSION['user_name']; ?> </td></tr>
    
             
