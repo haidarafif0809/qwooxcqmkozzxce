@@ -513,11 +513,15 @@ tr:nth-child(even){background-color: #f2f2f2}
 
       <th style='background-color: #4CAF50; color: white'>Rujuk Tempat Lain</th>
       <th style='background-color: #4CAF50; color: white'>Rujuk Rawat Inap</th>
+
 <?php endif ?>
 
 <?php  if ($rekam_medik['rekam_medik_ugd_lihat'] > 0):?>
-
 <th style='background-color: #4CAF50; color: white'>Rekam medik</th> 
+      <?php endif; ?>
+
+<?php  if ($registrasi_ugd['registrasi_ugd_edit'] > 0):?>
+<th style='background-color: #4CAF50; color: white'>Edit</th> 
       <?php endif; ?>
 
       <th style='background-color: #4CAF50; color: white'>No REG</th>

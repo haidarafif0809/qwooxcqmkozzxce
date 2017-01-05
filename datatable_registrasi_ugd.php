@@ -5,7 +5,7 @@ include 'sanitasi.php';
 /* Database connection end */
 
 //untuk otoritas akses
-$pilih_akses_registrasi_rj = $db->query("SELECT registrasi_rj_lihat, registrasi_rj_tambah, registrasi_rj_edit, registrasi_rj_hapus FROM otoritas_registrasi WHERE id_otoritas = '$_SESSION[otoritas_id]'");
+$pilih_akses_registrasi_rj = $db->query("SELECT registrasi_ugd_lihat, registrasi_ugd_tambah, registrasi_ugd_edit, registrasi_ugd_hapus FROM otoritas_registrasi WHERE id_otoritas = '$_SESSION[otoritas_id]'");
 $registrasi_rj = mysqli_fetch_array($pilih_akses_registrasi_rj);
 
 $qertu= $db->query("SELECT nama_dokter,nama_paramedik,nama_farmasi FROM penetapan_petugas ");
@@ -119,8 +119,10 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 	  $nestedData[] = "<a href='rekam_medik_ugd.php' class='btn btn-floating btn-small btn-info penjualan' ><i class='fa fa-medkit'></i></a>";
 	}
 
+	if ($registrasi_ugd['registrasi_ugd_edit'] > 0) {
 
-	
+	$nestedData[] = "<a href='edit_registrasi_ugd.php?no_reg=". $row['no_reg']."' class='btn btn-floating btn-small btn-info ' ><i class='fa fa-edit'></i></a> ";
+	}
 	$nestedData[] = $row["no_reg"];
 	$nestedData[] = $row["no_rm"];
 	$nestedData[] = $row["penjamin"];
