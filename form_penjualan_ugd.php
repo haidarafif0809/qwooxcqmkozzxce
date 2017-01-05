@@ -488,6 +488,8 @@ Level 7
     <input style="height:15px;" type="text" class="form-control" name="jumlah_barang" autocomplete="off" id="jumlah_barang" onkeydown="return numbersonly(this, event);"  placeholder="Jumlah" >
   </div>
 
+  <input style="height:15px;" type="hidden" class="form-control" name="kolom_cek_harga" autocomplete="off" id="kolom_cek_harga" placeholder="Jumlah" value="0" >
+
   <div class="col-sm-2">
           
           <select style="font-size:15px; height:40px" name="satuan_konversi" id="satuan_konversi" class="form-control"  >
@@ -1133,6 +1135,7 @@ $(document).ready(function(){
     var subtotal = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#total2").val()))));
     var pot_fakt_per = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#potongan_persen").val()))));
     var pot_fakt_rp = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#potongan_penjualan").val()))));
+    var kolom_cek_harga = $("#kolom_cek_harga").val();
 
 
     if (tax == '') {
@@ -1275,7 +1278,11 @@ $(document).ready(function(){
      $("#potongan1").val('');
      $("#tax1").val('');
      
-  if (a > 0){
+if (kolom_cek_harga == '0') {
+  alert ("Harga Tidak Sesuai, Tunggu Sebentar !");  
+
+}
+else if (a > 0){
   alert("Anda Tidak Bisa Menambahkan Barang Yang Sudah Ada, Silakan Edit atau Pilih Barang Yang Lain !");
        $("#kode_barang").focus();
   }
@@ -1304,6 +1311,7 @@ $(document).ready(function(){
      $("#pembayaran_penjualan").val('');
      $("#kredit").val('');
     $("#sisa_pembayaran_penjualan").val('');
+    $("#kolom_cek_harga").val('0');
      
      });
 
@@ -1334,6 +1342,7 @@ $(document).ready(function(){
      $("#pembayaran_penjualan").val('');
      $("#kredit").val('');
     $("#sisa_pembayaran_penjualan").val('');
+    $("#kolom_cek_harga").val('0');
 
      
      });
@@ -2181,28 +2190,13 @@ $("#cari_produk_penjualan").click(function(){
      var ber_stok = $("#ber_stok").val();
      var stok = jumlahbarang - jumlah_barang;
 
+if( limit_stok > stok  ){
 
+      if (ber_stok == Barang ) {
+              alert ("Persediaan Barang Ini Sudah Mencapai Batas Limit Stok, Segera Lakukan Pembelian !");
+      }
 
-if (stok < 0 )
-
-  {
-
-       if (ber_stok == 'Jasa') {
-       
-       }
-       
-       else{
-       alert ("Jumlah Melebihi Stok!");
-       $("#jumlah_barang").val('');
-       }
-
-
-    }
-
-    else if( limit_stok > stok  ){
-
-      alert ("Persediaan Barang Ini Sudah Mencapai Batas Limit Stok, Segera Lakukan Pembelian !");
-    }
+}
   });
 })
 
@@ -2472,42 +2466,49 @@ $(function() {
         $('#harga_produk').val(json.harga_jual);
         $('#harga_baru').val(json.harga_jual);
         $('#harga_lama').val(json.harga_jual);
+        $('#kolom_cek_harga').val('1');
         }
         else if (level_harga == "harga_2") {
 
         $('#harga_produk').val(json.harga_jual2);
         $('#harga_baru').val(json.harga_jual2);
         $('#harga_lama').val(json.harga_jual2);
+        $('#kolom_cek_harga').val('1');
         }
         else if (level_harga == "harga_3") {
 
         $('#harga_produk').val(json.harga_jual3);
         $('#harga_baru').val(json.harga_jual3);
         $('#harga_lama').val(json.harga_jual3);
+        $('#kolom_cek_harga').val('1');
         }
         else if (level_harga == "harga_4") {
 
         $('#harga_produk').val(json.harga_jual4);
         $('#harga_baru').val(json.harga_jual4);
         $('#harga_lama').val(json.harga_jual4);
+        $('#kolom_cek_harga').val('1');
         }
         else if (level_harga == "harga_5") {
 
         $('#harga_produk').val(json.harga_jual5);
         $('#harga_baru').val(json.harga_jual5);
         $('#harga_lama').val(json.harga_jual5);
+        $('#kolom_cek_harga').val('1');
         }
         else if (level_harga == "harga_6") {
 
         $('#harga_produk').val(json.harga_jual6);
         $('#harga_baru').val(json.harga_jual6);
         $('#harga_lama').val(json.harga_jual6);
+        $('#kolom_cek_harga').val('1');
         }
         else if (level_harga == "harga_7") {
 
         $('#harga_produk').val(json.harga_jual7);
         $('#harga_baru').val(json.harga_jual7);
         $('#harga_lama').val(json.harga_jual7);
+        $('#kolom_cek_harga').val('1');
         }
 
         $('#nama_barang').val(json.nama_barang);
