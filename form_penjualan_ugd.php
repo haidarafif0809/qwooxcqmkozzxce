@@ -1269,6 +1269,9 @@ $(document).ready(function(){
     $("#total2").val(tandaPemisahTitik(total_akhir1));
     
      $("#jumlah_barang").val('');
+     $("#harga_baru").val('');
+     $("#harga_produk").val('');
+     $("#harga_lama").val('');
      $("#potongan1").val('');
      $("#tax1").val('');
      

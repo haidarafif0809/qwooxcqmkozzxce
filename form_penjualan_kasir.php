@@ -1385,6 +1385,9 @@ $(document).ready(function(){
 
       
     
+     $("#harga_baru").val('');
+     $("#harga_produk").val('');
+     $("#harga_lama").val('');
      $("#jumlah_barang").val('');
      $("#potongan1").val('');
      $("#tax1").val('');
