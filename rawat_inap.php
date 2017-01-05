@@ -380,6 +380,8 @@ else
 <button style="display:none" data-toggle="collapse tooltip" accesskey="k" id="kembali" class="btn btn-primary" data-placement='top' title='Klik untuk kembali ke utama.'><i class="fa fa-reply"></i> <u>K</u>embali </button>
 
 <a href="rawat_inap_pasien_baru.php" accesskey="b" class="btn btn-info"><i class="fa fa-plus"></i> Pasien <u>B</u>aru </a>
+
+
 <?php endif ?>
 
 
@@ -433,10 +435,17 @@ else
 
   
   <div class="form-group">
-    <label for=""><u>C</u>ari Pasien Lama</label>
-    <input style="height: 20px;" type="text" accesskey="c" class="form-control" name="cari" autocomplete="off" id="cari_migrasi" placeholder="Ketikkan Nama Pasien Lama">
+    <div class="col-sm-6">
+      <label for=""><u>C</u>ari Pasien Lama</label>
+      <input style="height: 20px;" type="text" accesskey="c" class="form-control" name="cari" autocomplete="off" id="cari_migrasi" placeholder="Nama Pasien Lama">
+    </div>
 
+    <div class="col-sm-6">
+      <label for="">Alamat Pasien</label>
+      <input style="height: 20px;" type="text" accesskey="c" class="form-control" name="cari" autocomplete="off" id="alamat_pasien_lama" placeholder="Alamat Pasien Lama">
+      </div>
   </div>
+
 <button id="submit_cari" accesskey="a" type="button" class="btn btn-success" data-toggle='tooltip' data-placement='top' title='Pastikan anda telah mengetikkan nama pasien di kolom cari pasien  sebelum klik tombol cari.'><i class="fa fa-search"></i> C<u>a</u>ri</button>
   <br>
 <br>
@@ -776,14 +785,12 @@ tr:nth-child(even){background-color: #f2f2f2}
     $(document).on('click','#submit_cari',function() {
   
     var cari = $("#cari_migrasi").val();
-    if (cari == '') {
-  
-  $("#hasil_migrasi").html('');
-  
+    if (cari == '') {  
+      $("#hasil_migrasi").html('');  
     }
     else
     {
-            $("#myModal").modal('show');
+        $("#myModal").modal('show');
         $('#pasien_lama').DataTable().destroy();
 
           var dataTable = $('#pasien_lama').DataTable( {
@@ -797,6 +804,7 @@ tr:nth-child(even){background-color: #f2f2f2}
             url :"show_data_pasien.php", // json datasource
              "data": function ( d ) {
                 d.cari = $("#cari_migrasi").val();
+                d.alamat = $("#alamat_pasien_lama").val();
                 // d.custom = $('#myInput').val();
                 // etc
             },

@@ -11,8 +11,6 @@ include 'db.php';
 $perintah = $db->query("SELECT * FROM stok_opname");
 
 
-
-
  ?>
 
 
@@ -193,7 +191,6 @@ echo '<a href="form_stok_opname.php"  class="btn btn-info" > <i class="fa fa-plu
 			<th style='background-color: #4CAF50; color:white'> Jam </th>
 			<th style='background-color: #4CAF50; color:white'> Status </th>
 			<th style='background-color: #4CAF50; color:white'> Total Selisih</th>
-			
 			<th style='background-color: #4CAF50; color:white'> User </th>
 			<th style='background-color: #4CAF50; color:white'> Detail </th>
 			<?php 
@@ -212,12 +209,13 @@ echo '<a href="form_stok_opname.php"  class="btn btn-info" > <i class="fa fa-plu
 							}
 			?>
 			
+			<th style='background-color: #4CAF50; color:white'> Download </th>
+			
 		</thead>
 		
 	</table>
 </span>
 </div>
-
 
 <br>
 	<button type="submit" id="submit_close" class="glyphicon glyphicon-remove btn btn-danger" style="display:none"></button> 
