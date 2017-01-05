@@ -132,6 +132,14 @@ include 'db.php';
 </script>
 
 
+<script type="text/javascript">
+            $(document).ready(function() {
+                $('.jam_cari').timepicker({
+                    showPeriodLabels: false
+                });
+              });
+</script>
+
 <script type="text/javascript" language="javascript" >
    $(document).ready(function() {
         var dataTable = $('#table_fee_petugas').DataTable( {
@@ -190,6 +198,9 @@ include 'db.php';
         var nama_petugas = $("#nama_petugas").val();
         var dari_tanggal = $("#dari_tanggal").val();        
         var sampai_tanggal = $("#sampai_tanggal").val();
+       var dari_jam = $("#dari_jam").val();        
+        var sampai_jam = $("#sampai_jam").val();
+
           if (nama_petugas == '') {
             alert("Silakan nama petugas diisi terlebih dahulu.");
             $("#cari_petugas").focus();
@@ -202,6 +213,15 @@ include 'db.php';
             alert("Silakan sampai tanggal diisi terlebih dahulu.");
             $("#sampai_tanggal").focus();
           }
+          else if (dari_jam == '') {
+            alert("Silakan dari jam diisi terlebih dahulu.");
+            $("#dari_jam").focus();
+          }
+          else if (sampai_jam == '') {
+            alert("Silakan sampai jam diisi terlebih dahulu.");
+            $("#sampai_jam").focus();
+          }
+
             else{ 
               //TABLE KOMISI PRODUK
               var dataTable = $('#table_petugas').DataTable( {
@@ -235,7 +255,7 @@ include 'db.php';
     
     $("#cetak").show();
 
-          $("#cetak_lap").attr("href", "cetak_lap_jumlah_fee_produk.php?dari_tanggal="+dari_tanggal+"&sampai_tanggal="+sampai_tanggal+"");
+          $("#cetak_lap").attr("href", "cetak_lap_jumlah_fee_produk.php?dari_tanggal="+dari_tanggal+"&dari_jam="+dari_jam+"&sampai_tanggal="+sampai_tanggal+"&sampai_jam="+sampai_jam+"");
 }//end else
         });
         $("form").submit(function(){
