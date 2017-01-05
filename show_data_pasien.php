@@ -4,6 +4,7 @@ include 'db.php';
 include 'sanitasi.php';
 
 $cari = stringdoang($_POST['cari']);
+$alamat = stringdoang($_POST['alamat']);
 
 // storing  request (ie, get/post) global array to a variable  
 $requestData= $_REQUEST;
@@ -24,7 +25,10 @@ $columns = array(
 
 );     
 
-// getting total number records without any search
+
+if ($alamat == "") {
+  
+  // getting total number records without any search
 
 $sql = "SELECT id,kode_pelanggan,nama_pelanggan,jenis_kelamin,alamat_sekarang,tgl_lahir,no_telp,gol_darah,tanggal,penjamin  ";
 $sql.=" FROM pelanggan ";
@@ -44,6 +48,34 @@ $sql.=" AND (kode_pelanggan LIKE '%$cari%' ";
 $sql.=" OR nama_pelanggan LIKE '%$cari%' ";
 $sql.=" OR alamat_sekarang LIKE '%$cari%') "; 
 $sql.=" AND kode_pelanggan != '' ";
+
+}
+else{
+
+  // getting total number records without any search
+
+$sql = "SELECT id,kode_pelanggan,nama_pelanggan,jenis_kelamin,alamat_sekarang,tgl_lahir,no_telp,gol_darah,tanggal,penjamin  ";
+$sql.=" FROM pelanggan ";
+$sql.=" WHERE (kode_pelanggan LIKE '%$cari%' ";
+$sql.=" OR nama_pelanggan LIKE '%$cari%' ";
+$sql.=" OR alamat_sekarang LIKE '%$cari%') "; 
+$sql.=" AND alamat_sekarang = '$alamat' ";
+$sql.=" AND kode_pelanggan != '' ";
+
+$query=mysqli_query($conn_pasien, $sql) or die("Eror 1");
+$totalData = mysqli_num_rows($query);
+$totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
+
+
+$sql = "SELECT id,kode_pelanggan,nama_pelanggan,jenis_kelamin,alamat_sekarang,tgl_lahir,no_telp,gol_darah,tanggal,penjamin ";
+$sql.=" FROM pelanggan WHERE 1=1";
+$sql.=" AND (kode_pelanggan LIKE '%$cari%' ";
+$sql.=" OR nama_pelanggan LIKE '%$cari%' ";
+$sql.=" OR alamat_sekarang LIKE '%$cari%') "; 
+$sql.=" AND alamat_sekarang = '$alamat' ";
+$sql.=" AND kode_pelanggan != '' ";
+
+}
 
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
   $sql.=" AND ( kode_pelanggan LIKE '".$requestData['search']['value']."%' ";    
