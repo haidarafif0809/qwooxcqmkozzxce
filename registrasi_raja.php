@@ -311,7 +311,7 @@ if ($registrasi_rj['registrasi_rj_lihat'] > 0) {
 
 <div class="form-group" >
   <label for="umur">No Telp</label>
-  <input style="height: 20px;" type="text" onkeypress="return isNumberKey(event)" class="form-control " id="hp" name="hp" autocomplete="off">
+  <input style="height: 20px;" type="text"  class="form-control " id="hp" name="hp" autocomplete="off">
 </div>
 
 </div>
@@ -402,32 +402,32 @@ if ($registrasi_rj['registrasi_rj_lihat'] > 0) {
 <div class="form-group">
 
   <label >Sistole / Diastole (mmHg)</label>
-  <input style="height: 20px;" type="text" onkeypress="return isNumberKey(event)" class="form-control" id="sistole_distole" name="sistole_distole"  autocomplete="off"> 
+  <input style="height: 20px;" type="text"  class="form-control" id="sistole_distole" name="sistole_distole"  autocomplete="off"> 
 </div>
 
 <div class="form-group">
   <label >Frekuensi Pernapasan (kali/menit)</label>
-  <input style="height: 20px;" type="text" onkeypress="return isNumberKey(event)" class="form-control" id="respiratory_rate" name="respiratory_rate"  autocomplete="off"> 
+  <input style="height: 20px;" type="text"  class="form-control" id="respiratory_rate" name="respiratory_rate"  autocomplete="off"> 
 </div>
 
 <div class="form-group">
   <label >Suhu (°C)</label>
-  <input style="height: 20px;" type="text" onkeypress="return isNumberKey(event)" class="form-control" id="suhu" name="suhu" autocomplete="off"> 
+  <input style="height: 20px;" type="text"  class="form-control" id="suhu" name="suhu" autocomplete="off"> 
 </div>
 
 <div class="form-group ">
    <label >Nadi (kali/menit)</label>
-   <input style="height: 20px;" type="text" onkeypress="return isNumberKey(event)" class="form-control" id="nadi" name="nadi"  autocomplete="off"> 
+   <input style="height: 20px;" type="text"  class="form-control" id="nadi" name="nadi"  autocomplete="off"> 
 </div>
 
 <div class="form-group ">
   <label >Berat Badan (kg)</label>
-  <input style="height: 20px;" type="text" onkeypress="return isNumberKey(event)" class="form-control" id="berat_badan" name="berat_badan"  autocomplete="off"> 
+  <input style="height: 20px;" type="text"  class="form-control" id="berat_badan" name="berat_badan"  autocomplete="off"> 
 </div>
 
 <div class="form-group ">
   <label >Tinggi Badan (cm)</label>
-  <input style="height: 20px;" type="text" onkeypress="return isNumberKey(event)" sclass="form-control" id="tinggi_badan" name="tinggi_badan"  autocomplete="off"> 
+  <input style="height: 20px;" type="text"  sclass="form-control" id="tinggi_badan" name="tinggi_badan"  autocomplete="off"> 
 </div>
 
 
