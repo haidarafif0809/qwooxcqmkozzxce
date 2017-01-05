@@ -1798,7 +1798,7 @@ else
         var no_faktur = $("#no_faktur").val();
     var kode_barang = $("#kode_barang").val();
     var kode_barang = kode_barang.substr(0, kode_barang.indexOf('('));
- $.post('cek_tbs_penjualan_apotek.php',{kode_barang:kode_barang,no_faktur:no_faktur}, function(data){
+ $.post('cek_tbs_edit_penjualan_apotek.php',{kode_barang:kode_barang,no_faktur:no_faktur}, function(data){
   
   if(data == 1){
     alert("Anda Tidak Bisa Menambahkan Barang Yang Sudah Ada, Silakan Edit atau Pilih Barang Yang Lain !");

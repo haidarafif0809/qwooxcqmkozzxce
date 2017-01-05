@@ -3,9 +3,9 @@
 include 'db.php';
 
 $kode_barang = $_POST['kode_barang'];
-$session_id = $_POST['session_id'];
+$no_faktur = $_POST['no_faktur'];
 
-$query = $db->query("SELECT * FROM tbs_penjualan WHERE kode_barang = '$kode_barang' AND session_id = '$session_id'");
+$query = $db->query("SELECT * FROM tbs_penjualan WHERE kode_barang = '$kode_barang' AND no_faktur = '$no_faktur'");
 $jumlah = mysqli_num_rows($query);
 
 
