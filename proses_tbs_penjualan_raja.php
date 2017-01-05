@@ -25,6 +25,15 @@ session_start();
  $id_user = stringdoang($_POST['id_user']);
  $tipe_produk = stringdoang($_POST['ber_stok']);
 
+$select_produk = $db->query("SELECT nama_barang FROM barang WHERE kode_barang = '$kode' ");
+$data_produk = mysqli_fetch_array($select_produk);
+
+if ($nama == "") {
+  $nama = $data_produk['nama_barang'];
+}
+else{  
+ $nama = stringdoang($_POST['nama_barang']);
+}
 
           if(strpos($diskon, "%") !== false)
           {
