@@ -495,7 +495,7 @@ tr:nth-child(even){background-color: #f2f2f2}
 
 
 
-<!--   script untuk detail layanan PERUSAHAAN PENJAMIN-->
+<!--   script untuk Batal-->
 <script type="text/javascript">
      $(document).on('click', '.pilih2', function (e) {  
                var reg = $(this).attr('data-reg');
@@ -520,9 +520,27 @@ tr:nth-child(even){background-color: #f2f2f2}
                     
                     $("#detail2").modal('hide');
                     
-                    $(".tr-id-"+id+"").remove();
                     $.post("proses_keterangan_batal.php",{reg:reg, keterangan:keterangan},function(data){
-                      
+                      $('#table_rawat_jalan').DataTable().destroy();
+     
+                  var dataTable = $('#table_rawat_jalan').DataTable( {
+                      "processing": true,
+                      "serverSide": true,
+                      "ajax":{
+                        url :"datatable_registrasi_rawat_jalan.php", // json datasource
+                        type: "post",  // method  , by default get
+                        error: function(){  // error handling
+                          $(".employee-grid-error").html("");
+                          $("#table_rawat_jalan").append('<tbody class="employee-grid-error"><tr><th colspan="3">No data found in the server</th></tr></tbody>');
+                          $("#employee-grid_processing").css("display","none");
+                          }
+                      },
+                         "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+
+                          $(nRow).attr('class','tr-id-'+aData[12]+'');         
+
+                      }
+                    });
                     });
 
                     
@@ -530,9 +548,7 @@ tr:nth-child(even){background-color: #f2f2f2}
 
      
 </script>
-
-
-<!--  end script untuk akhir detail layanan PERUSAHAAN -->
+<!--  end script untuk batal-->
 
 <!--script ambil data pasien modal-->
 <script type="text/javascript">
