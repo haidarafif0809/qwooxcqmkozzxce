@@ -235,7 +235,6 @@ $data_lab = mysqli_fetch_array($sum_lab);
 </div>  <!-- END ROW dari kode pelanggan - ppn -->
 
 
-
 <div class="row">
 
   <div class="col-sm-3">
@@ -2178,7 +2177,7 @@ if (stok < 0 )
 
   {
 
-       if (ber_stok == 'Jasa') {
+       if (ber_stok == 'Jasa' || ber_stok == 'BHP' ) {
        
        }
        
