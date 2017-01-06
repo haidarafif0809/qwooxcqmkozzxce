@@ -204,7 +204,7 @@ else
 <ul class="nav nav-tabs yellow darken-4" role="tablist">
 <?php 
 if ($registrasi_rj['registrasi_rj_lihat'] > 0) {
-        echo "<li class='nav-item'><a class='nav-link active' href='registrasi_raja.php'> Antrian Pasien R. Jalan </a></li>";
+        echo "<li class='nav-item'><a class='nav-link' href='registrasi_raja.php'> Antrian Pasien R. Jalan </a></li>";
         echo "<li class='nav-item'><a class='nav-link' href='pasien_sudah_panggil.php' > Pasien Dipanggil </a></li>";
       }
       else{
@@ -212,7 +212,7 @@ if ($registrasi_rj['registrasi_rj_lihat'] > 0) {
       echo "<li></li>";
       }
  ?> 
-       <li class="nav-item"><a class="nav-link" href='pasien_sudah_masuk.php' > Pasien Masuk R.Dokter </a></li>
+       <li class="nav-item"><a class="nav-link active" href='pasien_sudah_masuk.php' > Pasien Masuk R.Dokter </a></li>
 
  <?php 
 if ($registrasi_rj['registrasi_rj_lihat'] > 0) {
