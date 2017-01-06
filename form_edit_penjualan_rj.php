@@ -1934,7 +1934,7 @@ alert("Silakan Bayar Piutang");
 
  $.post("cek_simpan_subtotal_penjualan.php",{total:total,no_reg:no_reg,no_faktur:no_faktur,tax:tax,potongan:potongan,biaya_adm:biaya_adm},function(data) {
 
-  if (data == "Oke") {
+  if (data == "1") {
 
 
 $("#transaksi_baru").show();
@@ -2095,7 +2095,7 @@ $("#piutang").hide();
 
  $.post("cek_simpan_subtotal_penjualan.php",{total:total,no_reg:no_reg,no_faktur:no_faktur,tax:tax,potongan:potongan,biaya_adm:biaya_adm},function(data) {
 
-  if (data == "Oke") {
+  if (data == "1") {
 
   $("#penjualan").hide();
   $("#simpan_sementara").hide();

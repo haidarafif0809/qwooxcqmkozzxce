@@ -26,7 +26,6 @@ $columns = array(
 	10=> 'aksi',
 	11=> 'selesai'
 
-
 );
 
 // getting total number records without any search
@@ -84,7 +83,10 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
         $table23 = $db->query("SELECT status FROM penjualan WHERE no_reg = '$row[no_reg]' ");
         $dataki = mysqli_fetch_array($table23);
 
-    if ($dataki['status'] == 'Lunas' OR  $dataki['status'] == 'Piutang'  OR  $dataki['status'] == 'Piutang Apotek'  )
+        $tableww = $db->query("SELECT dosis FROM detail_penjualan WHERE no_reg = '$row[no_reg]' ");
+        $kel_ugd = mysqli_fetch_array($tableww);
+
+    if ($dataki['status'] == 'Lunas' OR  $dataki['status'] == 'Piutang'  OR  $dataki['status'] == 'Piutang Apotek' AND ($kel_ugd['dosis'] != ''))
         {
         	$nestedData[] = "<a href='selesai_ugd.php?no_reg=".$row['no_reg']."&id=".$row['id']."' class='btn-floating btn-info btn-small'><i class='fa  fa-check'></i> </a>";
         }
