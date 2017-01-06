@@ -23,10 +23,10 @@ $tax = angkadoang($_POST['tax']);
  $totali = $data['total_penjualan'];
 
 if ($subtotal_tampil == $totali) {
-		echo "Oke";
+		echo "1";
 	}
 	else{
-		echo "Zonk";
+		echo "0";
 	}
 
 //Untuk Memutuskan Koneksi Ke Database
