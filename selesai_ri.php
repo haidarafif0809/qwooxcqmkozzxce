@@ -8,6 +8,6 @@ $id = stringdoang($_GET['id']);
 
 $update = $db->query("UPDATE rekam_medik_inap SET status = 'Selesai' WHERE id = '$id' ");
 
-header('location:rekam_medik_ranap.php');
+    echo '<META HTTP-EQUIV="Refresh" Content="0; URL=rekam_medik_inap.php">';
 
  ?>
