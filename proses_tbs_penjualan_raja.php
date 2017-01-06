@@ -48,9 +48,20 @@ else{
           }
 
 
-          $a = $harga * $jumlah;
+            if ($ppn == 'Exclude') {
+             $a = $harga * $jumlah;
 
-          $satu = 1;
+              
+              $x = $a - $potongan_tampil;
+
+              $hasil_tax = $x * ($pajak / 100);
+
+              $tax_persen = round($hasil_tax);
+            }
+            else{
+                        $a = $harga * $jumlah;
+
+              $satu = 1;
 
               $x = $a - $potongan_tampil;
 
@@ -61,6 +72,8 @@ else{
               $tax_persen1 = $x - round($hasil_tax2);
 
               $tax_persen = round($tax_persen1);
+            }
+
 
 $tanggal_sekarang = date('Y-m-d');
 $jam = date('H:i:s');
@@ -86,18 +99,13 @@ $subtotal_p = $subtotal_d + $pajak;
 
 
 if ($ppn == 'Exclude') {
-  # code...
-          $satu1 = 1;
+
 
               $xyz = $subtotal - $potongan_jadi;
 
-              $hasil_tax212 = $satu1 + ($pajak / 100);
+              $hasil_tax212 = $xyz * ($pajak / 100);
 
-              $hasil_tax411 = $xyz / $hasil_tax212;
-
-              $tax_persen100 = $xyz - round($hasil_tax411);
-
-              $subtotaljadi = $harga * $jumlah - $potongan_jadi + round($tax_persen100); 
+              $subtotaljadi = $harga * $jumlah - $potongan_jadi + round($hasil_tax212); 
 
 
 }
@@ -255,18 +263,12 @@ $subtotal_p = $subtotal_d + $pajak;
 
 if ($ppn == 'Exclude') {
   # code...
-          $satu1 = 1;
 
-              $xxx = $subtotal - $potongan_jadi;
+              $abc = $subtotal - $potongan_jadi;
 
-              $hasil_tax11 = $satu1 + ($pajak / 100);
+              $hasil_tax411 = $abc * ($pajak / 100);
 
-              $hasil_tax211 = $xxx / $hasil_tax11;
-
-              $tax_persen11 = $xxx - round($hasil_tax211);
-
-              $subtotaljadi = $harga * $jumlah - $potongan_jadi + round($tax_persen11); 
-
+              $subtotaljadi = $harga * $jumlah - $potongan_jadi + round($hasil_tax411); 
 
 }
 else

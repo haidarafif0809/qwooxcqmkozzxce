@@ -1516,8 +1516,7 @@ $("#kode_barang").focus();
  <script type="text/javascript">
   $(document).ready(function(){
 $("#cari_produk_penjualan").click(function(){
-  var no_faktur = $("#nomor_faktur_penjualan"
-).val();
+  var no_faktur = $("#nomor_faktur_penjualan").val();
 
   $.post("cek_tbs_penjualan_pesanan.php",{no_faktur: "<?php echo $no_faktur; ?>"},function(data){
         if (data != "1") {
@@ -2663,8 +2662,8 @@ $(document).ready(function(){
 
 <script type="text/javascript">
     $(document).ready(function(){
-
-      $("#tax").attr("disabled", true);
+/*
+      $("#tax").attr("disabled", true);*/
 
 
     $("#ppn").change(function(){
@@ -2674,13 +2673,11 @@ $(document).ready(function(){
 
   if (ppn == "Include"){
 
-      $("#tax").attr("disabled", true);
-      $("#tax1").attr("disabled", false);
+      $("#tax1").attr("disabled", true);
   }
 
   else if (ppn == "Exclude") {
     $("#tax1").attr("disabled", true);
-      $("#tax").attr("disabled", false);
   }
   else{
 

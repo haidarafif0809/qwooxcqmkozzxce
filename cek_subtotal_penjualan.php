@@ -31,10 +31,10 @@ include 'sanitasi.php';
 $total_tbs = ($total_sum - $diskon) + $biaya_admin;
 
 if ($total_akhir == $total_tbs) {
-		echo "1";
+		echo 1;
 	}
 	else{
-		echo "0";
+		echo 0;
 	}
 
 //Untuk Memutuskan Koneksi Ke Database
