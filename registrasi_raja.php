@@ -330,7 +330,7 @@ if ($registrasi_rj['registrasi_rj_lihat'] > 0) {
    
 <div class="form-group">
     <label for="alamat">Tanggal Lahir</label>
-    <input style="height: 20px;" type="date" class="form-control" id="tanggal_lahir" name="tanggal_lahir"  autocomplete="off">
+    <input style="height: 20px;" type="text" class="form-control" id="tanggal_lahir" name="tanggal_lahir"  autocomplete="off">
 </div>
 
 <div class="form-group" >
