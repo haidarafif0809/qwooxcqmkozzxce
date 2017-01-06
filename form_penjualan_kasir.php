@@ -1041,42 +1041,49 @@ if (level_harga == "harga_1") {
   $("#harga_produk").val(harga_level_1);
   $("#harga_lama").val(harga_level_1);
   $("#harga_baru").val(harga_level_1);
+  $('#kolom_cek_harga').val('1');
 }
 
 else if (level_harga == "harga_2") {
   $("#harga_produk").val(harga_level_2);
   $("#harga_baru").val(harga_level_2);
   $("#harga_lama").val(harga_level_2);
+  $('#kolom_cek_harga').val('1');
 }
 
 else if (level_harga == "harga_3") {
   $("#harga_produk").val(harga_level_3);
   $("#harga_lama").val(harga_level_3);
   $("#harga_baru").val(harga_level_3);
+  $('#kolom_cek_harga').val('1');
 }
 
 else if (level_harga == "harga_4") {
   $("#harga_produk").val(harga_level_4);
   $("#harga_lama").val(harga_level_4);
   $("#harga_baru").val(harga_level_4);
+  $('#kolom_cek_harga').val('1');
 }
 
 else if (level_harga == "harga_5") {
   $("#harga_produk").val(harga_level_5);
   $("#harga_lama").val(harga_level_5);
   $("#harga_baru").val(harga_level_5);
+  $('#kolom_cek_harga').val('1');
 }
 
 else if (level_harga == "harga_6") {
   $("#harga_produk").val(harga_level_6);
   $("#harga_lama").val(harga_level_6);
   $("#harga_baru").val(harga_level_6);
+  $('#kolom_cek_harga').val('1');
 }
 
 else if (level_harga == "harga_7") {
   $("#harga_produk").val(harga_level_7);
   $("#harga_lama").val(harga_level_7);
   $("#harga_baru").val(harga_level_7);
+  $('#kolom_cek_harga').val('1');
 }
 
   document.getElementById("jumlahbarang").value = $(this).attr('jumlah-barang');
