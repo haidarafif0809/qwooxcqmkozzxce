@@ -14,7 +14,7 @@ $sampai_tanggal = stringdoang($_GET['sampai_tanggal']);
 
 $take_penjamin = $db->query("SELECT r.id, r.no_rm, r.no_reg, r.nama_pasien, r.jenis_kelamin, r.umur_pasien, r.alamat_pasien, r.penjamin, r.hp_pasien, r.tanggal, p.total FROM registrasi r INNER JOIN penjualan p ON r.no_reg = p.no_reg WHERE r.penjamin = '$penjamin' AND  r.tanggal >= '$dari_tanggal' AND r.tanggal <= '$sampai_tanggal' AND r.jenis_pasien = 'Rawat Jalan'");
 
-$query01 = $db->query("SELECT SUM(p.total) AS total_penjualan INNER JOIN registrasi r ON p.no_reg = r.no_reg FROM penjualan WHERE r.jenis_pasien = 'Rawat Jalan' AND p.penjamin = '$penjamin' AND p.tanggal >= '$dari_tanggal' AND p.tanggal <= '$sampai_tanggal'");
+$query01 = $db->query("SELECT SUM(p.total) AS total_penjualan FROM penjualan p INNER JOIN registrasi r ON p.no_reg = r.no_reg WHERE r.jenis_pasien = 'Rawat Jalan' AND p.penjamin = '$penjamin' AND p.tanggal >= '$dari_tanggal' AND p.tanggal <= '$sampai_tanggal' AND r.jenis_pasien = 'Rawat Jalan' ");
 $cek01 = mysqli_fetch_array($query01);
 $total = $cek01['total_penjualan'];
 ?>

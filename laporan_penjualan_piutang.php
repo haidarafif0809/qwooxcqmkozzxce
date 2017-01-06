@@ -36,6 +36,7 @@ include 'db.php';
 <span id="result">
 <table id="tableuser" class="table table-hover table-sm">
 		<thead>
+			<th style="background-color: #4CAF50; color: white;"> Penjamin </th>
 			<th style="background-color: #4CAF50; color: white;"> Tanggal </th>
 			<th style="background-color: #4CAF50; color: white;"> Tanggal JT </th>
 			<th style="background-color: #4CAF50; color: white;"> Nomor Faktur </th>
@@ -102,7 +103,7 @@ include 'db.php';
           var dataTable = $('#tableuser').DataTable( {
           "processing": true,
           "serverSide": true,
-          "info":     false,
+          "info":     true,
           "language": {
         "emptyTable":     "My Custom Message On Empty Table"
     },

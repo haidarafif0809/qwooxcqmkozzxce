@@ -4,8 +4,6 @@ include 'sanitasi.php';
 include 'db.php';
 
 $sampai_tanggal = stringdoang($_POST['sampai_tanggal']);
-$tahun_sekarang = date('Y');
-$dari_tanggal = $tahun_sekarang."-01-01";
 
 
 ?>
@@ -33,9 +31,6 @@ border-collapse: collapse;
 
 <div class="container"></div>
 
-<h3><center><b>PERIODE TANGGAL <?php echo $dari_tanggal; ?> s/d <?php echo $sampai_tanggal; ?></b></center></h3>
-<hr>
-
 
 <div class="card card-block">
 
@@ -60,7 +55,7 @@ while ($datagrup_akun = mysqli_fetch_array($select_grup_akun))
 {
 echo "<h4 style='padding-left:25px'><b>" .$datagrup_akun['kode_grup_akun']." ".$datagrup_akun['nama_grup_akun'] ."</b></h4>";
 
-$select_daftar_akun_inner = $db->query("SELECT da.kode_daftar_akun, da.nama_daftar_akun, da.grup_akun, SUM(j.debit) - SUM(j.kredit)  AS total FROM daftar_akun da INNER JOIN jurnal_trans j  ON da.kode_daftar_akun = j.kode_akun_jurnal WHERE da.kategori_akun = 'Aktiva' AND da.grup_akun= '$datagrup_akun[kode_grup_akun]' AND date(j.waktu_jurnal) >= '$dari_tanggal' AND date(j.waktu_jurnal) <= '$sampai_tanggal'  GROUP BY j.kode_akun_jurnal");
+$select_daftar_akun_inner = $db->query("SELECT da.kode_daftar_akun, da.nama_daftar_akun, da.grup_akun, SUM(j.debit) - SUM(j.kredit)  AS total FROM daftar_akun da INNER JOIN jurnal_trans j  ON da.kode_daftar_akun = j.kode_akun_jurnal WHERE da.kategori_akun = 'Aktiva' AND da.grup_akun= '$datagrup_akun[kode_grup_akun]' AND date(j.waktu_jurnal) <= '$sampai_tanggal'  GROUP BY j.kode_akun_jurnal");
 $datadaftar_akun_inner = mysqli_fetch_array($select_daftar_akun_inner);
 
 
@@ -76,7 +71,7 @@ echo "<h4 style='padding-left:50px'><b>" .$datagrup_akun_sub['kode_grup_akun']."
 
  // ISI / SUB DARI AKTIVA >> 
 $kas_bank = 0;
-$select_daftar_akun_inner = $db->query("SELECT da.kode_daftar_akun, da.nama_daftar_akun, SUM(j.debit) - SUM(j.kredit)  AS total FROM daftar_akun da INNER JOIN jurnal_trans j  ON da.kode_daftar_akun = j.kode_akun_jurnal WHERE da.kategori_akun = 'Aktiva' AND da.grup_akun= '$datagrup_akun_sub[kode_grup_akun]' AND date(j.waktu_jurnal) >= '$dari_tanggal' AND date(j.waktu_jurnal) <= '$sampai_tanggal'  GROUP BY j.kode_akun_jurnal");
+$select_daftar_akun_inner = $db->query("SELECT da.kode_daftar_akun, da.nama_daftar_akun, SUM(j.debit) - SUM(j.kredit)  AS total FROM daftar_akun da INNER JOIN jurnal_trans j  ON da.kode_daftar_akun = j.kode_akun_jurnal WHERE da.kategori_akun = 'Aktiva' AND da.grup_akun= '$datagrup_akun_sub[kode_grup_akun]' AND date(j.waktu_jurnal) <= '$sampai_tanggal'  GROUP BY j.kode_akun_jurnal");
 
 
 while ($datadaftar_akun_inner = mysqli_fetch_array($select_daftar_akun_inner))
@@ -158,7 +153,7 @@ $total_aktiva = $total_aktiva_lancar;
 else{
 
 $total_persediaan_aktiva_tetap = 0;
-$select_daftar_akun_inner = $db->query("SELECT da.kode_daftar_akun, da.nama_daftar_akun, da.grup_akun, SUM(j.debit) - SUM(j.kredit)  AS total FROM daftar_akun da INNER JOIN jurnal_trans j  ON da.kode_daftar_akun = j.kode_akun_jurnal WHERE da.kategori_akun = 'Aktiva' AND da.grup_akun= '$datagrup_akun[kode_grup_akun]' AND date(j.waktu_jurnal) >= '$dari_tanggal' AND date(j.waktu_jurnal) <= '$sampai_tanggal'  GROUP BY j.kode_akun_jurnal");
+$select_daftar_akun_inner = $db->query("SELECT da.kode_daftar_akun, da.nama_daftar_akun, da.grup_akun, SUM(j.debit) - SUM(j.kredit)  AS total FROM daftar_akun da INNER JOIN jurnal_trans j  ON da.kode_daftar_akun = j.kode_akun_jurnal WHERE da.kategori_akun = 'Aktiva' AND da.grup_akun= '$datagrup_akun[kode_grup_akun]' AND date(j.waktu_jurnal) <= '$sampai_tanggal'  GROUP BY j.kode_akun_jurnal");
 
 
 
@@ -271,7 +266,7 @@ while ($datagrup_akun = mysqli_fetch_array($select_grup_akun))
 {
 echo "<h4 style='padding-left:25px'><b>" .$datagrup_akun['kode_grup_akun']." ".$datagrup_akun['nama_grup_akun'] ."</b></h4>";
 
-$select_daftar_akun_inner = $db->query("SELECT da.kode_daftar_akun, da.nama_daftar_akun, da.grup_akun, SUM(j.kredit) - SUM(j.debit)  AS total FROM daftar_akun da INNER JOIN jurnal_trans j  ON da.kode_daftar_akun = j.kode_akun_jurnal WHERE da.kategori_akun = 'Kewajiban' AND da.grup_akun= '$datagrup_akun[kode_grup_akun]' AND date(j.waktu_jurnal) >= '$dari_tanggal' AND date(j.waktu_jurnal) <= '$sampai_tanggal'  GROUP BY j.kode_akun_jurnal");
+$select_daftar_akun_inner = $db->query("SELECT da.kode_daftar_akun, da.nama_daftar_akun, da.grup_akun, SUM(j.kredit) - SUM(j.debit)  AS total FROM daftar_akun da INNER JOIN jurnal_trans j  ON da.kode_daftar_akun = j.kode_akun_jurnal WHERE da.kategori_akun = 'Kewajiban' AND da.grup_akun= '$datagrup_akun[kode_grup_akun]' AND date(j.waktu_jurnal) <= '$sampai_tanggal'  GROUP BY j.kode_akun_jurnal");
 $datadaftar_akun_inner = mysqli_fetch_array($select_daftar_akun_inner);
 
 
@@ -287,7 +282,7 @@ echo "<h4 style='padding-left:50px'><b>" .$datagrup_akun_sub['kode_grup_akun']."
 
  // ISI / SUB DARI AKTIVA >> 
 $kas_bank = 0;
-$select_daftar_akun_inner = $db->query("SELECT da.kode_daftar_akun, da.nama_daftar_akun, SUM(j.kredit) - SUM(j.debit)  AS total FROM daftar_akun da INNER JOIN jurnal_trans j  ON da.kode_daftar_akun = j.kode_akun_jurnal WHERE da.kategori_akun = 'Kewajiban' AND da.grup_akun= '$datagrup_akun_sub[kode_grup_akun]' AND date(j.waktu_jurnal) >= '$dari_tanggal' AND date(j.waktu_jurnal) <= '$sampai_tanggal'  GROUP BY j.kode_akun_jurnal");
+$select_daftar_akun_inner = $db->query("SELECT da.kode_daftar_akun, da.nama_daftar_akun, SUM(j.kredit) - SUM(j.debit)  AS total FROM daftar_akun da INNER JOIN jurnal_trans j  ON da.kode_daftar_akun = j.kode_akun_jurnal WHERE da.kategori_akun = 'Kewajiban' AND da.grup_akun= '$datagrup_akun_sub[kode_grup_akun]' AND date(j.waktu_jurnal) <= '$sampai_tanggal'  GROUP BY j.kode_akun_jurnal");
 
 
 while ($datadaftar_akun_inner = mysqli_fetch_array($select_daftar_akun_inner))
@@ -373,7 +368,7 @@ else{
 
 $total_persediaan_aktiva_tetap = 0;
 
-$select_daftar_akun_inner = $db->query("SELECT da.kode_daftar_akun, da.nama_daftar_akun, da.grup_akun, SUM(j.kredit) - SUM(j.debit)  AS total FROM daftar_akun da INNER JOIN jurnal_trans j  ON da.kode_daftar_akun = j.kode_akun_jurnal WHERE da.kategori_akun = 'Kewajiban' AND da.grup_akun= '$datagrup_akun[kode_grup_akun]' AND date(j.waktu_jurnal) >= '$dari_tanggal' AND date(j.waktu_jurnal) <= '$sampai_tanggal'  GROUP BY j.kode_akun_jurnal");
+$select_daftar_akun_inner = $db->query("SELECT da.kode_daftar_akun, da.nama_daftar_akun, da.grup_akun, SUM(j.kredit) - SUM(j.debit)  AS total FROM daftar_akun da INNER JOIN jurnal_trans j  ON da.kode_daftar_akun = j.kode_akun_jurnal WHERE da.kategori_akun = 'Kewajiban' AND da.grup_akun= '$datagrup_akun[kode_grup_akun]' AND date(j.waktu_jurnal) <= '$sampai_tanggal'  GROUP BY j.kode_akun_jurnal");
 
 
 
@@ -460,11 +455,11 @@ while($data = mysqli_fetch_array($select))
   echo "<h4><b>". $data['kode_grup_akun'] ." ".$data['nama_grup_akun']."</b></h4>"; 
   echo "<hr>";
 
-$select_daftar_akun = $db->query("SELECT da.kode_daftar_akun, da.nama_daftar_akun, SUM(j.kredit) - SUM(j.debit) AS total FROM daftar_akun da INNER JOIN jurnal_trans j  ON da.kode_daftar_akun = j.kode_akun_jurnal WHERE da.kategori_akun = 'Modal' AND da.grup_akun= '$data[kode_grup_akun]' AND date(j.waktu_jurnal) >= '$dari_tanggal' AND date(j.waktu_jurnal) <= '$sampai_tanggal' GROUP BY j.kode_akun_jurnal");
+$select_daftar_akun = $db->query("SELECT da.kode_daftar_akun, da.nama_daftar_akun, SUM(j.kredit) - SUM(j.debit) AS total FROM daftar_akun da INNER JOIN jurnal_trans j  ON da.kode_daftar_akun = j.kode_akun_jurnal WHERE da.kategori_akun = 'Modal' AND da.grup_akun= '$data[kode_grup_akun]' AND date(j.waktu_jurnal) <= '$sampai_tanggal' GROUP BY j.kode_akun_jurnal");
 
 
 $total_modal = 0;
-$sum_total_laba_brjalan = $db->query("SELECT da.kode_daftar_akun, da.nama_daftar_akun, SUM(j.kredit) - SUM(j.debit) AS total FROM daftar_akun da INNER JOIN jurnal_trans j ON da.kode_daftar_akun = j.kode_akun_jurnal WHERE ( da.kategori_akun = 'Biaya' AND da.tipe_akun = 'Beban Operasional') OR ( da.kategori_akun = 'Pendapatan' AND da.tipe_akun = 'Pendapatan Penjualan') OR(da.kategori_akun = 'HPP' AND da.tipe_akun = 'Harga Pokok Penjualan') OR ( da.kategori_akun = 'Pendapatan' AND da.tipe_akun = 'Pendapatan Diluar Usaha') AND date(j.waktu_jurnal) >= '$dari_tanggal' AND date(j.waktu_jurnal) <= '$sampai_tanggal'");
+$sum_total_laba_brjalan = $db->query("SELECT da.kode_daftar_akun, da.nama_daftar_akun, SUM(j.kredit) - SUM(j.debit) AS total FROM daftar_akun da INNER JOIN jurnal_trans j ON da.kode_daftar_akun = j.kode_akun_jurnal WHERE ( da.kategori_akun = 'Biaya' AND da.tipe_akun = 'Beban Operasional') OR ( da.kategori_akun = 'Pendapatan' AND da.tipe_akun = 'Pendapatan Penjualan') OR(da.kategori_akun = 'HPP' AND da.tipe_akun = 'Harga Pokok Penjualan') OR ( da.kategori_akun = 'Pendapatan' AND da.tipe_akun = 'Pendapatan Diluar Usaha') AND date(j.waktu_jurnal) <= '$sampai_tanggal'");
 
 
 $data_laba = mysqli_fetch_array($sum_total_laba_brjalan);

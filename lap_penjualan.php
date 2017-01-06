@@ -121,9 +121,9 @@ tr:nth-child(even){background-color: #f2f2f2}
     <div class="form-group">
     <label>Kode Pelanggan :</label>
      <input type="text" id="kode_pelanggan" class="form-control" readonly=""> 
-     <input type="hidden" id="id_hapus" class="form-control" > 
+     <input type="text" id="id_hapus" class="form-control" > 
      <input type="hidden" id="kode_meja" class="form-control" > 
-     <input type="hidden" id="faktur_hapus" class="form-control" > 
+     <input type="text" id="faktur_hapus" class="form-control" > 
     </div>
    
    </form>
@@ -344,7 +344,7 @@ tr:nth-child(even){background-color: #f2f2f2}
             }
           },
               "fnCreatedRow": function( nRow, aData, iDataIndex ) {
-              $(nRow).attr('class','tr-id-'+aData[16]+'');
+              $(nRow).attr('class','tr-id-'+aData[17]+'');
             },
 
         } );
@@ -542,10 +542,10 @@ else
     var no_faktur = $(this).attr("data-faktur");
     var kode_meja = $(this).attr("kode_meja");
     $("#kode_pelanggan").val(kode_pelanggan);
+    $("#id_hapus").val(id);
     $("#faktur_hapus").val(no_faktur);
     $("#kode_meja").val(kode_meja);
     $("#modal_hapus").modal('show');
-    $("#btn_jadi_hapus").attr("data-id", id);
     
     
     });
@@ -553,7 +553,7 @@ else
     $("#btn_jadi_hapus").click(function(){
     
     
-    var id = $(this).attr("data-id");
+    var id = $("#id_hapus").val();
     var no_faktur = $("#faktur_hapus").val();
     var kode_meja = $("#kode_meja").val();
     $.post("hapus_data_penjualan.php",{id:id,no_faktur:no_faktur,kode_meja:kode_meja},function(data){

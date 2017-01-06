@@ -1516,8 +1516,7 @@ $("#kode_barang").focus();
  <script type="text/javascript">
   $(document).ready(function(){
 $("#cari_produk_penjualan").click(function(){
-  var no_faktur = $("#nomor_faktur_penjualan"
-).val();
+  var no_faktur = $("#nomor_faktur_penjualan").val();
 
   $.post("cek_tbs_penjualan_pesanan.php",{no_faktur: "<?php echo $no_faktur; ?>"},function(data){
         if (data != "1") {
@@ -1934,7 +1933,7 @@ alert("Silakan Bayar Piutang");
 
  $.post("cek_simpan_subtotal_penjualan.php",{total:total,no_reg:no_reg,no_faktur:no_faktur,tax:tax,potongan:potongan,biaya_adm:biaya_adm},function(data) {
 
-  if (data == "Oke") {
+  if (data == "1") {
 
 
 $("#transaksi_baru").show();
@@ -2095,7 +2094,7 @@ $("#piutang").hide();
 
  $.post("cek_simpan_subtotal_penjualan.php",{total:total,no_reg:no_reg,no_faktur:no_faktur,tax:tax,potongan:potongan,biaya_adm:biaya_adm},function(data) {
 
-  if (data == "Oke") {
+  if (data == "1") {
 
   $("#penjualan").hide();
   $("#simpan_sementara").hide();
@@ -2663,8 +2662,8 @@ $(document).ready(function(){
 
 <script type="text/javascript">
     $(document).ready(function(){
-
-      $("#tax").attr("disabled", true);
+/*
+      $("#tax").attr("disabled", true);*/
 
 
     $("#ppn").change(function(){
@@ -2674,13 +2673,11 @@ $(document).ready(function(){
 
   if (ppn == "Include"){
 
-      $("#tax").attr("disabled", true);
-      $("#tax1").attr("disabled", false);
+      $("#tax1").attr("disabled", true);
   }
 
   else if (ppn == "Exclude") {
     $("#tax1").attr("disabled", true);
-      $("#tax").attr("disabled", false);
   }
   else{
 
@@ -2733,48 +2730,30 @@ $(document).on('click', '.pilih', function (e) {
 
 <script type="text/javascript">
 $(document).ready(function(){ //UNTUK MENETUKAN APAKAH PPN NYA  INCLUDE ATAU EXCLUDE MAUPUN NON
- var no_faktur = $("#nomor_faktur_penjualan").val(); 
- var ppn = $("#ppn").val();
- var no_reg = $("#no_reg").val(); 
-  //menentukan ppn include  di cek dari db->tbs_pembelian
-  $.post('cek_ppn_penjualan.php',{no_faktur:no_faktur,no_reg:no_reg},function(data){
-          if (data == 1) 
-            {
-              $("#ppn").attr("disabled",true);
-              $("#ppn").val('Include');
-              $("#ppn_input").val('Include');
-              $("#tax").attr("disabled", true);
-              $("#tax").val('0');
-              $("#tax1").attr("disabled", false);
-            }
-            else if (data != 1)
-            {
-                // menentukan ppn exclude di cek dari db->pembelian
-                $.post('cek_ppn_penjualan1.php',{no_faktur:no_faktur,no_reg:no_reg},function(data1){
-                    if (data1 == 1) 
-                    {
-                      $("#ppn").attr("disabled",true);
-                      $("#ppn").val('Exclude');
-                      $("#ppn_input").val('Exclude');
-                      $("#tax1").attr("disabled", true);
-                      $("#tax1").val('');
-                      $("#tax").attr("disabled", false); 
-                    }
-                     else if (data1 != 1)
-                    {//jika bukan exclude dan include maka perintah ini jalan
-                      $("#ppn").attr("disabled",true);
-                      $("#ppn").val('Non');
-                      $("#ppn_input").val('Non');
-                      $("#tax1").attr("disabled", true);
-                      $("#tax1").val('');
-                      $("#tax").attr("disabled", true); 
-                    }
-                });
-            }
+    // cek ppn exclude 
+    var no_reg = $("#no_reg").val();
+    $.get("cek_ppn_ex.php",{no_reg:no_reg},function(data){
+      if (data == 1) {
+          $("#ppn").val('Exclude');
+     $("#ppn").attr("disabled", true);
+     $("#tax1").attr("disabled", false);
+      }
+      else if(data == 2){
 
+      $("#ppn").val('Include');
+     $("#ppn").attr("disabled", true);
+       $("#tax1").attr("disabled", false);
+      }
+      else
+      {
 
-  }); 
+     $("#ppn").val('Non');
+     $("#tax1").attr("disabled", true);
+
+      }
 });
+    });
+
 </script>
 
 <script> 
