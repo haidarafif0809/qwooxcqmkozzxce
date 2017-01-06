@@ -23,6 +23,8 @@ session_start();
  $perawat = stringdoang($_POST['petugas_paramedik']);
  $apoteker = stringdoang($_POST['petugas_farmasi']);
  $petugas_lain = stringdoang($_POST['petugas_lain']);
+ $pajak_tbs_rupiah = stringdoang($_POST['pajak_tbs_rupiah']);
+ $ppn_input = stringdoang($_POST['ppn_input']);
 
  $session_id = session_id();
 
@@ -37,6 +39,8 @@ else{
 }
 
 
+          $a = $harga * $jumlah;
+          
  if(strpos($diskon, "%") !== false)
           {
               $potongan_jadi = $a * $diskon / 100;
@@ -49,7 +53,6 @@ else{
           }
 
 
-          $a = $harga * $jumlah;
 
           $satu = 1;
 
@@ -59,8 +62,14 @@ else{
 
               $hasil_tax2 = $x / $hasil_tax;
 
-              $tax_persen = $x - $hasil_tax2;
+              $pajak_persen = $x - $hasil_tax2;
 
+    if ($ppn_input == 'Include') {
+        $tax_persen = round($pajak_persen);
+    }
+    else{
+      $tax_persen = round($pajak_tbs_rupiah);
+    }
 
 
 $tanggal_sekarang = date('Y-m-d');
@@ -104,7 +113,13 @@ $harga_1 = angkadoang($_POST['harga']);
 $subtotal = $harga_1 * $jumlah;
 $subtotal_d =  $subtotal - $diskon;
 $subtotal_p = $subtotal_d + $pajak;
- $subtotal = $harga_1 * $jumlah - $potongan_jadi; 
+
+if ($ppn_input == 'Include') {
+  $subtotal = $subtotal_tanpa_pajak;
+}
+else{
+   $subtotal = $subtotal_tanpa_pajak + $pajak_tbs_rupiah;
+}
 
 $query687 = " INSERT INTO tbs_penjualan
 (no_reg,kode_barang,nama_barang,jumlah_barang,harga,subtotal,tipe_barang,tanggal,jam,potongan,tax,session_id,satuan)
@@ -270,8 +285,14 @@ $subtotal_d =  $subtotal - $diskon;
 $subtotal_p = $subtotal_d + $pajak;
 
 
+$subtotal_tanpa_pajak = $harga_1 * $jumlah - $potongan_jadi; 
 
- $subtotal = $harga_1 * $jumlah - $potongan_jadi; 
+if ($ppn_input == 'Include') {
+  $subtotal = $subtotal_tanpa_pajak;
+}
+else{
+   $subtotal = $subtotal_tanpa_pajak + $pajak_tbs_rupiah;
+}
                              // START PERHITUNGAN FEE HARGA 1 INSERT
 
 // PERHITUNGAN UNTUK FEE DOKTER
