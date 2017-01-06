@@ -36,6 +36,8 @@ else{
  $nama = stringdoang($_POST['nama_barang']);
 }
 
+$a = $harga * $jumlah;
+
           if(strpos($diskon, "%") !== false)
           {
               $potongan_jadi = $a * $diskon / 100;
