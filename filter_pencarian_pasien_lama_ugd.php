@@ -27,21 +27,41 @@ $columns = array(
 
 );
 
+
+if ($alamat_pasien == "") {
+
+	$sql = "SELECT penjamin,kode_pelanggan,nama_pelanggan,jenis_kelamin,alamat_sekarang,tgl_lahir,no_telp,gol_darah ";
+	$sql.=" FROM pelanggan WHERE kode_pelanggan != '' ";
+	$sql.=" AND nama_pelanggan = '$nama_lengkap_pasien' ";
+
+	$query=mysqli_query($conn_pasien, $sql) or die("cek_pasien_lama_reg_ugd1.php: get employees");
+	$totalData = mysqli_num_rows($query);
+	$totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
+
+	$sql = "SELECT penjamin,kode_pelanggan,nama_pelanggan,jenis_kelamin,alamat_sekarang,tgl_lahir,no_telp,gol_darah ";
+	$sql.=" FROM pelanggan WHERE 1=1 AND kode_pelanggan != ''";
+	$sql.=" AND nama_pelanggan = '$nama_lengkap_pasien' ";
+
+}
+else{
+
+	$sql = "SELECT penjamin,kode_pelanggan,nama_pelanggan,jenis_kelamin,alamat_sekarang,tgl_lahir,no_telp,gol_darah ";
+	$sql.=" FROM pelanggan WHERE kode_pelanggan != '' ";
+	$sql.=" AND nama_pelanggan = '$nama_lengkap_pasien' AND alamat_sekarang = '$alamat_pasien' ";
+
+	$query=mysqli_query($conn_pasien, $sql) or die("cek_pasien_lama_reg_ugd1.php: get employees");
+	$totalData = mysqli_num_rows($query);
+	$totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
+
+
+	$sql = "SELECT penjamin,kode_pelanggan,nama_pelanggan,jenis_kelamin,alamat_sekarang,tgl_lahir,no_telp,gol_darah ";
+	$sql.=" FROM pelanggan WHERE 1=1 AND kode_pelanggan != ''";
+	$sql.=" AND nama_pelanggan = '$nama_lengkap_pasien' AND alamat_sekarang = '$alamat_pasien' ";
+
+}
 // getting total number records without any search
 
-$sql = "SELECT penjamin,kode_pelanggan,nama_pelanggan,jenis_kelamin,alamat_sekarang,tgl_lahir,no_telp,gol_darah ";
-$sql.=" FROM pelanggan WHERE kode_pelanggan != '' ";
-$sql.=" AND ( nama_pelanggan LIKE '%$nama_lengkap_pasien%' ";
-$sql.=" OR alamat_sekarang LIKE '%$alamat_pasien%' ) ";
-$query=mysqli_query($conn_pasien, $sql) or die("cek_pasien_lama_reg_ugd1.php: get employees");
-$totalData = mysqli_num_rows($query);
-$totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
-
-$sql = "SELECT penjamin,kode_pelanggan,nama_pelanggan,jenis_kelamin,alamat_sekarang,tgl_lahir,no_telp,gol_darah ";
-$sql.=" FROM pelanggan WHERE 1=1 AND kode_pelanggan != ''";
-$sql.=" AND nama_pelanggan = '$nama_lengkap_pasien' ";
-$sql.=" AND alamat_sekarang = '$alamat_pasien' ";
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
 	$sql.=" AND ( kode_pelanggan LIKE '".$requestData['search']['value']."%' ";    
 	$sql.=" OR nama_pelanggan LIKE '".$requestData['search']['value']."%' ";  
