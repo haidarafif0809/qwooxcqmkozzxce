@@ -1033,7 +1033,7 @@ else
   });    
   </script>
 
-  <script type="text/javascript">
+<script type="text/javascript">
   $(document).ready(function(){
 $("#cari_produk_pembelian").click(function(){
   var no_faktur = $("#nomorfaktur").val();
