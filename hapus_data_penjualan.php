@@ -119,7 +119,6 @@ if ($data_detail_penjualan['no_pesanan'] == "") {
 
 }
 
-
 $query3 = $db->query("DELETE FROM laporan_fee_produk WHERE no_faktur = '$no_faktur'");
 $query4 = $db->query("DELETE FROM laporan_fee_faktur WHERE no_faktur = '$no_faktur'");
 $query5 = $db->query("DELETE  FROM tbs_penjualan WHERE no_faktur = '$no_faktur'");

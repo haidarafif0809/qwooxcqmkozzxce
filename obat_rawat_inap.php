@@ -340,8 +340,7 @@ tr:nth-child(even){background-color: #f2f2f2}
          <th style='background-color: #4CAF50; color: white'>Jumlah</th>
 
          <?php 
-         $sss = $db->query("SELECT * FROM detail_penjualan WHERE no_reg ='$no_reg' AND tipe_produk = 'Obat Obatan' 
-          ORDER BY id DESC");
+         $sss = $db->query("SELECT * FROM detail_penjualan dp  LEFT JOIN barang b ON dp.kode_barang = b.kode_barang  WHERE dp.no_reg ='$no_reg' AND b.tipe_barang = 'Obat Obatan' ORDER BY dp.id DESC");
          $asa1 = mysqli_num_rows($sss);
          if($asa1 > 0) {?>
 
@@ -357,8 +356,8 @@ tr:nth-child(even){background-color: #f2f2f2}
 
 $query5 = $db->query("SELECT * FROM tbs_penjualan WHERE no_reg ='$no_reg' AND tipe_barang = 'Obat Obatan' ORDER BY id DESC");
 
-
-$ss = $db->query("SELECT * FROM detail_penjualan WHERE no_reg ='$no_reg' AND tipe_produk = 'Obat Obatan' ORDER BY id DESC");
+$ss = $db->query("SELECT dp.no_reg,dp.kode_barang,dp.nama_barang,dp.dosis,dp.id,dp.jumlah_barang FROM detail_penjualan dp  LEFT JOIN barang b ON dp.kode_barang = b.kode_barang  WHERE dp.no_reg ='$no_reg' AND b.tipe_barang = 'Obat Obatan' 
+          ORDER BY dp.id DESC");
 $asa = mysqli_num_rows($ss);
 if ($asa > 0)
       {

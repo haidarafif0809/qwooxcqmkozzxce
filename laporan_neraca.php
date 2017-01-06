@@ -11,7 +11,7 @@ include 'db.php';
  ?>
 
 <div class="container">
-<h1> LAPORAN NERACA </h1><hr>
+<h1> LAPORAN NERACA PERTANGGAL</h1><hr>
 
 <form id="perhari" class="form-inline" action="proses_laporan_neraca.php" method="POST" role="form">
          

@@ -72,6 +72,8 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
           $nestedData[] = "<button class='btn btn-danger btn-hapus' data-id='". $row['id'] ."'  data-faktur='". $row['no_faktur'] ."'> <span class='glyphicon glyphicon-trash'> </span> Hapus </button>";
         }
   }
+
+ $nestedData[] = "<a href='download_stok_opname.php?no_faktur=". $row['no_faktur']."' class='btn btn-success'> <i class='fa fa-download'> </i> </a>";
 		
 	$nestedData[] = $row["id"];
 	$data[] = $nestedData;

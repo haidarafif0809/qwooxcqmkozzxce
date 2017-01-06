@@ -115,7 +115,7 @@ mysqli_close($db);
     Tanggal : <?php echo tanggal($data0['tanggal']);?><br>
     ===================<br><br>
     Terima Kasih<br>
-    Selamat Datang Kembali<br>
+    Semoga Lekas Sembuh...<br>
     Telp. <?php echo $data1['no_telp']; ?><br>
 
 

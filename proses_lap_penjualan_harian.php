@@ -43,25 +43,25 @@ tr:nth-child(even){background-color: #f2f2f2}
 					while ($data = mysqli_fetch_array($perintah))
 					{
 					//menampilkan data
-						$perintah1 = $db->query("SELECT * FROM penjualan WHERE tanggal = '$data[tanggal]'");
-						$data1 = mysqli_num_rows($perintah1);
+            $perintah1 = $db->query("SELECT * FROM penjualan WHERE tanggal = '$data[tanggal]'");
+            $data1 = mysqli_num_rows($perintah1);
 
-						$perintah2 = $db->query("SELECT SUM(total) AS t_total FROM penjualan WHERE tanggal = '$data[tanggal]'");
-						$data2 = mysqli_fetch_array($perintah2);
-						$t_total = $data2['t_total'];
+            $perintah2 = $db->query("SELECT SUM(total) AS t_total FROM penjualan WHERE tanggal = '$data[tanggal]'");
+            $data2 = mysqli_fetch_array($perintah2);
+            $t_total = $data2['t_total'];
 
-						$perintah21 = $db->query("SELECT SUM(nilai_kredit) AS t_kredit FROM penjualan WHERE tanggal = '$data[tanggal]'");
-						$data21 = mysqli_fetch_array($perintah21);
-						$t_kredit = $data21['t_kredit'];
+            $perintah21 = $db->query("SELECT SUM(kredit) AS t_kredit FROM penjualan WHERE tanggal = '$data[tanggal]'");
+            $data21 = mysqli_fetch_array($perintah21);
+            $t_kredit = $data21['t_kredit'];
 
-						$t_bayar = $t_total - $t_kredit;
+            $t_bayar = $t_total - $t_kredit;
 
-					echo "<tr>
-					<td>". $data['tanggal'] ."</td>
-					<td>". $data1."</td>
-					<td>". rp($t_total) ."</td>
-					<td>". rp($t_bayar) ."</td>
-					<td>". rp($t_kredit) ."</td>
+          echo "<tr>
+          <td>". $data['tanggal'] ."</td>
+          <td>". $data1."</td>
+          <td>". rp($t_total) ."</td>
+          <td>". rp($t_bayar) ."</td>
+          <td>". rp($t_kredit) ."</td>
 
 
 					</tr>";
@@ -75,11 +75,11 @@ tr:nth-child(even){background-color: #f2f2f2}
 					</table>
 </div>
 
+
+</div>
 <br>
 
        <a href='cetak_lap_penjualan_harian.php?dari_tanggal=<?php echo $dari_tanggal; ?>&sampai_tanggal=<?php echo $sampai_tanggal; ?>' class='btn btn-success'><i class='fa fa-print'> </i> Cetak Penjualan </a>
-
-</div>
 
 <script>
 // untuk memunculkan data tabel 

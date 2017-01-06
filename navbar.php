@@ -384,7 +384,11 @@ if ($lihat['retur_lihat'] > 0){
 
 
  if ($lihat['buku_besar_lihat'] > 0){
-                            echo '<li><a href="laporan_buku_besar.php" class="waves-effect">Buku Besar</a></li>';
+                            echo '<li><a href="laporan_buku_besar.php" class="waves-effect">Buku Besar Per Periode</a></li>';
+}
+
+if ($lihat['buku_besar_lihat'] > 0){
+                            echo '<li><a href="laporan_buku_besar_per_tanggal.php" class="waves-effect">Buku Besar Per Tanggal</a></li>';
 }
 
  if ($lihat['laporan_neraca_lihat'] > 0){

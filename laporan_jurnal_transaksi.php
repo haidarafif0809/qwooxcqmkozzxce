@@ -31,7 +31,7 @@ include 'db.php';
   
   <div class="card card-block">
 
-<br>
+
 
 <div class="table-responsive"><!--membuat agar ada garis pada tabel disetiap kolom-->
 <table id="tableuser" class="table table-hover">
