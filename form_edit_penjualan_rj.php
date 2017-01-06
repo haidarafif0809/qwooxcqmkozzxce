@@ -2730,48 +2730,30 @@ $(document).on('click', '.pilih', function (e) {
 
 <script type="text/javascript">
 $(document).ready(function(){ //UNTUK MENETUKAN APAKAH PPN NYA  INCLUDE ATAU EXCLUDE MAUPUN NON
- var no_faktur = $("#nomor_faktur_penjualan").val(); 
- var ppn = $("#ppn").val();
- var no_reg = $("#no_reg").val(); 
-  //menentukan ppn include  di cek dari db->tbs_pembelian
-  $.post('cek_ppn_penjualan.php',{no_faktur:no_faktur,no_reg:no_reg},function(data){
-          if (data == 1) 
-            {
-              $("#ppn").attr("disabled",true);
-              $("#ppn").val('Include');
-              $("#ppn_input").val('Include');
-              $("#tax").attr("disabled", true);
-              $("#tax").val('0');
-              $("#tax1").attr("disabled", false);
-            }
-            else if (data != 1)
-            {
-                // menentukan ppn exclude di cek dari db->pembelian
-                $.post('cek_ppn_penjualan1.php',{no_faktur:no_faktur,no_reg:no_reg},function(data1){
-                    if (data1 == 1) 
-                    {
-                      $("#ppn").attr("disabled",true);
-                      $("#ppn").val('Exclude');
-                      $("#ppn_input").val('Exclude');
-                      $("#tax1").attr("disabled", true);
-                      $("#tax1").val('');
-                      $("#tax").attr("disabled", false); 
-                    }
-                     else if (data1 != 1)
-                    {//jika bukan exclude dan include maka perintah ini jalan
-                      $("#ppn").attr("disabled",true);
-                      $("#ppn").val('Non');
-                      $("#ppn_input").val('Non');
-                      $("#tax1").attr("disabled", true);
-                      $("#tax1").val('');
-                      $("#tax").attr("disabled", true); 
-                    }
-                });
-            }
+    // cek ppn exclude 
+    var no_reg = $("#no_reg").val();
+    $.get("cek_ppn_ex.php",{no_reg:no_reg},function(data){
+      if (data == 1) {
+          $("#ppn").val('Exclude');
+     $("#ppn").attr("disabled", true);
+     $("#tax1").attr("disabled", false);
+      }
+      else if(data == 2){
 
+      $("#ppn").val('Include');
+     $("#ppn").attr("disabled", true);
+       $("#tax1").attr("disabled", false);
+      }
+      else
+      {
 
-  }); 
+     $("#ppn").val('Non');
+     $("#tax1").attr("disabled", true);
+
+      }
 });
+    });
+
 </script>
 
 <script> 

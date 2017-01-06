@@ -1673,14 +1673,7 @@ alert("Silakan Bayar Piutang");
 });
 
                $("#penjualan").mouseleave(function(){
-               
-               $.get('no_faktur_jl.php', function(data) {
-               /*optional stuff to do after getScript */ 
-               
-               $("#nomor_faktur_penjualan").val(data);
-               $("#no_faktur0").val(data);
-               
-               });
+
                var kode_pelanggan = $("#kd_pelanggan").val();
                if (kode_pelanggan == ""){
                $("#kd_pelanggan").attr("disabled", false);
@@ -1811,13 +1804,7 @@ alert("Silakan Bayar Piutang");
 
                $("#piutang").mouseleave(function(){
                
-               $.get('no_faktur_jl.php', function(data) {
-               /*optional stuff to do after getScript */ 
-               
-               $("#nomor_faktur_penjualan").val(data);
-               $("#no_faktur0").val(data);
-               
-               });
+
                var kode_pelanggan = $("#kd_pelanggan").val();
                if (kode_pelanggan == ""){
                $("#kd_pelanggan").attr("disabled", false);
@@ -2792,9 +2779,9 @@ $(function() {
         $("#transaksi_baru").show();
         $("#total1").val('');
 
- $.post("cek_subtotal_penjualan.php",{total:total,no_reg:no_reg,potongan:potongan,tax:tax,biaya_adm:biaya_adm},function(data) {
+ $.post("cek_subtotal_penjualan.php",{total:total,no_reg:no_reg,potongan:potongan,/*tax:tax,*/biaya_adm:biaya_adm},function(data) {
 
-  if (data == "Oke") {
+  if (data == 1) {
 
     $.post("proses_simpan_barang_raja.php",{id_user:id_user,total2:total2,sisa_pembayaran:sisa_pembayaran,kredit:kredit,no_rm:no_rm,total:total,potongan:potongan,potongan_persen:potongan_persen,/*tax:tax,*/cara_bayar:cara_bayar,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,total_hpp:total_hpp,sales:sales,kode_gudang:kode_gudang,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,biaya_adm:biaya_adm,dokter:dokter,petugas_kasir:petugas_kasir,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,penjamin:penjamin,nama_pasien:nama_pasien,jenis_penjualan:jenis_penjualan,no_reg:no_reg,analis:analis},function(info) {
 
@@ -2831,13 +2818,7 @@ $(function() {
 
               $("#simpan_sementara").mouseleave(function(){
                
-               $.get('no_faktur_jl.php', function(data) {
-               /*optional stuff to do after getScript */ 
-               
-               $("#nomor_faktur_penjualan").val(data);
-               $("#no_faktur0").val(data);
-               
-               });
+
                var kode_pelanggan = $("#kd_pelanggan").val();
                if (kode_pelanggan == ""){
                $("#kd_pelanggan").attr("disabled", false);
