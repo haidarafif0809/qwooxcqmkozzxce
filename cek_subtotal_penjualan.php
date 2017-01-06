@@ -8,7 +8,9 @@ include 'sanitasi.php';
  $no_reg = stringdoang($_POST['no_reg']);
  $total_akhir = angkadoang($_POST['total']);
  $diskon = angkadoang($_POST['potongan']);
- $pajak = angkadoang($_POST['tax']);
+ /*
+ $pajak = angkadoang($_POST['tax']);*/
+
  $biaya_admin = angkadoang($_POST['biaya_adm']);
 
 
@@ -26,13 +28,13 @@ include 'sanitasi.php';
  $total_sum = ($total + $total2);
 
 
-$total_tbs = ($total_sum - $diskon) + ($biaya_admin + $pajak);
+$total_tbs = ($total_sum - $diskon) + $biaya_admin;
 
 if ($total_akhir == $total_tbs) {
-		echo "Oke";
+		echo "1";
 	}
 	else{
-		echo "Zonk";
+		echo "0";
 	}
 
 //Untuk Memutuskan Koneksi Ke Database
