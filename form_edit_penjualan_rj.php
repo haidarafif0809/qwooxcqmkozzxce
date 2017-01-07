@@ -1778,14 +1778,12 @@ $("#cari_produk_penjualan").click(function(){
     
     }
 
-    $(".tr-id-"+id+"").remove();
-
-    $.post("hapus_pesanan_barang.php",{id:id,kode_barang:kode_barang},function(data){
     
+
     $("#total2").val(tandaPemisahTitik(total_akhir1));  
     $("#total1").val(tandaPemisahTitik(total_akhir));      
     $("#potongan_penjualan").val(Math.round(potongaaan));
-    if (total_akhir1 == '0')
+        if (total_akhir1 == '0')
     {
           $("#potongan_persen").val('0');
     }
@@ -1796,6 +1794,13 @@ $("#cari_produk_penjualan").click(function(){
     $("#tax_rp").val(Math.round(tax_bener));
     $("#pembayaran_penjualan").val('');
     $("#kode_barang").focus();
+
+    $(".tr-id-"+id+"").remove();
+    $.post("hapus_pesanan_barang.php",{id:id,kode_barang:kode_barang},function(data){
+    
+
+
+
     
 
     });
