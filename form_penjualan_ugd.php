@@ -1727,23 +1727,7 @@ alert("Silakan Bayar Piutang");
   });//penutup ready(function()
 </script>
 
-<script type="text/javascript">
-$(document).ready(function(){
-$("#cari_produk_penjualan").click(function(){
-  var session_id = $("#session_id").val();
 
-  $.post("cek_tbs_penjualan.php",{session_id: "<?php echo $session_id; ?>"},function(data){
-        if (data != "1") {
-
-
-             $("#ppn").attr("disabled", true);
-
-        }
-    });
-
-});
-});
-</script>
 
 <script type="text/javascript">
         $(document).ready(function(){
