@@ -14,8 +14,8 @@ include 'db.php';
 <h1> BUKU BESAR PER TANGGAL</h1><hr>
 
 
-<form id="perhari" class="form-inline" action="proses_buku_besar.php" method="POST" role="form">
-         
+<form id="perhari" class="form-inline" action="proses_buku_besar_pertanggal.php" method="POST" role="form">
+
 <div class="form-group">
     <input type="text" class="form-control dsds" id="tanggal" autocomplete="off" name="tanggal" placeholder="Tanggal ">
 </div>
@@ -53,7 +53,7 @@ mysqli_close($db);
 
 </div>
     
-<button id="btntgl" class="btn btn-primary"><i class="fa fa-eye"></i> Tampil</button>
+<button id="btn-tgl" class="btn btn-primary"><i class="fa fa-eye"></i> Tampil</button>
     
 </form>
 <br>
@@ -62,8 +62,7 @@ mysqli_close($db);
 
 <!-- Script Untuk Tampilan-->
 <script type="text/javascript">
-$("#btntgl").click(function() {
-
+$("#btn-tgl").click(function() {
       var tanggal = $("#tanggal").val();
       var daftar_akun = $("#daftar_akun").val();
       var rekap = $("#rekap").val();

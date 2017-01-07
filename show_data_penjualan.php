@@ -69,7 +69,8 @@ if( !empty($requestData['search']['value']) ) {   // if there is a search parame
 	$sql.=" AND ( no_faktur LIKE '".$requestData['search']['value']."%' ";  
 	$sql.=" OR kode_pelanggan LIKE '".$requestData['search']['value']."%' ";
 	$sql.=" OR no_reg LIKE '".$requestData['search']['value']."%' ";   
-	$sql.=" OR kode_pelanggan LIKE '".$requestData['search']['value']."%' ";   
+	$sql.=" OR kode_pelanggan LIKE '".$requestData['search']['value']."%' "; 
+  $sql.=" OR nama LIKE '".$requestData['search']['value']."%' ";   
 	$sql.=" OR tanggal LIKE '".$requestData['search']['value']."%' ";   
 	$sql.=" OR total LIKE '".$requestData['search']['value']."%' ";   
 	$sql.=" OR jenis_penjualan LIKE '".$requestData['search']['value']."%' "; 

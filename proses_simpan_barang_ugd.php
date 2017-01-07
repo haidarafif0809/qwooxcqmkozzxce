@@ -12,7 +12,7 @@ $session_id = session_id();
 $tahun_sekarang = date('Y');
 $bulan_sekarang = date('m');
 $tanggal_sekarang = date('Y-m-d');
-$jam_sekarang = date('H:i:sa');
+$jam_sekarang = date('H:i:s');
 $tahun_terakhir = substr($tahun_sekarang, 2);
 $waktu = date('Y-m-d H:i:sa');
  //ambil 2 angka terakhir dari tahun sekarang 
@@ -89,7 +89,7 @@ $keterangan = stringdoang($_POST['keterangan']);
 
 $ppn = stringdoang($_POST['ppn_input']);
 $keterangan = stringdoang($_POST['keterangan']);
-$tax = angkadoang($_POST['tax']);
+/*$tax = angkadoang($_POST['tax']);*/
 $biaya_admin = angkadoang($_POST['biaya_adm']);
 $jenis_penjualan = stringdoang($_POST['jenis_penjualan']);
 $potongan = angkadoang($_POST['potongan']);
@@ -274,11 +274,11 @@ $query = $db->query("SELECT * FROM tbs_penjualan WHERE session_id = '$session_id
 
 
               
-$stmt = $db->prepare("INSERT INTO penjualan (no_faktur, no_reg, penjamin, apoteker, perawat, petugas_lain, dokter, kode_gudang, kode_pelanggan, tanggal, jam, user, sales, status, potongan, no_pesanan,tax,jenis_penjualan,nama,biaya_admin, tunai, ppn, tanggal_jt, keterangan, total, kredit, nilai_kredit, cara_bayar, status_jual_awal ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,'Simpan Sementara',?,'1',?,?,?,?,?,?,?,?,?,?,?,?,'Kredit')");
+$stmt = $db->prepare("INSERT INTO penjualan (no_faktur, no_reg, penjamin, apoteker, perawat, petugas_lain, dokter, kode_gudang, kode_pelanggan, tanggal, jam, user, sales, status, potongan, no_pesanan,/*tax,*/jenis_penjualan,nama,biaya_admin, tunai, ppn, tanggal_jt, keterangan, total, kredit, nilai_kredit, cara_bayar, status_jual_awal ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,'Simpan Sementara',?,'1',/*?,*/?,?,?,?,?,?,?,?,?,?,?,'Kredit')");
               
     // hubungkan "data" dengan prepared statements
-              $stmt->bind_param("sssssssssssssiisssisssiiis",
-              $no_faktur,$no_reg,$penjamin,$petugas_farmasi,$petugas_paramedik,$petugas_lain, $dokter, $kode_gudang, $no_rm, $tanggal_sekarang, $jam_sekarang, $user, $id_user, $potongan,$tax,$jenis_penjualan,$nama_pasien,$biaya_admin, $pembayaran, $ppn, $tanggal_jt, $keterangan, $total, $kredit, $kredit, $cara_bayar);
+              $stmt->bind_param("sssssssssssssisssisssiiis",
+              $no_faktur,$no_reg,$penjamin,$petugas_farmasi,$petugas_paramedik,$petugas_lain, $dokter, $kode_gudang, $no_rm, $tanggal_sekarang, $jam_sekarang, $user, $id_user, $potongan,/*$tax,*/$jenis_penjualan,$nama_pasien,$biaya_admin, $pembayaran, $ppn, $tanggal_jt, $keterangan, $total, $kredit, $kredit, $cara_bayar);
               
 
               
@@ -373,8 +373,8 @@ if ($pajak != "" || $pajak != 0) {
 
 else {
   //ppn == Exclude
-  $total_penjualan = $total2 + $biaya_admin;
-  $pajak = $tax;
+  $total_penjualan = ($total2 - $total_tax) + $biaya_admin;
+  $pajak = $total_tax;
 $ppn_input;
  //Total Penjualan
         $insert_juranl = $db->query("INSERT INTO jurnal_trans (nomor_jurnal,waktu_jurnal,keterangan_jurnal,kode_akun_jurnal,debit,kredit,jenis_transaksi,no_faktur,approved,user_buat) VALUES ('".no_jurnal()."', '$tanggal_sekarang $jam_sekarang', 'Penjualan Simpan Sementara UGD - $ambil_kode_pelanggan[nama_pelanggan]', '$ambil_setting[total_penjualan]', '0', '$total_penjualan', 'Penjualan', '$no_faktur','1', '$user')");
