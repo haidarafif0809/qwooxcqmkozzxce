@@ -362,7 +362,7 @@ $user = $_SESSION['nama'];
     <input type="hidden" class="form-control" name="nama_barang" autocomplete="off" id="nama_barang" placeholder="nama" >
 
   <div class="col-sm-2">
-    <input style="height:15px;" type="text" class="form-control" name="jumlah_barang" autocomplete="off" id="jumlah_barang" placeholder="Jumlah" >
+    <input style="height:15px;" type="text" class="form-control" name="jumlah_barang" autocomplete="off" onkeydown="return numbersonly(this, event);" id="jumlah_barang" placeholder="Jumlah" >
   </div>
 
   <div class="col-sm-2">
@@ -684,7 +684,7 @@ $user = $_SESSION['nama'];
 
           
           <input type="hidden" name="kode_pelanggan" id="k_pelanggan" class="form-control" required="" >
-          <input type="text" name="ppn_input" id="ppn_input" value="Include" class="form-control" placeholder="ppn input">  
+          <input type="hidden" name="ppn_input" id="ppn_input" value="Include" class="form-control" placeholder="ppn input">  
       
 
           <div class="row">
@@ -1107,18 +1107,13 @@ $(document).ready(function(){
  if (ppn == 'Exclude') {
   
        
-        var satu = 1;
-         var total1 = parseInt(jumlah_barang,10) * parseInt(harga,10) - parseInt(potongan,10);
+      var total1 = parseInt(jumlah_barang,10) * parseInt(harga,10) - parseInt(potongan,10);
 
-         var hitungpajak = satu + (tax / 100);
+         var total_tax_exclude = parseInt(total1,10) * parseInt(tax,10) / 100;
 
-        var hitungpajak1 = parseInt(total1,10) / hitungpajak;
+         
+          var total = parseInt(total1,10) + parseInt(Math.round(total_tax_exclude,10));
 
-        var total_tax_exclude = parseInt(total1,10) - parseInt(Math.round(hitungpajak1,10));
-
-                 
-
-      var total = parseInt(total1,10) + parseInt(Math.round(total_tax_exclude,10));
 
     }
     else
@@ -2101,10 +2096,15 @@ $(document).on('click','.btn-hapus-tbs',function(e){
 
 
 
-    if (total_akhir1 == '0') {
+     if (total_akhir1 == 0) {
       
     $("#potongan_persen").val('0');
+         $("#ppn").val('Non');
+         $("#ppn").attr('disabled',false);
+     $("#tax1").attr("disabled", true);
+
     }
+
     else{
 
     $("#potongan_persen").val(Math.round(potongaaan_per));

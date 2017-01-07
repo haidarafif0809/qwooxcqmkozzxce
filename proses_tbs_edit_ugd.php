@@ -24,7 +24,9 @@ session_start();
  $harga = stringdoang($_POST['harga']);
  $dokter = stringdoang($_POST['dokter']);
  $tipe_produk = stringdoang($_POST['ber_stok']);
+ $ppn = stringdoang($_POST['ppn']);
 
+$a = $harga * $jumlah;
 
           if(strpos($diskon, "%") !== false)
           {
@@ -38,9 +40,22 @@ session_start();
           }
 
 
-          $a = $harga * $jumlah;
+    
+if ($ppn == 'Exclude')
+{
 
-          $satu = 1;
+ $a = $harga * $jumlah;
+
+ $x = $a - $potongan_tampil;
+
+   $tax_persen = $x * $pajak / 100;
+
+}
+elseif ($ppn == 'Include') 
+{
+       $a = $harga * $jumlah;
+          
+            $satu = 1;
 
               $x = $a - $potongan_tampil;
 
@@ -48,10 +63,19 @@ session_start();
 
               $hasil_tax2 = $x / $hasil_tax;
 
-              $tax_persen = $x - $hasil_tax2;
+              $tax_persen1 = $x - round($hasil_tax2);
+
+              $tax_persen = round($tax_persen1);
+
+}
+else{
+
+  $tax_persen = 0;
+}
+
 
 $tanggal_sekarang = date('Y-m-d');
-$jam = date('H:i:sa');
+$jam = date('H:i:s');
 
 
 $tbs_penjualan = $db->query("SELECT * FROM tbs_penjualan WHERE kode_barang = '$kode' AND no_faktur='$no_faktur'");
@@ -72,8 +96,23 @@ $subtotal = $harga * $jumlah;
 $subtotal_d =  $subtotal - $diskon;
 $subtotal_p = $subtotal_d + $pajak;
 
+if ($ppn == 'Exclude') {
+  # code...
+
+              $xyz = $subtotal - $potongan_jadi;
+
+              $cari_pajak = $xyz * $pajak / 100;
+
+              $subtotaljadi = $harga * $jumlah - $potongan_jadi + round($cari_pajak); 
+
+
+}
+else
+{
 
 $subtotaljadi = $harga * $jumlah - $potongan_jadi; 
+
+}
 
 $query_persen_dok1 = $db->query("UPDATE tbs_penjualan SET jumlah_barang = jumlah_barang + '$jumlah', subtotal = subtotal + '$subtotaljadi',  diskon = diskon + '$potongan_tampil' , tax = tax + '$tax_persen' WHERE kode_barang = '$kode' AND no_faktur='$no_faktur'");
 
@@ -220,8 +259,23 @@ $harga = stringdoang($_POST['harga']);
 $subtotal = $harga * $jumlah;
 $subtotal_d =  $subtotal - $diskon;
 $subtotal_p = $subtotal_d + $pajak;
+
+if ($ppn == 'Exclude') {
+  # code...
+              $xyz = $subtotal - $potongan_jadi;
+
+              $cari_pajak = $xyz * $pajak / 100;
+
+              $subtotaljadi = $harga * $jumlah - $potongan_jadi + round($cari_pajak); 
+
+
+}
+else
+{
+
 $subtotaljadi = $harga * $jumlah - $potongan_jadi; 
 
+}
 
                              // START PERHITUNGAN FEE HARGA 1 INSERT
 
@@ -531,7 +585,10 @@ $insert2_petugas = "INSERT INTO tbs_fee_produk (no_reg,no_faktur,no_rm,nama_petu
           mysqli_close($db); 
 
                 ?>
-                    <script type="text/javascript">
+
+
+                
+               <script type="text/javascript">
                                  
                                  $(".edit-jumlah").dblclick(function(){
 
@@ -560,17 +617,16 @@ $insert2_petugas = "INSERT INTO tbs_fee_produk (no_reg,no_faktur,no_rm,nama_petu
                                     var tipe_barang = $(this).attr("data-tipe");
 
 
+                                    var pot_fakt_rp = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#potongan_penjualan").val()))));
+
+                                    var pot_fakt_per = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#potongan_persen").val()))));
+
                                     var subtotal_lama = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#text-subtotal-"+id+"").text()))));
                                     var potongan = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#text-potongan-"+id+"").text()))));
 
                                     var tax = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#text-tax-"+id+"").text()))));
 
-                                    var tax_fak = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#tax").val()))));
-
-                                                                      
-                                    var subtotal = harga * jumlah_baru - potongan;
-
-                                    var subtotal_penjualan = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#total2").val()))));
+                                    /*var tax_fak = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#tax").val()))));*/
 
                                     var biaya_admin = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#biaya_admin").val()))));
 
@@ -578,26 +634,97 @@ $insert2_petugas = "INSERT INTO tbs_fee_produk (no_reg,no_faktur,no_rm,nama_petu
                                       biaya_admin = 0;
                                     }
 
-                                    subtotal_penjualan = subtotal_penjualan - subtotal_lama + subtotal;
+                                    var ppn = $("#ppn").val();
 
-                                    var pot_fakt_per = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#potongan_persen").val()))));
-                                    var potongaaan = pot_fakt_per;
-                                          var pos = potongaaan.search("%");
-                                          var potongan_persen = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah(potongaaan))));
-                                              potongan_persen = potongan_persen.replace("%","");
-                                          potongaaan = subtotal_penjualan * potongan_persen / 100;
-                                          $("#potongan_penjualan").val(potongaaan);
+
+
+                                if (ppn == 'Exclude') {
+
+                                   var subtotal1 = harga * jumlah_baru - potongan;
+
+                                    var subtotal_penjualan = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#total2").val()))));
+
+                                    var subtotal_ex = parseInt(subtotal_lama,10) - parseInt(tax,10);
+
+                                    var cari_tax = (parseInt(tax,10) * 100) / parseInt(subtotal_ex,10);
+
+
+                                    var cari_tax1 = parseInt(subtotal1,10) * parseInt(cari_tax,10) / 100;
+
+                                    var jumlah_tax = Math.round(cari_tax1);
+
+                                    var subtotal = parseInt(subtotal1,10) + parseInt(jumlah_tax,10);
+
+                                     var subtotal_penjualan = subtotal_penjualan - subtotal_lama + subtotal;
+                                    }
+                                    else
+                                    {
+
+                                   var subtotal1 = harga * jumlah_baru - potongan;
+
+                                    var subtotal_penjualan = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#total2").val()))));
+
+                                      var cari_tax = parseInt(subtotal_lama,10) - parseInt(tax,10);
+                                    var cari_tax1 = parseInt(subtotal_lama,10) / parseInt(cari_tax,10);
+
+                                    var tax_ex = cari_tax1.toFixed(2);
+
+                                    var subtotal = subtotal1;
+                                    var tax_ex1 = parseInt(subtotal,10) / tax_ex;
+                                    var tax_ex2 = parseInt(subtotal,10) - parseInt(Math.round(tax_ex1));
+                                    var jumlah_tax = Math.round(tax_ex2);
                                     
-                                    var tax_tbs = tax / subtotal_lama * 100;
-                                    var jumlah_tax = Math.round(tax_tbs) * parseInt(subtotal,10) / 100;
 
-                                    var sub_total = parseInt(subtotal_penjualan,10) - parseInt(potongaaan,10);
+                                       var subtotal_penjualan = subtotal_penjualan - subtotal_lama + subtotal;
 
-                                    var tax_fakt = parseInt(tax_fak,10) * parseInt(sub_total,10) / 100;
+                                    }  
 
-                                    var pajak_faktur = Math.round(tax_fakt);
 
-                                    var sub_akhir = (parseInt(subtotal_penjualan,10) + parseInt(biaya_admin,10)  + parseInt(pajak_faktur,10)) - parseInt(potongaaan,10);
+    if (pot_fakt_per == 0) {
+      var potongaaan = pot_fakt_rp;
+
+      var potongaaan_per = parseInt(potongaaan,10) / parseInt(subtotal_penjualan,10) * 100;
+      var potongaaan = pot_fakt_rp;
+  /*
+      var hitung_tax = parseInt(subtotal_penjualan,10) - parseInt(pot_fakt_rp,10);
+      var tax_bener = parseInt(hitung_tax,10) * parseInt(tax_faktur,10) / 100;*/
+
+      var total_akhir = parseInt(subtotal_penjualan,10) - parseInt(pot_fakt_rp,10) + parseInt(biaya_admin,10);
+
+
+    }
+    else if(pot_fakt_rp == 0)
+    {
+      var potongaaan = pot_fakt_per;
+      var pos = potongaaan.search("%");
+      var potongan_persen = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah(potongaaan))));
+          potongan_persen = potongan_persen.replace("%","");
+      potongaaan = subtotal_penjualan * potongan_persen / 100;
+      
+      var potongaaan_per = pot_fakt_per;  /*
+      var hitung_tax = parseInt(subtotal_penjualan,10) - parseInt(potongaaan,10);
+      var tax_bener = parseInt(hitung_tax,10) * parseInt(tax_faktur,10) / 100;*/
+
+     var total_akhir = parseInt(subtotal_penjualan,10) - parseInt(potongaaan,10) + parseInt(biaya_admin,10);
+
+    }
+     else if(pot_fakt_rp != 0 && pot_fakt_rp != 0)
+    {
+      var potongaaan = pot_fakt_per;
+      var pos = potongaaan.search("%");
+      var potongan_persen = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah(potongaaan))));
+          potongan_persen = potongan_persen.replace("%","");
+      potongaaan = subtotal_penjualan * potongan_persen / 100;
+      
+      var potongaaan_per = pot_fakt_per;
+      /*
+      var hitung_tax = parseInt(subtotal_penjualan,10) - parseInt(potongaaan,10);
+      var tax_bener = parseInt(hitung_tax,10) * parseInt(tax_faktur,10) / 100;*/
+ 
+      var total_akhir = parseInt(subtotal_penjualan,10) - parseInt(potongaaan,10) + parseInt(biaya_admin,10);
+
+    
+    }
 
                                       if (jumlah_baru == 0) {
 
@@ -621,9 +748,11 @@ $insert2_petugas = "INSERT INTO tbs_fee_produk (no_reg,no_faktur,no_rm,nama_petu
                                       $("#text-tax-"+id+"").text(Math.round(jumlah_tax));
                                       $("#input-jumlah-"+id+"").attr("type", "hidden"); 
                                       $("#total2").val(tandaPemisahTitik(subtotal_penjualan));
-                                      $("#potongan_penjualan").val(tandaPemisahTitik(potongaaan));  
-                                    $("#tax_rp").val(tandaPemisahTitik(pajak_faktur));       
-                                      $("#total1").val(tandaPemisahTitik(sub_akhir)); 
+                                      $("#potongan_penjualan").val(Math.round(potongaaan));
+                                              $("#potongan_persen").val(Math.round(potongaaan_per)); 
+                                    /*$("#tax_rp").val(tandaPemisahTitik(pajak_faktur));*/
+
+                                      $("#total1").val(tandaPemisahTitik(total_akhir)); 
                                    $("#pembayaran_penjualan").val('');
                                    $("#kredit").val('');
                                     $("#sisa_pembayaran_penjualan").val('')
@@ -664,8 +793,8 @@ $insert2_petugas = "INSERT INTO tbs_fee_produk (no_reg,no_faktur,no_rm,nama_petu
                                     $("#input-jumlah-"+id+"").attr("type", "hidden"); 
                                     $("#total2").val(tandaPemisahTitik(subtotal_penjualan)); 
                                     $("#potongan_penjualan").val(tandaPemisahTitik(potongaaan));
-                                    $("#tax_rp").val(tandaPemisahTitik(pajak_faktur));
-                                    $("#total1").val(tandaPemisahTitik(sub_akhir));   
+                                    /*$("#tax_rp").val(tandaPemisahTitik(pajak_faktur));*/
+                                    $("#total1").val(tandaPemisahTitik(total_akhir));   
                                          $("#pembayaran_penjualan").val('');
                                          $("#kredit").val('');
                                           $("#sisa_pembayaran_penjualan").val('')

@@ -15,16 +15,16 @@ if ($data > 0) {
       $a = ($sql['jumlah_barang'] * $sql['harga']) - $sql['potongan'];
       $b = $a + $sql['tax'];
       if ($b == $sql['subtotal']) {
-       echo "1";// EXCLUDE
+       echo 1;// EXCLUDE
       }
       elseif ($b != $sql['subtotal']) {
-        echo "2";// INCLUDE
+        echo 2;// INCLUDE
       }
 
 }
 else
 {
-  echo "0";// NON
+  echo 0;// NON
 }
 
 //Untuk Memutuskan Koneksi Ke fbsql_database( )e
