@@ -60,8 +60,7 @@ $no_faktur_retur = $nomor."/RB/".$data_bulan_terakhir."/".$tahun_terakhir;
  }
 
 
-    $total1 = angkadoang($_POST['total1']);
-    
+    $total1 = angkadoang($_POST['total1']);    
     $tax = angkadoang($_POST['tax']);
     $potongan = angkadoang($_POST['potongan']);
     $a = $total1 - $potongan;
@@ -148,8 +147,7 @@ $total_hpp = $ambil_sum['total'];
 
 $ppn_input = stringdoang($_POST['ppn_input']);
 
-$tbs = $db->query("SELECT * FROM tbs_retur_pembelian 
-  WHERE session_id = '$session_id'");
+$tbs = $db->query("SELECT * FROM tbs_retur_pembelian  WHERE session_id = '$session_id'");
 $data_tbs = mysqli_fetch_array($tbs);
 
 $sum_hpp_keluar = $db->query("SELECT SUM(total_nilai) AS total FROM hpp_keluar WHERE no_faktur = '$no_faktur_retur'");
