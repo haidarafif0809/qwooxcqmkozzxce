@@ -11,10 +11,11 @@ include 'sanitasi.php';
 
 $biaya_admin = angkadoang($_POST['biaya_adm']);
 $potongan = angkadoang($_POST['potongan']);
-$tax = angkadoang($_POST['tax']);
+/*/
+$tax = angkadoang($_POST['tax']);/*/
 
 
-		$subtotal_tampil = ($total + $potongan) - ($tax + $biaya_admin);
+		$subtotal_tampil = ($total + $potongan) - $biaya_admin;
 
 
 // menampilakn hasil penjumlah subtotal ALIAS total penjualan dari tabel tbs_penjualan berdasarkan data no faktur
@@ -23,10 +24,10 @@ $tax = angkadoang($_POST['tax']);
  $totali = $data['total_penjualan'];
 
 if ($subtotal_tampil == $totali) {
-		echo "1";
+		echo 1;
 	}
 	else{
-		echo "0";
+		echo 0;
 	}
 
 //Untuk Memutuskan Koneksi Ke Database
