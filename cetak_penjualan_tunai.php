@@ -21,11 +21,18 @@ $no_faktur = $_GET['no_faktur'];
     $data3 = mysqli_fetch_array($query3);
     $total_item = $data3['total_item'];
 
+
+    $query4 = $db->query("SELECT SUM(tax) as pajak FROM detail_penjualan WHERE no_faktur = '$no_faktur'");
+    $data4 = mysqli_fetch_array($query4);
+    $pajakee = $data4['pajak'];
+
+
     $select_operasi = $db->query("SELECT * FROM hasil_operasi WHERE no_reg = '$data0[no_reg]'");
 
     $query4 = $db->query("SELECT status_print FROM setting_printer WHERE nama_print = 'Printer Struk'");
     $datas = mysqli_fetch_array($query4);
     $status_print = $datas['status_print'];
+
 
     
  ?>
@@ -106,7 +113,7 @@ mysqli_close($db);
  <table>
   <tbody>
       <tr><td width="50%">Diskon</td> <td> :</td> <td><?php echo rp($data0['potongan']);?> </tr>
-      <tr><td  width="50%">Pajak</td> <td> :</td> <td> <?php echo rp($data0['tax']);?> </td></tr>
+      <tr><td  width="50%">Pajak</td> <td> :</td> <td> <?php echo rp($pajakee);?> </td></tr>
       <tr><td  width="50%">Biaya Admin</td> <td> :</td> <td> <?php echo rp($data0['biaya_admin']);?> </td></tr>
       <tr><td  width="50%">Total Item</td> <td> :</td> <td> <?php echo $total_item; ?> </td></tr>
       <tr><td width="50%">Total Penjualan</td> <td> :</td> <td><?php echo rp($data0['total']); ?> </tr>

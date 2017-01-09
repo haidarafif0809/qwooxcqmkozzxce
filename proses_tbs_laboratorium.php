@@ -22,6 +22,10 @@ $tahun_php = date('Y');
       $potongan = angkadoang($_POST['potongan']);
       $a = $harga * $jumlah;
      
+      $ppn = stringdoang($_POST['ppn']);
+      $tax = angkadoang($_POST['tax']);
+      $hargaa  = angkadoang($_POST['hargaa']);
+
       $tahun_sekarang = date('Y');
       $bulan_sekarang = date('m');
       $tanggal_sekarang = date('Y-m-d');
@@ -56,14 +60,31 @@ $id_kasir = $data_id['id'];
           }
 
 
-    $tax = angkadoang($_POST['tax']);
-    
-    $hargaa  = angkadoang($_POST['hargaa']);
-
           $a = $hargaa * $jumlah;
 
           $satu = 1;
   
+              
+
+               
+// MENGHITUNG PERSEN
+if ($ppn == 'Exclude')
+{
+
+ $a = $harga * $jumlah;
+
+ $x = $a - $potongan_tampil;
+
+   $tax_persen = $x * $tax / 100;
+
+}
+elseif ($ppn == 'Include') 
+{
+
+          $a = $harga * $jumlah;
+
+            $satu = 1;
+
               $x = $a - $potongan_tampil;
 
               $hasil_tax = $satu + ($tax / 100);
@@ -72,7 +93,34 @@ $id_kasir = $data_id['id'];
 
               $tax_persen = $x - $hasil_tax2;
 
-              $subtotal = $hargaa * $jumlah - $potongan_jadi; 
+}
+else
+{
+  $tax_persen = 0;
+}
+
+
+// MENGHITUNG SUBTOTAL 
+if ($ppn == 'Exclude') {
+              $subtotal1 = $harga * $jumlah;
+              $xyz = $subtotal1 - $potongan_jadi;
+
+              $cari_pajak = $xyz * $tax / 100;
+
+              $subtotal = $subtotal1 - $potongan_jadi + round($cari_pajak); 
+
+
+}
+
+else
+
+{
+
+$subtotal = $harga * $jumlah - $potongan_jadi; 
+
+} 
+
+
 
 if ($no_reg != '') {
  //FEE DOKTER

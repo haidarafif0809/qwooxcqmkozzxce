@@ -10,11 +10,11 @@
 	$rekap = stringdoang($_POST['rekap']);
 
 
-				$sum_saldo1 = $db->query("SELECT SUM(debit) AS saldo1 FROM jurnal_trans WHERE DATE(waktu_jurnal) < '$tanggal' AND kode_akun_jurnal = '$daftar_akun'");
+				$sum_saldo1 = $db->query("SELECT SUM(debit) AS saldo1 FROM jurnal_trans WHERE DATE(waktu_jurnal) > '$tanggal' AND kode_akun_jurnal = '1-1121'");
 				$cek_saldo1 = mysqli_fetch_array($sum_saldo1);
 				$saldo1 = $cek_saldo1['saldo1'];
 
-				$sum_saldo2 = $db->query("SELECT SUM(kredit) AS saldo2 FROM jurnal_trans WHERE DATE(waktu_jurnal) < '$tanggal' AND kode_akun_jurnal = '$daftar_akun'");
+				$sum_saldo2 = $db->query("SELECT SUM(kredit) AS saldo2 FROM jurnal_trans WHERE DATE(waktu_jurnal) > '$tanggal' AND kode_akun_jurnal = '$daftar_akun'");
 				$cek_saldo2 = mysqli_fetch_array($sum_saldo2);
 				$saldo2 = $cek_saldo2['saldo2'];
 
@@ -45,7 +45,7 @@ th {
 <div class="card card-block">
 
 	<?php if ($rekap == "direkap_perhari"): ?>
-	<h3> Periode : <?php echo tanggal($tanggal); ?></h3>
+	<h3> Tanggal : <?php echo tanggal($tanggal); ?></h3>
 	<br>
 
 	 <table id="tableuser1" class="table table-hover">
@@ -158,7 +158,7 @@ th {
 	<?php endif ?>
 
 	<?php if ($rekap == "tidak_direkap_perhari" || $rekap == ""): ?>
-	<h3> Periode : <?php echo tanggal($tanggal); ?></h3>
+	<h3> Tanggal : <?php echo tanggal($tanggal); ?></h3>
 	<br>
 
 	 <table id="tableuser2" class="table table-hover">
