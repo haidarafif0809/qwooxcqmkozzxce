@@ -502,7 +502,7 @@ else{
 		            }
 		          },
 		            "fnCreatedRow": function( nRow, aData, iDataIndex ) {
-		              $(nRow).attr('class','tr-id-'+aData[11]+'');
+		              $(nRow).attr('class','tr-id-'+aData[13]+'');
 		            },
 		        })
 
