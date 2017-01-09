@@ -40,11 +40,6 @@ $printer = $ggo['status_print'];
 
 ?>
 
-<style type="text/css" media="screen">
-
- body {font-size: 10px;}
-	
-</style>
 
 <html>
 <head>
@@ -74,11 +69,8 @@ $printer = $ggo['status_print'];
 </table>
 =================================<br>
 
-<?php
 
-if ($printer == 'Detail')
-{
-?>
+
 
 <table>
 	<tbody>
@@ -100,8 +92,7 @@ while($data = mysqli_fetch_array($cek_pembelian))
 ?>
 
 
-<?php
-}?>
+
 	</tbody>
 </table>
 =================================<br>
