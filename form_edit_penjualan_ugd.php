@@ -1655,7 +1655,6 @@ $(document).ready(function(){
 
         var jenis_penjualan = 'UGD';
         
-        
         var sisa = pembayaran - total;
         
         var sisa_kredit = parseInt(total, 10) - parseInt(pembayaran, 10);
@@ -1762,13 +1761,7 @@ alert("Silakan Bayar Piutang");
 
                $("#penjualan").mouseleave(function(){
                
-               $.get('no_faktur_jl.php', function(data) {
-               /*optional stuff to do after getScript */ 
-               
-               $("#nomor_faktur_penjualan").val(data);
-               $("#no_faktur0").val(data);
-               
-               });
+              
                var kode_pelanggan = $("#kd_pelanggan").val();
                if (kode_pelanggan == ""){
                $("#kd_pelanggan").attr("disabled", false);
@@ -1900,13 +1893,7 @@ alert("Silakan Bayar Piutang");
 
                $("#piutang").mouseleave(function(){
                
-               $.get('no_faktur_jl.php', function(data) {
-               /*optional stuff to do after getScript */ 
-               
-               $("#nomor_faktur_penjualan").val(data);
-               $("#no_faktur0").val(data);
-               
-               });
+          
                var kode_pelanggan = $("#kd_pelanggan").val();
                if (kode_pelanggan == ""){
                $("#kd_pelanggan").attr("disabled", false);
@@ -1943,7 +1930,7 @@ $(".btn-alert-hapus").click(function(){
     var kode_barang = $("#kode_barang").val();
     var no_reg = $("#no_reg").val();
     var kode_barang = kode_barang.substr(0, kode_barang.indexOf('('));
- $.post('cek_kode_barang_tbs_penjualan.php',{kode_barang:kode_barang,no_reg:no_reg}, function(data){
+ $.post('cek_kode_barang_tbs_edit.php',{kode_barang:kode_barang,no_reg:no_reg}, function(data){
   
   if(data == 1){
     alert("Anda Tidak Bisa Menambahkan Barang Yang Sudah Ada, Silakan Edit atau Pilih Barang Yang Lain !");
@@ -1956,24 +1943,6 @@ $(".btn-alert-hapus").click(function(){
 
     });//penutup click(function()
   });//penutup ready(function()
-</script>
-
-<script type="text/javascript">
-$(document).ready(function(){
-$("#cari_produk_penjualan").click(function(){
-  var session_id = $("#session_id").val();
-
-  $.post("cek_tbs_penjualan.php",{session_id: "<?php echo $session_id; ?>"},function(data){
-        if (data != "1") {
-
-
-             $("#ppn").attr("disabled", false);
-
-        }
-    });
-
-});
-});
 </script>
 
 
@@ -1991,28 +1960,29 @@ $("#cari_produk_penjualan").click(function(){
 
         var total = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah( $("#total2").val() ))));
         var potongan_penjualan = ((total * potongan_persen) / 100);
-        var tax = $("#tax").val();
-        var tax_rp = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#tax_rp").val()))));
+        /*var tax = $("#tax").val();*/
+       /* var tax_rp = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#tax_rp").val()))));*/
        var biaya_admin = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#biaya_admin").val()))));
         if (biaya_admin == '')
         {
           biaya_admin = 0;
         }
 
-        if (tax == "") {
+        /*if (tax == "") {
         tax = 0;
-      }
+      }*/
 
       
         var sisa_potongan = parseInt(total,10) - parseInt(Math.round(potongan_penjualan,10));
 
 
-             var t_tax = ((parseInt(sisa_potongan,10) * parseInt(tax,10)) / 100);
-             var hasil_akhir = parseInt(sisa_potongan, 10) + parseInt(Math.round(t_tax,10)) + parseInt(biaya_admin,10);
+            /* var t_tax = ((parseInt(sisa_potongan,10) * parseInt(tax,10)) / 100);*/
+             var hasil_akhir = parseInt(sisa_potongan, 10) + parseInt(biaya_admin,10);
 
             // hitungan jika potongan lebih dari 100 % 
-          var taxxx = ((parseInt(total,10) * parseInt(tax,10)) / 100); 
-          var toto = parseInt(total, 10) + parseInt(biaya_admin,10) + parseInt(Math.round(taxxx,10));       
+          /* var taxxx = ((parseInt(total,10) * parseInt(tax,10)) / 100); */
+
+          var toto = parseInt(total, 10) + parseInt(biaya_admin,10) ;       
          // end hitungan jika potongan lebih dari 100 %
 
         if (potongan_persen > 100) {
@@ -2040,7 +2010,7 @@ $("#cari_produk_penjualan").click(function(){
           $("#potongan_persen").val('')
           $("#potongan_penjualan").val('')
           $("#total1").val(tandaPemisahTitik(Math.round(toto)));
-          $("#tax_rp").val(Math.round(taxxx));
+          /*$("#tax_rp").val(Math.round(taxxx));*/
           $("#potongan_persen").focus()
 
         }
@@ -2066,7 +2036,7 @@ $("#cari_produk_penjualan").click(function(){
               } 
                   $("#total1").val(tandaPemisahTitik(Math.round(hasil_akhir)));
                   $("#potongan_penjualan").val(tandaPemisahTitik(Math.round(potongan_penjualan)));
-                  $("#tax_rp").val(Math.round(t_tax));
+                 /* $("#tax_rp").val(Math.round(t_tax));*/
         }
 
       });
@@ -2088,12 +2058,10 @@ $(document).ready(function(){
         var total1 = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah( $("#total1").val() ))));
         var total = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#total2").val()))));
         var potongan_persen = ((potongan_penjualan / total) * 100);
-        var tax = $("#tax").val();
-        var tax_rp = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#tax_rp").val()))));
+       /* var tax = $("#tax").val();
+        var tax_rp = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#tax_rp").val()))));*/
 
-        if (tax == "") {
-        tax = 0;
-      }
+
        var biaya_admin = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#biaya_admin").val()))));
         if (biaya_admin == '')
         {
@@ -2101,14 +2069,14 @@ $(document).ready(function(){
         }
 
         var sisa_potongan = total - Math.round(potongan_penjualan);
-        var t_tax = ((parseInt(sisa_potongan,10) * parseInt(tax,10)) / 100);
-        var hasil_akhir = parseInt(sisa_potongan, 10) + parseInt(Math.round(t_tax,10)) + parseInt(biaya_admin,10);
+       /* var t_tax = ((parseInt(sisa_potongan,10) * parseInt(tax,10)) / 100);*/
+        var hasil_akhir = parseInt(sisa_potongan, 10) + parseInt(biaya_admin,10);
         
              
 
             // hitungan jika potongan lebih dari 100 %
-          var taxxx = ((parseInt(total,10) * parseInt(tax,10)) / 100);
-          var toto = parseInt(total, 10) + parseInt(biaya_admin,10) + parseInt(Math.round(taxxx,10));
+          /* var taxxx = ((parseInt(total,10) * parseInt(tax,10)) / 100);*/
+          var toto = parseInt(total, 10) + parseInt(biaya_admin,10);
 
             // end hitungan jika potongan lebih dari 100 % 
 
@@ -2138,7 +2106,7 @@ $(document).ready(function(){
             $("#potongan_persen").val('');
             $("#potongan_penjualan").val('');
             $("#total1").val(tandaPemisahTitik(toto));
-            $("#tax_rp").val(Math.round(taxxx))
+           /* $("#tax_rp").val(Math.round(taxxx))*/
          }    
         else
         {
@@ -2164,7 +2132,7 @@ $(document).ready(function(){
 
         $("#total1").val(Math.round(hasil_akhir));
         $("#potongan_persen").val(Math.round(potongan_persen));
-        $("#tax_rp").val(Math.round(t_tax))
+       /* $("#tax_rp").val(Math.round(t_tax))*/
         }
 
         
@@ -2173,7 +2141,7 @@ $(document).ready(function(){
 
 </script>
 
-<script type="text/javascript">
+<!--<script type="text/javascript">
    $(document).ready(function(){   
 
        $("#tax").keyup(function(){
@@ -2264,7 +2232,7 @@ $(document).ready(function(){
         
           });
       });
-  </script>
+  </script>-->
 
   <script type="text/javascript">
   $(document).ready(function(){ 
@@ -2426,7 +2394,7 @@ if (stok < 0 )
 
   {
 
-       if (ber_stok == 'Jasa') {
+       if (ber_stok == 'Jasa' || ber_stok == 'BHP') {
        
        }
        
@@ -2670,6 +2638,7 @@ $(document).on('click','.btn-hapus-tbs',function(e){
     $("#total2").val(tandaPemisahTitik(total_akhir1));  
     $("#total1").val(tandaPemisahTitik(Math.round(total_akhir)));      
     $("#potongan_penjualan").val(Math.round(potongaaan));
+
     $("#pembayaran_penjualan").val('');
     $("#kredit").val('');
     $("#sisa_pembayaran_penjualan").val('');
