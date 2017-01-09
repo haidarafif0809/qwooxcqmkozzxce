@@ -5,14 +5,16 @@ include 'sanitasi.php';
 
 // mengirim data no faktur menggunakan metode POST
 
- $no_reg = stringdoang($_POST['no_reg']);
  $no_faktur = stringdoang($_POST['no_faktur']);
- $total_akhir = angkadoang($_POST['total']);
- $diskon = angkadoang($_POST['potongan']);
- /*
+ $no_reg = stringdoang($_POST['no_reg']); 
+ $total_akhir = angkadoang($_POST['total']);   
+ $subtotal = angkadoang($_POST['total2']);   
+ $pot_persen = angkadoang($_POST['potongan_persen']); 
+  /*
  $pajak = angkadoang($_POST['tax']);*/
 
  $biaya_admin = angkadoang($_POST['biaya_adm']);
+ $diskon = $subtotal * $pot_persen / 100; 
 
 
 // menampilakn hasil penjumlah subtotal ALIAS total penjualan dari tabel tbs_penjualan berdasarkan data no faktur
@@ -22,14 +24,14 @@ include 'sanitasi.php';
 
 
 // menampilakn hasil penjumlah subtotal ALIAS total penjualan dari tabel tbs_penjualan berdasarkan data no faktur
- $query2 = $db->query("SELECT SUM(harga_jual) AS harga_jual FROM tbs_operasi WHERE no_reg = '$no_reg' ");
+ $query2 = $db->query("SELECT SUM(harga_jual) AS harga_jual FROM tbs_operasi WHERE no_reg = '$no_reg' AND session_id = ''");
  $data2 = mysqli_fetch_array($query2);
  $total2 = $data2['harga_jual'];
 
  $total_sum = ($total + $total2);
 
 
-$total_tbs = ($total_sum - $diskon) + $biaya_admin;
+ $total_tbs = ($total_sum - round($diskon)) + $biaya_admin;
 
 if ($total_akhir == $total_tbs) {
 		echo "1";

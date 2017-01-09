@@ -674,7 +674,7 @@ else
 }
 
 
-                echo "<td style='font-size:15px' align='right' class='edit-jumlah' data-id='".$data1['id']."'><span id='text-jumlah-".$data1['id']."'>". $data1['jumlah_barang'] ."</span> <input type='hidden' id='input-jumlah-".$data1['id']."' value='".$data1['jumlah_barang']."' class='input_jumlah' data-id='".$data1['id']."' autofocus='' data-kode='".$data1['kode_barang']."' data-harga='".$data1['harga']."' data-tipe='".$data1['tipe_barang']."' data-satuan='".$data1['satuan']."' > </td>
+                echo "<td style='font-size:15px' align='right' class='edit-jumlah' data-id='".$data1['id']."'><span id='text-jumlah-".$data1['id']."'>". $data1['jumlah_barang'] ."</span> <input type='hidden' id='input-jumlah-".$data1['id']."' value='".$data1['jumlah_barang']."' class='input_jumlah' data-id='".$data1['id']."' autofocus='' data-kode='".$data1['kode_barang']."' data-harga='".$data1['harga']."' data-tipe='".$data1['tipe_barang']."' data-satuan='".$data1['satuan']."' onkeydown='return numbersonly(this, event);'> </td>
 
                 <td style='font-size:15px'>". $data1['nama'] ."</td>
                 <td style='font-size:15px' align='right'>". rp($data1['harga']) ."</td>
@@ -1029,7 +1029,7 @@ Laboratorium  </button>
 
           
           <input type="hidden" name="kode_pelanggan" id="k_pelanggan" class="form-control"  >
-          <input type="text" name="ppn_input" id="ppn_input" value="Include" class="form-control" placeholder="ppn input">  
+          <input type="hidden" name="ppn_input" id="ppn_input" value="Include" class="form-control" placeholder="ppn input">  
       
 
           <div class="row">
@@ -1442,7 +1442,7 @@ alert("Silakan Bayar Piutang");
   $("#transaksi_baru").show();
 
 
- $.post("cek_subtotal_penjualan_inap.php",{total:total,no_reg:no_reg,potongan:potongan,tax:tax,biaya_adm:biaya_adm},function(data) {
+ $.post("cek_subtotal_penjualan_inap.php",{total:total,total2:total2,no_reg:no_reg,potongan_persen:potongan_persen,tax:tax,biaya_adm:biaya_adm},function(data) {
 
   if (data == "1") {
 
@@ -1578,7 +1578,6 @@ alert("Silakan Bayar Piutang");
      var kode_barang = kode_barang.substr(0, kode_barang.indexOf('('));
      var nama_barang = $("#nama_barang").val();
      var kolom_cek_harga = $("#kolom_cek_harga").val();
-
      var jumlah_barang = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#jumlah_barang").val()))));
      var harga = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#harga_produk").val()))));
      var potongan = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#potongan1").val()))));    
@@ -1659,8 +1658,8 @@ alert("Silakan Bayar Piutang");
 
     //end hitung pajak
 
-    var pot_pers = parseInt(pot_fakt_rp,10) / parseInt(total_akhir1,10) * 100; 
-    var total_akhir = parseInt(total_akhier,10) + parseInt(Math.round(hasil_tax,10)) + parseInt(biaya_admin,10);
+      var pot_pers = parseInt(pot_fakt_rp,10) / parseInt(total_akhir1,10) * 100; 
+      var total_akhir = parseInt(total_akhier,10) + parseInt(Math.round(hasil_tax,10)) + parseInt(biaya_admin,10);
 
     
 
@@ -1689,8 +1688,8 @@ alert("Silakan Bayar Piutang");
         }
     //end hitung pajak
 
-    var pot_pers = parseInt(potongaaan,10) / parseInt(total_akhir1,10) * 100; 
-    var total_akhir = parseInt(total_akhier,10) + parseInt(Math.round(hasil_tax,10)) + parseInt(biaya_admin,10);
+      var pot_pers = parseInt(potongaaan,10) / parseInt(total_akhir1,10) * 100; 
+      var total_akhir = parseInt(total_akhier,10) + parseInt(Math.round(hasil_tax,10)) + parseInt(biaya_admin,10);
 
     }
      else if(pot_fakt_rp != 0 && pot_fakt_per != '0%')
@@ -1731,8 +1730,6 @@ alert("Silakan Bayar Piutang");
   
 
     }
-
-
 
    
 
@@ -1782,7 +1779,7 @@ else if (a > 0){
      $("#pembayaran_penjualan").val('');
      $("#sisa_pembayaran_penjualan").val('');
      $("#kredit").val('');
-    $("#kolom_cek_harga").val('0');
+     $("#kolom_cek_harga").val('0');
      
      });
 
@@ -1932,7 +1929,7 @@ else if (a > 0){
         
 
 
- $.post("cek_subtotal_penjualan_inap.php",{total:total,no_reg:no_reg,potongan:potongan,tax:tax,biaya_adm:biaya_adm},function(data) {
+ $.post("cek_subtotal_penjualan_inap.php",{total:total,total2:total2,no_reg:no_reg,potongan_persen:potongan_persen,tax:tax,biaya_adm:biaya_adm},function(data) {
 
   if (data == "1") {
 
@@ -3059,13 +3056,18 @@ $(document).ready(function(){
 
                                     var id = $(this).attr("data-id");
                                     var jumlah_baru = $(this).val();
+
+                                    if (jumlah_baru == "") {
+                                      jumlah_baru = 0;
+                                    }
+                                    
                                     var kode_barang = $(this).attr("data-kode");
                                     var harga = $(this).attr("data-harga");
                                     var jumlah_lama = $("#text-jumlah-"+id+"").text();
                                     var satuan_konversi = $(this).attr("data-satuan");
                                     var tipe_barang = $(this).attr("data-tipe");
                                     var ppn_input = $("#ppn_input").val();
-                
+
                                     var subtotal_lama = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#text-subtotal-"+id+"").text()))));
                                     var potongan = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#text-potongan-"+id+"").text()))));
 
@@ -3123,20 +3125,31 @@ $(document).ready(function(){
                             
 
                                     var tax_tbs = tax / subtotal_lama * 100;
-                                    var jumlah_tax = Math.round(tax_tbs) * subtotal / 100;
+                                    var jumlah_tax = Math.round(pajak_tbs_rupiah);
 
-                                    if (tipe_barang == 'Jasa' || tipe_barang == 'BHP' || tipe_barang == 'Bed') {
+                              if (jumlah_baru == 0) {
+                                      alert ("Jumlah Produk Tidak Boleh 0!");
+
+                                       $("#input-jumlah-"+id+"").val(jumlah_lama);
+                                       $("#text-jumlah-"+id+"").text(jumlah_lama);
+                                       $("#text-jumlah-"+id+"").show();
+                                       $("#input-jumlah-"+id+"").attr("type", "hidden");
+                                  }
+
+                              else{
+
+                                if (tipe_barang == 'Jasa' || tipe_barang == 'BHP' || tipe_barang == 'Bed') {
                                       
                                     $("#text-jumlah-"+id+"").show();
                                     $("#text-jumlah-"+id+"").text(jumlah_baru);
 
                                     $("#text-subtotal-"+id+"").text(tandaPemisahTitik(subtotal));
                                     $("#hapus-tbs-"+id+"").attr('data-subtotal', subtotal);
-                                    $("#text-tax-"+id+"").text(Math.round(jumlah_tax));
+                                    $("#text-tax-"+id+"").text(Math.round(pajak_tbs_rupiah));
                                     $("#input-jumlah-"+id+"").attr("type", "hidden"); 
                                     $("#total2").val(tandaPemisahTitik(subtotal_penjualan));         
                                     $("#potongan_penjualan").val(Math.round(potongaaan));
-                                    $("#total1").val(tandaPemisahTitik(Math.round(tot_akhr)));                                    
+                                    $("#total1").val(tandaPemisahTitik(Math.round(tot_akhr)));   
                                     $("#tax_rp").val(Math.round(t_tax)); 
                                     $("#pembayaran_penjualan").val('');
                                      $("#sisa_pembayaran_penjualan").val('');
@@ -3195,7 +3208,11 @@ $(document).ready(function(){
 
                                  });
 
-                            }
+                                }
+
+                              }//END if else julah barunya 0
+
+                                    
        
                                     $("#kode_barang").focus();
                                     
