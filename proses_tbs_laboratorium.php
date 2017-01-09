@@ -1,8 +1,8 @@
-<?php 
+<?php  session_start();
 include 'db.php';
 include_once 'sanitasi.php';
 
-session_start();
+
 $session_id = session_id();
 $tipe = stringdoang($_POST['tipe_barang']);
 $penjamin = stringdoang($_POST['penjamin']);

@@ -423,10 +423,10 @@ $data_rj_ri = mysqli_fetch_array($sum_rj_ri);
 </div>
 
     <input type="hidden" class="form-control" name="bidang" id="bidang" placeholder="Bidang" >
-    <input type="hidden" id="harga_penjamin" name="harga_penjamin" class="form-control" value=""> 
-    <input type="hidden" id="harga_produk" name="harga_produk" class="form-control" value=""> 
-    <input type="hidden" id="harga_baru" name="harga_baru" class="form-control" value=""> 
-    <input type="hidden" id="id_jasa" name="id_jasa" class="form-control" value=""> 
+    <input type="hidden" id="harga_penjamin" name="harga_penjamin" class="form-control" value=""placeholder="harga penjamin"> 
+    <input type="hidden" id="harga_produk" name="harga_produk" class="form-control" value=""placeholder="harga produk"> 
+    <input type="hidden" id="harga_baru" name="harga_baru" class="form-control" value=""placeholder="baru harga"> 
+    <input type="hidden" id="id_jasa" name="id_jasa" class="form-control" value=""placeholder="ida jasa"> 
     <input type="hidden" class="form-control" name="ber_stok" id="ber_stok" value="Jasa"  >
 
 
@@ -1150,6 +1150,192 @@ else if (level_harga == "harga_7") {
 
   </script>
 
+<script type="text/javascript">
+//KODE BARANG MOUSELEAVE
+$(document).ready(function(){
+        $("#kode_barang").mouseleave(function(){
+
+          var kode_barang = $(this).val();
+          var kode_barang = kode_barang.substr(0, kode_barang.indexOf('('));
+          var level_harga = $("#level_harga").val();
+          var session_id = $("#session_id").val();
+          var nama_barang = $("#nama_barang").val();
+         var penjamin = $("#penjamin").val();
+
+          var no_reg = $("#no_reg").val();
+         $.post('cek_tbs_penjualan_lab.php',{kode_barang:kode_barang, session_id:session_id,no_reg:no_reg}, function(data){
+          
+          if(data == 1){
+            alert("Anda Tidak Bisa Menambahkan Barang Yang Sudah Ada, Silakan Edit atau Pilih Barang Yang Lain !");
+            $("#kode_barang").focus();
+            $("#kode_barang").val('');
+            $("#nama_barang").val('');
+           }//penutup if
+
+            });////penutup function(data)
+
+      $.getJSON('lihat_nama_jasa_lab.php',{kode_barang:kode_barang}, function(json){
+      
+      if (json == null)
+      {
+        
+        $('#nama_barang').val('');
+        $('#bidang').val('');
+        $('#harga_produk').val('');
+        $('#harga_baru').val('');
+        $('#id_jasa').val('');
+        $('#ber_stok').val('');
+
+      }
+
+      else 
+      {
+         if (level_harga == "harga_1") {
+          $("#harga_produk").val(json.harga_1);
+            $("#harga_baru").val(json.harga_1);
+          $("#harga_penjamin").val(json.harga_1);
+        }
+        else if (level_harga == "harga_2") {
+          $("#harga_produk").val(json.harga_2);
+            $("#harga_baru").val(json.harga_2);
+          $("#harga_penjamin").val(json.harga_2);
+        }
+
+        else if (level_harga == "harga_3") {
+          $("#harga_produk").val(json.harga_3);
+            $("#harga_baru").val(json.harga_3);
+          $("#harga_penjamin").val(json.harga_3);
+        }
+
+        else if (level_harga == "harga_4") {
+          $("#harga_produk").val(json.harga_4);
+            $("#harga_baru").val(json.harga_4);
+          $("#harga_penjamin").val(json.harga_4);
+        }
+
+        else if (level_harga == "harga_5") {
+          $("#harga_produk").val(json.harga_5);
+            $("#harga_baru").val(json.harga_5);
+          $("#harga_penjamin").val(json.harga_5);
+        }
+
+        else if (level_harga == "harga_6") {
+          $("#harga_produk").val(json.harga_6);
+            $("#harga_baru").val(json.harga_6);
+          $("#harga_penjamin").val(json.harga_6);
+        }
+
+        else if (level_harga == "harga_7") {
+          $("#harga_produk").val(json.harga_7);
+            $("#harga_baru").val(json.harga_7);
+          $("#harga_penjamin").val(json.harga_7);
+        }
+
+        $('#persiapan').val(json.persiapan);
+        $('#nama_barang').val(json.nama);
+        $('#id_jasa').val(json.id);
+        $('#bidang').val(json.bidang);
+      }
+                                              
+        });
+        
+        });
+      // /KODE BARANG MOUSELEAVE
+
+      //KODE BARANG BLUR
+    $("#kode_barang").blur(function(){
+
+          var kode_barang = $(this).val();
+
+          var kode_barang = kode_barang.substr(0, kode_barang.indexOf('('));
+          var level_harga = $("#level_harga").val();
+          var session_id = $("#session_id").val();
+          
+         var penjamin = $("#penjamin").val();
+
+          var no_reg = $("#no_reg").val();
+         $.post('cek_tbs_penjualan_lab.php',{kode_barang:kode_barang, session_id:session_id,no_reg:no_reg}, function(data){
+          
+          if(data == 1){
+            alert("Anda Tidak Bisa Menambahkan Barang Yang Sudah Ada, Silakan Edit atau Pilih Barang Yang Lain !");
+            $("#kode_barang").focus();
+            $("#kode_barang").val('');
+            $("#nama_barang").val('');
+           }//penutup if
+
+            });////penutup function(data)
+
+      $.getJSON('lihat_nama_jasa_lab.php',{kode_barang:kode_barang}, function(json){
+      
+      if (json == null)
+      {
+        
+        $('#nama_barang').val('');
+        $('#bidang').val('');
+        $('#harga_produk').val('');
+        $('#harga_baru').val('');
+        $('#id_jasa').val('');
+        $('#ber_stok').val('');
+
+      }
+
+      else 
+      {
+         if (level_harga == "harga_1") {
+          $("#harga_produk").val(json.harga_1);
+            $("#harga_baru").val(json.harga_1);
+          $("#harga_penjamin").val(json.harga_1);
+        }
+        else if (level_harga == "harga_2") {
+          $("#harga_produk").val(json.harga_2);
+            $("#harga_baru").val(json.harga_2);
+          $("#harga_penjamin").val(json.harga_2);
+        }
+
+        else if (level_harga == "harga_3") {
+          $("#harga_produk").val(json.harga_3);
+            $("#harga_baru").val(json.harga_3);
+          $("#harga_penjamin").val(json.harga_3);
+        }
+
+        else if (level_harga == "harga_4") {
+          $("#harga_produk").val(json.harga_4);
+            $("#harga_baru").val(json.harga_4);
+          $("#harga_penjamin").val(json.harga_4);
+        }
+
+        else if (level_harga == "harga_5") {
+          $("#harga_produk").val(json.harga_5);
+            $("#harga_baru").val(json.harga_5);
+          $("#harga_penjamin").val(json.harga_5);
+        }
+
+        else if (level_harga == "harga_6") {
+          $("#harga_produk").val(json.harga_6);
+            $("#harga_baru").val(json.harga_6);
+          $("#harga_penjamin").val(json.harga_6);
+        }
+
+        else if (level_harga == "harga_7") {
+          $("#harga_produk").val(json.harga_7);
+            $("#harga_baru").val(json.harga_7);
+          $("#harga_penjamin").val(json.harga_7);
+        }
+
+        $('#persiapan').val(json.persiapan);
+        $('#nama_barang').val(json.nama);
+        $('#id_jasa').val(json.id);
+        $('#bidang').val(json.bidang);
+      }
+                                              
+        });
+        
+        });
+// /KODE BARANG BLUR
+  });
+</script>
+
+
 
 <script type="text/javascript">
 $(document).ready(function(){
@@ -1588,13 +1774,13 @@ alert("Silakan Bayar Piutang");
   }
 
   
- }};
+ });
 
  $("form").submit(function(){
     return false;
- 
-});
 
+});
+}
 });
 
                $("#penjualan").mouseleave(function(){
@@ -2515,6 +2701,8 @@ $(function() {
 
   });
 </script>
+
+
 
 <!--cek jatuh tempo keyup-->
 <script type="text/javascript">
