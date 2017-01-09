@@ -82,7 +82,11 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 	            
         $table23 = $db->query("SELECT status FROM penjualan WHERE no_reg = '$row[no_reg]' ");
         $dataki = mysqli_fetch_array($table23);
-        if ($dataki['status'] == 'Lunas' OR  $dataki['status'] == 'Piutang'  OR  $dataki['status'] == 'Piutang Apotek'  )
+
+        $ambil_dosis = $db->query("SELECT dp.dosis FROM detail_penjualan dp  LEFT JOIN barang b ON dp.kode_barang = b.kode_barang  WHERE dp.no_reg ='$row[no_reg]' AND b.tipe_barang = 'Obat Obatan'");		
+		$data_dosis = mysqli_fetch_array($ambil_dosis);
+
+        if ( ($dataki['status'] == 'Lunas' OR $dataki['status'] == 'Piutang'  OR  $dataki['status'] == 'Piutang Apotek') AND $data_dosis['dosis'] != "" )
         {
         	$nestedData[] = "<a href='selesai_rj.php?no_reg=".$row['no_reg']."' class='btn-floating btn-info btn-small'><i class='fa  fa-check'></i> </a>";
         }

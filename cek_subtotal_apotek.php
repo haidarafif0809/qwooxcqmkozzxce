@@ -8,7 +8,7 @@ include 'sanitasi.php';
 
  $session_id = session_id();
  $total_akhir = angkadoang($_POST['total']);
- $pajak = angkadoang($_POST['tax']);
+ /*$pajak = angkadoang($_POST['tax']);*/
  $diskon = angkadoang($_POST['potongan']);
  $biaya_admin = angkadoang($_POST['biaya_admin']);
 
@@ -20,14 +20,14 @@ include 'sanitasi.php';
  $data = mysqli_fetch_array($query);
 
  $total = $data['total_penjualan'];
- $total_tbs = ($total - $diskon) + ($pajak + $biaya_admin);
+ $total_tbs = ($total - $diskon) + $biaya_admin;
 
 
 if ($total_akhir == $total_tbs) {
-		echo "Oke";
+		echo 1;
 	}
 	else{
-		echo "Zonk";
+		echo 0;
 	}
 
 //Untuk Memutuskan Koneksi Ke Database

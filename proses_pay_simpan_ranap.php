@@ -365,9 +365,7 @@ else if ($ppn_input == "Include") {
 //ppn == Include
 
   $total_penjualan = ($total2 + $biaya_admin) - $total_tax ;
-
-
-$pajak = $total_tax;
+  $pajak = $total_tax;
 
  //Total Penjualan
         $insert_juranl = $db->query("INSERT INTO jurnal_trans (nomor_jurnal,waktu_jurnal,keterangan_jurnal,kode_akun_jurnal,debit,kredit,jenis_transaksi,no_faktur,approved,user_buat) VALUES ('".no_jurnal()."', '$tanggal_sekarang $jam_sekarang', 'Penjualan Rawat Inap Tunai - $ambil_kode_pelanggan[nama_pelanggan]', '$ambil_setting[total_penjualan]', '0', '$total_penjualan', 'Penjualan', '$no_faktur','1', '$nama_petugas')");
@@ -383,8 +381,8 @@ if ($pajak != "" || $pajak != 0 ) {
 else {
   //ppn == Exclude
 
-  $total_penjualan = $total2 + $biaya_admin;
-  $pajak = $tax;
+  $total_penjualan = ($total2 + $biaya_admin) - $total_tax ;
+  $pajak = $total_tax;
 
  //Total Penjualan
         $insert_juranl = $db->query("INSERT INTO jurnal_trans (nomor_jurnal,waktu_jurnal,keterangan_jurnal,kode_akun_jurnal,debit,kredit,jenis_transaksi,no_faktur,approved,user_buat) VALUES ('".no_jurnal()."', '$tanggal_sekarang $jam_sekarang', 'Penjualan Rawat Inap Tunai - $ambil_kode_pelanggan[nama_pelanggan]', '$ambil_setting[total_penjualan]', '0', '$total_penjualan', 'Penjualan', '$no_faktur','1', '$nama_petugas')");
@@ -484,7 +482,7 @@ if ($ppn_input == "Non") {
 
     $total_penjualan = $total2 + $biaya_admin;
 
- $ppn_input;
+ 
   //Total Penjualan
         $insert_juranl = $db->query("INSERT INTO jurnal_trans (nomor_jurnal,waktu_jurnal,keterangan_jurnal,kode_akun_jurnal,debit,kredit,jenis_transaksi,no_faktur,approved,user_buat) VALUES ('".no_jurnal()."', '$tanggal_sekarang $jam_sekarang', 'Penjualan Rawat Inap Piutang - $ambil_kode_pelanggan[nama_pelanggan]', '$ambil_setting[total_penjualan]', '0', '$total_penjualan', 'Penjualan', '$no_faktur','1', '$nama_petugas')");
 
@@ -493,7 +491,7 @@ if ($ppn_input == "Non") {
 
 else if ($ppn_input == "Include") {
 //ppn == Include
-$ppn_input;
+
   $total_penjualan = ($total2 + $biaya_admin) - $total_tax ;
   $pajak = $total_tax;
 
@@ -510,9 +508,9 @@ if ($pajak != "" || $pajak != 0) {
 
 else {
   //ppn == Exclude
-  $total_penjualan = $total2 + $biaya_admin;
-  $pajak = $tax;
-$ppn_input;
+  $total_penjualan = ($total2 + $biaya_admin) - $total_tax ;
+  $pajak = $total_tax;
+
  //Total Penjualan
         $insert_juranl = $db->query("INSERT INTO jurnal_trans (nomor_jurnal,waktu_jurnal,keterangan_jurnal,kode_akun_jurnal,debit,kredit,jenis_transaksi,no_faktur,approved,user_buat) VALUES ('".no_jurnal()."', '$tanggal_sekarang $jam_sekarang', 'Penjualan Rawat Inap Piutang - $ambil_kode_pelanggan[nama_pelanggan]', '$ambil_setting[total_penjualan]', '0', '$total_penjualan', 'Penjualan', '$no_faktur','1', '$nama_petugas')");
 

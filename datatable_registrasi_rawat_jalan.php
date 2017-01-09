@@ -85,6 +85,12 @@ if ($registrasi_rj['registrasi_rj_lihat']) {
 else{
 }
 
+if ($registrasi_rj['registrasi_rj_edit'] > 0) {  
+	$nestedData[] = "<a href='edit_registrasi_rawat_jalan.php?no_reg=". $row['no_reg']."' class='btn btn-success'>Edit</a>";
+}
+else{
+	$nestedData[] = "";
+}
 
 if ($registrasi_rj['registrasi_rj_hapus'] > 0) {     
      $nestedData[] = "<button class='btn btn-danger btn-floating pilih2' data-id='". $data_reg['id']."' data-reg='". $data_reg['no_reg']."'> <b> X </b> </button></td>";

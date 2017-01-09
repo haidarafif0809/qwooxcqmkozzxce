@@ -28,7 +28,7 @@ $perintah = $db->query("SELECT km.id, km.no_faktur, km.keterangan, km.ke_akun, k
       <th> Tanggal </th>
       <th> Jam </th>
       <th> Keterangan </th>
-      <th> User </th>    
+      <th> Petugas </th>    
       
     </thead>
     

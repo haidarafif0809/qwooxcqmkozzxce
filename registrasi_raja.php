@@ -194,12 +194,22 @@ if ($registrasi_rj['registrasi_rj_lihat'] > 0) {
 <br><br>
 
 <?php if ($registrasi_rj['registrasi_rj_tambah'] > 0): ?>
-  <button id="coba" type="submit" class="btn btn-primary" data-toggle="collapse" accesskey="r" ><i class='fa fa-plus'> </i>&nbsp;Tambah</button>
+  <button id="coba" type="submit" class="btn btn-primary" data-toggle="collapse" accesskey="r" ><i class='fa fa-plus'> </i>&nbsp;Daftar Rawat Jalan</button>
 
   <button id="kembali" style="display:none" data-toggle="collapse" accesskey="k"  class="btn btn-default"><i class="fa fa-reply"></i> <u>K</u>embali</button>
 
   <a href="rawat_jalan_baru.php" accesskey="b" class="btn btn-info"><i class="fa fa-plus"></i> Pasien <u>B</u>aru</a>
   
+<span id="tombol_span_filter" style="display: none">
+  <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample"><i class='fa fa-filter'> </i>
+  Filter Pencarian  </button>
+</span>
+
+<span id="tombol_span_filter_2" style="display: none">
+  <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample"><i class='fa fa-filter'> </i>
+  Filter Pencarian  </button>
+</span>
+
   <br>
  <br>
 <?php endif ?>
@@ -210,6 +220,26 @@ if ($registrasi_rj['registrasi_rj_lihat'] > 0) {
 
 <div id="demo" class="collapse">
 
+
+ <div class="collapse" id="collapseExample">
+
+    <div class="row">
+      <div class="col-sm-2">
+        <label>Nama Lengkap Pasien </label>
+        <input style="height: 20px;" type="text" class="form-control" id="nama_lengkap_pasien" name="nama_lengkap_pasien" autocomplete="off"  >
+      </div>
+      <div class="col-sm-3">
+        <label>Alamat Pasien </label>
+        <input style="height: 20px;" type="text" class="form-control" id="alamat_pasien" name="alamat_pasien" autocomplete="off"  >
+      </div> 
+    <label><br><br><br></label>
+        <button id="filter_cari" type="submit" class="btn btn-success"><i class='fa fa-search'> </i>&nbsp;Cari</button>
+
+    </div>
+
+ </div> <!--END collapseExample -->
+
+<span id="span_pasien_lama">
 <table id="pasien_lama" class="display table-sm table-bordered" width="100%">
           <thead>
             <tr>
@@ -221,6 +251,21 @@ if ($registrasi_rj['registrasi_rj_lihat'] > 0) {
             </tr>
           </thead>
 </table>
+</span>
+
+<span id="span_filter_pasien_lama" style="display: none">
+<table id="filter_pasien_lama" class="display table-sm table-bordered" width="100%">
+          <thead>
+            <tr>
+              <th style='background-color: #4CAF50; color: white' >No. RM </th>
+              <th style='background-color: #4CAF50; color: white' >Nama Lengkap</th>
+              <th style='background-color: #4CAF50; color: white' >Jenis Kelamin</th>
+              <th style='background-color: #4CAF50; color: white' >Alamat Sekarang </th>
+              <th style='background-color: #4CAF50; color: white' >Tanggal Lahir </th>
+            </tr>
+          </thead>
+</table>
+</span>
 
 <span id="hasil_migrasi"></span>
 <br>
@@ -259,9 +304,8 @@ if ($registrasi_rj['registrasi_rj_lihat'] > 0) {
 <div class="form-group">
   <label for="sel1">Penjamin</label>
   <select class="form-control" id="penjamin" name="penjamin"  autocomplete="off">
- <option value=""> --SILAKAN PILIH--</option>
   <?php 
-  $query = $db->query("SELECT nama FROM penjamin ");
+  $query = $db->query("SELECT nama FROM penjamin ORDER BY id ASC ");
   while ( $data = mysqli_fetch_array($query)) 
   {
   echo "<option value='".$data['nama']."'>".$data['nama']."</option>";
@@ -312,7 +356,7 @@ if ($registrasi_rj['registrasi_rj_lihat'] > 0) {
 
 <div class="form-group" >
   <label for="umur">No Telp</label>
-  <input style="height: 20px;" type="text" onkeypress="return isNumberKey(event)" class="form-control " id="hp" name="hp" autocomplete="off">
+  <input style="height: 20px;" type="text"  class="form-control " id="hp" name="hp" autocomplete="off">
 </div>
 
 </div>
@@ -323,7 +367,6 @@ if ($registrasi_rj['registrasi_rj_lihat'] > 0) {
 <div class="form-group">
 <label> Dokter </label>
 <select style="font-size:15px; height:35px" name="petugas_dokter" id="petugas_dokter" class="form-control" >
-<option value="">Cari Petugas</option>
  <?php 
     
     //untuk menampilkan semua data pada tabel pelanggan dalam DB
@@ -404,32 +447,32 @@ if ($registrasi_rj['registrasi_rj_lihat'] > 0) {
 <div class="form-group">
 
   <label >Sistole / Diastole (mmHg)</label>
-  <input style="height: 20px;" type="text" onkeypress="return isNumberKey(event)" class="form-control" id="sistole_distole" name="sistole_distole"  autocomplete="off"> 
+  <input style="height: 20px;" type="text"  class="form-control" id="sistole_distole" name="sistole_distole"  autocomplete="off"> 
 </div>
 
 <div class="form-group">
   <label >Frekuensi Pernapasan (kali/menit)</label>
-  <input style="height: 20px;" type="text" onkeypress="return isNumberKey(event)" class="form-control" id="respiratory_rate" name="respiratory_rate"  autocomplete="off"> 
+  <input style="height: 20px;" type="text"  class="form-control" id="respiratory_rate" name="respiratory_rate"  autocomplete="off"> 
 </div>
 
 <div class="form-group">
   <label >Suhu (°C)</label>
-  <input style="height: 20px;" type="text" onkeypress="return isNumberKey(event)" class="form-control" id="suhu" name="suhu" autocomplete="off"> 
+  <input style="height: 20px;" type="text"  class="form-control" id="suhu" name="suhu" autocomplete="off"> 
 </div>
 
 <div class="form-group ">
    <label >Nadi (kali/menit)</label>
-   <input style="height: 20px;" type="text" onkeypress="return isNumberKey(event)" class="form-control" id="nadi" name="nadi"  autocomplete="off"> 
+   <input style="height: 20px;" type="text"  class="form-control" id="nadi" name="nadi"  autocomplete="off"> 
 </div>
 
 <div class="form-group ">
   <label >Berat Badan (kg)</label>
-  <input style="height: 20px;" type="text" onkeypress="return isNumberKey(event)" class="form-control" id="berat_badan" name="berat_badan"  autocomplete="off"> 
+  <input style="height: 20px;" type="text"  class="form-control" id="berat_badan" name="berat_badan"  autocomplete="off"> 
 </div>
 
 <div class="form-group ">
   <label >Tinggi Badan (cm)</label>
-  <input style="height: 20px;" type="text" onkeypress="return isNumberKey(event)" sclass="form-control" id="tinggi_badan" name="tinggi_badan"  autocomplete="off"> 
+  <input style="height: 20px;" type="text"  sclass="form-control" id="tinggi_badan" name="tinggi_badan"  autocomplete="off"> 
 </div>
 
 
@@ -468,6 +511,7 @@ tr:nth-child(even){background-color: #f2f2f2}
     <thead>
       <tr>
              <th style='background-color: #4CAF50; color: white'>Aksi</th>
+             <th style='background-color: #4CAF50; color: white'>Edit</th>
              <th style='background-color: #4CAF50; color: white'>Batal </th>
              <th style='background-color: #4CAF50; color: white'>No REG</th>
              <th style='background-color: #4CAF50; color: white'>No RM </th>
@@ -496,7 +540,7 @@ tr:nth-child(even){background-color: #f2f2f2}
 
 
 
-<!--   script untuk detail layanan PERUSAHAAN PENJAMIN-->
+<!--   script untuk Batal-->
 <script type="text/javascript">
      $(document).on('click', '.pilih2', function (e) {  
                var reg = $(this).attr('data-reg');
@@ -521,9 +565,27 @@ tr:nth-child(even){background-color: #f2f2f2}
                     
                     $("#detail2").modal('hide');
                     
-                    $(".tr-id-"+id+"").remove();
                     $.post("proses_keterangan_batal.php",{reg:reg, keterangan:keterangan},function(data){
-                      
+                      $('#table_rawat_jalan').DataTable().destroy();
+     
+                  var dataTable = $('#table_rawat_jalan').DataTable( {
+                      "processing": true,
+                      "serverSide": true,
+                      "ajax":{
+                        url :"datatable_registrasi_rawat_jalan.php", // json datasource
+                        type: "post",  // method  , by default get
+                        error: function(){  // error handling
+                          $(".employee-grid-error").html("");
+                          $("#table_rawat_jalan").append('<tbody class="employee-grid-error"><tr><th colspan="3">No data found in the server</th></tr></tbody>');
+                          $("#employee-grid_processing").css("display","none");
+                          }
+                      },
+                         "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+
+                          $(nRow).attr('class','tr-id-'+aData[12]+'');         
+
+                      }
+                    });
                     });
 
                     
@@ -531,8 +593,7 @@ tr:nth-child(even){background-color: #f2f2f2}
 
      
 </script>
-
-<!--  end script untuk akhir detail layanan PERUSAHAAN -->
+<!--  end script untuk batal-->
 
 <!--script ambil data pasien modal-->
 <script type="text/javascript">
@@ -838,19 +899,29 @@ else{
 <!--end script panggil pasien-->
 
 
+<!--<script type="text/javascript">
+//tanggal_lahir
+ $(function() {
+   
+$( "#tanggal_lahir" ).datepicker({
+  dateFormat: "dd-mm-yy", changeYear: true ,  yearRange: "1800:2500"
+});
+});
+//end tanggal_LAHIR
+</script>
+
 <script>
+//tanggal_lahir
   $(function() {
   $( "#tanggal_lahir" ).pickadate({ selectYears: 100, format: 'dd-mm-yyyy'});
   });
-  </script>
-<!--end script datepicker-->
+  </script>-->
 
+<script type="text/javascript">
 
-<script>
+$("#tanggal_lahir").blur(function(){
 
 function hitung_umur(tanggal_input){
-
-
 
 var now = new Date(); //Todays Date   
 var birthday = tanggal_input;
@@ -858,7 +929,7 @@ birthday=birthday.split("-");
 
 var dobDay = birthday[0]; 
 var dobMonth = birthday[1];
-var dobYear = birthday[2];
+var dobYear= birthday[2];
 
 var nowDay= now.getDate();
 var nowMonth = now.getMonth() + 1;  //jan=0 so month+1
@@ -888,18 +959,24 @@ return val;
 }
 
 
-$( "#tanggal_lahir" ).change(function(){
     var tanggal_lahir = $("#tanggal_lahir").val();
-    var umur = hitung_umur(tanggal_lahir);
-if (tanggal_lahir == '')
-{
+    var date = new Date(tanggal_lahir);
+    var tanggal = (date.getMonth() + 1) + '-' + date.getDate() + '-' +  date.getFullYear();
 
-}
-else
-{
-  $("#umur").val(umur);
-
-}
+    var umur = hitung_umur(tanggal);
+    if (umur == "NaN Tahun" || umur == "NaN Bulan") {
+      var tanggal_lahir = $("#tanggal_lahir").val();
+      var umur = hitung_umur(tanggal_lahir);
+      $("#umur").val(umur);
+    }
+    else if (tanggal_lahir == '')
+    {
+    
+    }
+    else
+    {
+    $("#umur").val(umur);
+    }
 
 });
 </script>
@@ -984,13 +1061,31 @@ $("#form_cari").submit(function(){
   $("#coba").click(function(){
   $("#demo").show();
   $("#kembali").show();
+  $("#tombol_span_filter").show();
    $("#coba").hide();
   });
     
-    $("#kembali").click(function(){
+  $("#kembali").click(function(){
   $("#demo").hide();
   $("#coba").show();
   $("#kembali").hide();
+  $("#tombol_span_filter").hide();
+
+  });
+
+</script>
+
+<script type="text/javascript">
+  $("#tombol_span_filter").click(function(){
+  $("#tombol_span_filter").hide();
+  $("#tombol_span_filter_2").show();
+  $("#span_pasien_lama").hide();
+  });
+    
+  $("#tombol_span_filter_2").click(function(){  
+  $("#tombol_span_filter_2").hide();
+  $("#tombol_span_filter").show();
+  $("#span_pasien_lama").show();
 
   });
 
@@ -1060,6 +1155,57 @@ $("#form_cari").submit(function(){
       });
     </script>
 <!-- / DATATABLE AJAX PASIEN LAMA-->
+
+<!-- START DATATABLE AJAX PASIEN LAMA / FILTER PASIEN-->
+    <script type="text/javascript" language="javascript" >
+      $(document).ready(function() {        
+        $(document).on('click','#filter_cari',function(e){          
+        $('#filter_pasien_lama').DataTable().destroy();
+        var dataTable = $('#filter_pasien_lama').DataTable( {
+          "processing": true,
+          "serverSide": true,
+          "ajax":{
+            url :"filter_pencarian_pasien_lama.php", // json datasource
+            "data": function ( d ) {
+                d.nama_lengkap_pasien = $("#nama_lengkap_pasien").val();
+                d.alamat_pasien = $("#alamat_pasien").val();
+                // d.custom = $('#myInput').val();
+                // etc
+            },
+            type: "post",  // method  , by default get
+            error: function(){  // error handling
+              $(".employee-grid-error").html("");
+              $("#filter_pasien_lama").append('<tbody class="employee-grid-error"><tr><th colspan="3">No data found in the server</th></tr></tbody>');
+              $("#employee-grid_processing").css("display","none");
+              
+            }
+          },
+
+          "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+
+              $(nRow).attr('class', "pilih");
+              $(nRow).attr('data-no', aData[0]);
+              $(nRow).attr('data-nama', aData[1]);
+              $(nRow).attr('data-jenis-kelamin', aData[2]);
+              $(nRow).attr('data-alamat', aData[3]);
+              $(nRow).attr('data-lahir', aData[4]);
+              $(nRow).attr('data-darah', aData[5]);
+              $(nRow).attr('data-hp', aData[6]);
+              $(nRow).attr('data-penjamin', aData[7]);
+
+          }
+
+          });
+
+        $("#span_pasien_lama").hide();
+        $("#span_filter_pasien_lama").show();
+
+        });
+      });
+    </script>
+
+<!-- / DATATABLE AJAX PASIEN LAMA / FILTER PASIEN-->
+
 
 <!-- DATATABLE AJAX DAFTAR PASIEN-->
     <script type="text/javascript" language="javascript" >

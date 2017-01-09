@@ -69,7 +69,8 @@ if( !empty($requestData['search']['value']) ) {   // if there is a search parame
 	$sql.=" AND ( no_faktur LIKE '".$requestData['search']['value']."%' ";  
 	$sql.=" OR kode_pelanggan LIKE '".$requestData['search']['value']."%' ";
 	$sql.=" OR no_reg LIKE '".$requestData['search']['value']."%' ";   
-	$sql.=" OR kode_pelanggan LIKE '".$requestData['search']['value']."%' ";   
+	$sql.=" OR kode_pelanggan LIKE '".$requestData['search']['value']."%' "; 
+  $sql.=" OR nama LIKE '".$requestData['search']['value']."%' ";   
 	$sql.=" OR tanggal LIKE '".$requestData['search']['value']."%' ";   
 	$sql.=" OR total LIKE '".$requestData['search']['value']."%' ";   
 	$sql.=" OR jenis_penjualan LIKE '".$requestData['search']['value']."%' "; 
@@ -150,13 +151,12 @@ $penjualan_hapus = mysqli_num_rows($pilih_akses_penjualan_hapus);
           $pelanggan = 'Umum';    
         }
         else{
-        $query_pel = $db->query("SELECT nama_pelanggan FROM pelanggan WHERE kode_pelanggan = '$row[kode_pelanggan]' ");
+        $query_pel = $db_pasien->query("SELECT nama_pelanggan FROM pelanggan WHERE kode_pelanggan = '$row[kode_pelanggan]' ");
         $data_pelanggan = mysqli_fetch_array($query_pel);
         $pelanggan = $data_pelanggan['nama_pelanggan'];
         }
 
-
-        $query_dok = $db->query("SELECT u.nama FROM penjualan p INNER JOIN user u ON p.dokter = u.id WHERE jenis_penjualan = '$row[jenis_penjualan]' ");
+        $query_dok = $db->query("SELECT nama FROM user WHERE id = '$row[dokter]' ");
         $data_dok = mysqli_fetch_array($query_dok);
 
 				$sum_subtotal = $db->query("SELECT SUM(subtotal) AS total_kotor FROM detail_penjualan WHERE no_faktur = '$row[no_faktur]' ");

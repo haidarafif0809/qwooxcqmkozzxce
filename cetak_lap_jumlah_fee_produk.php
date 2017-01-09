@@ -4,17 +4,23 @@ include 'sanitasi.php';
 include 'db.php';
 
 
-$nama_petugas = $_GET['nama_petugas'];
-$dari_tanggal = $_GET['dari_tanggal'];
-$sampai_tanggal = $_GET['sampai_tanggal'];
+$nama_petugas = stringdoang($_GET['nama_petugas']);
+$dari_tanggal = stringdoang($_GET['dari_tanggal']);
+$sampai_tanggal = stringdoang($_GET['sampai_tanggal']);
+$dari_jam = stringdoang($_GET['dari_jam']);
+$sampai_jam = stringdoang($_GET['sampai_jam']);
 
-    $query0 = $db->query("SELECT lfp.id,lfp.tanggal,u.nama FROM laporan_fee_produk lfp INNER JOIN user u ON lfp.nama_petugas = u.id WHERE lfp.nama_petugas = '$nama_petugas' AND lfp.tanggal >= '$dari_tanggal' AND lfp.tanggal <= '$sampai_tanggal'");
+$waktu_dari = $dari_tanggal." ".$dari_jam;
+$waktu_sampai = $sampai_tanggal." ".$sampai_jam;
+  
+
+    $query0 = $db->query("SELECT lfp.id,lfp.tanggal,u.nama FROM laporan_fee_produk lfp INNER JOIN user u ON lfp.nama_petugas = u.id WHERE lfp.nama_petugas = '$nama_petugas' AND lfp.waktu >= '$waktu_dari' AND lfp.waktu <= '$waktu_sampai'");
     $data0 = mysqli_fetch_array($query0);
 
     $query1 = $db->query("SELECT * FROM perusahaan ");
     $data1 = mysqli_fetch_array($query1);
 
-    $query10 = $db->query("SELECT SUM(jumlah_fee) AS total_fee FROM laporan_fee_produk WHERE nama_petugas = '$nama_petugas' AND tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal'");
+    $query10 = $db->query("SELECT SUM(jumlah_fee) AS total_fee FROM laporan_fee_produk WHERE nama_petugas = '$nama_petugas' AND waktu >= '$waktu_dari' AND waktu <= '$waktu_sampai'");
     $cek0 = mysqli_fetch_array($query10);
     $total_fee = rp($cek0['total_fee']);
     
@@ -42,7 +48,7 @@ $sampai_tanggal = $_GET['sampai_tanggal'];
       <tr><td  width="40%">Nama Petugas</td> <td> :&nbsp;</td> <td> <?php echo $data0['nama']; ?></td></tr>
       <tr><td  width="40%">Tanggal</td> <td> :&nbsp;</td> <td> <?php echo tanggal($data0['tanggal']); ?> </td>
       </tr>
-      <tr><td  width="40%">Periode</td> <td> :&nbsp;</td> <td> <?php echo tanggal($dari_tanggal); ?> s/d <?php echo tanggal($sampai_tanggal); ?> </td></tr>
+      <tr><td  width="40%">Periode</td> <td> :&nbsp;</td> <td> <?php echo $waktu_dari; ?> s/d <?php echo $waktu_sampai; ?> </td></tr>
       <tr><td  width="40%">User</td> <td> :&nbsp;</td> <td> <?php echo $_SESSION['user_name']; ?> </td></tr>
    
             
@@ -78,7 +84,7 @@ $sampai_tanggal = $_GET['sampai_tanggal'];
             
             <tbody>
             <?php
-                $query10 = $db->query("SELECT lfp.nama_petugas,lfp.no_faktur,lfp.kode_produk,lfp.nama_produk,lfp.jumlah_fee,lfp.tanggal,lfp.jam ,u.nama FROM laporan_fee_produk lfp INNER JOIN user u ON lfp.nama_petugas = u.id  WHERE lfp.nama_petugas = '$nama_petugas' ");
+                $query10 = $db->query("SELECT lfp.nama_petugas,lfp.no_faktur,lfp.kode_produk,lfp.nama_produk,lfp.jumlah_fee,lfp.tanggal,lfp.jam ,u.nama FROM laporan_fee_produk lfp INNER JOIN user u ON lfp.nama_petugas = u.id  WHERE lfp.nama_petugas = '$nama_petugas' AND lfp.waktu >= '$waktu_dari' AND lfp.waktu <= '$waktu_sampai'  ");
                 while ($data10 = mysqli_fetch_array($query10))
                 {
                   

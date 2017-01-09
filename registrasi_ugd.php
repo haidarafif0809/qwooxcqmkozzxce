@@ -187,7 +187,8 @@ opacity: 0.9;
 </div>
 <!--modal end Layanan RUJUK KE RS-->
 
-<div class="container">
+<div style="padding-left:5%; padding-right:5%;">
+
 <?php if ($registrasi_ugd['registrasi_ugd_lihat'] > 0){ ?>
   <h3> DATA PASIEN UGD</h3><hr>
 <?php }else{ ?>
@@ -203,6 +204,17 @@ opacity: 0.9;
   <a href="registrasi_ugd_baru.php" accesskey="b" class="btn btn-info"> <i class="fa fa-plus"></i> Pasien <u>B</u>aru</a>
 
   <a href="reg_ugd_belum_selesai.php" accesskey="s" class="btn btn-danger"> <i class="fa fa-list"></i> Pasien Belum <u>S</u>elesai Pembayaran </a>
+
+  <span id="tombol_span_filter" style="display: none">
+  <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample"><i class='fa fa-filter'> </i>
+  Filter Pencarian  </button>
+</span>
+
+<span id="tombol_span_filter_2" style="display: none">
+  <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample"><i class='fa fa-filter'> </i>
+  Filter Pencarian  </button>
+</span>
+
 <br>
 <br>
 
@@ -210,6 +222,25 @@ opacity: 0.9;
   
 <div id="demo" class="collapse">
 
+ <div class="collapse" id="collapseExample">
+
+    <div class="row">
+      <div class="col-sm-2">
+        <label>Nama Lengkap Pasien </label>
+        <input style="height: 20px;" type="text" class="form-control" id="nama_lengkap_pasien" name="nama_lengkap_pasien" autocomplete="off"  >
+      </div>
+      <div class="col-sm-3">
+        <label>Alamat Pasien </label>
+        <input style="height: 20px;" type="text" class="form-control" id="alamat_pasien" name="alamat_pasien" autocomplete="off"  >
+      </div> 
+    <label><br><br><br></label>
+        <button id="filter_cari" type="submit" class="btn btn-success"><i class='fa fa-search'> </i>&nbsp;Cari</button>
+
+    </div>
+
+ </div> <!--END collapseExample -->
+
+<span id="span_pasien_lama">
 <table id="pasien_lama" class="display table-sm table-bordered" width="100%">
           <thead>
             <tr>
@@ -221,6 +252,21 @@ opacity: 0.9;
             </tr>
           </thead>
 </table>
+</span>
+
+<span id="span_filter_pasien_lama" style="display: none">
+<table id="filter_pasien_lama" class="display table-sm table-bordered" width="100%">
+          <thead>
+            <tr>
+              <th style='background-color: #4CAF50; color: white' >No. RM </th>
+              <th style='background-color: #4CAF50; color: white' >Nama Lengkap</th>
+              <th style='background-color: #4CAF50; color: white' >Jenis Kelamin</th>
+              <th style='background-color: #4CAF50; color: white' >Alamat Sekarang </th>
+              <th style='background-color: #4CAF50; color: white' >Tanggal Lahir </th>
+            </tr>
+          </thead>
+</table>
+</span>
 <span id="hasil_migrasi"></span>
 <br>
 
@@ -513,11 +559,15 @@ tr:nth-child(even){background-color: #f2f2f2}
 
       <th style='background-color: #4CAF50; color: white'>Rujuk Tempat Lain</th>
       <th style='background-color: #4CAF50; color: white'>Rujuk Rawat Inap</th>
+
 <?php endif ?>
 
 <?php  if ($rekam_medik['rekam_medik_ugd_lihat'] > 0):?>
-
 <th style='background-color: #4CAF50; color: white'>Rekam medik</th> 
+      <?php endif; ?>
+
+<?php  if ($registrasi_ugd['registrasi_ugd_edit'] > 0):?>
+<th style='background-color: #4CAF50; color: white'>Edit</th> 
       <?php endif; ?>
 
       <th style='background-color: #4CAF50; color: white'>No REG</th>
@@ -780,11 +830,29 @@ $("#hubungan_dengan_pasien").attr("disabled", true);
   $("#demo").show();
   $("#kembali").show();
    $("#coba").hide();
+  $("#tombol_span_filter").show();
   });
     $("#kembali").click(function(){
   $("#demo").hide();
   $("#coba").show();
   $("#kembali").hide();
+  $("#tombol_span_filter").hide();
+
+  });
+
+</script>
+
+<script type="text/javascript">
+  $("#tombol_span_filter").click(function(){
+  $("#tombol_span_filter").hide();
+  $("#tombol_span_filter_2").show();
+  $("#span_pasien_lama").hide();
+  });
+    
+  $("#tombol_span_filter_2").click(function(){  
+  $("#tombol_span_filter_2").hide();
+  $("#tombol_span_filter").show();
+  $("#span_pasien_lama").show();
 
   });
 
@@ -1035,6 +1103,54 @@ else
     </script>
 <!-- / DATATABLE AJAX PASIEN LAMA-->
 
+
+<!-- START DATATABLE AJAX PASIEN LAMA / FILTER PASIEN-->
+      <script type="text/javascript" language="javascript" >
+      $(document).ready(function() {
+        $(document).on('click','#filter_cari',function(e){          
+        $('#filter_pasien_lama').DataTable().destroy();
+        var dataTable = $('#filter_pasien_lama').DataTable( {
+          "processing": true,
+          "serverSide": true,
+          "ajax":{
+            url :"filter_pencarian_pasien_lama_ugd.php", // json datasource
+            "data": function ( d ) {
+                d.nama_lengkap_pasien = $("#nama_lengkap_pasien").val();
+                d.alamat_pasien = $("#alamat_pasien").val();
+                // d.custom = $('#myInput').val();
+                // etc
+            },
+            type: "post",  // method  , by default get
+            error: function(){  // error handling
+              $(".employee-grid-error").html("");
+              $("#filter_pasien_lama").append('<tbody class="employee-grid-error"><tr><th colspan="3">No data found in the server</th></tr></tbody>');
+              $("#employee-grid_processing").css("display","none");
+              
+            }
+          },
+
+          "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+
+              $(nRow).attr('class', "pilih");
+              $(nRow).attr('data-no', aData[0]);
+              $(nRow).attr('data-nama', aData[1]);
+              $(nRow).attr('data-jenis-kelamin', aData[2]);
+              $(nRow).attr('data-alamat', aData[3]);
+              $(nRow).attr('data-lahir', aData[4]);
+              $(nRow).attr('data-darah', aData[5]);
+              $(nRow).attr('data-hp', aData[6]);
+              $(nRow).attr('data-penjamin', aData[7]);
+
+          }
+
+          });
+
+        $("#span_pasien_lama").hide();
+        $("#span_filter_pasien_lama").show();
+        
+        });
+      });
+    </script>
 <!-- DATATABLE AJAX DAFTAR PASIEN-->
     <script type="text/javascript" language="javascript" >
       $(document).ready(function() {

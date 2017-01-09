@@ -77,7 +77,7 @@ $insert2 = "INSERT INTO tbs_fee_produk (no_faktur,no_reg,no_rm,nama_petugas,kode
 
 }
 
-	 header ('location:form_edit_penjualan_rj.php?no_faktur='.$no_faktur.'&no_rm='.$no_rm.'&kode_gudang='.$kode_gudang.'&nama_pasien='.$nama_pasien.'&no_reg='.$no_reg.'');
+    echo '<META HTTP-EQUIV="Refresh" Content="0; URL=form_edit_penjualan_rj.php?no_faktur='.$no_faktur.'&no_rm='.$no_rm.'&kode_gudang='.$kode_gudang.'&nama_pasien='.$nama_pasien.'&no_reg='.$no_reg.'">';
 
 //Untuk Memutuskan Koneksi Ke Database
 mysqli_close($db);   

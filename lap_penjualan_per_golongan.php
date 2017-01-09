@@ -5,10 +5,11 @@ include 'db.php';
 
 ?>
 
+
 <div class="container">
 
 <h3> LAPORAN PENJUALAN REKAP PER GOLONGAN BARANG </h3><hr>
-
+<br><br><br>
 <form id="perhari" class="form" role="form">
 
 <div class="col-sm-2"> 
@@ -44,7 +45,7 @@ tr:nth-child(even){background-color: #f2f2f2}
 
 </style>
 
-<span id="result">
+<span id="result" style="display: none">
  <div class="card card-block">
  <div class="table-responsive">
     <table id="table_lap" class="table table-bordered table-sm">
@@ -82,14 +83,11 @@ tr:nth-child(even){background-color: #f2f2f2}
 </script>
 
 <script type="text/javascript">
-  
-  $(function(){
-    $('.jam_cari').pickatime({
-        // 12 or 24 hour 
-        twelvehour: false
-    });
-  });
-
+            $(document).ready(function() {
+                $('.jam_cari').timepicker({
+                    showPeriodLabels: false
+                });
+              });
 </script>
 
 
@@ -154,6 +152,7 @@ tr:nth-child(even){background-color: #f2f2f2}
 
           $("#export_lap").attr("href", "export_lap_penjualan_golongan.php?golongan="+golongan+"&dari_tanggal="+dari_tanggal+"&sampai_tanggal="+sampai_tanggal+"&dari_jam="+dari_jam+"&sampai_jam="+sampai_jam+"");
 }//end else
+  $("#result").show();
         });
         $("form").submit(function(){
         

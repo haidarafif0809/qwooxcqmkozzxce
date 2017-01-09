@@ -89,7 +89,9 @@ $kredit_piutang = angkadoang($_POST['sisa_kredit']);
 $sisa_kredit = angkadoang($_POST['kredit']);
 $sisa = angkadoang($_POST['sisa']);
 $keterangan = stringdoang($_POST['keterangan']);
-$tax = angkadoang($_POST['tax']);
+
+/*$tax = angkadoang($_POST['tax']);
+*/
 $biaya_admin = angkadoang($_POST['biaya_adm']);
 $jenis_penjualan = stringdoang($_POST['jenis_penjualan']);
 $potongan = angkadoang($_POST['potongan']);
@@ -103,7 +105,7 @@ $ppn_input = stringdoang($_POST['ppn_input']);
    $_SESSION['no_faktur'] = $no_faktur;
 
 
- $select_kode_pelanggan = $db->query("SELECT nama_pelanggan FROM pelanggan WHERE kode_pelanggan = '$no_rm'");
+ $select_kode_pelanggan = $db_pasien->query("SELECT nama_pelanggan FROM pelanggan WHERE kode_pelanggan = '$no_rm'");
     $ambil_kode_pelanggan = mysqli_fetch_array($select_kode_pelanggan);
 
     // petugas analis
@@ -281,13 +283,13 @@ $ppn_input = stringdoang($_POST['ppn_input']);
 
 
               
-$stmt = $db->prepare("INSERT INTO penjualan (no_faktur, no_reg, penjamin, apoteker, perawat, petugas_lain, dokter, kode_gudang, kode_pelanggan, tanggal, jam, user, sales, status, potongan, no_pesanan,tax,jenis_penjualan,nama,biaya_admin,total,tunai,sisa,kredit,nilai_kredit,cara_bayar,ppn) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,'Simpan Sementara',?,'1',?,?,?,?,?,?,?,?,?,?,?)");
+$stmt = $db->prepare("INSERT INTO penjualan (no_faktur, no_reg, penjamin, apoteker, perawat, petugas_lain, dokter, kode_gudang, kode_pelanggan, tanggal, jam, user, sales, status, potongan, no_pesanan,/*tax,*/jenis_penjualan,nama,biaya_admin,total,tunai,sisa,kredit,nilai_kredit,cara_bayar,ppn) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,'Simpan Sementara',?,'1',/*?,*/?,?,?,?,?,?,?,?,?,?)");
 
 
               
     // hubungkan "data" dengan prepared statements
-              $stmt->bind_param("sssssssssssssiisssiiiiiss",
-              $no_faktur,$no_reg,$penjamin,$petugas_farmasi,$petugas_paramedik,$petugas_lain, $dokter, $kode_gudang, $no_rm, $tanggal_sekarang, $jam_sekarang, $nama_petugas, $petugas_kasir, $potongan,$tax,$jenis_penjualan,$nama_pasien,$biaya_admin,$total,$pembayaran,$sisa,$sisa_kredit,$sisa_kredit,$cara_bayar,$ppn_input);
+              $stmt->bind_param("sssssssssssssisssiiiiiss",
+              $no_faktur,$no_reg,$penjamin,$petugas_farmasi,$petugas_paramedik,$petugas_lain, $dokter, $kode_gudang, $no_rm, $tanggal_sekarang, $jam_sekarang, $nama_petugas, $petugas_kasir, $potongan,/*$tax,*/$jenis_penjualan,$nama_pasien,$biaya_admin,$total,$pembayaran,$sisa,$sisa_kredit,$sisa_kredit,$cara_bayar,$ppn_input);
               
 
               
@@ -364,7 +366,7 @@ $total_tax = $jumlah_tax['total_tax'];
 $biaya_admin = angkadoang($_POST['biaya_adm']);
 
     $ppn_input = stringdoang($_POST['ppn_input']);
-    $select_kode_pelanggan = $db->query("SELECT nama_pelanggan FROM pelanggan WHERE kode_pelanggan = '$no_rm'");
+    $select_kode_pelanggan = $db_pasien->query("SELECT nama_pelanggan FROM pelanggan WHERE kode_pelanggan = '$no_rm'");
     $ambil_kode_pelanggan = mysqli_fetch_array($select_kode_pelanggan);
 
 $kredit_piutang = $total - $pembayaran;
@@ -415,8 +417,8 @@ if ($pajak != "" || $pajak != 0) {
 
 else {
   //ppn == Exclude
-  $total_penjualan = $total2 + $biaya_admin;
-  $pajak = $tax;
+  $total_penjualan = ($total2 - $total_tax) + $biaya_admin;
+  $pajak = $total_tax;
 $ppn_input;
  //Total Penjualan
         $insert_juranl = $db->query("INSERT INTO jurnal_trans (nomor_jurnal,waktu_jurnal,keterangan_jurnal,kode_akun_jurnal,debit,kredit,jenis_transaksi,no_faktur,approved,user_buat) VALUES ('".no_jurnal()."', '$tanggal_sekarang $jam_sekarang', 'Penjualan Piutang - $ambil_kode_pelanggan[nama_pelanggan]', '$ambil_setting[total_penjualan]', '0', '$total_penjualan', 'Penjualan', '$no_faktur','1', '$nama_petugas')");

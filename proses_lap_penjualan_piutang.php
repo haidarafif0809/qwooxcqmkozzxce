@@ -33,7 +33,7 @@ $columns = array(
 );
 
 // getting total number records without any search
-$sql = "SELECT pel.nama_pelanggan,p.id,p.tanggal,p.tanggal_jt,p.no_faktur,p.kode_pelanggan,p.total,p.jam,p.user,p.status,p.potongan,p.tax,p.tunai,p.kredit";
+$sql = "SELECT pel.nama_pelanggan,p.id,p.penjamin,p.tanggal,p.tanggal_jt,p.no_faktur,p.kode_pelanggan,p.total,p.jam,p.user,p.status,p.potongan,p.tax,p.tunai,p.kredit";
 $sql.=" FROM penjualan p LEFT JOIN pelanggan pel ON p.kode_pelanggan = pel.kode_pelanggan ";
 $sql.=" WHERE p.tanggal <= '$sampai_tanggal' ";
 $sql.=" AND p.kredit != 0";
@@ -44,14 +44,15 @@ $totalData = mysqli_num_rows($query);
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
-$sql = "SELECT pel.nama_pelanggan,p.id,p.tanggal,p.tanggal_jt,p.no_faktur,p.kode_pelanggan,p.total,p.jam,p.user,p.status,p.potongan,p.tax,p.tunai,p.kredit";
+$sql = "SELECT pel.nama_pelanggan,p.id,p.penjamin,p.tanggal,p.tanggal_jt,p.no_faktur,p.kode_pelanggan,p.total,p.jam,p.user,p.status,p.potongan,p.tax,p.tunai,p.kredit";
 $sql.=" FROM penjualan p LEFT JOIN pelanggan pel ON p.kode_pelanggan = pel.kode_pelanggan ";
 $sql.=" WHERE p.tanggal <= '$sampai_tanggal' ";
 $sql.=" AND p.kredit != 0";
 
 	$sql.=" AND ( p.no_faktur LIKE '".$requestData['search']['value']."%'";  
 	$sql.=" OR p.tanggal LIKE '".$requestData['search']['value']."%' ";
-	$sql.=" OR p.tanggal_jt LIKE '".$requestData['search']['value']."%'";   
+	$sql.=" OR p.tanggal_jt LIKE '".$requestData['search']['value']."%'";  
+	$sql.=" OR p.penjamin LIKE '".$requestData['search']['value']."%'";   
 	$sql.=" OR p.total LIKE '".$requestData['search']['value']."%' )";
 
 }
@@ -72,6 +73,7 @@ while( $row=mysqli_fetch_array($query) ) {
 
 	$nestedData=array(); 
 
+	$nestedData[] = $row["penjamin"];
 	$nestedData[] = $row["tanggal"];
 	$nestedData[] = $row["tanggal_jt"];
 	$nestedData[] = $row["no_faktur"];
@@ -117,6 +119,7 @@ $total_kredit = $cek30['total_kredit'];
 $nestedData = array();
 
 	$nestedData[] = "<b style='color:red' >Total :</b>";
+	$nestedData[] = "";
 	$nestedData[] = "";
 	$nestedData[] = "";
 	$nestedData[] = "";

@@ -63,7 +63,7 @@ include 'db.php';
                   <div class="col-sm-2"> 
                   <input type="hidden" name="nama_petugas" id="nama_petugas" class="form-control" placeholder="Nama Petugas">
 
-                  <input type="text" name="nama_petugas_value" style="font-size:15px; height:15px" id="nama_petugas_value" class="form-control" placeholder="Nama Petugas" required="" >
+                  <input type="text" name="nama_petugas_value" style="font-size:15px; height:15px" id="nama_petugas_value" class="form-control" placeholder="Nama Petugas" required="" > 
 
                   </div>                  
 
@@ -127,12 +127,18 @@ include 'db.php';
   $( ".tanggal_cari" ).pickadate({ selectYears: 100, format: 'yyyy-mm-dd'});
   });
 
- $(function() {
-    $( ".jam_cari" ).pickatime({format: 'hh:ii:ss', twelvehour: false });
-  }); 
+ 
   // /PICKERDATE
 </script>
 
+
+<script type="text/javascript">
+            $(document).ready(function() {
+                $('.jam_cari').timepicker({
+                    showPeriodLabels: false
+                });
+              });
+</script>
 
 <script type="text/javascript" language="javascript" >
    $(document).ready(function() {
@@ -192,6 +198,9 @@ include 'db.php';
         var nama_petugas = $("#nama_petugas").val();
         var dari_tanggal = $("#dari_tanggal").val();        
         var sampai_tanggal = $("#sampai_tanggal").val();
+       var dari_jam = $("#dari_jam").val();        
+        var sampai_jam = $("#sampai_jam").val();
+
           if (nama_petugas == '') {
             alert("Silakan nama petugas diisi terlebih dahulu.");
             $("#cari_petugas").focus();
@@ -204,6 +213,15 @@ include 'db.php';
             alert("Silakan sampai tanggal diisi terlebih dahulu.");
             $("#sampai_tanggal").focus();
           }
+          else if (dari_jam == '') {
+            alert("Silakan dari jam diisi terlebih dahulu.");
+            $("#dari_jam").focus();
+          }
+          else if (sampai_jam == '') {
+            alert("Silakan sampai jam diisi terlebih dahulu.");
+            $("#sampai_jam").focus();
+          }
+
             else{ 
               //TABLE KOMISI PRODUK
               var dataTable = $('#table_petugas').DataTable( {
@@ -237,7 +255,7 @@ include 'db.php';
     
     $("#cetak").show();
 
-          $("#cetak_lap").attr("href", "cetak_lap_jumlah_fee_produk.php?dari_tanggal="+dari_tanggal+"&sampai_tanggal="+sampai_tanggal+"");
+          $("#cetak_lap").attr("href", "cetak_lap_jumlah_fee_produk.php?dari_tanggal="+dari_tanggal+"&dari_jam="+dari_jam+"&sampai_tanggal="+sampai_tanggal+"&sampai_jam="+sampai_jam+"&nama_petugas="+nama_petugas+"");
 }//end else
         });
         $("form").submit(function(){

@@ -44,6 +44,13 @@ $data = array();
 while($row=mysqli_fetch_array($query) ) {  // preparing an array
 	$nestedData=array();
 
+	$pilih_akses_kas_keluar = $db->query("SELECT * FROM otoritas_kas_keluar WHERE id_otoritas = '$_SESSION[otoritas_id]'");
+$kas_keluar = mysqli_fetch_array($pilih_akses_kas_keluar);
+
+if ($kas_keluar['kas_keluar_lihat'] == 1) {
+	$nestedData[] = "<a href='cetak_kas_keluar.php?no_faktur=".$row['no_faktur']."' target='blank' class='btn btn-primary' data-target='blank'> <i class='fa fa-print'></i> Cetak </a>";
+	}
+
 	$nestedData[] = $row["no_faktur"];
 	$nestedData[] = $row["nama_daftar_akun"];
 	$nestedData[] = rp($row["jumlah"]);
@@ -53,8 +60,7 @@ while($row=mysqli_fetch_array($query) ) {  // preparing an array
 	$nestedData[] = $row["user_edit"];
 	$nestedData[] = $row["waktu_edit"];
 	
-$pilih_akses_kas_keluar = $db->query("SELECT * FROM otoritas_kas_keluar WHERE id_otoritas = '$_SESSION[otoritas_id]'");
-$kas_keluar = mysqli_fetch_array($pilih_akses_kas_keluar);
+
 
 $nestedData[] ="<button class='btn btn-info detail' no_faktur='". $row['no_faktur'] ."'> <i class='fa fa-th-list'></i> Detail </button>";
 

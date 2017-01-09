@@ -11,7 +11,7 @@ $jumlah_baru = angkadoang($_POST['jumlah_baru']);
 $jumlah_lama = angkadoang($_POST['jumlah_lama']);
 $potongan = angkadoang($_POST['potongan']);
 $harga = angkadoang($_POST['harga']);
-$jumlah_tax = angkadoang($_POST['jumlah_tax']);
+echo $jumlah_tax = angkadoang($_POST['jumlah_tax']);
 $subtotal = angkadoang($_POST['subtotal']);
 
 

@@ -1,8 +1,8 @@
-<?php 
+<?php  session_start();
 include 'db.php';
 include_once 'sanitasi.php';
 
-session_start();
+
 $session_id = session_id();
 $tipe = stringdoang($_POST['tipe_barang']);
 $penjamin = stringdoang($_POST['penjamin']);
@@ -30,6 +30,15 @@ $tahun_php = date('Y');
       $jam_sekarang = date('H:i:s');
       $tahun_terakhir = substr($tahun_sekarang, 2);
 
+$select_produk = $db->query("SELECT nama FROM jasa_lab WHERE kode_lab = '$kode' ");
+$data_produk = mysqli_fetch_array($select_produk);
+
+if ($nama == "") {
+  $nama = $data_produk['nama_barang'];
+}
+else{  
+  $nama = stringdoang($_POST['nama_barang']);
+}
 
 $id_userr = $db->query("SELECT id FROM user WHERE nama = '$user'");
 $data_id = mysqli_fetch_array($id_userr);
