@@ -19,11 +19,10 @@
 $tahun_sekarang = date('Y');
 $bulan_sekarang = date('m');
 $tanggal_sekarang = date('Y-m-d');
-$jam_sekarang = date('H:i:sa');
+$jam_sekarang = date('H:i:s');
 $tahun_terakhir = substr($tahun_sekarang, 2);
 $waktu = $tanggal_sekarang." ".$jam_sekarang;
            
-
     
     $select_kode_pelanggan = $db->query("SELECT nama_pelanggan FROM pelanggan WHERE kode_pelanggan = '$kode_pelanggan'");
     $ambil_kode_pelanggan = mysqli_fetch_array($select_kode_pelanggan);
@@ -112,11 +111,11 @@ $delete1 = $db->query("DELETE FROM jurnal_trans WHERE no_faktur = '$nomor_faktur
             
             {
             
-             $stmt = $db->prepare("UPDATE  penjualan SET apoteker = ?, perawat = ?, petugas_lain = ?, biaya_admin = ?, kode_gudang = ?, total = ?, jam = ?, status = 'Lunas', potongan = ?, tax = ?, sisa = ?, cara_bayar = ?, tunai = ?, ppn = ?, status_jual_awal = 'Tunai', keterangan = ?, user = ? WHERE no_faktur = ? AND no_reg = ?") ;
+             $stmt = $db->prepare("UPDATE  penjualan SET apoteker = ?, perawat = ?, petugas_lain = ?, biaya_admin = ?, kode_gudang = ?, total = ?, jam = ?, status = 'Lunas', potongan = ?,  sisa = ?, cara_bayar = ?, tunai = ?, ppn = ?, status_jual_awal = 'Tunai', keterangan = ?, user = ? WHERE no_faktur = ? AND no_reg = ?") ;
               
     // hubungkan "data" dengan prepared statements
-              $stmt->bind_param("sssisisiiisisssss",
-                $petugas_farmasi, $petugas_paramedik, $petugas_lain, $biaya_adm, $kode_gudang, $total, $jam, $potongan, $tax, $sisa_pembayaran, $cara_bayar, $pembayaran, $ppn_input, $keterangan, $nama_petugas, $nomor_faktur, $no_reg );
+              $stmt->bind_param("sssisisiisisssss",
+                $petugas_farmasi, $petugas_paramedik, $petugas_lain, $biaya_adm, $kode_gudang, $total, $jam, $potongan, $sisa_pembayaran, $cara_bayar, $pembayaran, $ppn_input, $keterangan, $nama_petugas, $nomor_faktur, $no_reg );
               
 
                $petugas_farmasi = stringdoang($_POST['petugas_farmasi']);
@@ -125,9 +124,9 @@ $delete1 = $db->query("DELETE FROM jurnal_trans WHERE no_faktur = '$nomor_faktur
                $biaya_adm = stringdoang($_POST['biaya_adm']);
                $kode_gudang = stringdoang($_POST['kode_gudang']);
                $total = stringdoang($_POST['total']);
-               $jam = date('H:i:sa');
+               $jam = date('H:i:s');
                $potongan = stringdoang($_POST['potongan']);
-               $tax = stringdoang($_POST['tax']);
+               /*$tax = stringdoang($_POST['tax']);*/
                $sisa_pembayaran = stringdoang($_POST['sisa_pembayaran']);
                $cara_bayar = stringdoang($_POST['cara_bayar']);
                $pembayaran = stringdoang($_POST['pembayaran']);
@@ -206,8 +205,8 @@ if ($pajak != "" || $pajak != 0) {
 
 else {
   //ppn == Exclude
-  $total_penjualan = $total2 + $biaya_adm;
-  $pajak = $tax;
+  $total_penjualan = ($total2 - $total_tax) + $biaya_adm;
+  $pajak = $total_tax;
 
  //Total Penjualan
         $insert_juranl = $db->query("INSERT INTO jurnal_trans (nomor_jurnal,waktu_jurnal,keterangan_jurnal,kode_akun_jurnal,debit,kredit,jenis_transaksi,no_faktur,approved,user_buat) VALUES ('".no_jurnal()."', '$tanggal_sekarang $jam_sekarang', 'Penjualan UGD Tunai - $ambil_kode_pelanggan[nama_pelanggan]', '$ambil_setting[total_penjualan]', '0', '$total_penjualan', 'Penjualan', '$nomor_faktur','1', '$user')");
@@ -235,11 +234,11 @@ if ($potongan != "") {
 
             {
             
-             $stmt = $db->prepare("UPDATE  penjualan SET apoteker = ?, perawat = ?, petugas_lain = ?, biaya_admin = ?, kode_gudang = ?, total = ?, jam = ?, status = 'Piutang', potongan = ?, tax = ?, kredit = ?, cara_bayar = ?, tunai = ?, ppn = ?, status_jual_awal = 'Kredit', keterangan = ?, user = ?, nilai_kredit = ? WHERE no_faktur = ? AND no_reg = ?") ;
+             $stmt = $db->prepare("UPDATE  penjualan SET apoteker = ?, perawat = ?, petugas_lain = ?, biaya_admin = ?, kode_gudang = ?, total = ?, jam = ?, status = 'Piutang', potongan = ?, kredit = ?, cara_bayar = ?, tunai = ?, ppn = ?, status_jual_awal = 'Kredit', keterangan = ?, user = ?, nilai_kredit = ? WHERE no_faktur = ? AND no_reg = ?") ;
               
     // hubungkan "data" dengan prepared statements
-              $stmt->bind_param("sssisisiiisisssiss",
-                $petugas_farmasi, $petugas_paramedik, $petugas_lain, $biaya_adm, $kode_gudang, $total, $jam, $potongan, $tax, $sisa_kredit, $cara_bayar, $pembayaran, $ppn_input, $keterangan, $nama_petugas, $sisa_kredit, $nomor_faktur, $no_reg );
+              $stmt->bind_param("sssisisiisisssiss",
+                $petugas_farmasi, $petugas_paramedik, $petugas_lain, $biaya_adm, $kode_gudang, $total, $jam, $potongan, $sisa_kredit, $cara_bayar, $pembayaran, $ppn_input, $keterangan, $nama_petugas, $sisa_kredit, $nomor_faktur, $no_reg );
               
                $petugas_farmasi = stringdoang($_POST['petugas_farmasi']);
                $petugas_paramedik = stringdoang($_POST['petugas_paramedik']);
@@ -247,9 +246,9 @@ if ($potongan != "") {
                $biaya_adm = angkadoang($_POST['biaya_adm']);
                $kode_gudang = stringdoang($_POST['kode_gudang']);
                $total = angkadoang($_POST['total']);
-               $jam = date('H:i:sa');
+               $jam = date('H:i:s');
                $potongan = angkadoang($_POST['potongan']);
-               $tax = angkadoang($_POST['tax']);
+               /*$tax = angkadoang($_POST['tax']);*/
                $kredit = angkadoang($_POST['kredit']);
                $cara_bayar = stringdoang($_POST['cara_bayar']);
                $pembayaran = stringdoang($_POST['pembayaran']);
@@ -333,8 +332,8 @@ if ($pajak != "" || $pajak != 0) {
 
 else {
   //ppn == Exclude
-  $total_penjualan = $total2 + $biaya_adm;
-  $pajak = $tax;
+  $total_penjualan = ($total2 - $total_tax) + $biaya_adm;
+  $pajak = $total_tax;
 
  //Total Penjualan
         $insert_juranl = $db->query("INSERT INTO jurnal_trans (nomor_jurnal,waktu_jurnal,keterangan_jurnal,kode_akun_jurnal,debit,kredit,jenis_transaksi,no_faktur,approved,user_buat) VALUES ('".no_jurnal()."', '$tanggal_sekarang $jam_sekarang', 'Penjualan UGD Piutang - $ambil_kode_pelanggan[nama_pelanggan]', '$ambil_setting[total_penjualan]', '0', '$total_penjualan', 'Penjualan', '$nomor_faktur','1', '$user')");

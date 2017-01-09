@@ -114,6 +114,9 @@ $subtotal = $harga_1 * $jumlah;
 $subtotal_d =  $subtotal - $diskon;
 $subtotal_p = $subtotal_d + $pajak;
 
+$subtotal_tanpa_pajak = $harga_1 * $jumlah - $potongan_jadi; 
+
+
 if ($ppn_input == 'Include') {
   $subtotal = $subtotal_tanpa_pajak;
 }
@@ -575,7 +578,7 @@ else
 }
 
 
-                echo "<td style='font-size:15px' align='right' class='edit-jumlah' data-id='".$data1['id']."'><span id='text-jumlah-".$data1['id']."'>". $data1['jumlah_barang'] ."</span> <input type='hidden' id='input-jumlah-".$data1['id']."' value='".$data1['jumlah_barang']."' class='input_jumlah' data-id='".$data1['id']."' autofocus='' data-kode='".$data1['kode_barang']."' data-harga='".$data1['harga']."' data-tipe='".$data1['tipe_barang']."' data-satuan='".$data1['satuan']."' > </td>
+                echo "<td style='font-size:15px' align='right' class='edit-jumlah' data-id='".$data1['id']."'><span id='text-jumlah-".$data1['id']."'>". $data1['jumlah_barang'] ."</span> <input type='hidden' id='input-jumlah-".$data1['id']."' value='".$data1['jumlah_barang']."' class='input_jumlah' data-id='".$data1['id']."' autofocus='' data-kode='".$data1['kode_barang']."' data-harga='".$data1['harga']."' data-tipe='".$data1['tipe_barang']."' data-satuan='".$data1['satuan']."' onkeydown='return numbersonly(this, event);'> </td>
 
                 <td style='font-size:15px'>". $data1['nama'] ."</td>
                 <td style='font-size:15px' align='right'>". rp($data1['harga']) ."</td>
@@ -618,18 +621,36 @@ else
 
                                     var id = $(this).attr("data-id");
                                     var jumlah_baru = $(this).val();
+
+                                    if (jumlah_baru == "") {
+                                      jumlah_baru = 0;
+                                    }
+                                    
                                     var kode_barang = $(this).attr("data-kode");
                                     var harga = $(this).attr("data-harga");
                                     var jumlah_lama = $("#text-jumlah-"+id+"").text();
                                     var satuan_konversi = $(this).attr("data-satuan");
                                     var tipe_barang = $(this).attr("data-tipe");
-                
+                                    var ppn_input = $("#ppn_input").val();
+
                                     var subtotal_lama = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#text-subtotal-"+id+"").text()))));
                                     var potongan = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#text-potongan-"+id+"").text()))));
 
                                     var tax = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#text-tax-"+id+"").text()))));
+
+                                    var sub_total_dkrg_pajak = parseInt(subtotal_lama,10) - parseInt(Math.round(tax,10));
                                    
-                                    var subtotal = harga * jumlah_baru - potongan;
+                                    var total_tanpa_pajak = parseInt(jumlah_baru,10) * parseInt(harga,10) - parseInt(Math.round(potongan,10));
+                                    var pajak_tbs_persen = parseInt(tax,10) / parseInt(sub_total_dkrg_pajak,10) * 100;
+                                    var pajak_tbs_rupiah = parseInt(total_tanpa_pajak,10) * parseInt(Math.round(pajak_tbs_persen,10)) / 100;
+
+
+                                    if (ppn_input == 'Exclude') { 
+                                      var subtotal = parseInt(total_tanpa_pajak,10) + parseInt(Math.round(pajak_tbs_rupiah,10));
+                                    }
+                                    else{
+                                      var subtotal = parseInt(total_tanpa_pajak,10);
+                                    }
 
                                     var subtotal_penjualan = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#total2").val()))));
 
@@ -669,20 +690,31 @@ else
                             
 
                                     var tax_tbs = tax / subtotal_lama * 100;
-                                    var jumlah_tax = Math.round(tax_tbs) * subtotal / 100;
+                                    var jumlah_tax = Math.round(pajak_tbs_rupiah);
 
-                                    if (tipe_barang == 'Jasa' || tipe_barang == 'BHP' || tipe_barang == 'Bed') {
+                              if (jumlah_baru == 0) {
+                                      alert ("Jumlah Produk Tidak Boleh 0!");
+
+                                       $("#input-jumlah-"+id+"").val(jumlah_lama);
+                                       $("#text-jumlah-"+id+"").text(jumlah_lama);
+                                       $("#text-jumlah-"+id+"").show();
+                                       $("#input-jumlah-"+id+"").attr("type", "hidden");
+                                  }
+
+                              else{
+
+                                if (tipe_barang == 'Jasa' || tipe_barang == 'BHP' || tipe_barang == 'Bed') {
                                       
                                     $("#text-jumlah-"+id+"").show();
                                     $("#text-jumlah-"+id+"").text(jumlah_baru);
 
                                     $("#text-subtotal-"+id+"").text(tandaPemisahTitik(subtotal));
                                     $("#hapus-tbs-"+id+"").attr('data-subtotal', subtotal);
-                                    $("#text-tax-"+id+"").text(Math.round(jumlah_tax));
+                                    $("#text-tax-"+id+"").text(Math.round(pajak_tbs_rupiah));
                                     $("#input-jumlah-"+id+"").attr("type", "hidden"); 
                                     $("#total2").val(tandaPemisahTitik(subtotal_penjualan));         
                                     $("#potongan_penjualan").val(Math.round(potongaaan));
-                                    $("#total1").val(tandaPemisahTitik(Math.round(tot_akhr)));                                    
+                                    $("#total1").val(tandaPemisahTitik(Math.round(tot_akhr)));   
                                     $("#tax_rp").val(Math.round(t_tax)); 
                                     $("#pembayaran_penjualan").val('');
                                      $("#sisa_pembayaran_penjualan").val('');
@@ -725,7 +757,7 @@ else
 
                                     $("#text-subtotal-"+id+"").text(tandaPemisahTitik(subtotal));
                                     $("#hapus-tbs-"+id+"").attr('data-subtotal', subtotal);
-                                    $("#text-tax-"+id+"").text(Math.round(jumlah_tax));
+                                    $("#text-tax-"+id+"").text(Math.round(pajak_tbs_rupiah));
                                     $("#input-jumlah-"+id+"").attr("type", "hidden"); 
                                     $("#total2").val(tandaPemisahTitik(subtotal_penjualan));         
                                     $("#potongan_penjualan").val(Math.round(potongaaan));
@@ -741,7 +773,11 @@ else
 
                                  });
 
-                            }
+                                }
+
+                              }//END if else julah barunya 0
+
+                                    
        
                                     $("#kode_barang").focus();
                                     

@@ -505,7 +505,7 @@ Level 7
     <input type="hidden" class="form-control" name="nama_barang" autocomplete="off" id="nama_barang" placeholder="nama" >
 
   <div class="col-sm-2">
-    <input style="height:15px;" type="text" class="form-control" name="jumlah_barang" autocomplete="off" id="jumlah_barang" placeholder="Jumlah" >
+    <input style="height:15px;" type="text" class="form-control" name="jumlah_barang" autocomplete="off" id="jumlah_barang" placeholder="Jumlah" onkeydown="return numbersonly(this, event);" onkeyup="javascript:tandaPemisahTitik(this);">
   </div>
 
 
@@ -2876,6 +2876,9 @@ $(document).ready(function(){
 
                                     var id = $(this).attr("data-id");
                                     var jumlah_baru = $(this).val();
+                                    if (jumlah_baru == '') {
+                                      jumlah_baru = 0;
+                                    }
                                     var kode_barang = $(this).attr("data-kode");
                                     var harga = $(this).attr("data-harga");
                                     var jumlah_lama = $("#text-jumlah-"+id+"").text();
@@ -2902,7 +2905,7 @@ $(document).ready(function(){
 
 
 
-                                    var sub_akhir = parseInt(subtotal_penjualan,10) - parseInt(potongaaan,10) + parseInt(biaya_adm,10);
+                                    
                                     if (ppn == 'Exclude') {
 
                                    var subtotal1 = harga * jumlah_baru - potongan;
@@ -2943,7 +2946,6 @@ $(document).ready(function(){
                                        var subtotal_penjualan = subtotal_penjualan - subtotal_lama + subtotal;
 
                                     }
-                                              
 
     if (pot_fakt_per == 0) {
       var potongaaan = pot_fakt_rp;
@@ -2994,6 +2996,16 @@ $(document).ready(function(){
 
 
                                     
+            if (jumlah_baru == 0) {
+              alert("Jumlah barang tidak boleh nol atau kosong");
+
+                                      $("#input-jumlah-"+id+"").val(jumlah_lama);
+                                       $("#text-jumlah-"+id+"").text(jumlah_lama);
+                                       $("#text-jumlah-"+id+"").show();
+                                       $("#input-jumlah-"+id+"").attr("type", "hidden");
+            }
+            else
+            {
 
                                     if (tipe_barang == 'Jasa' || tipe_barang == 'BHP' ) {
                                       
@@ -3069,6 +3081,7 @@ $(document).ready(function(){
                                  });
 
                                     }
+            }
 
 
        
