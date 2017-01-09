@@ -21,14 +21,21 @@ $no_faktur = $_GET['no_faktur'];
     $data3 = mysqli_fetch_array($query3);
     $total_item = $data3['total_item'];
 
+
     $query4 = $db->query("SELECT SUM(tax) as pajak FROM detail_penjualan WHERE no_faktur = '$no_faktur'");
     $data4 = mysqli_fetch_array($query4);
     $pajakee = $data4['pajak'];
 
-    $select_operasi = $db->query("SELECT * FROM hasil_operasi WHERE no_reg = '$data0[no_reg]'")
+
+    $select_operasi = $db->query("SELECT * FROM hasil_operasi WHERE no_reg = '$data0[no_reg]'");
+
+    $query4 = $db->query("SELECT status_print FROM setting_printer WHERE nama_print = 'Printer Struk'");
+    $datas = mysqli_fetch_array($query4);
+    $status_print = $datas['status_print'];
+
+
     
  ?>
-
 
 
   <?php echo $data1['nama_perusahaan']; ?><br>
@@ -56,7 +63,8 @@ $no_faktur = $_GET['no_faktur'];
  <table>
 
   <tbody>
-           <?php 
+ <?php if ($status_print == 'Detail'){
+
            while ($data2 = mysqli_fetch_array($query2)){
            
            echo '<tr>
@@ -66,7 +74,8 @@ $no_faktur = $_GET['no_faktur'];
              <td style="padding:3px"> '. rp($data2['subtotal']) . ' </td></tr>';
            
            }
-           
+       } 
+
 //Untuk Memutuskan Koneksi Ke Database
            
            
