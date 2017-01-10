@@ -114,7 +114,7 @@ $data_rj_ri = mysqli_fetch_array($sum_rj_ri);
   <h3> EDIT PENJUALAN LABORATORIUM</h3>
 <div class="row">
 
-<div class="col-sm-8">
+<div class="col-xs-8">
 
  <!-- membuat form menjadi beberpa bagian -->
   <form enctype="multipart/form-data" role="form" action="formpenjualan.php" method="post ">
@@ -126,12 +126,12 @@ $data_rj_ri = mysqli_fetch_array($sum_rj_ri);
 
 <div class="row">
 
-<div class="col-sm-2 form-group"> 
+<div class="col-xs-2 form-group"> 
   <label> No. Faktur </label><br>
   <input  name="no_faktur" type="text" style="height:15px;" id="no_faktur" class="form-control" readonly="" required="" autofocus="" value="<?php echo $no_faktur; ?>" >
   </div>
 
-<div class="col-sm-2 form-group"> 
+<div class="col-xs-2 form-group"> 
   <label> No. RM / Pasien </label><br>
   <input  name="kode_pelanggan" type="hidden" style="height:15px;" id="kd_pelanggan" class="form-control" required="" autofocus="" value="<?php echo $no_rm; ?>" >
   <input  name="nama_pelanggan" type="hidden" style="height:15px;" id="nama_pelanggan" class="form-control" required="" autofocus="" value="<?php echo $nama_pasien; ?>" >
@@ -140,14 +140,14 @@ $data_rj_ri = mysqli_fetch_array($sum_rj_ri);
 
   <input  name="total_rj_ri" type="hidden" style="height:15px;" id="total_rj_ri" class="form-control" required="" autofocus="" value="<?php echo $data_rj_ri['total_rj_ri']; ?>" >
 
-<div class="col-sm-2 form-group">
+<div class="col-xs-2 form-group">
     <label> Petugas Kasir </label><br>
   <input style="height: 20px;" name="tampil_kasir" type="text" style="height:15px;" id="tampil_kasir" class="form-control" required="" autofocus="" value="<?php echo $nama_kasir; ?>" readonly="">
 
   <input style="height: 20px; display: none" name="petugas_kasir" type="text" style="height:15px;" id="petugas_kasir" class="form-control" required="" autofocus="" value="<?php echo $ambil_tanggal['sales']; ?>" readonly="">
 </div>
 
-    <div class="form-group col-sm-2">
+    <div class="form-group col-xs-2">
        <label for="penjamin">Petugas Analis</label><br>
          <select type="text" class="form-control chosen" id="apoteker" autocomplete="off">
         
@@ -176,7 +176,7 @@ $data_rj_ri = mysqli_fetch_array($sum_rj_ri);
 <div class="row">
 
 
-  <div class="form-group col-sm-2">
+  <div class="form-group col-xs-2">
     <label for="email">Penjamin:</label>
     <select class="form-control chosen" id="penjamin" name="penjamin" required="">
       <?php 
@@ -194,7 +194,7 @@ $data_rj_ri = mysqli_fetch_array($sum_rj_ri);
 </div>
 
 
-<div class="col-sm-2">
+<div class="col-xs-2">
     <label> Level Harga </label><br>
   <select style="font-size:15px; height:35px" type="text" name="level_harga" id="level_harga" class="form-control" required="" >
   <option value="<?php echo $level_harga;?>"> 
@@ -227,7 +227,7 @@ $data_rj_ri = mysqli_fetch_array($sum_rj_ri);
     </div>
 
 
-<div class="col-sm-2">
+<div class="col-xs-2">
           <label>PPN</label>
           <select style="font-size:15px; height:35px" name="ppn" id="ppn" class="form-control">
           <option value="<?php echo $ppn; ?>"><?php echo $ppn; ?></option>
@@ -239,7 +239,7 @@ $data_rj_ri = mysqli_fetch_array($sum_rj_ri);
 
 
 
-<div class="col-sm-3">
+<div class="col-xs-3">
 <br>
   <button type="button" id="lay" class="btn btn-primary" ><i class='fa  fa-list'></i> Lihat Layanan  </button> 
 </div>
@@ -387,7 +387,7 @@ $data_rj_ri = mysqli_fetch_array($sum_rj_ri);
 <br>
 <div class="row">
 
-  <div class="col-sm-3">
+  <div class="col-xs-3">
 
     <input type="text" style="height:15px" class="form-control" name="kode_barang" autocomplete="off" id="kode_barang" placeholder="Kode Lab" >
 
@@ -395,17 +395,17 @@ $data_rj_ri = mysqli_fetch_array($sum_rj_ri);
 
     <input type="hidden" class="form-control" name="nama_barang" autocomplete="off" id="nama_barang" placeholder="nama" >
 
-  <div class="col-sm-2">
+  <div class="col-xs-2">
     <input style="height:15px;" type="text" class="form-control" name="jumlah_barang" autocomplete="off" id="jumlah_barang" placeholder="Jumlah" >
   </div>
 
 
 
-   <div class="col-sm-2">
+   <div class="col-xs-2">
     <input style="height:15px;" type="text" class="form-control" name="potongan" autocomplete="off" id="potongan1" data-toggle="tooltip" data-placement="top" title="Jika Ingin Potongan Dalam Bentuk Persen (%), input : 10%" placeholder="Potongan">
   </div>
 
-   <div class="col-sm-1">
+   <div class="col-xs-1">
     <input style="height:15px;" type="text" class="form-control" name="tax" autocomplete="off" id="tax1" placeholder="Tax%" >
   </div>
 
@@ -513,7 +513,7 @@ $data_rj_ri = mysqli_fetch_array($sum_rj_ri);
 
 
 
-<div class="col-sm-4">
+<div class="col-xs-4">
 
 
 
@@ -532,7 +532,7 @@ $data_rj_ri = mysqli_fetch_array($sum_rj_ri);
       
 
         <div class="row">
-        <div class="col-sm-6">
+        <div class="col-xs-6">
           
            <label style="font-size:15px"> <b> Subtotal </b></label><br>
       <input style="height:25px;font-size:15px" type="text" name="total" id="total2" class="form-control" placeholder="Total" readonly="" onkeydown="return numbersonly(this, event);" onkeyup="javascript:tandaPemisahTitik(this);">
@@ -545,7 +545,7 @@ $data_rj_ri = mysqli_fetch_array($sum_rj_ri);
 
                   ?>
 
-            <div class="col-sm-6">
+            <div class="col-xs-6">
             <label>Biaya Admin </label><br>
             <input style="height:25px;font-size:15px" name="biaya_admin" type="text" id="biaya_admin"  placeholder="Biaya Admin" onkeydown="return numbersonly(this, event);" onkeyup="javascript:tandaPemisahTitik(this);"  value="<?php echo $biaya_adm ?>" autocomplete="off"  class="form-control">
           </div>
@@ -608,18 +608,18 @@ $data_rj_ri = mysqli_fetch_array($sum_rj_ri);
             ?>
 
 
-            <div class="col-sm-4">
+            <div class="col-xs-6">
           <label> Diskon ( Rp )</label><br>
           <input type="text" name="potongan" style="height:25px;font-size:15px" id="potongan_penjualan"  value="<?php echo rp($total_potongan); ?>" class="form-control" placeholder="" autocomplete="off"  onkeydown="return numbersonly(this, event);" onkeyup="javascript:tandaPemisahTitik(this);">
             
           </div>
 
-          <div class="col-sm-4">
+          <div class="col-xs-6">
             <label> Diskon ( % )</label><br>
           <input type="text" name="potongan_persen" style="height:25px;font-size:15px" id="potongan_persen" value="<?php echo round($potongan) ;?>" class="form-control" placeholder="" autocomplete="off" >
           </div>
 
-            <div class="col-sm-4">
+            <div class="col-xs-4" style="display: none;">
            <label> Pajak (%)</label>
            <input type="text" name="tax" id="tax" style="height:25px;font-size:15px" value="<?php echo round($pajak); ?>" style="height:25px;font-size:15px" class="form-control" autocomplete="off" >
 
@@ -635,13 +635,13 @@ $data_rj_ri = mysqli_fetch_array($sum_rj_ri);
            <label style="display: none"> Adm Bank  (%)</label>
            <input type="hidden" name="adm_bank" id="adm_bank"  value="" class="form-control" >
            
-           <div class="col-sm-6">
+           <div class="col-xs-6">
            <label> Tanggal</label>
            <input type="text" name="tanggal_jt" id="tanggal_jt"  value="" style="height:25px;font-size:15px" placeholder="Tanggal JT" class="form-control" >
 
            </div>
 
-        <div class="col-sm-6">
+        <div class="col-xs-6">
             <label style="font-size:15px"> <b> Cara Bayar (F4) </b> </label><br>
                       <select type="text" name="cara_bayar" id="carabayar1" class="form-control" required=""  style="font-size: 15px" >
                       <option value=""> Silahkan Pilih </option>
@@ -683,14 +683,14 @@ $data_rj_ri = mysqli_fetch_array($sum_rj_ri);
       <div class="form-group">
       <div class="row">
        
-        <div class="col-sm-6">
+        <div class="col-xs-6">
 
            <label style="font-size:15px"> <b> Total Akhir </b></label><br>
            <b><input type="text" name="total" id="total1" class="form-control" style="height: 25px; width:90%; font-size:20px;" placeholder="Total" readonly="" value="<?php echo rp($total_akhir1); ?>"></b>
           
         </div>
  
-            <div class="col-sm-6">
+            <div class="col-xs-6">
               
            <label style="font-size:15px">  <b> Pembayaran (F7)</b> </label><br>
            <b><input type="text" name="pembayaran" id="pembayaran_penjualan" style="height: 20px; width:90%; font-size:20px;" autocomplete="off" class="form-control"   style="font-size: 20px"  onkeydown="return numbersonly(this, event);" onkeyup="javascript:tandaPemisahTitik(this);"></b>
@@ -700,13 +700,13 @@ $data_rj_ri = mysqli_fetch_array($sum_rj_ri);
            
            
           <div class="row">
-            <div class="col-sm-6">
+            <div class="col-xs-6">
               
            <label> Kembalian </label><br>
            <b><input type="text" name="sisa_pembayaran"  id="sisa_pembayaran_penjualan"  style="height:25px;font-size:15px" class="form-control"  readonly="" required=""></b>
             </div>
 
-            <div class="col-sm-6">
+            <div class="col-xs-6">
               
           <label> Kredit </label><br>
           <b><input type="text" name="kredit" id="kredit" class="form-control"  style="height:25px;font-size:15px"  readonly="" required="" ></b>
@@ -928,7 +928,190 @@ data = data.replace(/\s+/g, '');
 //end cek level harga
 </script>
 
+<script type="text/javascript">
+//KODE BARANG MOUSELEAVE
+$(document).ready(function(){
+        $("#kode_barang").mouseleave(function(){
 
+          var kode_barang = $(this).val();
+          var kode_barang = kode_barang.substr(0, kode_barang.indexOf('('));
+          var level_harga = $("#level_harga").val();
+          var no_faktur = $("#no_faktur").val();
+          var nama_barang = $("#nama_barang").val();
+         var penjamin = $("#penjamin").val();
+
+          var no_reg = $("#no_reg").val();
+         $.post('cek_tbs_editpenjualan_lab.php',{kode_barang:kode_barang, no_faktur:no_faktur,no_reg:no_reg}, function(data){
+          
+          if(data == 1){
+            alert("Anda Tidak Bisa Menambahkan Barang Yang Sudah Ada, Silakan Edit atau Pilih Barang Yang Lain !");
+            $("#kode_barang").focus();
+            $("#kode_barang").val('');
+            $("#nama_barang").val('');
+           }//penutup if
+
+            });////penutup function(data)
+
+      $.getJSON('lihat_nama_jasa_lab.php',{kode_barang:kode_barang}, function(json){
+      
+      if (json == null)
+      {
+        
+        $('#nama_barang').val('');
+        $('#bidang').val('');
+        $('#harga_produk').val('');
+        $('#harga_baru').val('');
+        $('#id_jasa').val('');
+        $('#ber_stok').val('');
+
+      }
+
+      else 
+      {
+         if (level_harga == "harga_1") {
+          $("#harga_produk").val(json.harga_1);
+            $("#harga_baru").val(json.harga_1);
+          $("#harga_penjamin").val(json.harga_1);
+        }
+        else if (level_harga == "harga_2") {
+          $("#harga_produk").val(json.harga_2);
+            $("#harga_baru").val(json.harga_2);
+          $("#harga_penjamin").val(json.harga_2);
+        }
+
+        else if (level_harga == "harga_3") {
+          $("#harga_produk").val(json.harga_3);
+            $("#harga_baru").val(json.harga_3);
+          $("#harga_penjamin").val(json.harga_3);
+        }
+
+        else if (level_harga == "harga_4") {
+          $("#harga_produk").val(json.harga_4);
+            $("#harga_baru").val(json.harga_4);
+          $("#harga_penjamin").val(json.harga_4);
+        }
+
+        else if (level_harga == "harga_5") {
+          $("#harga_produk").val(json.harga_5);
+            $("#harga_baru").val(json.harga_5);
+          $("#harga_penjamin").val(json.harga_5);
+        }
+
+        else if (level_harga == "harga_6") {
+          $("#harga_produk").val(json.harga_6);
+            $("#harga_baru").val(json.harga_6);
+          $("#harga_penjamin").val(json.harga_6);
+        }
+
+        else if (level_harga == "harga_7") {
+          $("#harga_produk").val(json.harga_7);
+            $("#harga_baru").val(json.harga_7);
+          $("#harga_penjamin").val(json.harga_7);
+        }
+
+        $('#persiapan').val(json.persiapan);
+        $('#nama_barang').val(json.nama);
+        $('#id_jasa').val(json.id);
+        $('#bidang').val(json.bidang);
+      }
+                                              
+        });
+        
+        });
+      // /KODE BARANG MOUSELEAVE
+
+      //KODE BARANG BLUR
+    $("#kode_barang").blur(function(){
+
+          var kode_barang = $(this).val();
+
+          var kode_barang = kode_barang.substr(0, kode_barang.indexOf('('));
+          var level_harga = $("#level_harga").val();
+          var no_faktur = $("#no_faktur").val();
+          
+         var penjamin = $("#penjamin").val();
+
+          var no_reg = $("#no_reg").val();
+         $.post('cek_tbs_penjualan_lab.php',{kode_barang:kode_barang, no_faktur:no_faktur,no_reg:no_reg}, function(data){
+          
+          if(data == 1){
+            alert("Anda Tidak Bisa Menambahkan Barang Yang Sudah Ada, Silakan Edit atau Pilih Barang Yang Lain !");
+            $("#kode_barang").focus();
+            $("#kode_barang").val('');
+            $("#nama_barang").val('');
+           }//penutup if
+
+            });////penutup function(data)
+
+      $.getJSON('lihat_nama_jasa_lab.php',{kode_barang:kode_barang}, function(json){
+      
+      if (json == null)
+      {
+        
+        $('#nama_barang').val('');
+        $('#bidang').val('');
+        $('#harga_produk').val('');
+        $('#harga_baru').val('');
+        $('#id_jasa').val('');
+        $('#ber_stok').val('');
+
+      }
+
+      else 
+      {
+         if (level_harga == "harga_1") {
+          $("#harga_produk").val(json.harga_1);
+            $("#harga_baru").val(json.harga_1);
+          $("#harga_penjamin").val(json.harga_1);
+        }
+        else if (level_harga == "harga_2") {
+          $("#harga_produk").val(json.harga_2);
+            $("#harga_baru").val(json.harga_2);
+          $("#harga_penjamin").val(json.harga_2);
+        }
+
+        else if (level_harga == "harga_3") {
+          $("#harga_produk").val(json.harga_3);
+            $("#harga_baru").val(json.harga_3);
+          $("#harga_penjamin").val(json.harga_3);
+        }
+
+        else if (level_harga == "harga_4") {
+          $("#harga_produk").val(json.harga_4);
+            $("#harga_baru").val(json.harga_4);
+          $("#harga_penjamin").val(json.harga_4);
+        }
+
+        else if (level_harga == "harga_5") {
+          $("#harga_produk").val(json.harga_5);
+            $("#harga_baru").val(json.harga_5);
+          $("#harga_penjamin").val(json.harga_5);
+        }
+
+        else if (level_harga == "harga_6") {
+          $("#harga_produk").val(json.harga_6);
+            $("#harga_baru").val(json.harga_6);
+          $("#harga_penjamin").val(json.harga_6);
+        }
+
+        else if (level_harga == "harga_7") {
+          $("#harga_produk").val(json.harga_7);
+            $("#harga_baru").val(json.harga_7);
+          $("#harga_penjamin").val(json.harga_7);
+        }
+
+        $('#persiapan').val(json.persiapan);
+        $('#nama_barang').val(json.nama);
+        $('#id_jasa').val(json.id);
+        $('#bidang').val(json.bidang);
+      }
+                                              
+        });
+        
+        });
+// /KODE BARANG BLUR
+  });
+</script>
 
 
 <!-- cek stok satuan konversi keyup-->
@@ -1125,7 +1308,7 @@ if (jumlah_barang == ''){
       $("#tax_rp").val(Math.round(hasil_tax));
      $("#kode_barang").focus();
 
-          $.post("proses_tbs_edit_lab.php",{nama_barang:nama_barang,jumlah_barang:jumlah_barang,harga:harga,potongan:potongan,tax:tax,tipe_barang:ber_stok,no_rm:no_rm,apoteker:apoteker,penjamin:penjamin,tax:tax,hargaa:hargaa, kode_barang:kode_barang,no_faktur:no_faktur},function(data){ 
+          $.post("proses_tbs_edit_lab.php",{nama_barang:nama_barang,jumlah_barang:jumlah_barang,harga:harga,potongan:potongan,tax:tax,ppn:ppn,tipe_barang:ber_stok,no_rm:no_rm,apoteker:apoteker,penjamin:penjamin,tax:tax,hargaa:hargaa, kode_barang:kode_barang,no_faktur:no_faktur},function(data){ 
      
                  $("#ppn").attr("disabled", true);
                  $("#tbody").prepend(data);
@@ -2272,24 +2455,19 @@ $(document).ready(function(){
 
 <script type="text/javascript">
 $(document).ready(function(){
-
+var total2 = $("#total2").val();
 var ppn = $("#ppn").val();
     $("#ppn_input").val(ppn);
 
   if (ppn == "Include"){
-
-      $("#tax").attr("disabled", true);
       $("#tax1").attr("disabled", false);
   }
 
   else if (ppn == "Exclude") {
-    $("#tax1").attr("disabled", true);
-      $("#tax").attr("disabled", false);
+    $("#tax1").attr("disabled", false);
   }
   else{
-
     $("#tax1").attr("disabled", true);
-      $("#tax").attr("disabled", true);
   }
 
 
@@ -2301,7 +2479,28 @@ var ppn = $("#ppn").val();
 <script type="text/javascript">
     $(document).ready(function(){
 
+// cek ppn exclude 
+    var total2 = $("#total2").val();
+    var no_reg = $("#no_reg").val();
+    $.get("cek_ppn_ex.php",{no_reg:no_reg},function(data){
+      if (data == 1 || total2 != '0') {
+          $("#ppn").val('Exclude');
+     $("#ppn").attr("disabled", true);
+      }
+      else if(data == 2 || total2 != '0'){
 
+    $("#ppn").val('Include');
+     $("#ppn").attr("disabled", true);
+      }
+      else
+      {
+
+     $("#ppn").val('Include');
+
+      }
+
+    });
+    //CHENGE PPN
 
     $("#ppn").change(function(){
 
@@ -2309,19 +2508,13 @@ var ppn = $("#ppn").val();
     $("#ppn_input").val(ppn);
 
   if (ppn == "Include"){
-
-      $("#tax").attr("disabled", true);
       $("#tax1").attr("disabled", false);
   }
-
   else if (ppn == "Exclude") {
-    $("#tax1").attr("disabled", true);
-      $("#tax").attr("disabled", false);
+    $("#tax1").attr("disabled", false);
   }
   else{
-
     $("#tax1").attr("disabled", true);
-      $("#tax").attr("disabled", true);
   }
 
 
