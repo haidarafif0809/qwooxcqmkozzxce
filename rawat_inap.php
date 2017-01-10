@@ -748,6 +748,7 @@ tr:nth-child(even){background-color: #f2f2f2}
           <th style='background-color: #4CAF50; color: white'>Pindah Kamar</th>
           <th style='background-color: #4CAF50; color: white'>Operasi</th>
           <th style='background-color:#4CAF50; color: white'> Rujuk Lab</th>
+          <th style='background-color:#4CAF50; color: white'> Input Hasil Lab</th>
   <?php endif ?>
 
   <?php if ($rekam_medik['rekam_medik_ri_lihat']):?>         

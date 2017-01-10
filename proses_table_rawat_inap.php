@@ -171,6 +171,21 @@ else {
 }
 
 
+// untuk input hasil lab
+$show = $db->query("SELECT * FROM tbs_penjualan WHERE no_reg = '$row[no_reg]' AND lab = 'Laboratorium' ");
+$take = mysqli_num_rows($show);
+	if ($take > 0)
+	{
+		$nestedData[] = "<a href='cek_input_hasil_lab.php?no_rm=".$row['no_rm']."&nama=".$row['nama_pasien']."&no_reg=".$row['no_reg']."&jenis_penjualan=Rawat Inap' class='btn btn-floating btn-small btn-info'><i class='fa fa-pencil'></i></a>";
+	}
+	else
+	{
+	  $nestedData[] = "<p style='color:red'>Input Laboratorium</p>";
+
+	}
+// end untuk input hasil lab
+
+
         }
         
 

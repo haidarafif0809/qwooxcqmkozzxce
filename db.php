@@ -1,14 +1,14 @@
 <?php date_default_timezone_set("Asia/Jakarta");
 
 $servername = "localhost";
-$username = "klinikko";
-$password = "a9%nReXGbw";
-$dbname = "sim_rsmk";
+$username = "root";
+$password = "";
+$dbname = "aplikasi_simklinik";
 
 $conn = mysqli_connect($servername, $username, $password, $dbname) or die("Connection failed: " . mysqli_connect_error());
 
 // perintah untuk mengkoneksikan php ke database mysql
-$db = new mysqli('localhost','klinikko','a9%nReXGbw','sim_rsmk');
+$db = new mysqli('localhost','root','','aplikasi_simklinik');
 
 
 // Check connection
@@ -18,14 +18,14 @@ if ($db->connect_error) {
 
 
 $servername_pasien = "localhost";
-$username_pasien = "klinikko";
-$password_pasien = "a9%nReXGbw";
-$dbname_pasien = "pasien_kosasih";
+$username_pasien = "root";
+$password_pasien = "";
+$dbname_pasien = "db_pasien";
 
 $conn_pasien = mysqli_connect($servername_pasien, $username_pasien, $password_pasien, $dbname_pasien) or die("Connection failed: " . mysqli_connect_error());
 
 // perintah untuk mengkoneksikan php ke database mysql
-$db_pasien = new mysqli('localhost','klinikko','a9%nReXGbw','pasien_kosasih');
+$db_pasien = new mysqli('localhost','root','','db_pasien');
 
 
 // Check connection
