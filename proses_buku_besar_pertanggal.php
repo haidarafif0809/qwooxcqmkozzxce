@@ -278,7 +278,7 @@ th {
 
 		<br><br>
 
-	       <a href='cetak_laporan_buku_besar.php?dari_tanggal=<?php echo $dari_tanggal; ?>&tanggal=<?php echo $tanggal; ?>&daftar_akun=<?php echo $daftar_akun; ?>&rekap=<?php echo $rekap; ?>'
+	       <a href='cetak_laporan_buku_besar_pertanggal.php?tanggal=<?php echo $tanggal; ?>&daftar_akun=<?php echo $daftar_akun; ?>&rekap=<?php echo $rekap; ?>'
 	       class='btn btn-success' target='blank'><i class='fa fa-print'> </i> Cetak Buku Besar </a>
 	     
 </div>
