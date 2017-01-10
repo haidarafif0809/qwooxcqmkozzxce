@@ -423,6 +423,7 @@ if ($lihat['akuntansi_lihat'] > 0){
                             <ul>';
 }
 
+    echo '<li><a href="laporan_hasil_lab.php" class="waves-effect">Lap. Hasil Laboratorium</a></li>';
 
  if ($lihat['laporan_kunjungan_rj'] > 0){
     echo '<li><a href="lap_kunjungan_rj.php" class="waves-effect">Lap. Kunjungan R.Jalan</a></li>';

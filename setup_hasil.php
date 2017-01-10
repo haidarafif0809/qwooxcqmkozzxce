@@ -5,9 +5,6 @@ include 'db.php';
 
 
 
-$query = $db->query("SELECT bl.nama,sh.id,sh.nama_pemeriksaan,sh.kelompok_pemeriksaan,sh.model_hitung,sh.text_reference,sh.normal_lk,sh.normal_pr,sh.metode,sh.kategori_index,sh.text_hasil,sh.satuan_nilai_normal FROM setup_hasil sh INNER JOIN bidang_lab bl ON sh.kelompok_pemeriksaan = bl.id ORDER BY sh.id DESC");
-
-
 // AKHIR untuk FEGY NATION
 ?>
 
@@ -281,7 +278,7 @@ tr:nth-child(even){background-color: #f2f2f2}
 
 <span id="table_baru">
 <div class="table-responsive">
-  <table id="table-bidang" class="table table-sm table-bordered">
+  <table id="table_set_up" class="table table-sm table-bordered">
     <thead>
       <tr>
        <th style='background-color: #4CAF50; color: white'>Text Hasil</th>
@@ -299,113 +296,44 @@ tr:nth-child(even){background-color: #f2f2f2}
     </thead>
     <tbody id="tbody">
     
-   <?php 
- 
-   while($data = mysqli_fetch_array($query))
-      
-      {
-        if ($data['model_hitung'] == 'Text')
-        {
-
- echo 
-      "<tr class='tr-id-".$data['id']."'>";
-      if ($data['kategori_index'] == 'Detail')
-      {
-         echo "<td>&nbsp;&nbsp;". $data['text_hasil']."</td>";
-      }
-      else
-      {
-         echo "<td>". $data['text_hasil']."</td>";
-
-      }
-     
-      echo "<td>". $data['nama_pemeriksaan']."</td>
-      <td>". $data['kelompok_pemeriksaan']."</td>
-      <td>". $data['model_hitung']."</td>
-      <td>". $data['text_reference']."</td>      
-      <td>". $data['normal_lk']."</td>
-      <td>". $data['normal_pr']."</td>
-      <td>". $data['metode']."</td>
-      <td><a href='edit_setup_hasil.php?id=".$data['id']."'class='btn btn-warning'> Edit </a></td>
-      <td><button data-id='".$data['id']."' class='btn btn-danger delete'> Hapus </button></td>
-      </tr>";
-
-        }
-
-else {
-
-
-      echo 
-      "<tr class='tr-id-".$data['id']."'>";
-      if ($data['kategori_index'] == 'Detail')
-      {
-         echo "<td>&nbsp;&nbsp;". $data['text_hasil']."</td>";
-      }
-      else
-      {
-         echo "<td>". $data['text_hasil']."</td>";
-
-      }
-     
-     echo "<td>". $data['nama_pemeriksaan']."</td>
-      <td>". $data['nama']."</td>
-      <td>". $data['model_hitung']."</td>
-      <td>". $data['text_reference']."</td> ";
-
-      $model_hitung = $data['model_hitung'];
-
-switch ($model_hitung) {
-    case "Lebih Kecil Dari":
-        echo "<td>&lt;&nbsp; ". $data['normal_lk']."&nbsp;". $data['satuan_nilai_normal']." </td>
-        <td>&lt;&nbsp; ". $data['normal_pr']."&nbsp;". $data['satuan_nilai_normal']." </td>
-        ";
-        break;
-    case "Lebih Kecil Sama Dengan":
-        echo "<td>&lt;=&nbsp; ". $data['normal_lk']."&nbsp;". $data['satuan_nilai_normal']." </td>
-        <td>&lt;=&nbsp; ". $data['normal_pr']."&nbsp;". $data['satuan_nilai_normal']." </td>
-        ";
-        break;
-    case "Lebih Besar Dari":
-        echo "<td>&gt;&nbsp; ". $data['normal_lk']."&nbsp;". $data['satuan_nilai_normal']." </td>
-        <td>&gt;&nbsp; ". $data['normal_pr']."&nbsp;". $data['satuan_nilai_normal']." </td>
-        ";
-        break;
-          case "Lebih Besar Sama Dengan":
-        echo "<td>&gt;=&nbsp; ". $data['normal_lk']."&nbsp;". $data['satuan_nilai_normal']." </td>
-        <td>&gt;=&nbsp; ". $data['normal_pr']."&nbsp;". $data['satuan_nilai_normal']." </td>
-        ";
-        break;
-          case "Antara Sama Dengan":
-        echo "<td>". $data['normal_lk']."&nbsp;-&nbsp; ". $data['normal_lk2']."&nbsp;". $data['satuan_nilai_normal']." </td>
-        <td>". $data['normal_pr']."&nbsp;-&nbsp; ". $data['normal_pr2']."&nbsp;". $data['satuan_nilai_normal']." </td>
-        ";
-        break;
-}     
-     echo  "
-      <td>". $data['metode']."</td>
-      <td><a href='edit_setup_hasil.php?id=".$data['id']."'class='btn btn-warning'> Edit </a></td>
-      <td><button data-id='".$data['id']."' class='btn btn-danger delete'> Hapus </button></td>
-
-      </td>
-      </tr>";
-      
-      }
-
- }     
-    ?>
+  
   </tbody>
  </table>
     </div>
 
 </span>
 
-<script>
-// untuk memunculkan data tabel 
-$(document).ready(function() {
-        $('.table').DataTable({"ordering":false});
-    });
 
-</script>
+
+
+<!--start ajax datatable-->
+<script type="text/javascript" language="javascript" >
+      $(document).ready(function() {
+        var dataTable = $('#table_set_up').DataTable( {
+          "processing": true,
+          "serverSide": true,
+          "ajax":{
+            url :"show_data_setup_hasil.php", // json datasource
+            type: "post",  // method  , by default get
+            error: function(){  // error handling
+              $(".tbody").html("");
+
+             $("#table_set_up").append('<tbody class="tbody"><tr><th colspan="3">Tidak Ada Data Yang Ditemukan</th></tr></tbody>');
+
+              $("#table_set_up_processing").css("display","none");
+              
+            }
+          },
+              "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+              $(nRow).attr('class','tr-id-'+aData[10]+'');
+            },
+        } );
+      } );
+    </script>
+<!--end ajax datatable-->
+
+
+
 
 <script type="text/javascript">
 $("#copy").click(function(){
