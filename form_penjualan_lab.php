@@ -110,7 +110,7 @@ $data_rj_ri = mysqli_fetch_array($sum_rj_ri);
   <h3> FORM PENJUALAN LABORATORIUM</h3>
 <div class="row">
 
-<div class="col-sm-8">
+<div class="col-xs-8">
 
 
  <!-- membuat form menjadi beberpa bagian -->
@@ -124,7 +124,7 @@ $data_rj_ri = mysqli_fetch_array($sum_rj_ri);
 <div class="row">
 
 
-<div class="col-sm-2 form-group"> 
+<div class="col-xs-2 form-group"> 
     <label> No. RM / Pasien </label><br>
   <input  name="kode_pelanggan" type="hidden" style="height:15px;" id="kd_pelanggan" class="form-control" required="" autofocus="" value="<?php echo $pasien_rm; ?>" >
   <input  name="nama_pelanggan" type="hidden" style="height:15px;" id="nama_pelanggan" class="form-control" required="" autofocus="" value="Umum" >
@@ -144,12 +144,12 @@ $data_rj_ri = mysqli_fetch_array($sum_rj_ri);
   <input  name="total_rj_ri" type="hidden" style="height:15px;" id="total_rj_ri" class="form-control" required="" autofocus="" value="<?php echo $data_rj_ri['total_rj_ri']; ?>" >
 
 
-<div class="col-sm-2 form-group">
+<div class="col-xs-2 form-group">
     <label> Petugas Kasir </label><br>
   <input  name="kode_pelanggan" type="text" style="height:15px;" id="petugas_kasir" class="form-control" required="" autofocus="" value="<?php echo $user; ?>" readonly="">
 </div>
 
-    <div class="form-group col-sm-2">
+    <div class="form-group col-xs-2">
        <label for="penjamin">Petugas Analis</label><br>
          <select type="text" class="form-control chosen" id="apoteker" autocomplete="off">        
 
@@ -167,7 +167,7 @@ $data_rj_ri = mysqli_fetch_array($sum_rj_ri);
   </div>
 
 
-  <div class="col-sm-2">
+  <div class="col-xs-2">
           <label> Dokter Pengirim </label><br>
           
           <select name="dokter" id="dokter" class="form-control chosen" required="" >
@@ -201,7 +201,7 @@ $data_rj_ri = mysqli_fetch_array($sum_rj_ri);
 <div class="row">
 
 
-  <div class="form-group col-sm-2">
+  <div class="form-group col-xs-2">
     <label for="email">Penjamin:</label>
     <select class="form-control chosen" id="penjamin" name="penjamin" required="">
       <?php 
@@ -215,7 +215,7 @@ $data_rj_ri = mysqli_fetch_array($sum_rj_ri);
 </div>
 
 
-<div class="col-sm-2">
+<div class="col-xs-2">
     <label> Level Harga </label><br>
   <select style="font-size:15px; height:35px" type="text" name="level_harga" id="level_harga" class="form-control" required="" >
   <option value="harga_1">Level 1</option>
@@ -230,7 +230,7 @@ $data_rj_ri = mysqli_fetch_array($sum_rj_ri);
     </div>
 
 
-<div class="col-sm-2">
+<div class="col-xs-2">
           <label>PPN</label>
           <select style="font-size:15px; height:35px" name="ppn" id="ppn" class="form-control">
             <option value="Include">Include</option>  
@@ -241,7 +241,7 @@ $data_rj_ri = mysqli_fetch_array($sum_rj_ri);
 
 
 
-<div class="col-sm-3">
+<div class="col-xs-3">
 <br>
   <button type="button" id="lay" class="btn btn-primary" ><i class='fa  fa-list'></i> Lihat Layanan  </button> 
 </div>
@@ -395,7 +395,7 @@ $data_rj_ri = mysqli_fetch_array($sum_rj_ri);
 <br>
 <div class="row">
 
-  <div class="col-sm-3">
+  <div class="col-xs-3">
 
     <input type="text" style="height:15px" class="form-control" name="kode_barang" autocomplete="off" id="kode_barang" placeholder="Kode Lab" >
 
@@ -403,17 +403,17 @@ $data_rj_ri = mysqli_fetch_array($sum_rj_ri);
 
     <input type="hidden" class="form-control" name="nama_barang" autocomplete="off" id="nama_barang" placeholder="nama" >
 
-  <div class="col-sm-2">
+  <div class="col-xs-2">
     <input style="height:15px;" type="text" class="form-control" name="jumlah_barang" autocomplete="off" id="jumlah_barang" placeholder="Jumlah" >
   </div>
 
 
 
-   <div class="col-sm-2">
+   <div class="col-xs-2">
     <input style="height:15px;" type="text" class="form-control" name="potongan" autocomplete="off" id="potongan1" data-toggle="tooltip" data-placement="top" title="Jika Ingin Potongan Dalam Bentuk Persen (%), input : 10%" placeholder="Potongan">
   </div>
 
-   <div class="col-sm-1">
+   <div class="col-xs-1">
     <input style="height:15px;" type="text" class="form-control" name="tax" autocomplete="off" id="tax1" placeholder="Tax%" >
   </div>
 
@@ -608,7 +608,7 @@ $data_rj_ri = mysqli_fetch_array($sum_rj_ri);
 
 
 
-<div class="col-sm-4">
+<div class="col-xs-4">
 
 
 
@@ -628,7 +628,7 @@ $data_rj_ri = mysqli_fetch_array($sum_rj_ri);
 
       <?php if ($no_reg == ""): ?>
         <div class="row">
-        <div class="col-sm-6">
+        <div class="col-xs-6">
           
            <label style="font-size:15px"> <b> Subtotal </b></label><br>
       <input style="height:25px;font-size:15px" type="text" name="total" id="total2" class="form-control" placeholder="Total" readonly="" onkeydown="return numbersonly(this, event);" onkeyup="javascript:tandaPemisahTitik(this);">
@@ -641,7 +641,7 @@ $data_rj_ri = mysqli_fetch_array($sum_rj_ri);
 
                   ?>
 
-            <div class="col-sm-6">
+            <div class="col-xs-6">
             <label>Biaya Admin </label><br>
             <input style="height:25px;font-size:15px" name="biaya_admin" type="text" id="biaya_admin"  placeholder="Biaya Admin" onkeydown="return numbersonly(this, event);" onkeyup="javascript:tandaPemisahTitik(this);" autocomplete="off"  class="form-control">
           </div>
@@ -654,18 +654,18 @@ $data_rj_ri = mysqli_fetch_array($sum_rj_ri);
           
           <div class="row">
 
-            <div class="col-sm-4">
+            <div class="col-xs-6">
           <label> Diskon ( Rp )</label><br>
           <input type="text" name="potongan" style="height:25px;font-size:15px" id="potongan_penjualan" value="<?php echo $data_diskon['diskon_nominal']; ?>" class="form-control" placeholder="" autocomplete="off"  onkeydown="return numbersonly(this, event);" onkeyup="javascript:tandaPemisahTitik(this);">
             
           </div>
 
-          <div class="col-sm-4">
+          <div class="col-xs-6">
             <label> Diskon ( % )</label><br>
           <input type="text" name="potongan_persen" style="height:25px;font-size:15px" id="potongan_persen" value="<?php echo $data_diskon['diskon_persen']; ?>" class="form-control" placeholder="" autocomplete="off" >
           </div>
 
-            <div class="col-sm-4">
+            <div class="col-xs-4" style="display: none;">
            <label> Pajak (%)</label>
            <input type="text" name="tax" id="tax" style="height:25px;font-size:15px" value="<?php echo $data_diskon['tax']; ?>" style="height:25px;font-size:15px" class="form-control" autocomplete="off" >
 
@@ -681,13 +681,13 @@ $data_rj_ri = mysqli_fetch_array($sum_rj_ri);
            <label style="display: none"> Adm Bank  (%)</label>
            <input type="hidden" name="adm_bank" id="adm_bank"  value="" class="form-control" >
            
-           <div class="col-sm-6">
+           <div class="col-xs-6">
            <label> Tanggal</label>
            <input type="text" name="tanggal_jt" id="tanggal_jt"  value="" style="height:25px;font-size:15px" placeholder="Tanggal JT" class="form-control" >
 
            </div>
 
-        <div class="col-sm-6">
+        <div class="col-xs-6">
             <label style="font-size:15px"> <b> Cara Bayar (F4) </b> </label><br>
                       <select type="text" name="cara_bayar" id="carabayar1" class="form-control" required=""  style="font-size: 15px" >
                       <option value=""> Silahkan Pilih </option>
@@ -729,14 +729,14 @@ $data_rj_ri = mysqli_fetch_array($sum_rj_ri);
       <div class="form-group">
       <div class="row">
        
-        <div class="col-sm-6">
+        <div class="col-xs-6">
 
            <label style="font-size:15px"> <b> Total Akhir </b></label><br>
            <b><input type="text" name="total" id="total1" class="form-control" style="height: 25px; width:90%; font-size:20px;" placeholder="Total" readonly="" ></b>
           
         </div>
  
-            <div class="col-sm-6">
+            <div class="col-xs-6">
               
            <label style="font-size:15px">  <b> Pembayaran (F7)</b> </label><br>
            <b><input type="text" name="pembayaran" id="pembayaran_penjualan" style="height: 20px; width:90%; font-size:20px;" autocomplete="off" class="form-control"   style="font-size: 20px"  onkeydown="return numbersonly(this, event);" onkeyup="javascript:tandaPemisahTitik(this);"></b>
@@ -746,13 +746,13 @@ $data_rj_ri = mysqli_fetch_array($sum_rj_ri);
            
            
           <div class="row">
-            <div class="col-sm-6">
+            <div class="col-xs-6">
               
            <label> Kembalian </label><br>
            <b><input type="text" name="sisa_pembayaran"  id="sisa_pembayaran_penjualan"  style="height:25px;font-size:15px" class="form-control"  readonly="" required=""></b>
             </div>
 
-            <div class="col-sm-6">
+            <div class="col-xs-6">
               
           <label> Kredit </label><br>
           <b><input type="text" name="kredit" id="kredit" class="form-control"  style="height:25px;font-size:15px"  readonly="" required="" ></b>
@@ -768,7 +768,7 @@ $data_rj_ri = mysqli_fetch_array($sum_rj_ri);
       <?php else: ?>
 
         <div class="row">
-        <div class="col-sm-12">
+        <div class="col-xs-12">
           
            <label style="font-size:15px"> <b> Subtotal </b></label><br>
       <input style="height:25px;font-size:15px" type="text" name="total" id="total2" class="form-control" placeholder="Total" readonly="" onkeydown="return numbersonly(this, event);" onkeyup="javascript:tandaPemisahTitik(this);">
@@ -781,7 +781,7 @@ $data_rj_ri = mysqli_fetch_array($sum_rj_ri);
 
                   ?>
 
-            <div style="display: none" class="col-sm-6">
+            <div style="display: none" class="col-xs-6">
             <label>Biaya Admin </label><br>
             <input style="height:25px;font-size:15px" name="biaya_admin" type="text" id="biaya_admin"  placeholder="Biaya Admin" onkeydown="return numbersonly(this, event);" onkeyup="javascript:tandaPemisahTitik(this);" autocomplete="off"  class="form-control">
           </div>
@@ -794,22 +794,23 @@ $data_rj_ri = mysqli_fetch_array($sum_rj_ri);
           
           <div class="row">
 
-            <div style="display: none" class="col-sm-4">
+            <div style="display: none" class="col-xs-4">
           <label> Diskon ( Rp )</label><br>
           <input type="text" name="potongan" style="height:25px;font-size:15px" id="potongan_penjualan" value="<?php echo $data_diskon['diskon_nominal']; ?>" class="form-control" placeholder="" autocomplete="off"  onkeydown="return numbersonly(this, event);" onkeyup="javascript:tandaPemisahTitik(this);">
             
           </div>
 
-          <div style="display: none" class="col-sm-4">
+          <div style="display: none" class="col-xs-4">
             <label> Diskon ( % )</label><br>
           <input type="text" name="potongan_persen" style="height:25px;font-size:15px" id="potongan_persen" value="<?php echo $data_diskon['diskon_persen']; ?>" class="form-control" placeholder="" autocomplete="off" >
           </div>
 
-            <div style="display: none" class="col-sm-4">
+          <div style="display: none;" class="col-xs-4">
            <label> Pajak (%)</label>
            <input type="text" name="tax" id="tax" style="height:25px;font-size:15px" value="<?php echo $data_diskon['tax']; ?>" style="height:25px;font-size:15px" class="form-control" autocomplete="off" >
+          </div>
+          -->
 
-           </div>
 
           </div>
           
@@ -821,13 +822,13 @@ $data_rj_ri = mysqli_fetch_array($sum_rj_ri);
            <label style="display: none"> Adm Bank  (%)</label>
            <input type="hidden" name="adm_bank" id="adm_bank"  value="" class="form-control" >
            
-           <div style="display: none" class="col-sm-6">
+           <div style="display: none" class="col-xs-6">
            <label> Tanggal</label>
            <input type="text" name="tanggal_jt" id="tanggal_jt"  value="" style="height:25px;font-size:15px" placeholder="Tanggal JT" class="form-control" >
 
            </div>
 
-        <div style="display: none" class="col-sm-6">
+        <div style="display: none" class="col-xs-6">
             <label style="font-size:15px"> <b> Cara Bayar (F4) </b> </label><br>
                       <select type="text" name="cara_bayar" id="carabayar1" class="form-control" required=""  style="font-size: 15px" >
                       <option value=""> Silahkan Pilih </option>
@@ -869,14 +870,14 @@ $data_rj_ri = mysqli_fetch_array($sum_rj_ri);
       <div class="form-group">
       <div class="row">
        
-        <div style="display: none" class="col-sm-6">
+        <div style="display: none" class="col-xs-6">
 
            <label style="font-size:15px"> <b> Total Akhir </b></label><br>
            <b><input type="text" name="total" id="total1" class="form-control" style="height: 25px; width:90%; font-size:20px;" placeholder="Total" readonly="" ></b>
           
         </div>
  
-            <div style="display: none" class="col-sm-6">
+            <div style="display: none" class="col-xs-6">
               
            <label style="font-size:15px">  <b> Pembayaran (F7)</b> </label><br>
            <b><input type="text" name="pembayaran" id="pembayaran_penjualan" style="height: 20px; width:90%; font-size:20px;" autocomplete="off" class="form-control"   style="font-size: 20px"  onkeydown="return numbersonly(this, event);" onkeyup="javascript:tandaPemisahTitik(this);"></b>
@@ -886,13 +887,13 @@ $data_rj_ri = mysqli_fetch_array($sum_rj_ri);
            
            
           <div class="row">
-            <div style="display: none" class="col-sm-6">
+            <div style="display: none" class="col-xs-6">
               
            <label> Kembalian </label><br>
            <b><input type="text" name="sisa_pembayaran"  id="sisa_pembayaran_penjualan"  style="height:25px;font-size:15px" class="form-control"  readonly="" required=""></b>
             </div>
 
-            <div style="display: none" class="col-sm-6">
+            <div style="display: none" class="col-xs-6">
               
           <label> Kredit </label><br>
           <b><input type="text" name="kredit" id="kredit" class="form-control"  style="height:25px;font-size:15px"  readonly="" required="" ></b>
@@ -901,7 +902,7 @@ $data_rj_ri = mysqli_fetch_array($sum_rj_ri);
           
 
 
-           <div style="display: none" class="col-sm-12">
+           <div style="display: none" class="col-xs-12">
            <label> Keterangan </label><br>
            <textarea style="height:40px;font-size:15px" type="text" name="keterangan" id="keterangan" class="form-control"> 
            </textarea>
