@@ -13,12 +13,13 @@
         
             <th> Kode Barang </th>
             <th> Nama Barang </th>
+            <!--
             <th> Jumlah Barang </th>
+            -->
             <th> Satuan </th>
             <th> Kategori </th>
             <th> Status </th>
             <th> Suplier </th>
-            <th> Tambah </th>
         
         </thead> <!-- tag penutup tabel -->
         
@@ -116,13 +117,14 @@
         satuan='". $data1['satuan'] ."' harga='".  $harga1 ."' harga_level_2='".$harga2."'  harga_level_3='".$harga3."' harga_level_4='".$harga4."'  harga_level_5='".$harga5."' harga_level_6='".$harga6 ."'  harga_level_7='".$harga7."'  jumlah-barang='". $stok_barang ."' ber-stok='". $data1['tipe_barang'] ."' id-barang='". $data1['id'] ."'>
         
             <td>". $data1['kode_barang'] ."</td>
-            <td>". $data1['nama_barang'] ."</td>
-            <td>". $stok_barang ."</td>
-            <td>". $data1['nama'] ."</td>
+            <td>". $data1['nama_barang'] ."</td>";
+
+            //<td>". $stok_barang ."</td>
+
+           echo "<td>". $data1['nama'] ."</td>
             <td>". $data1['kategori'] ."</td>
             <td>". $data1['status'] ."</td>
             <td>". $data1['suplier'] ."</td>
-            <td> <button type='button' class='btn btn-sm btn-primary btn-tambah'>Tambah</button> </td>
             </tr>";
       
          }
