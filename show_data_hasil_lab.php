@@ -23,23 +23,25 @@ $columns = array(
 
 );
 
+
 // getting total number records without any search
-$sql = "SELECT * ";
-$sql.= "FROM hasil_lab ";
+$sql = "SELECT sh.satuan_nilai_normal,sh.normal_lk2,sh.normal_pr2,sh.model_hitung,hl.nama_pasien,hl.no_rm,hl.no_reg,hl.no_faktur,hl.nama_pemeriksaan,hl.id,hl.status,hl.hasil_pemeriksaan,hl.nilai_normal_lk,hl.nilai_normal_pr,hl.status_abnormal,hl.status_pasien,hl.tanggal ";
+$sql.= "FROM hasil_lab hl LEFT JOIN setup_hasil sh ON sh.nama_pemeriksaan = hl.id_pemeriksaan";
+
 $query=mysqli_query($conn, $sql) or die("1.php: get employees");
 $totalData = mysqli_num_rows($query);
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
-$sql = "SELECT *";
-$sql.= "FROM hasil_lab ";
+$sql = "SELECT sh.satuan_nilai_normal,sh.normal_lk2,sh.normal_pr2,sh.model_hitung,hl.nama_pasien,hl.no_rm,hl.no_reg,hl.no_faktur,hl.nama_pemeriksaan,hl.id,hl.status,hl.hasil_pemeriksaan,hl.nilai_normal_lk,hl.nilai_normal_pr,hl.status_abnormal,hl.status_pasien,hl.tanggal ";
+$sql.= "FROM hasil_lab hl LEFT JOIN setup_hasil sh ON sh.nama_pemeriksaan = hl.id_pemeriksaan";
 $sql.=" WHERE 1=1";
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
-	$sql.=" AND ( nama_pasien LIKE '".$requestData['search']['value']."%' ";    
-	$sql.=" OR no_rm LIKE '".$requestData['search']['value']."%' ";     
-	$sql.=" OR no_reg LIKE '".$requestData['search']['value']."%' ";    
-	$sql.=" OR no_faktur LIKE '".$requestData['search']['value']."%' ";    
-	$sql.=" OR no_rm LIKE '".$requestData['search']['value']."%' "; 
-	$sql.=" OR nama_pemeriksaan LIKE '".$requestData['search']['value']."%' )";
+	$sql.=" AND ( hl.nama_pasien LIKE '".$requestData['search']['value']."%' ";    
+	$sql.=" OR hl.no_rm LIKE '".$requestData['search']['value']."%' ";     
+	$sql.=" OR hl.no_reg LIKE '".$requestData['search']['value']."%' ";    
+	$sql.=" OR hl.no_faktur LIKE '".$requestData['search']['value']."%' ";    
+	$sql.=" OR hl.no_rm LIKE '".$requestData['search']['value']."%' "; 
+	$sql.=" OR hl.nama_pemeriksaan LIKE '".$requestData['search']['value']."%' )";
 }
 
 $query=mysqli_query($conn, $sql) or die("2.php: get employees");
@@ -55,7 +57,7 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 if($row['status'] != 'Selesai')
 {
 
-	$nestedData[] = "<a href='proses_input_hasil_lab.php?no_faktur=". $row['no_faktur']."&nama_daftar_akun=".$row['ke_akun']."' class='btn btn-success'> Input </a>";
+	$nestedData[] = "<a href='proses_input_hasil_lab_BELOM_YA.php?no_faktur=". $row['no_faktur']."' class='btn btn-success'> Input </a>";
 }
 else
 {
@@ -79,8 +81,42 @@ else
 	$nestedData[] = $row["nama_pasien"];
 	$nestedData[] = $row["nama_pemeriksaan"];
 	$nestedData[] = $row["hasil_pemeriksaan"];
-	$nestedData[] = $row["nilai_normal_lk"];
-	$nestedData[] = $row["nilai_normal_pr"];
+
+	
+
+$model_hitung = $row['model_hitung'];
+
+switch ($model_hitung) {
+    case "Lebih Kecil Dari":
+        $nestedData[] = "&lt;&nbsp; ". $row['nilai_normal_lk']."&nbsp;". $row['satuan_nilai_normal']."";
+        $nestedData[] = "&lt;&nbsp; ".$row['nilai_normal_pr']."&nbsp;". $row['satuan_nilai_normal']."";
+        
+        break;
+
+    case "Lebih Kecil Sama Dengan":
+        $nestedData[] = "&lt;=&nbsp; ". $row['nilai_normal_lk']."&nbsp;". $row['satuan_nilai_normal']."";  
+        $nestedData[] = " &lt;=&nbsp; ". $row['nilai_normal_pr']."&nbsp;". $row['satuan_nilai_normal']."";
+        break;
+
+    case "Lebih Besar Dari":
+        $nestedData[] = "&gt;&nbsp; ". $row['nilai_normal_lk']."&nbsp;". $row['satuan_nilai_normal']."";
+        $nestedData[] = "&gt;&nbsp; ". $row['nilai_normal_pr']."&nbsp;". $row['satuan_nilai_normal']."";
+        break;
+
+    case "Lebih Besar Sama Dengan":
+        $nestedData[] = "&gt;=&nbsp; ". $row['nilai_normal_lk']."&nbsp;". $row['satuan_nilai_normal']."";
+        $nestedData[] = "&gt;=&nbsp; ". $row['nilai_normal_pr']."&nbsp;". $row['satuan_nilai_normal']."";
+        break;
+    
+    case "Antara Sama Dengan":
+        $nestedData[] = "". $row['nilai_normal_lk']."&nbsp;-&nbsp; ". $row['normal_lk2']."&nbsp;". $row['satuan_nilai_normal']."";
+        $nestedData[] = "". $row['nilai_normal_pr']."&nbsp;-&nbsp; ". $row['normal_pr2']."&nbsp;". $row['satuan_nilai_normal']."";
+        break;
+	} 
+
+
+
+
 	$nestedData[] = $row["status_abnormal"];
 	$nestedData[] = $row["status_pasien"];
 	$nestedData[] = $row["tanggal"];
