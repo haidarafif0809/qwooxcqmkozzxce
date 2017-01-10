@@ -16,6 +16,29 @@ try {
 $db->begin_transaction();
     // A set of queries; if one fails, an exception should be thrown
 
+$total = angkadoang($_POST['total']);
+$potongan = angkadoang($_POST['potongan']);
+$biaya_admin = angkadoang($_POST['biaya_admin']);
+
+
+// menampilakn hasil penjumlah subtotal ALIAS total penjualan dari tabel tbs_penjualan berdasarkan data no faktur
+ $query = $db->query("SELECT SUM(subtotal) AS total_penjualan FROM tbs_penjualan WHERE session_id = '$session_id' AND no_reg = '' AND lab IS NULL AND session_id IS NOT NULL ");
+ $data = mysqli_fetch_array($query);
+
+ $total_ss = $data['total_penjualan'];
+ $total_tbs = ($total_ss - $potongan) + $biaya_admin;
+
+
+if ($total != $total_tbs) {
+
+    echo 1;
+
+  }
+
+  else
+
+  {
+
 //mengecek jumlah karakter dari bulan sekarang
 $cek_jumlah_bulan = strlen($bulan_sekarang);
 
@@ -70,10 +93,7 @@ $ppn_input = stringdoang($_POST['ppn_input']);
 $penjamin = stringdoang($_POST['penjamin']);
 $user = $_SESSION['nama'];
 $keterangan = stringdoang($_POST['keterangan']);
-$total = angkadoang($_POST['total']);
 $total2 = angkadoang($_POST['total2']);
-$potongan = angkadoang($_POST['potongan']);
-$biaya_admin = angkadoang($_POST['biaya_admin']);
 $sisa_pembayaran = angkadoang($_POST['sisa_pembayaran']);
 $sisa = angkadoang($_POST['sisa']);
 $cara_bayar = stringdoang($_POST['cara_bayar']);
@@ -439,47 +459,10 @@ else
 
 
 
-// BOT STAR AUTO
-              $total = angkadoang($_POST['total']);
-/*
-                    
-      $url = "https://api.telegram.org/bot233675698:AAEbTKDcPH446F-bje4XIf1YJ0kcmoUGffA/sendMessage?chat_id=-129639785&text=";
-      $text = urlencode("No Faktur : ".$no_faktur."\n");
-      $pesanan_jadi = "";
-      $ambil_tbs1 = $db->query("SELECT * FROM tbs_penjualan WHERE session_id = '$session_id' ORDER BY id ASC");
-      
- while ($data12 = mysqli_fetch_array($ambil_tbs1))
-
- {
-            $pesanan =  $data12['nama_barang']." - ".$data12['jumlah_barang']." - ".$data12['harga']."\n";
-      $pesanan_jadi = $pesanan_jadi.$pesanan;
-      
-      $ambil_tbs2 = $db->query("SELECT kode_barang FROM tbs_penjualan WHERE session_id = '$session_id' ORDER BY id DESC Limit 1");
-      $ambil_tbs3 = mysqli_fetch_array($ambil_tbs2);
-      $data_terakhir = $ambil_tbs3['kode_barang'];
-      
-      if ($data12['kode_barang'] == $data_terakhir ) 
-      {
-      $pesanan_jadi = $pesanan_jadi."Subtotal : ".$total;
-      $pesanan_terakhir =  urlencode($pesanan_jadi);
-      $url = $url.$text.$pesanan_terakhir;
-      
-      $url = str_replace(" ", "%20", $url);
-      
-
-      
-      }
-
-
-     
-     
-}
-*/
-
     $query3 = $db->query("DELETE  FROM tbs_penjualan WHERE session_id = '$session_id' AND no_reg = '' ");
     $query30 = $db->query("DELETE  FROM tbs_fee_produk WHERE session_id = '$session_id'");
 
-
+  }// braket if cek subtotal 
 
     // If we arrive here, it means that no exception was thrown
     // i.e. no query has failed, and we can commit the transaction
