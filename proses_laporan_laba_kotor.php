@@ -55,6 +55,9 @@ th {
 
 			{
 
+			$pelanggan = $db_pasien->query("SELECT nama_pelanggan FROM pelanggan WHERE kode_pelanggan = '$data_penjualan[kode_pelanggan]'");
+			$data_pelanggan = mysqli_fetch_array($pelanggan);
+
 			$sum_subtotal_detail_penjualan = $db->query("SELECT SUM(subtotal) AS subtotal FROM detail_penjualan WHERE no_faktur = '$data_penjualan[no_faktur]'");
 			$cek_sum_sub = mysqli_fetch_array($sum_subtotal_detail_penjualan);
 
@@ -74,7 +77,7 @@ th {
 			echo "<tr>
 			<td>". $data_penjualan['no_faktur'] ."</td>
 			<td>". $data_penjualan['tanggal'] ."</td>
-			<td>". $data_penjualan['kode_pelanggan'] ." - ". $data_penjualan['nama_pelanggan'] ."</td>
+			<td>". $data_penjualan['kode_pelanggan'] ." - ". $data_pelanggan['nama_pelanggan'] ."</td>
 			<td style='text-align: right'>". rp($subtotal) ."</td>
 			<td style='text-align: right'>". rp($cek_sum_hpp['total_hpp']) ."</td>
 			<td style='text-align: right'>". rp($laba_kotor) ."</td>

@@ -9,7 +9,7 @@ $sampai_tanggal = $_GET['sampai_tanggal'];
 
 
 //menampilkan seluruh data yang ada pada tabel penjualan
-$penjualan = $db->query("SELECT p.id,p.no_faktur,p.total,p.kode_pelanggan,p.tanggal,p.tanggal_jt,p.jam,p.user,p.sales,p.kode_meja,p.status,p.potongan,p.tax,p.sisa,p.kredit,pl.nama_pelanggan FROM penjualan p INNER JOIN pelanggan pl ON p.kode_pelanggan = pl.kode_pelanggan WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal'  ORDER BY p.id DESC");
+$penjualan = $db->query("SELECT p.id,p.no_faktur,p.total,p.kode_pelanggan,p.tanggal,p.tanggal_jt,p.jam,p.user,p.sales,p.kode_meja,p.status,p.potongan,p.tax,p.sisa,p.kredit,pl.nama_pelanggan FROM penjualan p LEFT JOIN pelanggan pl ON p.kode_pelanggan = pl.kode_pelanggan WHERE p.tanggal >= '$dari_tanggal' AND p.tanggal <= '$sampai_tanggal'  ORDER BY p.id DESC");
 
 
 
@@ -78,9 +78,8 @@ $penjualan = $db->query("SELECT p.id,p.no_faktur,p.total,p.kode_pelanggan,p.tang
 
 
 
-
-
- <table id="tableuser" class="table1">
+<br>
+ <table id="tableuser" class="table-bordered table-sm">
          <thead>
 			
 			<th class="table1" style="text-align: center; width: 5%"> Nomor Transaksi </th>
@@ -105,11 +104,13 @@ $penjualan = $db->query("SELECT p.id,p.no_faktur,p.total,p.kode_pelanggan,p.tang
 			//menyimpan data sementara yang ada pada $perintah
 			while ($data_penjualan = mysqli_fetch_array($penjualan))
 
-
 			{
 
 			$sum_subtotal_detail_penjualan = $db->query("SELECT SUM(subtotal) AS subtotal FROM detail_penjualan WHERE no_faktur = '$data_penjualan[no_faktur]'");
 			$cek_sum_sub = mysqli_fetch_array($sum_subtotal_detail_penjualan);
+
+			$pelanggan = $db_pasien->query("SELECT nama_pelanggan FROM pelanggan WHERE kode_pelanggan = '$data_penjualan[kode_pelanggan]'");
+			$data_pelanggan = mysqli_fetch_array($pelanggan);
 
 			$sum_pajak_penjualan = $db->query("SELECT SUM(tax) AS pajak FROM penjualan WHERE no_faktur = '$data_penjualan[no_faktur]'");
 			$cek_sum_pajak = mysqli_fetch_array($sum_pajak_penjualan);
@@ -134,7 +135,7 @@ $penjualan = $db->query("SELECT p.id,p.no_faktur,p.total,p.kode_pelanggan,p.tang
 			echo "<tr>
 			<td class='table1' style='text-align: center'>". $data_penjualan['no_faktur'] ."</td>
 			<td class='table1' style='text-align: center'>". $data_penjualan['tanggal'] ."</td>
-			<td class='table1' style='text-align: center'>". $data_penjualan['kode_pelanggan'] ." - ". $data_penjualan['nama_pelanggan'] ."</td>
+			<td class='table1' style='text-align: center'>". $data_penjualan['kode_pelanggan'] ." - ". $data_pelanggan['nama_pelanggan'] ."</td>
 			<td class='table1' style='text-align: right'>". rp($subtotal) ."</td>
 			<td class='table1' style='text-align: right'>". rp($cek_sum_hpp['total_hpp']) ."</td>
 			<td class='table1' style='text-align: right'>". rp($laba_kotor) ."</td>

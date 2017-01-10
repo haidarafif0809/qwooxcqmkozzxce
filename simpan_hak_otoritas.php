@@ -256,6 +256,45 @@ $laporan_hutang_beredar_lihat = stringdoang(isset($_POST['laporan_hutang_beredar
 $laporan_piutang_beredar_lihat = stringdoang(isset($_POST['laporan_piutang_beredar_lihat']));
 
 
+$tombol_submit_produk = stringdoang(isset($_POST['tombol_submit_produk']));
+$tombol_bayar = stringdoang(isset($_POST['tombol_bayar']));
+$tombol_simpan = stringdoang(isset($_POST['tombol_simpan']));
+$tombol_piutang = stringdoang(isset($_POST['tombol_piutang']));
+$tombol_batal = stringdoang(isset($_POST['tombol_batal']));
+$hapus_produk = stringdoang(isset($_POST['hapus_produk']));
+$edit_produk = stringdoang(isset($_POST['edit_produk']));
+
+$tombol_submit_produk_inap = stringdoang(isset($_POST['tombol_submit_produk_inap']));
+$tombol_bayar_inap = stringdoang(isset($_POST['tombol_bayar_inap']));
+$tombol_simpan_inap = stringdoang(isset($_POST['tombol_simpan_inap']));
+$tombol_piutang_inap = stringdoang(isset($_POST['tombol_piutang_inap']));
+$tombol_batal_inap = stringdoang(isset($_POST['tombol_batal_inap']));
+$hapus_produk_inap = stringdoang(isset($_POST['hapus_produk_inap']));
+$edit_produk_inap = stringdoang(isset($_POST['edit_produk_inap']));
+
+$tombol_submit_produk_ugd = stringdoang(isset($_POST['tombol_submit_produk_ugd']));
+$tombol_bayar_ugd = stringdoang(isset($_POST['tombol_bayar_ugd']));
+$tombol_simpan_ugd = stringdoang(isset($_POST['tombol_simpan_ugd']));
+$tombol_piutang_ugd = stringdoang(isset($_POST['tombol_piutang_ugd']));
+$tombol_batal_ugd = stringdoang(isset($_POST['tombol_batal_ugd']));
+$hapus_produk_ugd = stringdoang(isset($_POST['hapus_produk_ugd']));
+$edit_produk_ugd = stringdoang(isset($_POST['edit_produk_ugd']));
+
+$tombol_submit_produk_apotek = stringdoang(isset($_POST['tombol_submit_produk_apotek']));
+$tombol_bayar_apotek = stringdoang(isset($_POST['tombol_bayar_apotek']));
+$tombol_piutang_apotek = stringdoang(isset($_POST['tombol_piutang_apotek']));
+$tombol_batal_apotek = stringdoang(isset($_POST['tombol_batal_apotek']));
+$hapus_produk_apotek = stringdoang(isset($_POST['hapus_produk_apotek']));
+$edit_produk_apotek = stringdoang(isset($_POST['edit_produk_apotek']));
+
+$tombol_submit_produk_lab = stringdoang(isset($_POST['tombol_submit_produk_lab']));
+$tombol_bayar_lab = stringdoang(isset($_POST['tombol_bayar_lab']));
+$tombol_piutang_lab = stringdoang(isset($_POST['tombol_piutang_lab']));
+$tombol_batal_lab = stringdoang(isset($_POST['tombol_batal_lab']));
+$hapus_produk_lab = stringdoang(isset($_POST['hapus_produk_lab']));
+$edit_produk_lab = stringdoang(isset($_POST['edit_produk_lab']));
+
+
 
 $update_otoritas_item_keluar = $db->prepare("UPDATE otoritas_item_keluar SET item_keluar_lihat = ?, item_keluar_tambah = ?, item_keluar_edit = ?, item_keluar_hapus = ? WHERE id_otoritas = ?");
 
@@ -402,6 +441,46 @@ $update_otoritas_setting->bind_param("iiiii",
     $setting_lihat, $setting_registrasi_lihat, $penetapan_petugas_lihat, $printer_lihat, $id);
 
 $update_otoritas_setting->execute();
+
+
+$update_otoritas_penjualan_rj = $db->prepare("UPDATE otoritas_penjualan_rj SET tombol_submit = ?, tombol_bayar = ?, tombol_simpan = ?, tombol_piutang = ?, tombol_batal = ?, hapus_produk = ?, edit_produk = ? WHERE id_otoritas = ?");
+
+$update_otoritas_penjualan_rj->bind_param("iiiiiiii",
+    $tombol_submit_produk, $tombol_bayar, $tombol_simpan, $tombol_piutang, $tombol_batal, $hapus_produk, $edit_produk, $id);
+
+$update_otoritas_penjualan_rj->execute();
+
+
+$update_otoritas_penjualan_inap = $db->prepare("UPDATE otoritas_penjualan_inap SET tombol_submit_inap = ?, tombol_bayar_inap = ?, tombol_simpan_inap = ?, tombol_piutang_inap = ?, tombol_batal_inap = ?, hapus_produk_inap = ?, edit_produk_inap = ? WHERE id_otoritas = ?");
+
+$update_otoritas_penjualan_inap->bind_param("iiiiiiii",
+    $tombol_submit_produk_inap, $tombol_bayar_inap, $tombol_simpan_inap, $tombol_piutang_inap, $tombol_batal_inap, $hapus_produk_inap, $edit_produk_inap, $id);
+
+$update_otoritas_penjualan_inap->execute();
+
+
+$update_otoritas_penjualan_ugd = $db->prepare("UPDATE otoritas_penjualan_ugd SET tombol_submit_ugd = ?, tombol_bayar_ugd = ?, tombol_simpan_ugd = ?, tombol_piutang_ugd = ?, tombol_batal_ugd = ?, hapus_produk_ugd = ?, edit_produk_ugd = ? WHERE id_otoritas = ?");
+
+$update_otoritas_penjualan_ugd->bind_param("iiiiiiii",
+    $tombol_submit_produk_ugd, $tombol_bayar_ugd, $tombol_simpan_ugd, $tombol_piutang_ugd, $tombol_batal_ugd, $hapus_produk_ugd, $edit_produk_ugd, $id);
+
+$update_otoritas_penjualan_ugd->execute();
+
+
+$update_otoritas_penjualan_apotek = $db->prepare("UPDATE otoritas_penjualan_apotek SET tombol_submit_apotek = ?, tombol_bayar_apotek = ?, tombol_piutang_apotek = ?, tombol_batal_apotek = ?, hapus_produk_apotek = ?, edit_produk_apotek = ? WHERE id_otoritas = ?");
+
+$update_otoritas_penjualan_apotek->bind_param("iiiiiii",
+    $tombol_submit_produk_apotek, $tombol_bayar_apotek, $tombol_piutang_apotek, $tombol_batal_apotek, $hapus_produk_apotek, $edit_produk_apotek, $id);
+
+$update_otoritas_penjualan_apotek->execute();
+
+
+$update_otoritas_penjualan_lab = $db->prepare("UPDATE otoritas_penjualan_lab SET tombol_submit_lab = ?, tombol_bayar_lab = ?, tombol_piutang_lab = ?, tombol_batal_lab = ?, hapus_produk_lab = ?, edit_produk_lab = ? WHERE id_otoritas = ?");
+
+$update_otoritas_penjualan_lab->bind_param("iiiiiii",
+    $tombol_submit_produk_lab, $tombol_bayar_lab, $tombol_piutang_lab, $tombol_batal_lab, $hapus_produk_lab, $edit_produk_lab, $id);
+
+$update_otoritas_penjualan_lab->execute();
 
 
                 echo '<META HTTP-EQUIV="Refresh" Content="0; URL=hak_otoritas.php">';
