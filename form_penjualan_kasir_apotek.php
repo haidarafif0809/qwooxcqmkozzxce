@@ -1466,7 +1466,15 @@ alert("Silakan Bayar Piutang");
 
  $.post("proses_bayar_jual_apotek.php",{biaya_admin:biaya_admin,total2:total2,sisa_pembayaran:sisa_pembayaran,kredit:kredit,kode_pelanggan:kode_pelanggan,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,cara_bayar:cara_bayar,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,total_hpp:total_hpp,harga:harga,kode_gudang:kode_gudang,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,apoteker:apoteker,no_resep_dokter:no_resep_dokter,resep_dokter:resep_dokter,penjamin:penjamin},function(info) {
 
+if (info == 1)
+{
 
+   alert("Maaf Subtotal Penjualan Tidak Sesuai, Silakan Tunggu Sebentar! (2) ");       
+        window.location.href="form_penjualan_kasir_apotek.php";
+
+}
+
+else{
      $("#table-baru").html(info);
      var no_faktur = info;
      var kode_pelanggan = $('#kd_pelanggan').val();
@@ -1487,12 +1495,15 @@ alert("Silakan Bayar Piutang");
      $("#penjamin").val('')
      $("#cetak_tunai").show();
      $("#cetak_tunai_besar").show('');
-    
+    }
        
    });
 }
   else{
-    alert("Maaf Subtotal Penjualan Tidak Sesuai, Silakan Tunggu Sebentar!");       
+
+
+
+    alert("Maaf Subtotal Penjualan Tidak Sesuai, Silakan Tunggu Sebentar! (1) ");       
         window.location.href="form_penjualan_kasir_apotek.php";
   }
 
@@ -1621,13 +1632,7 @@ $.post("proses_bayar_jual_apotek.php",{biaya_admin:biaya_admin,total2:total2,sis
 
               $("#piutang").mouseleave(function(){
                
-               $.get('no_faktur_jl.php', function(data) {
-               /*optional stuff to do after getScript */ 
-               
-               $("#nomor_faktur_penjualan").val(data);
-               $("#no_faktur0").val(data);
-               
-               });
+              
                var kode_pelanggan = $("#kd_pelanggan").val();
                if (kode_pelanggan == ""){
                $("#kd_pelanggan").attr("disabled", false);
@@ -2473,6 +2478,7 @@ $(document).ready(function(){
                                     var jumlah_lama = $("#text-jumlah-"+id+"").text();
                                     var satuan_konversi = $(this).attr("data-satuan");
                                     var tipe = $(this).attr("data-tipe");
+                                    var ppn = $("#ppn").val();
 
                                     var subtotal_lama = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#text-subtotal-"+id+"").text()))));
                                     var potongan = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#text-potongan-"+id+"").text()))));
@@ -2698,8 +2704,7 @@ if (pot_fakt_per == 0) {
       /*$("#tax").attr("disabled", true);*/
 
     // cek ppn exclude 
-    var no_reg = $("#no_reg").val();
-    $.get("cek_ppn_ex.php",{no_reg:no_reg},function(data){
+    $.get("cek_ppn_ex_apotek.php",function(data){
       if (data == 1) {
           $("#ppn").val('Exclude');
      $("#ppn").attr("disabled", true);

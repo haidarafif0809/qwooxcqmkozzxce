@@ -7,11 +7,11 @@ $session_id = session_id();
 $tahun_sekarang = date('Y');
 $bulan_sekarang = date('m');
 $tanggal_sekarang = date('Y-m-d');
-$jam_sekarang = date('H:i:sa');
+$jam_sekarang = date('H:i:s');
 $tahun_terakhir = substr($tahun_sekarang, 2);
 
 $petugas_edit = $_SESSION['id'];
-$waktu = date('Y-m-d H:i:sa');
+$waktu = date('Y-m-d H:i:s');
 
 try {
     // First of all, let's begin a transaction
@@ -32,7 +32,7 @@ $keterangan = stringdoang($_POST['keterangan']);
 $total = angkadoang($_POST['total']);
 $total2 = angkadoang($_POST['total2']);
 $potongan = angkadoang($_POST['potongan']);
-$tax = angkadoang($_POST['tax']);
+/*$tax = angkadoang($_POST['tax']);*/
 $biaya_admin = angkadoang($_POST['biaya_admin']);
 $sisa_pembayaran = angkadoang($_POST['sisa_pembayaran']);
 $sisa = angkadoang($_POST['sisa']);
@@ -175,15 +175,15 @@ $id_kasir = $data_id['id'];
               
              
             // buat prepared statements
-            $stmt = $db->prepare("UPDATE penjualan SET penjamin = ?, apoteker = ?, kode_gudang = ?, total = ?, tanggal = ?, jam = ?, user = ?, sales = ?, status = 'Lunas', potongan = ?, tax = ?, sisa = ?, cara_bayar = ?, tunai = ?, status_jual_awal = 'Tunai', keterangan = ?, ppn = ?,jenis_penjualan = ?,biaya_admin = ?, petugas_edit = ?, waktu_edit = ?, no_resep = ?, resep_dokter = ? WHERE no_faktur = ?");
+            $stmt = $db->prepare("UPDATE penjualan SET penjamin = ?, apoteker = ?, kode_gudang = ?, total = ?, tanggal = ?, jam = ?, user = ?, sales = ?, status = 'Lunas', potongan = ?,  sisa = ?, cara_bayar = ?, tunai = ?, status_jual_awal = 'Tunai', keterangan = ?, ppn = ?,jenis_penjualan = ?,biaya_admin = ?, petugas_edit = ?, waktu_edit = ?, no_resep = ?, resep_dokter = ? WHERE no_faktur = ?");
             
             
             // hubungkan "data" dengan prepared statements
-            $stmt->bind_param("sssissssiiisisssisssss", 
-            $penjamin,$apoteker, $kode_gudang, $total, $tanggal_sekarang, $jam_sekarang, $id_kasir, $petugas_kasir, $potongan, $tax, $sisa, $cara_bayar, $pembayaran, $keterangan, $ppn_input,$jenis_penjualan,$biaya_admin,$petugas_edit,$waktu,$no_resep,$resep_dokter,$no_faktur);
+            $stmt->bind_param("sssissssiisisssisssss", 
+            $penjamin,$apoteker, $kode_gudang, $total, $tanggal_sekarang, $jam_sekarang, $id_kasir, $petugas_kasir, $potongan, $sisa, $cara_bayar, $pembayaran, $keterangan, $ppn_input,$jenis_penjualan,$biaya_admin,$petugas_edit,$waktu,$no_resep,$resep_dokter,$no_faktur);
 
             
-              $pj_total = $total - ($potongan + $tax);
+              $pj_total = $total - $potongan;
 
 
               $_SESSION['no_faktur']=$no_faktur;
@@ -267,8 +267,8 @@ if ($pajak != "" || $pajak != 0 ) {
 
 else {
   //ppn == Exclude
-  $total_penjualan = $total2 + $biaya_admin;
-  $pajak = $tax;
+  $total_penjualan = ($total2 - $total_tax) + $biaya_admin;
+  $pajak = $total_tax;
 
  //Total Penjualan
         $insert_juranl = $db->query("INSERT INTO jurnal_trans (nomor_jurnal,waktu_jurnal,keterangan_jurnal,kode_akun_jurnal,debit,kredit,jenis_transaksi,no_faktur,approved,user_buat) VALUES ('".no_jurnal()."', '$tanggal_sekarang $jam_sekarang', 'Penjualan Apotek Tunai - $ambil_kode_pelanggan[nama_pelanggan]', '$ambil_setting[total_penjualan]', '0', '$total_penjualan', 'Penjualan', '$no_faktur','1', '$user')");
@@ -298,16 +298,16 @@ if ($potongan != "" || $potongan != 0 ) {
               
             {
               
-              $stmt2 = $db->prepare("UPDATE penjualan SET penjamin = ?, apoteker = ?, kode_gudang = ?,total = ?, tanggal = ?, jam = ?,  user = ?, sales = ?, status = 'Piutang', potongan = ?, tax = ?, kredit = ?, cara_bayar = ?, tunai = ?, status_jual_awal = 'Kredit', keterangan = ?, ppn = ?,jenis_penjualan = ?,tanggal_jt = ?,biaya_admin = ?, petugas_edit = ?, waktu_edit = ?, no_resep = ?, resep_dokter = ?  WHERE no_faktur = ?");
+              $stmt2 = $db->prepare("UPDATE penjualan SET penjamin = ?, apoteker = ?, kode_gudang = ?,total = ?, tanggal = ?, jam = ?,  user = ?, sales = ?, status = 'Piutang', potongan = ?, kredit = ?, cara_bayar = ?, tunai = ?, status_jual_awal = 'Kredit', keterangan = ?, ppn = ?,jenis_penjualan = ?,tanggal_jt = ?,biaya_admin = ?, petugas_edit = ?, waktu_edit = ?, no_resep = ?, resep_dokter = ?  WHERE no_faktur = ?");
             
             
             // hubungkan "data" dengan prepared statements
-            $stmt2->bind_param("sssissssiiisissssisssss", 
-            $penjamin,$apoteker, $kode_gudang, $total, $tanggal_sekarang, $jam_sekarang, $id_kasir, $petugas_kasir, $potongan, $tax, $sisa_kredit, $cara_bayar, $pembayaran, $keterangan, $ppn_input,$jenis_penjualan,$tanggal_jt,$biaya_admin,$petugas_edit,$waktu,$no_resep,$resep_dokter,$no_faktur);
+            $stmt2->bind_param("sssissssiisissssisssss", 
+            $penjamin,$apoteker, $kode_gudang, $total, $tanggal_sekarang, $jam_sekarang, $id_kasir, $petugas_kasir, $potongan, $sisa_kredit, $cara_bayar, $pembayaran, $keterangan, $ppn_input,$jenis_penjualan,$tanggal_jt,$biaya_admin,$petugas_edit,$waktu,$no_resep,$resep_dokter,$no_faktur);
 
             
 
-              $pj_total = $total - ($potongan + $tax);
+              $pj_total = $total - $potongan;
 
               $_SESSION['no_faktur']=$no_faktur;
               
@@ -394,8 +394,8 @@ if ($pajak != "" || $pajak != 0) {
 else {
 
   //ppn == Exclude
-  $total_penjualan = $total2 + $biaya_admin;
-  $pajak = $tax;
+  $total_penjualan = ($total2 - $total_tax) + $biaya_admin;
+  $pajak = $total_tax;
 $ppn_input;
  //Total Penjualan
         $insert_juranl = $db->query("INSERT INTO jurnal_trans (nomor_jurnal,waktu_jurnal,keterangan_jurnal,kode_akun_jurnal,debit,kredit,jenis_transaksi,no_faktur,approved,user_buat) VALUES ('".no_jurnal()."', '$tanggal_sekarang $jam_sekarang', 'Penjualan Apotek Piutang - $ambil_kode_pelanggan[nama_pelanggan]', '$ambil_setting[total_penjualan]', '0', '$total_penjualan', 'Penjualan', '$no_faktur','1', '$user')");
@@ -417,8 +417,6 @@ if ($potongan != "" || $potongan != 0 ) {
 
    
 }
-
-
 
 
 
