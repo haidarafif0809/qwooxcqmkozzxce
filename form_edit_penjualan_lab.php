@@ -2497,11 +2497,11 @@ var ppn = $("#ppn").val();
     var total2 = $("#total2").val();
     var no_reg = $("#no_reg").val();
     $.get("cek_ppn_edit_lab.php",{no_reg:no_reg},function(data){
-      if (data == 1 || total2 != '0') {
+      if (data == 1) {
           $("#ppn").val('Exclude');
      $("#ppn").attr("disabled", true);
       }
-      else if(data == 2 || total2 != '0'){
+      else if(data == 2){
 
     $("#ppn").val('Include');
      $("#ppn").attr("disabled", true);
