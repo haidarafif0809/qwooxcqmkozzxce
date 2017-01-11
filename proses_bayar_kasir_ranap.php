@@ -10,6 +10,36 @@ $jam_sekarang = date('H:i:sa');
 $tahun_terakhir = substr($tahun_sekarang, 2);
 
 try {
+
+
+$no_reg = stringdoang($_POST['no_reg']);
+$total = angkadoang($_POST['total']);
+$potongan = angkadoang($_POST['potongan']);
+$biaya_admin = angkadoang($_POST['biaya_adm']);
+
+
+// menampilakn hasil penjumlah subtotal ALIAS total penjualan dari tabel tbs_penjualan berdasarkan data no faktur
+ $query121 = $db->query("SELECT SUM(subtotal) AS total_penjualan FROM tbs_penjualan WHERE no_reg = '$no_reg'");
+ $data43 = mysqli_fetch_array($query121);
+ $total_ss = $data43['total_penjualan'];
+
+
+// menampilakn hasil penjumlah subtotal ALIAS total penjualan dari tabel tbs_penjualan berdasarkan data no faktur
+ $query212 = $db->query("SELECT SUM(harga_jual) AS harga_jual FROM tbs_operasi WHERE no_reg = '$no_reg'");
+ $data2 = mysqli_fetch_array($query212);
+ $total_operasi = $data2['harga_jual'];
+
+ $total_sum = ($total_ss + $total_operasi);
+
+
+$total_tbs = ($total_sum - $potongan) + $biaya_admin;
+
+if ($total != $total_tbs) {
+    echo 1;
+  }
+  else{
+   
+
     // First of all, let's begin a transaction
 $db->begin_transaction();
 
@@ -63,7 +93,6 @@ echo $no_faktur = $nomor."/JL/".$data_bulan_terakhir."/".$tahun_terakhir;
  $session_id = session_id();
 
 $no_rm = stringdoang($_POST['no_rm']);
-$no_reg = stringdoang($_POST['no_reg']);
 $ber_stok = stringdoang($_POST['ber_stok']);
 $tanggal_jt = tanggal_mysql($_POST['tanggal_jt']);
 $nama_petugas = stringdoang($_SESSION['nama']);
@@ -80,16 +109,13 @@ $analis = stringdoang($_POST['analis']);
     $dokter = stringdoang($_POST['dokter']);
 
 $keterangan = stringdoang($_POST['keterangan']);
-$total = angkadoang($_POST['total']);
 $total2 = angkadoang($_POST['total2']);
-$potongan = angkadoang($_POST['potongan']);
 $tax = angkadoang($_POST['tax']);
 $sisa_pembayaran = angkadoang($_POST['sisa_pembayaran']);
 $sisa_kredit = angkadoang($_POST['kredit']);
 $sisa = angkadoang($_POST['sisa']);
 $cara_bayar = stringdoang($_POST['cara_bayar']);
 $pembayaran = angkadoang($_POST['pembayaran']);
-$biaya_admin = angkadoang($_POST['biaya_adm']);
 $bed = stringdoang($_POST['bed']);
 $group_bed = stringdoang($_POST['group_bed']);
 
@@ -666,7 +692,7 @@ $query = $db->query("UPDATE bed SET sisa_bed = sisa_bed + 1 WHERE nama_kamar = '
     $hapus_tbs_operasi = $db->query("DELETE  FROM tbs_operasi WHERE no_reg = '$no_reg'");
     $hapus_tbs_detail_operasi = $db->query("DELETE  FROM tbs_detail_operasi WHERE no_reg = '$no_reg'");
 
-
+}// braket cek subtotal (di proses)
 
     // If we arrive here, it means that no exception was thrown
     // i.e. no query has failed, and we can commit the transaction

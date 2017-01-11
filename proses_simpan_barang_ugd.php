@@ -7,6 +7,27 @@
 
 
 
+$no_reg = stringdoang($_POST['no_reg']);
+$biaya_admin = angkadoang($_POST['biaya_adm']);
+$potongan = angkadoang($_POST['potongan']);
+$total = angkadoang($_POST['total']);
+
+
+
+// menampilakn hasil penjumlah subtotal ALIAS total penjualan dari tabel tbs_penjualan berdasarkan data no faktur
+ $queryasa = $db->query("SELECT SUM(subtotal) AS total_penjualan FROM tbs_penjualan WHERE  no_reg = '$no_reg'");
+ $datas = mysqli_fetch_array($queryasa);
+ $total_ss = $datas['total_penjualan'];
+
+
+$total_tbs = ($total_ss - $potongan) + $biaya_admin;
+
+if ($total != $total_tbs) {
+    echo 1;
+  }
+  else{
+
+
 $session_id = session_id();
 
 $tahun_sekarang = date('Y');
@@ -14,7 +35,8 @@ $bulan_sekarang = date('m');
 $tanggal_sekarang = date('Y-m-d');
 $jam_sekarang = date('H:i:s');
 $tahun_terakhir = substr($tahun_sekarang, 2);
-$waktu = date('Y-m-d H:i:sa');
+$waktu = date('Y-m-d H:i:s');
+
  //ambil 2 angka terakhir dari tahun sekarang 
 $tahun = $db->query("SELECT YEAR(NOW()) as tahun");
 $v_tahun = mysqli_fetch_array($tahun);
@@ -398,6 +420,8 @@ if ($potongan != "" || $potongan != 0 ) {
 
      $query3 = $db->query("DELETE FROM tbs_penjualan WHERE no_reg = '$no_reg'");
     $query30 = $db->query("DELETE FROM tbs_fee_produk WHERE no_reg = '$no_reg'");
+}// braket cek subtotal
+
 
 //Untuk Memutuskan Koneksi Ke Database
 mysqli_close($db);   

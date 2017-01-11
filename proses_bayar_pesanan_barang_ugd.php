@@ -4,8 +4,27 @@
     include 'db.php';
 
 
-    echo $nomor_faktur = stringdoang($_POST['no_faktur']);
+    $total = angkadoang($_POST['total']);
+    $no_reg = stringdoang($_POST['no_reg']);  
+    $biaya_adm = stringdoang($_POST['biaya_adm']);
+    $potongan = stringdoang($_POST['potongan']);
+    $nomor_faktur = stringdoang($_POST['no_faktur']);
 
+// menampilakn hasil penjumlah subtotal ALIAS total penjualan dari tabel tbs_penjualan berdasarkan data no faktur
+ $query32 = $db->query("SELECT SUM(subtotal) AS total_penjualan FROM tbs_penjualan WHERE no_reg = '$no_reg' AND no_faktur = '$nomor_faktur'");
+ $data32 = mysqli_fetch_array($query32);
+ $total_ss = $data32['total_penjualan'];
+
+
+ $total_tbs = ($total_ss - $potongan) + $biaya_adm;
+
+
+if ($total != $total_tbs) {
+    echo 1;
+  }
+  else{
+
+echo $nomor_faktur = stringdoang($_POST['no_faktur']);
     $total = angkadoang($_POST['total']);
     $total2 = angkadoang($_POST['total2']);
     $user = $_SESSION['nama'];
@@ -358,15 +377,7 @@ if ($potongan != "") {
             $query30 = $db->query("DELETE  FROM tbs_fee_produk WHERE no_faktur = '$nomor_faktur' AND no_reg = '$no_reg' ");
 
 
-
-    // cek query
-if (!$stmt) {
-   die('Query Error : '.$db->errno.
-   ' - '.$db->error);
-}
-else {
-
-}
+}//braket cek subtotal (di proses)
 
 
 

@@ -3,18 +3,51 @@
     include 'sanitasi.php';
     include 'db.php';
 
+    $total = angkadoang($_POST['total']);
+    $no_reg = stringdoang($_POST['no_reg']);  
+    $biaya_adm = angkadoang($_POST['biaya_adm']);
+    $potongan = angkadoang($_POST['potongan']);
+    $nomor_faktur = stringdoang($_POST['no_faktur']);
+
+// menampilakn hasil penjumlah subtotal ALIAS total penjualan dari tabel tbs_penjualan berdasarkan data no faktur
+ $queryasa = $db->query("SELECT SUM(subtotal) AS total_penjualan FROM tbs_penjualan WHERE  no_reg = '$no_reg' AND no_faktur = '$nomor_faktur' ");
+ $datas = mysqli_fetch_array($queryasa);
+ $total_ss = $datas['total_penjualan'];
+
+
+
+$total_tbs = ($total_ss - $potongan) + $biaya_adm;
+
+if ($total != $total_tbs) {
+    echo 1;
+  }
+  else{
 
     echo $nomor_faktur = stringdoang($_POST['no_faktur']);
 
-    $total = angkadoang($_POST['total']);
     $total2 = angkadoang($_POST['total2']);
     $user = $_SESSION['nama'];
     $sales = stringdoang($_POST['petugas_kasir']);
     $kode_pelanggan = stringdoang($_POST['no_rm']);
     $no_jurnal = no_jurnal();
-    $no_reg = stringdoang($_POST['no_reg']);  
     $no_rm = stringdoang($_POST['no_rm']);   
+              
+               $petugas_farmasi = stringdoang($_POST['petugas_farmasi']);
+               $petugas_paramedik = stringdoang($_POST['petugas_paramedik']);
+               $petugas_lain = stringdoang($_POST['petugas_lain']);
+               $kode_gudang = stringdoang($_POST['kode_gudang']);
+               $jam = date('H:i:s');
+               /*$tax = stringdoang($_POST['tax']);*/
+               $sisa_pembayaran = stringdoang($_POST['sisa_pembayaran']);
+               $cara_bayar = stringdoang($_POST['cara_bayar']);
+               $pembayaran = stringdoang($_POST['pembayaran']);
+               $ppn_input = stringdoang($_POST['ppn_input']);
+               $keterangan = stringdoang($_POST['keterangan']);
+               $nomor_faktur = stringdoang($_POST['no_faktur']);
+               $tanggal_edit = stringdoang($_POST['tanggal']);
 
+               $nama_petugas = $_SESSION['nama'];
+               $_SESSION['no_faktur'] = $nomor_faktur;
     
 $tahun_sekarang = date('Y');
 $bulan_sekarang = date('m');
@@ -111,34 +144,13 @@ $delete1 = $db->query("DELETE FROM jurnal_trans WHERE no_faktur = '$nomor_faktur
             
             {
             
-             $stmt = $db->prepare("UPDATE  penjualan SET apoteker = ?, perawat = ?, petugas_lain = ?, biaya_admin = ?, kode_gudang = ?, total = ?, jam = ?, status = 'Lunas', potongan = ?,  sisa = ?, cara_bayar = ?, tunai = ?, ppn = ?, status_jual_awal = 'Tunai', keterangan = ?, user = ? WHERE no_faktur = ? AND no_reg = ?") ;
+             $stmt = $db->prepare("UPDATE  penjualan SET apoteker = ?, perawat = ?, petugas_lain = ?, biaya_admin = ?, kode_gudang = ?, total = ?, jam = ?, status = 'Lunas', potongan = ?,  sisa = ?, cara_bayar = ?, tunai = ?, ppn = ?, status_jual_awal = 'Tunai', keterangan = ?, user = ? , tanggal = ? WHERE no_faktur = ? AND no_reg = ?") ;
               
     // hubungkan "data" dengan prepared statements
-              $stmt->bind_param("sssisisiisisssss",
-                $petugas_farmasi, $petugas_paramedik, $petugas_lain, $biaya_adm, $kode_gudang, $total, $jam, $potongan, $sisa_pembayaran, $cara_bayar, $pembayaran, $ppn_input, $keterangan, $nama_petugas, $nomor_faktur, $no_reg );
+              $stmt->bind_param("sssisisiisissssss",
+                $petugas_farmasi, $petugas_paramedik, $petugas_lain, $biaya_adm, $kode_gudang, $total, $jam, $potongan, $sisa_pembayaran, $cara_bayar, $pembayaran, $ppn_input, $keterangan, $nama_petugas, $tanggal_edit, $nomor_faktur,  $no_reg );
               
 
-               $petugas_farmasi = stringdoang($_POST['petugas_farmasi']);
-               $petugas_paramedik = stringdoang($_POST['petugas_paramedik']);
-               $petugas_lain = stringdoang($_POST['petugas_lain']);
-               $biaya_adm = stringdoang($_POST['biaya_adm']);
-               $kode_gudang = stringdoang($_POST['kode_gudang']);
-               $total = stringdoang($_POST['total']);
-               $jam = date('H:i:s');
-               $potongan = stringdoang($_POST['potongan']);
-               /*$tax = stringdoang($_POST['tax']);*/
-               $sisa_pembayaran = stringdoang($_POST['sisa_pembayaran']);
-               $cara_bayar = stringdoang($_POST['cara_bayar']);
-               $pembayaran = stringdoang($_POST['pembayaran']);
-               $ppn_input = stringdoang($_POST['ppn_input']);
-               $keterangan = stringdoang($_POST['keterangan']);
-               $nomor_faktur = stringdoang($_POST['no_faktur']);
-               $no_reg = stringdoang($_POST['no_reg']);   
-
-               $nama_petugas = $_SESSION['nama'];
-               $_SESSION['no_faktur'] = $nomor_faktur;    
-
-               $user = $_SESSION['user_name'];
             
             // jalankan query
             
@@ -234,32 +246,13 @@ if ($potongan != "") {
 
             {
             
-             $stmt = $db->prepare("UPDATE  penjualan SET apoteker = ?, perawat = ?, petugas_lain = ?, biaya_admin = ?, kode_gudang = ?, total = ?, jam = ?, status = 'Piutang', potongan = ?, kredit = ?, cara_bayar = ?, tunai = ?, ppn = ?, status_jual_awal = 'Kredit', keterangan = ?, user = ?, nilai_kredit = ? WHERE no_faktur = ? AND no_reg = ?") ;
+             $stmt = $db->prepare("UPDATE  penjualan SET apoteker = ?, perawat = ?, petugas_lain = ?, biaya_admin = ?, kode_gudang = ?, total = ?, jam = ?, status = 'Piutang', potongan = ?, kredit = ?, cara_bayar = ?, tunai = ?, ppn = ?, status_jual_awal = 'Kredit', keterangan = ?, user = ?, nilai_kredit = ?,tanggal = ? WHERE no_faktur = ? AND no_reg = ?") ;
               
     // hubungkan "data" dengan prepared statements
-              $stmt->bind_param("sssisisiisisssiss",
-                $petugas_farmasi, $petugas_paramedik, $petugas_lain, $biaya_adm, $kode_gudang, $total, $jam, $potongan, $sisa_kredit, $cara_bayar, $pembayaran, $ppn_input, $keterangan, $nama_petugas, $sisa_kredit, $nomor_faktur, $no_reg );
+              $stmt->bind_param("sssisisiisisssisss",
+                $petugas_farmasi, $petugas_paramedik, $petugas_lain, $biaya_adm, $kode_gudang, $total, $jam, $potongan, $sisa_kredit, $cara_bayar, $pembayaran, $ppn_input, $keterangan, $nama_petugas, $sisa_kredit,$tanggal_edit, $nomor_faktur,$no_reg );
               
-               $petugas_farmasi = stringdoang($_POST['petugas_farmasi']);
-               $petugas_paramedik = stringdoang($_POST['petugas_paramedik']);
-               $petugas_lain = stringdoang($_POST['petugas_lain']);
-               $biaya_adm = angkadoang($_POST['biaya_adm']);
-               $kode_gudang = stringdoang($_POST['kode_gudang']);
-               $total = angkadoang($_POST['total']);
-               $jam = date('H:i:s');
-               $potongan = angkadoang($_POST['potongan']);
-               /*$tax = angkadoang($_POST['tax']);*/
-               $kredit = angkadoang($_POST['kredit']);
-               $cara_bayar = stringdoang($_POST['cara_bayar']);
-               $pembayaran = stringdoang($_POST['pembayaran']);
-               $ppn_input = stringdoang($_POST['ppn_input']);
-               $keterangan = stringdoang($_POST['keterangan']);
-               $nomor_faktur = stringdoang($_POST['no_faktur']);
-               $no_reg = stringdoang($_POST['no_reg']);   
-               $sisa_kredit = $total - $pembayaran;
-
-               $nama_petugas = $_SESSION['nama'];
-               $_SESSION['no_faktur'] = $nomor_faktur;  
+ 
 
               
     // jalankan query
@@ -360,18 +353,7 @@ if ($potongan != "") {
             
             $perintah2 = $db->query("DELETE FROM tbs_penjualan WHERE no_faktur = '$nomor_faktur'");
 
-
-
-    // cek query
-if (!$stmt) {
-   die('Query Error : '.$db->errno.
-   ' - '.$db->error);
-}
-else {
-
-}
-
-
+}//braket cek subtotal (di subtotal)
 
 
 

@@ -10,6 +10,25 @@ $jam_sekarang = date('H:i:s');
 $tahun_terakhir = substr($tahun_sekarang, 2);
 
 try {
+
+$total = angkadoang($_POST['total']);
+$potongan = angkadoang($_POST['potongan']);
+$biaya_admin = angkadoang($_POST['biaya_adm']);
+$no_reg = stringdoang($_POST['no_reg']);
+
+
+// menampilakn hasil penjumlah subtotal ALIAS total penjualan dari tabel tbs_penjualan berdasarkan data no faktur
+ $query = $db->query("SELECT SUM(subtotal) AS total_penjualan FROM tbs_penjualan WHERE  no_reg = '$no_reg'");
+ $data = mysqli_fetch_array($query);
+ $total_ss = $data['total_penjualan'];
+
+$total_tbs = ($total_ss - $potongan) + $biaya_admin;
+
+if ($total != $total_tbs) {
+    echo 1;
+  }
+  else{
+  
     // First of all, let's begin a transaction
 $db->begin_transaction();
     // A set of queries; if one fails, an exception should be thrown
@@ -63,7 +82,6 @@ echo $no_faktur = $nomor."/JL/".$data_bulan_terakhir."/".$tahun_terakhir;
  $session_id = session_id();
 
 $no_rm = stringdoang($_POST['no_rm']);
-$no_reg = stringdoang($_POST['no_reg']);
 $ber_stok = stringdoang($_POST['ber_stok']);
 $tanggal_jt = tanggal_mysql($_POST['tanggal_jt']);
 $nama_petugas = stringdoang($_SESSION['nama']);
@@ -81,10 +99,8 @@ $analis = stringdoang($_POST['analis']);
     $dokter = stringdoang($_POST['dokter']);
 
 $keterangan = stringdoang($_POST['keterangan']);
-$total = angkadoang($_POST['total']);
 $total2 = angkadoang($_POST['total2']);
 $harga = angkadoang($_POST['harga']);
-$potongan = angkadoang($_POST['potongan']);
 /*
 $tax = angkadoang($_POST['tax']);
 */
@@ -94,7 +110,6 @@ $sisa_kredit = angkadoang($_POST['kredit']);
 $sisa = angkadoang($_POST['sisa']);
 $cara_bayar = stringdoang($_POST['cara_bayar']);
 $pembayaran = angkadoang($_POST['pembayaran']);
-$biaya_admin = angkadoang($_POST['biaya_adm']);
 $jenis_penjualan = stringdoang($_POST['jenis_penjualan']);
 $no_jurnal = no_jurnal();
 
@@ -620,6 +635,8 @@ else
     $query3 = $db->query("DELETE  FROM tbs_penjualan WHERE session_id = '$session_id' AND no_reg = '$no_reg' ");
     $query30 = $db->query("DELETE  FROM tbs_fee_produk WHERE session_id = '$session_id' AND no_reg = '$no_reg' ");
 
+
+}// braket if cek subtotal penjualan
 
 
     // If we arrive here, it means that no exception was thrown
