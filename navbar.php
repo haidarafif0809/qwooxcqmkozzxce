@@ -318,6 +318,9 @@ if ($lihat['pembayaran_hutang_lihat'] > 0){
 
 if ($lihat['kartu_stok_lihat'] > 0){
  echo '<li><a href="kartu_stok.php" class="waves-effect" style="font-size: 16px">Kartu Stok</a></li>';
+
+
+ echo '<li><a href="kartu_stok_periode.php" class="waves-effect" style="font-size: 16px">Kartu Stok Per Periode</a></li>';
 }
 
 ?>

@@ -8,24 +8,25 @@ header("Content-Disposition: attachment; filename=data_kartu_stok.xls");
 include 'db.php';
 include 'sanitasi.php';
 
-$id = stringdoang($_GET['id_produk']);
+$daritgl = stringdoang($_GET['daritgl']);
+$sampaitgl = stringdoang($_GET['sampaitgl']);
 $kode_barang = stringdoang($_GET['kode_barang']);
 $nama_barang = stringdoang($_GET['nama_barang']);
-$bulan = stringdoang($_GET['bulan']);
-$tahun = stringdoang($_GET['tahun']);
 
 
 
-$hpp_masuk = $db->query("SELECT SUM(jumlah_kuantitas) AS jumlah FROM hpp_masuk WHERE kode_barang = '$kode_barang' AND MONTH(tanggal) < '$bulan' AND YEAR(tanggal) = '$tahun'");
+// awal Select untuk hitung Saldo Awal
+$hpp_masuk = $db->query("SELECT SUM(jumlah_kuantitas) AS jumlah FROM hpp_masuk WHERE kode_barang = '$kode_barang' AND waktu <= '$daritgl' ");
 $out_masuk = mysqli_fetch_array($hpp_masuk);
 $jumlah_masuk = $out_masuk['jumlah'];
 
 
-$hpp_keluar = $db->query("SELECT SUM(jumlah_kuantitas) AS jumlah FROM hpp_keluar WHERE kode_barang = '$kode_barang' AND MONTH(tanggal) < '$bulan' AND YEAR(tanggal) = '$tahun'");
+$hpp_keluar = $db->query("SELECT SUM(jumlah_kuantitas) AS jumlah FROM hpp_keluar WHERE kode_barang = '$kode_barang' AND waktu <= '$daritgl' ");
 $out_keluar = mysqli_fetch_array($hpp_keluar);
 $jumlah_keluar = $out_keluar['jumlah'];
 
 $total_saldo = $jumlah_masuk - $jumlah_keluar;
+
  ?>
 
 
@@ -36,8 +37,7 @@ $total_saldo = $jumlah_masuk - $jumlah_keluar;
 		<tr><center><h3><b>Data Kartu Stok</b></h3></center></tr>
 		<tr><td><b>Kode Barang</b></td> <td>=</td> <td><b><?php echo $kode_barang ?></b></td> </tr>
 		<tr><td><b>Nama Barang</b></td> <td>=</td> <td><b><?php echo $nama_barang ?></b></td> </tr>
-		<tr><td><b>Bulan</b></td> <td>=</td> <td><b><?php echo $bulan ?></b></td> </tr>
-		<tr><td><b>Tahun</b></td> <td>=</td> <td><b><?php echo $tahun ?></b></td> </tr>
+		<tr><td><b>Periode</b></td> <td>=</td> <td><b><?php echo $daritgl; ?> Sampai <?php echo$sampaitgl;   ?></b></td> </tr>
 	</tbody>
 </table>
 </b>
@@ -67,7 +67,8 @@ $total_saldo = $jumlah_masuk - $jumlah_keluar;
 
 <?php 
 
-$select = $db->query("SELECT no_faktur,jumlah_kuantitas,jenis_transaksi,tanggal,jenis_hpp FROM hpp_masuk WHERE kode_barang = '$kode_barang' AND MONTH(tanggal) = '$bulan' AND YEAR(tanggal) = '$tahun' UNION SELECT no_faktur, jumlah_kuantitas,jenis_transaksi, tanggal, jenis_hpp FROM hpp_keluar WHERE kode_barang = '$kode_barang' AND MONTH(tanggal) = '$bulan' AND YEAR(tanggal) = '$tahun' ORDER BY tanggal");
+$select = $db->query("SELECT no_faktur,jumlah_kuantitas,jenis_transaksi,tanggal,jenis_hpp,waktu FROM hpp_masuk WHERE kode_barang = '$kode_barang' AND tanggal >= '$daritgl' AND tanggal <= '$sampaitgl' UNION SELECT no_faktur, jumlah_kuantitas,jenis_transaksi, tanggal, jenis_hpp,waktu FROM hpp_keluar WHERE kode_barang = '$kode_barang' AND tanggal >= '$daritgl' AND tanggal <= '$sampaitgl' ORDER BY waktu ASC ");
+
 
 while($data = mysqli_fetch_array($select))
 	{
@@ -81,9 +82,9 @@ if ($data['jenis_hpp'] == '1')
 			<td>". $data['no_faktur'] ."</td>
 			<td>". $data['jenis_transaksi'] ."</td>
 			<td>". $data['tanggal'] ."</td>
-			<td>". $masuk ."</td>
+			<td>". rp($masuk) ."</td>
 		  	<td>0</td>
-		  	<td>". $total_saldo ."</td>
+		  	<td>". rp($total_saldo) ."</td>
 			";
 }
 else
@@ -97,8 +98,8 @@ $total_saldo = $total_saldo - $keluar;
 			<td>". $data['jenis_transaksi'] ."</td>
 			<td>". $data['tanggal'] ."</td>
 			<td>0</td>
-		  	<td>".$keluar."</td>
-		  	<td>". $total_saldo ."</td>
+		  	<td>".rp($keluar)."</td>
+		  	<td>". rp($total_saldo) ."</td>
 			";
 }
 
