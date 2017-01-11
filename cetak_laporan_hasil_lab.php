@@ -39,7 +39,7 @@ $tanggal = date('Y-m-d');
 
       <tr><td width="50%">No Faktur</td> <td> :&nbsp;</td> <td> <?php echo $out['no_faktur']; ?> </td></tr> 
       <tr><td  width="50%">Nama Pasien</td> <td> :&nbsp;</td> <td> <?php echo $out['nama_pasien'];?> </td></tr>
-      <tr><td  width="50%">Tanggal</td> <td> :&nbsp;</td> <td> <?php echo $out['tanggal'];?>; ?> </td></tr>
+      <tr><td  width="50%">Tanggal</td> <td> :&nbsp;</td> <td> <?php echo $out['tanggal']; ?> </td></tr>
             
   </tbody>
   </table>
