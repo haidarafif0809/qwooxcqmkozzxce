@@ -14,11 +14,11 @@ $inner_join = $db->query("SELECT j.kode_akun_jurnal, d.nama_daftar_akun FROM jur
 $ambil = mysqli_fetch_array($inner_join);
 $nama_akun = $ambil['nama_daftar_akun'];
 
-			$sum_saldo1 = $db->query("SELECT SUM(debit) AS saldo1 FROM jurnal_trans WHERE DATE(waktu_jurnal) < '$tanggal' AND kode_akun_jurnal = '$daftar_akun'");
+			$sum_saldo1 = $db->query("SELECT SUM(debit) AS saldo1 FROM jurnal_trans WHERE DATE(waktu_jurnal) > '$tanggal' AND kode_akun_jurnal = '$daftar_akun'");
 			$cek_saldo1 = mysqli_fetch_array($sum_saldo1);
 			$saldo1 = $cek_saldo1['saldo1'];
 
-			$sum_saldo2 = $db->query("SELECT SUM(kredit) AS saldo2 FROM jurnal_trans WHERE DATE(waktu_jurnal) < '$tanggal' AND kode_akun_jurnal = '$daftar_akun'");
+			$sum_saldo2 = $db->query("SELECT SUM(kredit) AS saldo2 FROM jurnal_trans WHERE DATE(waktu_jurnal) > '$tanggal' AND kode_akun_jurnal = '$daftar_akun'");
 			$cek_saldo2 = mysqli_fetch_array($sum_saldo2);
 			$saldo2 = $cek_saldo2['saldo2'];
 

@@ -10,6 +10,27 @@ $jam_sekarang = date('H:i:s');
 $tahun_terakhir = substr($tahun_sekarang, 2);
 
 try {
+
+
+$no_reg = stringdoang($_POST['no_reg']);
+$total = angkadoang($_POST['total']);
+$potongan = angkadoang($_POST['potongan']);
+$biaya_admin = angkadoang($_POST['biaya_adm']);
+
+
+// menampilakn hasil penjumlah subtotal ALIAS total penjualan dari tabel tbs_penjualan berdasarkan data no faktur
+ $queryasa = $db->query("SELECT SUM(subtotal) AS total_penjualan FROM tbs_penjualan WHERE  no_reg = '$no_reg'");
+ $datas = mysqli_fetch_array($queryasa);
+ $total_ss = $datas['total_penjualan'];
+
+
+$total_tbs = ($total_ss - $diskon) + $biaya_admin;
+
+if ($total == $total_tbs) {
+    echo 1;
+  }
+  else{
+    
     // First of all, let's begin a transaction
 $db->begin_transaction();
     // A set of queries; if one fails, an exception should be thrown
@@ -582,7 +603,7 @@ else
     $query3 = $db->query("DELETE  FROM tbs_penjualan WHERE session_id = '$session_id' AND no_reg = '$no_reg' ");
     $query30 = $db->query("DELETE  FROM tbs_fee_produk WHERE session_id = '$session_id' AND no_reg = '$no_reg' ");
 
-
+}//braket cek subtotal (di proses)
 
     // If we arrive here, it means that no exception was thrown
     // i.e. no query has failed, and we can commit the transaction

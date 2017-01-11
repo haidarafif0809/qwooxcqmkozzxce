@@ -6,7 +6,7 @@ include 'sanitasi.php';
 // mengirim data no faktur menggunakan metode POST
 
  $no_reg = stringdoang($_POST['no_reg']);
- $total_akhir = angkadoang($_POST['total']);
+$total_akhir = angkadoang($_POST['total']);
  $diskon = angkadoang($_POST['potongan']);
  /*
  $pajak = angkadoang($_POST['tax']);*/
@@ -31,10 +31,10 @@ include 'sanitasi.php';
 $total_tbs = ($total_sum - $diskon) + $biaya_admin;
 
 if ($total_akhir == $total_tbs) {
-		echo "1";
+		echo 1;
 	}
 	else{
-		echo "0";
+		echo 0;
 	}
 
 //Untuk Memutuskan Koneksi Ke Database

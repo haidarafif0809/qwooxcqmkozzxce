@@ -96,7 +96,7 @@ if ($tax != 0) {
 
 <!--membuat agar tabel berada dalam baris tertentu-->
  <div class="row">
-<div class="col-sm-8">
+<div class="col-xs-8">
   
 
 <!-- membuat form menjadi beberpa bagian -->
@@ -105,7 +105,7 @@ if ($tax != 0) {
 
 <div class="row"><!--div class="row"-->
 
-      <div style="display: none" class="form-group col-sm-2">
+      <div style="display: none" class="form-group col-xs-2">
           <label> No. Faktur </label>
           <input type="text" name="no_faktur" id="nomor_faktur_penjualan" class="form-control" readonly="" value="<?php echo $no_faktur; ?>" required="" >
 
@@ -114,7 +114,7 @@ if ($tax != 0) {
       </div>
 
 
-      <div class="form-group col-sm-2">
+      <div class="form-group col-xs-2">
          <label> No. RM / Pasien </label><br>
         <input type="text" name="no_rm" id="no_rm" class="form-control"  autofocus="" readonly="" value="<?php echo $no_rm; ?>|<?php echo $nama_pasien; ?>">
        <input type="hidden" name="nama_pasien" id="nama_pasien" class="form-control" autofocus="" readonly="" value="<?php echo $nama_pasien; ?>">
@@ -124,7 +124,7 @@ if ($tax != 0) {
        <input type="hidden" name="nama_gudang" id="nama_gudang" class="form-control" autofocus="" readonly="" value="<?php echo $nama_gudang; ?>">
 
 
-     <div class="form-group  col-sm-2">
+     <div class="form-group  col-xs-2">
           <label> Gudang </label><br><br>
           
           <select name="kode_gudang" id="kode_gudang" class="form-control chosen" required="" >
@@ -146,7 +146,7 @@ if ($tax != 0) {
           </select>
       </div>
 
-      <div class="form-group  col-sm-2">
+      <div class="form-group  col-xs-2">
           <label>PPN</label>
           <select name="ppn" id="ppn" class="form-control">
             <option value="Include">Include</option>  
@@ -156,7 +156,7 @@ if ($tax != 0) {
       </div>
 
 
-      <div class="col-sm-2">
+      <div class="col-xs-2">
       <label>Kasir</label>
       <input style="height:20px;" type="text" class="form-control"  id="petugas_kasir" name="petugas_kasir" value="<?php echo $user; ?>" readonly="">   
       </div>
@@ -172,7 +172,7 @@ if ($tax != 0) {
 
       ?>
 
-      <div class="col-sm-3">
+      <div class="col-xs-3">
       <label>Dokter Pelaksana</label>
       <select style="font-size:15px; height:35px" name="dokter" id="dokter" class="form-control chosen">
         <option value="<?php echo $dokter;?>"><?php echo $kel['nama'];?></option>
@@ -205,7 +205,7 @@ if ($tax != 0) {
         </select>
       </div>
 
-  <div class="col-sm-3">
+  <div class="col-xs-3">
         <label>Petugas Paramedik</label>
         <select style="font-size:15px; height:35px" name="petugas_paramedik" id="petugas_paramedik" class="form-control chosen">
         <option value="">Cari Petugas</option>
@@ -242,25 +242,25 @@ if ($tax != 0) {
 
 <div class="row"><!--div class="row"-->
 
-    <div class="col-sm-2">
+    <div class="col-xs-2">
       <label>No. REG :</label>
       <input style="height:20px" type="text" class="form-control"  id="no_reg" name="no_reg" value="<?php echo $no_reg; ?>" readonly="">   
     </div>
 
 
-   <div class="col-sm-2">
+   <div class="col-xs-2">
       <label> Penjamin :</label>
       <input style="height:20px;" type="text" class="form-control"  id="penjamin" name="penjamin" placeholder="Penjamin " autocomplete="off" value="<?php echo $penjamin; ?>">   
   </div>
 
-   <div class="col-sm-2">
+   <div class="col-xs-2">
       <label> Asal Poli :</label>
       <input style="height:20px;" type="text" class="form-control"  id="asal_poli" name="asal_poli" placeholder="Isi Poli" autocomplete="off" value="<?php echo $poli; ?>">   
   </div>
 
 
 
-    <div class="form-group col-sm-2">
+    <div class="form-group col-xs-2">
    <label> Level Harga </label><br>
   <select style="font-size:15px; height:40px" type="text" name="level_harga" id="level_harga" class="form-control" >
         <option value="<?php echo $level_harga;?>"> 
@@ -296,7 +296,7 @@ if ($tax != 0) {
 
 
 
-  <div class="col-sm-3">
+  <div class="col-xs-3">
   <label>Petugas Farmasi</label>
   <select style="font-size:15px; height:35px" name="petugas_farmasi" id="petugas_farmasi" class="form-control chosen">
   <option value="">Cari Petugas</option>
@@ -329,7 +329,7 @@ if ($tax != 0) {
 </div>  
 
 
-<div class="col-sm-3">
+<div class="col-xs-3">
 <label>Petugas Lain</label>
 <select style="font-size:15px; height:35px" name="petugas_lain" id="petugas_lain" class="form-control chosen">
 <option value="">Cari Petugas</option>
@@ -540,7 +540,7 @@ if ($tax != 0) {
 <form class="form" action="proses_tambah_edit_penjualan.php" role="form" id="formtambahproduk">
 <div class="row 1">
 
-  <div class="col-sm-2">
+  <div class="col-xs-2">
     <div class="form-group">
     <input type="text" class="form-control" name="kode_barang" id="kode_barang" autocomplete="off" accesskey="k" placeholder="Kode Produk">
     <input type="hidden" class="form-control" name="nama_barang" id="nama_barang" placeholder="Nama Barang" readonly="">
@@ -549,13 +549,13 @@ if ($tax != 0) {
   </div>
 
 
-  <div class="col-sm-1">
+  <div class="col-xs-1">
       <div class="form-group">
     <input type="text" class="form-control" name="jumlah_barang" autocomplete="off" id="jumlah_barang" placeholder="Jumlah " onkeydown="return numbersonly(this, event);" onkeyup="javascript:tandaPemisahTitik(this);">
       </div>
   </div>
 
-  <div class="col-sm-1">
+  <div class="col-xs-1">
     <select type="text" name="satuan_konversi" id="satuan_konversi" class="form-control"  required="" style="height:50px;font-size:15px; width: 75px" >
           
           <?php 
@@ -574,12 +574,12 @@ if ($tax != 0) {
   </div>
 
 
-   <div class="form-group col-sm-2">
+   <div class="form-group col-xs-2">
     <input type="text" class="form-control" name="potongan" autocomplete="off" id="potongan1" placeholder="Potongan" >
   </div>
 
 
-      <div class="form-group col-sm-2">
+      <div class="form-group col-xs-2">
       <input type="text" class="form-control" name="tax" autocomplete="off" id="tax1"  placeholder="Pajak (%)" >
       </div>
 
@@ -610,7 +610,7 @@ if ($tax != 0) {
     <input type="hidden" id="level_hidden" name="level_hidden" class="form-control" value="<?php echo $level_harga;?>">        
 
   <br>
-  <div class="form-group col-sm-3">        
+  <div class="form-group col-xs-3">        
   <button type="submit" id="submit_produk" class="btn btn-success" data-faktur="<?php echo $no_faktur; ?>"> <i class='fa fa-plus'> </i>Tambah(F3)</button>
 </div>
 
@@ -790,7 +790,7 @@ Laboratorium  </button>
 
 
 
-<div class="col-sm-4">
+<div class="col-xs-4">
  
 <div class="card card-block">
 
@@ -807,14 +807,14 @@ Laboratorium  </button>
           <br>
 
         <div class="row">
-            <div class="col-sm-6">
+            <div class="col-xs-6">
            
            <label style="font-size:15px"> <b> Subtotal </b></label><br>
            <input style="height:15px;font-size:15px" type="text" name="total" id="total2" class="form-control" placeholder="Total" readonly="" >
            
            </div>
 
-          <div class="col-sm-6">
+          <div class="col-xs-6">
                 <label> Biaya Admin</label><br>
               <input type="text" name="biaya_adm" style="height:15px;font-size:15px" id="biaya_adm" value="<?php echo $biaya_adm ?>" class="form-control" placeholder="Biaya Admin" autocomplete="off"  onkeydown="return numbersonly(this, event);" onkeyup="javascript:tandaPemisahTitik(this);">
             
@@ -874,13 +874,13 @@ Laboratorium  </button>
          $total_akhir1 = $hitung_total + round($hitung_tax) + $biaya_adm;
 
             ?>
-          <div class="col-sm-6">
+          <div class="col-xs-6">
             <label> Diskon ( Rp )</label><br>
             <input style="height:15px;font-size:15px" type="text" name="potongan" id="potongan_penjualan" value="<?php echo rp($total_potongan); ?>" class="form-control" placeholder="" autocomplete="off"  onkeydown="return numbersonly(this, event);" onkeyup="javascript:tandaPemisahTitik(this);">
 
           </div>
 
-          <div class="col-sm-6">
+          <div class="col-xs-6">
             
           <label> Diskon ( % )</label><br>
           <input style="height:15px;font-size:15px" type="text" name="potongan_persen" id="potongan_persen" value="<?php echo round($potongan) ;?>" class="form-control" placeholder="" autocomplete="off" >
@@ -889,7 +889,7 @@ Laboratorium  </button>
 
 
 <!--
-          <div class="form-group col-sm-4">
+          <div class="form-group col-xs-4">
            <label> Pajak </label><br>
           <input style="height:15px;font-size:15px" type="text" name="tax" id="tax" value  class="form-control"  autocomplete="off" >
           </div>
@@ -902,12 +902,12 @@ Laboratorium  </button>
           
 <div class="row">
 
-          <div class="form-group col-sm-6">
+          <div class="form-group col-xs-6">
           <label> Tanggal Jatuh Tempo </label><br>
           <input type="text" name="tanggal_jt" id="tanggal_jt" style="height:15px;font-size:15px"  value="" class="form-control tanggal" >
           </div>
 
-          <div class="form-group  col-sm-6">
+          <div class="form-group  col-xs-6">
         <label style="font-size:15px"> <b> Cara Bayar (F4) </b> </label><br>
           <select type="text" name="cara_bayar" id="carabayar1" class="form-control" required=""  style="font-size: 16px" >
           <option value=""> Silahkan Pilih </option>
@@ -950,13 +950,13 @@ Laboratorium  </button>
           
     <div class="row">
 
-     <div class="form-group  col-sm-6">  
+     <div class="form-group  col-xs-6">  
 
           <label style="font-size:15px"> <b> Total Akhir </b></label><br>
            <b><input type="text" name="total" id="total1" class="form-control" style="height: 25px; width:90%; font-size:20px;" placeholder="Total" readonly="" value="<?php echo rp($total_akhir1); ?>"></b> 
      </div> 
 
-      <div class="form-group  col-sm-6">
+      <div class="form-group  col-xs-6">
 
      <label style="font-size:15px">  <b> Pembayaran (F7)</b> </label><br>
            <b><input type="text" name="pembayaran" id="pembayaran_penjualan" style="height: 20px; width:90%; font-size:20px;" autocomplete="off" class="form-control"   style="font-size: 20px"  onkeydown="return numbersonly(this, event);" onkeyup="javascript:tandaPemisahTitik(this);"></b>
@@ -971,14 +971,14 @@ Laboratorium  </button>
 
 <div class="row">
 
-        <div class="col-sm-6">
+        <div class="col-xs-6">
 
           <label> Pembayaran Awal </label><br>
           <input type="text" name="pembayaran" id="pembayaran_awal" style="height: 15px; width:90%;" autocomplete="off" class="form-control" readonly="" value="<?php echo rp($pembayaran_awal); ?>">
 
         </div>
 
-          <div class="col-sm-6">
+          <div class="col-xs-6">
           <label> Kembalian </label><br>
           <b><input type="text" name="sisa_pembayaran" id="sisa_pembayaran_penjualan" style="height:15px;font-size:15px" class="form-control"  readonly="" required=""  style="font-size: 20px" ></b>
           </div>
@@ -990,12 +990,12 @@ Laboratorium  </button>
           
 
           
-          <div class="col-sm-6">
+          <div class="col-xs-6">
           <label> Kredit </label><br>
           <b><input type="text" name="kredit" id="kredit" value="<?php echo rp($nilai_kredit); ?>" class="form-control" style="height:15px;font-size:15px"  readonly="" required="" ></b>
           </div>
 
-          <div class="col-sm-6">
+          <div class="col-xs-6">
           <label> Keterangan </label><br>
           <textarea type="text" name="keterangan" id="keterangan" class="form-control"> 
           </textarea>
@@ -1030,13 +1030,13 @@ if ($_SESSION['otoritas'] == 'Pimpinan') {
 
 <div class="row">
 
-  <div class="col-sm-3">
+  <div class="col-xs-3">
     <button type="submit" id="penjualan" class="btn btn-info" data-faktur='<?php echo $no_faktur
  ?>'>Bayar(F8)</button>
 
     
   </div>
-  <div class="col-sm-3">
+  <div class="col-xs-3">
   <button type="submit" id="piutang" class="btn btn-warning" data-faktur='<?php echo $no_faktur; ?>'>Piutang(F9)</button>
 
   
@@ -2126,17 +2126,19 @@ alert("Silakan Bayar Piutang");
 
   if (data == 1) {
            
-$("#cetak_langsung").hide();
-$("#transaksi_baru").show();
-$("#cetak_tunai").show();
-$("#cetak_tunai_besar").show();
-$("#cetak_tunai_kategori").show();
-$("#penjualan").hide();
-$("#piutang").hide();
+
 
  $.post("proses_bayar_pesanan_barang_raja.php",{no_faktur:no_faktur,sisa_pembayaran:sisa_pembayaran, kredit:kredit,no_rm:no_rm,no_reg:no_reg,tanggal_jt:tanggal_jt,total:total,total2:total2,potongan:potongan,potongan_persen:potongan_persen,/*tax:tax,*/cara_bayar:cara_bayar,pembayaran:pembayaran,total_hpp:total_hpp,harga:harga,kode_gudang:kode_gudang,dokter:dokter,petugas_kasir:petugas_kasir,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,sisa:sisa,ppn:ppn,penjamin:penjamin,nama_pasien:nama_pasien,jenis_penjualan:jenis_penjualan,biaya_adm:biaya_adm,sisa_kredit:sisa_kredit},function(info) {
 
-            
+if (info == 1)
+{
+        alert("Maaf Subtotal Penjualan Tidak Sesuai, Silakan Tunggu Sebentar! (2) ");       
+        window.location.href="bayar_pesanan_barang_raja.php?no_reg="+no_reg+"&no_rm="+no_rm+"&kode_gudang="+kode_gudang+"&nama_gudang="+nama_gudang+"&nama_pasien="+nama_pasien+"&no_faktur="+no_faktur+"";
+}
+else
+{
+
+
   $("#demo").html(info);        
      var no_faktur = info;
      $("#cetak_tunai").attr('href', 'cetak_penjualan_tunai.php?no_faktur='+no_faktur+'');
@@ -2150,19 +2152,29 @@ $("#piutang").hide();
      $("#kredit").val('');
      $("#cetak_tunai").click();
 
-                 var win = window.open('cetak_penjualan_tunai.php?no_faktur='+no_faktur+'');
-               if (win) { 
-              
-              win.focus(); 
-               } else { 
-              
-              alert('Mohon Izinkan PopUps Pada Website Ini !'); }   
-       
+     $("#cetak_langsung").hide();
+     $("#transaksi_baru").show();
+     $("#cetak_tunai").show();
+     $("#cetak_tunai_besar").show();
+     $("#cetak_tunai_kategori").show();
+     $("#penjualan").hide();
+     $("#piutang").hide();
+
+
+   var win = window.open('cetak_penjualan_tunai.php?no_faktur='+no_faktur+'');
+     if (win) { 
+          win.focus(); 
+               } 
+    else { alert('Mohon Izinkan PopUps Pada Website Ini !'); }   
+}
+
    });
 
   }
-  else{
-    alert("Maaf Subtotal Penjualan Tidak Sesuai, Silakan Tunggu Sebentar!");       
+
+  else
+  {
+    alert("Maaf Subtotal Penjualan Tidak Sesuai, Silakan Tunggu Sebentar! (1) ");       
         window.location.href="bayar_pesanan_barang_raja.php?no_reg="+no_reg+"&no_rm="+no_rm+"&kode_gudang="+kode_gudang+"&nama_gudang="+nama_gudang+"&nama_pasien="+nama_pasien+"&no_faktur="+no_faktur+"";
   }
 
@@ -2268,25 +2280,21 @@ alert("Silakan Bayar Piutang");
 
  {
 
-
-
-
-
  $.post("cek_simpan_subtotal_penjualan.php",{total:total,no_reg:no_reg,no_faktur:no_faktur/*,tax:tax*/,potongan:potongan,biaya_adm:biaya_adm},function(data) {
 
   if (data == 1) {
            
-$("#transaksi_baru").show();
-$("#cetak_langsung").hide();
-$("#cetak_tunai").show();
-$("#cetak_tunai_besar").show();
-$("#cetak_tunai_kategori").show();
-$("#penjualan").hide();
-$("#piutang").hide();
-
  $.post("proses_bayar_pesanan_barang_raja.php",{no_faktur:no_faktur,sisa_pembayaran:sisa_pembayaran, kredit:kredit,no_rm:no_rm,no_reg:no_reg,tanggal_jt:tanggal_jt,total:total,total2:total2,potongan:potongan,potongan_persen:potongan_persen,/*tax:tax,*/cara_bayar:cara_bayar,pembayaran:pembayaran,total_hpp:total_hpp,harga:harga,kode_gudang:kode_gudang,dokter:dokter,petugas_kasir:petugas_kasir,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,sisa:sisa,ppn:ppn,penjamin:penjamin,nama_pasien:nama_pasien,jenis_penjualan:jenis_penjualan,biaya_adm:biaya_adm,sisa_kredit:sisa_kredit},function(info) {
 
-            
+if (info == 1)
+{
+    alert("Maaf Subtotal Penjualan Tidak Sesuai, Silakan Tunggu Sebentar! (2) ");       
+        window.location.href="bayar_pesanan_barang_raja.php?no_reg="+no_reg+"&no_rm="+no_rm+"&kode_gudang="+kode_gudang+"&nama_gudang="+nama_gudang+"&nama_pasien="+nama_pasien+"&no_faktur="+no_faktur+"";
+}
+else
+{
+
+
   $("#demo").html(info);        
      var no_faktur = info;
      $("#cetak_tunai").attr('href', 'cetak_penjualan_tunai.php?no_faktur='+no_faktur+'');
@@ -2300,14 +2308,24 @@ $("#piutang").hide();
      $("#kredit").val('');
      $("#cetak_tunai").click();
 
+      $("#transaksi_baru").show();
+      $("#cetak_langsung").hide();
+      $("#cetak_tunai").show();
+      $("#cetak_tunai_besar").show();
+      $("#cetak_tunai_kategori").show();
+      $("#penjualan").hide();
+      $("#piutang").hide();
 
+}
        
    });
 
   }
   else{
-    alert("Maaf Subtotal Penjualan Tidak Sesuai, Silakan Tunggu Sebentar!");       
+
+      alert("Maaf Subtotal Penjualan Tidak Sesuai, Silakan Tunggu Sebentar! (1) ");       
         window.location.href="bayar_pesanan_barang_raja.php?no_reg="+no_reg+"&no_rm="+no_rm+"&kode_gudang="+kode_gudang+"&nama_gudang="+nama_gudang+"&nama_pasien="+nama_pasien+"&no_faktur="+no_faktur+"";
+  
   }
 
 
@@ -2404,18 +2422,17 @@ $("#piutang").hide();
 
   if (data == 1) {
 
-      $("#penjualan").hide();
-  $("#simpan_sementara").hide();
-$("#cetak_langsung").show();
-  $("#batal_penjualan").hide(); 
-  $("#piutang").hide();
-  $("#transaksi_baru").show();
-
-
  $.post("proses_bayar_pesanan_barang_raja.php",{no_faktur:no_faktur,sisa_pembayaran:sisa_pembayaran, kredit:kredit,no_rm:no_rm,no_reg:no_reg,tanggal_jt:tanggal_jt,total:total,total2:total2,potongan:potongan,potongan_persen:potongan_persen/*,tax:tax*/,cara_bayar:cara_bayar,pembayaran:pembayaran,total_hpp:total_hpp,harga:harga,kode_gudang:kode_gudang,dokter:dokter,petugas_kasir:petugas_kasir,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,sisa:sisa,ppn:ppn,penjamin:penjamin,nama_pasien:nama_pasien,jenis_penjualan:jenis_penjualan,biaya_adm:biaya_adm,sisa_kredit:sisa_kredit},function(info) {
 
+if (info == 1)
+  {
+    alert("Maaf Subtotal Penjualan Tidak Sesuai, Silakan Tunggu Sebentar! (2) ");       
+   window.location.href="bayar_pesanan_barang_raja.php?no_reg="+no_reg+"&no_rm="+no_rm+"&kode_gudang="+kode_gudang+"&nama_gudang="+nama_gudang+"&nama_pasien="+nama_pasien+"&no_faktur="+no_faktur+"";
 
-                $("#demo").html(info);
+  }              
+else{
+
+             $("#demo").html(info);
             var no_faktur = info;
             $("#cetak_piutang").attr('href', 'cetak_penjualan_piutang.php?no_faktur='+no_faktur+'');
             $("#table-baru").html(info);
@@ -2430,15 +2447,21 @@ $("#cetak_langsung").show();
             $("#tax").val(''); 
             $("#cetak_piutang").click();
             
-       
+             $("#penjualan").hide();
+            $("#simpan_sementara").hide();
+            $("#cetak_langsung").show();
+            $("#batal_penjualan").hide(); 
+            $("#piutang").hide();
+            $("#transaksi_baru").show();
+ }
+
    });
 
  }
   else{
-    alert("Maaf Subtotal Penjualan Tidak Sesuai, Silakan Tunggu Sebentar!");       
+    alert("Maaf Subtotal Penjualan Tidak Sesuai, Silakan Tunggu Sebentar! (1) ");       
    window.location.href="bayar_pesanan_barang_raja.php?no_reg="+no_reg+"&no_rm="+no_rm+"&kode_gudang="+kode_gudang+"&nama_gudang="+nama_gudang+"&nama_pasien="+nama_pasien+"&no_faktur="+no_faktur+"";
   }
-
 
 
  });

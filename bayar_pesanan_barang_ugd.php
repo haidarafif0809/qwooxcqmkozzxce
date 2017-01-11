@@ -963,6 +963,9 @@ Level 7
           -->
           <a href='cetak_penjualan_tunai.php?no_faktur=<?php echo $no_faktur; ?>' id="cetak_tunai" style="display: none;" class="btn btn-success" target="blank"> Cetak Tunai  </a>
 
+          <button type="submit" id="cetak_langsung" target="blank" class="btn btn-success" style="font-size:15px"> Bayar / Cetak (Ctrl + K) </button>
+
+
           <button type="submit" id="batal_penjualan" class="btn btn-danger" style="font-size:15px">  Batal (Ctrl + B)</button>
 
 
@@ -1633,17 +1636,16 @@ alert("Silakan Bayar Piutang");
 
   if (data == 1) {
 
-
-  $("#penjualan").hide();
-  $("#simpan_sementara").hide();
-  $("#batal_penjualan").hide(); 
-  $("#piutang").hide();
-  $("#transaksi_baru").show();
-
  $.post("proses_bayar_pesanan_barang_ugd.php",{no_faktur:no_faktur,sisa_pembayaran:sisa_pembayaran,kredit:kredit,no_rm:no_rm,no_reg:no_reg,tanggal_jt:tanggal_jt,total:total,total2:total2,potongan:potongan,potongan_persen:potongan_persen,cara_bayar:cara_bayar,pembayaran:pembayaran,total_hpp:total_hpp,harga:harga,kode_gudang:kode_gudang,dokter:dokter,petugas_kasir:petugas_kasir,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,sisa:sisa,ppn:ppn,penjamin:penjamin,nama_pasien:nama_pasien,jenis_penjualan:jenis_penjualan,biaya_adm:biaya_adm,sisa_kredit:sisa_kredit},function(info) {
 
-
-     $("#table-baru").html(info);
+if (info == 1)
+ {
+     alert("Maaf Subtotal Penjualan Tidak Sesuai, Silakan Tunggu Sebentar! (2) ");       
+        window.location.href="bayar_pesanan_barang_ugd.php?no_reg="+no_reg+"&kode_pelanggan="+no_rm+"&kode_gudang="+kode_gudang+"&nama_gudang="+nama_gudang+"&nama_pelanggan="+nama_pasien+"&no_faktur="+no_faktur+"";
+ } 
+ else
+ {    
+      $("#table-baru").html(info);
      var no_faktur = info;
      $("#cetak_tunai").attr('href', 'cetak_penjualan_tunai.php?no_faktur='+no_faktur+'');
      $("#cetak_tunai_besar").attr('href', 'cetak_penjualan_tunai_besar.php?no_faktur='+no_faktur+'');
@@ -1656,13 +1658,19 @@ alert("Silakan Bayar Piutang");
      $("#cetak_tunai").show();
      $("#cetak_tunai_kategori").show('');
      $("#cetak_tunai_besar").show('');
-    
-       
+      $("#penjualan").hide();
+      $("#simpan_sementara").hide();
+       $("#batal_penjualan").hide(); 
+        $("#cetak_langsung").hide(); 
+      $("#piutang").hide();
+      $("#transaksi_baru").show();
+  }       
+   
    });
 
 }
   else{
-    alert("Maaf Subtotal Penjualan Tidak Sesuai, Silakan Tunggu Sebentar!");       
+    alert("Maaf Subtotal Penjualan Tidak Sesuai, Silakan Tunggu Sebentar! (1) ");       
         window.location.href="bayar_pesanan_barang_ugd.php?no_reg="+no_reg+"&kode_pelanggan="+no_rm+"&kode_gudang="+kode_gudang+"&nama_gudang="+nama_gudang+"&nama_pelanggan="+nama_pasien+"&no_faktur="+no_faktur+"";
   }
 
@@ -1769,16 +1777,19 @@ alert("Silakan Bayar Piutang");
   if (data == 1) {
 
 
-  $("#penjualan").hide();
-  $("#simpan_sementara").hide();
-  $("#batal_penjualan").hide(); 
-  $("#piutang").hide();
-  $("#transaksi_baru").show();
+  
 
  $.post("proses_bayar_pesanan_barang_ugd.php",{no_faktur:no_faktur,sisa_pembayaran:sisa_pembayaran, kredit:kredit,no_rm:no_rm,no_reg:no_reg,tanggal_jt:tanggal_jt,total:total,total2:total2,potongan:potongan,potongan_persen:potongan_persen,cara_bayar:cara_bayar,pembayaran:pembayaran,total_hpp:total_hpp,harga:harga,kode_gudang:kode_gudang,dokter:dokter,petugas_kasir:petugas_kasir,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,sisa:sisa,ppn:ppn,penjamin:penjamin,nama_pasien:nama_pasien,jenis_penjualan:jenis_penjualan, biaya_adm:biaya_adm,sisa_kredit:sisa_kredit},function(info) {
 
+if (info == 1)
+ {
+   alert("Maaf Subtotal Penjualan Tidak Sesuai, Silakan Tunggu Sebentar! (2) ");       
+        window.location.href="bayar_pesanan_barang_ugd.php?no_reg="+no_reg+"&kode_pelanggan="+no_rm+"&kode_gudang="+kode_gudang+"&nama_gudang="+nama_gudang+"&nama_pelanggan="+nama_pasien+"&no_faktur="+no_faktur+"";
+ } 
+else
+{
 
-     $("#table-baru").html(info);
+            $("#table-baru").html(info);
             var no_faktur = info;
             $("#cetak_piutang").attr('href', 'cetak_penjualan_piutang.php?no_faktur='+no_faktur+'');
             $("#table-baru").html(info);
@@ -1791,13 +1802,20 @@ alert("Silakan Bayar Piutang");
             $("#tanggal_jt").val('');
             $("#cetak_piutang").show();
             $("#tax").val('');
-            
+
+            $("#penjualan").hide();
+            $("#simpan_sementara").hide();
+            $("#cetak_langsung").hide();
+            $("#batal_penjualan").hide(); 
+            $("#piutang").hide();
+            $("#transaksi_baru").show();
+}         
        
    });
 
   }
     else{
-    alert("Maaf Subtotal Penjualan Tidak Sesuai, Silakan Tunggu Sebentar!");       
+    alert("Maaf Subtotal Penjualan Tidak Sesuai, Silakan Tunggu Sebentar! (1) ");       
         window.location.href="bayar_pesanan_barang_ugd.php?no_reg="+no_reg+"&kode_pelanggan="+no_rm+"&kode_gudang="+kode_gudang+"&nama_gudang="+nama_gudang+"&nama_pelanggan="+nama_pasien+"&no_faktur="+no_faktur+"";
   }
 
@@ -1825,8 +1843,176 @@ alert("Silakan Bayar Piutang");
       
   </script>
 
+<script>
+   //perintah javascript yang diambil dari form proses_bayar_beli.php dengan id=form_beli
+  $("#cetak_langsung").click(function(){
 
-  <script type="text/javascript">
+        
+        var sisa_pembayaran = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah( $("#sisa_pembayaran_penjualan").val() ))));
+        var kredit = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah( $("#kredit").val() )))); 
+        var no_faktur = $("#no_faktur").val();
+        var no_rm = $("#no_rm").val();
+        var no_rm = no_rm.substr(0, no_rm.indexOf(' |'));
+        var nama_pasien = $("#nama_pasien").val();
+        var no_reg = $("#no_reg").val();
+        var tanggal_jt = $("#tanggal_jt").val();
+        var total = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah( $("#total1").val() )))); 
+        var total2 = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah( $("#total2").val() )))); 
+        var potongan =  bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah( $("#potongan_penjualan").val() ))));
+        potongan = Math.round(potongan);
+        var potongan_persen = $("#potongan_persen").val();
+       /* var tax = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#tax_rp").val()))));*/
+        var cara_bayar = $("#carabayar1").val();
+        var pembayaran = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah( $("#pembayaran_penjualan").val() ))));
+        var total_hpp = $("#total_hpp").val();
+        var harga = $("#harga_produk").val();
+        var kode_gudang = $("#kode_gudang").val();
+        var nama_gudang = '<?php echo $nama_gudang;?>'
+        var dokter = $("#dokter").val();
+        var petugas_kasir = $("#petugas_kasir").val();   
+        var petugas_paramedik = $("#petugas_paramedik").val();
+        var petugas_farmasi = $("#petugas_farmasi").val();
+        var petugas_lain = $("#petugas_lain").val();
+        var keterangan = $("#keterangan").val();   
+        var ber_stok = $("#ber_stok").val();   
+        var ppn_input = $("#ppn_input").val();
+        var ppn = $("#ppn").val();
+        var penjamin = $("#penjamin").val();
+        var biaya_adm = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#biaya_admin").val()))));
+
+        if (biaya_adm == "") {
+          biaya_adm = 0
+        }
+
+        var jenis_penjualan = 'UGD';
+        
+        
+        var sisa = pembayaran - total;
+        
+        var sisa_kredit = parseInt(total, 10) - parseInt(pembayaran, 10);
+
+ 
+ if (sisa_pembayaran < 0)
+ {
+
+  alert("Jumlah Pembayaran Tidak Mencukupi");
+
+ }
+
+
+else if (pembayaran == "") 
+ {
+
+alert("Pembayaran Harus Di Isi");
+
+ }
+
+   else if (kode_gudang == "")
+ {
+
+alert(" Kode Gudang Harus Diisi ");
+
+ }
+ 
+ else if ( sisa < 0) 
+ {
+
+alert("Silakan Bayar Piutang");
+
+ }
+                else if (total ==  0 || total == "") 
+        {
+        
+        alert("Anda Belum Melakukan Pemesanan");
+        
+        }
+
+ else
+
+ {
+
+
+ $.post("cek_simpan_subtotal_penjualan.php",{total:total,no_reg:no_reg,no_faktur:no_faktur,potongan:potongan,biaya_adm:biaya_adm},function(data) {
+
+  if (data == 1) {
+
+ $.post("proses_bayar_pesanan_barang_ugd.php",{no_faktur:no_faktur,sisa_pembayaran:sisa_pembayaran,kredit:kredit,no_rm:no_rm,no_reg:no_reg,tanggal_jt:tanggal_jt,total:total,total2:total2,potongan:potongan,potongan_persen:potongan_persen,cara_bayar:cara_bayar,pembayaran:pembayaran,total_hpp:total_hpp,harga:harga,kode_gudang:kode_gudang,dokter:dokter,petugas_kasir:petugas_kasir,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,sisa:sisa,ppn:ppn,penjamin:penjamin,nama_pasien:nama_pasien,jenis_penjualan:jenis_penjualan,biaya_adm:biaya_adm,sisa_kredit:sisa_kredit},function(info) {
+
+if (info == 1)
+ {
+     alert("Maaf Subtotal Penjualan Tidak Sesuai, Silakan Tunggu Sebentar! (2) ");       
+        window.location.href="bayar_pesanan_barang_ugd.php?no_reg="+no_reg+"&kode_pelanggan="+no_rm+"&kode_gudang="+kode_gudang+"&nama_gudang="+nama_gudang+"&nama_pelanggan="+nama_pasien+"&no_faktur="+no_faktur+"";
+ } 
+ else
+ {    
+      $("#table-baru").html(info);
+     var no_faktur = info;
+     $("#cetak_tunai").attr('href', 'cetak_penjualan_tunai.php?no_faktur='+no_faktur+'');
+     $("#cetak_tunai_besar").attr('href', 'cetak_penjualan_tunai_besar.php?no_faktur='+no_faktur+'');
+     $("#cetak_tunai_kategori").attr('href','cetak_penjualan_tunai_kategori.php?no_faktur='+no_faktur+'');
+
+     $("#alert_berhasil").show();
+     $("#pembayaran_penjualan").val('');
+     $("#sisa_pembayaran_penjualan").val('');
+     $("#kredit").val('');
+
+      $("#penjualan").hide();
+      $("#simpan_sementara").hide();
+       $("#batal_penjualan").hide(); 
+      $("#cetak_langsung").hide(); 
+      $("#piutang").hide();
+      $("#transaksi_baru").show();
+
+      var win = window.open('cetak_penjualan_tunai.php?no_faktur='+no_faktur+'');
+      if (win) { 
+    
+    win.focus(); 
+
+      } 
+      else 
+      { 
+        alert('Mohon Izinkan PopUps Pada Website Ini !');
+     }  
+
+  }       
+   
+   });
+
+}
+  else{
+    alert("Maaf Subtotal Penjualan Tidak Sesuai, Silakan Tunggu Sebentar! (1) ");       
+        window.location.href="bayar_pesanan_barang_ugd.php?no_reg="+no_reg+"&kode_pelanggan="+no_rm+"&kode_gudang="+kode_gudang+"&nama_gudang="+nama_gudang+"&nama_pelanggan="+nama_pasien+"&no_faktur="+no_faktur+"";
+  }
+
+
+
+ });
+
+
+ }
+
+ $("form").submit(function(){
+    return false;
+ 
+});
+
+});
+
+               $("#penjualan").mouseleave(function(){
+               
+               
+               var kode_pelanggan = $("#kd_pelanggan").val();
+               if (kode_pelanggan == ""){
+               $("#kd_pelanggan").attr("disabled", false);
+               }
+               
+               });
+      
+  </script>
+
+
+
+<script type="text/javascript">
 //berfunsi untuk mencekal username ganda
  $(document).ready(function(){
   $(document).on('click', '.pilih', function (e) {

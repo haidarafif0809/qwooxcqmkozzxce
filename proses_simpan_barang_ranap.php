@@ -5,8 +5,34 @@
     include 'db.php';
     //mengirim data disetiap masing-masing variabel menggunakan metode POST
 
-    $user = $_SESSION['nama'];
+$no_reg = stringdoang($_POST['no_reg']);
+$total = angkadoang($_POST['total']);
+$potongan = angkadoang($_POST['potongan']);
+$biaya_admin = angkadoang($_POST['biaya_adm']);
 
+
+// menampilakn hasil penjumlah subtotal ALIAS total penjualan dari tabel tbs_penjualan berdasarkan data no faktur
+ $query121 = $db->query("SELECT SUM(subtotal) AS total_penjualan FROM tbs_penjualan WHERE no_reg = '$no_reg'");
+ $data43 = mysqli_fetch_array($query121);
+ $total_ss = $data43['total_penjualan'];
+
+
+// menampilakn hasil penjumlah subtotal ALIAS total penjualan dari tabel tbs_penjualan berdasarkan data no faktur
+ $query212 = $db->query("SELECT SUM(harga_jual) AS harga_jual FROM tbs_operasi WHERE no_reg = '$no_reg'");
+ $data2 = mysqli_fetch_array($query212);
+ $total_operasi = $data2['harga_jual'];
+
+ $total_sum = ($total_ss + $total_operasi);
+
+
+$total_tbs = ($total_sum - $potongan) + $biaya_admin;
+
+if ($total != $total_tbs) {
+    echo 1;
+  }
+  else{
+
+$user = $_SESSION['nama'];
 $session_id = session_id();
 
 
@@ -68,13 +94,12 @@ $no_faktur = $nomor."/JL/".$data_bulan_terakhir."/".$tahun_terakhir;
 $tahun_sekarang = date('Y');
 $bulan_sekarang = date('m');
 $tanggal_sekarang = date('Y-m-d');
-$jam_sekarang = date('H:i:sa');
+$jam_sekarang = date('H:i:s');
 $tahun_terakhir = substr($tahun_sekarang, 2);
-$waktu = date('Y-m-d H:i:sa');
+$waktu = date('Y-m-d H:i:s');
 
 
 $no_rm = stringdoang($_POST['no_rm']);
-$no_reg = stringdoang($_POST['no_reg']);
 $ber_stok = stringdoang($_POST['ber_stok']);
 $tanggal_jt = tanggal_mysql($_POST['tanggal_jt']);
 $nama_petugas = stringdoang($_SESSION['nama']);
@@ -92,9 +117,7 @@ $analis = stringdoang($_POST['analis']);
     $dokter_pj = stringdoang($_POST['dokter_pj']);
 
 $keterangan = stringdoang($_POST['keterangan']);
-$total = angkadoang($_POST['total']);
 $total2 = angkadoang($_POST['total2']);
-$potongan = angkadoang($_POST['potongan']);
 $tax = angkadoang($_POST['tax']);
 $sisa_pembayaran = angkadoang($_POST['sisa_pembayaran']);
 $sisa_kredit = angkadoang($_POST['kredit']);
@@ -102,7 +125,6 @@ $kredit = angkadoang($_POST['sisa_kredit']);
 $sisa = angkadoang($_POST['sisa']);
 $cara_bayar = stringdoang($_POST['cara_bayar']);
 $pembayaran = angkadoang($_POST['pembayaran']);
-$biaya_admin = angkadoang($_POST['biaya_adm']);
 
 
 
@@ -627,6 +649,9 @@ if ($ambil_beef > 0) {
 
      $query00 = $db->query("DELETE FROM tbs_penjualan WHERE no_reg = '$no_reg' ");
      $query01 = $db->query("DELETE FROM tbs_fee_produk WHERE no_reg = '$no_reg' ");
+
+
+}//braket cek subtotal (diproses)
 
 //Untuk Memutuskan Koneksi Ke Database
 mysqli_close($db);   

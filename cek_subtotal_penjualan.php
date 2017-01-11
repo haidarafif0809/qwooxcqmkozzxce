@@ -20,15 +20,7 @@ include 'sanitasi.php';
  $total = $data['total_penjualan'];
 
 
-// menampilakn hasil penjumlah subtotal ALIAS total penjualan dari tabel tbs_penjualan berdasarkan data no faktur
- $query2 = $db->query("SELECT harga_jual FROM tbs_operasi WHERE no_reg = '$no_reg'");
- $data2 = mysqli_fetch_array($query2);
- $total2 = $data2['harga_jual'];
-
- $total_sum = ($total + $total2);
-
-
-$total_tbs = ($total_sum - $diskon) + $biaya_admin;
+$total_tbs = ($total - $diskon) + $biaya_admin;
 
 if ($total_akhir == $total_tbs) {
 		echo 1;

@@ -3,12 +3,32 @@
     include 'sanitasi.php';
     include 'db.php';
 
+$total = angkadoang($_POST['total']);
+$potongan = angkadoang($_POST['potongan']);
+$biaya_admin = angkadoang($_POST['biaya_adm']);
+$nomor_faktur = stringdoang($_POST['no_faktur']);
+$no_reg = stringdoang($_POST['no_reg']);
+
+
+// menampilakn hasil penjumlah subtotal ALIAS total penjualan dari tabel tbs_penjualan berdasarkan data no faktur
+ $query = $db->query("SELECT SUM(subtotal) AS total_penjualan FROM tbs_penjualan WHERE no_reg = '$no_reg' AND no_faktur = '$nomor_faktur'");
+ $data = mysqli_fetch_array($query);
+ $total_ss = $data['total_penjualan'];
+
+
+$total_tbs = ($total_ss - $potongan) + $biaya_admin;
+
+if ($total != $total_tbs) {
+    echo 1;
+  }
+  else{
+   
 
 $tahun_sekarang = date('Y');
 $bulan_sekarang = date('m');
 $tanggal_sekarang = date('Y-m-d');
-$jam_sekarang = date('H:i:sa');
-$waktu = date('Y-m-d H:i:sa');
+$jam_sekarang = date('H:i:s');
+$waktu = date('Y-m-d H:i:s');
 $tahun_terakhir = substr($tahun_sekarang, 2);
 
 echo $nomor_faktur = stringdoang($_POST['no_faktur']);
@@ -29,10 +49,8 @@ $nama_pasien = stringdoang($_POST['nama_pasien']);
     $dokter = stringdoang($_POST['dokter']);
 
 $keterangan = stringdoang($_POST['keterangan']);
-$total = angkadoang($_POST['total']);
 $total2 = angkadoang($_POST['total2']);
 $harga = angkadoang($_POST['harga']);
-$potongan = angkadoang($_POST['potongan']);
 
 /*/$tax = angkadoang($_POST['tax']);/*/
 
@@ -41,7 +59,6 @@ $sisa_kredit = angkadoang($_POST['kredit']);
 $sisa = angkadoang($_POST['sisa']);
 $cara_bayar = stringdoang($_POST['cara_bayar']);
 $pembayaran = angkadoang($_POST['pembayaran']);
-$biaya_admin = angkadoang($_POST['biaya_adm']);
 $jenis_penjualan = stringdoang($_POST['jenis_penjualan']);
 $no_jurnal = no_jurnal();
     
@@ -458,7 +475,7 @@ if ($potongan != "" || $potongan != 0 ) {
 
 
 
-
+}// braket if untuk cek subtotal 
 
 //Untuk Memutuskan Koneksi Ke Database
 mysqli_close($db);   

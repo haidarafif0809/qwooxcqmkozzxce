@@ -24,7 +24,7 @@ include 'sanitasi.php';
 
 
 // menampilakn hasil penjumlah subtotal ALIAS total penjualan dari tabel tbs_penjualan berdasarkan data no faktur
- $query2 = $db->query("SELECT SUM(harga_jual) AS harga_jual FROM tbs_operasi WHERE no_reg = '$no_reg' AND session_id = ''");
+ $query2 = $db->query("SELECT SUM(harga_jual) AS harga_jual FROM tbs_operasi WHERE no_reg = '$no_reg' ");
  $data2 = mysqli_fetch_array($query2);
  $total2 = $data2['harga_jual'];
 
@@ -34,10 +34,10 @@ include 'sanitasi.php';
  $total_tbs = ($total_sum - round($diskon)) + $biaya_admin;
 
 if ($total_akhir == $total_tbs) {
-		echo "1";
+		echo 1;
 	}
 	else{
-		echo "0";
+		echo 0;
 	}
 
 //Untuk Memutuskan Koneksi Ke Database
