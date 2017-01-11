@@ -504,7 +504,7 @@ $("select").chosen({no_results_text: "Oops, Tidak Ada !"});
 <!--END SCRIPT TAMBAH PRODUK TBS -->
 
 
-<!— SCRIPT CEK TABLE PRODUK-->
+<!--SCRIPT CEK TABLE PRODUK -->
 <script type="text/javascript">
 
 //menampilkan no urut faktur setelah tombol click di pilih
