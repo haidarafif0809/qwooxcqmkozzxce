@@ -46,6 +46,12 @@ $id_user = $_SESSION['id'];
 $sum_lab = $db->query("SELECT SUM(subtotal) AS total_lab FROM tbs_penjualan WHERE lab = 'Laboratorium' AND no_reg = '$no_reg' ");
 $data_lab = mysqli_fetch_array($sum_lab);
 
+
+
+
+$pilih_akses_tombol = $db->query("SELECT * FROM otoritas_penjualan_rj WHERE id_otoritas = '$_SESSION[otoritas_id]' ");
+$otoritas_tombol = mysqli_fetch_array($pilih_akses_tombol);
+
  ?>
 
     <style type="text/css">
@@ -491,6 +497,10 @@ Level 7
 
 <!-- membuat form prosestbspenjual -->
 
+
+<?php if ($otoritas_tombol['tombol_submit'] > 0):?>  
+
+
 <form class="form"  role="form" id="formtambahproduk">
 <br>
 <div class="row">
@@ -559,6 +569,7 @@ Level 7
 </form> <!-- tag penutup form -->
 
 
+<?php endif ?>
 
 
 
@@ -621,19 +632,33 @@ Level 7
                   {
                     echo "<td></td>";
                   }
+           if ($otoritas_tombol['edit_produk'] > 0){          
 
+                echo "<td style='font-size:15px' align='right' class='edit-jumlah' data-id='".$data1['id']."'><span id='text-jumlah-".$data1['id']."'>". $data1['jumlah_barang'] ."</span> <input type='hidden' id='input-jumlah-".$data1['id']."' value='".$data1['jumlah_barang']."' class='input_jumlah' data-id='".$data1['id']."' autofocus='' data-kode='".$data1['kode_barang']."' data-harga='".$data1['harga']."' data-tipe='".$data1['tipe_barang']."' data-satuan='".$data1['satuan']."' > </td>";
+              }
+              else{
 
-                echo "<td style='font-size:15px' align='right' class='edit-jumlah' data-id='".$data1['id']."'><span id='text-jumlah-".$data1['id']."'>". $data1['jumlah_barang'] ."</span> <input type='hidden' id='input-jumlah-".$data1['id']."' value='".$data1['jumlah_barang']."' class='input_jumlah' data-id='".$data1['id']."' autofocus='' data-kode='".$data1['kode_barang']."' data-harga='".$data1['harga']."' data-tipe='".$data1['tipe_barang']."' data-satuan='".$data1['satuan']."' > </td>
-                <td style='font-size:15px'>". $data1['nama'] ."</td>
+                 echo "<td style='font-size:15px' align='right' class='tidak_punya_otoritas' data-id='".$data1['id']."'><span id='text-jumlah-".$data1['id']."'>". $data1['jumlah_barang'] ."</span> </td>";
 
+                     }
+
+                echo "<td style='font-size:15px'>". $data1['nama'] ."</td>
                 <td style='font-size:15px' align='right'>". rp($data1['harga']) ."</td>
                 <td style='font-size:15px' align='right'><span id='text-subtotal-".$data1['id']."'>". rp($data1['subtotal']) ."</span></td>
                 <td style='font-size:15px' align='right'><span id='text-potongan-".$data1['id']."'>". rp($data1['potongan']) ."</span></td>
                 <td style='font-size:15px' align='right'><span id='text-tax-".$data1['id']."'>". rp($data1['tax']) ."</span></td>";
 
-               echo "<td style='font-size:15px'> <button class='btn btn-danger btn-sm btn-hapus-tbs' id='hapus-tbs-". $data1['id'] ."' data-id='". $data1['id'] ."' data-kode-barang='". $data1['kode_barang'] ."' data-barang='". $data1['nama_barang'] ."' data-subtotal='". $data1['subtotal'] ."'>Hapus</button> </td> 
+            if ($otoritas_tombol['hapus_produk'] > 0) {
 
-                </tr>";
+               echo "<td style='font-size:15px'> <button class='btn btn-danger btn-sm btn-hapus-tbs' id='hapus-tbs-". $data1['id'] ."' data-id='". $data1['id'] ."' data-kode-barang='". $data1['kode_barang'] ."' data-barang='". $data1['nama_barang'] ."' data-subtotal='". $data1['subtotal'] ."'>Hapus</button> </td>";
+             }
+               else{
+                 echo "<td style='font-size:12px; color:red'> Tidak Ada Otoritas </td>";
+
+               }
+
+
+                echo "</tr>";
 
 
                 }
@@ -911,26 +936,39 @@ Laboratorium  </button>
 
           <div class="row">
  
-            
+           <?php if ($otoritas_tombol['tombol_bayar'] > 0):?>              
           <button type="submit" id="penjualan" class="btn btn-info" style="font-size:15px;">Bayar (F8)</button>
           <a class="btn btn-info" href="pasien_sudah_masuk.php" id="transaksi_baru" style="display: none">  Transaksi Baru </a>
-          
+          <?php endif;?>
         
+          
+          <?php if ($otoritas_tombol['tombol_piutang'] > 0):?>  
           <button type="submit" id="piutang" class="btn btn-warning" style="font-size:15px">Piutang (F9)</button>
+          <?php endif;?>
 
           <a href='cetak_penjualan_piutang.php' id="cetak_piutang" style="display: none;" class="btn btn-success" target="blank">Cetak Piutang  </a>
 
+          <?php if ($otoritas_tombol['tombol_simpan'] > 0):?>  
+
           <button type="submit" id="simpan_sementara" class="btn btn-primary" style="font-size:15px">  Simpan (F10)</button>
+
+          <?php endif;?>
 
           <a href='cetak_penjualan_tunai.php' id="cetak_tunai" style="display: none;" class="btn btn-primary" target="blank"> Cetak Tunai  </a>
 
+           <?php if ($otoritas_tombol['tombol_bayar'] > 0):?>              
+
           <button type="submit" id="cetak_langsung" target="blank" class="btn btn-success" style="font-size:15px"> Bayar / Cetak (Ctrl + K) </button>
 
+          <?php endif;?>
 
            <a href='cetak_penjualan_tunai_kategori.php' id="cetak_tunai_kategori" style="display: none;" class="btn btn-warning" target="blank"> Cetak Tunai/Kategori  </a>
 
+           <?php if ($otoritas_tombol['tombol_batal'] > 0):?>              
+
           <button type="submit" id="batal_penjualan" class="btn btn-danger" style="font-size:15px">  Batal (Ctrl + B)</button>
 
+         <?php endif;?>
 
           <a href='cetak_penjualan_tunai_besar.php' id="cetak_tunai_besar" style="display: none;" class="btn btn-warning" target="blank"> Cetak Tunai  Besar </a>
           
@@ -965,6 +1003,11 @@ $(document).ready(function(){
 
 </script>
 
+<script type="text/javascript">
+  $(document).on('click', '.tidak_punya_otoritas', function (e) {
+    alert("Anda Tidak Punya Otoritas Untuk Edit Jumlah Produk !!");
+  });
+</script>
 
 <script type="text/javascript" language="javascript" >
    $(document).ready(function() {
@@ -1437,10 +1480,10 @@ else if (a > 0){
   }
   else if (ber_stok == 'Jasa' || ber_stok == 'BHP' ){
 
-$("#kode_barang").val('');
-$("#kode_barang").focus();
+    $("#kode_barang").val('');
+    $("#kode_barang").focus();
     $("#potongan_penjualan").val(Math.round(potongaaan));
-      $("#potongan_persen").val(Math.round(pot_pers));
+    $("#potongan_persen").val(Math.round(pot_pers));
     $("#total1").val(tandaPemisahTitik(Math.round(total_akhir)));
     $("#total2").val(tandaPemisahTitik(total_akhir1));
    

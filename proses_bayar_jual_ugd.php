@@ -11,7 +11,6 @@ $tahun_terakhir = substr($tahun_sekarang, 2);
 
 try {
 
-
 $no_reg = stringdoang($_POST['no_reg']);
 $total = angkadoang($_POST['total']);
 $potongan = angkadoang($_POST['potongan']);
@@ -24,9 +23,9 @@ $biaya_admin = angkadoang($_POST['biaya_adm']);
  $total_ss = $datas['total_penjualan'];
 
 
-$total_tbs = ($total_ss - $diskon) + $biaya_admin;
+$total_tbs = ($total_ss - $potongan) + $biaya_admin;
 
-if ($total == $total_tbs) {
+if ($total != $total_tbs) {
     echo 1;
   }
   else{

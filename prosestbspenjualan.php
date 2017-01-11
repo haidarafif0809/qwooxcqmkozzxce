@@ -42,6 +42,9 @@
 
     $tax_persen = $x - $hasil_tax2;
 
+$pilih_akses_tombol = $db->query("SELECT * FROM otoritas_penjualan_rj WHERE id_otoritas = '$_SESSION[otoritas_id]' ");
+$otoritas_tombol = mysqli_fetch_array($pilih_akses_tombol);
+
     $query9 = $db->query("SELECT * FROM fee_produk WHERE nama_petugas = '$sales' AND kode_produk = '$kode_barang'");
     $cek9 = mysqli_fetch_array($query9);
     $prosentase = $cek9['jumlah_prosentase'];
@@ -182,15 +185,52 @@ $jumlah = mysqli_num_rows($cek);
                 //menampilkan data
                 echo "<tr class='tr-kode-". $data1['kode_barang'] ." tr-id-". $data1['id'] ."' data-kode-barang='".$data1['kode_barang']."'>
                 <td>". $data1['kode_barang'] ."</td>
-                <td>". $data1['nama_barang'] ."</td>
-                <td class='edit-jumlah' data-id='".$data1['id']."'><span id='text-jumlah-".$data1['id']."'>". $data1['jumlah_barang'] ."</span> <input type='hidden' id='input-jumlah-".$data1['id']."' value='".$data1['jumlah_barang']."' class='input_jumlah' data-id='".$data1['id']."' autofocus='' data-kode='".$data1['kode_barang']."' data-harga='".$data1['harga']."' data-satuan='".$data1['satuan']."' > </td>
-                <td>". $data1['nama'] ."</td>
+                <td>". $data1['nama_barang'] ."</td>";
+                $kd = $db->query("SELECT f.nama_petugas, u.nama FROM tbs_fee_produk f INNER JOIN user u ON f.nama_petugas = u.id WHERE f.kode_produk = '$data1[kode_barang]' AND f.jam = '$data1[jam]' ");
+                
+                $kdD = $db->query("SELECT f.nama_petugas, u.nama FROM tbs_fee_produk f INNER JOIN user u ON f.nama_petugas = u.id WHERE f.kode_produk = '$data1[kode_barang]' AND f.jam = '$data1[jam]' ");
+                    
+                $nu = mysqli_fetch_array($kd);
+
+                  if ($nu['nama'] != '')
+                  {
+
+                  echo "<td style='font-size:15px;'>";
+                   while($nur = mysqli_fetch_array($kdD))
+                  {
+                    echo $nur['nama']." ,";
+                  }
+                   echo "</td>";
+
+                  }
+                  else
+                  {
+                    echo "<td></td>";
+                  }
+
+                if ($otoritas_tombol['edit_produk'] > 0)
+                {     
+                  
+                echo "<td class='edit-jumlah' data-id='".$data1['id']."'><span id='text-jumlah-".$data1['id']."'>". $data1['jumlah_barang'] ."</span> <input type='hidden' id='input-jumlah-".$data1['id']."' value='".$data1['jumlah_barang']."' class='input_jumlah' data-id='".$data1['id']."' autofocus='' data-kode='".$data1['kode_barang']."' data-harga='".$data1['harga']."' data-satuan='".$data1['satuan']."' > </td>";
+                }
+              else{
+                echo "<td class='tidak_punya_otoritas' data-id='".$data1['id']."'><span id='text-jumlah-".$data1['id']."'>". $data1['jumlah_barang'] ."</span> </td>";
+
+              }
+                echo "<td>". $data1['nama'] ."</td>
                 <td>". rp($data1['harga']) ."</td>
                 <td><span id='text-subtotal-".$data1['id']."'>". rp($data1['subtotal']) ."</span></td>
                 <td><span id='text-potongan-".$data1['id']."'>". rp($data1['potongan']) ."</span></td>
                 <td><span id='text-tax-".$data1['id']."'>". rp($data1['tax']) ."</span></td>";
 
-               echo "<td> <button class='btn btn-danger btn-hapus-tbs' data-id='". $data1['id'] ."' data-kode-barang='". $data1['kode_barang'] ."' data-barang='". $data1['nama_barang'] ."' data-subtotal='". $data1['subtotal'] ."'>Hapus</button> </td> 
+                if ($otoritas_tombol['hapus_produk'] > 0) 
+                  {
+               echo "<td style='font-size:15px'> <button class='btn btn-danger btn-sm btn-hapus-tbs' id='hapus-tbs-". $data1['id'] ."' data-id='". $data1['id'] ."' data-kode-barang='". $data1['kode_barang'] ."' data-barang='". $data1['nama_barang'] ."' data-subtotal='". $data1['subtotal'] ."'>Hapus</button> </td>";
+                     }
+               else{
+                 echo "<td style='font-size:12px; color:red'> Tidak Ada Otoritas </td>";
+
+               }
 
                 </tr>";
 
