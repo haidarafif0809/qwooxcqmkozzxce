@@ -94,6 +94,9 @@ $otoritas_tombol = mysqli_fetch_array($pilih_akses_tombol);
   $(function() {
     $( ".tanggal" ).datepicker({dateFormat: "yy-mm-dd"});
   });
+   $(function() {
+    $( "#tanggal_tmpl" ).datepicker({dateFormat: "yy-mm-dd"});
+  });
   </script>
 
 <!--untuk membuat agar tampilan form terlihat rapih dalam satu tempat -->
@@ -178,7 +181,14 @@ $otoritas_tombol = mysqli_fetch_array($pilih_akses_tombol);
 
       ?>
 
-      <div class="col-xs-3">
+      <div class="col-xs-2">
+      <label> Tanggal  :</label>
+      <input style="height:20px;" type="text" class="form-control"  id="tanggal_tmpl" name="tanggal_tmpl" placeholder="Isi Poli" autocomplete="off" value="<?php echo $ambil_tanggal['tanggal'];  ?>">   
+      </div>
+
+
+
+      <div class="col-xs-2">
       <label>Dokter Pelaksana</label>
       <select style="font-size:15px; height:35px" name="dokter" id="dokter" class="form-control chosen">
         <option value="<?php echo $dokter;?>"><?php echo $kel['nama'];?></option>
@@ -211,7 +221,7 @@ $otoritas_tombol = mysqli_fetch_array($pilih_akses_tombol);
         </select>
       </div>
 
-  <div class="col-xs-3">
+  <div class="col-xs-2">
         <label>Petugas Paramedik</label>
         <select style="font-size:15px; height:35px" name="petugas_paramedik" id="petugas_paramedik" class="form-control chosen">
         <option value="">Cari Petugas</option>
@@ -311,10 +321,32 @@ $otoritas_tombol = mysqli_fetch_array($pilih_akses_tombol);
     </select>
       </div>
 
+<div class="col-xs-2">
+<label>Petugas Lain</label>
+<select style="font-size:15px; height:35px" name="petugas_lain" id="petugas_lain" class="form-control chosen">
+<option value="">Cari Petugas</option>
+  <?php 
+    
+    //untuk menampilkan semua data pada tabel pelanggan dalam DB
+    $query01 = $db->query("SELECT nama,id FROM user WHERE otoritas = 'Petugas Lain'");
 
+    //untuk menyimpan data sementara yang ada pada $query
+    while($data01 = mysqli_fetch_array($query01))
+    {
+    
+    
+    echo "<option value='".$data01['id'] ."'>".$data01['nama'] ."</option>";
 
+    
+    }
+    
+    
+    ?>
 
-  <div class="col-xs-3">
+</select>
+</div>
+
+  <div class="col-xs-2">
   <label>Petugas Farmasi</label>
   <select style="font-size:15px; height:35px" name="petugas_farmasi" id="petugas_farmasi" class="form-control chosen">
   <option value="">Cari Petugas</option>
@@ -347,30 +379,7 @@ $otoritas_tombol = mysqli_fetch_array($pilih_akses_tombol);
 </div>  
 
 
-<div class="col-xs-3">
-<label>Petugas Lain</label>
-<select style="font-size:15px; height:35px" name="petugas_lain" id="petugas_lain" class="form-control chosen">
-<option value="">Cari Petugas</option>
-  <?php 
-    
-    //untuk menampilkan semua data pada tabel pelanggan dalam DB
-    $query01 = $db->query("SELECT nama,id FROM user WHERE otoritas = 'Petugas Lain'");
 
-    //untuk menyimpan data sementara yang ada pada $query
-    while($data01 = mysqli_fetch_array($query01))
-    {
-    
-    
-    echo "<option value='".$data01['id'] ."'>".$data01['nama'] ."</option>";
-
-    
-    }
-    
-    
-    ?>
-
-</select>
-</div>
 
 
 </div><!--div class="row"-->
@@ -561,23 +570,23 @@ $otoritas_tombol = mysqli_fetch_array($pilih_akses_tombol);
 
 <div class="row 1">
 
-  <div class="col-xs-2">
+  <div class="col-xs-3">
     <div class="form-group">
-    <input type="text" class="form-control" name="kode_barang" id="kode_barang" autocomplete="off" accesskey="k" placeholder="Kode Produk">
+    <input type="text" class="form-control" style="height:15px;" name="kode_barang" id="kode_barang" autocomplete="off" accesskey="k" placeholder="Kode Produk">
     <input type="hidden" class="form-control" name="nama_barang" id="nama_barang" placeholder="Nama Barang" readonly="">
     </div>
 
   </div>
 
 
-  <div class="col-xs-1">
+  <div class="col-xs-2">
       <div class="form-group">
-    <input type="text" class="form-control" name="jumlah_barang" autocomplete="off" id="jumlah_barang" placeholder="Jumlah " onkeydown="return numbersonly(this, event);" onkeyup="javascript:tandaPemisahTitik(this);">
+    <input type="text" style="height:15px;" class="form-control" name="jumlah_barang" autocomplete="off" id="jumlah_barang" placeholder="Jumlah " onkeydown="return numbersonly(this, event);" onkeyup="javascript:tandaPemisahTitik(this);">
       </div>
   </div>
 
-  <div class="col-xs-1">
-    <select type="text" name="satuan_konversi" id="satuan_konversi" class="form-control"  required="" style="height:50px;font-size:15px; width: 75px" >
+  <div class="col-xs-2">
+    <select type="text" style="font-size:15px; height:40px" name="satuan_konversi" id="satuan_konversi" class="form-control"  required="" >
           
           <?php 
           
@@ -596,12 +605,12 @@ $otoritas_tombol = mysqli_fetch_array($pilih_akses_tombol);
 
 
    <div class="form-group col-xs-2">
-    <input type="text" class="form-control" name="potongan" autocomplete="off" id="potongan1" placeholder="Potongan" >
+    <input type="text" style="height:15px;" class="form-control" name="potongan" autocomplete="off" id="potongan1" data-toggle="tooltip" data-placement="top" title="Jika Ingin Potongan Dalam Bentuk Persen (%), input : 10%" placeholder="Potongan" >
   </div>
 
 
-      <div class="form-group col-xs-2">
-      <input type="text" class="form-control" name="tax" autocomplete="off" id="tax1"  placeholder="Pajak (%)" >
+      <div class="form-group col-xs-1">
+      <input type="text" style="height:15px;"  class="form-control" name="tax" autocomplete="off" id="tax1"  placeholder="Tax (%)" >
       </div>
 
 
@@ -629,10 +638,8 @@ $otoritas_tombol = mysqli_fetch_array($pilih_akses_tombol);
   
     <input type="hidden" id="level_hidden" name="level_hidden" class="form-control" value="<?php echo $level_harga;?>">        
 
-  <br>
-  <div class="form-group col-xs-3">        
-  <button type="submit" id="submit_produk" class="btn btn-success" data-faktur="<?php echo $no_faktur; ?>"> <i class='fa fa-plus'> </i>Tambah(F3)</button>
-</div>
+
+<button type="submit" id="submit_produk" class="btn btn-success" data-faktur="<?php echo $no_faktur; ?>"> <i class='fa fa-plus'> </i>Tambah(F3)</button>
 
 
 
@@ -2003,7 +2010,7 @@ $("#cari_produk_penjualan").click(function(){
         var penjamin = $("#penjamin").val();
         var nama_pasien = $("#nama_pasien").val();
         var jenis_penjualan = 'Rawat Jalan';
-        
+        var tanggal = $("#tanggal_tmpl").val();      
         var sisa = pembayaran - total;
         
         var sisa_kredit = total - pembayaran;
@@ -2052,13 +2059,12 @@ alert("Silakan Bayar Piutang");
 
   if (data == 1) {
             
- $.post("proses_bayar_edit_jual_raja.php",{no_faktur:no_faktur,sisa_pembayaran:sisa_pembayaran, kredit:kredit,no_rm:no_rm,no_reg:no_reg,tanggal_jt:tanggal_jt,total:total,total2:total2,potongan:potongan,potongan_persen:potongan_persen,/*/tax:tax,/*/cara_bayar:cara_bayar,pembayaran:pembayaran,total_hpp:total_hpp,harga:harga,kode_gudang:kode_gudang,dokter:dokter,petugas_kasir:petugas_kasir,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,sisa:sisa,ppn:ppn,penjamin:penjamin,nama_pasien:nama_pasien,jenis_penjualan:jenis_penjualan,biaya_adm:biaya_adm,sisa_kredit:sisa_kredit},function(info) {
+ $.post("proses_bayar_edit_jual_raja.php",{no_faktur:no_faktur,sisa_pembayaran:sisa_pembayaran, kredit:kredit,no_rm:no_rm,no_reg:no_reg,tanggal_jt:tanggal_jt,total:total,total2:total2,potongan:potongan,potongan_persen:potongan_persen,/*/tax:tax,/*/cara_bayar:cara_bayar,pembayaran:pembayaran,total_hpp:total_hpp,harga:harga,kode_gudang:kode_gudang,dokter:dokter,petugas_kasir:petugas_kasir,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,sisa:sisa,ppn:ppn,penjamin:penjamin,nama_pasien:nama_pasien,jenis_penjualan:jenis_penjualan,biaya_adm:biaya_adm,sisa_kredit:sisa_kredit,tanggal:tanggal},function(info) {
 
 if (info == 1)
 {
    alert("Maaf Subtotal Penjualan Tidak Sesuai, Silakan Tunggu Sebentar! (2) "); 
         window.location.href="form_edit_penjualan_rj.php?no_reg="+no_reg+"&no_rm="+no_rm+"&kode_gudang="+kode_gudang+"&nama_pasien="+nama_pasien+"&no_faktur="+no_faktur+"";
-
 }
  else
  { 
@@ -2158,6 +2164,7 @@ if (info == 1)
         var ppn = $("#ppn").val();
         var penjamin = $("#penjamin").val();
         var nama_pasien = $("#nama_pasien").val();
+        var tanggal = $("#tanggal_tmpl").val();
         var jenis_penjualan = 'Rawat Jalan';
         
         var sisa = pembayaran - total;
@@ -2209,7 +2216,7 @@ alert("Silakan Bayar Piutang");
   if (data == 1) {
 
             
- $.post("proses_bayar_edit_jual_raja.php",{no_faktur:no_faktur,sisa_pembayaran:sisa_pembayaran, kredit:kredit,no_rm:no_rm,no_reg:no_reg,tanggal_jt:tanggal_jt,total:total,total2:total2,potongan:potongan,potongan_persen:potongan_persen,/*/tax:tax,/*/cara_bayar:cara_bayar,pembayaran:pembayaran,total_hpp:total_hpp,harga:harga,kode_gudang:kode_gudang,dokter:dokter,petugas_kasir:petugas_kasir,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,sisa:sisa,ppn:ppn,penjamin:penjamin,nama_pasien:nama_pasien,jenis_penjualan:jenis_penjualan,biaya_adm:biaya_adm,sisa_kredit:sisa_kredit},function(info) {
+ $.post("proses_bayar_edit_jual_raja.php",{no_faktur:no_faktur,sisa_pembayaran:sisa_pembayaran, kredit:kredit,no_rm:no_rm,no_reg:no_reg,tanggal_jt:tanggal_jt,total:total,total2:total2,potongan:potongan,potongan_persen:potongan_persen,/*/tax:tax,/*/cara_bayar:cara_bayar,pembayaran:pembayaran,total_hpp:total_hpp,harga:harga,kode_gudang:kode_gudang,dokter:dokter,petugas_kasir:petugas_kasir,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,sisa:sisa,ppn:ppn,penjamin:penjamin,nama_pasien:nama_pasien,jenis_penjualan:jenis_penjualan,biaya_adm:biaya_adm,sisa_kredit:sisa_kredit,tanggal:tanggal},function(info) {
 
 if (info == 1)
 {
@@ -2345,6 +2352,8 @@ else {
         var penjamin = $("#penjamin").val();
         var nama_pasien = $("#nama_pasien").val();
         var jenis_penjualan = 'Rawat Jalan';
+        var tanggal = $("#tanggal_tmpl").val();
+
         
         var sisa = pembayaran - total;
         
@@ -2387,7 +2396,7 @@ else {
   $("#piutang").hide();
   $("#transaksi_baru").show();
 
- $.post("proses_bayar_edit_jual_raja.php",{no_faktur:no_faktur,sisa_pembayaran:sisa_pembayaran, kredit:kredit,no_rm:no_rm,no_reg:no_reg,tanggal_jt:tanggal_jt,total:total,total2:total2,potongan:potongan,potongan_persen:potongan_persen,/*/tax:tax,/*/cara_bayar:cara_bayar,pembayaran:pembayaran,total_hpp:total_hpp,harga:harga,kode_gudang:kode_gudang,dokter:dokter,petugas_kasir:petugas_kasir,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,sisa:sisa,ppn:ppn,penjamin:penjamin,nama_pasien:nama_pasien,jenis_penjualan:jenis_penjualan,biaya_adm:biaya_adm,sisa_kredit:sisa_kredit},function(info) {
+ $.post("proses_bayar_edit_jual_raja.php",{no_faktur:no_faktur,sisa_pembayaran:sisa_pembayaran, kredit:kredit,no_rm:no_rm,no_reg:no_reg,tanggal_jt:tanggal_jt,total:total,total2:total2,potongan:potongan,potongan_persen:potongan_persen,/*/tax:tax,/*/cara_bayar:cara_bayar,pembayaran:pembayaran,total_hpp:total_hpp,harga:harga,kode_gudang:kode_gudang,dokter:dokter,petugas_kasir:petugas_kasir,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,sisa:sisa,ppn:ppn,penjamin:penjamin,nama_pasien:nama_pasien,jenis_penjualan:jenis_penjualan,biaya_adm:biaya_adm,sisa_kredit:sisa_kredit,tanggal:tanggal},function(info) {
 
 if (info == 1)
 {
