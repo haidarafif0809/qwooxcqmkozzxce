@@ -60,9 +60,6 @@ $id_kasir = $data_id['id'];
           }
 
 
-          $a = $hargaa * $jumlah;
-
-          $satu = 1;
   
               
 

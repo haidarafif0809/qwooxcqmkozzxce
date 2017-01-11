@@ -17,7 +17,10 @@ $tahun_php = date('Y');
       $kode = stringdoang($_POST['kode_barang']);
       $harga = angkadoang($_POST['harga']);
       $jumlah = angkadoang($_POST['jumlah_barang']);
+      $tax = angkadoang($_POST['tax']);
+      $hargaa  = angkadoang($_POST['hargaa']);
       $nama = stringdoang($_POST['nama_barang']);
+      $ppn = stringdoang($_POST['ppn']);
       $user = $_SESSION['nama'];
       $potongan = angkadoang($_POST['potongan']);
       $a = $harga * $jumlah;
@@ -45,14 +48,27 @@ $id_kasir = $data_id['id'];
           }
 
 
-    $tax = angkadoang($_POST['tax']);
     
-    $hargaa  = angkadoang($_POST['hargaa']);
 
-          $a = $hargaa * $jumlah;
 
-          $satu = 1;
-  
+// MENGHITUNG PERSEN
+if ($ppn == 'Exclude')
+{
+
+ $a = $harga * $jumlah;
+
+ $x = $a - $potongan_tampil;
+
+   $tax_persen = $x * $tax / 100;
+
+}
+elseif ($ppn == 'Include') 
+{
+
+          $a = $harga * $jumlah;
+
+            $satu = 1;
+
               $x = $a - $potongan_tampil;
 
               $hasil_tax = $satu + ($tax / 100);
@@ -61,8 +77,34 @@ $id_kasir = $data_id['id'];
 
               $tax_persen = $x - $hasil_tax2;
 
-              $subtotal = $hargaa * $jumlah - $potongan_jadi; 
-                         
+}
+else
+{
+  $tax_persen = 0;
+}
+
+
+// MENGHITUNG SUBTOTAL 
+if ($ppn == 'Exclude') {
+              $subtotal1 = $harga * $jumlah;
+              $xyz = $subtotal1 - $potongan_jadi;
+
+              $cari_pajak = $xyz * $tax / 100;
+
+              $subtotal = $subtotal1 - $potongan_jadi + round($cari_pajak); 
+
+
+}
+
+else
+
+{
+
+$subtotal = $harga * $jumlah - $potongan_jadi; 
+
+} 
+
+       
 
           $query0 = $db->query("SELECT * FROM tbs_penjualan WHERE kode_barang = '$kode' AND no_faktur = '$no_faktur'");
           $cek    = mysqli_num_rows($query0);
