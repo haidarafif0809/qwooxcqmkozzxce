@@ -7,7 +7,7 @@ $no_rm = stringdoang($_POST['no_rm']);
 echo $no_reg = stringdoang($_POST['no_reg']);
 $jenis_penjualan = stringdoang($_POST['jenis_penjualan']);
 $tanggal = date('Y-m-d');
-$jam = date('H-m-s');
+$jam = date('H:m:s');
 $select = $db->query("SELECT * FROM tbs_hasil_lab WHERE no_reg = '$no_reg' AND no_rm = '$no_rm'");
 while($out = mysqli_fetch_array($select))
 {
