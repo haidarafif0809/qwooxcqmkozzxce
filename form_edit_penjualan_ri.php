@@ -56,7 +56,7 @@ $session_id = session_id();
 $user = $_SESSION['nama'];
 
 
-   $perintah = $db->query("SELECT tanggal, tunai, nilai_kredit, total,tax,potongan,dokter,penjamin,biaya_admin,tunai FROM penjualan WHERE no_faktur = '$no_faktur' AND no_reg = '$no_reg'");
+   $perintah = $db->query("SELECT tanggal, tunai, nilai_kredit, total,tax,potongan,dokter,penjamin,biaya_admin,tunai,tanggal FROM penjualan WHERE no_faktur = '$no_faktur' AND no_reg = '$no_reg'");
     $ambil_tanggal = mysqli_fetch_array($perintah);
 
     $dp = $ambil_tanggal['tunai'];
@@ -113,6 +113,7 @@ padding-right: 5%;
 
 <script>
   $(function() {
+    $( "#tanggal" ).datepicker({dateFormat: "yy-mm-dd"});
     $( "#tanggal_jt" ).datepicker({dateFormat: "yy-mm-dd"});
   });
   </script>
@@ -152,7 +153,7 @@ padding-right: 5%;
 
 <div class="padding" >
 
-  <h3> EDIT BAYAR RAWAT INAP</h3>
+  <h3> EDIT PENJUALAN RAWAT INAP</h3>
 
 
 <div class="row">
@@ -1021,7 +1022,7 @@ Laboratorium  </button>
            
            <div class="col-xs-6">
              
-           <label> Tanggal</label>
+           <label> Tanggal JT</label>
            <input type="text" name="tanggal_jt" id="tanggal_jt"  value="" style="height:15px;font-size:15px" placeholder="Tanggal JT" class="form-control" >
            </div>
 
@@ -1116,11 +1117,21 @@ Laboratorium  </button>
           <b><input type="text" name="kredit" id="kredit" class="form-control" value="0" style="height:15px;font-size:15px"  readonly=""  ></b>
             </div>
           </div> 
-          
+            
+            <div class="row">
+                
+                <div class="col-xs-6">
+               <label> Tanggal</label>
+               <input type="text" name="tanggal" id="tanggal"  value="<?php echo $ambil_tanggal['tanggal']; ?>" style="height:15px;font-size:15px" placeholder="TanggaL" class="form-control" >
+               </div>
 
-           <label> Keterangan </label><br>
-           <textarea style="height:40px;font-size:15px" type="text" name="keterangan" id="keterangan" class="form-control"><?php echo $data_penj['keterangan']; ?> 
-           </textarea>
+                  <div class="col-xs-6">             
+               <label> Keterangan </label><br>
+               <textarea style="height:40px;font-size:15px" type="text" name="keterangan" id="keterangan" class="form-control"><?php echo $data_penj['keterangan']; ?> 
+               </textarea>
+               </div>
+            </div>
+          
 
 
           
@@ -1515,6 +1526,7 @@ $(document).ready(function(){
         var no_rm = no_rm.substr(0, no_rm.indexOf('|'));
         var no_reg = $("#no_reg").val();
         var tanggal_jt = $("#tanggal_jt").val();
+        var tanggal = $("#tanggal").val();
         var total = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#total1").val() )))); 
         var total2 = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#total2").val())))); 
         var potongan =  bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#potongan_penjualan").val()))));
@@ -1598,7 +1610,7 @@ alert("Silakan Bayar Piutang");
 
 
 
- $.post("proses_edit_bayar_jual_ri.php",{total2:total2,sisa_pembayaran:sisa_pembayaran,kredit:kredit,no_rm:no_rm,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,cara_bayar:cara_bayar,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,total_hpp:total_hpp,harga:harga,sales:sales,kode_gudang:kode_gudang,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,nama_pasien:nama_pasien,no_reg:no_reg,dokter:dokter,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,penjamin:penjamin,bed:bed,group_bed:group_bed,biaya_admin:biaya_admin,no_faktur:'<?php echo $no_faktur; ?>'},function(info) {
+ $.post("proses_edit_bayar_jual_ri.php",{total2:total2,sisa_pembayaran:sisa_pembayaran,kredit:kredit,no_rm:no_rm,tanggal:tanggal,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,cara_bayar:cara_bayar,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,total_hpp:total_hpp,harga:harga,sales:sales,kode_gudang:kode_gudang,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,nama_pasien:nama_pasien,no_reg:no_reg,dokter:dokter,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,penjamin:penjamin,bed:bed,group_bed:group_bed,biaya_admin:biaya_admin,no_faktur:'<?php echo $no_faktur; ?>'},function(info) {
 
 if (info == 1)
 {
@@ -1677,6 +1689,7 @@ else
         var no_rm = no_rm.substr(0, no_rm.indexOf('|'));
         var no_reg = $("#no_reg").val();
         var tanggal_jt = $("#tanggal_jt").val();
+        var tanggal = $("#tanggal").val();
         var total = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#total1").val() )))); 
         var total2 = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#total2").val())))); 
         var potongan =  bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#potongan_penjualan").val()))));
@@ -1760,7 +1773,7 @@ alert("Silakan Bayar Piutang");
 
 
 
- $.post("proses_edit_bayar_jual_ri.php",{total2:total2,sisa_pembayaran:sisa_pembayaran,kredit:kredit,no_rm:no_rm,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,cara_bayar:cara_bayar,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,total_hpp:total_hpp,harga:harga,sales:sales,kode_gudang:kode_gudang,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,nama_pasien:nama_pasien,no_reg:no_reg,dokter:dokter,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,penjamin:penjamin,bed:bed,group_bed:group_bed,biaya_admin:biaya_admin,no_faktur:'<?php echo $no_faktur; ?>'},function(info) {
+ $.post("proses_edit_bayar_jual_ri.php",{total2:total2,sisa_pembayaran:sisa_pembayaran,kredit:kredit,no_rm:no_rm,tanggal:tanggal,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,cara_bayar:cara_bayar,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,total_hpp:total_hpp,harga:harga,sales:sales,kode_gudang:kode_gudang,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,nama_pasien:nama_pasien,no_reg:no_reg,dokter:dokter,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,penjamin:penjamin,bed:bed,group_bed:group_bed,biaya_admin:biaya_admin,no_faktur:'<?php echo $no_faktur; ?>'},function(info) {
 
 if (info == 1)
 {
@@ -1842,6 +1855,7 @@ else
         var no_rm = no_rm.substr(0, no_rm.indexOf(' |')); 
         var no_reg = $("#no_reg").val();
         var tanggal_jt = $("#tanggal_jt").val();
+        var tanggal = $("#tanggal").val();
         var total = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah( $("#total1").val() )))); 
         var total2 = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah( $("#total2").val() )))); 
         var potongan =  bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah( $("#potongan_penjualan").val() ))));
@@ -1905,7 +1919,7 @@ else
 
        
         
-       $.post("proses_edit_bayar_jual_ri.php",{total2:total2,sisa_pembayaran:sisa_pembayaran,kredit:kredit,no_rm:no_rm,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,cara_bayar:cara_bayar,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,total_hpp:total_hpp,sales:sales,kode_gudang:kode_gudang,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,nama_pasien:nama_pasien,no_reg:no_reg,dokter:dokter,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,penjamin:penjamin,bed:bed,group_bed:group_bed,biaya_admin:biaya_admin,no_faktur:'<?php echo $no_faktur; ?>',potongan_persen:potongan_persen},function(info) {
+       $.post("proses_edit_bayar_jual_ri.php",{total2:total2,sisa_pembayaran:sisa_pembayaran,kredit:kredit,no_rm:no_rm,tanggal:tanggal,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,cara_bayar:cara_bayar,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,total_hpp:total_hpp,sales:sales,kode_gudang:kode_gudang,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,nama_pasien:nama_pasien,no_reg:no_reg,dokter:dokter,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,penjamin:penjamin,bed:bed,group_bed:group_bed,biaya_admin:biaya_admin,no_faktur:'<?php echo $no_faktur; ?>',potongan_persen:potongan_persen},function(info) {
 
 if (info == 1)
 {
@@ -1981,6 +1995,7 @@ else
         var no_rm = no_rm.substr(0, no_rm.indexOf(' |')); 
         var no_reg = $("#no_reg").val();
         var tanggal_jt = $("#tanggal_jt").val();
+        var tanggal = $("#tanggal").val();
         var total = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah( $("#total1").val() )))); 
         var total2 = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah( $("#total2").val() )))); 
         var potongan =  bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah( $("#potongan_penjualan").val() ))));
@@ -2034,7 +2049,7 @@ else
   if (data == 1) {
 
 
-       $.post("proses_simpan_bayar_barang_ranap.php",{total2:total2,sisa_pembayaran:sisa_pembayaran,kredit:kredit,no_rm:no_rm,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,cara_bayar:cara_bayar,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,total_hpp:total_hpp,sales:sales,kode_gudang:kode_gudang,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,nama_pasien:nama_pasien,no_reg:no_reg,dokter:dokter,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,penjamin:penjamin,biaya_admin:biaya_admin,dokter_pj:dokter_pj,no_faktur:'<?php echo $no_faktur; ?>'},function(info) {
+       $.post("proses_simpan_bayar_barang_ranap.php",{total2:total2,sisa_pembayaran:sisa_pembayaran,kredit:kredit,no_rm:no_rm,tanggal:tanggal,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,cara_bayar:cara_bayar,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,total_hpp:total_hpp,sales:sales,kode_gudang:kode_gudang,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,nama_pasien:nama_pasien,no_reg:no_reg,dokter:dokter,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,penjamin:penjamin,biaya_admin:biaya_admin,dokter_pj:dokter_pj,no_faktur:'<?php echo $no_faktur; ?>'},function(info) {
 
 if (info == 1)
  {
