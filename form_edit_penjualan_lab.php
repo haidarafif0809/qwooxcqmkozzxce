@@ -1578,7 +1578,7 @@ alert("Silakan Bayar Piutang");
 
    $.post("cek_simpan_subtotal_penjualan.php",{total:total,no_reg:no_reg,no_faktur:no_faktur,tax:tax,potongan:potongan,biaya_adm:biaya_admin},function(data) {
 
-  if (data == "Oke") {
+  if (data == 1) {
 
         $("#piutang").hide();
         $("#batal_penjualan").hide();

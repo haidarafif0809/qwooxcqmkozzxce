@@ -17,6 +17,7 @@ $no_reg = stringdoang($_GET['no_reg']);
 $pasien = $no_rm ."(".$nama.")";
 $pasien_rm = $no_rm;
 $jenis_penjualan = stringdoang($_GET['jenis_penjualan']);
+$rujukan = stringdoang($_GET['rujukan']);
 }
 
 else if (isset($_GET['no_rm']))
@@ -29,6 +30,7 @@ $no_reg = '';
 $pasien = $no_rm ."(".$nama.")";
 $pasien_rm = $no_rm;
 $jenis_penjualan = '';
+$rujukan = '';
 }
 
 else
@@ -41,6 +43,7 @@ $pasien = $nama;
 $pasien_rm = $nama;
 $no_reg = '';
 $jenis_penjualan = '';
+$rujukan = '';
 }
 
 
@@ -130,6 +133,8 @@ $data_rj_ri = mysqli_fetch_array($sum_rj_ri);
   <input  name="nama_pelanggan" type="hidden" style="height:15px;" id="nama_pelanggan" class="form-control" required="" autofocus="" value="Umum" >
   <input  name="kode_pelanggan1" type="text" style="height:15px;" id="kd_pelanggan1" class="form-control" required="" autofocus="" value="<?php echo $pasien; ?>" >
 </div>
+
+<input  name="" type="hidden" style="height:15px;" id="rujukan" class="form-control" required="" autofocus="" value="<?php echo $rujukan; ?>" >
 
   <input  name="nama_pasien" type="hidden" style="height:15px;" id="nama_pasien" class="form-control" required="" autofocus="" value="<?php echo $kel['nama']; ?>" >
   <input  name="nama_gudang" type="hidden" style="height:15px;" id="nama_gudang" class="form-control" required="" autofocus="" value="<?php echo $kel['nama_gudang']; ?>" >
@@ -809,7 +814,6 @@ $data_rj_ri = mysqli_fetch_array($sum_rj_ri);
            <label> Pajak (%)</label>
            <input type="text" name="tax" id="tax" style="height:25px;font-size:15px" value="<?php echo $data_diskon['tax']; ?>" style="height:25px;font-size:15px" class="form-control" autocomplete="off" >
           </div>
-          -->
 
 
           </div>
@@ -1413,7 +1417,6 @@ data = data.replace(/\s+/g, '');
     var kode_barang = kode_barang.substr(0, kode_barang.indexOf('('));
     var nama_barang = $("#nama_barang").val();
     var no_reg = $("#no_reg").val();
-
     var jumlah_barang = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#jumlah_barang").val()))));
     var harga = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#harga_produk").val()))));
     var potongan = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#potongan1").val()))));
@@ -1679,7 +1682,7 @@ if (jumlah_barang == ''){
 <script>
    //perintah javascript yang diambil dari form proses_bayar_beli.php dengan id=form_beli
   $("#penjualan").click(function(){
-
+        var dokter = $("#dokter").val()
         var apoteker = $("#apoteker").val()
         var penjamin = $("#penjamin").val()
         var sisa_pembayaran = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#sisa_pembayaran_penjualan").val()))));
@@ -1757,10 +1760,10 @@ alert("Silakan Bayar Piutang");
 
  $.post("cek_subtotal_lab.php",{total:total,potongan:potongan,tax:tax,biaya_admin:biaya_admin},function(data) {
 
-  if (data == "Oke") {
+  if (data == 1) {
 
 
- $.post("proses_bayar_jual_lab.php",{biaya_admin:biaya_admin,total2:total2,sisa_pembayaran:sisa_pembayaran,kredit:kredit,kode_pelanggan:kode_pelanggan,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,cara_bayar:cara_bayar,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,total_hpp:total_hpp,harga:harga,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,apoteker:apoteker,penjamin:penjamin, nama_pelanggan:nama_pelanggan},function(info) {
+ $.post("proses_bayar_jual_lab.php",{biaya_admin:biaya_admin,total2:total2,sisa_pembayaran:sisa_pembayaran,kredit:kredit,kode_pelanggan:kode_pelanggan,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,cara_bayar:cara_bayar,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,total_hpp:total_hpp,harga:harga,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,dokter:dokter,apoteker:apoteker,penjamin:penjamin, nama_pelanggan:nama_pelanggan},function(info) {
 
 
      $("#table-baru").html(info);
@@ -1971,6 +1974,7 @@ alert("Silakan Bayar Piutang");
         var biaya_admin = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#biaya_admin").val()))));
         var apoteker = $("#apoteker").val();
         var penjamin = $("#penjamin").val();
+        var dokter = $("#dokter").val();
         var sisa_pembayaran = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#sisa_pembayaran_penjualan").val()))));
         var kredit = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#kredit").val() )))); 
         
@@ -2038,7 +2042,7 @@ alert("Silakan Bayar Piutang");
   {
 
 
-       $.post("proses_bayar_jual_lab.php",{biaya_admin:biaya_admin,total2:total2,sisa_pembayaran:sisa_pembayaran,kredit:kredit,kode_pelanggan:kode_pelanggan,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,cara_bayar:cara_bayar,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,total_hpp:total_hpp,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,apoteker:apoteker,penjamin:penjamin, nama_pelanggan:nama_pelanggan},function(info) {
+       $.post("proses_bayar_jual_lab.php",{biaya_admin:biaya_admin,total2:total2,sisa_pembayaran:sisa_pembayaran,kredit:kredit,kode_pelanggan:kode_pelanggan,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,cara_bayar:cara_bayar,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,total_hpp:total_hpp,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,apoteker:apoteker,penjamin:penjamin,dokter:dokter, nama_pelanggan:nama_pelanggan},function(info) {
 
      $("#table-baru").html(info);
             var no_faktur = info;

@@ -23,11 +23,11 @@ include 'sanitasi.php';
 
 
 if ($total_akhir == $total_tbs) {
-		echo "Oke";
+		echo 1;
 
 	}
 	else{
-		echo "Zonk";
+		echo 0;
 	}
 
 //Untuk Memutuskan Koneksi Ke Database

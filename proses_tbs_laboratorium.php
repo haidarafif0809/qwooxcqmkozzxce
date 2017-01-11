@@ -7,6 +7,7 @@ $session_id = session_id();
 $tipe = stringdoang($_POST['tipe_barang']);
 $penjamin = stringdoang($_POST['penjamin']);
 $analis = stringdoang($_POST['apoteker']);
+$dokter = stringdoang($_POST['dokter']);
 $no_rm  = stringdoang($_POST['no_rm']);
 $no_reg  = stringdoang($_POST['no_reg']);
 $petugas = $_SESSION['id'];
@@ -117,12 +118,8 @@ $subtotal = $harga * $jumlah - $potongan_jadi;
 
 } 
 
-
-
+////////////////
 if ($no_reg != '') {
- //FEE DOKTER
-
-$dokter = stringdoang($_POST['dokter']);
     $query9 = $db->query("SELECT jumlah_prosentase,jumlah_uang FROM fee_produk WHERE nama_petugas = '$dokter' AND kode_produk = '$kode'");
     $cek9 = mysqli_fetch_array($query9);
     $prosentase = $cek9['jumlah_prosentase'];
@@ -165,7 +162,9 @@ $dokter = stringdoang($_POST['dokter']);
     }// END DOKTER
 }
 
+
 //FEE PETUGAS ANALIS
+
     $query9 = $db->query("SELECT jumlah_prosentase,jumlah_uang FROM fee_produk WHERE nama_petugas = '$analis' AND kode_produk = '$kode'");
     $cek9 = mysqli_fetch_array($query9);
     $prosentase = $cek9['jumlah_prosentase'];
@@ -206,7 +205,7 @@ $dokter = stringdoang($_POST['dokter']);
                 } 
 
     }// END PETUGAS ANALIS
-                         
+
 
 //FEE PETUGAS KASIR
     $query9 = $db->query("SELECT * FROM fee_produk WHERE nama_petugas = '$petugas' AND kode_produk = '$kode'");
@@ -248,7 +247,7 @@ $dokter = stringdoang($_POST['dokter']);
                 {
                 echo "Error: " . $query10. "<br>" . $db->error;
                 } 
-    }// END PETUGAS ANALIS
+    }// END PETUGAS Kasir
 
 
 
