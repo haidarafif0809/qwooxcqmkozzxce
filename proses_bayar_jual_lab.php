@@ -178,14 +178,26 @@ $id_kasir = $data_id['id'];
     }
 // end fee petugas kasir
 
-    $query = $db->query("SELECT * FROM tbs_penjualan WHERE session_id = '$session_id' AND no_reg = '' AND lab = 'Laboratorium'");
+  $query = $db->query("SELECT * FROM tbs_penjualan WHERE session_id = '$session_id' AND no_reg = '' AND lab = 'Laboratorium'");
     while ($data = mysqli_fetch_array($query))
       {
         
+$cek_id_pemeriksaan = $db->query("SELECT id FROM jasa_lab WHERE kode_lab = '$data[kode_barang]'");
+$out = mysqli_fetch_array($cek_id_pemeriksaan);
+$id_pemeriksaan = $out['id'];
+
+$cek_hasil = $db->query("SELECT normal_lk,normal_pr FROM setup_hasil WHERE nama_pemeriksaan = '$id_pemeriksaan'");
+$out_hasil = mysqli_fetch_array($cek_hasil);
+$hasil_pria = $out_hasil['normal_lk'];
+$hasil_wanita = $out_hasil['normal_pr'];
+
+$insert_on = $db->query("INSERT INTO hasil_lab (no_faktur, id_pemeriksaan, nilai_normal_lk, nilai_normal_pr, status_pasien,
+nama_pemeriksaan, nama_pasien, status,no_rm) VALUES ('$no_faktur','$id_pemeriksaan','$hasil_pria','$hasil_wanita','Umum',
+'$data[nama_barang]','$nama_pelanggan','Unfinish','$no_rm')");
     
         $query2 = "INSERT INTO detail_penjualan (no_faktur,no_rm, tanggal, jam, kode_barang, nama_barang, jumlah_barang, harga, subtotal, potongan, tax, sisa,tipe_produk,lab) VALUES ('$no_faktur','$no_rm', '$tanggal_sekarang', '$jam_sekarang', '$data[kode_barang]','$data[nama_barang]','$data[jumlah_barang]','$data[harga]','$data[subtotal]','$data[potongan]','$data[tax]', '$data[jumlah_barang]','$data[tipe_barang]','$data[lab]')";
 
-        if ($db->query($query2) === TRUE) {
+        if ($db->query($query2) === TRUE){
         } 
 
         else {
