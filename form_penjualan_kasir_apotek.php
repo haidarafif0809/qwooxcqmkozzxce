@@ -479,7 +479,7 @@ $user = $_SESSION['nama'];
                     echo "<td></td>";
                   }
 
-              if ($otoritas_tombol['hapus_produk_apotek'] > 0) {
+              if ($otoritas_tombol['edit_produk_apotek'] > 0) {
 
                 echo"<td style='font-size:15px' align='right' class='edit-jumlah' data-id='".$data1['id']."'><span id='text-jumlah-".$data1['id']."'>". $data1['jumlah_barang'] ."</span> <input type='hidden' id='input-jumlah-".$data1['id']."' value='".$data1['jumlah_barang']."' class='input_jumlah' data-id='".$data1['id']."' autofocus='' data-kode='".$data1['kode_barang']."' data-tipe='".$data1['tipe_barang']."' data-harga='".$data1['harga']."' data-satuan='".$data1['satuan']."' data-tipe='".$data1['tipe_barang']."' > </td>";
               }

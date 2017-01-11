@@ -11,6 +11,9 @@ include 'sanitasi.php';
 // menampilkan seluruh data yang ada pada tabel penjualan yang terdapt pada DB
  $perintah = $db->query("SELECT * FROM penjualan");
 
+$pilih_akses_tombol = $db->query("SELECT * FROM otoritas_penjualan_apotek WHERE id_otoritas = '$_SESSION[otoritas_id]' ");
+$otoritas_tombol = mysqli_fetch_array($pilih_akses_tombol);
+
 
 $session_id = session_id();
 $user = $_SESSION['nama'];
@@ -42,6 +45,7 @@ $nama_gudang = $da['nama_gudang'];
     $no_resep = $ambil_tanggal['no_resep'];
     $resep_dokter = $ambil_tanggal['resep_dokter'];
     $ppn = $ambil_tanggal['ppn'];
+    $tanggal = $ambil_tanggal['tanggal'];
 
 
 $nama_kasir = $db->query("SELECT nama FROM user WHERE id = '$ambil_tanggal[sales]' ");
@@ -91,7 +95,7 @@ $level_harga = $data_level['harga'];
 
 <script>
   $(function() {
-    $( "#tanggal_jt" ).datepicker({dateFormat: "yy-mm-dd"});
+    $( ".tanggal" ).datepicker({dateFormat: "yy-mm-dd"});
   });
   </script>
 
@@ -270,6 +274,11 @@ $level_harga = $data_level['harga'];
 <div class="row">
 
 <div class="col-sm-2 form-group">
+    <label> Tanggal </label><br>
+  <input style="height: 20px;" name="tanggal" type="text" style="height:15px;" id="tanggal" class="form-control tanggal" value="<?php echo $tanggal; ?>" required="">
+</div>
+
+<div class="col-sm-2 form-group">
     <label> No. Resep Dokter </label><br>
   <input style="height: 20px;" name="no_resep_dokter" type="text" style="height:15px;" id="no_resep_dokter" class="form-control" value="<?php echo $no_resep; ?>" required="">
 </div>
@@ -323,9 +332,9 @@ $level_harga = $data_level['harga'];
           </select>
 </div>
 
-<div class="col-sm-3">
+<div class="col-sm-2">
 <br>
-  <button type="button" id="lay" class="btn btn-primary" ><i class='fa  fa-list'>&nbsp;Lihat Layanan</i>  </button> 
+  <button type="button" id="lay" class="btn btn-primary" ><i class='fa  fa-list'>&nbsp; Layanan</i>  </button> 
 </div>
 
 </div>
@@ -465,6 +474,7 @@ $level_harga = $data_level['harga'];
 </div><!-- end of modal edit data  -->
 
 <!-- membuat form prosestbspenjual -->
+<?php if ($otoritas_tombol['tombol_submit_apotek'] > 0):?>  
 
 <form class="form"  role="form" id="formtambahproduk">
 <br>
@@ -527,6 +537,9 @@ $level_harga = $data_level['harga'];
 
 
 </form> <!-- tag penutup form -->
+
+
+<?php endif ?>
 
                 <!--untuk mendefinisikan sebuah bagian dalam dokumen-->  
                 <span id='tes'></span>            
@@ -591,12 +604,19 @@ $row_retur = mysqli_num_rows($pilih);
 $pilih = $db->query("SELECT no_faktur_penjualan FROM detail_pembayaran_piutang WHERE no_faktur_penjualan = '$data1[no_faktur]'");
 $row_piutang = mysqli_num_rows($pilih);
 
-if ($row_retur > 0 || $row_piutang > 0) {
+if ($otoritas_tombol['edit_produk_apotek'] > 0) {
+
+            if ($row_retur > 0 || $row_piutang > 0) {
                   echo"<td style='font-size:15px' align='right' class='edit-jumlah-alert' data-id='".$data1['id']."' data-faktur='".$data1['no_faktur']."'  data-kode='".$data1['kode_barang']."'>". $data1['jumlah_barang'] ."</td>";  
-}
-else
-{
+            }
+            else
+            {
                 echo"<td style='font-size:15px' align='right' class='edit-jumlah' data-id='".$data1['id']."'><span id='text-jumlah-".$data1['id']."'>". $data1['jumlah_barang'] ."</span> <input type='hidden' id='input-jumlah-".$data1['id']."' value='".$data1['jumlah_barang']."' class='input_jumlah' data-id='".$data1['id']."' autofocus='' data-kode='".$data1['kode_barang']."' data-tipe='".$data1['tipe_barang']."' data-harga='".$data1['harga']."' data-satuan='".$data1['satuan']."' data-tipe='".$data1['tipe_barang']."' > </td>";
+            }
+
+}
+else{
+          echo"<td style='font-size:15px' align='right' class='tidak_punya_otoritas' data-id='".$data1['id']."'><span id='text-jumlah-".$data1['id']."'>". $data1['jumlah_barang'] ."</span> <input type='hidden' id='input-jumlah-".$data1['id']."' value='".$data1['jumlah_barang']."' class='input_jumlah' data-id='".$data1['id']."' autofocus='' data-kode='".$data1['kode_barang']."' data-tipe='".$data1['tipe_barang']."' data-harga='".$data1['harga']."' data-satuan='".$data1['satuan']."' data-tipe='".$data1['tipe_barang']."' > </td>";
 }
 
 
@@ -605,14 +625,22 @@ else
                 <td style='font-size:15px' align='right'><span id='text-subtotal-".$data1['id']."'>". rp($data1['subtotal']) ."</span></td>
                 <td style='font-size:15px' align='right'><span id='text-potongan-".$data1['id']."'>". rp($data1['potongan']) ."</span></td>
                 <td style='font-size:15px' align='right'><span id='text-tax-".$data1['id']."'>". rp($data1['tax']) ."</span></td>";
-if ($row_retur > 0 || $row_piutang > 0) {
 
-        echo "<td> <button class='btn btn-danger btn-sm btn-alert-hapus' id='btn-hapus-".$data1['id']."' data-id='".$data1['id']."' data-subtotal='".$data1['subtotal']."' data-faktur='".$data1['no_faktur']."' data-kode='".$data1['kode_barang']."'><span class='glyphicon glyphicon-trash'></span> Hapus </button></td>";   
+if ($otoritas_tombol['hapus_produk_apotek'] > 0) {
+
+            if ($row_retur > 0 || $row_piutang > 0) {
+
+                echo "<td> <button class='btn btn-danger btn-sm btn-alert-hapus' id='btn-hapus-".$data1['id']."' data-id='".$data1['id']."' data-subtotal='".$data1['subtotal']."' data-faktur='".$data1['no_faktur']."' data-kode='".$data1['kode_barang']."'><span class='glyphicon glyphicon-trash'></span> Hapus </button></td>";   
 
             }
             else
             {
                echo "<td style='font-size:15px'> <button class='btn btn-danger btn-sm btn-hapus-tbs' id='btn-hapus-id-".$data1['id']."' data-id='". $data1['id'] ."' data-kode-barang='". $data1['kode_barang'] ."' data-barang='". $data1['nama_barang'] ."' data-subtotal='". $data1['subtotal'] ."'>Hapus</button> </td> ";
+            }
+
+}
+else{
+            echo "<td style='font-size:15px; color:red'> Tidak Ada Otoritas </td>";
 }
                 echo"</tr>";
 
@@ -874,22 +902,25 @@ if ($row_retur > 0 || $row_piutang > 0) {
 
           <div class="row">
  
-            
+        <?php if ($otoritas_tombol['tombol_bayar_apotek'] > 0):?> 
           <button type="submit" id="penjualan" class="btn btn-info" style="font-size:15px">Bayar (F8)</button>
-          <a class="btn btn-info" href="lap_penjualan.php" id="transaksi_baru" style="display: none">  Kembali </a>
-          
-        
+        <?php endif ?>
 
-          
-            
+          <a class="btn btn-info" href="lap_penjualan.php" id="transaksi_baru" style="display: none">  Kembali </a>
+
+        <?php if ($otoritas_tombol['tombol_piutang_apotek'] > 0):?> 
           <button type="submit" id="piutang" class="btn btn-warning" style="font-size:15px">Piutang (F9)</button>
+        <?php endif ?>
+        
+        <?php if ($otoritas_tombol['tombol_batal_apotek'] > 0):?>   
+          <a href='batal_penjualan_edit_apotek.php?no_faktur=<?php echo $no_faktur; ?>' type="submit" id="batal_penjualan" class="btn btn-danger" style="font-size:15px">  Batal (Ctrl + B)  </a>
+        <?php endif ?>
 
           <a href='cetak_penjualan_piutang.php' id="cetak_piutang" style="display: none;" class="btn btn-success" target="blank">Cetak Piutang  </a>
 
      
           <a href='cetak_penjualan_tunai.php' id="cetak_tunai" style="display: none;" class="btn btn-primary" target="blank"> Cetak Tunai  </a>
 
-          <a href='batal_penjualan_edit_apotek.php?no_faktur=<?php echo $no_faktur; ?>' type="submit" id="batal_penjualan" class="btn btn-danger" style="font-size:15px">  Batal (Ctrl + B)  </a>
 
           
 
@@ -1582,6 +1613,7 @@ if (ppn == 'Exclude') {
         var ber_stok = $("#ber_stok").val();
         var ppn_input = $("#ppn_input").val();
         var ppn = $("#ppn").val();
+        var tanggal = $("#tanggal").val();
         var biaya_admin = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#biaya_adm").val()))));
         if (biaya_admin == '') {
           biaya_admin = 0;
@@ -1591,6 +1623,7 @@ if (ppn == 'Exclude') {
         var sisa = pembayaran - total;
         
         var sisa_kredit = total - pembayaran;
+
 
  if (sisa_pembayaran < 0)
  {
@@ -1645,28 +1678,36 @@ alert("Anda Belum Melakukan Pemesanan");
   $("#piutang").hide();
   $("#transaksi_baru").show();
 
- $.post("proses_bayar_jual_edit_apotek.php",{id_kasir:id_kasir,no_faktur:no_faktur,biaya_admin:biaya_admin,total2:total2,sisa_pembayaran:sisa_pembayaran,kredit:kredit,kode_pelanggan:kode_pelanggan,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,cara_bayar:cara_bayar,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,total_hpp:total_hpp,harga:harga,kode_gudang:kode_gudang,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,apoteker:apoteker,no_resep_dokter:no_resep_dokter,resep_dokter:resep_dokter,penjamin:penjamin},function(info) {
 
+ $.post("proses_bayar_jual_edit_apotek.php",{id_kasir:id_kasir,no_faktur:no_faktur,biaya_admin:biaya_admin,total2:total2,sisa_pembayaran:sisa_pembayaran,kredit:kredit,kode_pelanggan:kode_pelanggan,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,cara_bayar:cara_bayar,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,total_hpp:total_hpp,harga:harga,kode_gudang:kode_gudang,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,apoteker:apoteker,no_resep_dokter:no_resep_dokter,resep_dokter:resep_dokter,penjamin:penjamin,tanggal:tanggal},function(info) {
 
-     $("#table-baru").html(info);
-     var no_faktur = info;
-     $("#cetak_tunai").attr('href', 'cetak_penjualan_tunai.php?no_faktur='+no_faktur+'');
-     $("#cetak_tunai_besar").attr('href', 'cetak_besar_apotek.php?no_faktur='+no_faktur+'');
-     $("#alert_berhasil").show();
-     $("#pembayaran_penjualan").val('');
-     $("#sisa_pembayaran_penjualan").val('');
-     $("#kredit").val('');
-     $("#apoteker").val('')
-     $("#no_resep_dokter").val('')
-     $("#resep_dokter").val('')
-     $("#penjamin").val('')
-     $("#apoteker").val('')
-     $("#no_resep_dokter").val('')
-     $("#resep_dokter").val('')
-     $("#penjamin").val('')
-     $("#cetak_tunai").show();
-     $("#cetak_tunai_besar").show('');
-    
+  if (info == 1) {
+         alert("Maaf Subtotal Penjualan Tidak Sesuai, Silakan Tunggu Sebentar!");       
+        window.location.href="form_edit_penjualan_apotek.php?no_rm="+kode_pelanggan+"&kode_gudang="+kode_gudang+"&no_faktur=<?php echo $no_faktur; ?>";
+  }
+  else{
+
+         $("#table-baru").html(info);
+         var no_faktur = info;
+         $("#cetak_tunai").attr('href', 'cetak_penjualan_tunai.php?no_faktur='+no_faktur+'');
+         $("#cetak_tunai_besar").attr('href', 'cetak_besar_apotek.php?no_faktur='+no_faktur+'');
+         $("#alert_berhasil").show();
+         $("#pembayaran_penjualan").val('');
+         $("#sisa_pembayaran_penjualan").val('');
+         $("#kredit").val('');
+         $("#apoteker").val('')
+         $("#no_resep_dokter").val('')
+         $("#resep_dokter").val('')
+         $("#penjamin").val('')
+         $("#apoteker").val('')
+         $("#no_resep_dokter").val('')
+         $("#resep_dokter").val('')
+         $("#penjamin").val('')
+         $("#cetak_tunai").show();
+         $("#cetak_tunai_besar").show('');
+        
+  }
+
        
    });
 
@@ -1781,7 +1822,7 @@ else
         $("#penjualan").hide();
         $("#transaksi_baru").show();
         
-       $.post("proses_bayar_jual_edit_apotek.php",{id_kasir:id_kasir,no_faktur:no_faktur,biaya_admin:biaya_admin,total2:total2,sisa_pembayaran:sisa_pembayaran,kredit:kredit,kode_pelanggan:kode_pelanggan,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,cara_bayar:cara_bayar,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,total_hpp:total_hpp,kode_gudang:kode_gudang,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,apoteker:apoteker,no_resep_dokter:no_resep_dokter,resep_dokter:resep_dokter,penjamin:penjamin},function(info) 
+       $.post("proses_bayar_jual_edit_apotek.php",{id_kasir:id_kasir,no_faktur:no_faktur,biaya_admin:biaya_admin,total2:total2,sisa_pembayaran:sisa_pembayaran,kredit:kredit,kode_pelanggan:kode_pelanggan,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,cara_bayar:cara_bayar,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,total_hpp:total_hpp,kode_gudang:kode_gudang,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,apoteker:apoteker,no_resep_dokter:no_resep_dokter,resep_dokter:resep_dokter,penjamin:penjamin,tanggal:tanggal},function(info) 
        {
 
           $("#table-baru").html(info);
@@ -2831,7 +2872,11 @@ if (pot_fakt_per == 0) {
   });
 </script>
 
-
+<script type="text/javascript">
+  $(document).on('click', '.tidak_punya_otoritas', function (e) {
+    alert("Anda Tidak Punya Otoritas Untuk Edit Jumlah Produk !!");
+  });
+</script>
 
 <!-- SHORTCUT -->
 
