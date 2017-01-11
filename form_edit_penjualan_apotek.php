@@ -156,7 +156,7 @@ $level_harga = $data_level['harga'];
   <h3> EDIT PENJUALAN APOTEK</h3>
 <div class="row">
 
-<div class="col-sm-8">
+<div class="col-xs-8">
 
 
  <!-- membuat form menjadi beberpa bagian -->
@@ -171,12 +171,12 @@ $level_harga = $data_level['harga'];
   
 <div class="row">
 
-<div class="col-sm-2 form-group">
+<div class="col-xs-2 form-group">
     <label> No. Faktur </label><br>
   <input style="height: 20px;" name="kode_pelanggan" readonly="" type="text" style="height:15px;" id="no_faktur" class="form-control" required="" autofocus="" value="<?php echo $no_faktur; ?>" >
 </div>
 
-<div class="col-sm-2 form-group">
+<div class="col-xs-2 form-group">
     <label> No. RM / Pasien </label><br>
     <?php if ($rows > 0): ?>
 
@@ -191,14 +191,14 @@ $level_harga = $data_level['harga'];
 
 
 
-<div class="col-sm-2 form-group">
+<div class="col-xs-2 form-group">
     <label> Petugas Kasir </label><br>
   <input style="height: 20px;" name="tampil_kasir" type="text" style="height:15px;" id="tampil_kasir" class="form-control" required="" autofocus="" value="<?php echo $nama_kasir; ?>" readonly="">
 
   <input style="height: 20px; display: none" name="id_kasir" type="text" style="height:15px;" id="id_kasir" class="form-control" required="" autofocus="" value="<?php echo $ambil_tanggal['sales']; ?>" readonly="">
 </div>
 
-    <div class="form-group col-sm-2">
+    <div class="form-group col-xs-2">
        <label for="penjamin">Petugas Farmasi / Analis</label><br>
          <select type="text" class="form-control chosen" id="apoteker" autocomplete="off">
         
@@ -226,7 +226,7 @@ $level_harga = $data_level['harga'];
 
     
 
-     <div class="form-group  col-sm-2">
+     <div class="form-group  col-xs-2">
           <label> Gudang </label><br>
           
           <select name="kode_gudang" id="kode_gudang" class="form-control chosen" required="" >
@@ -249,7 +249,7 @@ $level_harga = $data_level['harga'];
       </div>
 
 
-  <div class="form-group col-sm-2">
+  <div class="form-group col-xs-2">
     <label for="email">Penjamin:</label>
     <select class="form-control chosen" id="penjamin" name="penjamin" required="">
       <?php 
@@ -273,22 +273,22 @@ $level_harga = $data_level['harga'];
 
 <div class="row">
 
-<div class="col-sm-2 form-group">
+<div class="col-xs-2 form-group">
     <label> Tanggal </label><br>
   <input style="height: 20px;" name="tanggal" type="text" style="height:15px;" id="tanggal" class="form-control tanggal" value="<?php echo $tanggal; ?>" required="">
 </div>
 
-<div class="col-sm-2 form-group">
+<div class="col-xs-2 form-group">
     <label> No. Resep Dokter </label><br>
   <input style="height: 20px;" name="no_resep_dokter" type="text" style="height:15px;" id="no_resep_dokter" class="form-control" value="<?php echo $no_resep; ?>" required="">
 </div>
 
-<div class="col-sm-2 form-group">
+<div class="col-xs-2 form-group">
     <label>Resep Dokter </label><br>
   <input style="height: 20px;" name="resep_dokter" type="text" style="height:15px;" id="resep_dokter" value="<?php echo $resep_dokter; ?>" class="form-control" required="">
 </div>
 
-    <div class="form-group col-sm-2">
+    <div class="form-group col-xs-2">
    <label> Level Harga </label><br>
   <select style="font-size:15px; height:35px" type="text" name="level_harga" id="level_harga" class="form-control" >
         <option value="<?php echo $level_harga;?>"> 
@@ -322,7 +322,7 @@ $level_harga = $data_level['harga'];
       </div>
 
 
-<div class="col-sm-2">
+<div class="col-xs-2">
           <label>PPN</label>
           <select style="font-size:15px; height:35px" name="ppn" id="ppn" class="form-control">            
             <option value="<?php echo $ppn; ?>"><?php echo $ppn; ?></option>  
@@ -332,7 +332,7 @@ $level_harga = $data_level['harga'];
           </select>
 </div>
 
-<div class="col-sm-2">
+<div class="col-xs-2">
 <br>
   <button type="button" id="lay" class="btn btn-primary" ><i class='fa  fa-list'>&nbsp; Layanan</i>  </button> 
 </div>
@@ -480,7 +480,7 @@ $level_harga = $data_level['harga'];
 <br>
 <div class="row">
 
-  <div class="col-sm-3">
+  <div class="col-xs-3">
 
     <input type="text" style="height:15px" class="form-control" name="kode_barang" autocomplete="off" id="kode_barang" placeholder="Kode Barang" >
 
@@ -488,11 +488,11 @@ $level_harga = $data_level['harga'];
 
     <input type="hidden" class="form-control" name="nama_barang" autocomplete="off" id="nama_barang" placeholder="nama" >
 
-  <div class="col-sm-2">
+  <div class="col-xs-2">
     <input style="height:15px;" type="text" class="form-control" name="jumlah_barang" autocomplete="off" id="jumlah_barang" placeholder="Jumlah" >
   </div>
 
-  <div class="col-sm-2">
+  <div class="col-xs-2">
           
           <select style="font-size:15px; height:35px" type="text" name="satuan_konversi" id="satuan_konversi" class="form-control" >
           
@@ -511,11 +511,11 @@ $level_harga = $data_level['harga'];
   </div>
 
 
-   <div class="col-sm-2">
+   <div class="col-xs-2">
     <input style="height:15px;" type="text" class="form-control" name="potongan" autocomplete="off" id="potongan1" data-toggle="tooltip" data-placement="top" title="Jika Ingin Potongan Dalam Bentuk Persen (%), input : 10%" placeholder="Potongan">
   </div>
 
-   <div class="col-sm-1">
+   <div class="col-xs-1">
     <input style="height:15px;" type="text" class="form-control" name="tax" autocomplete="off" id="tax1" placeholder="Tax%" >
   </div>
 
@@ -661,7 +661,7 @@ else{
 
 
 
-<div class="col-sm-4">
+<div class="col-xs-4">
 
 
 
@@ -680,14 +680,14 @@ else{
       
 
         <div class="row">
-            <div class="col-sm-6">
+            <div class="col-xs-6">
            
            <label style="font-size:15px"> <b> Subtotal </b></label><br>
            <input style="height:15px;font-size:15px" type="text" name="total" id="total2" class="form-control" placeholder="Total" readonly="" >
            
            </div>
 
-          <div class="col-sm-6">
+          <div class="col-xs-6">
                 <label> Biaya Admin</label><br>
               <input type="text" name="biaya_adm" style="height:15px;font-size:15px" id="biaya_adm" value="<?php echo $biaya_adm ?>" class="form-control" placeholder="Biaya Admin" autocomplete="off"  onkeydown="return numbersonly(this, event);" onkeyup="javascript:tandaPemisahTitik(this);">
             
@@ -748,13 +748,13 @@ else{
          $total_akhir1 = $hitung_total + round($hitung_tax) + $biaya_adm;
 
             ?>
-          <div class="col-sm-6">
+          <div class="col-xs-6">
             <label> Diskon ( Rp )</label><br>
             <input style="height:15px;font-size:15px" type="text" name="potongan" id="potongan_penjualan" value="<?php echo rp($total_potongan); ?>" class="form-control" placeholder="" autocomplete="off"  onkeydown="return numbersonly(this, event);" onkeyup="javascript:tandaPemisahTitik(this);">
 
           </div>
 
-          <div class="col-sm-6">
+          <div class="col-xs-6">
             
           <label> Diskon ( % )</label><br>
           <input style="height:15px;font-size:15px" type="text" name="potongan_persen" id="potongan_persen" value="<?php echo round($potongan) ;?>" class="form-control" placeholder="" autocomplete="off" >
@@ -767,12 +767,12 @@ else{
 
 <div class="row">
 
-          <div class="form-group col-sm-6">
+          <div class="form-group col-xs-6">
           <label> Tanggal Jatuh Tempo </label><br>
           <input type="text" name="tanggal_jt" id="tanggal_jt" style="height:15px;font-size:15px"  value="" class="form-control tanggal" >
           </div>
 
-          <div class="form-group  col-sm-6">
+          <div class="form-group  col-xs-6">
         <label style="font-size:15px"> <b> Cara Bayar (F4) </b> </label><br>
           <select type="text" name="cara_bayar" id="carabayar1" class="form-control" required=""  style="font-size: 16px" >
           <option value=""> Silahkan Pilih </option>
@@ -814,13 +814,13 @@ else{
       <div class="form-group">
         <div class="row">
 
-     <div class="form-group  col-sm-6">  
+     <div class="form-group  col-xs-6">  
 
           <label style="font-size:15px"> <b> Total Akhir </b></label><br>
            <b><input type="text" name="total" id="total1" class="form-control" style="height: 25px; width:90%; font-size:20px;" placeholder="Total" readonly="" value="<?php echo rp($total_akhir1); ?>"></b> 
      </div> 
 
-      <div class="form-group  col-sm-6">
+      <div class="form-group  col-xs-6">
 
      <label style="font-size:15px">  <b> Pembayaran (F7)</b> </label><br>
            <b><input type="text" name="pembayaran" id="pembayaran_penjualan" style="height: 20px; width:90%; font-size:20px;" autocomplete="off" class="form-control"   style="font-size: 20px"  onkeydown="return numbersonly(this, event);" onkeyup="javascript:tandaPemisahTitik(this);"></b>
@@ -835,14 +835,14 @@ else{
 
 <div class="row">
 
-        <div class="col-sm-6">
+        <div class="col-xs-6">
 
           <label> Pembayaran Awal </label><br>
           <input type="text" name="pembayaran" id="pembayaran_awal" style="height: 15px; width:90%;" autocomplete="off" class="form-control" readonly="" value="<?php echo rp($pembayaran_awal); ?>">
 
         </div>
 
-          <div class="col-sm-6">
+          <div class="col-xs-6">
           <label> Kembalian </label><br>
           <b><input type="text" name="sisa_pembayaran" id="sisa_pembayaran_penjualan" style="height:15px;font-size:15px" class="form-control"  readonly="" required=""  style="font-size: 20px" ></b>
           </div>
@@ -854,12 +854,12 @@ else{
           
 
           
-          <div class="col-sm-6">
+          <div class="col-xs-6">
           <label> Kredit </label><br>
           <b><input type="text" name="kredit" id="kredit" value="<?php echo rp($nilai_kredit); ?>" class="form-control" style="height:15px;font-size:15px"  readonly="" required="" ></b>
           </div>
 
-          <div class="col-sm-6">
+          <div class="col-xs-6">
           <label> Keterangan </label><br>
           <textarea type="text" name="keterangan" id="keterangan" class="form-control"> 
           </textarea>

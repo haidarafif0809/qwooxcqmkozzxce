@@ -26,6 +26,9 @@ session_start();
  $tipe_produk = stringdoang($_POST['ber_stok']);
  $ppn = stringdoang($_POST['ppn']);
 
+$pilih_akses_tombol = $db->query("SELECT * FROM otoritas_penjualan_ugd WHERE id_otoritas = '$_SESSION[otoritas_id]' ");
+$otoritas_tombol = mysqli_fetch_array($pilih_akses_tombol);
+
 $select_produk = $db->query("SELECT nama_barang FROM barang WHERE kode_barang = '$kode' ");
 $data_produk = mysqli_fetch_array($select_produk);
 
@@ -579,18 +582,30 @@ $insert2_petugas = "INSERT INTO tbs_fee_produk (no_reg,session_id,no_rm,nama_pet
                   }
 
 
+if ($otoritas_tombol['edit_produk_ugd'] > 0) {
+
                 echo "<td style='font-size:15px' align='right' class='edit-jumlah' data-id='".$data1['id']."'><span id='text-jumlah-".$data1['id']."'>". $data1['jumlah_barang'] ."</span> <input type='hidden' id='input-jumlah-".$data1['id']."' value='".$data1['jumlah_barang']."' class='input_jumlah' data-id='".$data1['id']."' autofocus='' data-kode='".$data1['kode_barang']."' data-harga='".$data1['harga']."' data-tipe='".$data1['tipe_barang']."' data-satuan='".$data1['satuan']."' > </td>
+                <td style='font-size:15px'>". $data1['nama'] ."</td>";
+}
+else{
+                echo "<td style='font-size:15px' align='right' class='tidak_punya_otoritas' data-id='".$data1['id']."'><span id='text-jumlah-".$data1['id']."'>". $data1['jumlah_barang'] ."</span> <input type='hidden' id='input-jumlah-".$data1['id']."' value='".$data1['jumlah_barang']."' class='input_jumlah' data-id='".$data1['id']."' autofocus='' data-kode='".$data1['kode_barang']."' data-harga='".$data1['harga']."' data-tipe='".$data1['tipe_barang']."' data-satuan='".$data1['satuan']."' > </td>
+                <td style='font-size:15px'>". $data1['nama'] ."</td>";
 
-<td style='font-size:15px'>". $data1['nama'] ."</td>
+}
 
-                <td style='font-size:15px' align='right'>". rp($data1['harga']) ."</td>
+                echo "<td style='font-size:15px' align='right'>". rp($data1['harga']) ."</td>
                 <td style='font-size:15px' align='right'><span id='text-subtotal-".$data1['id']."'>". rp($data1['subtotal']) ."</span></td>
                 <td style='font-size:15px' align='right'><span id='text-potongan-".$data1['id']."'>". rp($data1['potongan']) ."</span></td>
                 <td style='font-size:15px' align='right'><span id='text-tax-".$data1['id']."'>". rp($data1['tax']) ."</span></td>";
 
-               echo "<td style='font-size:15px'> <button class='btn btn-danger btn-sm btn-hapus-tbs' id='hapus-tbs-". $data1['id'] ."' data-id='". $data1['id'] ."' data-kode-barang='". $data1['kode_barang'] ."' data-barang='". $data1['nama_barang'] ."' data-subtotal='". $data1['subtotal'] ."'>Hapus</button> </td> 
+if ($otoritas_tombol['hapus_produk_ugd'] > 0) {
+               echo "<td style='font-size:15px'> <button class='btn btn-danger btn-sm btn-hapus-tbs' id='hapus-tbs-". $data1['id'] ."' data-id='". $data1['id'] ."' data-kode-barang='". $data1['kode_barang'] ."' data-barang='". $data1['nama_barang'] ."' data-subtotal='". $data1['subtotal'] ."'>Hapus</button> </td>";
+}
+else{
+                echo "<td style='font-size:15px; color:red'> Tidak Ada Otoritas </td>";
+}
 
-                </tr>";
+                echo "</tr>";
                  //Untuk Memutuskan Koneksi Ke Database
           mysqli_close($db); 
 

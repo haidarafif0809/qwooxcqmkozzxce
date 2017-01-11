@@ -70,7 +70,7 @@ $user = $_SESSION['nama'];
   <h3> FORM PENJUALAN APOTEK</h3>
 <div class="row">
 
-<div class="col-sm-8">
+<div class="col-xs-8">
 
 
  <!-- membuat form menjadi beberpa bagian -->
@@ -85,18 +85,18 @@ $user = $_SESSION['nama'];
 
 <div class="row">
 
-<div class="col-sm-2 form-group">
+<div class="col-xs-2 form-group">
     <label> No. RM / Pasien </label><br>
   <input style="height: 20px;" name="kode_pelanggan" type="text" style="height:15px;" id="kd_pelanggan" class="form-control" required="" autofocus="" value="Umum" >
 </div>
 
 
-<div class="col-sm-2 form-group">
+<div class="col-xs-2 form-group">
     <label> Petugas Kasir </label><br>
   <input style="height: 20px;" name="kode_pelanggan" type="text" style="height:15px;" id="petugas_kasir" class="form-control" required="" autofocus="" value="<?php echo $user; ?>" readonly="">
 </div>
 
-    <div class="form-group col-sm-3">
+    <div class="form-group col-xs-3">
        <label for="penjamin">Petugas Farmasi / Analis</label><br>
          <select type="text" class="form-control chosen" id="apoteker" autocomplete="off">
         
@@ -124,7 +124,7 @@ $user = $_SESSION['nama'];
 
     
 
-<div class="col-sm-2">
+<div class="col-xs-2">
           <label> Gudang </label><br>
           
           <select name="kode_gudang" id="kode_gudang" class="form-control chosen" required="" >
@@ -156,7 +156,7 @@ $user = $_SESSION['nama'];
           </select>
 </div>
 
-  <div class="form-group col-sm-2">
+  <div class="form-group col-xs-2">
     <label for="email">Penjamin:</label>
     <select class="form-control chosen" id="penjamin" name="penjamin" required="">
       <?php 
@@ -175,17 +175,17 @@ $user = $_SESSION['nama'];
 <div class="row">
 
 
-<div class="col-sm-2 form-group">
+<div class="col-xs-2 form-group">
     <label> No.Resep Dokter </label><br>
   <input style="height: 20px;" name="no_resep_dokter" type="text" style="height:15px;" id="no_resep_dokter" class="form-control" >
 </div>
 
-<div class="col-sm-2 form-group">
+<div class="col-xs-2 form-group">
     <label>Resep Dokter </label><br>
   <input style="height: 20px;" name="resep_dokter" type="text" style="height:15px;" id="resep_dokter" class="form-control" >
 </div>
 
-<div class="col-sm-2">
+<div class="col-xs-2">
     <label> Level Harga </label><br>
   <select style="font-size:15px; height:35px" type="text" name="level_harga" id="level_harga" class="form-control" required="" >
   <option value="harga_1">Level 1</option>
@@ -200,7 +200,7 @@ $user = $_SESSION['nama'];
     </div>
 
 
-<div class="col-sm-2">
+<div class="col-xs-2">
           <label>PPN</label>
           <select style="font-size:15px; height:35px" name="ppn" id="ppn" class="form-control">
             <option value="Include">Include</option>  
@@ -211,7 +211,7 @@ $user = $_SESSION['nama'];
 
 
 
-<div class="col-sm-3">
+<div class="col-xs-3">
 <br>
   <button type="button" id="lay" class="btn btn-primary" ><i class='fa  fa-list'></i>&nbsp;Lihat Layanan  </button> 
 </div>
@@ -360,7 +360,7 @@ $user = $_SESSION['nama'];
 <br>
 <div class="row">
 
-  <div class="col-sm-3">
+  <div class="col-xs-3">
 
     <input type="text" style="height:15px" class="form-control" name="kode_barang" autocomplete="off" id="kode_barang" placeholder="Kode Barang" >
 
@@ -368,11 +368,11 @@ $user = $_SESSION['nama'];
 
     <input type="hidden" class="form-control" name="nama_barang" autocomplete="off" id="nama_barang" placeholder="nama" >
 
-  <div class="col-sm-2">
+  <div class="col-xs-2">
     <input style="height:15px;" type="text" class="form-control" name="jumlah_barang" autocomplete="off" onkeydown="return numbersonly(this, event);" id="jumlah_barang" placeholder="Jumlah" >
   </div>
 
-  <div class="col-sm-2">
+  <div class="col-xs-2">
           
           <select style="font-size:15px; height:35px" type="text" name="satuan_konversi" id="satuan_konversi" class="form-control"  required="">
           
@@ -391,11 +391,11 @@ $user = $_SESSION['nama'];
   </div>
 
 
-   <div class="col-sm-2">
+   <div class="col-xs-2">
     <input style="height:15px;" type="text" class="form-control" name="potongan" autocomplete="off" id="potongan1" data-toggle="tooltip" data-placement="top" title="Jika Ingin Potongan Dalam Bentuk Persen (%), input : 10%" placeholder="Potongan">
   </div>
 
-   <div class="col-sm-1">
+   <div class="col-xs-1">
     <input style="height:15px;" type="text" class="form-control" name="tax" autocomplete="off" id="tax1" placeholder="Tax%" >
   </div>
 
@@ -522,7 +522,7 @@ $user = $_SESSION['nama'];
 
 
 
-<div class="col-sm-4">
+<div class="col-xs-4">
 
 
 
@@ -541,7 +541,7 @@ $user = $_SESSION['nama'];
       
 
       <div class="row">
-        <div class="col-sm-6">
+        <div class="col-xs-6">
           
            <label style="font-size:15px"> <b> Subtotal </b></label><br>
       <input style="height:25px;font-size:15px" type="text" name="total" id="total2" class="form-control" placeholder="Total" readonly="" onkeydown="return numbersonly(this, event);" onkeyup="javascript:tandaPemisahTitik(this);">
@@ -554,7 +554,7 @@ $user = $_SESSION['nama'];
 
                   ?>
 
-            <div class="col-sm-6">
+            <div class="col-xs-6">
             <label>Biaya Admin </label><br>
             <input style="height:25px;font-size:15px" name="biaya_admin" type="text" id="biaya_admin"  placeholder="Biaya Admin" onkeydown="return numbersonly(this, event);" onkeyup="javascript:tandaPemisahTitik(this);" autocomplate="off" class="form-control">
           </div>
@@ -567,13 +567,13 @@ $user = $_SESSION['nama'];
           
           <div class="row">
 
-            <div class="col-sm-6">
+            <div class="col-xs-6">
           <label> Diskon ( Rp )</label><br>
           <input type="text" name="potongan" style="height:25px;font-size:15px" id="potongan_penjualan" value="<?php echo $data_diskon['diskon_nominal']; ?>" class="form-control" placeholder="" autocomplete="off"  onkeydown="return numbersonly(this, event);" onkeyup="javascript:tandaPemisahTitik(this);">
             
           </div>
 
-          <div class="col-sm-6">
+          <div class="col-xs-6">
             <label> Diskon ( % )</label><br>
           <input type="text" name="potongan_persen" style="height:25px;font-size:15px" id="potongan_persen" value="<?php echo $data_diskon['diskon_persen']; ?>" class="form-control" placeholder="" autocomplete="off" >
           </div>
@@ -592,13 +592,13 @@ $user = $_SESSION['nama'];
            <label style="display: none"> Adm Bank  (%)</label>
            <input type="hidden" name="adm_bank" id="adm_bank"  value="" class="form-control" >
            
-           <div class="col-sm-6">
+           <div class="col-xs-6">
            <label> Tanggal</label>
            <input type="text" name="tanggal_jt" id="tanggal_jt"  value="" style="height:25px;font-size:15px" placeholder="Tanggal JT" class="form-control" >
 
            </div>
 
-        <div class="col-sm-6">
+        <div class="col-xs-6">
             <label style="font-size:15px"> <b> Cara Bayar (F4) </b> </label><br>
                       <select type="text" name="cara_bayar" id="carabayar1" class="form-control" required=""  style="font-size: 15px" >
                       <option value=""> Silahkan Pilih </option>
@@ -640,14 +640,14 @@ $user = $_SESSION['nama'];
       <div class="form-group">
       <div class="row">
        
-        <div class="col-sm-6">
+        <div class="col-xs-6">
 
            <label style="font-size:15px"> <b> Total Akhir </b></label><br>
            <b><input type="text" name="total" id="total1" class="form-control" style="height: 25px; width:90%; font-size:20px;" placeholder="Total" readonly="" ></b>
           
         </div>
  
-            <div class="col-sm-6">
+            <div class="col-xs-6">
               
            <label style="font-size:15px">  <b> Pembayaran (F7)</b> </label><br>
            <b><input type="text" name="pembayaran" id="pembayaran_penjualan" style="height: 20px; width:90%; font-size:20px;" autocomplete="off" class="form-control"   style="font-size: 20px"  onkeydown="return numbersonly(this, event);" onkeyup="javascript:tandaPemisahTitik(this);"></b>
@@ -657,13 +657,13 @@ $user = $_SESSION['nama'];
            
            
           <div class="row">
-            <div class="col-sm-6">
+            <div class="col-xs-6">
               
            <label> Kembalian </label><br>
            <b><input type="text" name="sisa_pembayaran"  id="sisa_pembayaran_penjualan"  style="height:25px;font-size:15px" class="form-control"  readonly="" required=""></b>
             </div>
 
-            <div class="col-sm-6">
+            <div class="col-xs-6">
               
           <label> Kredit </label><br>
           <b><input type="text" name="kredit" id="kredit" class="form-control"  style="height:25px;font-size:15px"  readonly="" required="" ></b>
