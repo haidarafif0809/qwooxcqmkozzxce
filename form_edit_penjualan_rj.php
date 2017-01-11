@@ -70,6 +70,10 @@ if ($tax != 0) {
         $data_level = mysqli_fetch_array($level_harga);
         $level_harga = $data_level['harga'];
 
+$pilih_akses_tombol = $db->query("SELECT * FROM otoritas_penjualan_rj WHERE id_otoritas = '$_SESSION[otoritas_id]' ");
+$otoritas_tombol = mysqli_fetch_array($pilih_akses_tombol);
+
+
  ?>
 
 <!-- js untuk tombol shortcut -->
@@ -549,8 +553,12 @@ if ($tax != 0) {
 </div>
 
 
+
+<?php if ($otoritas_tombol['tombol_submit'] > 0):?>  
+
 <!-- membuat form prosestbspenjual -->
 <form class="form" action="proses_tambah_edit_penjualan.php" role="form" id="formtambahproduk">
+
 <div class="row 1">
 
   <div class="col-xs-2">
@@ -618,7 +626,6 @@ if ($tax != 0) {
 
   <input type="hidden" id="id_produk" name="id_produk" placeholder="id_produk" class="form-control" value="" required="">  
 
-  <input type="hidden" name="no_faktur" id="no_faktur0" class="form-control" value="<?php echo $no_faktur; ?>" required="" >
   
     <input type="hidden" id="level_hidden" name="level_hidden" class="form-control" value="<?php echo $level_harga;?>">        
 
@@ -632,9 +639,10 @@ if ($tax != 0) {
 </div><!--end div row potngan,tax,tombol submit Tambah--> 
 
 </form> <!-- tag penutup form -->
-
+<?php endif;?>
                 <!--untuk mendefinisikan sebuah bagian dalam dokumen-->  
-               
+     <input type="hidden" name="no_faktur" id="no_faktur0" class="form-control" value="<?php echo $no_faktur; ?>" required="" >
+            
                 
                 <div class="table-responsive"> <!--tag untuk membuat garis pada tabel-->  
                 <span id="table-baru">  
@@ -705,7 +713,14 @@ if ($row_retur > 0 || $row_piutang > 0) {
 }
 else {
 
+ if ($otoritas_tombol['edit_produk'] > 0){ 
+
   echo"<td class='edit-jumlah' data-id='".$data1['id']."' data-faktur='".$data1['no_faktur']."'  data-kode='".$data1['kode_barang']."'><span id='text-jumlah-".$data1['id']."'>". $data1['jumlah_barang'] ."</span> <input type='hidden' id='input-jumlah-".$data1['id']."' value='".$data1['jumlah_barang']."' class='input_jumlah' data-id='".$data1['id']."' autofocus='' data-kode='".$data1['kode_barang']."' data-satuan='".$data1['satuan']."' data-harga='".$data1['harga']."' data-tipe='".$data1['tipe_barang']."'> </td>";  
+}
+else
+{
+  echo "<td style='font-size:15px' align='right' class='tidak_punya_otoritas' data-id='".$data1['id']."'><span id='text-jumlah-".$data1['id']."'>". $data1['jumlah_barang'] ."</span> </td>";
+   }
 
 }
 
@@ -725,7 +740,17 @@ if ($row_retur > 0 || $row_piutang > 0) {
 } 
 
 else{
+
+  if ($otoritas_tombol['hapus_produk'] > 0) {
+
       echo "<td> <button class='btn btn-danger btn-sm btn-hapus-tbs' id='btn-hapus-".$data1['id']."' data-id='". $data1['id'] ."' data-subtotal='".$data1['subtotal']."' data-kode-barang='". $data1['kode_barang'] ."' data-barang='". $data1['nama_barang'] ."'><span class='glyphicon glyphicon-trash'> </span> Hapus </button> </td>";
+
+    }
+else
+{
+   echo "<td style='font-size:12px; color:red'> Tidak Ada Otoritas </td>";
+}
+
 }
 
                
@@ -1039,24 +1064,24 @@ if ($_SESSION['otoritas'] == 'Pimpinan') {
           
           <input type="hidden" name="kode_pelanggan" id="k_pelanggan" class="form-control" required="" >
 
-<div class="row">
-
-  <div class="col-xs-3">
-    <button type="submit" id="penjualan" class="btn btn-info" data-faktur='<?php echo $no_faktur
- ?>'>Bayar(F8)</button>
-
-    
-  </div>
-  <div class="col-xs-3">
-  <button type="submit" id="piutang" class="btn btn-warning" data-faktur='<?php echo $no_faktur; ?>'>Piutang(F9)</button>
-
-  
-  </div>
-
-
 </div>
 
+
+ <?php if ($otoritas_tombol['tombol_bayar'] > 0):?>              
+    <button type="submit" id="penjualan" class="btn btn-info" data-faktur='<?php echo $no_faktur?>'>Bayar(F8)</button>
+<?php endif;?>
+
+
+ <?php if ($otoritas_tombol['tombol_piutang'] > 0):?>              
+  <button type="submit" id="piutang" class="btn btn-warning" data-faktur='<?php echo $no_faktur; ?>'>Piutang(F9)</button> 
+<?php endif;?>
+
+
+
+
+ <?php if ($otoritas_tombol['tombol_bayar'] > 0):?>              
      <button type="submit" id="cetak_langsung" target="blank" class="btn btn-success" style="font-size:15px"> Bayar / Cetak (Ctrl + K) </button>
+<?php endif;?>
           
 
     <a href="lap_penjualan.php" id="transaksi_baru" class="btn btn-primary"  style="display: none;">Kembali</a>
@@ -1068,10 +1093,15 @@ if ($_SESSION['otoritas'] == 'Pimpinan') {
 
    <a href='cetak_penjualan_tunai_kategori.php' id="cetak_tunai_kategori" style="display: none;" class="btn btn-warning" target="blank"> Cetak Tunai/Kategori  </a>
 
+
+  <?php if ($otoritas_tombol['tombol_batal'] > 0):?>              
+ <button type="submit" id="batal_penjualan" class="btn btn-danger" style="font-size:15px">  Batal (Ctrl + B)</button>
+<?php endif;?>
+
+
     <a href='cetak_penjualan_piutang.php?no_faktur=<?php echo $no_faktur ?>' id="cetak_piutang"  style="display: none;" class="btn btn-warning" target="blank"> <span class="  glyphicon glyphicon-print"> </span> Cetak Piutang </a>
 
 
-</div>
      
 </div>
 
@@ -1098,6 +1128,12 @@ if ($_SESSION['otoritas'] == 'Pimpinan') {
     
 
     </div><!-- end of container -->
+
+<script type="text/javascript">
+  $(document).on('click', '.tidak_punya_otoritas', function (e) {
+    alert("Anda Tidak Punya Otoritas Untuk Edit Jumlah Produk !!");
+  });
+</script>
 
 
 <!--untuk memasukkan perintah java script-->
@@ -2409,6 +2445,17 @@ else
 });
 
   </script>   
+
+<script type="text/javascript">
+$(document).ready(function(){
+  $("#batal_penjualan").click(function(){
+    var no_reg = $("#no_reg").val()
+        window.location.href="batal_penjualan_edit_raja.php?no_reg="+no_reg+"";
+
+  })
+  });
+</script>
+
 
 
 <script>

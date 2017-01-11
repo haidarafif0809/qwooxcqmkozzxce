@@ -531,16 +531,15 @@ $insert2_petugas = "INSERT INTO tbs_fee_produk (no_reg,no_faktur,no_rm,nama_petu
                 
                 $data1 = mysqli_fetch_array($perintah);
 
-                //menampilkan data
+                 //menampilkan data
                 echo "<tr class='tr-id-". $data1['id'] ." tr-kode-". $data1['kode_barang'] ."'>
                 <td>". $data1['kode_barang'] ."</td>
                 <td>". $data1['nama_barang'] ."</td>";
 
 
-
-                $kd = $db->query("SELECT f.nama_petugas, u.nama FROM tbs_fee_produk f INNER JOIN user u ON f.nama_petugas = u.id WHERE f.kode_produk = '$data1[kode_barang]' AND f.jam = '$data1[jam]' ");
+                $kd = $db->query("SELECT f.nama_petugas, u.nama FROM tbs_fee_produk f INNER JOIN user u ON f.nama_petugas = u.id WHERE f.kode_produk = '$data1[kode_barang]' AND f.no_reg = '$no_reg' ");
                 
-                $kdD = $db->query("SELECT f.nama_petugas, u.nama FROM tbs_fee_produk f INNER JOIN user u ON f.nama_petugas = u.id WHERE f.kode_produk = '$data1[kode_barang]' AND f.jam = '$data1[jam]' ");
+                $kdD = $db->query("SELECT f.nama_petugas, u.nama FROM tbs_fee_produk f INNER JOIN user u ON f.nama_petugas = u.id WHERE f.kode_produk = '$data1[kode_barang]' AND f.no_reg = '$no_reg' ");
                     
                 $nu = mysqli_fetch_array($kd);
 
@@ -561,7 +560,6 @@ $insert2_petugas = "INSERT INTO tbs_fee_produk (no_reg,no_faktur,no_rm,nama_petu
                   }
 
 
-
 $pilih = $db->query("SELECT no_faktur_penjualan FROM detail_retur_penjualan WHERE no_faktur_penjualan = '$data1[no_faktur]' AND kode_barang = '$data1[kode_barang]'");
 $row_retur = mysqli_num_rows($pilih);
 
@@ -574,8 +572,15 @@ if ($row_retur > 0 || $row_piutang > 0) {
 
 }
 else {
+if ($otoritas_tombol['edit_produk'] > 0)
+{ 
 
   echo"<td class='edit-jumlah' data-id='".$data1['id']."' data-faktur='".$data1['no_faktur']."'  data-kode='".$data1['kode_barang']."'><span id='text-jumlah-".$data1['id']."'>". $data1['jumlah_barang'] ."</span> <input type='hidden' id='input-jumlah-".$data1['id']."' value='".$data1['jumlah_barang']."' class='input_jumlah' data-id='".$data1['id']."' autofocus='' data-kode='".$data1['kode_barang']."' data-satuan='".$data1['satuan']."' data-harga='".$data1['harga']."' data-tipe='".$data1['tipe_barang']."'> </td>";  
+}
+else
+{
+    echo "<td style='font-size:15px' align='right' class='tidak_punya_otoritas' data-id='".$data1['id']."'><span id='text-jumlah-".$data1['id']."'>". $data1['jumlah_barang'] ."</span> </td>";
+}
 
 }
 
@@ -595,7 +600,17 @@ if ($row_retur > 0 || $row_piutang > 0) {
 } 
 
 else{
+
+if ($otoritas_tombol['hapus_produk'] > 0)
+{
       echo "<td> <button class='btn btn-danger btn-sm btn-hapus-tbs' id='btn-hapus-".$data1['id']."' data-id='". $data1['id'] ."' data-subtotal='".$data1['subtotal']."' data-kode-barang='". $data1['kode_barang'] ."' data-barang='". $data1['nama_barang'] ."'><span class='glyphicon glyphicon-trash'> </span> Hapus </button> </td>";
+}
+else
+{
+     echo "<td style='font-size:12px; color:red'> Tidak Ada Otoritas </td>";
+
+}
+
 }
 
                
