@@ -6,6 +6,8 @@ include 'navbar.php';
 include 'db.php';
 include 'sanitasi.php';
 
+$pilih_akses_tombol = $db->query("SELECT * FROM otoritas_penjualan_inap WHERE id_otoritas = '$_SESSION[otoritas_id]' ");
+$otoritas_tombol = mysqli_fetch_array($pilih_akses_tombol);
  
 $no_reg = stringdoang($_GET['no_reg']);
 $no_faktur = stringdoang($_GET['no_faktur']);
@@ -587,6 +589,8 @@ Level 7
 
 <!-- membuat form prosestbspenjual -->
 
+<?php if ($otoritas_tombol['tombol_submit_inap'] > 0) { ?>
+
 <form class="form"  role="form" id="formtambahproduk">
 <br>
 <div class="row">
@@ -649,7 +653,7 @@ Level 7
 </form> <!-- tag penutup form -->
 
 
-
+<?php } ?>
 
 
                 <!--untuk mendefinisikan sebuah bagian dalam dokumen-->  
@@ -716,13 +720,23 @@ $row_retur = mysqli_num_rows($pilih);
 $pilih = $db->query("SELECT no_faktur_penjualan FROM detail_pembayaran_piutang WHERE no_faktur_penjualan = '$data1[no_faktur]'");
 $row_piutang = mysqli_num_rows($pilih);
 
-if ($row_retur > 0 || $row_piutang > 0) {
-                echo"<td style='font-size:15px' align='right' class='edit-jumlah-alert' data-id='".$data1['id']."' data-faktur='".$data1['no_faktur']."'  data-kode='".$data1['kode_barang']."'>". $data1['jumlah_barang'] ."</td>";  
-              }
-              else
-              {
-                echo"<td style='font-size:15px' align='right' class='edit-jumlah' data-id='".$data1['id']."'><span id='text-jumlah-".$data1['id']."'>". $data1['jumlah_barang'] ."</span> <input type='hidden' id='input-jumlah-".$data1['id']."' value='".$data1['jumlah_barang']."' class='input_jumlah' data-id='".$data1['id']."' autofocus='' data-kode='".$data1['kode_barang']."' data-harga='".$data1['harga']."' data-tipe='".$data1['tipe_barang']."' data-satuan='".$data1['satuan']."' onkeydown='return numbersonly(this, event);'> </td>";                
-              }
+             if ($otoritas_tombol['edit_produk_inap'] > 0) 
+             {
+
+                    if ($row_retur > 0 || $row_piutang > 0) {
+                        echo"<td style='font-size:15px' align='right' class='edit-jumlah-alert' data-id='".$data1['id']."' data-faktur='".$data1['no_faktur']."'  data-kode='".$data1['kode_barang']."'>". $data1['jumlah_barang'] ."</td>";  
+                      }
+                      else
+                      {
+                        echo"<td style='font-size:15px' align='right' class='edit-jumlah' data-id='".$data1['id']."'><span id='text-jumlah-".$data1['id']."'>". $data1['jumlah_barang'] ."</span> <input type='hidden' id='input-jumlah-".$data1['id']."' value='".$data1['jumlah_barang']."' class='input_jumlah' data-id='".$data1['id']."' autofocus='' data-kode='".$data1['kode_barang']."' data-harga='".$data1['harga']."' data-tipe='".$data1['tipe_barang']."' data-satuan='".$data1['satuan']."' onkeydown='return numbersonly(this, event);'> </td>";                
+                      }
+             }
+             else
+            {
+                echo "<td style='font-size:15px' align='right' class='gk_bisa_edit'>". $data1['jumlah_barang'] ."</td>";
+            }
+
+
 
                 echo"<td style='font-size:15px'>". $data1['nama'] ."</td>
                 <td style='font-size:15px' align='right'>". rp($data1['harga']) ."</td>
@@ -731,15 +745,25 @@ if ($row_retur > 0 || $row_piutang > 0) {
                 <td style='font-size:15px' align='right'><span id='text-tax-".$data1['id']."'>". rp($data1['tax']) ."</span></td>
           <td>". $data1['tanggal']." ".$data1['jam']."</td>";
 
-if ($row_retur > 0 || $row_piutang > 0) {
+          if ($otoritas_tombol['hapus_produk_inap'] > 0) {
 
-        echo "<td> <button class='btn btn-danger btn-sm btn-alert-hapus' id='btn-hapus-".$data1['id']."' data-id='".$data1['id']."' data-subtotal='".$data1['subtotal']."' data-faktur='".$data1['no_faktur']."' data-kode='".$data1['kode_barang']."'><span class='glyphicon glyphicon-trash'></span> Hapus </button></td>";   
+                if ($row_retur > 0 || $row_piutang > 0) {
 
-            }
-            else
-            {
-          echo"<td style='font-size:15px'> <button class='btn btn-danger btn-sm btn-hapus-tbs' id='hapus-tbs-".$data1['id']."' data-id='". $data1['id'] ."' data-kode-barang='". $data1['kode_barang'] ."' data-barang='". $data1['nama_barang'] ."' data-subtotal='". $data1['subtotal'] ."'>Hapus</button> </td>";              
-            }
+              echo "<td> <button class='btn btn-danger btn-sm btn-alert-hapus' id='btn-hapus-".$data1['id']."' data-id='".$data1['id']."' data-subtotal='".$data1['subtotal']."' data-faktur='".$data1['no_faktur']."' data-kode='".$data1['kode_barang']."'><span class='glyphicon glyphicon-trash'></span> Hapus </button></td>";   
+
+                  }
+                  else
+                  {
+                echo"<td style='font-size:15px'> <button class='btn btn-danger btn-sm btn-hapus-tbs' id='hapus-tbs-".$data1['id']."' data-id='". $data1['id'] ."' data-kode-barang='". $data1['kode_barang'] ."' data-barang='". $data1['nama_barang'] ."' data-subtotal='". $data1['subtotal'] ."'>Hapus</button> </td>";              
+                  }
+
+          }
+          else
+          {
+
+          echo "<td style='font-size:15px; color:red'> Tidak Ada Otoritas </td>";
+          }
+
 
 
                 echo"</tr>";
@@ -1133,30 +1157,33 @@ Laboratorium  </button>
 
           <div class="row">
  
-            
+                      <?php if ($otoritas_tombol['tombol_bayar_inap'] > 0) { ?>
           <button type="submit" id="penjualan" class="btn btn-info" style="font-size:15px">Bayar (F8)</button>
-          <a class="btn btn-info" href="lap_penjualan.php" id="transaksi_baru" style="display: none">  Kembali </a>
+                     <?php } ?>
+          <a class="btn btn-info" href="lap_penjualan.php" id="transaksi_baru" style="display: none"> Kembali </a>
           
         
 
-          
+          <?php if ($otoritas_tombol['tombol_piutang_inap'] > 0) { ?>
             
           <button type="submit" id="piutang" class="btn btn-warning" style="font-size:15px">Piutang (F9)</button>
+           <?php } ?>
 
           <a href='cetak_penjualan_piutang.php' id="cetak_piutang" style="display: none;" class="btn btn-success" target="blank">Cetak Piutang  </a>
 
      
 
-            
+                     <?php if ($otoritas_tombol['tombol_simpan_inap'] > 0) { ?> 
           <button style="display: none" type="submit" id="simpan_sementara" class="btn btn-primary " style="font-size:15px">  Simpan (F10)</button>
+                     <?php } ?>
           <a href='cetak_penjualan_tunai.php' id="cetak_tunai" style="display: none;" class="btn btn-primary" target="blank"> Cetak Tunai  </a>
-
+          <?php if ($otoritas_tombol['tombol_bayar_inap'] > 0) { ?>
            <button type="submit" id="cetak_langsung" target="blank" class="btn btn-success" style="font-size:15px"> Bayar / Cetak (Ctrl + K) </button>
-
+           <?php } ?>
           <a href='cetak_penjualan_tunai_kategori.php' id="cetak_tunai_kategori" style="display: none;" class="btn btn-primary" target="blank"> Cetak Tunai / Kategori   </a>
-
+                    <?php if ($otoritas_tombol['tombol_batal_inap'] > 0) { ?>
           <button type="submit" id="batal_penjualan" class="btn btn-danger" style="font-size:15px">  Batal (Ctrl + B)</button>
-
+           <?php } ?>
 
           <a href='cetak_penjualan_tunai_besar.php' id="cetak_tunai_besar" style="display: none;" class="btn btn-warning" target="blank"> Cetak Tunai  Besar </a>
           
@@ -3037,8 +3064,14 @@ $(document).ready(function(){
         </script>
 
                             <script type="text/javascript">
+
+                                $(document).on('dblclick','.gk_bisa_edit',function(e){
+
+                                  alert("Anda Tidak Punya Otoritas Untuk Edit Jumlah Produk !!");
+
+                                });
                                  
-                                 $(".edit-jumlah").dblclick(function(){
+                                $(document).on('dblclick','.edit-jumlah',function(e){
 
                                     var id = $(this).attr("data-id");
 
@@ -3049,10 +3082,10 @@ $(document).ready(function(){
                                  });
 
 
-                                 $(".input_jumlah").blur(function(){
+                                $(document).on('blur','.input_jumlah',function(e){
 
                                     var id = $(this).attr("data-id");
-                                    var jumlah_baru = $(this).val();
+                                    var jumlah_baru = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($(this).val()))));
                                     if (jumlah_baru == "") {
                                       jumlah_baru = 0;
                                     }
