@@ -79,6 +79,7 @@ $no_rm = stringdoang($_POST['kode_pelanggan']);
 $nama_pelanggan = stringdoang($_POST['nama_pelanggan']);
 
 }
+$dokter = stringdoang($_POST['dokter']);
 
 $apoteker = stringdoang($_POST['apoteker']);
 $nama_petugas = stringdoang($_SESSION['nama']);
@@ -192,8 +193,8 @@ $hasil_pria = $out_hasil['normal_lk'];
 $hasil_wanita = $out_hasil['normal_pr'];
 
 $insert_on = $db->query("INSERT INTO hasil_lab (no_faktur, id_pemeriksaan, nilai_normal_lk, nilai_normal_pr, status_pasien,
-nama_pemeriksaan, nama_pasien, status,no_rm) VALUES ('$no_faktur','$id_pemeriksaan','$hasil_pria','$hasil_wanita','Umum',
-'$data[nama_barang]','$nama_pelanggan','Unfinish','$no_rm')");
+nama_pemeriksaan, nama_pasien, status,no_rm,petugas_analis,dokter) VALUES ('$no_faktur','$id_pemeriksaan','$hasil_pria',
+'$hasil_wanita','Umum','$data[nama_barang]','$nama_pelanggan','Unfinish','$no_rm','$apoteker','$dokter')");
     
         $query2 = "INSERT INTO detail_penjualan (no_faktur,no_rm, tanggal, jam, kode_barang, nama_barang, jumlah_barang, harga, subtotal, potongan, tax, sisa,tipe_produk,lab) VALUES ('$no_faktur','$no_rm', '$tanggal_sekarang', '$jam_sekarang', '$data[kode_barang]','$data[nama_barang]','$data[jumlah_barang]','$data[harga]','$data[subtotal]','$data[potongan]','$data[tax]', '$data[jumlah_barang]','$data[tipe_barang]','$data[lab]')";
 

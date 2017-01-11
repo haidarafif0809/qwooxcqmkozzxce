@@ -385,6 +385,38 @@ $no_jurnal = no_jurnal();
 
 
 
+// update no_faktur di hasil_lab and insert ke hasil lab
+$cek_lab = $db->query("SELECT * FROM hasil_lab WHERE no_reg = '$no_reg'");
+$out_lab = mysqli_num_rows($cek_lab);
+if($out_lab > 0 )
+{
+  $update = $db->query("UPDATE hasil_lab SET no_faktur = '$no_faktur' WHERE no_reg = '$no_reg'");
+}
+else
+{
+  
+  $taked_tbs = $db->query("SELECT * FROM tbs_penjualan WHERE no_reg = '$no_reg' AND lab = 'Laboratorium'");
+  while ($out_tbs = mysqli_fetch_array($taked_tbs))
+  {
+        
+    $cek_id_pemeriksaan = $db->query("SELECT id FROM jasa_lab WHERE kode_lab = '$out_tbs[kode_barang]'");
+    $out = mysqli_fetch_array($cek_id_pemeriksaan);
+    $id_pemeriksaan = $out['id'];
+
+    $cek_hasil = $db->query("SELECT normal_lk,normal_pr FROM setup_hasil WHERE nama_pemeriksaan = '$id_pemeriksaan'");
+    $out_hasil = mysqli_fetch_array($cek_hasil);
+    $hasil_pria = $out_hasil['normal_lk'];
+    $hasil_wanita = $out_hasil['normal_pr'];
+
+    $insert_on = $db->query("INSERT INTO hasil_lab (no_faktur, id_pemeriksaan, nilai_normal_lk, nilai_normal_pr, status_pasien,
+    nama_pemeriksaan, nama_pasien, status,no_rm,no_reg,dokter,petugas_analis) VALUES ('$no_faktur','$id_pemeriksaan',
+    '$hasil_pria','$hasil_wanita','Rawat Inap','$out_tbs[nama_barang]','$nama_pasien','Unfinish','$no_rm','$no_reg',
+    '$dokter','$analis')");
+  }
+
+  $delete_tbs_hasil_lab = $db->query("DELETE FROM tbs_hasil_lab WHERE no_reg = '$no_reg'");
+}
+// Ending update no_faktur di hasil_lab and ending insert
 
             $pembayaran = stringdoang($_POST['pembayaran']);
             $total = stringdoang($_POST['total']);
