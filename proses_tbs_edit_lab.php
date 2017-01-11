@@ -17,14 +17,14 @@ $tahun_php = date('Y');
       $kode = stringdoang($_POST['kode_barang']);
       $harga = angkadoang($_POST['harga']);
       $jumlah = angkadoang($_POST['jumlah_barang']);
+      $tax = angkadoang($_POST['tax']);
+      $hargaa  = angkadoang($_POST['hargaa']);
       $nama = stringdoang($_POST['nama_barang']);
+      $ppn = stringdoang($_POST['ppn']);
       $user = $_SESSION['nama'];
       $potongan = angkadoang($_POST['potongan']);
       $a = $harga * $jumlah;
-      $ppn = stringdoang($_POST['ppn']);
-      $tax = angkadoang($_POST['tax']);
-      $hargaa  = angkadoang($_POST['hargaa']);
-
+     
       $tahun_sekarang = date('Y');
       $bulan_sekarang = date('m');
       $tanggal_sekarang = date('Y-m-d');
@@ -49,6 +49,7 @@ $id_kasir = $data_id['id'];
 
 
     
+
 
 // MENGHITUNG PERSEN
 if ($ppn == 'Exclude')
@@ -102,7 +103,8 @@ else
 $subtotal = $harga * $jumlah - $potongan_jadi; 
 
 } 
-                         
+
+       
 
           $query0 = $db->query("SELECT * FROM tbs_penjualan WHERE kode_barang = '$kode' AND no_faktur = '$no_faktur'");
           $cek    = mysqli_num_rows($query0);

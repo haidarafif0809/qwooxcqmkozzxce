@@ -1197,8 +1197,23 @@ $(document).ready(function(){
         subtotal = 0;
       };
 
-    var total = parseInt(jumlah_barang,10) * parseInt(hargaa,10) - parseInt(potongan,10);
 
+      if (ppn == 'Exclude') {
+  
+       
+      var total1 = parseInt(jumlah_barang,10) * parseInt(hargaa,10) - parseInt(potongan,10);
+
+         var total_tax_exclude = parseInt(total1,10) * parseInt(tax,10) / 100;
+
+         
+          var total = parseInt(total1,10) + parseInt(Math.round(total_tax_exclude,10));
+
+
+    }
+    else
+    {
+        var total = parseInt(jumlah_barang,10) * parseInt(hargaa,10) - parseInt(potongan,10);
+    }
 
     var total_akhir1 = parseInt(subtotal,10) + parseInt(total,10);
 
@@ -1212,16 +1227,16 @@ $(document).ready(function(){
 
 
          //Hitung pajak
-        if (tax_faktur != 0 ) {
+        /*if (tax_faktur != 0 ) {
         var hasil_tax = parseInt(total_akhier,10) * parseInt(tax_faktur,10) / 100;
 
         }
         else
         {
         var hasil_tax = 0;
-        }
+        }*/
     //end hitung pajak
-    var total_akhir = parseInt(total_akhier,10) + parseInt(Math.round(hasil_tax),10) + parseInt(biaya_admin,10)
+    var total_akhir = parseInt(total_akhier,10) + parseInt(biaya_admin,10)
 
 
     }
@@ -1237,16 +1252,16 @@ $(document).ready(function(){
 
 
          //Hitung pajak
-        if (tax_faktur != 0) {
+        /*if (tax_faktur != 0) {
         var hasil_tax = parseInt(total_akhier,10) * parseInt(tax_faktur,10) / 100;
 
         }
         else
         {
         var hasil_tax = 0;
-        }
+        }*/
     //end hitung pajak
-   var total_akhir = parseInt(total_akhier,10) + parseInt(Math.round(hasil_tax),10) + parseInt(biaya_admin,10)
+   var total_akhir = parseInt(total_akhier,10) + parseInt(biaya_admin,10)
 
     }
      else if(pot_fakt_rp != 0 && pot_fakt_per != 0)
@@ -1262,17 +1277,17 @@ $(document).ready(function(){
 
 
          //Hitung pajak
-        if (tax_faktur != 0) {
+       /* if (tax_faktur != 0) {
         var hasil_tax = parseInt(total_akhier,10) * parseInt(tax_faktur,10) / 100;
 
         }
         else
         {
         var hasil_tax = 0;
-        }
+        }*/
     //end hitung pajak
 
-    var total_akhir = parseInt(total_akhier,10) + parseInt(Math.round(hasil_tax),10) + parseInt(biaya_admin,10)
+    var total_akhir = parseInt(total_akhier,10) + parseInt(biaya_admin,10)
 
 
     }
@@ -1305,7 +1320,6 @@ if (jumlah_barang == ''){
       $("#total1").val(tandaPemisahTitik(total_akhir));
       $("#potongan_penjualan").val(Math.round(potongaaan));
       $("#total2").val(tandaPemisahTitik(total_akhir1));
-      $("#tax_rp").val(Math.round(hasil_tax));
      $("#kode_barang").focus();
 
           $.post("proses_tbs_edit_lab.php",{nama_barang:nama_barang,jumlah_barang:jumlah_barang,harga:harga,potongan:potongan,tax:tax,ppn:ppn,tipe_barang:ber_stok,no_rm:no_rm,apoteker:apoteker,penjamin:penjamin,tax:tax,hargaa:hargaa, kode_barang:kode_barang,no_faktur:no_faktur},function(data){ 
@@ -2482,7 +2496,7 @@ var ppn = $("#ppn").val();
 // cek ppn exclude 
     var total2 = $("#total2").val();
     var no_reg = $("#no_reg").val();
-    $.get("cek_ppn_ex.php",{no_reg:no_reg},function(data){
+    $.get("cek_ppn_edit_lab.php",{no_reg:no_reg},function(data){
       if (data == 1 || total2 != '0') {
           $("#ppn").val('Exclude');
      $("#ppn").attr("disabled", true);
