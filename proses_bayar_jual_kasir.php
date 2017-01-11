@@ -369,7 +369,7 @@ $cek_lab = $db->query("SELECT * FROM hasil_lab WHERE no_reg = '$no_reg'");
 $out_lab = mysqli_num_rows($cek_lab);
 if($out_lab > 0 )
 {
-  $update = $db->query("UPDATE hasil_lab SET no_faktur = '$no_faktur' WHERE no_reg = '$no_reg'");
+  $update = $db->query("UPDATE hasil_lab SET no_faktur = '$no_faktur', petugas_analis = '$analis', dokter = '$dokter' WHERE no_reg = '$no_reg'");
 }
 else
 {
