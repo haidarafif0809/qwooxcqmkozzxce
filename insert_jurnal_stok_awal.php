@@ -4,7 +4,7 @@ include_once 'sanitasi.php';
 
 
 //Mengambil data stok awal berdasarkan trtansaksi yang sudah ada
-$pilih_stok_awal = $db->query("SELECT * FROM stok_awal WHERE tanggal >= '2017-01-01'");
+$pilih_stok_awal = $db->query("SELECT * FROM stok_awal WHERE tanggal >= '2017-01-01' GROUP BY no_faktur");
 while ($data_masuk = mysqli_fetch_array($pilih_stok_awal)) { //START while ($data_masuk) {
 
   $no_faktur = $data_masuk['no_faktur'];
