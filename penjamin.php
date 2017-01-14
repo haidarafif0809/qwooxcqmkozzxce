@@ -170,7 +170,11 @@ $penjamin_tambah = mysqli_num_rows($pilih_akses_penjamin_tambah);
 </div>  <!-- container  -->
 
 
-
+      <script>
+                // Replace the <textarea id="editor1"> with a CKEditor
+                // instance, using default configuration.
+                CKEDITOR.replace( 'layanan' );
+            </script>
 
 <script type="text/javascript">
 $("#nama").blur(function(){
@@ -283,12 +287,6 @@ $.post('delete_penjamin.php',{id:id},function(data){
     </script>
 <!--/DATA TABLE MENGGUNAKAN AJAX-->
 
-<script type="text/javascript">
-$(function () {
- $("#layanan").wysihtml5();
-
-});
-</script>
 
 
 
