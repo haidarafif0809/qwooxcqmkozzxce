@@ -532,7 +532,7 @@ Level 7
     <input type="hidden" class="form-control" name="ber_stok" id="ber_stok" placeholder="Ber Stok" >
     <input type="hidden" class="form-control" name="harga_lama" id="harga_lama" placeholder="hargama">
     <input type="hidden" class="form-control" name="harga_baru" id="harga_baru" placeholder="hargaru">
-    <input type="text" class="form-control" name="jumlahbarang" id="jumlahbarang">
+    <input type="hidden" class="form-control" name="jumlahbarang" id="jumlahbarang">
     <input type="hidden" id="satuan_produk" name="satuan" class="form-control">
     <input type="hidden" id="harga_produk" name="harga" class="form-control" placeholder="harga">
     <input type="hidden" id="id_produk" name="id_produk" class="form-control">        

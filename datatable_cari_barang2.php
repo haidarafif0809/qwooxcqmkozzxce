@@ -78,7 +78,7 @@ else
 {
 	if ($kategori == 'semua') {
     	$sql = "SELECT * ";
-		$sql.=" FROM barang";
+		$sql.=" FROM barang WHERE 1=1";
     
     }
     
