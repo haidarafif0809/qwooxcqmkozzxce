@@ -403,14 +403,17 @@ else
     $out = mysqli_fetch_array($cek_id_pemeriksaan);
     $id_pemeriksaan = $out['id'];
 
-    $cek_hasil = $db->query("SELECT normal_lk,normal_pr FROM setup_hasil WHERE nama_pemeriksaan = '$id_pemeriksaan'");
+    $cek_hasil = $db->query("SELECT normal_lk,normal_pr,model_hitung,satuan_nilai_normal FROM setup_hasil WHERE nama_pemeriksaan = '$id_pemeriksaan'");
     $out_hasil = mysqli_fetch_array($cek_hasil);
     $hasil_pria = $out_hasil['normal_lk'];
     $hasil_wanita = $out_hasil['normal_pr'];
+    $model_hitung = $out_hasil['model_hitung'];
+    $satuan_nilai_normal = $out_hasil['satuan_nilai_normal'];
 
-    $insert_on = $db->query("INSERT INTO hasil_lab (no_faktur, id_pemeriksaan, nilai_normal_lk, nilai_normal_pr, status_pasien,
-    nama_pemeriksaan, nama_pasien, status,no_rm,no_reg,dokter,petugas_analis) VALUES ('$no_faktur','$id_pemeriksaan',
-    '$hasil_pria','$hasil_wanita','Rawat Inap','$out_tbs[nama_barang]','$nama_pasien','Unfinish','$no_rm','$no_reg',
+    $insert_on = $db->query("INSERT INTO hasil_lab (satuan_nilai_normal,model_hitung,no_faktur, id_pemeriksaan, nilai_normal_lk, nilai_normal_pr, status_pasien,
+    nama_pemeriksaan, nama_pasien, status,no_rm,no_reg,dokter,petugas_analis) VALUES ('$satuan_nilai_normal','$model_hitung',
+    '$no_faktur','$id_pemeriksaan','$hasil_pria','$hasil_wanita','Rawat Inap','$out_tbs[nama_barang]','$nama_pasien',
+    'Unfinish','$no_rm','$no_reg',
     '$dokter','$analis')");
   }
 

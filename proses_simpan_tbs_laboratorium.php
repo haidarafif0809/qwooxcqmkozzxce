@@ -254,7 +254,7 @@ $dokter = stringdoang($_POST['dokter']);
                 
                 //menyimpan data sementara yang ada pada $perintah  
                 
-               $data1 = mysqli_fetch_array($perintah)
+               $data1 = mysqli_fetch_array($perintah);
                 //menampilkan data
                 echo "<tr class='tr-kode-". $data1['kode_barang'] ." tr-id-". $data1['id'] ."' data-kode-barang='".$data1['kode_barang']."'>
                 <td style='font-size:15px'>". $data1['kode_barang'] ."</td>
@@ -294,7 +294,7 @@ $dokter = stringdoang($_POST['dokter']);
                 </tr>";
 
 
-                }
+                
 
                 ?>
       

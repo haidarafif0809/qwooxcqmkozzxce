@@ -88,35 +88,33 @@ $show = $db->query("SELECT * FROM hasil_lab WHERE no_reg = '$no_reg' AND status 
                 <td>". $take['nama_pemeriksaan'] ."</td>
                 <td>". $take['hasil_pemeriksaan'] ."</td>";
 
-$ambil_model = $db->query("SELECT model_hitung,satuan_nilai_normal,normal_lk2,normal_pr2 FROM setup_hasil WHERE nama_pemeriksaan = '$take[id_pemeriksaan]'");
-while($show_model = mysqli_fetch_array($ambil_model))
-{
 
-$model_hitung = $show_model['model_hitung']; 
+
+$model_hitung = $take['model_hitung']; 
 switch ($model_hitung) {
     case "Lebih Kecil Dari":
-        echo "<td>&lt;&nbsp; ". $take['nilai_normal_lk']."&nbsp;". $show_model['satuan_nilai_normal']." </td>
-        <td>&lt;&nbsp; ". $take['nilai_normal_pr']."&nbsp;". $show_model['satuan_nilai_normal']." </td>
+        echo "<td>&lt;&nbsp; ". $take['nilai_normal_lk']."&nbsp;". $take['satuan_nilai_normal']." </td>
+        <td>&lt;&nbsp; ". $take['nilai_normal_pr']."&nbsp;". $take['satuan_nilai_normal']." </td>
         ";
         break;
     case "Lebih Kecil Sama Dengan":
-        echo "<td>&lt;=&nbsp; ". $take['nilai_normal_lk']."&nbsp;". $show_model['satuan_nilai_normal']." </td>
-        <td>&lt;=&nbsp; ". $take['nilai_normal_pr']."&nbsp;". $show_model['satuan_nilai_normal']." </td>
+        echo "<td>&lt;=&nbsp; ". $take['nilai_normal_lk']."&nbsp;". $take['satuan_nilai_normal']." </td>
+        <td>&lt;=&nbsp; ". $take['nilai_normal_pr']."&nbsp;". $take['satuan_nilai_normal']." </td>
         ";
         break;
     case "Lebih Besar Dari":
-        echo "<td>&gt;&nbsp; ". $take['nilai_normal_lk']."&nbsp;". $show_model['satuan_nilai_normal']." </td>
-        <td>&gt;&nbsp; ". $take['nilai_normal_pr']."&nbsp;". $show_model['satuan_nilai_normal']." </td>
+        echo "<td>&gt;&nbsp; ". $take['nilai_normal_lk']."&nbsp;". $take['satuan_nilai_normal']." </td>
+        <td>&gt;&nbsp; ". $take['nilai_normal_pr']."&nbsp;". $take['satuan_nilai_normal']." </td>
         ";
         break;
           case "Lebih Besar Sama Dengan":
-        echo "<td>&gt;=&nbsp; ". $take['nilai_normal_lk']."&nbsp;". $show_model['satuan_nilai_normal']." </td>
-        <td>&gt;=&nbsp; ". $take['nilai_normal_pr']."&nbsp;". $show_model['satuan_nilai_normal']." </td>
+        echo "<td>&gt;=&nbsp; ". $take['nilai_normal_lk']."&nbsp;". $take['satuan_nilai_normal']." </td>
+        <td>&gt;=&nbsp; ". $take['nilai_normal_pr']."&nbsp;". $take['satuan_nilai_normal']." </td>
         ";
         break;
           case "Antara Sama Dengan":
-        echo "<td>". $take['nilai_normal_lk']."&nbsp;-&nbsp; ". $show_model['normal_lk2']."&nbsp;". $show_model['satuan_nilai_normal']." </td>
-        <td>". $take['nilai_normal_pr']."&nbsp;-&nbsp; ". $show_model['normal_pr2']."&nbsp;". $show_model['satuan_nilai_normal']." </td>
+        echo "<td>". $take['nilai_normal_lk']."&nbsp;-&nbsp; ". $take['normal_lk2']."&nbsp;". $take['satuan_nilai_normal']." </td>
+        <td>". $take['nilai_normal_pr']."&nbsp;-&nbsp; ". $take['normal_pr2']."&nbsp;". $take['satuan_nilai_normal']." </td>
         ";
         break;
     } 
@@ -127,7 +125,7 @@ switch ($model_hitung) {
                echo " <td>". $take['status_abnormal'] ."</td>
                 <td>". $take['status_pasien'] ."</td>
             <tr>";
-}
+
             }
 
 //Untuk Memutuskan Koneksi Ke Database

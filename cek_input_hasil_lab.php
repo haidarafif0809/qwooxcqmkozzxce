@@ -27,13 +27,15 @@ $cek_id_pemeriksaan = $db->query("SELECT id FROM jasa_lab WHERE kode_lab = '$kod
 $out = mysqli_fetch_array($cek_id_pemeriksaan);
 $id_pemeriksaan = $out['id'];
 
-$cek_hasil = $db->query("SELECT normal_lk,normal_pr FROM setup_hasil WHERE nama_pemeriksaan = '$id_pemeriksaan'");
+$cek_hasil = $db->query("SELECT normal_lk,normal_pr,model_hitung,satuan_nilai_normal FROM setup_hasil WHERE nama_pemeriksaan = '$id_pemeriksaan'");
 $out_hasil = mysqli_fetch_array($cek_hasil);
 $hasil_pria = $out_hasil['normal_lk'];
 $hasil_wanita = $out_hasil['normal_pr'];
+$model_hitung = $out_hasil['model_hitung'];
+$satuan_nilai_normal = $out_hasil['satuan_nilai_normal'];
 
-$query6 = "INSERT INTO tbs_hasil_lab (no_rm,no_reg,id_pemeriksaan, nilai_normal_lk,nilai_normal_pr,status_pasien,
-nama_pemeriksaan) VALUES ('$no_rm','$no_reg','$id_pemeriksaan','$hasil_pria','$hasil_wanita','$jenis_penjualan','$nama_barang')";
+$query6 = "INSERT INTO tbs_hasil_lab (satuan_nilai_normal,model_hitung,no_rm,no_reg,id_pemeriksaan, nilai_normal_lk,nilai_normal_pr,status_pasien,nama_pemeriksaan) VALUES ('$satuan_nilai_normal','$model_hitung',
+'$no_rm','$no_reg','$id_pemeriksaan','$hasil_pria','$hasil_wanita','$jenis_penjualan','$nama_barang')";
 
       if ($db->query($query6) === TRUE)
       {
