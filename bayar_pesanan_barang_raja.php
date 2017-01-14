@@ -2953,24 +2953,7 @@ $(document).ready(function(){
           var kode_barang = $(this).val();
           var kode_barang = kode_barang.substr(0, kode_barang.indexOf('('));
           var level_harga = $("#level_harga").val();
-
-            $.post("cek_jumlah_tbs.php",
-            {
-            no_faktur:no_faktur,kode_barang:kode_barang
-            },
-            function(data){
-            $("#jumlah_barang_tbs").val(data);
-            });
-
-
-          
-          $.post("cek_barang_penjualan.php",
-          {
-          kode_barang: kode_barang
-          },
-          function(data){
-          $("#jumlahbarang").val(data);
-          });
+   
 
           $.post('cek_kode_barang_edit_tbs_penjualan.php',{kode_barang:kode_barang,no_faktur:no_faktur}, function(data){
           
@@ -2980,8 +2963,9 @@ $(document).ready(function(){
           $("#nama_barang").val('');
           $("#kode_barang").focus();
           }//penutup if
-          
-          });////penutup function(data)
+ 
+ else {         
+       
       $.getJSON('lihat_nama_barang.php',{kode_barang:kode_barang}, function(json){
       
       if (json == null)
@@ -2996,7 +2980,7 @@ $(document).ready(function(){
         $('#satuan_konversi').val('');
         $('#id_produk').val('');
         $('#ber_stok').val('');
-
+        $('#jumlahbarang').val('');
       }
 
       else 
@@ -3050,16 +3034,17 @@ $(document).ready(function(){
         $('#satuan_konversi').val(json.satuan);
         $('#id_produk').val(json.id);
         $('#ber_stok').val(json.tipe_barang);
+        $('#jumlahbarang').val(json.foto);
       }
                                               
         });
-        
-        
-        });
-        });
-
+  
+    }//else cek data barang
       
-      
+      });////penutup function(data)
+          
+      });
+  }); 
 </script>
 
 

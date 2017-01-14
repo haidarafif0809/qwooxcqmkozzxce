@@ -528,7 +528,7 @@ $level_harga = $data_level['harga'];
     <input type="hidden" class="form-control" name="ber_stok" id="ber_stok" placeholder="Ber Stok" >
     <input type="hidden" class="form-control" name="harga_lama" id="harga_lama">
     <input type="hidden" class="form-control" name="harga_baru" id="harga_baru">
-    <input type="hidden" class="form-control" name="jumlahbarang" id="jumlahbarang">
+    <input type="text" class="form-control" name="jumlahbarang" id="jumlahbarang">
     <input type="hidden" id="satuan_produk" name="satuan" class="form-control" value="" >
     <input type="hidden" id="harga_produk" name="harga" class="form-control" value="" >
     <input type="hidden" id="id_produk" name="id_produk" class="form-control" value="" >  
@@ -2391,6 +2391,7 @@ $(function() {
 <!-- AUTOCOMPLETE -->
 
 <script type="text/javascript">
+
   $("#penjamin").change(function(){
 
     var penjamin = $(this).val();
@@ -2408,13 +2409,15 @@ $(function() {
 
 
 <script type="text/javascript">
+    $(document).ready(function(){
+
         $("#kode_barang").blur(function(){
 
           var kode_barang = $(this).val();
 
           var kode_barang = kode_barang.substr(0, kode_barang.indexOf('('));
           var level_harga = $("#level_harga").val();
-          var session_id = $("#session_id").val();
+          var no_faktur = $("#no_faktur").val();
           
          var penjamin = $("#penjamin").val();
 /*
@@ -2423,11 +2426,20 @@ $(function() {
           });
           */
 
+   $.post('cek_kode_barang_edit_tbs_penjualan.php',{kode_barang:kode_barang,no_faktur:no_faktur}, function(data){
           
-          $.post("cek_barang_penjualan.php",{kode_barang: kode_barang}, function(data){
-          $("#jumlahbarang").val(data);
-          });
+          if(data == 1)
+          {
 
+          alert("Anda Tidak Bisa Menambahkan Barang Yang Sudah Ada, Silakan Edit atau Pilih Barang Yang Lain !");
+
+          $("#kode_barang").val('');
+          $("#nama_barang").val('');
+          $("#kode_barang").focus();
+
+          }//penutup if
+
+else {
 
       $.getJSON('lihat_nama_barang.php',{kode_barang:kode_barang}, function(json){
       
@@ -2443,7 +2455,7 @@ $(function() {
         $('#satuan_konversi').val('');
         $('#id_produk').val('');
         $('#ber_stok').val('');
-
+        $('#jumlahbarang').val('');
       }
 
       else 
@@ -2504,14 +2516,17 @@ $(function() {
         $('#satuan_konversi').val(json.satuan);
         $('#id_produk').val(json.id);
         $('#ber_stok').val(json.tipe_barang);
-      }
-                                              
-        });
-        
-        });
+        $('#jumlahbarang').val(json.foto);
 
-      
-      
+      }
+ 
+  }); 
+}// else penutup ambil data barang
+
+   });//cek barang yang ada di tbs                                            
+        
+        });       
+    });   
 </script>
 
 
