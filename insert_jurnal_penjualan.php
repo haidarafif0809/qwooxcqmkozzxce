@@ -6,7 +6,7 @@ include_once 'sanitasi.php';
 $mulai = $_GET['mulai'];
 
 //Mengambil data penjualan berdasarkan trtansaksi yang sudah '#LUNAS'
-$pilih_penjualan_tunai = $db->query("SELECT * FROM penjualan WHERE tanggal >= '2017-01-01' LIMIT $mulai,50");
+$pilih_penjualan_tunai = $db->query("SELECT * FROM penjualan WHERE tanggal >= '2017-01-01' LIMIT $mulai,1");
 while ($data_penj = mysqli_fetch_array($pilih_penjualan_tunai)) { //START while ($data_penj) {
 
   $no_faktur = $data_penj['no_faktur'];
