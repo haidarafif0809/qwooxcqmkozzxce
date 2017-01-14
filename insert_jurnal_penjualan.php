@@ -6,7 +6,7 @@ include_once 'sanitasi.php';
 $mulai = $_GET['mulai'];
 
 //Mengambil data penjualan berdasarkan trtansaksi yang sudah '#LUNAS'
-$pilih_penjualan_tunai = $db->query("SELECT * FROM penjualan WHERE tanggal >= '2017-01-01' LIMIT $mulai,200");
+$pilih_penjualan_tunai = $db->query("SELECT * FROM penjualan WHERE tanggal >= '2017-01-01' LIMIT $mulai,50");
 while ($data_penj = mysqli_fetch_array($pilih_penjualan_tunai)) { //START while ($data_penj) {
 
   $no_faktur = $data_penj['no_faktur'];
@@ -50,8 +50,9 @@ while ($data_penj = mysqli_fetch_array($pilih_penjualan_tunai)) { //START while 
     $keterangan_jurnal = $data_jenis_penj['jenis_penjualan'];
 
 // START INSERT JURNAL PENJUALAN TUNAI // START INSERT JURNAL PENJUALAN TUNAI // START INSERT JURNAL PENJUALAN TUNAI 
+    $status = $pembayaran - $total;
 
-    if ($status == 'Lunas') { // START if ($status == 'Lunas') {      
+    if ($status >= 0) { // START if ($status == 'Lunas') {      
     echo "LUNAS"; echo "<br>";
 
           //PERSEDIAAN    
@@ -124,7 +125,7 @@ while ($data_penj = mysqli_fetch_array($pilih_penjualan_tunai)) { //START while 
 
 // START INSERT JURNAL PENJUALAN PIUTANG // START INSERT JURNAL PENJUALAN PIUTANG // START INSERT JURNAL PENJUALAN PIUTANG 
 
-    else{ // Start else piutang
+    else if ($status != 0) { // Start else piutang
 
 echo "PIUTANG"; echo "<br>";
           //PERSEDIAAN    
