@@ -1223,17 +1223,24 @@ $(document).ready(function(){
       var kode_barang = kode_barang.substr(0, kode_barang.indexOf('('));
       var id_produk = $("#id_produk").val();
       var prev = $("#satuan_produk").val();
+      var ber_stok = $("#ber_stok").val();
 
       $.post("cek_stok_konversi_penjualan.php",
         {jumlah_barang:jumlah_barang,satuan_konversi:satuan_konversi,kode_barang:kode_barang,
         id_produk:id_produk},function(data){
 
-          if (data < 0) {
+          if (ber_stok != "Barang") {
+
+          }
+          else{
+             if (data < 0) {
             alert("Jumlah Melebihi Stok");
             $("#jumlah_barang").val('');
           $("#satuan_konversi").val(prev);
 
           }
+          }
+         
 
       });
     });

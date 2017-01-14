@@ -369,7 +369,7 @@ $user = $_SESSION['nama'];
     <input type="hidden" class="form-control" name="nama_barang" autocomplete="off" id="nama_barang" placeholder="nama" >
 
   <div class="col-xs-2">
-    <input style="height:15px;" type="text" class="form-control" name="jumlah_barang" autocomplete="off" onkeydown="return numbersonly(this, event);" id="jumlah_barang" placeholder="Jumlah" >
+    <input style="height:15px;" type="text" class="form-control" name="jumlah_barang" autocomplete="off" id="jumlah_barang" placeholder="Jumlah" >
   </div>
 
   <div class="col-xs-2">
