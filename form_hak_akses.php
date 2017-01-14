@@ -10,8 +10,12 @@
     $nama = $_GET['nama'];
     $id = $_GET['id'];
 
-    $otoritas_akses = $db->query("SELECT * FROM hak_otoritas ho LEFT JOIN otoritas_penjualan open ON ho.id = open.id_otoritas LEFT JOIN otoritas_pembelian opem ON ho.id = opem.id_otoritas LEFT JOIN otoritas_master_data omd ON ho.id = omd.id_otoritas LEFT JOIN otoritas_pembayaran opemb ON ho.id = opemb.id_otoritas LEFT JOIN otoritas_transaksi_kas otk ON ho.id = otk.id_otoritas LEFT JOIN otoritas_kas_keluar okk ON ho.id = okk.id_otoritas LEFT JOIN otoritas_kas_masuk okm ON ho.id = okm.id_otoritas LEFT JOIN otoritas_kas_mutasi okmut ON ho.id = okmut.id_otoritas LEFT JOIN otoritas_persediaan operse ON ho.id = operse.id_otoritas LEFT JOIN otoritas_stok_opname oso ON ho.id = oso.id_otoritas LEFT JOIN otoritas_stok_awal osa ON ho.id = osa.id_otoritas LEFT JOIN otoritas_item_masuk oim ON ho.id = oim.id_otoritas LEFT JOIN otoritas_item_keluar oik ON ho.id = oik.id_otoritas LEFT JOIN otoritas_kas ok ON ho.id = ok.id_otoritas LEFT JOIN otoritas_laporan ol ON ho.id = ol.id_otoritas LEFT JOIN otoritas_registrasi oreg ON ho.id = oreg.id_otoritas LEFT JOIN otoritas_rekam_medik orm ON ho.id = orm.id_otoritas LEFT JOIN otoritas_setting os ON ho.id = os.id_otoritas LEFT JOIN otoritas_penjualan_rj opr ON ho.id = opr.id_otoritas LEFT JOIN otoritas_penjualan_inap opi ON ho.id = opi.id_otoritas LEFT JOIN otoritas_penjualan_ugd opu ON ho.id = opu.id_otoritas  LEFT JOIN otoritas_penjualan_apotek opap ON ho.id = opap.id_otoritas LEFT JOIN otoritas_penjualan_lab opl ON ho.id = opl.id_otoritas WHERE ho.id = '$id'");
+    $otoritas_akses = $db->query("SELECT * FROM hak_otoritas ho LEFT JOIN otoritas_penjualan open ON ho.id = open.id_otoritas LEFT JOIN otoritas_pembelian opem ON ho.id = opem.id_otoritas LEFT JOIN otoritas_master_data omd ON ho.id = omd.id_otoritas LEFT JOIN otoritas_pembayaran opemb ON ho.id = opemb.id_otoritas LEFT JOIN otoritas_transaksi_kas otk ON ho.id = otk.id_otoritas LEFT JOIN otoritas_kas_keluar okk ON ho.id = okk.id_otoritas LEFT JOIN otoritas_kas_masuk okm ON ho.id = okm.id_otoritas LEFT JOIN otoritas_kas_mutasi okmut ON ho.id = okmut.id_otoritas LEFT JOIN otoritas_persediaan operse ON ho.id = operse.id_otoritas LEFT JOIN otoritas_stok_opname oso ON ho.id = oso.id_otoritas LEFT JOIN otoritas_stok_awal osa ON ho.id = osa.id_otoritas LEFT JOIN otoritas_item_masuk oim ON ho.id = oim.id_otoritas LEFT JOIN otoritas_item_keluar oik ON ho.id = oik.id_otoritas LEFT JOIN otoritas_kas ok ON ho.id = ok.id_otoritas LEFT JOIN otoritas_laporan ol ON ho.id = ol.id_otoritas LEFT JOIN otoritas_registrasi oreg ON ho.id = oreg.id_otoritas LEFT JOIN otoritas_rekam_medik orm ON ho.id = orm.id_otoritas LEFT JOIN otoritas_setting os ON ho.id = os.id_otoritas  WHERE ho.id = '$id'");
     $data_otoritas = mysqli_fetch_array($otoritas_akses);
+
+
+    $oto_jual = $db->query("SELECT * FROM hak_otoritas ho LEFT JOIN otoritas_penjualan_rj opr ON ho.id = opr.id_otoritas LEFT JOIN otoritas_penjualan_inap opi ON ho.id = opi.id_otoritas LEFT JOIN otoritas_penjualan_ugd opu ON ho.id = opu.id_otoritas  LEFT JOIN otoritas_penjualan_apotek opap ON ho.id = opap.id_otoritas LEFT JOIN otoritas_penjualan_lab opl ON ho.id = opl.id_otoritas WHERE ho.id = '$id'");
+    $data_otoritas1 = mysqli_fetch_array($oto_jual);
 
 
  ?>
@@ -562,7 +566,7 @@ else{
 
     <?php 
 
-    if ($data_otoritas['tombol_submit'] == '1'){
+    if ($data_otoritas1['tombol_submit'] == '1'){
         echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="tombol_submit_produk" name="tombol_submit_produk" checked="">
         <label for="tombol_submit_produk">Tombol Submit</label> <br>';
     }
@@ -576,7 +580,7 @@ else{
 
     <?php 
 
-    if ($data_otoritas['tombol_bayar'] == '1'){
+    if ($data_otoritas1['tombol_bayar'] == '1'){
         echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="tombol_bayar" name="tombol_bayar" checked="">
         <label for="tombol_bayar">Tombol Bayar</label> <br>';
     }
@@ -590,7 +594,7 @@ else{
 
     <?php 
 
-    if ($data_otoritas['tombol_simpan'] == '1'){
+    if ($data_otoritas1['tombol_simpan'] == '1'){
         echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="tombol_simpan" name="tombol_simpan" checked="">
         <label for="tombol_simpan">Tombol Simpan</label> <br>';
     }
@@ -605,7 +609,7 @@ else{
 
     <?php 
 
-    if ($data_otoritas['tombol_piutang'] == '1'){
+    if ($data_otoritas1['tombol_piutang'] == '1'){
         echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="tombol_piutang" name="tombol_piutang" checked="">
         <label for="tombol_piutang">Tombol Piutang</label> <br>';
     }
@@ -624,7 +628,7 @@ else{
 
     <?php 
 
-    if ($data_otoritas['tombol_batal'] == '1'){
+    if ($data_otoritas1['tombol_batal'] == '1'){
         echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="tombol_batal" name="tombol_batal" checked="">
         <label for="tombol_batal">Tombol Batal</label> <br>';
     }
@@ -638,7 +642,7 @@ else{
 
     <?php 
 
-    if ($data_otoritas['hapus_produk'] == '1'){
+    if ($data_otoritas1['hapus_produk'] == '1'){
         echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="hapus_produk" name="hapus_produk" checked="">
         <label for="hapus_produk">Tombol Hapus</label> <br>';
     }
@@ -652,7 +656,7 @@ else{
 
     <?php 
 
-    if ($data_otoritas['edit_produk'] == '1'){
+    if ($data_otoritas1['edit_produk'] == '1'){
         echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="edit_produk" name="edit_produk" checked="">
         <label for="edit_produk">Edit Produk</label> <br>';
     }
@@ -675,7 +679,7 @@ else{
 
     <?php 
 
-    if ($data_otoritas['tombol_submit_inap'] == '1'){
+    if ($data_otoritas1['tombol_submit_inap'] == '1'){
         echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="tombol_submit_produk_inap" name="tombol_submit_produk_inap" checked="">
         <label for="tombol_submit_produk_inap">Tombol Submit</label> <br>';
     }
@@ -689,7 +693,7 @@ else{
 
     <?php 
 
-    if ($data_otoritas['tombol_bayar_inap'] == '1'){
+    if ($data_otoritas1['tombol_bayar_inap'] == '1'){
         echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="tombol_bayar_inap" name="tombol_bayar_inap" checked="">
         <label for="tombol_bayar_inap">Tombol Bayar</label> <br>';
     }
@@ -703,7 +707,7 @@ else{
 
     <?php 
 
-    if ($data_otoritas['tombol_simpan_inap'] == '1'){
+    if ($data_otoritas1['tombol_simpan_inap'] == '1'){
         echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="tombol_simpan_inap" name="tombol_simpan_inap" checked="">
         <label for="tombol_simpan_inap">Tombol Simpan</label> <br>';
     }
@@ -718,7 +722,7 @@ else{
 
     <?php 
 
-    if ($data_otoritas['tombol_piutang_inap'] == '1'){
+    if ($data_otoritas1['tombol_piutang_inap'] == '1'){
         echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="tombol_piutang_inap" name="tombol_piutang_inap" checked="">
         <label for="tombol_piutang_inap">Tombol Piutang</label> <br>';
     }
@@ -737,7 +741,7 @@ else{
 
     <?php 
 
-    if ($data_otoritas['tombol_batal_inap'] == '1'){
+    if ($data_otoritas1['tombol_batal_inap'] == '1'){
         echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="tombol_batal_inap" name="tombol_batal_inap" checked="">
         <label for="tombol_batal_inap">Tombol Batal</label> <br>';
     }
@@ -751,7 +755,7 @@ else{
 
     <?php 
 
-    if ($data_otoritas['hapus_produk_inap'] == '1'){
+    if ($data_otoritas1['hapus_produk_inap'] == '1'){
         echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="hapus_produk_inap" name="hapus_produk_inap" checked="">
         <label for="hapus_produk_inap">Tombol Hapus</label> <br>';
     }
@@ -765,7 +769,7 @@ else{
 
     <?php 
 
-    if ($data_otoritas['edit_produk_inap'] == '1'){
+    if ($data_otoritas1['edit_produk_inap'] == '1'){
         echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="edit_produk_inap" name="edit_produk_inap" checked="">
         <label for="edit_produk_inap">Edit Produk</label> <br>';
     }
@@ -787,7 +791,7 @@ else{
 
     <?php 
 
-    if ($data_otoritas['tombol_submit_ugd'] == '1'){
+    if ($data_otoritas1['tombol_submit_ugd'] == '1'){
         echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="tombol_submit_produk_ugd" name="tombol_submit_produk_ugd" checked="">
         <label for="tombol_submit_produk_ugd">Tombol Submit</label> <br>';
     }
@@ -801,7 +805,7 @@ else{
 
     <?php 
 
-    if ($data_otoritas['tombol_bayar_ugd'] == '1'){
+    if ($data_otoritas1['tombol_bayar_ugd'] == '1'){
         echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="tombol_bayar_ugd" name="tombol_bayar_ugd" checked="">
         <label for="tombol_bayar_ugd">Tombol Bayar</label> <br>';
     }
@@ -815,7 +819,7 @@ else{
 
     <?php 
 
-    if ($data_otoritas['tombol_simpan_ugd'] == '1'){
+    if ($data_otoritas1['tombol_simpan_ugd'] == '1'){
         echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="tombol_simpan_ugd" name="tombol_simpan_ugd" checked="">
         <label for="tombol_simpan_ugd">Tombol Simpan</label> <br>';
     }
@@ -830,7 +834,7 @@ else{
 
     <?php 
 
-    if ($data_otoritas['tombol_piutang_ugd'] == '1'){
+    if ($data_otoritas1['tombol_piutang_ugd'] == '1'){
         echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="tombol_piutang_ugd" name="tombol_piutang_ugd" checked="">
         <label for="tombol_piutang_ugd">Tombol Piutang</label> <br>';
     }
@@ -849,7 +853,7 @@ else{
 
     <?php 
 
-    if ($data_otoritas['tombol_batal_ugd'] == '1'){
+    if ($data_otoritas1['tombol_batal_ugd'] == '1'){
         echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="tombol_batal_ugd" name="tombol_batal_ugd" checked="">
         <label for="tombol_batal_ugd">Tombol Batal</label> <br>';
     }
@@ -863,7 +867,7 @@ else{
 
     <?php 
 
-    if ($data_otoritas['hapus_produk_ugd'] == '1'){
+    if ($data_otoritas1['hapus_produk_ugd'] == '1'){
         echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="hapus_produk_ugd" name="hapus_produk_ugd" checked="">
         <label for="hapus_produk_ugd">Tombol Hapus</label> <br>';
     }
@@ -877,7 +881,7 @@ else{
 
     <?php 
 
-    if ($data_otoritas['edit_produk_ugd'] == '1'){
+    if ($data_otoritas1['edit_produk_ugd'] == '1'){
         echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="edit_produk_ugd" name="edit_produk_ugd" checked="">
         <label for="edit_produk_ugd">Edit Produk</label> <br>';
     }
@@ -912,7 +916,7 @@ else{
 
     <?php 
 
-    if ($data_otoritas['tombol_submit_apotek'] == '1'){
+    if ($data_otoritas1['tombol_submit_apotek'] == '1'){
         echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="tombol_submit_produk_apotek" name="tombol_submit_produk_apotek" checked="">
         <label for="tombol_submit_produk_apotek">Tombol Submit</label> <br>';
     }
@@ -926,7 +930,7 @@ else{
 
     <?php 
 
-    if ($data_otoritas['tombol_bayar_apotek'] == '1'){
+    if ($data_otoritas1['tombol_bayar_apotek'] == '1'){
         echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="tombol_bayar_apotek" name="tombol_bayar_apotek" checked="">
         <label for="tombol_bayar_apotek">Tombol Bayar</label> <br>';
     }
@@ -942,7 +946,7 @@ else{
 
     <?php 
 
-    if ($data_otoritas['tombol_piutang_apotek'] == '1'){
+    if ($data_otoritas1['tombol_piutang_apotek'] == '1'){
         echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="tombol_piutang_apotek" name="tombol_piutang_apotek" checked="">
         <label for="tombol_piutang_apotek">Tombol Piutang</label> <br>';
     }
@@ -961,7 +965,7 @@ else{
 
     <?php 
 
-    if ($data_otoritas['tombol_batal_apotek'] == '1'){
+    if ($data_otoritas1['tombol_batal_apotek'] == '1'){
         echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="tombol_batal_apotek" name="tombol_batal_apotek" checked="">
         <label for="tombol_batal_apotek">Tombol Batal</label> <br>';
     }
@@ -975,7 +979,7 @@ else{
 
     <?php 
 
-    if ($data_otoritas['hapus_produk_apotek'] == '1'){
+    if ($data_otoritas1['hapus_produk_apotek'] == '1'){
         echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="hapus_produk_apotek" name="hapus_produk_apotek" checked="">
         <label for="hapus_produk_apotek">Tombol Hapus</label> <br>';
     }
@@ -989,7 +993,7 @@ else{
 
     <?php 
 
-    if ($data_otoritas['edit_produk_apotek'] == '1'){
+    if ($data_otoritas1['edit_produk_apotek'] == '1'){
         echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="edit_produk_apotek" name="edit_produk_apotek" checked="">
         <label for="edit_produk_apotek">Edit Produk</label> <br>';
     }
@@ -1010,7 +1014,7 @@ else{
 
     <?php 
 
-    if ($data_otoritas['tombol_submit_lab'] == '1'){
+    if ($data_otoritas1['tombol_submit_lab'] == '1'){
         echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="tombol_submit_produk_lab" name="tombol_submit_produk_lab" checked="">
         <label for="tombol_submit_produk_lab">Tombol Submit</label> <br>';
     }
@@ -1024,7 +1028,7 @@ else{
 
     <?php 
 
-    if ($data_otoritas['tombol_bayar_lab'] == '1'){
+    if ($data_otoritas1['tombol_bayar_lab'] == '1'){
         echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="tombol_bayar_lab" name="tombol_bayar_lab" checked="">
         <label for="tombol_bayar_lab">Tombol Bayar</label> <br>';
     }
@@ -1039,7 +1043,7 @@ else{
 
     <?php 
 
-    if ($data_otoritas['tombol_piutang_lab'] == '1'){
+    if ($data_otoritas1['tombol_piutang_lab'] == '1'){
         echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="tombol_piutang_lab" name="tombol_piutang_lab" checked="">
         <label for="tombol_piutang_lab">Tombol Piutang</label> <br>';
     }
@@ -1058,7 +1062,7 @@ else{
 
     <?php 
 
-    if ($data_otoritas['tombol_batal_lab'] == '1'){
+    if ($data_otoritas1['tombol_batal_lab'] == '1'){
         echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="tombol_batal_lab" name="tombol_batal_lab" checked="">
         <label for="tombol_batal_lab">Tombol Batal</label> <br>';
     }
@@ -1072,7 +1076,7 @@ else{
 
     <?php 
 
-    if ($data_otoritas['hapus_produk_lab'] == '1'){
+    if ($data_otoritas1['hapus_produk_lab'] == '1'){
         echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="hapus_produk_lab" name="hapus_produk_lab" checked="">
         <label for="hapus_produk_lab">Tombol Hapus</label> <br>';
     }
@@ -1086,7 +1090,7 @@ else{
 
     <?php 
 
-    if ($data_otoritas['edit_produk_lab'] == '1'){
+    if ($data_otoritas1['edit_produk_lab'] == '1'){
         echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="edit_produk_lab" name="edit_produk_lab" checked="">
         <label for="edit_produk_lab">Edit Produk</label> <br>';
     }
