@@ -6,8 +6,10 @@ include_once 'sanitasi.php';
 $mulai = $_GET['mulai'];
 
 //Mengambil data penjualan berdasarkan trtansaksi yang sudah '#LUNAS'
-$pilih_penjualan_tunai = $db->query("SELECT * FROM penjualan WHERE tanggal >= '2017-01-01' LIMIT $mulai,50");
+$pilih_penjualan_tunai = $db->query("SELECT ppn, biaya_admin, user, tanggal, jam, cara_bayar, potongan, status, kredit, total, no_faktur, no_reg, kode_pelanggan FROM penjualan WHERE tanggal >= '2017-01-01' LIMIT $mulai,50");
 while ($data_penj = mysqli_fetch_array($pilih_penjualan_tunai)) { //START while ($data_penj) {
+
+
 
   $no_faktur = $data_penj['no_faktur'];
   $ppn_input = $data_penj['ppn'];
@@ -30,8 +32,9 @@ while ($data_penj = mysqli_fetch_array($pilih_penjualan_tunai)) { //START while 
   }
 
 
-    $select_setting_akun = $db->query("SELECT * FROM setting_akun");
+    $select_setting_akun = $db->query("SELECT persediaan, hpp_penjualan, pembayaran_kredit, total_penjualan, pajak_jual, potongan_jual FROM setting_akun");
     $ambil_setting = mysqli_fetch_array($select_setting_akun);
+
 
     $select = $db->query("SELECT SUM(total_nilai) AS total_hpp FROM hpp_keluar WHERE no_faktur = '$data_penj[no_faktur]'");
     $ambil = mysqli_fetch_array($select);
@@ -125,7 +128,7 @@ while ($data_penj = mysqli_fetch_array($pilih_penjualan_tunai)) { //START while 
 
 // START INSERT JURNAL PENJUALAN PIUTANG // START INSERT JURNAL PENJUALAN PIUTANG // START INSERT JURNAL PENJUALAN PIUTANG 
 
-    else if ($status != 0) { // Start else piutang
+    else if ($status < 0) { // Start else piutang
 
 echo "PIUTANG"; echo "<br>";
           //PERSEDIAAN    
