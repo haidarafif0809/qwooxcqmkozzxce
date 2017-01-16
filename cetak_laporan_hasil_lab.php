@@ -9,6 +9,14 @@ $no_faktur = stringdoang($_GET['no_faktur']);
 $select = $db->query("SELECT * FROM hasil_lab WHERE no_faktur = '$no_faktur' AND status = 'Selesai'");
 $out = mysqli_fetch_array($select);
 
+$p_analis = $db->query("SELECT id,nama FROM user WHERE id = '$out[petugas_analis]'");
+$out_analis = mysqli_fetch_array($p_analis);
+$analis = $out_analis['nama'];
+
+$p_dokter = $db->query("SELECT id,nama FROM user WHERE id = '$out[dokter]'");
+$out_dokter = mysqli_fetch_array($p_dokter);
+$dokter = $out_dokter['nama'];
+
 $query1 = $db->query("SELECT * FROM perusahaan");
 $data1 = mysqli_fetch_array($query1);
 
@@ -39,6 +47,8 @@ $tanggal = date('Y-m-d');
 
       <tr><td width="50%">No Faktur</td> <td> :&nbsp;</td> <td> <?php echo $out['no_faktur']; ?> </td></tr> 
       <tr><td  width="50%">Nama Pasien</td> <td> :&nbsp;</td> <td> <?php echo $out['nama_pasien'];?> </td></tr>
+      <tr><td  width="50%">Dokter</td> <td> :&nbsp;</td> <td> <?php echo $dokter;?> </td></tr>
+      <tr><td  width="50%">Analis</td> <td> :&nbsp;</td> <td> <?php echo $analis;?> </td></tr>
       <tr><td  width="50%">Tanggal</td> <td> :&nbsp;</td> <td> <?php echo $out['tanggal']; ?> </td></tr>
             
   </tbody>

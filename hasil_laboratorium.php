@@ -10,19 +10,13 @@ $no_rm = stringdoang($_GET['no_rm']);
 $no_reg = stringdoang($_GET['no_reg']);
 $jenis_penjualan = stringdoang($_GET['jenis_penjualan']);
 
+
+
 ?>
 <div class="container">
-<h1>Form Hasil Laboratorium</h1>
-
-<form  role="form" >
-
-<input style="height: 20px" type="hidden"  class="form-control" id="no_rm" value="<?php echo $no_rm; ?>"  autocomplete="off">
-<input style="height: 20px" type="hidden"  class="form-control" id="no_reg" value="<?php echo $no_reg; ?>"  autocomplete="off">
-<input style="height: 20px" type="hidden"  class="form-control" id="nama" value="<?php echo $nama; ?>"  autocomplete="off">
-<input style="height: 20px" type="hidden"  class="form-control" id="jenis_penjualan" value="<?php echo $jenis_penjualan; ?>"  autocomplete="off">
+<h3>FORM HASIL LABORATORIUM</h3><hr>
 
 
-</form>
 
  <table>
   <tbody>
@@ -38,6 +32,65 @@ $jenis_penjualan = stringdoang($_GET['jenis_penjualan']);
   </tbody>
 </table>
 <br>
+
+<form  role="form" >
+
+<input style="height: 20px" type="hidden"  class="form-control" id="no_rm" value="<?php echo $no_rm; ?>"  autocomplete="off">
+<input style="height: 20px" type="hidden"  class="form-control" id="no_reg" value="<?php echo $no_reg; ?>"  autocomplete="off">
+<input style="height: 20px" type="hidden"  class="form-control" id="nama" value="<?php echo $nama; ?>"  autocomplete="off">
+<input style="height: 20px" type="hidden"  class="form-control" id="jenis_penjualan" value="<?php echo $jenis_penjualan; ?>"  autocomplete="off">
+
+<div class="row">
+  
+<span id="petugasnya">
+<div class="form-group col-xs-3">
+       <label for="penjamin"><b>Petugas Analis</b></label><br>
+         <select type="text" class="form-control chosen" id="analis" autocomplete="off">        
+
+         <?php 
+         $query09 = $db->query("SELECT nama,id FROM user WHERE tipe = '2' ");
+         while ( $data09 = mysqli_fetch_array($query09)) {
+
+          echo "<option value='".$data09['id'] ."'>".$data09['nama'] ."</option>";
+
+         }
+         ?>
+
+      
+        </select> 
+</div>
+
+
+<div class="col-xs-3">
+          <label> <b>Dokter Laboratorium </b></label><br>
+          
+          <select name="dokter" id="dokter" class="form-control chosen" required="" >
+          <?php 
+        //untuk menampilkan semua data pada tabel pelanggan dalam DB
+    $query01 = $db->query("SELECT nama,id FROM user WHERE tipe = '1'");
+
+    //untuk menyimpan data sementara yang ada pada $query
+    while($data01 = mysqli_fetch_array($query01))
+    {
+    
+
+    if ($data01['nama'] == $dokter) {
+     echo "<option selected value='".$data01['id'] ."'>".$data01['nama'] ."</option>";
+    }
+    else{
+      echo "<option value='".$data01['id'] ."'>".$data01['nama'] ."</option>";
+    }
+
+    
+    }
+?>
+  </select>
+</div>
+</span>
+</div><!--div close row-->
+
+</form>
+
 <span id="result">
 <div class="table-responsive">
   <table id="table-baru" class="table table-bordered table-sm">
@@ -176,6 +229,7 @@ $(document).ready(function(){
 });
 </script>
 
+
 <script type="text/javascript">
 // untuk update status abnormal
 $(document).on('dblclick','.edit-status',function(e){
@@ -220,6 +274,11 @@ $("#input-status-"+id+"").attr("data-status",input_nama);
 // ending untuk update status abnormal
 </script>
 
+      <script type="text/javascript">
+      
+      $(".chosen").chosen({no_results_text: "Maaf, Data Tidak Ada!"});  
+      
+      </script>
 
 <script>
    //perintah javascript yang diambil dari form proses_bayar_beli.php dengan id=form_beli
@@ -228,9 +287,10 @@ $("#input-status-"+id+"").attr("data-status",input_nama);
         var no_reg = $("#no_reg").val();
         var nama = $("#nama").val();
         var jenis_penjualan = $("#jenis_penjualan").val();
-        
+        var dokter = $("#dokter").val();
+        var analis = $("#analis").val();
 
- $.post("proses_selesai_lab.php",{no_rm:no_rm,no_reg:no_reg,nama:nama,jenis_penjualan:jenis_penjualan},function(info) {
+ $.post("proses_selesai_lab.php",{no_rm:no_rm,no_reg:no_reg,nama:nama,jenis_penjualan:jenis_penjualan,dokter:dokter,analis:analis},function(info) {
 
 
      $("#table-baru").html(info);
@@ -249,7 +309,7 @@ $("#input-status-"+id+"").attr("data-status",input_nama);
      $("#kembali").show();
      $("#selesai").hide();
      $("#result").hide();
-       
+     $("#petugasnya").hide();
    });
 
 

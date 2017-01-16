@@ -13,6 +13,15 @@ $query1 = $db->query("SELECT * FROM perusahaan ");
 $data1 = mysqli_fetch_array($query1);
 
 $tanggal = date('Y-m-d');
+
+$p_analis = $db->query("SELECT id,nama FROM user WHERE id = '$out[petugas_analis]'");
+$out_analis = mysqli_fetch_array($p_analis);
+$analis = $out_analis['nama'];
+
+$p_dokter = $db->query("SELECT id,nama FROM user WHERE id = '$out[dokter]'");
+$out_dokter = mysqli_fetch_array($p_dokter);
+$dokter = $out_dokter['nama'];
+
  ?>
 
 <div class="container">
@@ -42,14 +51,22 @@ $tanggal = date('Y-m-d');
       <tr><td  width="50%">Nama Pasien</td> <td> :&nbsp;</td> <td> <?php echo $out['nama_pasien'];?> </td></tr>
       <tr><td  width="50%">Tanggal</td> <td> :&nbsp;</td> <td> <?php echo $tanggal; ?> </td></tr>
             
+      <tr><td width="50%">Dokter</td> <td> :&nbsp;</td> <td> <?php echo $dokter; ?> </td></tr>
+      <tr><td  width="50%">Analis</td> <td> :&nbsp;</td> <td> <?php echo $analis; ?> </td></tr>  
   </tbody>
   </table>
                  
         </div><!--penutup colsm4-->
 
         <div class="col-sm-2">
-               
-                Petugas : <?php echo $_SESSION['nama']; ?>  <br>
+        
+   <table>
+  <tbody>
+
+      <tr><td  width="50%">Petugas</td> <td> :&nbsp;</td> <td> <?php echo $_SESSION['nama']; ?> </td></tr>
+            
+  </tbody>
+  </table>       
 
         </div><!--penutup colsm4-->
 

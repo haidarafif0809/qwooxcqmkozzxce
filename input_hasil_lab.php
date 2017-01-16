@@ -6,25 +6,77 @@ include 'db.php';
 include 'sanitasi.php';
 
 $no_faktur = stringdoang($_GET['no_faktur']);
+$nama_pasien = stringdoang($_GET['nama_pasien']);
 
 ?>
 <div class="container">
 <h1>Form Hasil Laboratorium</h1>
 
-<form  role="form" >
-
-<input type="hidden" class="form-control" id="no_faktur" value="<?php echo $no_faktur;?>" autocomplete="off">
-
-</form>
 
  <table>
   <tbody>
 
     <tr><td width="50%"><font class="satu">No Faktur</font></td> <td> :&nbsp;</td> <td><font class="satu"> <?php echo $no_faktur; ?> </font></tr>
+    <tr><td width="50%"><font class="satu">Nama Pasien</font></td> <td> :&nbsp;</td> <td><font class="satu"> <?php echo $nama_pasien; ?> </font></tr>
 
   </tbody>
 </table>
 <br>
+
+<form  role="form" >
+
+<input type="hidden" class="form-control" id="no_faktur" value="<?php echo $no_faktur;?>" autocomplete="off">
+
+<div class="row">
+  
+<span id="petugasnya">
+<div class="form-group col-xs-3">
+       <label for="penjamin"><b>Petugas Analis</b></label><br>
+         <select type="text" class="form-control chosen" id="analis" autocomplete="off">        
+
+         <?php 
+         $query09 = $db->query("SELECT nama,id FROM user WHERE tipe = '2' ");
+         while ( $data09 = mysqli_fetch_array($query09)) {
+
+          echo "<option value='".$data09['id'] ."'>".$data09['nama'] ."</option>";
+
+         }
+         ?>
+
+      
+        </select> 
+</div>
+
+
+<div class="col-xs-3">
+          <label> <b>Dokter Laboratorium </b></label><br>
+          
+          <select name="dokter" id="dokter" class="form-control chosen" required="" >
+          <?php 
+        //untuk menampilkan semua data pada tabel pelanggan dalam DB
+    $query01 = $db->query("SELECT nama,id FROM user WHERE tipe = '1'");
+
+    //untuk menyimpan data sementara yang ada pada $query
+    while($data01 = mysqli_fetch_array($query01))
+    {
+    
+
+    if ($data01['nama'] == $dokter) {
+     echo "<option selected value='".$data01['id'] ."'>".$data01['nama'] ."</option>";
+    }
+    else{
+      echo "<option value='".$data01['id'] ."'>".$data01['nama'] ."</option>";
+    }
+
+    
+    }
+?>
+  </select>
+</div>
+</span>
+</div><!--div close row-->
+
+</form>
 <span id="result">
 <div class="table-responsive">
   <table id="table-baru" class="table table-bordered table-sm">
@@ -212,9 +264,11 @@ $("#input-status-"+id+"").attr("data-status",input_nama);
    //perintah javascript yang diambil dari form proses_bayar_beli.php dengan id=form_beli
   $("#selesai").click(function(){
         var no_faktur = $("#no_faktur").val();
-        
+        var dokter = $("#dokter").val();
+        var analis = $("#analis").val();
 
- $.post("proses_selesai_lab_akhir.php",{no_faktur:no_faktur},function(info) {
+
+ $.post("proses_selesai_lab_akhir.php",{no_faktur:no_faktur,dokter:dokter,analis:analis},function(info) {
 
      $("#table-baru").html(info);
      var no_faktur = info;

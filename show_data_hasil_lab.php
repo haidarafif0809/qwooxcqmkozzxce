@@ -57,7 +57,7 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 if($row['status'] != 'Selesai')
 {
 
-	$nestedData[] = "<a href='input_hasil_lab.php?no_faktur=". $row['no_faktur']."' class='btn btn-success'> Input </a>";
+	$nestedData[] = "<a href='input_hasil_lab.php?no_faktur=". $row['no_faktur']."&nama_pasien=". $row['nama_pasien']."' class='btn btn-success'> Input </a>";
 }
 else
 {
