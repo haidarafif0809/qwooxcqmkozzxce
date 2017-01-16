@@ -204,9 +204,11 @@ var nama = $("#nama_kamar").val();
           $("#nama_kamar").val('');
           $("#nama_kamar").focus();
         }
-        else{
+        else if (data == 2){
+          alert('Kode kamar yang anda masukan tidak boleh sama dengan kode barang!');
+          $("#nama_kamar").val('');
+          $("#nama_kamar").focus();
 
-// Finish Proses
         }
 
       }); // end post dari cek nama
