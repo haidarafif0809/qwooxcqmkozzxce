@@ -6,7 +6,7 @@ include_once 'sanitasi.php';
 $mulai = $_GET['mulai'];
 
 //Mengambil data penjualan berdasarkan trtansaksi yang sudah '#LUNAS'
-$pilih_penjualan_tunai = $db->query("SELECT ppn, biaya_admin, user, tanggal, jam, cara_bayar, potongan, status, kredit, total, no_faktur, no_reg, kode_pelanggan FROM penjualan WHERE tanggal >= '2017-01-01' LIMIT $mulai,50");
+$pilih_penjualan_tunai = $db->query("SELECT ppn, biaya_admin, user, tanggal, jam, cara_bayar, potongan, status, kredit, total, no_faktur, no_reg, kode_pelanggan FROM penjualan WHERE tanggal >= '2017-01-01' LIMIT $mulai,2");
 while ($data_penj = mysqli_fetch_array($pilih_penjualan_tunai)) { //START while ($data_penj) {
 
 
@@ -40,7 +40,7 @@ while ($data_penj = mysqli_fetch_array($pilih_penjualan_tunai)) { //START while 
     $ambil = mysqli_fetch_array($select);
     $total_hpp = $ambil['total_hpp'];
 
-    $sum_tax_tbs = $db->query("SELECT SUM(tax) AS total_tax, SUM(subtotal) AS sub_total FROM detail_penjualan WHERE no_faktur = '$data_penj[no_faktur]' AND no_reg = '$data_penj[no_reg]' ");
+    $sum_tax_tbs = $db->query("SELECT SUM(tax) AS total_tax, SUM(subtotal) AS sub_total FROM detail_penjualan WHERE no_faktur = '$data_penj[no_faktur]' ");
     $jumlah_tax = mysqli_fetch_array($sum_tax_tbs);
     $total_tax = $jumlah_tax['total_tax'];
     $total2 = $jumlah_tax['sub_total'];

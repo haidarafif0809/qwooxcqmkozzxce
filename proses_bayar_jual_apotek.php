@@ -216,13 +216,13 @@ $id_kasir = $data_id['id'];
 
           if ($tunai_i >= 0) 
 {
-              
-              $stmt = $db->prepare("INSERT INTO penjualan (no_faktur,penjamin,no_resep,resep_dokter,apoteker, kode_gudang, kode_pelanggan, total, tanggal, jam, user, sales, status, potongan, /*tax,*/ sisa, cara_bayar, tunai, status_jual_awal, keterangan, ppn,jenis_penjualan,biaya_admin) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,'Lunas',?,/*?,*/?,?,?,'Tunai',?,?,'Apotek',?)");
+              $ket_jurnal = "Penjualan Apotek Lunas";
+
+              $stmt = $db->prepare("INSERT INTO penjualan (no_faktur,penjamin,no_resep,resep_dokter,apoteker, kode_gudang, kode_pelanggan, total, tanggal, jam, user, sales, status, potongan, /*tax,*/ sisa, cara_bayar, tunai, status_jual_awal, keterangan, ppn,jenis_penjualan,biaya_admin, no_faktur_jurnal, keterangan_jurnal) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,'Lunas',?,/*?,*/?,?,?,'Tunai',?,?,'Apotek',?,?,?)");
               
     // hubungkan "data" dengan prepared statements
-              $stmt->bind_param("sssssssissssiisissi",
-              $no_faktur,$penjamin,$no_resep,$resep_dokter, $apoteker,$kode_gudang, $no_rm, $total, $tanggal_sekarang, $jam_sekarang, $user, $id_kasir, $potongan, /*$tax,*/ $sisa, $cara_bayar, $pembayaran, $keterangan, $ppn_input,$biaya_admin);
- 
+              $stmt->bind_param("sssssssissssiisississ",
+              $no_faktur,$penjamin,$no_resep,$resep_dokter, $apoteker,$kode_gudang, $no_rm, $total, $tanggal_sekarang, $jam_sekarang, $user, $id_kasir, $potongan, /*$tax,*/ $sisa, $cara_bayar, $pembayaran, $keterangan, $ppn_input,$biaya_admin,$no_jurnal,$ket_jurnal);
 
 
               $_SESSION['no_faktur']=$no_faktur;
@@ -244,6 +244,16 @@ $id_kasir = $data_id['id'];
               
               // jalankan query
               $stmt1->execute();
+              if (!$stmt1) 
+          {
+            die('Query Error : '.$db->errno.
+              ' - '.$db->error);
+          }
+
+    else 
+          {
+        
+          }
 
 
 $select_setting_akun = $db->query("SELECT * FROM setting_akun");
@@ -264,7 +274,7 @@ $total_tax = $jumlah_tax['total_tax'];
     $select_kode_pelanggan = $db->query("SELECT nama_pelanggan FROM pelanggan WHERE kode_pelanggan = '$no_rm'");
     $ambil_kode_pelanggan = mysqli_fetch_array($select_kode_pelanggan);
 
-
+/*
 
 //PERSEDIAAN    
         $insert_jurnal = $db->query("INSERT INTO jurnal_trans (nomor_jurnal,waktu_jurnal,keterangan_jurnal,kode_akun_jurnal,debit,kredit,jenis_transaksi,no_faktur,approved,user_buat) VALUES ('".no_jurnal()."', '$tanggal_sekarang $jam_sekarang', 'Penjualan Apotek Tunai - $ambil_kode_pelanggan[nama_pelanggan]', '$ambil_setting[persediaan]', '0', '$total_hpp', 'Penjualan', '$no_faktur','1', '$user')");
@@ -330,7 +340,7 @@ if ($potongan != "" || $potongan != 0 ) {
         $insert_juranl = $db->query("INSERT INTO jurnal_trans (nomor_jurnal,waktu_jurnal,keterangan_jurnal,kode_akun_jurnal,debit,kredit,jenis_transaksi,no_faktur,approved,user_buat) VALUES ('".no_jurnal()."', '$tanggal_sekarang $jam_sekarang', 'Penjualan Apotek Tunai - $ambil_kode_pelanggan[nama_pelanggan]', '$ambil_setting[potongan_jual]', '$potongan', '0', 'Penjualan', '$no_faktur','1', '$user')");
 }
 
-            
+      */      
               
  }
               
@@ -339,13 +349,14 @@ if ($potongan != "" || $potongan != 0 ) {
               
             {
               
+              $ket_jurnal = "Penjualan Apotek Piutang";
               
               
-              $stmt = $db->prepare("INSERT INTO penjualan (no_faktur,penjamin,no_resep,resep_dokter,apoteker, kode_gudang, kode_pelanggan, total, tanggal, tanggal_jt, jam, user, sales, status, potongan, /*tax,*/ kredit, nilai_kredit, cara_bayar, tunai, status_jual_awal, keterangan, ppn,jenis_penjualan,biaya_admin) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,'Piutang',?,/*?,*/?,?,?,?,'Kredit',?,?,'Apotek',?)");
+              $stmt = $db->prepare("INSERT INTO penjualan (no_faktur,penjamin,no_resep,resep_dokter,apoteker, kode_gudang, kode_pelanggan, total, tanggal, tanggal_jt, jam, user, sales, status, potongan, /*tax,*/ kredit, nilai_kredit, cara_bayar, tunai, status_jual_awal, keterangan, ppn,jenis_penjualan,biaya_admin, no_faktur_jurnal, keterangan_jurnal) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,'Piutang',?,/*?,*/?,?,?,?,'Kredit',?,?,'Apotek',?,?,?)");
               
 
-              $stmt->bind_param("sssssssisssssiiisissi",
-              $no_faktur,$penjamin,$no_resep,$resep_dokter, $apoteker, $kode_gudang, $no_rm, $total , $tanggal_sekarang, $tanggal_jt, $jam_sekarang, $user, $id_kasir, $potongan, /*$tax,*/ $sisa_kredit, $sisa_kredit, $cara_bayar, $pembayaran, $keterangan, $ppn_input,$biaya_admin);
+              $stmt->bind_param("sssssssisssssiiisississ",
+              $no_faktur,$penjamin,$no_resep,$resep_dokter, $apoteker, $kode_gudang, $no_rm, $total , $tanggal_sekarang, $tanggal_jt, $jam_sekarang, $user, $id_kasir, $potongan, /*$tax,*/ $sisa_kredit, $sisa_kredit, $cara_bayar, $pembayaran, $keterangan, $ppn_input,$biaya_admin,$no_jurnal,$ket_jurnal);
 
               
 
@@ -374,7 +385,7 @@ $total_tax = $jumlah_tax['total_tax'];
     $ambil_kode_pelanggan = mysqli_fetch_array($select_kode_pelanggan);
 
 
-
+/*
 //PERSEDIAAN    
         $insert_jurnal = $db->query("INSERT INTO jurnal_trans (nomor_jurnal,waktu_jurnal,keterangan_jurnal,kode_akun_jurnal,debit,kredit,jenis_transaksi,no_faktur,approved,user_buat) VALUES ('".no_jurnal()."', '$tanggal_sekarang $jam_sekarang', 'Penjualan Apotek Piutang - $ambil_kode_pelanggan[nama_pelanggan]', '$ambil_setting[persediaan]', '0', '$total_hpp', 'Penjualan', '$no_faktur','1', '$user')");
         
@@ -440,6 +451,7 @@ if ($potongan != "" || $potongan != 0 ) {
         $insert_juranl = $db->query("INSERT INTO jurnal_trans (nomor_jurnal,waktu_jurnal,keterangan_jurnal,kode_akun_jurnal,debit,kredit,jenis_transaksi,no_faktur,approved,user_buat) VALUES ('".no_jurnal()."', '$tanggal_sekarang $jam_sekarang', 'Penjualan Apotek Piutang - $ambil_kode_pelanggan[nama_pelanggan]', '$ambil_setting[potongan_jual]', '$potongan', '0', 'Penjualan', '$no_faktur','1', '$user')");
 }
 
+*/
 
    
 }
