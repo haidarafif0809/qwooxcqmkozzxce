@@ -4,7 +4,8 @@ include_once 'sanitasi.php';
 
 session_start();
  
-
+$pilih_akses_tombol = $db->query("SELECT * FROM otoritas_penjualan_rj WHERE id_otoritas = '$_SESSION[otoritas_id]' ");
+$otoritas_tombol = mysqli_fetch_array($pilih_akses_tombol);
 
  $no_faktur = stringdoang($_POST['no_faktur']);
  $kode = stringdoang($_POST['kode_barang']);

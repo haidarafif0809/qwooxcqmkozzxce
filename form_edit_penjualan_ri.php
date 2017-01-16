@@ -1403,34 +1403,41 @@ $.post("cek_level_harga_barang.php",
 <!-- end cek stok satuan konversi change-->
 
 
-<!-- cek stok satuan konversi keyup-->
+<!-- cek stok  blur-->
 <script type="text/javascript">
   $(document).ready(function(){
-    $("#jumlah_barang").keyup(function(){
-      var jumlah_barang = $("#jumlah_barang").val();
+    $("#jumlah_barang").blur(function(){
+      var jumlah_barang = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#jumlah_barang").val()))));
+      var jumlahbarang = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#jumlahbarang").val()))));
+
       var satuan_konversi = $("#satuan_konversi").val();
       var kode_barang = $("#kode_barang").val();
       var kode_barang = kode_barang.substr(0, kode_barang.indexOf('('));
       var id_produk = $("#id_produk").val();
       var prev = $("#satuan_produk").val();
+      var limit_stok = $("#limit_stok").val();
+      var ber_stok = $("#ber_stok").val();
+      var stok = jumlahbarang - jumlah_barang;
 
-      $.post("cek_stok_konversi_penjualan.php",
-        {jumlah_barang:jumlah_barang,satuan_konversi:satuan_konversi,kode_barang:kode_barang,
-        id_produk:id_produk},function(data){
-
-          if (data < 0) {
-            alert("Jumlah Melebihi Stok");
-            $("#jumlah_barang").val('');
-          $("#satuan_konversi").val(prev);
+        if (ber_stok == 'Jasa' || ber_stok == 'BHP') {
 
           }
 
-      });
+       else if (stok < 0) {
+
+            alert("Jumlah Melebihi Stok");
+            $("#jumlah_barang").val('');
+          $("#satuan_konversi").val(prev);
+          }// cek stok barang       
+
+      else{
+
+        }
+
     });
   });
 </script>
-<!-- cek stok satuan konversi keyup-->
-
+<!-- cek stok blur-->
 
 
 <script>
@@ -2126,7 +2133,9 @@ if (info == 1)
      var petugas_kasir     = $("#id_sales").val();
      var petugas_paramedik = $("#petugas_paramedik").val();
      var petugas_farmasi   = $("#petugas_farmasi").val();
-     var petugas_lain      = $("#petugas_lain").val();  
+     var petugas_lain      = $("#petugas_lain").val(); 
+     var limit_stok      = $("#limit_stok").val(); 
+ 
      var no_rm = $("#no_rm").val();
      var no_rm = no_rm.substr(0, no_rm.indexOf(' |'));     
      var kode_barang = $("#kode_barang").val();
@@ -2144,6 +2153,7 @@ if (info == 1)
      var ppn = $("#ppn").val();
      var ppn_input = $("#ppn_input").val();
      var stok = parseInt(jumlahbarang,10) - parseInt(jumlah_barang,10);
+     var limit_stok = $("#limit_stok").val();
      var tax_faktur = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#tax").val()))));
      var subtotal = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#total2").val()))));     
      var pot_fakt_per = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#potongan_persen").val()))));
@@ -2272,22 +2282,16 @@ if (info == 1)
   
 
     }
-
-     $("#jumlah_barang").val('');
-     $("#potongan1").val('');
-     $("#tax1").val('');
-
      
   if (a > 0){
   alert("Anda Tidak Bisa Menambahkan Barang Yang Sudah Ada, Silakan Edit atau Pilih Barang Yang Lain !");
   }
-  else if (jumlah_barang == ''){
+  else if (jumlah_barang == '')
+  {
   alert("Jumlah Barang Harus Diisi");
        $("#jumlah_barang").focus();
-
-
   }
- 
+
 
   else if (ber_stok == 'Jasa' || ber_stok == 'BHP' ){
 
@@ -2318,15 +2322,18 @@ if (info == 1)
 
 
   
-  } 
-  else if (stok < 0) {
-
-    alert ("Jumlah Melebihi Stok Barang !");
-
   }
+
+
+  else if (stok < 0 && ber_stok == 'Barang' ) {
+            alert("Jumlah Melebihi Stok");
+            $("#jumlah_barang").val('');
+          $("#satuan_konversi").val(prev);
+          }// cek stok barang     
 
   else{
 
+ 
         $("#kode_barang").val('');
         $("#pembayaran_penjualan").val('');
         $("#sisa_pembayaran_penjualan").val('');
@@ -2338,8 +2345,14 @@ if (info == 1)
         $("#potongan_penjualan").val(Math.round(potongaaan));
         $("#kode_barang").focus();
 
+if (limit_stok > stok)
+        {
+          alert("Persediaan Barang Ini Sudah Mencapai Batas Limit Stok, Segera Lakukan Pembelian !");
+        }
+
     $.post("proses_tbs_bayar_ranap.php",{kode_barang:kode_barang,ppn_input:ppn_input,pajak_tbs_rupiah:pajak_tbs_rupiah,nama_barang:nama_barang,jumlah_barang:jumlah_barang,harga:harga,tax:tax,potongan:potongan,no_rm:no_rm,satuan:satuan,ber_stok:ber_stok,no_reg:no_reg,dokter:dokter,dokter_pj:dokter_pj,penjamin:penjamin,asal_poli:asal_poli,level_harga:level_harga,petugas_kasir:petugas_kasir,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,no_faktur:'<?php echo $no_faktur; ?>'},function(data){
      
+
 
       $("#ppn").attr("disabled", true);
      $("#tbody").prepend(data);
@@ -2353,6 +2366,7 @@ if (info == 1)
 
      
      });
+    
 }
 
   });
@@ -2630,44 +2644,7 @@ $(document).ready(function(){
 
 
 
-<script>
 
-//untuk menampilkan sisa penjualan secara otomatis
-  $(document).ready(function(){
-
-  $("#jumlah_barang").keyup(function(){
-     var jumlah_barang = $("#jumlah_barang").val();
-     var jumlahbarang = $("#jumlahbarang").val();
-     var limit_stok = $("#limit_stok").val();
-     var ber_stok = $("#ber_stok").val();
-     var stok = jumlahbarang - jumlah_barang;
-
-
-
-if (stok < 0 )
-
-  {
-
-       if (ber_stok == 'Jasa' || ber_stok == 'BHP') {
-       
-       }
-       
-       else{
-       alert ("Jumlah Melebihi Stok!");
-       $("#jumlah_barang").val('');
-       }
-
-
-    }
-
-    else if( limit_stok > stok  ){
-
-      alert ("Persediaan Barang Ini Sudah Mencapai Batas Limit Stok, Segera Lakukan Pembelian !");
-    }
-  });
-})
-
-</script>
 
 
 <script>
@@ -2998,7 +2975,7 @@ $(function() {
         $('#satuan_produk').val(json.satuan);
         $('#satuan_konversi').val(json.satuan);
         $('#id_produk').val(json.id);
-        $('#ber_stok').val(json.tipe_barang);
+        $('#ber_stok').val(json.berkaitan_dgn_stok);
         $('#jumlahbarang').val(json.foto);
 
       }

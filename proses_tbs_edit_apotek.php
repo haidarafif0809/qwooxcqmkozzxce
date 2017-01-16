@@ -392,8 +392,7 @@ else{
 //Untuk Memutuskan Koneksi Ke Database
 mysqli_close($db);   
     ?>
-
-                <script type="text/javascript">
+    <script type="text/javascript">
                                  
                                  $(".edit-jumlah").dblclick(function(){
 
@@ -421,6 +420,7 @@ mysqli_close($db);
                                     var satuan_konversi = $(this).attr("data-satuan");
                                     var tipe = $(this).attr("data-tipe");
                                     var ppn = $("#ppn").val();
+
 
                                     var subtotal_lama = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#text-subtotal-"+id+"").text()))));
                                     var potongan = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#text-potongan-"+id+"").text()))));
@@ -453,6 +453,7 @@ mysqli_close($db);
                                             {
                                               tax_faktur = 0;
                                             }*/
+
 
                                     var sub_akhir = parseInt(subtotal_penjualan,10) - parseInt(potongaaan,10) + parseInt(biaya_admin,10);
 

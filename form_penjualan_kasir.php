@@ -1040,11 +1040,11 @@ $(document).ready(function(){
               $(nRow).attr('jumlah-barang', aData[9]);
               $(nRow).attr('satuan', aData[17]);
               $(nRow).attr('kategori', aData[11]);
-              $(nRow).attr('status', aData[12]);
-              $(nRow).attr('suplier', aData[13]);
-              $(nRow).attr('limit_stok', aData[14]);
-              $(nRow).attr('ber-stok', aData[15]);
-              $(nRow).attr('tipe_barang', aData[16]);
+              $(nRow).attr('status', aData[16]);
+              $(nRow).attr('suplier', aData[12]);
+              $(nRow).attr('limit_stok', aData[13]);
+              $(nRow).attr('ber-stok', aData[14]);
+              $(nRow).attr('tipe_barang', aData[15]);
               $(nRow).attr('id-barang', aData[18]);
 
 
@@ -1213,40 +1213,7 @@ $(document).ready(function(){
 </script>
 <!-- end cek stok satuan konversi change-->
 
-<!-- cek stok satuan konversi keyup-->
-<script type="text/javascript">
-  $(document).ready(function(){
-    $("#jumlah_barang").keyup(function(){
-      var jumlah_barang = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#jumlah_barang").val()))));
-      var satuan_konversi = $("#satuan_konversi").val();
-      var kode_barang = $("#kode_barang").val();
-      var kode_barang = kode_barang.substr(0, kode_barang.indexOf('('));
-      var id_produk = $("#id_produk").val();
-      var prev = $("#satuan_produk").val();
-      var ber_stok = $("#ber_stok").val();
 
-      $.post("cek_stok_konversi_penjualan.php",
-        {jumlah_barang:jumlah_barang,satuan_konversi:satuan_konversi,kode_barang:kode_barang,
-        id_produk:id_produk},function(data){
-
-          if (ber_stok != "Barang") {
-
-          }
-          else{
-             if (data < 0) {
-            alert("Jumlah Melebihi Stok");
-            $("#jumlah_barang").val('');
-          $("#satuan_konversi").val(prev);
-
-          }
-          }
-         
-
-      });
-    });
-  });
-</script>
-<!-- cek stok satuan konversi keyup-->
   
 
 
@@ -1329,6 +1296,8 @@ $(document).ready(function(){
     var kode_barang = $("#kode_barang").val();
     var kode_barang = kode_barang.substr(0, kode_barang.indexOf('('));
     var nama_barang = $("#nama_barang").val();
+    var limit_stok = $("#limit_stok").val();
+
     var kolom_cek_harga = $("#kolom_cek_harga").val();
     
     var jumlah_barang = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#jumlah_barang").val()))));
@@ -1508,12 +1477,9 @@ else if (a > 0){
      $("#jumlah_barang").val('');
      $("#potongan1").val('');
      $("#tax1").val('');
-    $("#sisa_pembayaran_penjualan").val('');
-
+     $("#sisa_pembayaran_penjualan").val('');
      $("#kredit").val('');
-
-    $("#kolom_cek_harga").val('0');
-
+     $("#kolom_cek_harga").val('0');
 
      });
 
@@ -1521,7 +1487,8 @@ else if (a > 0){
   
   } 
 
-  else if (stok < 0) {
+
+else if (stok < 0 && ber_stok == 'Barang' ) {
 
     alert ("Jumlah Melebihi Stok Barang !");
     $("#jumlah_barang").val('');
@@ -1530,14 +1497,18 @@ else if (a > 0){
   }
 
   else{
+
     $("#kode_barang").val('');
     $("#kode_barang").focus();
     $("#potongan_penjualan").val(Math.round(potongaaan,10));
-      $("#potongan_persen").val(Math.round(pot_pers));
+    $("#potongan_persen").val(Math.round(pot_pers));
     $("#total1").val(tandaPemisahTitik(Math.round(total_akhir)));
     $("#total2").val(tandaPemisahTitik(total_akhir1));
    
-
+if (limit_stok > stok)
+        {
+          alert("Persediaan Barang Ini Sudah Mencapai Batas Limit Stok, Segera Lakukan Pembelian !");
+        }
 
    $.post("proses_tbs_penjualan_raja.php",{id_user:id_user,penjamin:penjamin,asal_poli:asal_poli,level_harga:level_harga,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,no_reg:no_reg,no_rm:no_rm,dokter:dokter,petugas_kasir:petugas_kasir,kode_barang:kode_barang,nama_barang:nama_barang,jumlah_barang:jumlah_barang,harga:harga,potongan:potongan,tax:tax,satuan:satuan,ber_stok:ber_stok,ppn:ppn},function(data){
      
@@ -1587,8 +1558,8 @@ else if (a > 0){
 
    </script>
 
-<!--cetak langsung disini-->
 
+<!--cetak langsung disini-->
 <script>
    //perintah javascript yang diambil dari form proses_bayar_beli.php dengan id=form_beli
   $("#cetak_langsung").click(function(){
@@ -2457,50 +2428,43 @@ $("#cari_produk_penjualan").click(function(){
 
 
 
-<script>
-
-//untuk menampilkan sisa penjualan secara otomatis
+<!-- cek stok  blur-->
+<script type="text/javascript">
   $(document).ready(function(){
+    $("#jumlah_barang").blur(function(){
+      var jumlah_barang = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#jumlah_barang").val()))));
+      var jumlahbarang = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#jumlahbarang").val()))));
 
-  $("#jumlah_barang").keyup(function(){
-     var jumlah_barang = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#jumlah_barang").val()))));;
-     var jumlahbarang = $("#jumlahbarang").val();
-     var limit_stok = $("#limit_stok").val();
-     var ber_stok = $("#ber_stok").val();
-     var stok = jumlahbarang - jumlah_barang;
+      var satuan_konversi = $("#satuan_konversi").val();
+      var kode_barang = $("#kode_barang").val();
+      var kode_barang = kode_barang.substr(0, kode_barang.indexOf('('));
+      var id_produk = $("#id_produk").val();
+      var prev = $("#satuan_produk").val();
+      var limit_stok = $("#limit_stok").val();
+      var ber_stok = $("#ber_stok").val();
+      var stok = jumlahbarang - jumlah_barang;
 
+        if (ber_stok == 'Jasa' || ber_stok == 'BHP') {
 
+          }
 
-if (stok < 0 )
+       else if (stok < 0) {
 
-  {
+            alert("Jumlah Melebihi Stok");
+            $("#jumlah_barang").val('');
+          $("#satuan_konversi").val(prev);
+          }// cek stok barang       
 
-       if (ber_stok == 'Jasa' || ber_stok == 'BHP') {
-       
-       }
-       
-       else{
-       alert ("Jumlah Melebihi Stok!");
-       $("#jumlah_barang").val('');
-       }
+      else{
 
+        }
 
-    }
-
-    else if( limit_stok > stok  ){
-
-      alert ("Persediaan Barang Ini Sudah Mencapai Batas Limit Stok, Segera Lakukan Pembelian !");
-      if (jumlah_barang > stok)
-      {
-        alert("Stok Tidak Mencukupi");
-       $("#jumlah_barang").val('');
-
-      }
-    }
+    });
   });
-})
-
 </script>
+<!-- cek stok blur-->
+
+
 
 
 

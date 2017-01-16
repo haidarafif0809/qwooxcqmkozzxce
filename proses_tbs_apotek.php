@@ -361,7 +361,7 @@ mysqli_close($db);
     ?>
 
 
-                  <script type="text/javascript">
+                   <script type="text/javascript">
                                  
                                  $(".edit-jumlah").dblclick(function(){
 
@@ -398,6 +398,8 @@ mysqli_close($db);
                                     var subtotal_penjualan = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#total2").val()))));
 
                                     subtotal_penjualan = subtotal_penjualan - subtotal_lama + subtotal;
+
+
                                     var pot_fakt_rp = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#potongan_penjualan").val()))));
 
                                     var pot_fakt_per = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#potongan_persen").val()))));
@@ -419,7 +421,7 @@ mysqli_close($db);
                                               tax_faktur = 0;
                                             }*/
 
-                                    var sub_akhir = parseInt(subtotal_penjualan,10) - parseInt(potongaaan,10) + parseInt(biaya_adm,10) ;
+                                    var sub_akhir = parseInt(subtotal_penjualan,10) - parseInt(potongaaan,10) + parseInt(biaya_admin,10) ;
 
 
 
@@ -476,7 +478,7 @@ if (pot_fakt_per == 0) {
       var hitung_tax = parseInt(subtotal_penjualan,10) - parseInt(pot_fakt_rp,10);
       var tax_bener = parseInt(hitung_tax,10) * parseInt(tax_faktur,10) / 100;*/
 
-      var total_akhir = parseInt(subtotal_penjualan,10) - parseInt(pot_fakt_rp,10) + parseInt(biaya_adm,10);
+      var total_akhir = parseInt(subtotal_penjualan,10) - parseInt(pot_fakt_rp,10) + parseInt(biaya_admin,10);
 
 
     }
@@ -492,7 +494,7 @@ if (pot_fakt_per == 0) {
       var hitung_tax = parseInt(subtotal_penjualan,10) - parseInt(potongaaan,10);
       var tax_bener = parseInt(hitung_tax,10) * parseInt(tax_faktur,10) / 100;*/
 
-     var total_akhir = parseInt(subtotal_penjualan,10) - parseInt(potongaaan,10) + parseInt(biaya_adm,10);
+     var total_akhir = parseInt(subtotal_penjualan,10) - parseInt(potongaaan,10) + parseInt(biaya_admin,10);
 
     }
      else if(pot_fakt_rp != 0 && pot_fakt_rp != 0)
@@ -508,7 +510,7 @@ if (pot_fakt_per == 0) {
       var hitung_tax = parseInt(subtotal_penjualan,10) - parseInt(potongaaan,10);
       var tax_bener = parseInt(hitung_tax,10) * parseInt(tax_faktur,10) / 100;*/
  
-      var total_akhir = parseInt(subtotal_penjualan,10) - parseInt(potongaaan,10) + parseInt(biaya_adm,10);
+      var total_akhir = parseInt(subtotal_penjualan,10) - parseInt(potongaaan,10) + parseInt(biaya_admin,10);
 
     
     }
