@@ -369,7 +369,7 @@ $cek_lab = $db->query("SELECT * FROM hasil_lab WHERE no_reg = '$no_reg'");
 $out_lab = mysqli_num_rows($cek_lab);
 if($out_lab > 0 )
 {
-  $update = $db->query("UPDATE hasil_lab SET no_faktur = '$no_faktur', petugas_analis = '$analis', dokter = '$dokter' WHERE no_reg = '$no_reg'");
+  $update = $db->query("UPDATE hasil_lab SET no_faktur = '$no_faktur' WHERE no_reg = '$no_reg'");
 }
 else
 {
@@ -389,9 +389,9 @@ else
     $model_hitung = $out_hasil['model_hitung'];
     $satuan_nilai_normal = $out_hasil['satuan_nilai_normal'];
 
-    $insert_on = $db->query("INSERT INTO hasil_lab (satuan_nilai_normal,model_hitung,no_faktur, id_pemeriksaan, nilai_normal_lk, nilai_normal_pr, status_pasien,nama_pemeriksaan, nama_pasien, status,no_rm,no_reg,dokter,petugas_analis) VALUES ('$satuan_nilai_normal','$model_hitung','$no_faktur','$id_pemeriksaan',
+    $insert_on = $db->query("INSERT INTO hasil_lab (satuan_nilai_normal,model_hitung,no_faktur, id_pemeriksaan, nilai_normal_lk, nilai_normal_pr, status_pasien,nama_pemeriksaan, nama_pasien, status,no_rm,no_reg) VALUES ('$satuan_nilai_normal','$model_hitung','$no_faktur','$id_pemeriksaan',
     '$hasil_pria','$hasil_wanita','Rawat Jalan','$out_tbs[nama_barang]','$nama_pasien','Unfinish','$no_rm',
-    '$no_reg','$dokter','$analis')");
+    '$no_reg')");
   }
   $delete_tbs_hasil_lab = $db->query("DELETE FROM tbs_hasil_lab WHERE no_reg = '$no_reg'");
 }
