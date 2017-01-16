@@ -60,7 +60,7 @@ $alergi = stringdoang($_POST['alergi']);
 $no_kk = stringdoang($_POST['no_kk']);
 $nama_kk = stringdoang($_POST['nama_kk']);
 $no_urut = stringdoang($_POST['no_urut']);
-
+$status_registrasi = stringdoang($_POST['status_pasien']);
 
 $tgl = date('Y-m-d');
 $jam =  date("H:i:s");
@@ -69,9 +69,15 @@ $waktu = date("Y-m-d H:i:s");
 $bulan_php = date('m');
 $tahun_php = date('Y');
 
+if ($status_registrasi == 'pasien_masuk')
+{
+  $menunggu = 'Proses';
+}
+else
+{
+  $menunggu = 'menunggu';
+}
 
-// masukin ke registrasi
-$menunggu = 'menunggu';
 $rawat_jalan_nya = 'Rawat Jalan';
  
 $stmt = $db->query("UPDATE registrasi SET alergi = '$alergi', no_kk = '$no_kk', nama_kk = '$nama_kk', poli = '$poli', no_urut = '$no_urut', nama_pasien = '$nama_lengkap', jam = '$jam', penjamin = '$penjamin', dokter = '$dokter', status = '$menunggu', 
@@ -101,8 +107,17 @@ $sql0->execute();
 //penutup untuk cancel double klick
 
     $db->commit();
+if ($status_registrasi == 'pasien_masuk')
+{
+  echo '<META HTTP-EQUIV="Refresh" Content="0; URL=pasien_sudah_masuk.php">';
 
-echo '<META HTTP-EQUIV="Refresh" Content="0; URL=registrasi_raja.php">';
+}
+else
+{
+  echo '<META HTTP-EQUIV="Refresh" Content="0; URL=registrasi_raja.php">';
+
+}
+
 } catch (Exception $e) {
     // An exception has been thrown
     // We must rollback the transaction

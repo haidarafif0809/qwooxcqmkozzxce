@@ -162,8 +162,10 @@ if ($rekam_medik['rekam_medik_rj_lihat'] > 0) {
   ";
 }
 
-  
- 
+if ($registrasi_rj['registrasi_rj_edit'] > 0) {  
+	$nestedData[] = "<a href='edit_registrasi_rawat_jalan.php?no_reg=". $row['no_reg']."&status_registrasi=pasien_masuk' class='btn btn-floating btn-small btn-success'><i class='fa fa-edit'> </i></a>";
+}	
+
 
 if ($registrasi_rj['registrasi_rj_hapus'] > 0) {
 

@@ -5,6 +5,7 @@ include 'db.php';
 include 'sanitasi.php';
 
 $no_reg = stringdoang($_GET['no_reg']);
+$status_registrasi = stringdoang($_GET['status_registrasi']);
 
 
 $settt = $db->query("SELECT tampil_ttv FROM setting_registrasi");
@@ -61,7 +62,13 @@ $data_rekam_medik = mysqli_fetch_array($select_rekam_medik);
 <button class="btn btn-success" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample"><i class='fa fa-search'> </i>
 Cari  </button>
 
+<?php if ($status_registrasi == 'pasien_masuk'){?>
+
+<a href="pasien_sudah_masuk.php" accesskey="b" class="btn btn-primary"><i class="fa fa-reply"></i> Kembali</a>
+<?php }else{?>
+
 <a href="registrasi_raja.php" accesskey="b" class="btn btn-primary"><i class="fa fa-reply"></i> Kembali</a>
+<?php }?>
 
 
  <div class="collapse" id="collapseExample">
@@ -91,6 +98,8 @@ Cari  </button>
  <form role="form" id="formku" action="update_proses_pendaftaran_reg_raja.php" method="POST" >
 
   <input style="height: 20px;" type="hidden" class="form-control" id="token" name="token" value="Kosasih" autocomplete="off"> 
+
+  <input style="height: 20px;" type="hidden" class="form-control" id="status_pasien" name="status_pasien" value="<?php echo $status_registrasi;?>" autocomplete="off"> 
 
 
 <div class="form-group">

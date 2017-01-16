@@ -86,8 +86,8 @@ else{
 }
 
 if ($registrasi_rj['registrasi_rj_edit'] > 0) {  
-	$nestedData[] = "<a href='edit_registrasi_rawat_jalan.php?no_reg=". $row['no_reg']."' class='btn btn-floating btn-success'><i class='fa fa-edit'> </i></a>";
-}
+	$nestedData[] = "<a href='edit_registrasi_rawat_jalan.php?no_reg=". $row['no_reg']."&status_registrasi=pasien_antian' class='btn btn-floating btn-success'><i class='fa fa-edit'> </i></a>";
+}	
 else{
 	$nestedData[] = "";
 }
