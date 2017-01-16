@@ -294,13 +294,14 @@ $query = $db->query("SELECT * FROM tbs_penjualan WHERE session_id = '$session_id
         
       }
 
+$ket_jurnal = "Penjualan ".$jenis_penjualan." Simpan Sementara ".$ambil_kode_pelanggan['nama_pelanggan']." ";
 
               
-$stmt = $db->prepare("INSERT INTO penjualan (no_faktur, no_reg, penjamin, apoteker, perawat, petugas_lain, dokter, kode_gudang, kode_pelanggan, tanggal, jam, user, sales, status, potongan, no_pesanan,/*tax,*/jenis_penjualan,nama,biaya_admin, tunai, ppn, tanggal_jt, keterangan, total, kredit, nilai_kredit, cara_bayar, status_jual_awal ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,'Simpan Sementara',?,'1',/*?,*/?,?,?,?,?,?,?,?,?,?,?,'Kredit')");
+$stmt = $db->prepare("INSERT INTO penjualan (no_faktur, no_reg, penjamin, apoteker, perawat, petugas_lain, dokter, kode_gudang, kode_pelanggan, tanggal, jam, user, sales, status, potongan, no_pesanan,/*tax,*/jenis_penjualan,nama,biaya_admin, tunai, ppn, tanggal_jt, keterangan, total, kredit, nilai_kredit, cara_bayar, status_jual_awal, no_faktur_jurnal, keterangan_jurnal) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,'Simpan Sementara',?,'1',/*?,*/?,?,?,?,?,?,?,?,?,?,?,'Kredit')");
               
     // hubungkan "data" dengan prepared statements
-              $stmt->bind_param("sssssssssssssisssisssiiis",
-              $no_faktur,$no_reg,$penjamin,$petugas_farmasi,$petugas_paramedik,$petugas_lain, $dokter, $kode_gudang, $no_rm, $tanggal_sekarang, $jam_sekarang, $user, $id_user, $potongan,/*$tax,*/$jenis_penjualan,$nama_pasien,$biaya_admin, $pembayaran, $ppn, $tanggal_jt, $keterangan, $total, $kredit, $kredit, $cara_bayar);
+              $stmt->bind_param("sssssssssssssisssisssiiisss",
+              $no_faktur,$no_reg,$penjamin,$petugas_farmasi,$petugas_paramedik,$petugas_lain, $dokter, $kode_gudang, $no_rm, $tanggal_sekarang, $jam_sekarang, $user, $id_user, $potongan,/*$tax,*/$jenis_penjualan,$nama_pasien,$biaya_admin, $pembayaran, $ppn, $tanggal_jt, $keterangan, $total, $kredit, $kredit, $cara_bayar,$no_jurnal,$ket_jurnal);
               
 
               
@@ -348,7 +349,7 @@ $biaya_admin = angkadoang($_POST['biaya_adm']);
 
 $kredit_piutang = $total - $pembayaran;
 
-
+/*
 //PERSEDIAAN    
         $insert_jurnal = $db->query("INSERT INTO jurnal_trans (nomor_jurnal,waktu_jurnal,keterangan_jurnal,kode_akun_jurnal,debit,kredit,jenis_transaksi,no_faktur,approved,user_buat) VALUES ('".no_jurnal()."', '$tanggal_sekarang $jam_sekarang', 'Penjualan Simpan Sementara UGD - $ambil_kode_pelanggan[nama_pelanggan]', '$ambil_setting[persediaan]', '0', '$total_hpp', 'Penjualan', '$no_faktur','1', '$user')");
         

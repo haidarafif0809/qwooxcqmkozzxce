@@ -208,7 +208,7 @@ $id_kasir = $data_id['id'];
       }
 
 
-
+kredit
     $sisa = angkadoang($_POST['sisa']);
     $sisa_kredit = angkadoang($_POST['kredit']);
 
@@ -216,7 +216,7 @@ $id_kasir = $data_id['id'];
 
           if ($tunai_i >= 0) 
 {
-              $ket_jurnal = "Penjualan Apotek Lunas";
+              $ket_jurnal = "Penjualan Apotek Lunas ".$ambil_kode_pelanggan['nama_pelanggan']." ";
 
               $stmt = $db->prepare("INSERT INTO penjualan (no_faktur,penjamin,no_resep,resep_dokter,apoteker, kode_gudang, kode_pelanggan, total, tanggal, jam, user, sales, status, potongan, /*tax,*/ sisa, cara_bayar, tunai, status_jual_awal, keterangan, ppn,jenis_penjualan,biaya_admin, no_faktur_jurnal, keterangan_jurnal) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,'Lunas',?,/*?,*/?,?,?,'Tunai',?,?,'Apotek',?,?,?)");
               
@@ -349,7 +349,7 @@ if ($potongan != "" || $potongan != 0 ) {
               
             {
               
-              $ket_jurnal = "Penjualan Apotek Piutang";
+              $ket_jurnal = "Penjualan Apotek Piutang ".$ambil_kode_pelanggan['nama_pelanggan']." ";
               
               
               $stmt = $db->prepare("INSERT INTO penjualan (no_faktur,penjamin,no_resep,resep_dokter,apoteker, kode_gudang, kode_pelanggan, total, tanggal, tanggal_jt, jam, user, sales, status, potongan, /*tax,*/ kredit, nilai_kredit, cara_bayar, tunai, status_jual_awal, keterangan, ppn,jenis_penjualan,biaya_admin, no_faktur_jurnal, keterangan_jurnal) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,'Piutang',?,/*?,*/?,?,?,?,'Kredit',?,?,'Apotek',?,?,?)");

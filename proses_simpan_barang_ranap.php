@@ -306,13 +306,14 @@ $no_jurnal = no_jurnal();
   
     }
 // end laporan fee produk
+$ket_jurnal = "Penjualan Rawat Inap Simpan Sementara ".$ambil_kode_pelanggan['nama_pelanggan']." ";
 
 
-            $stmt = $db->prepare("INSERT INTO penjualan (no_faktur, no_reg, penjamin, apoteker, perawat, petugas_lain, dokter, kode_gudang, kode_pelanggan, total, tanggal, jam, user, sales, status, potongan, tax, sisa, cara_bayar, tunai, keterangan, ppn,jenis_penjualan,nama,kredit,nilai_kredit,biaya_admin) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,'Simpan Sementara',?,?,?,?,?,?,?,'Rawat Inap',?,?,?,?)");
+            $stmt = $db->prepare("INSERT INTO penjualan (no_faktur, no_reg, penjamin, apoteker, perawat, petugas_lain, dokter, kode_gudang, kode_pelanggan, total, tanggal, jam, user, sales, status, potongan, tax, sisa, cara_bayar, tunai, keterangan, ppn,jenis_penjualan,nama,kredit,nilai_kredit,biaya_admin, no_faktur_jurnal,keterangan_jurnal) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,'Simpan Sementara',?,?,?,?,?,?,?,'Rawat Inap',?,?,?,?,?,?)");
               
     // hubungkan "data" dengan prepared statements
-              $stmt->bind_param("sssssssssissssiiisisssiii",
-              $no_faktur,$no_reg,$penjamin,$petugas_farmasi, $petugas_paramedik, $petugas_lain, $dokter, $kode_gudang, $no_rm, $total, $tanggal_sekarang, $jam_sekarang, $nama_petugas, $petugas_kasir, $potongan, $tax, $sisa, $cara_bayar, $pembayaran, $keterangan, $ppn_input,$nama_pasien,$sisa_kredit,$sisa_kredit,$biaya_admin);
+              $stmt->bind_param("sssssssssissssiiisisssiiiss",
+              $no_faktur,$no_reg,$penjamin,$petugas_farmasi, $petugas_paramedik, $petugas_lain, $dokter, $kode_gudang, $no_rm, $total, $tanggal_sekarang, $jam_sekarang, $nama_petugas, $petugas_kasir, $potongan, $tax, $sisa, $cara_bayar, $pembayaran, $keterangan, $ppn_input,$nama_pasien,$sisa_kredit,$sisa_kredit,$biaya_admin,$no_jurnal,$ket_jurnal);
 
               
     // jalankan query
@@ -379,7 +380,7 @@ $total_tax = $jumlah_tax['total_tax'];
     $select_kode_pelanggan = $db->query("SELECT nama_pelanggan FROM pelanggan WHERE kode_pelanggan = '$no_rm'");
     $ambil_kode_pelanggan = mysqli_fetch_array($select_kode_pelanggan);
 
-
+/*
 
 //PERSEDIAAN    
         $insert_jurnal = $db->query("INSERT INTO jurnal_trans (nomor_jurnal,waktu_jurnal,keterangan_jurnal,kode_akun_jurnal,debit,kredit,jenis_transaksi,no_faktur,approved,user_buat) VALUES ('".no_jurnal()."', '$tanggal_sekarang $jam_sekarang', 'Penjualan R.Inap Simpan Sementara - $ambil_kode_pelanggan[nama_pelanggan]', '$ambil_setting[persediaan]', '0', '$total_hpp', 'Penjualan', '$no_faktur','1', '$user')");
@@ -450,7 +451,7 @@ if ($potongan != "" || $potongan != 0 ) {
 
 
 
-/*
+
 // BOT STAR AUTO
      $ambil_tbs = $db->query("SELECT * FROM tbs_penjualan WHERE no_faktur = '$no_faktur'");
       $data10 = mysqli_fetch_array($ambil_tbs);

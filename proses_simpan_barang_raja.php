@@ -101,6 +101,7 @@ $total2 = angkadoang($_POST['total2']);
 $cara_bayar = stringdoang($_POST['cara_bayar']);
 $ppn_input = stringdoang($_POST['ppn_input']);
     $user = $_SESSION['user_name'];
+$no_jurnal = no_jurnal();
 
    $_SESSION['no_faktur'] = $no_faktur;
 
@@ -280,16 +281,15 @@ $ppn_input = stringdoang($_POST['ppn_input']);
 
 
 
-
-
+$ket_jurnal = "Penjualan ".$jenis_penjualan." Simpan Sementara ".$ambil_kode_pelanggan['nama_pelanggan']." ";
               
-$stmt = $db->prepare("INSERT INTO penjualan (no_faktur, no_reg, penjamin, apoteker, perawat, petugas_lain, dokter, kode_gudang, kode_pelanggan, tanggal, jam, user, sales, status, potongan, no_pesanan,/*tax,*/jenis_penjualan,nama,biaya_admin,total,tunai,sisa,kredit,nilai_kredit,cara_bayar,ppn) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,'Simpan Sementara',?,'1',/*?,*/?,?,?,?,?,?,?,?,?,?)");
+$stmt = $db->prepare("INSERT INTO penjualan (no_faktur, no_reg, penjamin, apoteker, perawat, petugas_lain, dokter, kode_gudang, kode_pelanggan, tanggal, jam, user, sales, status, potongan, no_pesanan,/*tax,*/jenis_penjualan,nama,biaya_admin,total,tunai,sisa,kredit,nilai_kredit,cara_bayar,ppn,no_faktur_jurnal,keterangan_jurnal) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,'Simpan Sementara',?,'1',/*?,*/?,?,?,?,?,?,?,?,?,?,?,?)");
 
 
               
     // hubungkan "data" dengan prepared statements
-              $stmt->bind_param("sssssssssssssisssiiiiiss",
-              $no_faktur,$no_reg,$penjamin,$petugas_farmasi,$petugas_paramedik,$petugas_lain, $dokter, $kode_gudang, $no_rm, $tanggal_sekarang, $jam_sekarang, $nama_petugas, $petugas_kasir, $potongan,/*$tax,*/$jenis_penjualan,$nama_pasien,$biaya_admin,$total,$pembayaran,$sisa,$sisa_kredit,$sisa_kredit,$cara_bayar,$ppn_input);
+              $stmt->bind_param("sssssssssssssisssiiiiissss",
+              $no_faktur,$no_reg,$penjamin,$petugas_farmasi,$petugas_paramedik,$petugas_lain, $dokter, $kode_gudang, $no_rm, $tanggal_sekarang, $jam_sekarang, $nama_petugas, $petugas_kasir, $potongan,/*$tax,*/$jenis_penjualan,$nama_pasien,$biaya_admin,$total,$pembayaran,$sisa,$sisa_kredit,$sisa_kredit,$cara_bayar,$ppn_input,$no_jurnal,$no_faktur_jurnal);
               
 
               
@@ -401,6 +401,8 @@ $biaya_admin = angkadoang($_POST['biaya_adm']);
 
 $kredit_piutang = $total - $pembayaran;
 
+/*
+
 //PERSEDIAAN    
         $insert_jurnal = $db->query("INSERT INTO jurnal_trans (nomor_jurnal,waktu_jurnal,keterangan_jurnal,kode_akun_jurnal,debit,kredit,jenis_transaksi,no_faktur,approved,user_buat) VALUES ('".no_jurnal()."', '$tanggal_sekarang $jam_sekarang', 'Penjualan Piutang - $ambil_kode_pelanggan[nama_pelanggan]', '$ambil_setting[persediaan]', '0', '$total_hpp', 'Penjualan', '$no_faktur','1', '$nama_petugas')");
         
@@ -468,7 +470,7 @@ if ($potongan != "" || $potongan != 0 ) {
 }
 
 
-
+*/
 
    
     echo "Success";
