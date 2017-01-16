@@ -60,7 +60,6 @@ include 'db.php';
 <div class="form-group">
   <label for="sel1">Nama Pemeriksaan</label>
   <select class="form-control" id="pemeriksaan" name="pemeriksaan" required="">  
-  <option value="">Silakan Pilih</option>
   </select>
 </div>
   </span>
@@ -168,12 +167,9 @@ include 'db.php';
   <input style="height: 20px" type="text" class="form-control" id="nilai_lk2" name="nilai_lk2" autocomplete="off">
 </div>
 
-
-
 </div>
 
  </div>
-
 
 
 <div class="form-group">
@@ -237,9 +233,6 @@ include 'db.php';
 
 
 
-
-
-
 <div class="form-group">
   <label for="setup">Text</label>
   <textarea class="form-control" id="text_p" name="text_p" autocomplete="off"></textarea>
@@ -262,7 +255,7 @@ include 'db.php';
 </div>
 
 
-<button type="submit" class="btn btn-info"><i class="fa fa-plus"></i> Tambah</button>
+<button type="submit" id="tambah" class="btn btn-info"><i class="fa fa-plus"></i> Tambah</button>
 </form>
   
 </div>
@@ -377,6 +370,44 @@ $("#periksa").html(data);
     });
   });
 </script> 
+
+<script type="text/javascript">
+$(document).on('change','#periksa',function(e){
+
+      var pemeriksaan = $("#pemeriksaan").val();
+
+$.post("cek_pemeriksaan.php",{pemeriksaan:pemeriksaan},function(data){
+if(data == 1)
+{
+  alert("Pemeriksaan Sudah Ada !!");
+  $("#pemeriksaan").focus();
+
+  $("#pemeriksaan").val('');
+}
+else
+{
+
+}
+
+});
+    });
+</script>
+
+<script type="text/javascript">
+$(document).on('click','#tambah',function(e){
+
+      var pemeriksaan = $("#pemeriksaan").val();
+
+if(pemeriksaan == "")
+{
+  alert("Pemeriksaan Tidak Boleh Kosong !!");
+  $("#pemeriksaan").focus();
+
+}
+
+});
+    
+</script>
 
 <script type="text/javascript">
 $(document).ready(function(){

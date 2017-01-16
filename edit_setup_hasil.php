@@ -6,9 +6,8 @@ include 'sanitasi.php';
 
 $id = stringdoang($_GET['id']);
 
-$select_to = $db->query("SELECT bl.nama,sh.id,sh.nama_pemeriksaan,sh.kelompok_pemeriksaan,sh.model_hitung,sh.text_reference,sh.normal_lk,sh.normal_pr,sh.metode,sh.kategori_index,sh.text_hasil,sh.satuan_nilai_normal FROM setup_hasil sh INNER JOIN bidang_lab bl ON sh.kelompok_pemeriksaan = bl.id WHERE sh.id = '$id'");
+$select_to = $db->query("SELECT sh.normal_lk2,sh.normal_pr2,jl.id AS id_lab ,jl.nama AS nama_lab,bl.nama,sh.id,sh.nama_pemeriksaan,sh.kelompok_pemeriksaan,sh.model_hitung,sh.text_reference,sh.normal_lk,sh.normal_pr,sh.metode,sh.kategori_index,sh.text_hasil,sh.satuan_nilai_normal FROM setup_hasil sh INNER JOIN bidang_lab bl ON sh.kelompok_pemeriksaan = bl.id INNER JOIN jasa_lab jl ON jl.id = sh.nama_pemeriksaan WHERE sh.id = '$id'");
 $call = mysqli_fetch_array($select_to);
-
 
 ?>
    <!-- Modal Untuk Confirm Delete-->
@@ -35,6 +34,9 @@ $call = mysqli_fetch_array($select_to);
 
 
 <div class="container">
+
+  <a href="setup_hasil.php" class="btn btn-info"><i class="fa fa-reply"></i> Kembali</a>
+<br><br>
 <h3>EDIT SETUP HASIL</h3><hr>
 
 
@@ -58,10 +60,11 @@ $call = mysqli_fetch_array($select_to);
 <div class="form-group">
   <label for="sel1">Nama Pemeriksaan</label>
   <select class="form-control" id="pemeriksaan" name="pemeriksaan" required="">  
-  <option value="<?php echo $call['nama_pemeriksaan']; ?>"><?php echo $call['nama_pemeriksaan']; ?></option> 
   </select>
 </div>
   </span>
+
+  <input type="hidden" class="form-control" id="periksa_hidden" value="<?php echo $call['id_lab']; ?>" autocomplete="off">
 
 <div class="form-group">
   <label for="setup">Text Hasil</label>
@@ -352,13 +355,16 @@ $(".nilai2").hide();
 //saat pilih kelompok pemeriksaan, nama pemeriksaan yang ada dalm kelompok tsb muncul
   $(document).ready(function(){
           var kelompok = $("#kelompok").val();
-    $.post("cek_nama_pemeriksaan.php",{kelompok:kelompok},function(data){
+          var pemeriksaan = $("#pemeriksaan").val();
+    $.post("cek_nama_pemeriksaan_edit.php",{kelompok:kelompok,pemeriksaan:pemeriksaan},function(data){
 $("#periksa").html(data);
 });
 
     $("#kelompok").change(function(){
       var kelompok = $("#kelompok").val();
-$.post("cek_nama_pemeriksaan.php",{kelompok:kelompok},function(data){
+      var pemeriksaan = $("#pemeriksaan").val();
+
+$.post("cek_nama_pemeriksaan_edit.php",{kelompok:kelompok,pemeriksaan:pemeriksaan},function(data){
 
 $("#periksa").html(data);
 
@@ -366,6 +372,31 @@ $("#periksa").html(data);
     });
   });
 </script> 
+
+<script type="text/javascript">
+// untuk cek nama pemeriksaan ini sudah ada apa belum
+$(document).on('change','#periksa',function(e){
+
+      var pemeriksaan = $("#pemeriksaan").val();
+      var periksa_hidden = $("#periksa_hidden").val();
+
+$.post("cek_pemeriksaan.php",{pemeriksaan:pemeriksaan},function(data){
+if(data == 1)
+{
+  alert("Pemeriksaan Sudah Ada !!");
+  $("#pemeriksaan").focus();
+
+  $("#pemeriksaan").val(periksa_hidden);
+}
+else
+{
+
+}
+
+});
+    });
+// ENDING untuk cek nama pemeriksaan ini sudah ada apa belum\
+</script>
 
 <script type="text/javascript">
 $("#perhitungan").change(function(){
