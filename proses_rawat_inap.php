@@ -112,10 +112,10 @@ $no_urut = 1;
 $bulan_php = date("m");
 $tahun_php = date("Y");
 
-$select_to = $db->query("SELECT nama_pasien FROM registrasi WHERE jenis_pasien = 'Rawat Inap' ORDER BY id DESC LIMIT 1 ");
+$select_to = $db->query("SELECT nama_pasien FROM registrasi WHERE jenis_pasien = 'Rawat Inap' AND status != 'Sudah Pulang' ORDER BY id DESC LIMIT 1 ");
 $keluar = mysqli_fetch_array($select_to);
 
-if ($keluar['nama_pasien'] == $nama_lengkap )
+if ($keluar['nama_pasien'] == $nama_lengkap)
 {
   echo '<META HTTP-EQUIV="Refresh" Content="0; URL=rawat_inap.php">';
 }
