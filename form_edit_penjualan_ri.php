@@ -1069,7 +1069,7 @@ Laboratorium  </button>
           
 
            <label style="font-size:15px"> <b> Total Akhir </b></label><br>
-           <b><input type="text" name="total" id="total1" class="form-control" style="height: 25px; width:90%; font-size:20px;" placeholder="Total" readonly="" value="<?php echo rp($total_akhir1); ?>" ></b>
+           <b><input type="text" name="total" id="total1" class="form-control" style="height: 25px; width:90%; font-size:20px;" placeholder="Total" readonly="" ></b>
           
         </div>
  
@@ -3470,6 +3470,10 @@ $(document).ready(function(){
     if (total_operasi == '') {
       total_operasi = 0;
     }
+    var biaya_admin = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#biaya_admin").val()))));
+    if (biaya_admin == '') {
+      biaya_admin = 0;
+    }
 
     $.post("cek_pesanan_tbs_edit_inap.php",{no_reg:no_reg,no_faktur:no_faktur},function(data1){
   
@@ -3504,6 +3508,10 @@ $(document).ready(function(){
 
       var total = (parseInt(bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah(data)))),10) + parseInt(total_operasi,10)) - parseInt(pot_fakt_rp,10);
                   $("#total1").val(tandaPemisahTitik(total))
+            }
+            else{
+              var akhir = (parseInt(sum,10) - parseInt(pot_fakt_rp,10)) + parseInt(biaya_admin,10);
+                  $("#total1").val(tandaPemisahTitik(akhir))
             }
       
 

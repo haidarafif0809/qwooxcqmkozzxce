@@ -862,7 +862,7 @@ else{
         else
         {
           $potongan = $diskon_p;
-          $total_potongan = $diskon_n;
+          $total_potongan = round($diskon_n);
         }
 
          $hitung_total = $subtotal - $total_potongan; 
@@ -875,7 +875,7 @@ else{
          <div class="col-xs-6">
 
           <label> Diskon ( Rp )</label><br>
-          <input type="text" name="potongan" style="height:10px;font-size:15px" id="potongan_penjualan" value="<?php echo $total_potongan; ?>" class="form-control" placeholder="" autocomplete="off"  onkeydown="return numbersonly(this, event);" onkeyup="javascript:tandaPemisahTitik(this);">
+          <input type="text" name="potongan" style="height:10px;font-size:15px" id="potongan_penjualan" value="<?php echo round($total_potongan); ?>" class="form-control" placeholder="" autocomplete="off"  onkeydown="return numbersonly(this, event);" onkeyup="javascript:tandaPemisahTitik(this);">
             
           </div>
 
@@ -1864,6 +1864,7 @@ else
         var ppn_input = $("#ppn_input").val();
         var ppn = $("#ppn").val();
         var penjamin = $("#penjamin").val();
+        var tanggal = $("#tanggal").val();
         var jenis_penjualan = 'UGD';
         var biaya_adm = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#biaya_admin").val()))));
 
@@ -3628,6 +3629,10 @@ $(document).ready(function(){
     var no_reg = $("#no_reg").val();
     var pot_fakt_per = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#potongan_persen").val()))));
     var pot_fakt_rp = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#potongan_penjualan").val()))));
+    var biaya_admin = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#biaya_admin").val()))));
+    if (biaya_admin == "") {
+      biaya_admin = 0;
+    }
 
     $.post("cek_total_seluruh_raja.php",{no_reg:no_reg},function(data1){
   
@@ -3660,6 +3665,12 @@ $(document).ready(function(){
 
 
                   $("#total1").val(tandaPemisahTitik(total));
+            }
+
+            else{
+              var akhir = (parseInt(data,10) - parseInt(pot_fakt_rp,10)) + parseInt(biaya_admin,10);
+              $("#total1").val(tandaPemisahTitik(akhir));
+
             }
       
 

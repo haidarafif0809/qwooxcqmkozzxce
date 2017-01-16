@@ -7,7 +7,7 @@ include 'sanitasi.php';
 
  $no_reg = stringdoang($_POST['no_reg']);
  $no_faktur = stringdoang($_POST['no_faktur']);
-$total_akhir = angkadoang($_POST['total']); 
+ $total_akhir = angkadoang($_POST['total']); 
  $diskon = angkadoang($_POST['potongan']);
  
  /*$pajak = angkadoang($_POST['tax']);*/
@@ -25,7 +25,7 @@ $total_akhir = angkadoang($_POST['total']);
  $total_tbs = ($total_ss - $diskon) + $biaya_admin;
 
 
-if ($total_akhir == $total_tbs) {
+if ($total_akhir == round($total_tbs)) {
 		echo 1;
 	}
 	else{

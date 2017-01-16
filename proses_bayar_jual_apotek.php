@@ -208,7 +208,7 @@ $id_kasir = $data_id['id'];
       }
 
 
-kredit
+
     $sisa = angkadoang($_POST['sisa']);
     $sisa_kredit = angkadoang($_POST['kredit']);
 

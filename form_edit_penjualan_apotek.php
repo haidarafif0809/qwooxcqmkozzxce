@@ -1717,6 +1717,7 @@ alert("Anda Belum Melakukan Pemesanan");
         if (biaya_admin == '') {
           biaya_admin = 0;
         }
+        var tanggal = $("#tanggal").val();
         var apoteker = $("#apoteker").val();
         var no_resep_dokter = $("#no_resep_dokter").val();
         var resep_dokter = $("#resep_dokter").val();
@@ -1783,8 +1784,13 @@ else
         $("#penjualan").hide();
         $("#transaksi_baru").show();
         
-       $.post("proses_bayar_jual_edit_apotek.php",{id_kasir:id_kasir,no_faktur:no_faktur,biaya_admin:biaya_admin,total2:total2,sisa_pembayaran:sisa_pembayaran,kredit:kredit,kode_pelanggan:kode_pelanggan,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,cara_bayar:cara_bayar,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,total_hpp:total_hpp,kode_gudang:kode_gudang,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,apoteker:apoteker,no_resep_dokter:no_resep_dokter,resep_dokter:resep_dokter,penjamin:penjamin,tanggal:tanggal},function(info) 
-       {
+       $.post("proses_bayar_jual_edit_apotek.php",{id_kasir:id_kasir,no_faktur:no_faktur,biaya_admin:biaya_admin,total2:total2,sisa_pembayaran:sisa_pembayaran,kredit:kredit,kode_pelanggan:kode_pelanggan,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,cara_bayar:cara_bayar,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,total_hpp:total_hpp,kode_gudang:kode_gudang,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,apoteker:apoteker,no_resep_dokter:no_resep_dokter,resep_dokter:resep_dokter,penjamin:penjamin,tanggal:tanggal},function(info){
+
+  if (info == 1) {
+         alert("Maaf Subtotal Penjualan Tidak Sesuai, Silakan Tunggu Sebentar!");       
+        window.location.href="form_edit_penjualan_apotek.php?no_rm="+kode_pelanggan+"&kode_gudang="+kode_gudang+"&no_faktur=<?php echo $no_faktur; ?>";
+  }
+  else{
 
           $("#table-baru").html(info);
             var no_faktur = info;
@@ -1800,7 +1806,7 @@ else
             $("#cetak_piutang").show();
             $("#tax").val('');
             
-       
+      }
        
        });
   

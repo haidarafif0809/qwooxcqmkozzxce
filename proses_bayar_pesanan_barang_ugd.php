@@ -131,11 +131,11 @@ $delete = $db->query("DELETE FROM laporan_fee_produk WHERE no_faktur = '$nomor_f
 
               $ket_jurnal = "Penjualan UGD Lunas ".$ambil_kode_pelanggan['nama_pelanggan']." ";
             
-             $stmt = $db->prepare("UPDATE penjualan SET apoteker = ?, perawat = ?, petugas_lain = ?, biaya_admin = ?, kode_gudang = ?, total = ?, jam = ?, status = 'Lunas', potongan = ?,  sisa = ?, cara_bayar = ?, tunai = ?, ppn = ?, status_jual_awal = 'Tunai', keterangan = ?, user = ? WHERE no_faktur = ? AND no_reg = ?, no_jurnal = ?, keterangan_jurnal = ?") ;
+             $stmt = $db->prepare("UPDATE penjualan SET apoteker = ?, perawat = ?, petugas_lain = ?, biaya_admin = ?, kode_gudang = ?, total = ?, jam = ?, status = 'Lunas', potongan = ?,  sisa = ?, cara_bayar = ?, tunai = ?, ppn = ?, status_jual_awal = 'Tunai', keterangan = ?, user = ?, no_faktur_jurnal = ?, keterangan_jurnal = ? WHERE no_faktur = ? AND no_reg = ?") ;
               
     // hubungkan "data" dengan prepared statements
               $stmt->bind_param("sssisisiisisssssss",
-                $petugas_farmasi, $petugas_paramedik, $petugas_lain, $biaya_adm, $kode_gudang, $total, $jam, $potongan,$sisa_pembayaran, $cara_bayar, $pembayaran, $ppn_input, $keterangan, $nama_petugas, $nomor_faktur, $no_reg,$no_jurnal,$ket_jurnal) );
+                $petugas_farmasi, $petugas_paramedik, $petugas_lain, $biaya_adm, $kode_gudang, $total, $jam, $potongan,$sisa_pembayaran, $cara_bayar, $pembayaran, $ppn_input, $keterangan, $nama_petugas,$no_jurnal,$ket_jurnal, $nomor_faktur, $no_reg) );
               
 
                $petugas_farmasi = stringdoang($_POST['petugas_farmasi']);
@@ -255,11 +255,11 @@ if ($potongan != "") {
 
               $ket_jurnal = "Penjualan UGD Piutang ".$ambil_kode_pelanggan['nama_pelanggan']." ";
             
-             $stmt = $db->prepare("UPDATE penjualan SET apoteker = ?, perawat = ?, petugas_lain = ?, biaya_admin = ?, kode_gudang = ?, total = ?, jam = ?, status = 'Piutang', potongan = ?, kredit = ?, cara_bayar = ?, tunai = ?, ppn = ?, status_jual_awal = 'Kredit', keterangan = ?, user = ?, nilai_kredit = ? WHERE no_faktur = ? AND no_reg = ?, no_jurnal = ?, keterangan_jurnal = ?") ;
+             $stmt = $db->prepare("UPDATE penjualan SET apoteker = ?, perawat = ?, petugas_lain = ?, biaya_admin = ?, kode_gudang = ?, total = ?, jam = ?, status = 'Piutang', potongan = ?, kredit = ?, cara_bayar = ?, tunai = ?, ppn = ?, status_jual_awal = 'Kredit', keterangan = ?, user = ?, nilai_kredit = ?, no_faktur_jurnal = ?, keterangan_jurnal = ? WHERE no_faktur = ? AND no_reg = ?") ;
               
     // hubungkan "data" dengan prepared statements
               $stmt->bind_param("sssisisiisisssissss",
-                $petugas_farmasi, $petugas_paramedik, $petugas_lain, $biaya_adm, $kode_gudang, $total, $jam, $potongan, $kredit, $cara_bayar, $pembayaran, $ppn_input, $keterangan, $nama_petugas, $kredit, $nomor_faktur, $no_reg,$no_jurnal,$ket_jurnal) );
+                $petugas_farmasi, $petugas_paramedik, $petugas_lain, $biaya_adm, $kode_gudang, $total, $jam, $potongan, $kredit, $cara_bayar, $pembayaran, $ppn_input, $keterangan, $nama_petugas, $kredit,$no_jurnal,$ket_jurnal, $nomor_faktur, $no_reg) );
               
                $petugas_farmasi = stringdoang($_POST['petugas_farmasi']);
                $petugas_paramedik = stringdoang($_POST['petugas_paramedik']);

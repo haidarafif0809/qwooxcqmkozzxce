@@ -297,7 +297,7 @@ $query = $db->query("SELECT * FROM tbs_penjualan WHERE session_id = '$session_id
 $ket_jurnal = "Penjualan ".$jenis_penjualan." Simpan Sementara ".$ambil_kode_pelanggan['nama_pelanggan']." ";
 
               
-$stmt = $db->prepare("INSERT INTO penjualan (no_faktur, no_reg, penjamin, apoteker, perawat, petugas_lain, dokter, kode_gudang, kode_pelanggan, tanggal, jam, user, sales, status, potongan, no_pesanan,/*tax,*/jenis_penjualan,nama,biaya_admin, tunai, ppn, tanggal_jt, keterangan, total, kredit, nilai_kredit, cara_bayar, status_jual_awal, no_faktur_jurnal, keterangan_jurnal) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,'Simpan Sementara',?,'1',/*?,*/?,?,?,?,?,?,?,?,?,?,?,'Kredit')");
+$stmt = $db->prepare("INSERT INTO penjualan (no_faktur, no_reg, penjamin, apoteker, perawat, petugas_lain, dokter, kode_gudang, kode_pelanggan, tanggal, jam, user, sales, status, potongan, no_pesanan,/*tax,*/jenis_penjualan,nama,biaya_admin, tunai, ppn, tanggal_jt, keterangan, total, kredit, nilai_kredit, cara_bayar, status_jual_awal, no_faktur_jurnal, keterangan_jurnal) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,'Simpan Sementara',?,'1',/*?,*/?,?,?,?,?,?,?,?,?,?,?,'Kredit',?,?)");
               
     // hubungkan "data" dengan prepared statements
               $stmt->bind_param("sssssssssssssisssisssiiisss",

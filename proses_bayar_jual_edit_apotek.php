@@ -31,7 +31,7 @@ $no_faktur = stringdoang($_POST['no_faktur']);
  $data = mysqli_fetch_array($query);
 
  $total_ss = $data['total_penjualan'];
- $total_tbs = ($total_ss - $potongan) + $biaya_admin;
+ echo $total_tbs = ($total_ss - $potongan) + $biaya_admin;
 
 
 if ($total != $total_tbs) {
@@ -197,14 +197,14 @@ else{
 
                   {
                     
-                   
+                   $ket_jurnal = "Penjualan ".$jenis_penjualan." Lunas ".$ambil_kode_pelanggan['nama_pelanggan']." ";
                   // buat prepared statements
-                  $stmt = $db->prepare("UPDATE penjualan SET penjamin = ?, apoteker = ?, kode_gudang = ?, total = ?, tanggal = ?, jam = ?, user = ?, sales = ?, status = 'Lunas', potongan = ?,  sisa = ?, cara_bayar = ?, tunai = ?, status_jual_awal = 'Tunai', keterangan = ?, ppn = ?,jenis_penjualan = ?,biaya_admin = ?, petugas_edit = ?, waktu_edit = ?, no_resep = ?, resep_dokter = ? WHERE no_faktur = ?");
+                  $stmt = $db->prepare("UPDATE penjualan SET penjamin = ?, apoteker = ?, kode_gudang = ?, total = ?, tanggal = ?, jam = ?, user = ?, sales = ?, status = 'Lunas', potongan = ?,  sisa = ?, cara_bayar = ?, tunai = ?, status_jual_awal = 'Tunai', keterangan = ?, ppn = ?,jenis_penjualan = ?,biaya_admin = ?, petugas_edit = ?, waktu_edit = ?, no_resep = ?, resep_dokter = ?, no_faktur_jurnal = ?, keterangan_jurnal = ? WHERE no_faktur = ?");
                   
                   
                   // hubungkan "data" dengan prepared statements
-                  $stmt->bind_param("sssissssiisisssisssss", 
-                  $penjamin,$apoteker, $kode_gudang, $total, $tanggal_sekarang, $jam_sekarang, $id_kasir, $petugas_kasir, $potongan, $sisa, $cara_bayar, $pembayaran, $keterangan, $ppn_input,$jenis_penjualan,$biaya_admin,$petugas_edit,$waktu,$no_resep,$resep_dokter,$no_faktur);
+                  $stmt->bind_param("sssissssiisisssisssssss", 
+                  $penjamin,$apoteker, $kode_gudang, $total, $tanggal_sekarang, $jam_sekarang, $id_kasir, $petugas_kasir, $potongan, $sisa, $cara_bayar, $pembayaran, $keterangan, $ppn_input,$jenis_penjualan,$biaya_admin,$petugas_edit,$waktu,$no_resep,$resep_dokter,$no_jurnal,$ket_jurnal,$no_faktur);
 
                   
                     $pj_total = $total - $potongan;
@@ -247,7 +247,7 @@ else{
           $select_kode_pelanggan = $db->query("SELECT nama_pelanggan FROM pelanggan WHERE kode_pelanggan = '$no_rm'");
           $ambil_kode_pelanggan = mysqli_fetch_array($select_kode_pelanggan);
 
-
+/*
 
       //PERSEDIAAN    
               $insert_jurnal = $db->query("INSERT INTO jurnal_trans (nomor_jurnal,waktu_jurnal,keterangan_jurnal,kode_akun_jurnal,debit,kredit,jenis_transaksi,no_faktur,approved,user_buat) VALUES ('".no_jurnal()."', '$tanggal_sekarang $jam_sekarang', 'Penjualan Apotek Tunai - $ambil_kode_pelanggan[nama_pelanggan]', '$ambil_setting[persediaan]', '0', '$total_hpp', 'Penjualan', '$no_faktur','1', '$user')");
@@ -311,7 +311,7 @@ else{
               $insert_juranl = $db->query("INSERT INTO jurnal_trans (nomor_jurnal,waktu_jurnal,keterangan_jurnal,kode_akun_jurnal,debit,kredit,jenis_transaksi,no_faktur,approved,user_buat) VALUES ('".no_jurnal()."', '$tanggal_sekarang $jam_sekarang', 'Penjualan Apotek Tunai - $ambil_kode_pelanggan[nama_pelanggan]', '$ambil_setting[potongan_jual]', '$potongan', '0', 'Penjualan', '$no_faktur','1', '$user')");
       }
 
-                  
+   */               
                     
        }
                     
@@ -321,13 +321,16 @@ else{
                     else if ($tunai_i != 0)
                     
                   {
-                    
-                    $stmt2 = $db->prepare("UPDATE penjualan SET penjamin = ?, apoteker = ?, kode_gudang = ?,total = ?, tanggal = ?, jam = ?,  user = ?, sales = ?, status = 'Piutang', potongan = ?, kredit = ?, cara_bayar = ?, tunai = ?, status_jual_awal = 'Kredit', keterangan = ?, ppn = ?,jenis_penjualan = ?,tanggal_jt = ?,biaya_admin = ?, petugas_edit = ?, waktu_edit = ?, no_resep = ?, resep_dokter = ?  WHERE no_faktur = ?");
+
+                $ket_jurnal = "Penjualan ".$jenis_penjualan." Piutang ".$ambil_kode_pelanggan['nama_pelanggan']." ";
+
+                    $stmt2 = $db->prepare("UPDATE penjualan SET penjamin = ?, apoteker = ?, kode_gudang = ?,total = ?, tanggal = ?, jam = ?,  user = ?, sales = ?, status = 'Piutang', potongan = ?, kredit = ?, cara_bayar = ?, tunai = ?, status_jual_awal = 'Kredit', keterangan = ?, ppn = ?,jenis_penjualan = ?,tanggal_jt = ?,biaya_admin = ?, petugas_edit = ?, waktu_edit = ?, no_resep = ?, resep_dokter = ?, no_faktur_jurnal = ?, keterangan_jurnal = ?  WHERE no_faktur = ?");
+
                   
                   
                   // hubungkan "data" dengan prepared statements
-                  $stmt2->bind_param("sssissssiisissssisssss", 
-                  $penjamin,$apoteker, $kode_gudang, $total, $tanggal_sekarang, $jam_sekarang, $id_kasir, $petugas_kasir, $potongan, $sisa_kredit, $cara_bayar, $pembayaran, $keterangan, $ppn_input,$jenis_penjualan,$tanggal_jt,$biaya_admin,$petugas_edit,$waktu,$no_resep,$resep_dokter,$no_faktur);
+                  $stmt2->bind_param("sssissssiisissssisssssss", 
+                  $penjamin,$apoteker, $kode_gudang, $total, $tanggal_sekarang, $jam_sekarang, $id_kasir, $petugas_kasir, $potongan, $sisa_kredit, $cara_bayar, $pembayaran, $keterangan, $ppn_input,$jenis_penjualan,$tanggal_jt,$biaya_admin,$petugas_edit,$waktu,$no_resep,$resep_dokter,$no_jurnal,$ket_jurnal,$no_faktur);
 
                   
 
@@ -371,7 +374,7 @@ else{
 
 
                   $piutang_1 = $total - $pembayaran;
-
+/*
 
       //PERSEDIAAN    
               $insert_jurnal = $db->query("INSERT INTO jurnal_trans (nomor_jurnal,waktu_jurnal,keterangan_jurnal,kode_akun_jurnal,debit,kredit,jenis_transaksi,no_faktur,approved,user_buat) VALUES ('".no_jurnal()."', '$tanggal_sekarang $jam_sekarang', 'Penjualan Apotek Piutang - $ambil_kode_pelanggan[nama_pelanggan]', '$ambil_setting[persediaan]', '0', '$total_hpp', 'Penjualan', '$no_faktur','1', '$user')");
@@ -438,7 +441,7 @@ else{
               $insert_juranl = $db->query("INSERT INTO jurnal_trans (nomor_jurnal,waktu_jurnal,keterangan_jurnal,kode_akun_jurnal,debit,kredit,jenis_transaksi,no_faktur,approved,user_buat) VALUES ('".no_jurnal()."', '$tanggal_sekarang $jam_sekarang', 'Penjualan Apotek Piutang - $ambil_kode_pelanggan[nama_pelanggan]', '$ambil_setting[potongan_jual]', '$potongan', '0', 'Penjualan', '$no_faktur','1', '$user')");
       }
 
-
+*/
          
       }
 
