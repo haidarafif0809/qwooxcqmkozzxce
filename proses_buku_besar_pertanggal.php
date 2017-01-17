@@ -10,7 +10,7 @@
 	$rekap = stringdoang($_POST['rekap']);
 
 
-				$sum_saldo1 = $db->query("SELECT SUM(debit) AS saldo1 FROM jurnal_trans WHERE DATE(waktu_jurnal) > '$tanggal' AND kode_akun_jurnal = '1-1121'");
+				$sum_saldo1 = $db->query("SELECT SUM(debit) AS saldo1 FROM jurnal_trans WHERE DATE(waktu_jurnal) > '$tanggal' AND kode_akun_jurnal = '$daftar_akun'");
 				$cek_saldo1 = mysqli_fetch_array($sum_saldo1);
 				$saldo1 = $cek_saldo1['saldo1'];
 
