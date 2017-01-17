@@ -49,7 +49,7 @@ jika tidak maka nomor terakhir ditambah dengan 1
  */
  if ($v_bulan_terakhir['bulan'] != $v_bulan['bulan']) {
   # code...
-$no_faktur = "1/JL/".$data_bulan_terakhir."/".$tahun_terakhir;
+echo $no_faktur = "1/JL/".$data_bulan_terakhir."/".$tahun_terakhir;
 
  }
 
@@ -58,7 +58,7 @@ $no_faktur = "1/JL/".$data_bulan_terakhir."/".$tahun_terakhir;
 
 $nomor = 1 + $ambil_nomor ;
 
-$no_faktur = $nomor."/JL/".$data_bulan_terakhir."/".$tahun_terakhir;
+echo $no_faktur = $nomor."/JL/".$data_bulan_terakhir."/".$tahun_terakhir;
 
 
  }
@@ -289,7 +289,7 @@ $stmt = $db->prepare("INSERT INTO penjualan (no_faktur, no_reg, penjamin, apotek
               
     // hubungkan "data" dengan prepared statements
               $stmt->bind_param("sssssssssssssisssiiiiissss",
-              $no_faktur,$no_reg,$penjamin,$petugas_farmasi,$petugas_paramedik,$petugas_lain, $dokter, $kode_gudang, $no_rm, $tanggal_sekarang, $jam_sekarang, $nama_petugas, $petugas_kasir, $potongan,/*$tax,*/$jenis_penjualan,$nama_pasien,$biaya_admin,$total,$pembayaran,$sisa,$sisa_kredit,$sisa_kredit,$cara_bayar,$ppn_input,$no_jurnal,$no_faktur_jurnal,$ket_jurnal);
+              $no_faktur,$no_reg,$penjamin,$petugas_farmasi,$petugas_paramedik,$petugas_lain, $dokter, $kode_gudang, $no_rm, $tanggal_sekarang, $jam_sekarang, $nama_petugas, $petugas_kasir, $potongan,/*$tax,*/$jenis_penjualan,$nama_pasien,$biaya_admin,$total,$pembayaran,$sisa,$sisa_kredit,$sisa_kredit,$cara_bayar,$ppn_input,$no_jurnal,$ket_jurnal);
               
 
               
@@ -471,9 +471,6 @@ if ($potongan != "" || $potongan != 0 ) {
 
 
 */
-
-   
-    echo "Success";
 
 /* BOT STAR AUTO
      $ambil_tbs = $db->query("SELECT * FROM tbs_penjualan WHERE no_faktur = '$no_faktur'");
