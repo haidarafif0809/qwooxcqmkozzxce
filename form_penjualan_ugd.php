@@ -1303,12 +1303,7 @@ $(document).ready(function(){
 
     $("#total2").val(tandaPemisahTitik(total_akhir1));
     
-     $("#jumlah_barang").val('');
-     $("#harga_baru").val('');
-     $("#harga_produk").val('');
-     $("#harga_lama").val('');
-     $("#potongan1").val('');
-     $("#tax1").val('');
+
      
 if (kolom_cek_harga == '0') {
   alert ("Harga Tidak Sesuai, Tunggu Sebentar !");  
@@ -1326,7 +1321,6 @@ else if (a > 0){
   }
   else if (ber_stok == 'Jasa' || ber_stok == 'BHP' )
   {
-      $("#kode_barang").val('');
       $("#kode_barang").focus();
 
  $.post("proses_tbs_penjualan_ugd.php",{penjamin:penjamin,asal_poli:asal_poli,level_harga:level_harga,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,no_reg:no_reg,no_rm:no_rm,dokter:dokter,petugas_kasir:petugas_kasir,kode_barang:kode_barang,nama_barang:nama_barang,jumlah_barang:jumlah_barang,harga:harga,potongan:potongan,tax:tax,satuan:satuan, ber_stok:ber_stok, id_user:id_user
@@ -1343,8 +1337,8 @@ else if (a > 0){
      $("#tax1").val('');
      $("#pembayaran_penjualan").val('');
      $("#kredit").val('');
-    $("#sisa_pembayaran_penjualan").val('');
-    $("#kolom_cek_harga").val('0');
+     $("#sisa_pembayaran_penjualan").val('');
+     $("#kolom_cek_harga").val('0');
      
      });
 
@@ -1360,9 +1354,6 @@ else if (a > 0){
   }
 
   else{
-    $("#kode_barang").val('');
-    $("#kode_barang").focus();
-
       if (limit_stok > stok)
         {
           alert("Persediaan Barang Ini Sudah Mencapai Batas Limit Stok, Segera Lakukan Pembelian !");
@@ -1380,8 +1371,16 @@ else if (a > 0){
      $("#tax1").val('');
      $("#pembayaran_penjualan").val('');
      $("#kredit").val('');
-    $("#sisa_pembayaran_penjualan").val('');
-    $("#kolom_cek_harga").val('0');
+     $("#sisa_pembayaran_penjualan").val('');
+     $("#kolom_cek_harga").val('0');
+      
+     $("#kode_barang").focus();
+     $("#harga_baru").val('');
+     $("#harga_produk").val('');
+     $("#harga_lama").val('');
+     $("#potongan1").val('');
+     $("#tax1").val('');
+
 
      
      });

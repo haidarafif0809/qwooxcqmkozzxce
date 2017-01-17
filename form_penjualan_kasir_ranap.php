@@ -1948,14 +1948,7 @@ else
 
     }
 
-   
-
-     $("#harga_baru").val('');
-     $("#harga_produk").val('');
-     $("#harga_lama").val('');
-     $("#jumlah_barang").val('');
-     $("#potongan1").val('');
-     $("#tax1").val('');
+  
      
   if (kolom_cek_harga == '0') {
   alert ("Harga Tidak Sesuai, Tunggu Sebentar !");  
@@ -2013,13 +2006,12 @@ else if (a > 0){
   }
 
   else{
-      $("#kode_barang").val('');
       $("#potongan_persen").val(Math.round(pot_pers));  
       $("#potongan_penjualan").val(Math.round(potongaaan));
       $("#tax_rp").val(Math.round(hasil_tax));
       $("#total2").val(tandaPemisahTitik(total_akhir1));
       $("#total1").val(tandaPemisahTitik(Math.round(total_akhir)));
-      $("#kode_barang").focus();
+      
 
       if (limit_stok > stok)
         {
@@ -2040,6 +2032,13 @@ else if (a > 0){
      $("#sisa_pembayaran_penjualan").val('');
      $("#kredit").val('');
       $("#kolom_cek_harga").val('0');
+
+     $("#harga_baru").val('');
+     $("#harga_produk").val('');
+     $("#harga_lama").val('');
+     $("#potongan1").val('');
+     $("#tax1").val('');
+     $("#kode_barang").focus();
 
      
      });

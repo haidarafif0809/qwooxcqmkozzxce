@@ -1211,9 +1211,7 @@ $(document).ready(function(){
 
 
 
-     $("#jumlah_barang").val('');
-     $("#potongan1").val('');
-     $("#tax1").val('');
+
 
 
 if (jumlah_barang == ''){
@@ -1278,7 +1276,6 @@ $("#kode_barang").focus();
 
 else{
 
-    $("#kode_barang").val('');
     $("#pembayaran_penjualan").val('');
      $("#sisa_pembayaran_penjualan").val('');
      $("#kredit").val('');
@@ -1289,7 +1286,6 @@ else{
       $("#total2").val(tandaPemisahTitik(total_akhir1));
      /* $("#tax_rp").val(Math.round(hasil_tax));*/
 
-    $("#kode_barang").focus();
 
       if (limit_stok > stok)
         {
@@ -1306,7 +1302,9 @@ else{
      $("#potongan1").val('');
      $("#tax1").val('');
      $("#tipe_barang").val('');
-     
+     $("#kode_barang").val('');
+     $("#kode_barang").focus();
+
      $("#harga_penjamin").val('');
 
      
@@ -2213,7 +2211,7 @@ $(function() {
           });
           */
 
-             $.post('cek_kode_barang_tbs_penjualan.php',{kode_barang:kode_barang,session_id:session_id}, function(data){
+             $.post('cek_kode_barang_tbs_penjualan_apotek.php',{kode_barang:kode_barang,session_id:session_id}, function(data){
           
           if(data == 1)
           {

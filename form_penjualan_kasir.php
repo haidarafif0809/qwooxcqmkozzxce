@@ -594,7 +594,7 @@ Level 7
                 <?php
                 
                 //menampilkan semua data yang ada pada tabel tbs penjualan dalam DB
-                $perintah = $db->query("SELECT tp.jam,tp.id,tp.tipe_barang,tp.kode_barang,tp.satuan,tp.nama_barang,tp.jumlah_barang,tp.harga,tp.subtotal,tp.potongan,tp.tax,s.nama FROM tbs_penjualan tp INNER JOIN satuan s ON tp.satuan = s.id WHERE tp.no_reg = '$no_reg'  AND lab IS NULL ");
+                $perintah = $db->query("SELECT tp.jam,tp.id,tp.tipe_barang,tp.kode_barang,tp.satuan,tp.nama_barang,tp.jumlah_barang,tp.harga,tp.subtotal,tp.potongan,tp.tax,s.nama FROM tbs_penjualan tp LEFT JOIN satuan s ON tp.satuan = s.id WHERE tp.no_reg = '$no_reg'  AND tp.lab IS NULL ");
                 
                 //menyimpan data sementara yang ada pada $perintah
                 
@@ -608,9 +608,9 @@ Level 7
                 <td style='font-size:15px'>". $data1['kode_barang'] ."</td>
                 <td style='font-size:15px;'>". $data1['nama_barang'] ."</td>";
 
-                $kd = $db->query("SELECT f.nama_petugas, u.nama FROM tbs_fee_produk f INNER JOIN user u ON f.nama_petugas = u.id WHERE f.kode_produk = '$data1[kode_barang]' AND f.jam = '$data1[jam]' ");
+                $kd = $db->query("SELECT f.nama_petugas, u.nama FROM tbs_fee_produk f LEFT JOIN user u ON f.nama_petugas = u.id WHERE f.kode_produk = '$data1[kode_barang]' AND f.jam = '$data1[jam]' ");
                 
-                $kdD = $db->query("SELECT f.nama_petugas, u.nama FROM tbs_fee_produk f INNER JOIN user u ON f.nama_petugas = u.id WHERE f.kode_produk = '$data1[kode_barang]' AND f.jam = '$data1[jam]' ");
+                $kdD = $db->query("SELECT f.nama_petugas, u.nama FROM tbs_fee_produk f LEFT JOIN user u ON f.nama_petugas = u.id WHERE f.kode_produk = '$data1[kode_barang]' AND f.jam = '$data1[jam]' ");
                     
                 $nu = mysqli_fetch_array($kd);
 
@@ -701,9 +701,9 @@ Laboratorium  </button>
     echo "<tr class='tr-kode-". $data1['kode_barang'] ." tr-id-". $data1['id'] ."' data-kode-barang='".$data1['kode_barang']."'>
                 <td style='font-size:15px'>". $data1['kode_barang'] ."</td>
                 <td style='font-size:15px;'>". $data1['nama_barang'] ."</td>";
-                $kd = $db->query("SELECT f.nama_petugas, u.nama FROM tbs_fee_produk f INNER JOIN user u ON f.nama_petugas = u.id WHERE f.kode_produk = '$data1[kode_barang]' AND f.jam = '$data1[jam]' ");
+                $kd = $db->query("SELECT f.nama_petugas, u.nama FROM tbs_fee_produk f LEFT JOIN user u ON f.nama_petugas = u.id WHERE f.kode_produk = '$data1[kode_barang]' AND f.jam = '$data1[jam]' ");
                 
-                $kdD = $db->query("SELECT f.nama_petugas, u.nama FROM tbs_fee_produk f INNER JOIN user u ON f.nama_petugas = u.id WHERE f.kode_produk = '$data1[kode_barang]' AND f.jam = '$data1[jam]' ");
+                $kdD = $db->query("SELECT f.nama_petugas, u.nama FROM tbs_fee_produk f LEFT JOIN user u ON f.nama_petugas = u.id WHERE f.kode_produk = '$data1[kode_barang]' AND f.jam = '$data1[jam]' ");
                     
                 $nu = mysqli_fetch_array($kd);
 
@@ -1422,14 +1422,6 @@ $(document).ready(function(){
     }
 
 
-      
-    
-     $("#harga_baru").val('');
-     $("#harga_produk").val('');
-     $("#harga_lama").val('');
-     $("#jumlah_barang").val('');
-     $("#potongan1").val('');
-     $("#tax1").val('');
 
 if (kolom_cek_harga == '0') {
   alert ("Harga Tidak Sesuai, Tunggu Sebentar !");  
@@ -1478,6 +1470,12 @@ else if (a > 0){
      $("#kredit").val('');
      $("#kolom_cek_harga").val('0');
 
+    $("#harga_baru").val('');
+     $("#harga_produk").val('');
+     $("#harga_lama").val('');
+     $("#potongan1").val('');
+     $("#tax1").val('');
+
      });
 
 
@@ -1495,8 +1493,7 @@ else if (stok < 0 && ber_stok == 'Barang' ) {
 
   else{
 
-    $("#kode_barang").val('');
-    $("#kode_barang").focus();
+ 
     $("#potongan_penjualan").val(Math.round(potongaaan,10));
     $("#potongan_persen").val(Math.round(pot_pers));
     $("#total1").val(tandaPemisahTitik(Math.round(total_akhir)));
@@ -1519,7 +1516,7 @@ if (limit_stok > stok)
      $("#tax1").val('');
      $("#sisa_pembayaran_penjualan").val('');
      $("#kredit").val('');
-
+    $("#kode_barang").focus();
     $("#sisa_pembayaran_penjualan").val('');
     $("#kolom_cek_harga").val('0');
 

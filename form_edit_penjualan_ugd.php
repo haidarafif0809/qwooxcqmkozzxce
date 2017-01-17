@@ -1544,10 +1544,7 @@ $(document).ready(function(){
     $("#total2").val(tandaPemisahTitik(total_akhir1));
     /*$("#tax_rp").val(Math.round(hasil_tax));*/
 
-    
-     $("#jumlah_barang").val('');
-     $("#potongan1").val('');
-     $("#tax1").val('');
+  
      
   if (a > 0){
   alert("Anda Tidak Bisa Menambahkan Barang Yang Sudah Ada, Silakan Edit atau Pilih Barang Yang Lain !");
@@ -1560,8 +1557,6 @@ $(document).ready(function(){
   }
   else if (ber_stok == 'Jasa' || ber_stok == 'BHP' )
   {
-      $("#kode_barang").val('');
-      $("#kode_barang").focus();
 
  $.post("proses_tbs_edit_ugd.php",{no_faktur:no_faktur, penjamin:penjamin,asal_poli:asal_poli,level_harga:level_harga,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,no_reg:no_reg,no_rm:no_rm,dokter:dokter,petugas_kasir:petugas_kasir,kode_barang:kode_barang,nama_barang:nama_barang,jumlah_barang:jumlah_barang,harga:harga,potongan:potongan,tax:tax,satuan:satuan, ber_stok:ber_stok,ppn:ppn},function(data){
      
@@ -1577,6 +1572,8 @@ $(document).ready(function(){
      $("#pembayaran_penjualan").val('');
      $("#kredit").val('');
       $("#sisa_pembayaran_penjualan").val('');
+     $("#kode_barang").focus();
+
      });
 
 
@@ -1589,9 +1586,7 @@ $(document).ready(function(){
             $("#jumlah_barang").val('');
   }
 
-  else{
-    $("#kode_barang").val('');
-    $("#kode_barang").focus();
+  else{    
 
   if (limit_stok > stok)
         {
@@ -1610,8 +1605,8 @@ $(document).ready(function(){
      $("#tax1").val('');
      $("#pembayaran_penjualan").val('');
      $("#kredit").val('');
-      $("#sisa_pembayaran_penjualan").val('')
-
+     $("#sisa_pembayaran_penjualan").val('')
+     $("#kode_barang").focus();
      
      });
 }

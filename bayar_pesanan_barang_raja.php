@@ -1481,9 +1481,7 @@ $(document).ready(function(){
     /*/
     $("#tax_rp").val(Math.round(tax_bener));/*/
 
-     $("#jumlah_barang").val('');
-     $("#potongan1").val('');
-     $("#tax1").val('');
+
      
   if (a > 0){
   alert("Anda Tidak Bisa Menambahkan Barang Yang Sudah Ada, Silakan Edit atau Pilih Barang Yang Lain !");
@@ -1504,7 +1502,6 @@ $(document).ready(function(){
   }
   else if (ber_stok == 'Jasa' || ber_stok == 'BHP' ){
     $("#kode_barang").focus();
-    $("#kode_barang").val('');
 
   if (limit_stok > stok)
         {
@@ -1541,8 +1538,6 @@ $(document).ready(function(){
   }
 
   else{
-    $("#kode_barang").val('');
-    $("#kode_barang").focus();
 
  if (limit_stok > stok)
         {
@@ -1562,6 +1557,7 @@ $(document).ready(function(){
      $("#pembayaran_penjualan").val('');
      $("#sisa_pembayaran_penjualan").val('');
      $("#kredit").val('');
+    $("#kode_barang").focus();
 
      
      });

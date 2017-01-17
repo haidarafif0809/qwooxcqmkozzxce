@@ -289,7 +289,7 @@ $stmt = $db->prepare("INSERT INTO penjualan (no_faktur, no_reg, penjamin, apotek
               
     // hubungkan "data" dengan prepared statements
               $stmt->bind_param("sssssssssssssisssiiiiissss",
-              $no_faktur,$no_reg,$penjamin,$petugas_farmasi,$petugas_paramedik,$petugas_lain, $dokter, $kode_gudang, $no_rm, $tanggal_sekarang, $jam_sekarang, $nama_petugas, $petugas_kasir, $potongan,/*$tax,*/$jenis_penjualan,$nama_pasien,$biaya_admin,$total,$pembayaran,$sisa,$sisa_kredit,$sisa_kredit,$cara_bayar,$ppn_input,$no_jurnal,$no_faktur_jurnal);
+              $no_faktur,$no_reg,$penjamin,$petugas_farmasi,$petugas_paramedik,$petugas_lain, $dokter, $kode_gudang, $no_rm, $tanggal_sekarang, $jam_sekarang, $nama_petugas, $petugas_kasir, $potongan,/*$tax,*/$jenis_penjualan,$nama_pasien,$biaya_admin,$total,$pembayaran,$sisa,$sisa_kredit,$sisa_kredit,$cara_bayar,$ppn_input,$no_jurnal,$no_faktur_jurnal,$ket_jurnal);
               
 
               

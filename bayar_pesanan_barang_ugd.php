@@ -1445,8 +1445,6 @@ $(document).ready(function(){
   }
 
   else{
-    $("#kode_barang").val('');
-    $("#kode_barang").focus();
 
      if (limit_stok > stok)
         {
@@ -1465,7 +1463,8 @@ $(document).ready(function(){
      $("#tax1").val('');
      $("#pembayaran_penjualan").val('');
      $("#kredit").val('');
-      $("#sisa_pembayaran_penjualan").val('')
+     $("#sisa_pembayaran_penjualan").val('')
+      $("#kode_barang").focus();
 
      
      });

@@ -1509,9 +1509,6 @@ $(document).ready(function(){
      /*
     $("#tax_rp").val(Math.round(tax_bener));*/
 
-     $("#jumlah_barang").val('');
-     $("#potongan1").val('');
-     $("#tax1").val('');
      
   if (a > 0){
   alert("Anda Tidak Bisa Menambahkan Barang Yang Sudah Ada, Silakan Edit atau Pilih Barang Yang Lain !");
@@ -1529,7 +1526,6 @@ $(document).ready(function(){
   }
   else if (ber_stok == 'Jasa' || ber_stok == 'BHP' ){
 $("#kode_barang").focus();
-    $("#kode_barang").val('');
 
  $.post("proses_tbs_pesanan_barang_raja.php",{penjamin:penjamin,asal_poli:asal_poli,level_harga:level_harga,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,no_reg:no_reg,no_rm:no_rm,dokter:dokter,petugas_kasir:petugas_kasir,kode_barang:kode_barang,nama_barang:nama_barang,jumlah_barang:jumlah_barang,harga:harga,potongan:potongan,tax:tax,satuan:satuan, ber_stok:ber_stok,no_faktur:no_faktur,ppn:ppn},function(data){
      
@@ -1537,8 +1533,7 @@ $("#kode_barang").focus();
 
      $("#ppn").attr("disabled", true);
      $("#tbody").prepend(data);
-         $("#kode_barang").val('');
-
+     $("#kode_barang").val('');
      $("#nama_barang").val('');
      $("#jumlah_barang").val('');
      $("#potongan1").val('');
@@ -1558,8 +1553,6 @@ $("#kode_barang").focus();
   }
 
   else{
-    $("#kode_barang").val('');
-    $("#kode_barang").focus();
 
   if (limit_stok > stok)
         {
@@ -1577,7 +1570,7 @@ $("#kode_barang").focus();
      $("#potongan1").val('');
      $("#tax1").val('');
      $("#pembayaran_penjualan").val('');
-
+    $("#kode_barang").focus();
      
      });
 }

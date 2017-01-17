@@ -1441,10 +1441,6 @@ if (ppn == 'Exclude') {
 
 
     /*$("#tax_rp").val(Math.round(tax_bener));*/
-
-     $("#jumlah_barang").val('');
-     $("#potongan1").val('');
-     $("#tax1").val('');
      
   if (a > 0){
   alert("Anda Tidak Bisa Menambahkan Barang Yang Sudah Ada, Silakan Edit atau Pilih Barang Yang Lain !");
@@ -1465,7 +1461,6 @@ if (ppn == 'Exclude') {
       $("#potongan_penjualan").val(Math.round(potongaaan));
       $("#total2").val(tandaPemisahTitik(total_akhir1));
     $("#kode_barang").focus();
-    $("#kode_barang").val('');
 
  $.post("proses_tbs_edit_apotek.php",{no_faktur:no_faktur,kode_barang:kode_barang,nama_barang:nama_barang,jumlah_barang:jumlah_barang,harga:harga,potongan:potongan,satuan:satuan,tipe_barang:ber_stok,no_rm:no_rm,apoteker:apoteker,penjamin:penjamin,tax:tax,hargaa:hargaa, id_kasir:id_kasir,ppn:ppn},function(data){ 
      
@@ -1479,7 +1474,8 @@ if (ppn == 'Exclude') {
      $("#tax1").val('');
      $("#tipe_barang").val(''); 
      $("#harga_penjamin").val('');
-     
+     $("#kode_barang").val('');
+
      });
 
 
@@ -1499,8 +1495,7 @@ if (ppn == 'Exclude') {
       $("#potongan_penjualan").val(Math.round(potongaaan));
       $("#total2").val(tandaPemisahTitik(total_akhir1));
 
-    $("#kode_barang").val('');
-    $("#kode_barang").focus();
+    
 
       if (limit_stok > stok)
         {
@@ -1516,7 +1511,7 @@ if (ppn == 'Exclude') {
                  $("#potongan1").val('');
                  $("#tax1").val('');
                  $("#tipe_barang").val('');
-                 
+                 $("#kode_barang").focus();
                  $("#harga_penjamin").val('');
 
      

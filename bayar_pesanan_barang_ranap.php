@@ -2100,8 +2100,6 @@ else {
 
   else if (ber_stok == 'Jasa' || ber_stok == 'BHP' ){
 
-       $("#kode_barang").val('');
-
      $("#total2").val(tandaPemisahTitik(total_akhir1));
      $("#total1").val(tandaPemisahTitik(total_akhir));
      $("#tax_rp").val(Math.round(hasil_tax));
@@ -2138,7 +2136,6 @@ else {
 
   else{
       
-      $("#kode_barang").val('');
       $("#pembayaran_penjualan").val('');
       $("#sisa_pembayaran_penjualan").val('');
       $("#kredit").val('');
@@ -2147,7 +2144,6 @@ else {
       $("#tax_rp").val(Math.round(hasil_tax));
 
       $("#potongan_penjualan").val(Math.round(potongaaan));
-     $("#kode_barang").focus();
 
        if (limit_stok > stok)
         {
@@ -2166,6 +2162,7 @@ else {
      $("#jumlah_barang").val('');
      $("#potongan1").val('');
      $("#tax1").val('');
+     $("#kode_barang").focus();
 
      
      });
