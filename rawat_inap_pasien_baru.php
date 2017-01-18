@@ -220,7 +220,7 @@ $dq = mysqli_fetch_array($q);
 </div>
 <br>
 
-<button class="btn btn-success" id="lay"><i class="fa fa-list"></i> Lihat Layanan </button>
+<button class="btn btn-success" id="lay" type="button"><i class="fa fa-list"></i> Lihat Layanan </button>
      
       <br>
   <br>
@@ -466,7 +466,7 @@ $dq = mysqli_fetch_array($q);
 
 
 <div class="form-group">
-    <label for="pekerjaan_pasien">Nama Penganggung Jawab :</label>
+    <label for="pekerjaan_pasien">Nama Penanggung Jawab :</label>
     <input style="height: 20px;" type="text" class="form-control" id="nama_penanggungjawab" name="nama_penanggungjawab" autocomplete="off">
 </div>
 
@@ -490,7 +490,7 @@ $dq = mysqli_fetch_array($q);
 </div>
 
 <div class="form-group">
-    <label for="no_hp_penanggung">No Hp Penganggung Jawab :</label>
+    <label for="no_hp_penanggung">No Hp Penanggung Jawab :</label>
     <input style="height: 20px;" type="text" onkeypress="return isNumberKey(event)" class="form-control" id="no_hp_penanggung" name="no_hp_penanggung" autocomplete="off">
 </div>
 

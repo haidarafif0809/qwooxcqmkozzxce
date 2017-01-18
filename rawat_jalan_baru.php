@@ -114,7 +114,7 @@ $datasett = mysqli_fetch_array($settt);
   </select>
 </div>
 
-<button class="btn btn-warning" id="lay"><i class="fa fa-list"></i> Lihat Layanan </button>
+<button class="btn btn-warning" id="lay" type="button"><i class="fa fa-list"></i> Lihat Layanan </button>
      
    <br>
    <br>
@@ -271,7 +271,7 @@ $datasett = mysqli_fetch_array($settt);
   <div class="card card-block">
 
 <div class="form-group">
-    <label for="pekerjaan_pasien">Nama Penganggung Jawab :</label>
+    <label for="pekerjaan_pasien">Nama Penanggung Jawab :</label>
     <input style="height: 20px;" type="text" class="form-control" id="nama_penanggungjawab" name="nama_penanggungjawab" autocomplete="off">
 </div>
 
@@ -291,7 +291,7 @@ $datasett = mysqli_fetch_array($settt);
 
 
 <div class="form-group">
-    <label for="no_hp_penanggung">No Hp Penganggung Jawab :</label>
+    <label for="no_hp_penanggung">No Hp Penanggung Jawab :</label>
     <input style="height: 20px;" type="text" onkeypress="return isNumberKey(event)" class="form-control" id="no_hp_penanggung" name="no_hp_penanggung" autocomplete="off">
 </div>
 
@@ -548,6 +548,12 @@ return val;
 
 
     var tanggal_lahir = $("#tanggal_lahir").val();
+
+if (tanggal_lahir != '')
+{
+
+
+
     var date = new Date(tanggal_lahir);
     var tanggal = (date.getMonth() + 1) + '-' + date.getDate() + '-' +  date.getFullYear();
 
@@ -565,6 +571,11 @@ return val;
     {
     $("#umur").val(umur);
     }
+}
+else
+{
+  $("#umur").val('');
+}
 
 });
 </script>
@@ -573,6 +584,11 @@ return val;
   
   $("#umur").blur(function(){
     var umur = $("#umur").val();
+
+if (umur != '')
+{
+
+
     var tahun = new Date();
     var tahun_sekarang = tahun.getFullYear();
     var hari_sekarang = tahun.getDate();
@@ -587,6 +603,11 @@ return val;
     }
     var tanggal_lahir = hari_sekarang + '-' + bulan_sekarang + '-' +  tahun_lahir;
     $("#tanggal_lahir").val(tanggal_lahir);
+}
+
+else{
+  $("#tanggal_lahir").val('');
+}
 
   });
 

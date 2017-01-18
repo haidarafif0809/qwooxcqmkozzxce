@@ -305,19 +305,7 @@ $no_jurnal = no_jurnal();
 
   
     }
-// end laporan fee produk
-$ket_jurnal = "Penjualan Rawat Inap Simpan Sementara ".$ambil_kode_pelanggan['nama_pelanggan']." ";
 
-
-            $stmt = $db->prepare("INSERT INTO penjualan (no_faktur, no_reg, penjamin, apoteker, perawat, petugas_lain, dokter, kode_gudang, kode_pelanggan, total, tanggal, jam, user, sales, status, potongan, tax, sisa, cara_bayar, tunai, keterangan, ppn,jenis_penjualan,nama,kredit,nilai_kredit,biaya_admin, no_faktur_jurnal,keterangan_jurnal) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,'Simpan Sementara',?,?,?,?,?,?,?,'Rawat Inap',?,?,?,?,?,?)");
-              
-    // hubungkan "data" dengan prepared statements
-              $stmt->bind_param("sssssssssissssiiisisssiiiss",
-              $no_faktur,$no_reg,$penjamin,$petugas_farmasi, $petugas_paramedik, $petugas_lain, $dokter, $kode_gudang, $no_rm, $total, $tanggal_sekarang, $jam_sekarang, $nama_petugas, $petugas_kasir, $potongan, $tax, $sisa, $cara_bayar, $pembayaran, $keterangan, $ppn_input,$nama_pasien,$sisa_kredit,$sisa_kredit,$biaya_admin,$no_jurnal,$ket_jurnal);
-
-              
-    // jalankan query
-              $stmt->execute();
 
 
  // update no_faktur di hasil_lab and insert ke hasil lab
@@ -387,6 +375,24 @@ else
 
 
     }
+
+
+
+// end laporan fee produk
+$ket_jurnal = "Penjualan Rawat Inap Simpan Sementara ".$ambil_kode_pelanggan['nama_pelanggan']." ";
+
+
+            $stmt = $db->prepare("INSERT INTO penjualan (no_faktur, no_reg, penjamin, apoteker, perawat, petugas_lain, dokter, kode_gudang, kode_pelanggan, total, tanggal, jam, user, sales, status, potongan, tax, sisa, cara_bayar, tunai, keterangan, ppn,jenis_penjualan,nama,kredit,nilai_kredit,biaya_admin, no_faktur_jurnal,keterangan_jurnal) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,'Simpan Sementara',?,?,?,?,?,?,?,'Rawat Inap',?,?,?,?,?,?)");
+              
+    // hubungkan "data" dengan prepared statements
+              $stmt->bind_param("sssssssssissssiiisisssiiiss",
+              $no_faktur,$no_reg,$penjamin,$petugas_farmasi, $petugas_paramedik, $petugas_lain, $dokter, $kode_gudang, $no_rm, $total, $tanggal_sekarang, $jam_sekarang, $nama_petugas, $petugas_kasir, $potongan, $tax, $sisa, $cara_bayar, $pembayaran, $keterangan, $ppn_input,$nama_pasien,$sisa_kredit,$sisa_kredit,$biaya_admin,$no_jurnal,$ket_jurnal);
+
+              
+    // jalankan query
+              $stmt->execute();
+
+
 
 
     echo "Success";

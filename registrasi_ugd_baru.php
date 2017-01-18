@@ -106,7 +106,7 @@ $ss = mysqli_fetch_array($qertu);
     </select>
 </div>
 
-<button class="btn btn-success" accesskey="l" id="lay"><i class="fa fa-list"></i> Lihat <u>L</u>ayanan </button>
+<button class="btn btn-success" accesskey="l" id="lay" type="button"><i class="fa fa-list"></i> Lihat <u>L</u>ayanan </button>
      
       <br>
   <br>
