@@ -33,7 +33,7 @@ $sql = "SELECT rekam_medik.no_reg, rekam_medik.no_rm, rekam_medik.nama, rekam_me
   rekam_medik.umur, rekam_medik.jenis_kelamin, rekam_medik.poli, rekam_medik.dokter, rekam_medik.jam, rekam_medik.tanggal_periksa,rekam_medik.id ";
 $sql.=" FROM rekam_medik INNER JOIN registrasi ON rekam_medik.no_reg = registrasi.no_reg";
 $sql.=" WHERE registrasi.status != 'Batal Rawat' AND registrasi.status != 'Rujuk Keluar Klinik Tidak Ditangani' AND rekam_medik.status IS NULL  ";
-$sql.=" ORDER BY id DESC ";
+$sql.=" ORDER BY rekam_medik.tanggal_periksa DESC ";
 $query = mysqli_query($conn, $sql) or die("proses_table_rekam_medik_raja.php: get employees");
 $totalData = mysqli_num_rows($query);
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
@@ -57,7 +57,7 @@ if( !empty($requestData['search']['value']) ) {   // if there is a search parame
 
 $query=mysqli_query($conn, $sql) or die("proses_table_rekam_medik_raja.php: get employees");
 $totalFiltered = mysqli_num_rows($query); // when there is a search parameter then we have to modify total number filtered rows as per search result. 
-$sql.=" ORDER BY ". $columns[$requestData['order'][0]['column']]."   ".$requestData['order'][0]['dir']."  LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
+$sql.=" ORDER BY rekam_medik.tanggal_periksa DESC  LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
 /* $requestData['order'][0]['column'] contains colmun index, $requestData['order'][0]['dir'] contains order such as asc/desc  */	
 $query=mysqli_query($conn, $sql) or die("proses_table_rekam_medik_raja.php: get employees");
 

@@ -572,6 +572,7 @@ if (tanggal_lahir != '')
     $("#umur").val(umur);
     }
 }
+
 else
 {
   $("#umur").val('');
@@ -584,10 +585,15 @@ else
   
   $("#umur").blur(function(){
     var umur = $("#umur").val();
+    var tanggal_lahir = $("#tanggal_lahir").val();
 
-if (umur != '')
+if (tanggal_lahir != '')
 {
 
+}
+
+else if (umur != '')
+{
 
     var tahun = new Date();
     var tahun_sekarang = tahun.getFullYear();
@@ -605,7 +611,8 @@ if (umur != '')
     $("#tanggal_lahir").val(tanggal_lahir);
 }
 
-else{
+else
+{
   $("#tanggal_lahir").val('');
 }
 

@@ -445,8 +445,6 @@ $(document).ready(function(){
 var pengantar = $("#pengantar").val();
 
 
-
-
 if (pengantar == 'Datang Sendiri')
 {
   $("#hubungan_dengan_pasien").attr("readonly", true);
@@ -605,6 +603,16 @@ else
   
   $("#umur").blur(function(){
     var umur = $("#umur").val();
+    var tanggal_lahir = $("#tanggal_lahir").val();
+
+if (tanggal_lahir != '')
+{
+    
+}
+
+else if (umur != '')
+{
+
     var tahun = new Date();
     var tahun_sekarang = tahun.getFullYear();
     var hari_sekarang = tahun.getDate();
@@ -619,24 +627,29 @@ else
     }
     var tanggal_lahir = hari_sekarang + '-' + bulan_sekarang + '-' +  tahun_lahir;
     $("#tanggal_lahir").val(tanggal_lahir);
+}
+else
+{
+    $("#tanggal_lahir").val('');
+}
 
   });
-
 </script>
 
+
+
 <script type="text/javascript">
+
 $("#tanggal_lahir").blur(function(){
-// untuk update umur ketika sudah beda bulan dan tahun
-var tanggal_lahir = $("#tanggal_lahir").val();
-    
+
 function hitung_umur(tanggal_input){
 
 var now = new Date(); //Todays Date   
 var birthday = tanggal_input;
 birthday=birthday.split("-");   
 
-var dobDay= birthday[0]; 
-var dobMonth= birthday[1];
+var dobDay = birthday[0]; 
+var dobMonth = birthday[1];
 var dobYear= birthday[2];
 
 var nowDay= now.getDate();
@@ -650,36 +663,57 @@ if (agemonth < 0) {
        ageyear--;
        agemonth = (12 + agemonth);
         }
-if (nowDay < dobDay) {
+if (nowDay< dobDay) {
       agemonth--;
       ageday = 30 + ageday;
       }
 
 
 if (ageyear <= 0) {
- var val = agemonth + " " + "Bulan";
+ var val = agemonth + " Bulan";
 }
 else {
 
- var val = ageyear + " " + "Tahun";
+ var val = ageyear + " Tahun";
 }
 return val;
 }
 
+
     var tanggal_lahir = $("#tanggal_lahir").val();
-    var umur = hitung_umur(tanggal_lahir);
-if (tanggal_lahir == '')
+
+if (tanggal_lahir != '')
 {
 
+    var date = new Date(tanggal_lahir);
+    var tanggal = (date.getMonth() + 1) + '-' + date.getDate() + '-' +  date.getFullYear();
+
+    var umur = hitung_umur(tanggal);
+    if (umur == "NaN Tahun" || umur == "NaN Bulan") {
+      var tanggal_lahir = $("#tanggal_lahir").val();
+      var umur = hitung_umur(tanggal_lahir);
+      $("#umur").val(umur);
+    }
+    else if (tanggal_lahir == '')
+    {
+    
+    }
+    else
+    {
+    $("#umur").val(umur);
+    }
 }
+
 else
 {
-  $("#umur").val(umur);
+    $("#umur").val('');
+
 }
 
-  });
-
+});
 </script>
+
+
 
 <!-- DATATABLE AJAX PASIEN LAMA-->
     <script type="text/javascript" language="javascript" >

@@ -733,6 +733,10 @@ return val;
 
 
     var tanggal_lahir = $("#tanggal_lahir").val();
+
+if (tanggal_lahir != '')
+{
+
     var date = new Date(tanggal_lahir);
     var tanggal = (date.getMonth() + 1) + '-' + date.getDate() + '-' +  date.getFullYear();
 
@@ -750,6 +754,13 @@ return val;
     {
     $("#umur").val(umur);
     }
+}
+
+else
+{
+    $("#umur").val('');
+
+}
 
 });
 </script>
@@ -758,6 +769,16 @@ return val;
   
   $("#umur").blur(function(){
     var umur = $("#umur").val();
+    var tanggal_lahir = $("#tanggal_lahir").val();
+
+if (tanggal_lahir != '')
+{
+    
+}
+
+else if (umur != '')
+{
+
     var tahun = new Date();
     var tahun_sekarang = tahun.getFullYear();
     var hari_sekarang = tahun.getDate();
@@ -772,9 +793,13 @@ return val;
     }
     var tanggal_lahir = hari_sekarang + '-' + bulan_sekarang + '-' +  tahun_lahir;
     $("#tanggal_lahir").val(tanggal_lahir);
+}
+else
+{
+    $("#tanggal_lahir").val('');
+}
 
   });
-
 </script>
 
 <!--   script untuk detail layanan PERUSAHAAN PENJAMIN-->
