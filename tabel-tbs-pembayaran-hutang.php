@@ -22,8 +22,7 @@ $query = $db->query("SELECT * FROM pembayaran_hutang");
       <th> Kredit </th>
       <th> Potongan </th>
       <th> Total </th>
-      <th> Jumlah Bayar </th>
-      
+      <th> Jumlah Bayar </th>   
       <th> Hapus </th>
       <th> Edit </th>
       

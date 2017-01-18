@@ -29,7 +29,7 @@ include 'db.php';
     <tbody> <!-- tag pembuka tbody, yang digunakan untuk menampilkan data yang ada di database --> 
     <?php
 
-    echo $kode_pelanggan = $_POST['kode_pelanggan'];
+$kode_pelanggan = $_POST['kode_pelanggan'];
 
     $perintah = $db->query("SELECT * FROM penjualan WHERE kode_pelanggan = '$kode_pelanggan' AND kredit != 0");
 

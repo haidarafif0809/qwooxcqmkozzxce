@@ -664,8 +664,8 @@ $("#transaksi_baru").show();
  $.post("proses_bayar_hutang.php", {no_faktur_pembayaran:no_faktur_pembayaran,no_faktur_pembelian:no_faktur_pembelian,cara_bayar:cara_bayar,suplier:n_suplier,keterangan:keterangan,total:total,user_buat:user_buat,dari_kas:dari_kas,kredit:kredit,status:status,total_bayar:total_bayar,potongan1:potongan1,faktur:faktur},function(info) {
 
 
-$("#result").html(info);
-
+      $("#result").html(info);
+     $("#result").load('tabel-tbs-pembayaran-hutang.php');
      $("#alert_berhasil").show();
      $("#cetak_hutang").show();
      $("#nama_suplier").val('');

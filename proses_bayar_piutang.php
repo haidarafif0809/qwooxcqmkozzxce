@@ -1,6 +1,5 @@
-]    <?php session_start();
-    
-    
+<?php session_start();
+
     include 'sanitasi.php';
     include 'db.php';
     //mengirim data disetiap masing-masing variabel menggunakan metode POST
@@ -94,7 +93,6 @@
 
 
     }
-
 
 
         $total_bayar = angkadoang($_POST['total_bayar']);
