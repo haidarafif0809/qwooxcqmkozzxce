@@ -10,11 +10,11 @@
 	$rekap = stringdoang($_POST['rekap']);
 
 
-				$sum_saldo1 = $db->query("SELECT SUM(debit) AS saldo1 FROM jurnal_trans WHERE DATE(waktu_jurnal) > '$tanggal' AND kode_akun_jurnal = '$daftar_akun'");
+				$sum_saldo1 = $db->query("SELECT SUM(debit) AS saldo1 FROM jurnal_trans WHERE DATE(waktu_jurnal) < '$tanggal' AND kode_akun_jurnal = '$daftar_akun'");
 				$cek_saldo1 = mysqli_fetch_array($sum_saldo1);
 				$saldo1 = $cek_saldo1['saldo1'];
 
-				$sum_saldo2 = $db->query("SELECT SUM(kredit) AS saldo2 FROM jurnal_trans WHERE DATE(waktu_jurnal) > '$tanggal' AND kode_akun_jurnal = '$daftar_akun'");
+				$sum_saldo2 = $db->query("SELECT SUM(kredit) AS saldo2 FROM jurnal_trans WHERE DATE(waktu_jurnal) < '$tanggal' AND kode_akun_jurnal = '$daftar_akun'");
 				$cek_saldo2 = mysqli_fetch_array($sum_saldo2);
 				$saldo2 = $cek_saldo2['saldo2'];
 
@@ -45,7 +45,7 @@ th {
 <div class="card card-block">
 
 	<?php if ($rekap == "direkap_perhari"): ?>
-	<h3> Tanggal : <?php echo tanggal($tanggal); ?></h3>
+	<h3> Tanggal : <?php echo tanggal($tanggal); ?> </h3>
 	<br>
 
 	 <table id="tableuser1" class="table table-hover">
@@ -74,7 +74,7 @@ th {
 
 				<?php 
 
-	$select = $db->query("SELECT DATE(waktu_jurnal) AS waktu_jurnal, no_faktur, keterangan_jurnal, debit, kredit FROM jurnal_trans WHERE DATE(waktu_jurnal) <= '$tanggal' AND kode_akun_jurnal = '$daftar_akun' GROUP BY DATE(waktu_jurnal) ORDER BY waktu_jurnal ASC");
+	$select = $db->query("SELECT DATE(waktu_jurnal) AS waktu_jurnal, no_faktur, keterangan_jurnal, debit, kredit FROM jurnal_trans WHERE DATE(waktu_jurnal) = '$tanggal' AND kode_akun_jurnal = '$daftar_akun' GROUP BY DATE(waktu_jurnal) ORDER BY waktu_jurnal ASC");
 
 				//menyimpan data sementara yang ada pada $perintah
 				while ($cek = mysqli_fetch_array($select))
@@ -92,29 +92,27 @@ th {
 				$saldo_xy = $saldo11 - $saldo21;
 
 
-
 						
-				$sum_t_debit = $db->query("SELECT SUM(debit) AS t_debit FROM jurnal_trans WHERE DATE(waktu_jurnal) <= '$tanggal' AND kode_akun_jurnal = '$daftar_akun'");
+				$sum_t_debit = $db->query("SELECT SUM(debit) AS t_debit FROM jurnal_trans WHERE DATE(waktu_jurnal) = '$tanggal' AND kode_akun_jurnal = '$daftar_akun'");
 				$cek_t_debit = mysqli_fetch_array($sum_t_debit);
 				$t_debit = $cek_t_debit['t_debit'] + $saldo_xy; 
 				
 				
-				$sum_t_kredit = $db->query("SELECT SUM(kredit) AS t_kredit FROM jurnal_trans WHERE DATE(waktu_jurnal) <= '$tanggal' AND kode_akun_jurnal = '$daftar_akun'");
+				$sum_t_kredit = $db->query("SELECT SUM(kredit) AS t_kredit FROM jurnal_trans WHERE DATE(waktu_jurnal) = '$tanggal' AND kode_akun_jurnal = '$daftar_akun'");
 				$cek_t_kredit = mysqli_fetch_array($sum_t_kredit);
 				$t_kredit = $cek_t_kredit['t_kredit'];
 						
-				$perintah1 = $db->query("SELECT * FROM jurnal_trans WHERE DATE(waktu_jurnal) <= '$tanggal' AND kode_akun_jurnal = '$daftar_akun'");
+				$perintah1 = $db->query("SELECT * FROM jurnal_trans WHERE DATE(waktu_jurnal) = '$tanggal' AND kode_akun_jurnal = '$daftar_akun'");
 				$num_rows = mysqli_num_rows($perintah1);
 
 						$sum_t_debit = $db->query("SELECT SUM(debit) AS tt_debit FROM jurnal_trans WHERE DATE(waktu_jurnal) = '$cek[waktu_jurnal]' AND kode_akun_jurnal = '$daftar_akun' GROUP BY DATE(waktu_jurnal)");
 						$cek_t_debit = mysqli_fetch_array($sum_t_debit);
 						$tt_debit = $cek_t_debit['tt_debit'];
-						
 
 						$sum_t_kredit = $db->query("SELECT SUM(kredit) AS tt_kredit FROM jurnal_trans WHERE DATE(waktu_jurnal) = '$cek[waktu_jurnal]' AND kode_akun_jurnal = '$daftar_akun' GROUP BY DATE(waktu_jurnal)");
 						$cek_t_kredit = mysqli_fetch_array($sum_t_kredit);
 						$tt_kredit = $cek_t_kredit['tt_kredit'];
-
+								
 						
 						echo "<tr>
 						<td><center> <b>-</b> </center></td>
@@ -158,7 +156,7 @@ th {
 	<?php endif ?>
 
 	<?php if ($rekap == "tidak_direkap_perhari" || $rekap == ""): ?>
-	<h3> Tanggal : <?php echo tanggal($tanggal); ?></h3>
+	<h3> Periode : <?php echo tanggal($tanggal); ?></h3>
 	<br>
 
 	 <table id="tableuser2" class="table table-hover">
@@ -190,7 +188,7 @@ th {
 
 				<?php 
 
-	$select = $db->query("SELECT waktu_jurnal, no_faktur, keterangan_jurnal, debit, kredit FROM jurnal_trans WHERE DATE(waktu_jurnal) <= '$tanggal' AND kode_akun_jurnal = '$daftar_akun' ORDER BY waktu_jurnal ASC");
+	$select = $db->query("SELECT waktu_jurnal, no_faktur, keterangan_jurnal, debit, kredit FROM jurnal_trans WHERE DATE(waktu_jurnal) = '$tanggal' AND kode_akun_jurnal = '$daftar_akun' ORDER BY waktu_jurnal ASC");
 
 				//menyimpan data sementara yang ada pada $perintah
 				while ($cek = mysqli_fetch_array($select))
@@ -207,7 +205,7 @@ th {
 
 				$saldo_xy = $saldo11 - $saldo21;
 						
-				$sum_t_debit = $db->query("SELECT SUM(debit) AS t_debit FROM jurnal_trans WHERE DATE(waktu_jurnal) <= '$tanggal' AND kode_akun_jurnal = '$daftar_akun'");
+				$sum_t_debit = $db->query("SELECT SUM(debit) AS t_debit FROM jurnal_trans WHERE DATE(waktu_jurnal) = '$tanggal' AND kode_akun_jurnal = '$daftar_akun'");
 				$cek_t_debit = mysqli_fetch_array($sum_t_debit);
 				$t_debit = $cek_t_debit['t_debit'] + $saldo_xy; 
 				
@@ -215,23 +213,21 @@ th {
 
 
 				
-				$sum_t_kredit = $db->query("SELECT SUM(kredit) AS t_kredit FROM jurnal_trans WHERE DATE(waktu_jurnal) <= '$tanggal' AND kode_akun_jurnal = '$daftar_akun'");
+				$sum_t_kredit = $db->query("SELECT SUM(kredit) AS t_kredit FROM jurnal_trans WHERE DATE(waktu_jurnal) = '$tanggal' AND kode_akun_jurnal = '$daftar_akun'");
 				$cek_t_kredit = mysqli_fetch_array($sum_t_kredit);
 				$t_kredit = $cek_t_kredit['t_kredit'];
 						
-				$perintah1 = $db->query("SELECT * FROM jurnal_trans WHERE DATE(waktu_jurnal) <= '$tanggal' AND kode_akun_jurnal = '$daftar_akun'");
+				$perintah1 = $db->query("SELECT * FROM jurnal_trans WHERE DATE(waktu_jurnal) = '$tanggal' AND kode_akun_jurnal = '$daftar_akun'");
 				$num_rows = mysqli_num_rows($perintah1);	
 
 
 				$sum_t_debit = $db->query("SELECT SUM(debit) AS tt_debit FROM jurnal_trans WHERE DATE(waktu_jurnal) = '$cek[waktu_jurnal]' AND kode_akun_jurnal = '$daftar_akun' GROUP BY DATE(waktu_jurnal)");
 						$cek_t_debit = mysqli_fetch_array($sum_t_debit);
 						$tt_debit = $cek_t_debit['tt_debit'];
-						
 
 						$sum_t_kredit = $db->query("SELECT SUM(kredit) AS tt_kredit FROM jurnal_trans WHERE DATE(waktu_jurnal) = '$cek[waktu_jurnal]' AND kode_akun_jurnal = '$daftar_akun' GROUP BY DATE(waktu_jurnal)");
 						$cek_t_kredit = mysqli_fetch_array($sum_t_kredit);
-						$tt_kredit = $cek_t_kredit['tt_kredit'];
-							
+						$tt_kredit = $cek_t_kredit['tt_kredit'];			
 						
 						echo "<tr>
 						<td>". $cek['no_faktur']."</td>
