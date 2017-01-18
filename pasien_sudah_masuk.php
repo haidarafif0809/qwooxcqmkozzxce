@@ -446,7 +446,8 @@ $(document).on('click', '.pilih12', function (e) {
 
           "fnCreatedRow": function( nRow, aData, iDataIndex ) {
 
-              $(nRow).attr('class', "pilih");
+              $(nRow).attr('class', "pilih tr-id-"+aData[20]);
+
               $(nRow).attr('data-no', aData[0]);
               $(nRow).attr('data-nama', aData[1]);
               $(nRow).attr('data-jenis-kelamin', aData[2]);

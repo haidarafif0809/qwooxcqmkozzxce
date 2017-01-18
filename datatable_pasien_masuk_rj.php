@@ -31,7 +31,8 @@ $columns = array(
 	7 => 'penjamin',
 	8 => 'umur_pasien',
 	9 => 'jenis_kelamin',
-	10 => 'keterangan'
+	10 => 'keterangan',
+	20 => 'id'
 
 
 
@@ -193,6 +194,7 @@ else
 	$nestedData[] = $row["umur_pasien"];	
 	$nestedData[] = $row["jenis_kelamin"];
 	$nestedData[] = $row["keterangan"];
+	$nestedData[] = $row["id"];
 	
 	$data[] = $nestedData;
 }
