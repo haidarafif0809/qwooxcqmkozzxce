@@ -22,10 +22,7 @@ $query->execute();
     die('Query Error : '.$db->errno.
     ' - '.$db->error);
     }
-    else 
-    {
-    echo "sukses";
-    }
+
 
     //Untuk Memutuskan Koneksi Ke Database
 mysqli_close($db);   

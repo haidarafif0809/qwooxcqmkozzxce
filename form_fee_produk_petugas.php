@@ -29,7 +29,7 @@
         <br><br>
         <!-- Tampilan Modal -->
         <div id="myModal" class="modal fade" role="dialog">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog" role="document">
         
         <!-- Isi Modal-->
         <div class="modal-content">
@@ -88,7 +88,7 @@
         <br><br>
         <!-- Tampilan Modal -->
         <div id="my_Modal" class="modal fade" role="dialog">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog" role="document">
         
         <!-- Isi Modal-->
         <div class="modal-content">
