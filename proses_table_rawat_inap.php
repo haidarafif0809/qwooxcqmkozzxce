@@ -99,7 +99,7 @@ $sttus = mysqli_num_rows($penjual);
   	{
 
 		if ($sttus == 0) {
-         $nestedData[] = "<button  class='btn btn-floating btn-small btn-info' id='batal_ranap' data-reg='". $row['no_reg']. "' data-id='". $row['id']. "'><i class='fa fa-remove'></i> </button>";
+         $nestedData[] = "<button  class='btn btn-floating btn-small btn-info batal_ranap' data-reg='". $row['no_reg']. "' data-id='". $row['id']. "'><i class='fa fa-remove'></i> </button>";
 		}
 		else {
 			$nestedData[] = "";

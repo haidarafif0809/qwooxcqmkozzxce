@@ -1227,34 +1227,61 @@ return val;
 </script>
 
 
+
+<!--   script untuk Batal-->
 <script type="text/javascript">
-  
+     $(document).on('click', '.batal_ranap', function (e) {
+               var reg = $(this).attr("data-reg");
+               var id = $(this).attr("data-id");
 
-  $(document).on('click', '#batal_ranap', function (e) {
-    var no_reg = $(this).attr("data-reg");
-    var id = $(this).attr("data-id");
-     $("#no_reg").val(no_reg);
-     $("#input_keterangan").attr("data-id",id)
-
-    $("#modal_batal").modal('show');
-      
-  });
+               $("#input_keterangan").attr('data-id',id);
+               $("#modal_batal").modal('show');
+               $("#no_reg").val(reg);
 
 
-  $(document).on('click', '#input_keterangan', function (e) {
-    var no_reg = $("#no_reg").val();
-    var keterangan = $("#keterangan").val();
-    var id = $(this).attr("data-id");
-
-      $(".tr-id-"+id+"").remove();
-      $.post("proses_keterangan_batal_ri.php",{no_reg:no_reg, keterangan:keterangan},function(data){
-      
-      $("#modal_batal").modal('hide');
-
-      });
-  });
-
+               
+     });
+//            tabel lookup mahasiswa         
 </script>
+
+<script type="text/javascript">
+     $(document).on('click', '#input_keterangan', function (e) {    
+                    var reg = $("#no_reg").val();
+                    var keterangan = $("#keterangan").val();
+                    var id = $(this).attr("data-id");                    
+                    
+                    $("#modal_batal").modal('hide');
+                    
+                    $.post("proses_keterangan_batal_ri.php",{reg:reg, keterangan:keterangan},function(data){
+                      $('#table_rawat_inap').DataTable().destroy();
+     
+                  var dataTable = $('#table_rawat_inap').DataTable( {
+                      "processing": true,
+                      "serverSide": true,
+                      "ajax":{
+                        url :"proses_table_rawat_inap.php", // json datasource
+                        type: "post",  // method  , by default get
+                        error: function(){  // error handling
+                          $(".employee-grid-error").html("");
+                          $("#table_rawat_inap").append('<tbody class="employee-grid-error"><tr><th colspan="3">No data found in the server</th></tr></tbody>');
+                          $("#employee-grid_processing").css("display","none");
+                          }
+                      },
+                         "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+
+                          $(nRow).attr('class','tr-id-'+aData[12]+'');         
+
+                      }
+                    });
+                    });
+
+                    
+        }); 
+
+     
+</script>
+<!--  end script untuk batal-->
+
 
 
 <!--script disable hubungan pasien-->

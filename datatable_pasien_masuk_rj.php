@@ -36,6 +36,7 @@ $columns = array(
 
 
 
+
 );
 
 // getting total number records without any search

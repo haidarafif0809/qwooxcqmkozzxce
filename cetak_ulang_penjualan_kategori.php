@@ -15,7 +15,7 @@ $no_faktur = $_GET['no_faktur'];
     $query1 = $db->query("SELECT * FROM perusahaan ");
     $data1 = mysqli_fetch_array($query1);
 
-    $query2 = $db->query("SELECT SUM(subtotal) AS subtotal_obat FROM detail_penjualan WHERE no_faktur = '$no_faktur' AND tipe_produk = 'Obat Obatan' OR tipe_produk = 'Barang' ");
+    $query2 = $db->query("SELECT SUM(subtotal) AS subtotal_obat FROM detail_penjualan WHERE no_faktur = '$no_faktur' AND (tipe_produk = 'Obat Obatan' OR tipe_produk = 'Barang') ");
     $data2 = mysqli_fetch_array($query2);
 
     $queryja = $db->query("SELECT SUM(subtotal) AS subtotal_jasa FROM detail_penjualan WHERE no_faktur = '$no_faktur' AND tipe_produk = 'Jasa' ");

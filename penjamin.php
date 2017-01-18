@@ -149,7 +149,7 @@ $penjamin_tambah = mysqli_num_rows($pilih_akses_penjamin_tambah);
 
 <div class="form-group">
     <label for="penjamin">Jatuh Tempo:</label>
-    <input type="number" class="form-control" id="jatuh_tempo" name="jatuh_tempo" placeholder="Isi Jika ada Perjanjian Tanggal Jatuh Tempo" autocomplete="off">
+    <input type="text" class="form-control" id="jatuh_tempo" name="jatuh_tempo" placeholder="Isi Jika ada Perjanjian, Berapa Hari Jatuh Temponya" autocomplete="off"  onkeydown="return numbersonly(this, event);" onkeyup="javascript:tandaPemisahTitik(this);">
 </div>
 
 <div class="form-group">

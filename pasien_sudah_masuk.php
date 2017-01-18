@@ -299,28 +299,43 @@ tr:nth-child(even){background-color: #f2f2f2}
 
   });
 
-  $("#submit_rujuk_penanganan").click(function(){  
-    var keterangan = $("#keterangan2").val();
-    var reg = $(this).attr("data-reg");
-    var id = $(this).attr("data-id");
+</script>
 
-            $("#rujuk_penanganan").modal('hide');
-            $(".tr-id-"+id+"").remove();
-            $.post("proses_keterangan_rujuk.php",{reg:reg,keterangan:keterangan},function(data){
-            
-            $("#tbody").prepend(data);
-
-
-            });
-
-
-   });
+<script type="text/javascript">
+     $(document).on('click', '#submit_rujuk_penanganan', function (e) {    
+                    var keterangan = $("#keterangan2").val();
+                    var reg = $(this).attr("data-reg");
+                    var id = $(this).attr("data-id");                   
+                    
+                    $("#rujuk_penanganan").modal('hide');
+                    
+                    $.post("proses_keterangan_rujuk.php",{reg:reg, keterangan:keterangan},function(data){
+                      $('#pasien_masuk').DataTable().destroy();
      
+                  var dataTable = $('#pasien_masuk').DataTable( {
+                      "processing": true,
+                      "serverSide": true,
+                      "ajax":{
+                        url :"datatable_pasien_masuk_rj.php", // json datasource
+                        type: "post",  // method  , by default get
+                        error: function(){  // error handling
+                          $(".employee-grid-error").html("");
+                          $("#pasien_masuk").append('<tbody class="employee-grid-error"><tr><th colspan="3">No data found in the server</th></tr></tbody>');
+                          $("#employee-grid_processing").css("display","none");
+                          }
+                      },
+                         "fnCreatedRow": function( nRow, aData, iDataIndex ) {
 
-   $("form").submit(function(){
-       return false;
-       });
-//            tabel lookup mahasiswa         
+                          $(nRow).attr('class','tr-id-'+aData[20]+'');         
+
+                      }
+                    });
+                    });
+
+                    
+        }); 
+
+     
 </script>
 
 

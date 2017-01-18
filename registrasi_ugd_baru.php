@@ -106,7 +106,7 @@ $ss = mysqli_fetch_array($qertu);
     </select>
 </div>
 
-<button class="btn btn-success" accesskey="l" id="lay"><i class="fa fa-list"></i> Lihat <u>L</u>ayanan </button>
+<button class="btn btn-success" accesskey="l" id="lay" type="button"><i class="fa fa-list"></i> Lihat <u>L</u>ayanan </button>
      
       <br>
   <br>
@@ -545,7 +545,7 @@ $("#hubungan_dengan_pasien").attr("readonly", true);
               $('#hasil_migrasi').html('');
               $("#rujukan").focus();
 // untuk update umur ketika sudah beda bulan dan tahun
-    var tanggal_lahir = $("#tanggal_lahir").val();
+var tanggal_lahir = $("#tanggal_lahir").val();
     
 function hitung_umur(tanggal_input){
 
@@ -626,15 +626,17 @@ else
 
 <script type="text/javascript">
 $("#tanggal_lahir").blur(function(){
-
+// untuk update umur ketika sudah beda bulan dan tahun
+var tanggal_lahir = $("#tanggal_lahir").val();
+    
 function hitung_umur(tanggal_input){
 
 var now = new Date(); //Todays Date   
 var birthday = tanggal_input;
 birthday=birthday.split("-");   
 
-var dobDay = birthday[0]; 
-var dobMonth = birthday[1];
+var dobDay= birthday[0]; 
+var dobMonth= birthday[1];
 var dobYear= birthday[2];
 
 var nowDay= now.getDate();
@@ -648,27 +650,23 @@ if (agemonth < 0) {
        ageyear--;
        agemonth = (12 + agemonth);
         }
-if (nowDay< dobDay) {
+if (nowDay < dobDay) {
       agemonth--;
       ageday = 30 + ageday;
       }
 
 
 if (ageyear <= 0) {
- var val = agemonth + " Bulan";
+ var val = agemonth + " " + "Bulan";
 }
 else {
 
- var val = ageyear + " Tahun";
+ var val = ageyear + " " + "Tahun";
 }
 return val;
 }
 
-    var tanggal = $("#tanggal_lahir").val();
-
-    var date = new Date(tanggal);
-    var tanggal_lahir = (date.getMonth() + 1) + '-' + date.getDate() + '-' +  date.getFullYear();
-
+    var tanggal_lahir = $("#tanggal_lahir").val();
     var umur = hitung_umur(tanggal_lahir);
 if (tanggal_lahir == '')
 {

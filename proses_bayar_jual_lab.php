@@ -234,20 +234,6 @@ nama_pemeriksaan, nama_pasien, status,no_rm,petugas_analis,dokter) VALUES ('$no_
               $stmt->execute();
               
               
-    // UPDATE KAS 
-              $stmt1 = $db->prepare("UPDATE kas SET jumlah = jumlah + ? WHERE nama = ?");
-              
-              $stmt1->bind_param("is", 
-              $total, $cara_bayar);
-              
-              // siapkan "data" query
-              
-              $total = angkadoang($_POST['total']);
-              $cara_bayar = stringdoang($_POST['cara_bayar']);
-              
-              // jalankan query
-              $stmt1->execute();
-
 
 $select_setting_akun = $db->query("SELECT * FROM setting_akun");
 $ambil_setting = mysqli_fetch_array($select_setting_akun);

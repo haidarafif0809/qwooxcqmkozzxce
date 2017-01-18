@@ -1722,6 +1722,131 @@ else
 
 
 
+
+    <script>
+       //perintah javascript yang diambil dari form proses_bayar_beli.php dengan id=form_beli
+       $("#simpan_sementara").click(function(){
+        var id_user = $("#id_user").val();
+        var sisa_pembayaran = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah( $("#sisa_pembayaran_penjualan").val() ))));
+        var kredit = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah( $("#kredit").val() )))); 
+        var no_rm = $("#no_rm").val();
+        var no_rm = no_rm.substr(0, no_rm.indexOf(' |'));
+        var no_reg = $("#no_reg").val();
+        var total = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah( $("#total1").val() )))); 
+        var total2 = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah( $("#total2").val() )))); 
+        var potongan_jual =  bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah( $("#potongan_penjualan").val() ))));
+        var potongan = Math.round(potongan_jual);
+        var potongan_persen = $("#potongan_persen").val();
+          /*var tax = $("#tax_rp").val();
+*/
+        var cara_bayar = $("#carabayar1").val();
+        var pembayaran = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah( $("#pembayaran_penjualan").val() ))));
+        if (pembayaran == '') {
+          pembayaran = 0;
+        }
+        var total_hpp = $("#total_hpp").val();
+        var kode_gudang = $("#kode_gudang").val();
+        var sales = $("#sales").val();
+        var keterangan = $("#keterangan").val();   
+        var ber_stok = $("#ber_stok").val();
+        var ppn_input = $("#ppn_input").val();       
+       var sisa =  pembayaran - total; 
+        var biaya_adm = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah( $("#biaya_adm").val() ))));
+        if (biaya_adm == '') {
+          biaya_adm = 0;
+        }
+        var dokter = $("#dokter").val();
+        var petugas_kasir = $("#petugas_kasir").val();   
+        var petugas_paramedik = $("#petugas_paramedik").val();
+        var petugas_farmasi = $("#petugas_farmasi").val();
+        var petugas_lain = $("#petugas_lain").val
+        var ber_stok = $("#ber_stok").val();   
+        var penjamin = $("#penjamin").val();
+        var nama_pasien = $("#nama_pasien").val();
+        var analis = $("#analis").val();
+        var jenis_penjualan = 'Rawat Jalan';
+
+       var sisa_kredit = total - pembayaran;
+
+
+       
+          if (no_rm == "") 
+       {
+       
+       alert("No Rm Harus Di Isi");
+       
+       }
+
+         else if ( total == "") 
+         {
+         
+         alert("Anda Belum Melakukan Pesanan");
+         
+         }
+                 
+         
+       else
+       {
+
+
+        $("#piutang").hide();
+        $("#simpan_sementara").hide();
+        $("#batal_penjualan").hide();
+        $("#penjualan").hide();
+        $("#transaksi_baru").show();
+
+ $.post("cek_subtotal_penjualan.php",{total:total,no_reg:no_reg,potongan:potongan,/*tax:tax,*/biaya_adm:biaya_adm},function(data) {
+
+  if (data == 1) {
+
+    $.post("proses_simpan_barang_raja.php",{id_user:id_user,total2:total2,sisa_pembayaran:sisa_pembayaran,kredit:kredit,no_rm:no_rm,total:total,potongan:potongan,potongan_persen:potongan_persen,/*tax:tax,*/cara_bayar:cara_bayar,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,total_hpp:total_hpp,sales:sales,kode_gudang:kode_gudang,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,biaya_adm:biaya_adm,dokter:dokter,petugas_kasir:petugas_kasir,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,penjamin:penjamin,nama_pasien:nama_pasien,jenis_penjualan:jenis_penjualan,no_reg:no_reg,analis:analis},function(info) {
+
+        
+            $("#table-baru").html(info);
+            $("#alert_berhasil").show();
+            $("#pembayaran_penjualan").val('');
+            $("#sisa_pembayaran_penjualan").val('');
+            $("#kredit").val('');
+            $("#potongan_penjualan").val('');
+            $("#potongan_persen").val('');
+            $("#tanggal_jt").val('');
+        
+        $("#total1").val('');
+        $("#pembayaran_penjualan").val('');
+       $("#sisa_pembayaran_penjualan").val('');
+       $("#kredit").val('');
+            /*
+            $("#tax").val('');*/
+                   });
+
+  }
+  else{
+    alert("Maaf Subtotal Penjualan Tidak Sesuai, Silakan Tunggu Sebentar!");       
+        window.location.href="form_penjualan_kasir.php?no_reg="+no_reg+"";
+  }
+
+ });
+       
+       }  
+       //mengambil no_faktur pembelian agar berurutan
+
+       });
+ $("form").submit(function(){
+       return false;
+       });
+
+              $("#simpan_sementara").mouseleave(function(){
+               
+
+               var kode_pelanggan = $("#kd_pelanggan").val();
+               if (kode_pelanggan == ""){
+               $("#kd_pelanggan").attr("disabled", false);
+               }
+               
+               });
+  </script>  
+
+
 <script>
    //perintah javascript yang diambil dari form proses_bayar_beli.php dengan id=form_beli
   $("#penjualan").click(function(){
@@ -2903,141 +3028,7 @@ else
 
 
 
-     <script>
-       //perintah javascript yang diambil dari form proses_bayar_beli.php dengan id=form_beli
-       $("#simpan_sementara").click(function(){
-        var id_user = $("#id_user").val();
-        var sisa_pembayaran = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah( $("#sisa_pembayaran_penjualan").val() ))));
-        var kredit = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah( $("#kredit").val() )))); 
-        var no_rm = $("#no_rm").val();
-        var no_rm = no_rm.substr(0, no_rm.indexOf(' |'));
-        var no_reg = $("#no_reg").val();
-        var total = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah( $("#total1").val() )))); 
-        var total2 = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah( $("#total2").val() )))); 
-        var potongan_jual =  bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah( $("#potongan_penjualan").val() ))));
-        var potongan = Math.round(potongan_jual);
-        var potongan_persen = $("#potongan_persen").val();
-          /*
-        var tax = $("#tax_rp").val();
-*/
-        var cara_bayar = $("#carabayar1").val();
-        var pembayaran = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah( $("#pembayaran_penjualan").val() ))));
-        if (pembayaran == '') {
-          pembayaran = 0;
-        }
-        var total_hpp = $("#total_hpp").val();
-        var kode_gudang = $("#kode_gudang").val();
-        var sales = $("#sales").val();
-        var keterangan = $("#keterangan").val();   
-        var ber_stok = $("#ber_stok").val();
-        var ppn_input = $("#ppn_input").val();       
-       var sisa =  pembayaran - total; 
-        var biaya_adm = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah( $("#biaya_adm").val() ))));
-        if (biaya_adm == '') {
-          biaya_adm = 0;
-        }
-        var dokter = $("#dokter").val();
-        var petugas_kasir = $("#petugas_kasir").val();   
-        var petugas_paramedik = $("#petugas_paramedik").val();
-        var petugas_farmasi = $("#petugas_farmasi").val();
-        var petugas_lain = $("#petugas_lain").val
-        var ber_stok = $("#ber_stok").val();   
-        var penjamin = $("#penjamin").val();
-        var nama_pasien = $("#nama_pasien").val();
-        var analis = $("#analis").val();
-        var jenis_penjualan = 'Rawat Jalan';
-
-       var sisa_kredit = total - pembayaran;
-
-
-       
-  if (no_rm == "") 
-       {
-       
-       alert("No Rm Harus Di Isi");
-       
-       }
-
-         else if ( total == "") 
-         {
-         
-         alert("Anda Belum Melakukan Pesanan");
-         
-         }
-         else if (petugas_paramedik == '') {
-          alert("Petugas Paramedik harus di isi");
-          $("#petugas_paramedik").focus()
-         }
-         else if (petugas_farmasi == '') {
-          alert("Petugas Farmasi harus di isi");
-          $("#petugas_farmasi").focus()
-         }
-         else if (petugas_lain == '') {
-          alert("Petugas lain harus di isi");
-          $("#petugas_lain").focus()
-         }
-
-         
-       else
-       {
-
-        $("#pembayaran_penjualan").val('');
-       $("#sisa_pembayaran_penjualan").val('');
-       $("#kredit").val('');
-        $("#piutang").hide();
-        $("#simpan_sementara").hide();
-        $("#batal_penjualan").hide();
-        $("#penjualan").hide();
-        $("#transaksi_baru").show();
-        $("#total1").val('');
-
- $.post("cek_subtotal_penjualan.php",{total:total,no_reg:no_reg,potongan:potongan,/*tax:tax,*/biaya_adm:biaya_adm},function(data) {
-
-  if (data == 1) {
-
-    $.post("proses_simpan_barang_raja.php",{id_user:id_user,total2:total2,sisa_pembayaran:sisa_pembayaran,kredit:kredit,no_rm:no_rm,total:total,potongan:potongan,potongan_persen:potongan_persen,/*tax:tax,*/cara_bayar:cara_bayar,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,total_hpp:total_hpp,sales:sales,kode_gudang:kode_gudang,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,biaya_adm:biaya_adm,dokter:dokter,petugas_kasir:petugas_kasir,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,penjamin:penjamin,nama_pasien:nama_pasien,jenis_penjualan:jenis_penjualan,no_reg:no_reg,analis:analis},function(info) {
-
-        
-            $("#table-baru").html(info);
-            $("#alert_berhasil").show();
-            $("#pembayaran_penjualan").val('');
-            $("#sisa_pembayaran_penjualan").val('');
-            $("#kredit").val('');
-            $("#potongan_penjualan").val('');
-            $("#potongan_persen").val('');
-            $("#tanggal_jt").val('');
-            /*
-            $("#tax").val('');*/
-            
-            window.location.href="pasien_sudah_masuk.php";
-       });
-
-  }
-  else{
-    alert("Maaf Subtotal Penjualan Tidak Sesuai, Silakan Tunggu Sebentar!");       
-        window.location.href="form_penjualan_kasir.php?no_reg="+no_reg+"";
-  }
-
- });
-       
-       }  
-       //mengambil no_faktur pembelian agar berurutan
-
-       });
- $("form").submit(function(){
-       return false;
-       });
-
-              $("#simpan_sementara").mouseleave(function(){
-               
-
-               var kode_pelanggan = $("#kd_pelanggan").val();
-               if (kode_pelanggan == ""){
-               $("#kd_pelanggan").attr("disabled", false);
-               }
-               
-               });
-  </script>    
+   
 
 
 

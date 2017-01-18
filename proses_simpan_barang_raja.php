@@ -281,37 +281,6 @@ $no_jurnal = no_jurnal();
 
 
 
-$ket_jurnal = "Penjualan ".$jenis_penjualan." Simpan Sementara ".$ambil_kode_pelanggan['nama_pelanggan']." ";
-              
-$stmt = $db->prepare("INSERT INTO penjualan (no_faktur, no_reg, penjamin, apoteker, perawat, petugas_lain, dokter, kode_gudang, kode_pelanggan, tanggal, jam, user, sales, status, potongan, no_pesanan,/*tax,*/jenis_penjualan,nama,biaya_admin,total,tunai,sisa,kredit,nilai_kredit,cara_bayar,ppn,no_faktur_jurnal,keterangan_jurnal) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,'Simpan Sementara',?,'1',/*?,*/?,?,?,?,?,?,?,?,?,?,?,?)");
-
-
-              
-    // hubungkan "data" dengan prepared statements
-              $stmt->bind_param("sssssssssssssisssiiiiissss",
-              $no_faktur,$no_reg,$penjamin,$petugas_farmasi,$petugas_paramedik,$petugas_lain, $dokter, $kode_gudang, $no_rm, $tanggal_sekarang, $jam_sekarang, $nama_petugas, $petugas_kasir, $potongan,/*$tax,*/$jenis_penjualan,$nama_pasien,$biaya_admin,$total,$pembayaran,$sisa,$sisa_kredit,$sisa_kredit,$cara_bayar,$ppn_input,$no_jurnal,$ket_jurnal);
-              
-
-              
-    // jalankan query
-              $stmt->execute();
-              
-              
-
-
-    // cek query
-if (!$stmt) 
-   {
-    die('Query Error : '.$db->errno.
-    ' - '.$db->error);
-   }
-
-else 
-    {
-    
-    }
-
-
 // update no_faktur di hasil_lab and insert ke hasil lab
 $cek_lab = $db->query("SELECT * FROM hasil_lab WHERE no_reg = '$no_reg'");
 $out_lab = mysqli_num_rows($cek_lab);
@@ -376,6 +345,37 @@ else
       }
 
 
+
+
+$status = 'Simpan Sementara';
+
+$ket_jurnal = "Penjualan ".$jenis_penjualan." Simpan Sementara ".$ambil_kode_pelanggan['nama_pelanggan']." ";
+              
+$stmt = $db->prepare("INSERT INTO penjualan (no_faktur, no_reg, penjamin, apoteker, perawat, petugas_lain, dokter, kode_gudang, kode_pelanggan, tanggal, jam, user, sales, status, potongan, no_pesanan,jenis_penjualan,nama,biaya_admin,total,tunai,sisa,kredit,nilai_kredit,cara_bayar,ppn,no_faktur_jurnal,keterangan_jurnal) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,'1',?,?,?,?,?,?,?,?,?,?,?,?)");
+
+
+              
+    // hubungkan "data" dengan prepared statements
+              $stmt->bind_param("ssssssssssssssisssiiiiissss",
+              $no_faktur,$no_reg,$penjamin,$petugas_farmasi,$petugas_paramedik,$petugas_lain, $dokter, $kode_gudang, $no_rm, $tanggal_sekarang, $jam_sekarang, $nama_petugas, $petugas_kasir,$status,$potongan,$jenis_penjualan,$nama_pasien,$biaya_admin,$total,$pembayaran,$sisa,$sisa_kredit,$sisa_kredit,$cara_bayar,$ppn_input,$no_jurnal,$ket_jurnal);
+              
+
+              
+    // jalankan query
+              $stmt->execute();
+              
+      
+    // cek query
+if (!$stmt) 
+   {
+    die('Query Error : '.$db->errno.
+    ' - '.$db->error);
+   }
+
+else 
+    {
+    
+    }
 
 
 
