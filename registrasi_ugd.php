@@ -858,6 +858,22 @@ $("#hubungan_dengan_pasien").attr("disabled", true);
 
 </script>
 
+
+
+
+<!--   script untuk detail layanan pulang-->
+<script type="text/javascript">
+$(document).on('click', '.rujuk', function (e) {
+            var reg = $(this).attr('data-reg');
+            var id = $(this).attr('data-id');
+
+               $("#reg").val(reg);
+               $("#rujukkkk").attr('data-id',id);
+               $("#modal_rujuk").modal('show');
+       });
+</script>
+<!--  end script untuk akhir detail pulang-->
+
 <!--   script untuk detail layanan MERUJUK-->
 <script type="text/javascript">
      $(document).on('click','#rujukkkk',function() {   
@@ -879,19 +895,58 @@ $("#hubungan_dengan_pasien").attr("disabled", true);
 <!--  end script untuk akhir detail RUJUK-->
 
 
-<!--   script untuk detail layanan pulang-->
-<script type="text/javascript">
-$(document).on('click', '.rujuk', function (e) {
-            var reg = $(this).attr('data-reg');
-            var id = $(this).attr('data-id');
+<!--   script untuk detail layanan PERUSAHAAN PENJAMIN-->
+  <script type="text/javascript">
+    $(document).on('click', '.rujuk', function (e) {
 
-               $("#reg").val(reg);
-               $("#rujukkkk").attr('data-id',id);
-               $("#modal_rujuk").modal('show');
-       });
+    var id = $(this).attr('data-id');
+    var reg = $(this).attr('data-reg');
+
+          $("#modal_rujuk").modal('show');
+          $("#rujukkkk").attr("data-id",id);
+          $("#rujukkkk").attr("data-reg",reg);
+          $("#reg").val(reg);
+
+  });
+
 </script>
-<!--  end script untuk akhir detail pulang-->
 
+<script type="text/javascript">
+     $(document).on('click', '#rujukkkk', function (e) {    
+                    var keterangan = $("#keterangan_rujuk").val();
+                    var reg = $(this).attr("data-reg");
+                    var id = $(this).attr("data-id");                   
+                    
+                    $("#modal_rujuk").modal('hide');
+                    
+                    $.post("proses_rujuk_rs.php",{reg:reg, keterangan:keterangan},function(data){
+                      $('#table_ugd').DataTable().destroy();
+     
+                  var dataTable = $('#table_ugd').DataTable( {
+                      "processing": true,
+                      "serverSide": true,
+                      "ajax":{
+                        url :"datatable_registrasi_ugd.php", // json datasource
+                        type: "post",  // method  , by default get
+                        error: function(){  // error handling
+                          $(".employee-grid-error").html("");
+                          $("#table_ugd").append('<tbody class="employee-grid-error"><tr><th colspan="3">No data found in the server</th></tr></tbody>');
+                          $("#employee-grid_processing").css("display","none");
+                          }
+                      },
+                         "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+
+                          $(nRow).attr('class','tr-id-'+aData[21]+'');         
+
+                      }
+                    });
+                    });
+
+                    
+        }); 
+
+     
+</script>
 
 
 
