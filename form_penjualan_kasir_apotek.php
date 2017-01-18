@@ -610,7 +610,6 @@ $user = $_SESSION['nama'];
                          
                          
                          
-                         echo "<option selected value='".$data_sett['kas']."'>".$data_sett['nama_daftar_akun'] ."</option>";
                          
                          $query = $db->query("SELECT nama_daftar_akun, kode_daftar_akun FROM daftar_akun WHERE tipe_akun = 'Kas & Bank'");
                          while($data = mysqli_fetch_array($query))
@@ -618,10 +617,14 @@ $user = $_SESSION['nama'];
                          
                          
                          
-                         
+                    if($data_sett['kas'] == $data['kode_daftar_akun'])
+                         {
+                          echo "<option selected value='".$data_sett['kas']."'>".$data_sett['nama_daftar_akun'] ."</option>";
+                         }
+                         else
+                         {
                          echo "<option value='".$data['kode_daftar_akun']."'>".$data['nama_daftar_akun'] ."</option>";
-                         
-                         
+                         }
                          
                          
                          }
