@@ -29,9 +29,9 @@ $sub_operasi = mysqli_fetch_array($pilih_akses_sub_operasi);
 
 <div class="form-group">
   <label for="sel1">Nama Operasi</label>
-  <input type="text" style="height: 20px;" value="<?php echo $nama_operasi; ?>" readonly=""class="form-control" id="nama_operasi" name="nama_operasi" autocomplete="off">
+  <input type="text" style="height: 20px;" value="<?php echo $nama_operasi; ?>" readonly="" class="form-control" id="nama_operasi" name="nama_operasi" autocomplete="off">
 
-  <input type="hidden" style="height: 20px;" value="<?php echo $id_operasi; ?>" readonly=""class="form-control" id="id_operasi" name="id_operasi" autocomplete="off">
+  <input type="hidden" style="height: 20px;" value="<?php echo $id_operasi; ?>" readonly="" class="form-control" id="id_operasi" name="id_operasi" autocomplete="off">
 </div>
 
 <div class="form-group">
@@ -147,7 +147,9 @@ $sub_operasi = mysqli_fetch_array($pilih_akses_sub_operasi);
   <input type="text" style="height: 20px;" class="form-control" id="harga_jual_edit" name="harga_jual_edit" autocomplete="off">
 </div>
 
-   <button type="submit" id="submit_edit" class="btn btn-success">Submit</button>
+  <input type="hidden" style="height: 20px;" value="<?php echo $id_operasi; ?>" readonly="" class="form-control" id="id_operasi_edit" name="id_operasi" autocomplete="off">
+
+   <button type="submit" id="submit_edit" data-id="" class="btn btn-success">Submit</button>
   </form>
   <div class="alert alert-success" style="display:none">
    <strong>Berhasil!</strong> Data Berhasil Di Edit
@@ -181,7 +183,7 @@ $sub_operasi = mysqli_fetch_array($pilih_akses_sub_operasi);
 
         <label>Nama Cito</label>
         <input type="text" id="nama_cito_delete" name="nama_cito_delete">
-        <input type="hidden" id="id_delete" name="id2">
+        <input type="text" id="id_delete" name="id2">
 
     </div>
     <div class="modal-footer">
@@ -292,7 +294,7 @@ echo "</tr>";
 
 <!--Start Script Tambah-->
 <script type="text/javascript">
-  $("#submit_tmbh").click(function(){
+  $(document).on('click','#submit_tmbh',function(e){
   var id_operasi = $("#id_operasi").val();
   var kelas_kamar = $("#kelas_kamar").val();
   var kelas_citu = $("#kelas_citu").val();
@@ -329,7 +331,8 @@ echo "</tr>";
 
 <!-- Start Script Edit-->
 <script type="text/javascript">
-	$(".btn-edit").click(function(){
+
+  $(document).on('click','.btn-edit',function(e){
 		
 		$("#modal_edit").modal('show');
 
@@ -338,42 +341,37 @@ echo "</tr>";
 		var kelas  = $(this).attr("data-id-kelas");
 		var cito  = $(this).attr("data-id-cito");
     var harga  = $(this).attr("data-harga");
+    var id  = $(this).attr("data-id-sub");
 
 		$("#sub_edit").val(sub);
 		$("#op_edit").val(op);
 		$("#kelas_edit").val(kelas);
 		$("#cito_edit").val(cito);
     $("#harga_jual_edit").val(harga);
+    $("#submit_edit").attr("data-id",id);
 		
 		
 		});
 		
-		$("#submit_edit").click(function(){
+
+  $(document).on('click','#submit_edit',function(e){
 
 		var sub = $("#sub_edit").val();
 		var kelas = $("#kelas_edit").val();
 		var cito = $("#cito_edit").val();
     var harga = $("#harga_jual_edit").val();
+    var id = $(this).attr("data-id");
+    var id_operasi_edit = $("#id_operasi_edit").val();
 		
-		$.post("update_sub_operasi.php",{sub:sub,kelas:kelas,cito:cito,harga:harga},function(data){
-		if(data != '') 
-		{
 
-    $("#modal_edit").modal("hide");
-		$(".alert").show('fast');
-		$("#table_baru").load('show_sub_operasi.php');
-		setTimeout(tutupalert, 2000);
+        $(".tr-id-"+id).remove();
+        $("#modal_edit").modal("hide");        
+    		$.post("update_sub_operasi.php",{sub:sub,kelas:kelas,cito:cito,harga:harga,id_operasi_edit:id_operasi_edit},function(data){
+          $("#tbody").prepend(data);
 
-		}
-		
-		
-		});
+    		});
 	
-									
-
-		function tutupmodal() {
-		
-		}	
+	
 		});
 </script>
 <!--Ending Script Edit-->
@@ -382,7 +380,8 @@ echo "</tr>";
 
 <!--   script modal confirmasi delete -->
 <script type="text/javascript">
-$(".delete").click(function(){
+
+  $(document).on('click','.delete',function(e){
 
   var id = $(this).attr('data-id');
   var nama = $(this).attr('data-namacit');
@@ -405,14 +404,16 @@ $(".delete").click(function(){
 
 <!--  script modal  lanjkutan confiormasi delete -->
 <script type="text/javascript">
-$("#yesss").click(function(){
+  $(document).on('click','#yesss',function(e){
 
 var id = $("#id_delete").val();
 
-$.post('delete_sub_operasi.php',{id:id},function(data){
+      $(".tr-id-"+id).remove();
+
+      $.post('delete_sub_operasi.php',{id:id},function(data){
     
       $("#modale-delete").modal('hide');
-      $(".tr-id-"+id+"").remove();
+      
   
     });
 
@@ -428,14 +429,5 @@ $(document).ready(function(){
 </script>
 
 <!--  end modal confirmasi delete lanjutan  -->
-
-
-<script>
-
-$(document).ready(function(){
-    $('.table').DataTable();
-});
-
-</script>
 
   <?php include 'footer.php'; ?>

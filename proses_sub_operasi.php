@@ -58,7 +58,7 @@ $select_cito = $db->query("SELECT id,nama FROM cito");
           }
         }
 
-      echo "<tr class='tr-id-".$data['id_operasi']."'>
+      echo "<tr class='tr-id-".$data['id_sub_operasi']."'>
 
             <td>". $nama_operasi ."</td>
             <td>". $kelas ."</td>
