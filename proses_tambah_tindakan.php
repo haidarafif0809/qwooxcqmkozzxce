@@ -1,9 +1,7 @@
-
-<?php 
+<?php session_start();
 include 'db.php';
 include_once 'sanitasi.php';
 
-session_start();
 $petugas = $_SESSION['nama'];
 
 $session_id = session_id();
