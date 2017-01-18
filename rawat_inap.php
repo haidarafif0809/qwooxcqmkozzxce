@@ -405,13 +405,13 @@ else
 
 <div class="form-group" >
   <label for="bed">Kamar:</label>
-  <input style="height: 20px;" type="text" class="form-control disable" id="group_bed" name="group_bed" autocomplete="off" >
+  <input style="height: 20px;" type="text" class="form-control disable" id="group_bed" name="group_bed" autocomplete="off" readonly="" >
 </div>
 
 
 <div class="form-group" >
   <label for="bed">Bed:</label>
-  <input style="height: 20px;" type="text" class="form-control disable" id="bed" name="bed" autocomplete="off" >
+  <input style="height: 20px;" type="text" class="form-control disable" id="bed" name="bed" autocomplete="off" readonly="" >
 </div>
 
 </div>
