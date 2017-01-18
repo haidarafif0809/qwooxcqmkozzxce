@@ -38,6 +38,8 @@ include 'db.php';
 
 	</table>
 </span>
+ <h6 style="text-align: left ; color: blue"><i> Note * Bisa Cetak Jika Input Hasil Sudah Selesai dan Penjualan Sudah Selesai ( No Faktur Tidak Kosong ) !!</i></h6>
+
 </div> <!--/ responsive-->
 
 </div>
