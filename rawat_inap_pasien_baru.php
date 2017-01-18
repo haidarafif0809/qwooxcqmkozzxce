@@ -175,7 +175,7 @@ $dq = mysqli_fetch_array($q);
  
 <div class="form-group" >
   <label for="bed">Kamar:</label>
-  <input style="height: 20px;" type="text" class="form-control disable5" id="group_bed" name="group_bed" autocomplete="off" required="" >
+  <input style="height: 20px;" type="text" class="form-control disable5" id="group_bed" name="group_bed" autocomplete="off" required="" readonly="">
 </div>
 
 
