@@ -85,6 +85,13 @@ else
 	
 
 $model_hitung = $row['model_hitung'];
+if($model_hitung == '')
+{
+   $nestedData[] = "<td>&nbsp; ". '-' ." </td>";
+   $nestedData[] = "  <td>&nbsp; ". '-'." </td>";
+}
+else
+{
 
 switch ($model_hitung) {
     case "Lebih Kecil Dari":
@@ -109,11 +116,11 @@ switch ($model_hitung) {
         break;
     
     case "Antara Sama Dengan":
-        $nestedData[] = "". $row['nilai_normal_lk']."&nbsp;-&nbsp; ". $row['normal_lk2']."&nbsp;". $row['satuan_nilai_normal']."";
-        $nestedData[] = "". $row['nilai_normal_pr']."&nbsp;-&nbsp; ". $row['normal_pr2']."&nbsp;". $row['satuan_nilai_normal']."";
+        $nestedData[] = "". $row['nilai_normal_lk']."&nbsp;-&nbsp; ". $row['nilai_normal_lk']."&nbsp;". $row['satuan_nilai_normal']."";
+        $nestedData[] = "". $row['nilai_normal_pr']."&nbsp;-&nbsp; ". $row['nilai_normal_pr']."&nbsp;". $row['satuan_nilai_normal']."";
         break;
 	} 
-
+}
 
 
 

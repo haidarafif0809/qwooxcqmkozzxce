@@ -119,44 +119,50 @@ $query = $db->query("SELECT * FROM tbs_hasil_lab WHERE no_reg = '$no_reg' AND no
 
       echo "<td style='background-color: #33b5e5;' class='edit-nama' data-id='".$data['id']."'><span id='text-nama-".$data['id']."'>". $data['hasil_pemeriksaan'] ."</span> <input type='hidden' id='input-nama-".$data['id']."' value='".$data['hasil_pemeriksaan']."' class='input_nama' data-id='".$data['id']."' data-nama='".$data['hasil_pemeriksaan']."' autofocus=''> </td>";
 
-$ambil_model = $db->query("SELECT model_hitung,satuan_nilai_normal FROM setup_hasil WHERE nama_pemeriksaan = '$data[id_pemeriksaan]'");
-while($show_model = mysqli_fetch_array($ambil_model))
-{
 
-$model_hitung = $show_model['model_hitung']; 
+
+$model_hitung = $data['model_hitung']; 
+if($model_hitung == '')
+{
+  echo "<td>&nbsp; ". '-' ." </td>
+        <td>&nbsp; ". '-'." </td>
+        ";
+}
+else
+{
 switch ($model_hitung) {
     case "Lebih Kecil Dari":
-        echo "<td>&lt;&nbsp; ". $data['nilai_normal_lk']."&nbsp;". $show_model['satuan_nilai_normal']." </td>
-        <td>&lt;&nbsp; ". $data['nilai_normal_pr']."&nbsp;". $show_model['satuan_nilai_normal']." </td>
+        echo "<td>&lt;&nbsp; ". $data['nilai_normal_lk']."&nbsp;". $data['satuan_nilai_normal']." </td>
+        <td>&lt;&nbsp; ". $data['nilai_normal_pr']."&nbsp;". $data['satuan_nilai_normal']." </td>
         ";
         break;
     case "Lebih Kecil Sama Dengan":
-        echo "<td>&lt;=&nbsp; ". $data['nilai_normal_lk']."&nbsp;". $show_model['satuan_nilai_normal']." </td>
-        <td>&lt;=&nbsp; ". $data['nilai_normal_pr']."&nbsp;". $show_model['satuan_nilai_normal']." </td>
+        echo "<td>&lt;=&nbsp; ". $data['nilai_normal_lk']."&nbsp;". $data['satuan_nilai_normal']." </td>
+        <td>&lt;=&nbsp; ". $data['nilai_normal_pr']."&nbsp;". $data['satuan_nilai_normal']." </td>
         ";
         break;
     case "Lebih Besar Dari":
-        echo "<td>&gt;&nbsp; ". $data['nilai_normal_lk']."&nbsp;". $show_model['satuan_nilai_normal']." </td>
-        <td>&gt;&nbsp; ". $data['nilai_normal_pr']."&nbsp;". $show_model['satuan_nilai_normal']." </td>
+        echo "<td>&gt;&nbsp; ". $data['nilai_normal_lk']."&nbsp;". $data['satuan_nilai_normal']." </td>
+        <td>&gt;&nbsp; ". $data['nilai_normal_pr']."&nbsp;". $data['satuan_nilai_normal']." </td>
         ";
         break;
           case "Lebih Besar Sama Dengan":
-        echo "<td>&gt;=&nbsp; ". $data['nilai_normal_lk']."&nbsp;". $show_model['satuan_nilai_normal']." </td>
-        <td>&gt;=&nbsp; ". $data['nilai_normal_pr']."&nbsp;". $show_model['satuan_nilai_normal']." </td>
+        echo "<td>&gt;=&nbsp; ". $data['nilai_normal_lk']."&nbsp;". $data['satuan_nilai_normal']." </td>
+        <td>&gt;=&nbsp; ". $data['nilai_normal_pr']."&nbsp;". $data['satuan_nilai_normal']." </td>
         ";
         break;
           case "Antara Sama Dengan":
-        echo "<td>". $data['nilai_normal_lk']."&nbsp;-&nbsp; ". $data['normal_lk2']."&nbsp;". $show_model['satuan_nilai_normal']." </td>
-        <td>". $data['nilai_normal_pr']."&nbsp;-&nbsp; ". $data['normal_pr2']."&nbsp;". $show_model['satuan_nilai_normal']." </td>
+        echo "<td>". $data['nilai_normal_lk']."&nbsp;-&nbsp; ". $data['normal_lk2']."&nbsp;". $data['satuan_nilai_normal']." </td>
+        <td>". $data['nilai_normal_pr']."&nbsp;-&nbsp; ". $data['normal_pr2']."&nbsp;". $data['satuan_nilai_normal']." </td>
         ";
         break;
 		} 
-
+}
         echo "<td style='background-color: #33b5e5;' class='edit-status' data-id='".$data['id']."'><span id='text-status-".$data['id']."'>". $data['status_abnormal'] ."</span> <input type='hidden' id='input-status-".$data['id']."' value='".$data['status_abnormal']."' class='input_status' data-id='".$data['id']."' data-status='".$data['status_abnormal']."' autofocus=''> </td>";
 
 
    echo "</tr>";
-      }
+      
   
 }
     ?>
@@ -166,6 +172,9 @@ switch ($model_hitung) {
  </div>
 </span>
 
+<?php 
+
+ ?>
 <button type="submit" id="selesai" class="btn btn-success" style="font-size:15px;">Selesai</button>
 
 <a href='cetak_hasil_lab.php' id="cetak" style="display: none;" class="btn btn-warning" target="blank"><i class="fa fa-print"></i> Cetak </a>
@@ -246,7 +255,7 @@ var id = $(this).attr("data-id");
 var input_nama = $(this).val();
 
 if (input_nama == '') {
-      alert('Status Harus di Isi Dahulu !!');
+      alert('Status Ab-Normal Harus di Isi Dahulu !!');
 
     $("#input-status-"+id+"").val(nama_lama);
     $("#text-status-"+id+"").text(nama_lama);

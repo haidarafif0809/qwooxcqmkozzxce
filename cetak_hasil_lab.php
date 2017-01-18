@@ -108,6 +108,14 @@ $show = $db->query("SELECT * FROM hasil_lab WHERE no_reg = '$no_reg' AND status 
 
 
 $model_hitung = $take['model_hitung']; 
+if($model_hitung == '')
+{
+  echo "<td>&nbsp; ". '-' ." </td>
+        <td>&nbsp; ". '-'." </td>
+        ";
+}
+else
+{
 switch ($model_hitung) {
     case "Lebih Kecil Dari":
         echo "<td>&lt;&nbsp; ". $take['nilai_normal_lk']."&nbsp;". $take['satuan_nilai_normal']." </td>
@@ -130,12 +138,12 @@ switch ($model_hitung) {
         ";
         break;
           case "Antara Sama Dengan":
-        echo "<td>". $take['nilai_normal_lk']."&nbsp;-&nbsp; ". $take['normal_lk2']."&nbsp;". $take['satuan_nilai_normal']." </td>
-        <td>". $take['nilai_normal_pr']."&nbsp;-&nbsp; ". $take['normal_pr2']."&nbsp;". $take['satuan_nilai_normal']." </td>
+        echo "<td>". $take['nilai_normal_lk']."&nbsp;-&nbsp; ". $take['nilai_normal_lk']."&nbsp;". $take['satuan_nilai_normal']." </td>
+        <td>". $take['nilai_normal_pr']."&nbsp;-&nbsp; ". $take['nilai_normal_pr']."&nbsp;". $take['satuan_nilai_normal']." </td>
         ";
         break;
     } 
-
+}
 
 
 
