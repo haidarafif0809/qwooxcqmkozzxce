@@ -78,7 +78,7 @@ $tanggal = date('Y-m-d');
            <th> Hasil Pemeriksaan </th>
            <th> Nilai Normal Pria </th>
            <th> Nilai Normal Wanita </th>
-           <th> Status Ab-normal </th>
+           <th> Normal / Tidak Normal </th>
            <th> Status Rawat </th>
            
             

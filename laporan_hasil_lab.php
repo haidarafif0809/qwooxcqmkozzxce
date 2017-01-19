@@ -23,11 +23,13 @@ include 'db.php';
 			<th style="background-color: #4CAF50; color: white;"> No REG</th>
 			<th style="background-color: #4CAF50; color: white;"> No Faktur</th>
 			<th style="background-color: #4CAF50; color: white;"> Pasien</th>
+			<th style="background-color: #4CAF50; color: white;"> Dokter</th>
+			<th style="background-color: #4CAF50; color: white;"> Analis</th>
 			<th style="background-color: #4CAF50; color: white;"> Pemeriksaan</th>
 			<th style="background-color: #4CAF50; color: white;"> Hasil Pemeriksaan</th>
 			<th style="background-color: #4CAF50; color: white;"> Normal Pria </th>
 			<th style="background-color: #4CAF50; color: white;"> Normal Wanita </th>
-			<th style="background-color: #4CAF50; color: white;"> Ab-Normal </th>
+			<th style="background-color: #4CAF50; color: white;"> Normal / Tidak Normal </th>
 			<th style="background-color: #4CAF50; color: white;"> Status Rawat </th>
 			<th style="background-color: #4CAF50; color: white;"> Tanggal </th>
 		</thead>

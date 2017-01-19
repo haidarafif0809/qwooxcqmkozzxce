@@ -98,11 +98,11 @@ $jenis_penjualan = stringdoang($_GET['jenis_penjualan']);
     <thead>
       <tr>
 
-          <th style='background-color: #4CAF50; color: white;'>Nama Pemeriksaan</th>
-          <th style='background-color: #4CAF50; color: white;'>Hasil Pemeriksaan</th>
+          <th style='background-color: #4CAF50; color: white;' >Nama Pemeriksaan</th>
+          <th style='background-color: #4CAF50; color: white;' >Hasil Pemeriksaan</th>
           <th style='background-color: #4CAF50; color: white;' >Nilai Pria</th>
           <th style='background-color: #4CAF50; color: white;' >Nilai Wanita</th>
-          <th style='background-color: #4CAF50; color: white'>Apakah Ab-Normal</th>
+          <th style='background-color: #4CAF50; color: white;' >Normal / Tidak Normal</th>
 
     </tr>
     </thead>
