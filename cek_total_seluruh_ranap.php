@@ -16,12 +16,12 @@ $no_reg = $_POST['no_reg'];
 
 if ($data > 0) 
 {
-	echo "1";
+	echo 1;
 }
 
 else
 {
-	echo "0";
+	echo 0;
 }
 mysqli_close($db); 
         

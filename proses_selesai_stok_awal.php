@@ -68,7 +68,7 @@ $ambil_setting = mysqli_fetch_array($select_setting_akun);
 
 
 
-     $query3 = $db->query("DELETE FROM tbs_stok_awal ");
+     $query3 = $db->query("DELETE FROM tbs_stok_awal WHERE session_id = '$session_id' ");
 
 //Untuk Memutuskan Koneksi Ke Database
 mysqli_close($db);   

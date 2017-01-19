@@ -12,7 +12,7 @@ $bed = stringdoang($_GET['bed']);
 $group_bed = stringdoang($_GET['kamar']);
 $session_id = session_id();
 
-$select = $db->query("SELECT nama_pelanggan FROM pelanggan WHERE kode_pelanggan = '$no_rm'");
+$select = $db_pasien->query("SELECT nama_pelanggan FROM pelanggan WHERE kode_pelanggan = '$no_rm'");
 $out = mysqli_fetch_array($select);
 
 

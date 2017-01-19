@@ -12,7 +12,7 @@ $otoritas_tombol = mysqli_fetch_array($pilih_akses_tombol);
 
 
 $no_reg = stringdoang($_GET['no_reg']);
-
+  
 if (isset($_GET['analis'])) {
   
 $analis = stringdoang($_GET['analis']);
@@ -886,7 +886,7 @@ Laboratorium  </button>
         <div class="col-xs-6">
           
            <label style="font-size:15px"> <b> Subtotal </b></label><br>
-      <input style="height:10px;font-size:15px" type="text" name="total" id="total2" class="form-control" placeholder="Total" readonly="" >
+      <input style="height:20px;font-size:15px" type="text" name="total" id="total2" class="form-control" placeholder="Total" readonly="" >
 
         </div>
 
@@ -894,7 +894,7 @@ Laboratorium  </button>
 
         <div class="col-xs-6">
            <label> Biaya Admin (Rp) </label>
-           <input type="text" name="biaya_admin" id="biaya_admin" style="height:10px;font-size:15px"  style="height:10px;font-size:15px" class="form-control" autocomplete="off" onkeydown="return numbersonly(this, event);" onkeyup="javascript:tandaPemisahTitik(this);" >
+           <input type="text" name="biaya_admin" id="biaya_admin" style="height:20px;font-size:15px"  style="height:20px;font-size:15px" class="form-control" autocomplete="off" onkeydown="return numbersonly(this, event);" onkeyup="javascript:tandaPemisahTitik(this);" >
            </div>
 
       </div>
@@ -910,18 +910,18 @@ Laboratorium  </button>
 
           <div class="col-xs-6">
            <label> Diskon ( Rp )</label><br>
-          <input type="text" name="potongan" style="height:10px;font-size:15px" id="potongan_penjualan" v class="form-control" placeholder="" autocomplete="off" value="<?php echo $data_diskon['diskon_nominal']; ?>" onkeydown="return numbersonly(this, event);" onkeyup="javascript:tandaPemisahTitik(this);">
+          <input type="text" name="potongan" style="height:20px;font-size:15px" id="potongan_penjualan" v class="form-control" placeholder="" autocomplete="off" value="<?php echo $data_diskon['diskon_nominal']; ?>" onkeydown="return numbersonly(this, event);" onkeyup="javascript:tandaPemisahTitik(this);">
           </div>
 
           <div class="col-xs-6">
             <label> Diskon ( % )</label><br>
-          <input type="text" name="potongan_persen" style="height:10px;font-size:15px" id="potongan_persen"  class="form-control" placeholder="" value="<?php echo $data_diskon['diskon_persen']; ?>%" autocomplete="off" >
+          <input type="text" name="potongan_persen" style="height:20px;font-size:15px" id="potongan_persen"  class="form-control" placeholder="" value="<?php echo $data_diskon['diskon_persen']; ?>%" autocomplete="off" >
           </div>
 
 
             <div class="col-xs-4" style="display: none">
            <label> Pajak (%)</label>
-           <input type="text" name="tax" id="tax" style="height:10px;font-size:15px"  style="height:10px;font-size:15px" class="form-control" autocomplete="off" >
+           <input type="text" name="tax" id="tax" style="height:20px;font-size:15px"  style="height:20px;font-size:15px" class="form-control" autocomplete="off" >
            </div>
                    
 
@@ -940,7 +940,7 @@ Laboratorium  </button>
            <div class="col-xs-6">
              
            <label> Tanggal Jatuh Tempo</label>
-           <input type="text" name="tanggal_jt" id="tanggal_jt"  value="<?php echo $take_jt ?>" style="height:10px;font-size:15px" placeholder="Tanggal JT" class="form-control" >
+           <input type="text" name="tanggal_jt" id="tanggal_jt"  value="<?php echo $take_jt ?>" style="height:20px;font-size:15px" placeholder="Tanggal JT" class="form-control" >
            </div>
 
         <div class="col-xs-6">
@@ -1002,13 +1002,13 @@ Laboratorium  </button>
             <div class="col-xs-6">
               
            <label> Kembalian </label><br>
-           <b><input type="text" name="sisa_pembayaran"  id="sisa_pembayaran_penjualan"  style="height:10px;font-size:15px" class="form-control"  readonly="" ></b>
+           <b><input type="text" name="sisa_pembayaran"  id="sisa_pembayaran_penjualan"  style="height:20px;font-size:15px" class="form-control"  readonly="" ></b>
             </div>
 
             <div class="col-xs-6">
               
           <label> Kredit </label><br>
-          <b><input type="text" name="kredit" id="kredit" class="form-control"  style="height:10px;font-size:15px"  readonly=""  ></b>
+          <b><input type="text" name="kredit" id="kredit" class="form-control"  style="height:20px;font-size:15px"  readonly=""  ></b>
             </div>
           </div> 
           
@@ -3602,8 +3602,6 @@ $(document).ready(function(){
       total_lab = 0;
     }
 
-    var sum = parseInt(total_operasi,10) + parseInt(total_lab,10);   
-    $("#total2").val(tandaPemisahTitik(sum))
 
     $.post("cek_total_seluruh_ranap.php",{no_reg:no_reg},function(data1){
   
@@ -3618,39 +3616,36 @@ $(document).ready(function(){
                   }
                   else{
                     var sum = parseInt(data,10) + parseInt(total_operasi,10) + parseInt(total_lab,10);
-                  }
-                  
-                  
-                  
+                  }              
                
 
                   $("#total2").val(tandaPemisahTitik(sum))
                   
                   
 
-      if (pot_fakt_per == '0%') {
+      if (pot_fakt_per == '0%') 
+      {
 
                var potongann = pot_fakt_rp;
                var potongaaan = parseInt(potongann,10) / parseInt(data,10) * 100;
 
-          if (data == '0') {
-              
-              $("#potongan_persen").val(Math.round('0'));
-             
-          }
-          else{
-            $("#potongan_persen").val(Math.round(potongaaan));
-            
-          }
+              if (data == 0) {
+                  
+                  $("#potongan_persen").val(Math.round('0'));
                  
+              }
+              else
+              {
+            $("#potongan_persen").val(Math.round(potongaaan)); 
+              }
+                
+              var total = parseInt(data,10) - parseInt(pot_fakt_rp,10) + parseInt(total_operasi,10) + parseInt(total_lab,10);
 
+               $("#total1").val(tandaPemisahTitik(total))
 
-      var total = parseInt(data,10) - parseInt(pot_fakt_rp,10) + parseInt(total_operasi,10) + parseInt(total_lab,10);
-                  $("#total1").val(tandaPemisahTitik(total))
-
-            }
-            else if(pot_fakt_rp == 0)
-            {
+     }
+      else if(pot_fakt_rp == 0)
+     {
 
                   var potongaaan = pot_fakt_per;
                   var pos = potongaaan.search("%");
@@ -3661,13 +3656,21 @@ $(document).ready(function(){
                   $("#potongan1").val(potongaaan);
 
 
-      var total = parseInt(data,10) - parseInt(potongaaan,10) + parseInt(total_operasi,10) + parseInt(total_lab,10);
+                  var total = parseInt(data,10) - parseInt(potongaaan,10) + parseInt(total_operasi,10) + parseInt(total_lab,10);
+
                   $("#total1").val(tandaPemisahTitik(total))
-            }
+
+     }
       
 
                 });
-        }
+}
+else
+{
+  var total = parseInt(total_operasi,10) + parseInt(total_lab,10);   
+  $("#total1").val(tandaPemisahTitik(total))
+  $("#total2").val(tandaPemisahTitik(total))
+}
 
 
       });
