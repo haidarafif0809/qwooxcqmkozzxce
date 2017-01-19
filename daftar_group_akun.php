@@ -274,7 +274,7 @@ mysqli_close($db);
 <script type="text/javascript">
     $(document).ready(function(){
 	//fungsi hapus data 
-		$(".btn-hapus").click(function(){
+		$(document).on('click', '.btn-hapus', function (e) {
 		var nama_group = $(this).attr("data-satuan");
 		var id = $(this).attr("data-id");
 		$("#nama_group").val(nama_group);
@@ -289,12 +289,11 @@ mysqli_close($db);
 		
 		var id = $("#id_hapus").val();
 		$.post("hapus_group_akun.php",{id:id},function(data){
-		if (data != "") {
+
 		
 		$(".tr-id-"+id+"").remove();
 		$("#modal_hapus").modal('hide');
 		
-		}
 
 		
 		});
