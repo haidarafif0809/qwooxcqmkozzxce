@@ -236,8 +236,8 @@ $user = $_SESSION['nama'];
       </div>
       <div class="modal-body">
 
-<span class="modal_baru">
 <div class="table-resposive">
+<span class="modal_baru">
   <table id="tabel_cari" class="table table-bordered table-sm">
         <thead> <!-- untuk memberikan nama pada kolom tabel -->
         
@@ -257,8 +257,8 @@ $user = $_SESSION['nama'];
         
         </thead> <!-- tag penutup tabel -->
   </table>
-  </div>
 </span>
+  </div>
 </div> <!-- tag penutup modal-body-->
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
