@@ -33,7 +33,7 @@ $sampai_tanggal = stringdoang($_POST['sampai_tanggal']);
 <div class="card card-block">
 <!-- PENDAPATAN-->
 <?php
-$select = $db->query("SELECT kode_grup_akun, nama_grup_akun FROM grup_akun WHERE kategori_akun = 'Pendapatan' AND tipe_akun = 'Akun Header' AND parent= '-'");
+$select = $db->query("SELECT kode_grup_akun, nama_grup_akun FROM grup_akun WHERE kategori_akun = 'Pendapatan' AND tipe_akun = 'Akun Header' AND parent= '-' ORDER BY kode_grup_akun");
 
 $total_pendapatan = 0;
 
@@ -43,7 +43,7 @@ while($data = mysqli_fetch_array($select))
 
 	
 
-
+$total_pendapatan_nilai = 0;
 
 $select_grup_akun = $db->query("SELECT kode_grup_akun, nama_grup_akun FROM grup_akun WHERE kategori_akun = 'Pendapatan' AND tipe_akun = 'Akun Header' AND parent= '$data[kode_grup_akun]' ");
 while ($datagrup_akun = mysqli_fetch_array($select_grup_akun))
@@ -57,6 +57,7 @@ while ($datagrup_akun = mysqli_fetch_array($select_grup_akun))
     $data_nilai['total_pendapatan'] = 0;
   }
 
+$total_pendapatan_nilai = $total_pendapatan_nilai + $data_nilai['total_pendapatan'];
 
 $select_daftar_akun = $db->query("SELECT da.grup_akun, da.kode_daftar_akun, da.nama_daftar_akun, SUM(j.kredit) - SUM(j.debit) AS total FROM daftar_akun da INNER JOIN jurnal_trans j  ON da.kode_daftar_akun = j.kode_akun_jurnal WHERE da.kategori_akun = 'Pendapatan' AND (da.tipe_akun = 'Pendapatan Penjualan' OR da.tipe_akun = 'Pendapatan Diluar Usaha') AND da.grup_akun= '$datagrup_akun[kode_grup_akun]' AND date(j.waktu_jurnal) >= '$dari_tanggal' AND date(j.waktu_jurnal) <= '$sampai_tanggal' GROUP BY j.kode_akun_jurnal");
 
@@ -87,7 +88,7 @@ else{
 }
 
 
-$total_pendapatan_jual = $total_pendapatan_jual  + $data_nilai['total_pendapatan'];
+$total_pendapatan_jual = $total_pendapatan_jual  + $datadaftar_akun['total'];
 
 }
 
