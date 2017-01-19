@@ -1,4 +1,4 @@
-<?php include_once 'session_login.php';
+<?php include 'session_login.php';
  
 
 // memasukan file session login,  header, navbar, db.php,
@@ -1403,8 +1403,7 @@ data = data.replace(/\s+/g, '');
 
    <script>
    //untuk menampilkan data yang diambil pada form tbs penjualan berdasarkan id=formtambahproduk
-  $("#submit_produk").click(function(){
-
+$(document).on('click','#submit_produk',function(e){
     var no_rm = $("#kd_pelanggan1").val();
     if (no_rm != 'Umum') {
       var no_rm = no_rm.substr(0, no_rm.indexOf('('));
@@ -1578,7 +1577,7 @@ if (jumlah_barang == ''){
       $("#total2").val(tandaPemisahTitik(total_akhir1));
      $("#kode_barang").focus();
 
-          $.post("proses_tbs_laboratorium.php",{nama_barang:nama_barang,jumlah_barang:jumlah_barang,harga:harga,potongan:potongan,tax:tax,tipe_barang:ber_stok,no_rm:no_rm,apoteker:apoteker,penjamin:penjamin,tax:tax,hargaa:hargaa,hargaa:hargaa,ppn:ppn, kode_barang:kode_barang,no_reg:no_reg,dokter:dokter},function(data){ 
+          $.post("proses_tbs_laboratorium.php",{nama_barang:nama_barang,jumlah_barang:jumlah_barang,harga:harga,potongan:potongan,tax:tax,tipe_barang:ber_stok,no_rm:no_rm,apoteker:apoteker,penjamin:penjamin,hargaa:hargaa,ppn:ppn, kode_barang:kode_barang,no_reg:no_reg,dokter:dokter},function(data){ 
      
                  $("#ppn").attr("disabled", true);
                  $("#tbody").prepend(data);
