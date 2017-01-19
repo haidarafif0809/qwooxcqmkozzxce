@@ -459,9 +459,10 @@ while($data = mysqli_fetch_array($select))
 $select_daftar_akun = $db->query("SELECT da.kode_daftar_akun, da.nama_daftar_akun, SUM(j.kredit) - SUM(j.debit) AS total FROM daftar_akun da INNER JOIN jurnal_trans j  ON da.kode_daftar_akun = j.kode_akun_jurnal WHERE da.kategori_akun = 'Modal' AND da.grup_akun= '$data[kode_grup_akun]' AND date(j.waktu_jurnal) <= '$sampai_tanggal' GROUP BY j.kode_akun_jurnal");
 
 
-$total_modal = 0;
 
-$sum_total_laba_brjalan = $db->query("SELECT SUM(j.kredit) - SUM(j.debit) AS total FROM daftar_akun da INNER JOIN jurnal_trans j ON da.kode_daftar_akun = j.kode_akun_jurnal WHERE ( da.kategori_akun = 'Biaya' AND da.tipe_akun = 'Beban Operasional') OR ( da.kategori_akun = 'Pendapatan' AND da.tipe_akun = 'Pendapatan Penjualan') OR(da.kategori_akun = 'HPP' AND da.tipe_akun = 'Harga Pokok Penjualan') OR ( da.kategori_akun = 'Pendapatan' AND da.tipe_akun = 'Pendapatan Diluar Usaha') AND date(j.waktu_jurnal) <= '$sampai_tanggal'");
+
+$sum_total_laba_brjalan = $db->query("SELECT SUM(j.kredit) - SUM(j.debit) AS total FROM daftar_akun da INNER JOIN jurnal_trans j ON da.kode_daftar_akun = j.kode_akun_jurnal WHERE (( da.kategori_akun = 'Biaya' AND da.tipe_akun = 'Beban Operasional') OR ( da.kategori_akun = 'Pendapatan' AND da.tipe_akun = 'Pendapatan Penjualan') OR(da.kategori_akun = 'HPP' AND da.tipe_akun = 'Harga Pokok Penjualan') OR ( da.kategori_akun = 'Pendapatan' AND da.tipe_akun = 'Pendapatan Diluar Usaha')) AND date(j.waktu_jurnal) <= '$sampai_tanggal'");
+
 
 
   $select_nama = $db->query("SELECT s.laba_tahun_berjalan, da.nama_daftar_akun FROM setting_akun s INNER JOIN daftar_akun da ON s.laba_tahun_berjalan = da.kode_daftar_akun");
@@ -470,6 +471,7 @@ $sum_total_laba_brjalan = $db->query("SELECT SUM(j.kredit) - SUM(j.debit) AS tot
   $data_laba = mysqli_fetch_array($sum_total_laba_brjalan);
   $total_laba_tahun_berjalan = $data_laba['total'];
 
+$total_modal = 0 + $total_laba_tahun_berjalan;
 
 while ($datadaftar_akun = mysqli_fetch_array($select_daftar_akun))
 {
@@ -501,6 +503,9 @@ $total_modal = $total_modal + $datadaftar_akun['total'];
 
 }
 
+if ($total_laba_tahun_berjalan > 0) {
+
+
 if ($total_laba_tahun_berjalan < 0) {
   echo "
  <table>
@@ -519,6 +524,8 @@ else{
   </tbody>
 </table>
 ";
+
+}
 
 }
 
@@ -543,7 +550,7 @@ else{
 ";
 }
 
-$totol_kewajiban_modal = $total_akhir_kewajiban + $total_modal + $total_laba_tahun_berjalan;
+$totol_kewajiban_modal = $total_akhir_kewajiban + $total_modal;
 
 } // END MODAL
 

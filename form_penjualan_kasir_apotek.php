@@ -1416,7 +1416,7 @@ else{
         var ppn = $("#ppn").val();
         var biaya_admin = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#biaya_admin").val()))));
 
-$("#keterangan").val(total2);
+
         
         var sisa = pembayaran - total;
         
