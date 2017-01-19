@@ -8,6 +8,7 @@ $tipe = stringdoang($_POST['tipe_barang']);
 $penjamin = stringdoang($_POST['penjamin']);
 $analis = stringdoang($_POST['apoteker']);
 $no_rm  = stringdoang($_POST['no_rm']);
+$dokter  = stringdoang($_POST['dokter']);
 $no_faktur  = stringdoang($_POST['no_faktur']);
 $petugas = $_SESSION['id'];
 $waktu = date("Y-m-d H:i:sa");
@@ -148,7 +149,7 @@ $subtotal = $harga * $jumlah - $potongan_jadi;
           }                     
                
 
-               //FEE PETUGAS ANALIS
+    //FEE PETUGAS ANALIS
     $query9 = $db->query("SELECT jumlah_prosentase,jumlah_uang FROM fee_produk WHERE nama_petugas = '$analis' AND kode_produk = '$kode'");
     $cek9 = mysqli_fetch_array($query9);
     $prosentase = $cek9['jumlah_prosentase'];
@@ -178,7 +179,7 @@ $subtotal = $harga * $jumlah - $potongan_jadi;
 
       $fee_nominal_produk = $nominal * $jumlah;
 
-      $query100 = $db->query("INSERT INTO tbs_fee_produk (nama_petugas, no_faktur, kode_produk, nama_produk, jumlah_fee, tanggal, jam,waktu,no_rm) VALUES ('$analis', '$no_faktur', '$kode', '$nama', '$fee_nominal_produk', '$tanggal_sekarang', '$jam_sekarang','$waktu','$no_rm')");
+      $query100 = "INSERT INTO tbs_fee_produk (nama_petugas, no_faktur, kode_produk, nama_produk, jumlah_fee, tanggal, jam,waktu,no_rm) VALUES ('$analis', '$no_faktur', '$kode', '$nama', '$fee_nominal_produk', '$tanggal_sekarang', '$jam_sekarang','$waktu','$no_rm')";
               if ($db->query($query100) === TRUE) 
                 {
                 
@@ -189,7 +190,49 @@ $subtotal = $harga * $jumlah - $potongan_jadi;
                 } 
 
     }// END PETUGAS ANALIS
-                         
+
+   
+   //FEE DOKTER
+    $query9 = $db->query("SELECT jumlah_prosentase,jumlah_uang FROM fee_produk WHERE nama_petugas = '$dokter' AND kode_produk = '$kode'");
+    $cek9 = mysqli_fetch_array($query9);
+    $prosentase = $cek9['jumlah_prosentase'];
+    $nominal = $cek9['jumlah_uang'];
+
+
+    if ($prosentase != 0){
+   
+          $subtotal_prosentase = $harga * $jumlah;
+          
+          $fee_prosentase_produk = $prosentase * $subtotal_prosentase / 100;
+
+          $query10 = "INSERT INTO tbs_fee_produk (nama_petugas, no_faktur, kode_produk, nama_produk, jumlah_fee, tanggal, jam,waktu,no_rm) VALUES ('$dokter', '$no_faktur', '$kode','$nama', '$fee_prosentase_produk', '$tanggal_sekarang', '$jam_sekarang','$waktu','$no_rm')";
+
+            if ($db->query($query10) === TRUE) 
+                {
+                
+              } 
+            else 
+                {
+                echo "Error: " . $query10 . "<br>" . $db->error;
+                } 
+
+    }
+
+    elseif ($nominal != 0) {
+
+      $fee_nominal_produk = $nominal * $jumlah;
+
+      $query100 = "INSERT INTO tbs_fee_produk (nama_petugas, no_faktur, kode_produk, nama_produk, jumlah_fee, tanggal, jam,waktu,no_rm) VALUES ('$dokter', '$no_faktur', '$kode', '$nama', '$fee_nominal_produk', '$tanggal_sekarang', '$jam_sekarang','$waktu','$no_rm')";
+              if ($db->query($query100) === TRUE) 
+                {
+                
+              } 
+            else 
+                {
+                echo "Error: " . $query100. "<br>" . $db->error;
+                } 
+
+    }// END DOKTER                      
 
 //FEE PETUGAS KASIR
     $query9 = $db->query("SELECT * FROM fee_produk WHERE nama_petugas = '$petugas' AND kode_produk = '$kode'");
