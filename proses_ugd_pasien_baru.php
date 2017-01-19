@@ -39,6 +39,10 @@ $status_kawin = stringdoang($_POST['status_kawin']);
 $pendidikan_terakhir = stringdoang($_POST['pendidikan_terakhir']);
 $agama = stringdoang($_POST['agama']);
 $penjamin = stringdoang($_POST['penjamin']);
+if ($penjamin == '')
+{
+  $penjamin = 'PERSONAL';
+}
 $gol_darah = stringdoang($_POST['gol_darah']);
 $dokter_jaga = stringdoang($_POST['dokter_jaga']);
 $kondisi = stringdoang($_POST['kondisi']);

@@ -607,8 +607,8 @@ else
     $update_registrasi = $db->query("UPDATE registrasi SET status = 'Sudah Pulang' WHERE no_reg ='$no_reg'");
 
 
-    $query3 = $db->query("DELETE  FROM tbs_penjualan WHERE session_id = '$session_id' AND no_reg = '$no_reg' ");
-    $query30 = $db->query("DELETE  FROM tbs_fee_produk WHERE session_id = '$session_id' AND no_reg = '$no_reg' ");
+    $query3 = $db->query("DELETE  FROM tbs_penjualan WHERE  no_reg = '$no_reg' ");
+    $query30 = $db->query("DELETE  FROM tbs_fee_produk WHERE  no_reg = '$no_reg' ");
 
 }//braket cek subtotal (di proses)
 

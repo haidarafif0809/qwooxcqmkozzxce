@@ -17,12 +17,12 @@ $jam = $my2['jam'];
 $tanggal = $my2['tanggal'];
 $waktu = $tanggal." ".$jam;
 
-$query65 = $db->query("SELECT HOUR(TIMEDIFF('$waktu_sekerang' , '$waktu')) AS waktu_selisih ");
+$query65 = $db->query("SELECT MINUTE(TIMEDIFF('$waktu_sekerang' , '$waktu')) AS waktu_selisih ");
 $my22 = mysqli_fetch_array($query65);
 $waktu_selisih = $my22['waktu_selisih'];
 
 
-if ($waktu_selisih < 1 AND $my > 0)
+if ($waktu_selisih < 30 AND $my > 0)
 {
 	echo "1";
 }

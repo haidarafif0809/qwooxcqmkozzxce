@@ -2448,7 +2448,7 @@ if ($asa == 0)
       <td>". $data['kode_barang']."</td>
       <td>". $data['nama_barang']."</td>
       <td>". $data['jumlah_barang']."</td>
-      <td><button class='btn btn-danger btn-sm batal' data-id='".$data['id']."' data-reg='". $data['no_reg']."'>
+      <td><button class='btn btn-danger btn-sm batal' data-id='".$data['id']."' data-reg='". $data['no_reg']."' data-kode-barang='". $data['kode_barang']."'>
       <i class='fa fa-remove'></i> Batal </button></td>
       </tr>";
        
@@ -2479,14 +2479,3 @@ tr:nth-child(even){background-color: #f2f2f2}
 
 </style>
 
-<script type="text/javascript">
-$(".batal").click(function() {
-    var id = $(this).attr("data-id");
-
-    $(".tr-id-"+id+"").remove();
-    $.post("batal_obat_rekam_medik.php",{id:id},function(data){
-      
-    });
-
-  });
-</script>

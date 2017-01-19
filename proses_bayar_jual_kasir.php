@@ -259,76 +259,16 @@ $no_jurnal = no_jurnal();
 
      // petugas analis
               
-    $fee_produk_ksir = $db->query("SELECT * FROM tbs_fee_produk WHERE nama_petugas = '$analis' AND no_reg = '$no_reg'");
+    $fee_produk_ksir = $db->query("SELECT * FROM tbs_fee_produk WHERE no_reg = '$no_reg'");
    while  ($data_fee_produk = mysqli_fetch_array($fee_produk_ksir)){
 
 
-
           $query10 = $db->query("INSERT INTO laporan_fee_produk (nama_petugas, no_faktur, kode_produk, nama_produk, jumlah_fee, tanggal, jam, no_rm, no_reg) VALUES ('$data_fee_produk[nama_petugas]', '$no_faktur', '$data_fee_produk[kode_produk]', '$data_fee_produk[nama_produk]', '$data_fee_produk[jumlah_fee]', '$tanggal_sekarang', '$jam_sekarang', '$no_rm', '$no_reg')");
 
 
     }
 
-         // petugas kasir
-              
-    $fee_produk_ksir = $db->query("SELECT * FROM tbs_fee_produk WHERE nama_petugas = '$id_user' AND no_reg = '$no_reg'");
-   while  ($data_fee_produk = mysqli_fetch_array($fee_produk_ksir)){
 
-
-
-          $query10 = $db->query("INSERT INTO laporan_fee_produk (nama_petugas, no_faktur, kode_produk, nama_produk, jumlah_fee, tanggal, jam, no_rm, no_reg) VALUES ('$data_fee_produk[nama_petugas]', '$no_faktur', '$data_fee_produk[kode_produk]', '$data_fee_produk[nama_produk]', '$data_fee_produk[jumlah_fee]', '$tanggal_sekarang', '$jam_sekarang', '$no_rm', '$no_reg')");
-
-
-    }
-    
-
-// petugas paramedik
-       
-    $fee_produk_paramedik = $db->query("SELECT * FROM tbs_fee_produk WHERE nama_petugas = '$petugas_paramedik' AND no_reg = '$no_reg'");
-   while  ($data_fee_produk = mysqli_fetch_array($fee_produk_paramedik)){
-
-
-
-          $query10 = $db->query("INSERT INTO laporan_fee_produk (nama_petugas, no_faktur, kode_produk, nama_produk, jumlah_fee, tanggal, jam, no_rm, no_reg) VALUES ('$data_fee_produk[nama_petugas]', '$no_faktur', '$data_fee_produk[kode_produk]', '$data_fee_produk[nama_produk]', '$data_fee_produk[jumlah_fee]', '$tanggal_sekarang', '$jam_sekarang', '$no_rm', '$no_reg')");
-
-
-    }
-
-// petugas farmasi
-       
-    $fee_produk_farmasi = $db->query("SELECT * FROM tbs_fee_produk WHERE nama_petugas = '$petugas_farmasi' AND no_reg = '$no_reg'");
-   while  ($data_fee_produk = mysqli_fetch_array($fee_produk_farmasi)){
-
-
-
-          $query10 = $db->query("INSERT INTO laporan_fee_produk (nama_petugas, no_faktur, kode_produk, nama_produk, jumlah_fee, tanggal, jam, no_rm, no_reg) VALUES ('$data_fee_produk[nama_petugas]', '$no_faktur', '$data_fee_produk[kode_produk]', '$data_fee_produk[nama_produk]', '$data_fee_produk[jumlah_fee]', '$tanggal_sekarang', '$jam_sekarang', '$no_rm', '$no_reg')");
-
-
-    }
-
-// petugas lain
-       
-    $fee_produk_lain = $db->query("SELECT * FROM tbs_fee_produk WHERE nama_petugas = '$petugas_lain' AND no_reg = '$no_reg'");
-   while  ($data_fee_produk = mysqli_fetch_array($fee_produk_lain)){
-
-
-
-          $query10 = $db->query("INSERT INTO laporan_fee_produk (nama_petugas, no_faktur, kode_produk, nama_produk, jumlah_fee, tanggal, jam, no_rm, no_reg) VALUES ('$data_fee_produk[nama_petugas]', '$no_faktur', '$data_fee_produk[kode_produk]', '$data_fee_produk[nama_produk]', '$data_fee_produk[jumlah_fee]', '$tanggal_sekarang', '$jam_sekarang', '$no_rm', '$no_reg')");
-
-
-    }
-
-//dokter 
-       
-    $fee_produk_dokter = $db->query("SELECT * FROM tbs_fee_produk WHERE nama_petugas = '$dokter' AND no_reg = '$no_reg'");
-   while  ($data_fee_produk = mysqli_fetch_array($fee_produk_dokter)){
-
-
-
-          $query10 = $db->query("INSERT INTO laporan_fee_produk (nama_petugas, no_faktur, kode_produk, nama_produk, jumlah_fee, tanggal, jam, no_rm, no_reg) VALUES ('$data_fee_produk[nama_petugas]', '$no_faktur', '$data_fee_produk[kode_produk]', '$data_fee_produk[nama_produk]', '$data_fee_produk[jumlah_fee]', '$tanggal_sekarang', '$jam_sekarang', '$no_rm', '$no_reg')");
-
-
-    }
 
 
 
@@ -670,8 +610,8 @@ else
     $update_registrasi = $db->query("UPDATE registrasi SET status = 'Sudah Pulang' WHERE no_reg ='$no_reg'");
 
 
-    $query3 = $db->query("DELETE  FROM tbs_penjualan WHERE session_id = '$session_id' AND no_reg = '$no_reg' ");
-    $query30 = $db->query("DELETE  FROM tbs_fee_produk WHERE session_id = '$session_id' AND no_reg = '$no_reg' ");
+    $query3 = $db->query("DELETE  FROM tbs_penjualan WHERE  no_reg = '$no_reg' ");
+    $query30 = $db->query("DELETE  FROM tbs_fee_produk WHERE  no_reg = '$no_reg' ");
 
 
 }// braket if cek subtotal penjualan

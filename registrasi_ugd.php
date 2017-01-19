@@ -607,6 +607,10 @@ tr:nth-child(even){background-color: #f2f2f2}
     var rujukan = $("#rujukan").val();
     var token = $("#token").val();
     var penjamin = $("#penjamin").val();
+    if (penjamin == '')
+    {
+      penjamin = 'PERSONAL';
+    }
     var nama_pasien = $("#nama_pasien").val();
     var jenis_kelamin = $("#jenis_kelamin").val();
     var tanggal_lahir = $("#tanggal_lahir").val();

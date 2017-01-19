@@ -277,9 +277,8 @@ $no_jurnal = no_jurnal();
   
     }
 
-    // petugas analis
-              
-    $fee_produk_ksir = $db->query("SELECT * FROM tbs_fee_produk WHERE nama_petugas = '$analis'  AND no_reg = '$no_reg' ");
+// proses masukan fee dari tbs              
+    $fee_produk_ksir = $db->query("SELECT * FROM tbs_fee_produk WHERE no_reg = '$no_reg' ");
    while  ($data_fee_produk = mysqli_fetch_array($fee_produk_ksir)){
 
 
@@ -289,66 +288,6 @@ $no_jurnal = no_jurnal();
 
     }
 
-
-    // petugas kasir
-    $fee_produk_ksir = $db->query("SELECT * FROM tbs_fee_produk WHERE nama_petugas = '$petugas_kasir'  AND no_reg = '$no_reg'");
-   while  ($data_fee_produk = mysqli_fetch_array($fee_produk_ksir)){
-
-
-
-          $query10 = $db->query("INSERT INTO laporan_fee_produk (nama_petugas, no_faktur, kode_produk, nama_produk, jumlah_fee, tanggal, jam,no_reg,no_rm) VALUES ('$data_fee_produk[nama_petugas]', '$no_faktur', '$data_fee_produk[kode_produk]', '$data_fee_produk[nama_produk]', '$data_fee_produk[jumlah_fee]', '$tanggal_sekarang', '$jam_sekarang','$no_reg','$no_rm')");
-
-
-    }
-    
-
-// petugas paramedik
-       
-    $fee_produk_paramedik = $db->query("SELECT * FROM tbs_fee_produk WHERE nama_petugas = '$petugas_paramedik'  AND no_reg = '$no_reg'");
-   while  ($data_fee_produk = mysqli_fetch_array($fee_produk_paramedik)){
-
-
-
-          $query10 = $db->query("INSERT INTO laporan_fee_produk (nama_petugas, no_faktur, kode_produk, nama_produk, jumlah_fee, tanggal, jam,no_reg,no_rm) VALUES ('$data_fee_produk[nama_petugas]', '$no_faktur', '$data_fee_produk[kode_produk]', '$data_fee_produk[nama_produk]', '$data_fee_produk[jumlah_fee]', '$tanggal_sekarang', '$jam_sekarang','$no_reg','$no_rm')");
-
-
-    }
-
-// petugas farmasi
-       
-    $fee_produk_farmasi = $db->query("SELECT * FROM tbs_fee_produk WHERE nama_petugas = '$petugas_farmasi'  AND no_reg = '$no_reg'");
-   while  ($data_fee_produk = mysqli_fetch_array($fee_produk_farmasi)){
-
-
-
-          $query10 = $db->query("INSERT INTO laporan_fee_produk (nama_petugas, no_faktur, kode_produk, nama_produk, jumlah_fee, tanggal, jam,no_reg,no_rm) VALUES ('$data_fee_produk[nama_petugas]', '$no_faktur', '$data_fee_produk[kode_produk]', '$data_fee_produk[nama_produk]', '$data_fee_produk[jumlah_fee]', '$tanggal_sekarang', '$jam_sekarang','$no_reg','$no_rm')");
-
-
-    }
-
-// petugas lain
-       
-    $fee_produk_lain = $db->query("SELECT * FROM tbs_fee_produk WHERE nama_petugas = '$petugas_lain'  AND no_reg = '$no_reg'");
-   while  ($data_fee_produk = mysqli_fetch_array($fee_produk_lain)){
-
-
-
-          $query10 = $db->query("INSERT INTO laporan_fee_produk (nama_petugas, no_faktur, kode_produk, nama_produk, jumlah_fee, tanggal, jam,no_reg,no_rm) VALUES ('$data_fee_produk[nama_petugas]', '$no_faktur', '$data_fee_produk[kode_produk]', '$data_fee_produk[nama_produk]', '$data_fee_produk[jumlah_fee]', '$tanggal_sekarang', '$jam_sekarang','$no_reg','$no_rm')");
-
-
-    }
-
-//dokter 
-       
-    $fee_produk_dokter = $db->query("SELECT * FROM tbs_fee_produk WHERE nama_petugas = '$dokter'  AND no_reg = '$no_reg'");
-   while  ($data_fee_produk = mysqli_fetch_array($fee_produk_dokter)){
-
-
-
-          $query10 = $db->query("INSERT INTO laporan_fee_produk (nama_petugas, no_faktur, kode_produk, nama_produk, jumlah_fee, tanggal, jam,no_reg,no_rm) VALUES ('$data_fee_produk[nama_petugas]', '$no_faktur', '$data_fee_produk[kode_produk]', '$data_fee_produk[nama_produk]', '$data_fee_produk[jumlah_fee]', '$tanggal_sekarang', '$jam_sekarang','$no_reg','$no_rm')");
-
-
-    }
 
 
 

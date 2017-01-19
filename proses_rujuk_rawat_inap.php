@@ -22,6 +22,10 @@ $umur = stringdoang($_POST['umur']);
 $hp_pasien = stringdoang($_POST['hp_pasien']);
 $kondisi = stringdoang($_POST['kondisi']);
 $penjamin = stringdoang($_POST['penjamin']);
+if ($penjamin == '')
+{
+  $penjamin = 'PERSONAL';
+}
 $surat_jaminan = stringdoang($_POST['surat_jaminan']);
 $perkiraan_menginap = stringdoang($_POST['perkiraan_menginap']);
 $penanggung_jawab = stringdoang($_POST['penanggung_jawab']);

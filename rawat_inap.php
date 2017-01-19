@@ -875,6 +875,10 @@ else
     var hp_pasien = $("#hp_pasien").val();
     var kondisi = $("#kondisi").val();
     var penjamin = $("#penjamin").val();
+    if (penjamin == '')
+    {
+      penjamin = 'PERSONAL';
+    }
     var surat_jaminan = $("#surat_jaminan").val();
     var perkiraan_menginap = $("#perkiraan_menginap").val();
     var penanggung_jawab = $("#penanggung_jawab").val();

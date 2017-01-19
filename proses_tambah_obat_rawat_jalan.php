@@ -2482,24 +2482,12 @@ $data01 = mysqli_fetch_array($query5);
       <td>". $data01['nama_barang']."</td>
       <td>". $data01['dosis']."</td>
       <td>". $data01['jumlah_barang']."</td>
-      <td><button class='btn btn-danger btn-sm batal' data-id='".$data01['id']."' data-reg='". $data01['no_reg']."'><i class='fa fa-remove'></i> Batal </button></td>
+      <td><button class='btn btn-danger btn-sm batal' data-id='".$data01['id']."' data-reg='". $data01['no_reg']."' data-kode-barang='". $data01['kode_barang']."'><i class='fa fa-remove'></i> Batal </button></td>
 
 
       </tr>";
 }
     ?>
-
-<script type="text/javascript">
-$(".batal").click(function() {
-    var id = $(this).attr("data-id");
-
-    $(".tr-id-"+id+"").remove();
-    $.post("batal_obat_rekam_medik.php",{id:id},function(data){
-      
-    });
-
-  });
-</script>
 
 
 <style>

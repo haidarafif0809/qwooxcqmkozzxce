@@ -21,8 +21,14 @@ $keluar2 = mysqli_fetch_array($query98);
 $penjamin = $keluar2['penjamin'];
 
 
-$qertu= $db->query("SELECT nama_dokter,nama_paramedik,nama_farmasi FROM penetapan_petugas ");
-$ss = mysqli_fetch_array($qertu);
+
+$qertu = $db->query("SELECT pp.nama_paramedik,u.id FROM penetapan_petugas pp LEFT JOIN user u ON pp.nama_paramedik = u.nama ");
+$ss_paramedik = mysqli_fetch_array($qertu);
+
+$qertu2 = $db->query("SELECT pp.nama_farmasi,u.id FROM penetapan_petugas pp LEFT JOIN user u ON pp.nama_farmasi = u.nama ");
+$ss_farmasi = mysqli_fetch_array($qertu2);
+
+
  ?>
 
        <!-- js untuk tombol shortcut -->
@@ -157,19 +163,26 @@ $select_to = $db->query("SELECT no_reg,status,perawat,apoteker FROM penjualan WH
 $out_of = mysqli_fetch_array($select_to);
 $status_bayar = $out_of['status'];
 
+$select_perawat = $db->query("SELECT p.perawat,u.nama FROM penjualan p LEFT JOIN user u ON p.perawat = u.id WHERE p.no_reg = '$no_reg' "); 
+$out_perawat = mysqli_fetch_array($select_perawat);
+
+
+$select_apoteker = $db->query("SELECT p.apoteker,u.nama FROM penjualan p LEFT JOIN user u ON p.apoteker = u.id WHERE p.no_reg = '$no_reg' "); 
+$out_apoteker = mysqli_fetch_array($select_apoteker);
+
 if ($status_bayar == 'Lunas' OR $status_bayar == 'Piutang'):?> 
 
 <div class="col-sm-2">
 <div class="form-group">
      <label for="Petugas Paramedik">Petugas Paramedik:</label><br>
-     <input style="height: 15px;" type="text" class="form-control" id="perawat2" name="perawat2" value="<?php echo $out_of['perawat']; ?>" readonly="" >
+     <input style="height: 15px;" type="text" class="form-control" id="perawat2" name="perawat2" value="<?php echo $out_perawat['nama']; ?>" readonly="" >
 </div>
 </div>
 
 <div class="col-sm-2">
 <div class="form-group">
      <label for="">Petugas Farmasi:</label><br>
-     <input style="height: 15px;" type="text" class="form-control" id="apoteker2" name="apoteker2" value="<?php echo $out_of['apoteker']; ?>" readonly="" >
+     <input style="height: 15px;" type="text" class="form-control" id="apoteker2" name="apoteker2" value="<?php echo $out_apoteker['nama']; ?>" readonly="" >
 </div>
 </div>
 
@@ -183,11 +196,11 @@ if ($status_bayar == 'Lunas' OR $status_bayar == 'Piutang'):?>
 <div class="form-group">
      <label for="penjamin">Petugas Paramedik:</label><br>
      <select type="text" class="form-control" id="perawat" placeholder="Isi Perawat" autocomplete="off">
-<option value="<?php echo $ss['nama_paramedik'];?>"><?php echo $ss['nama_paramedik'];?></option>
+<option value="<?php echo $ss_paramedik['id'];?>"><?php echo $ss_paramedik['nama_paramedik'];?></option>
     <?php 
-    $query99 = $db->query("SELECT * FROM user WHERE otoritas = 'Petugas Paramedik' ");
+    $query99 = $db->query("SELECT id,nama FROM user WHERE otoritas = 'Petugas Paramedik' ");
     while ( $data99 = mysqli_fetch_array($query99)) {
-    echo "<option value='".$data99['nama']."'>".$data99['nama']."</option>";
+    echo "<option value='".$data99['id']."'>".$data99['nama']."</option>";
     }
     ?>
 
@@ -199,11 +212,11 @@ if ($status_bayar == 'Lunas' OR $status_bayar == 'Piutang'):?>
 <div class="form-group">
      <label for="penjamin">Petugas Farmasi:</label><br>
      <select type="text" class="form-control" id="apoteker" placeholder="Isi Apoteker" autocomplete="off">
-<option value="<?php echo $ss['nama_farmasi'];?>"><?php echo $ss['nama_farmasi'];?></option>
+<option value="<?php echo $ss_farmasi['id'];?>"><?php echo $ss_farmasi['nama_farmasi'];?></option>
      <?php 
-     $query09 = $db->query("SELECT * FROM user WHERE otoritas = 'Petugas Farmasi' ");
+     $query09 = $db->query("SELECT id,nama FROM user WHERE otoritas = 'Petugas Farmasi' ");
      while ( $data09 = mysqli_fetch_array($query09)) {
-     echo "<option value='".$data09['nama']."'>".$data09['nama']."</option>";
+     echo "<option value='".$data09['id']."'>".$data09['nama']."</option>";
      }
      ?>
 
@@ -342,7 +355,7 @@ if ($asa == 0)
       <td>". $data['kode_barang']."</td>
       <td>". $data['nama_barang']."</td>
       <td>". $data['jumlah_barang']."</td>
-      <td><button class='btn btn-danger batal' data-id='".$data['id']."' data-reg='". $data['no_reg']."'>
+      <td><button class='btn btn-danger batal' data-id='".$data['id']."' data-reg='". $data['no_reg']."' data-kode-barang='". $data['kode_barang']."'>
       <i class='fa fa-remove'></i> Batal </button></td>
       </tr>";
        }
@@ -376,11 +389,13 @@ else
 </div>
 
 <script type="text/javascript">
-$(".batal").click(function() {
+    $(document).on('click', '.batal', function (e) {
     var id = $(this).attr("data-id");
+    var no_reg = $(this).attr("data-reg");
+    var kode_barang = $(this).attr("data-kode-barang");
 
     $(".tr-id-"+id+"").remove();
-    $.post("batal_obat_rekam_medik.php",{id:id},function(data){
+    $.post("batal_obat_rekam_medik.php",{id:id,no_reg:no_reg,kode_barang:kode_barang},function(data){
       
     });
 

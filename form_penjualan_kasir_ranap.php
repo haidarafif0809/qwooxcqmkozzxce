@@ -219,7 +219,7 @@ padding-right: 5%;
      <?php 
     
     //untuk menampilkan semua data pada tabel pelanggan dalam DB
-    $queri_para = $db->query("SELECT nama,id FROM user WHERE tipe_user = '2'");
+    $queri_para = $db->query("SELECT nama,id FROM user WHERE tipe = '2'");
 
     //untuk menyimpan data sementara yang ada pada $query
     while($data_paramedik = mysqli_fetch_array($queri_para))
@@ -358,7 +358,7 @@ Level 7
   <?php 
     
     //untuk menampilkan semua data pada tabel pelanggan dalam DB
-    $query01 = $db->query("SELECT nama,id FROM user WHERE tipe_user = '3'");
+    $query01 = $db->query("SELECT nama,id FROM user WHERE tipe = '3'");
 
     //untuk menyimpan data sementara yang ada pada $query
     while($data01 = mysqli_fetch_array($query01))

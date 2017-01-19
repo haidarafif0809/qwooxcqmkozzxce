@@ -681,6 +681,10 @@ else
     var hp = $("#hp").val();
     var kondisi = $("#kondisi").val();
     var penjamin = $("#penjamin").val();
+    if (penjamin == '')
+    {
+      penjamin = 'PERSONAL';
+    }
     var petugas_dokter = $("#petugas_dokter").val();
     var rujukan = $("#rujukan").val();
     var poli = $("#poli").val();
