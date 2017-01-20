@@ -53,6 +53,7 @@ $session_id = session_id();
       <div class="modal-body"> <!--membuat kerangka untuk tempat tabel -->
 
    <div class="table-responsive">                              
+       <center>
        <table id="table_item_keluar" class="table table-bordered table-sm">
           <thead> <!-- untuk memberikan nama pada kolom tabel -->
                           <th> Kode Barang </th>
@@ -64,6 +65,7 @@ $session_id = session_id();
                           <th> Harga Beli</th>
               </thead> <!-- tag penutup tabel -->
             </table>
+    </center>
       </div> 
           
       </div> <!-- tag penutup modal body -->

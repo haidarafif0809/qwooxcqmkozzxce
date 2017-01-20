@@ -46,6 +46,7 @@ $perintah = $db->query("SELECT * FROM item_masuk");
                               <div class="modal-body"> <!--membuat kerangka untuk tempat tabel -->
                               
                               <div class="table-responsive">                              
+                             <center>
                               <table id="table_item_masuk" class="table table-bordered table-sm">
                             <thead> <!-- untuk memberikan nama pada kolom tabel -->
         
@@ -60,6 +61,7 @@ $perintah = $db->query("SELECT * FROM item_masuk");
         
                           </thead> <!-- tag penutup tabel -->
                               </table>
+                              </center>
                               </div> 
                               
                               </div><!-- tag penutup modal body -->
