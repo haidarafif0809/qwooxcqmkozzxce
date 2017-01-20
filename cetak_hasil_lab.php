@@ -14,6 +14,11 @@ $data1 = mysqli_fetch_array($query1);
 
 $tanggal = date('Y-m-d');
 
+$select_bio = $db->query("SELECT umur_pasien,alamat_pasien FROM registrasi WHERE no_rm = '$out[no_rm]'");
+$show_bio = mysqli_fetch_array($select_bio);
+$umur = $show_bio['umur_pasien'];
+$alamat = $show_bio['alamat_pasien'];
+
 $p_analis = $db->query("SELECT id,nama FROM user WHERE id = '$out[petugas_analis]'");
 $out_analis = mysqli_fetch_array($p_analis);
 $analis = $out_analis['nama'];
@@ -28,8 +33,8 @@ $dokter = $out_dokter['nama'];
     
     <div class="row"><!--row1-->
     <h3> <center><b> HASIL LABORATORIUM </b></center></h3><hr>
-        <div class="col-sm-2">
-                <img src='save_picture/<?php echo $data1['foto']; ?>' class='img-rounded' alt='Cinque Terre' width='160' height='140`'> 
+        <div class="col-sm-1">
+                <img src='save_picture/<?php echo $data1['foto']; ?>' class='img-rounded' alt='Cinque Terre' width='90' height='80`'> 
         </div><!--penutup colsm2-->
 
         <div class="col-sm-4">
@@ -40,7 +45,7 @@ $dokter = $out_dokter['nama'];
                  
         </div><!--penutup colsm4-->
 
-        <div class="col-sm-4">
+        <div class="col-sm-3">
                          
 
    <table>
@@ -49,22 +54,24 @@ $dokter = $out_dokter['nama'];
       <tr><td width="50%">No RM</td> <td> :&nbsp;</td> <td> <?php echo $out['no_rm']; ?> </td></tr>
       <tr><td  width="50%">No REG</td> <td> :&nbsp;</td> <td> <?php echo $out['no_reg'];?> </td></tr>  
       <tr><td  width="50%">Nama Pasien</td> <td> :&nbsp;</td> <td> <?php echo $out['nama_pasien'];?> </td></tr>
-      <tr><td  width="50%">Tanggal</td> <td> :&nbsp;</td> <td> <?php echo $tanggal; ?> </td></tr>
-            
-      <tr><td width="50%">Dokter</td> <td> :&nbsp;</td> <td> <?php echo $dokter; ?> </td></tr>
-      <tr><td  width="50%">Analis</td> <td> :&nbsp;</td> <td> <?php echo $analis; ?> </td></tr>  
+      <tr><td  width="50%">Umur Pasien</td> <td> :&nbsp;</td> <td> <?php echo $umur;?> </td></tr>
+      <tr><td  width="50%">Alamat Pasien</td> <td> :&nbsp;</td> <td> <?php echo $alamat;?> </td></tr>  
+ 
   </tbody>
   </table>
                  
         </div><!--penutup colsm4-->
 
-        <div class="col-sm-2">
+        <div class="col-sm-4">
         
    <table>
   <tbody>
 
+      <tr><td  width="50%">Tanggal</td> <td> :&nbsp;</td> <td> <?php echo $tanggal; ?> </td></tr>
       <tr><td  width="50%">Petugas</td> <td> :&nbsp;</td> <td> <?php echo $_SESSION['nama']; ?> </td></tr>
-            
+      <tr><td width="50%">Dokter</td> <td> :&nbsp;</td> <td> <?php echo $dokter; ?> </td></tr>
+      <tr><td  width="50%">Analis</td> <td> :&nbsp;</td> <td> <?php echo $analis; ?> </td></tr>   
+ 
   </tbody>
   </table>       
 
@@ -86,7 +93,7 @@ $dokter = $out_dokter['nama'];
            <th> Hasil Pemeriksaan </th>
            <th> Nilai Normal Pria </th>
            <th> Nilai Normal Wanita </th>
-           <th> Normal / Tidak Normal </th>
+           <!--<th> Normal / Tidak Normal </th>-->
            <th> Status Rawat </th>
            
             
@@ -147,8 +154,8 @@ switch ($model_hitung) {
 
 
 
-               echo " <td>". $take['status_abnormal'] ."</td>
-                <td>". $take['status_pasien'] ."</td>
+               //<td>". $take['status_abnormal'] ."</td>//
+                echo " <td>". $take['status_pasien'] ."</td>
             <tr>";
 
             }
@@ -169,7 +176,7 @@ mysqli_close($db);
      
 <div class="col-sm-1">
      </div>
-     <div class="col-sm-3"><b>&nbsp;&nbsp;&nbsp;&nbsp;Penerima<br><br><br><br>( ................... )</b></div>
+     <div class="col-sm-3"><b>&nbsp;&nbsp;&nbsp;&nbsp;<br><br><br><br></b></div>
      <div class="col-sm-2">
      </div>
      <div class="col-sm-3">

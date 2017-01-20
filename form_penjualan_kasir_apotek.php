@@ -236,8 +236,8 @@ $user = $_SESSION['nama'];
       </div>
       <div class="modal-body">
 
-<span class="modal_baru">
 <div class="table-resposive">
+<span class="modal_baru">
   <table id="tabel_cari" class="table table-bordered table-sm">
         <thead> <!-- untuk memberikan nama pada kolom tabel -->
         
@@ -257,8 +257,8 @@ $user = $_SESSION['nama'];
         
         </thead> <!-- tag penutup tabel -->
   </table>
-  </div>
 </span>
+  </div>
 </div> <!-- tag penutup modal-body-->
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -544,7 +544,7 @@ $user = $_SESSION['nama'];
         <div class="col-xs-6">
           
            <label style="font-size:15px"> <b> Subtotal </b></label><br>
-      <input style="height:25px;font-size:15px" type="text" name="total" id="total2" class="form-control" placeholder="Total" readonly="" onkeydown="return numbersonly(this, event);" onkeyup="javascript:tandaPemisahTitik(this);">
+      <input style="height:25px;font-size:15px" type="text" name="total" id="total2" class="form-control" placeholder="Total" readonly="">
 
         </div>
 
@@ -878,12 +878,13 @@ $(document).ready(function(){
   var satuan_konversi = $("#satuan_konversi").val();
   var jumlah_barang = $("#jumlah_barang").val();
   var id_produk = $("#id_produk").val();
-
+$('#kolom_cek_harga').val('0');
 $.post("cek_level_harga_barang.php", {level_harga:level_harga, kode_barang:kode_barang,jumlah_barang:jumlah_barang,id_produk:id_produk,satuan_konversi:satuan_konversi},function(data){
 
           $("#harga_produk").val(data);
           $("#harga_baru").val(data);
           $("#harga_penjamin").val(data);
+          $('#kolom_cek_harga').val('1');
         });
     });
 });

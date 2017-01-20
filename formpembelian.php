@@ -489,17 +489,19 @@ $no_faktur = $nomor."/JL/".$data_bulan_terakhir."/".$tahun_terakhir;
               <b><option value=""> Silahkan Pilih </option></b>
               <?php 
               $sett_akun = $db->query("SELECT sa.kas, da.nama_daftar_akun FROM setting_akun sa INNER JOIN daftar_akun da ON sa.kas = da.kode_daftar_akun");
-                         $data_sett = mysqli_fetch_array($sett_akun);
-                         
-                         
-                         
-                         echo "<option selected value='".$data_sett['kas']."'>".$data_sett['nama_daftar_akun'] ."</option>";
-              
+              $data_sett = mysqli_fetch_array($sett_akun);
+
               $query = $db->query("SELECT nama_daftar_akun, kode_daftar_akun FROM daftar_akun WHERE tipe_akun = 'Kas & Bank' ");
               while($data = mysqli_fetch_array($query))
               {
+              if ($data_sett['kas'] == $data['kode_daftar_akun']) {
+               echo "<option selected value='".$data['kode_daftar_akun']."'>".$data_sett['nama_daftar_akun'] ."</option>";
+
+              }
+              else{
+                echo "<option value='".$data['kode_daftar_akun']."'>".$data['nama_daftar_akun'] ."</option>";
+              }
               
-              echo "<option value='".$data['kode_daftar_akun']."'>".$data['nama_daftar_akun'] ."</option>";
               }
 
               //Untuk Memutuskan Koneksi Ke Database

@@ -42,7 +42,7 @@ elseif ($level_harga == 'harga_7') {
 
 if ($data['konversi'] == '') {
 
-echo $harga * $jumlah_barang;
+echo $harga;
 
 }
 else{

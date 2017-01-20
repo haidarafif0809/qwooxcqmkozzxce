@@ -7,17 +7,17 @@ $requestData= $_REQUEST;
 
 $columns = array( 
 // datatable column index  => database column name
-	0 => 'input', 
-	1 => 'no_rm',
-	2 => 'no_reg',
-	3 => 'no_faktur',
-	4 => 'nama_pasien',
-	5 => 'nama_pemeriksaan',
-	6 => 'nilai_normal_lk',
-	7 => 'nilai_normal_pr',
-	8 => 'status_abnormal',
-	9 => 'status_rawat',
-	10 => 'tanggal',
+	0 => 'input',  
+	1 => 'cetak',
+	2 => 'no_rm',
+	3 => 'no_reg',
+	4 => 'no_faktur',
+	5 => 'nama_pasien',
+	6 => 'dokter',
+	7 => 'petugas_analis',
+	8 => 'status_rawat',
+	9 => 'tanggal',
+	10 => 'detail',
 	11 => 'id'
 
 
@@ -29,6 +29,7 @@ $columns = array(
 $sql = "SELECT us.nama AS dokter, se.nama AS analis,hl.nama_pasien,hl.no_rm,hl.no_faktur,hl.no_reg,hl.nama_pemeriksaan,
 		hl.status,hl.hasil_pemeriksaan,hl.nilai_normal_lk,hl.nilai_normal_pr,hl.model_hitung,hl.id,hl.satuan_nilai_normal,hl.status_abnormal,hl.status_pasien,hl.tanggal ";
 $sql.= "FROM hasil_lab hl LEFT JOIN user us ON us.id = hl.dokter LEFT JOIN user se ON se.id = hl.petugas_analis";
+$sql.=" GROUP BY hl.no_rm";
 
 $query=mysqli_query($conn, $sql) or die("1.php: get employees");
 $totalData = mysqli_num_rows($query);
@@ -38,6 +39,7 @@ $sql = "SELECT us.nama AS dokter, se.nama AS analis,hl.nama_pasien,hl.no_rm,hl.n
 		hl.status,hl.hasil_pemeriksaan,hl.nilai_normal_lk,hl.nilai_normal_pr,hl.model_hitung,hl.id,hl.satuan_nilai_normal,hl.status_abnormal,hl.status_pasien,hl.tanggal ";
 $sql.= "FROM hasil_lab hl LEFT JOIN user us ON us.id = hl.dokter LEFT JOIN user se ON se.id = hl.petugas_analis";
 $sql.=" WHERE 1=1";
+
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
 	$sql.=" AND ( hl.nama_pasien LIKE '".$requestData['search']['value']."%' ";    
 	$sql.=" OR hl.no_rm LIKE '".$requestData['search']['value']."%' ";     
@@ -53,10 +55,11 @@ if( !empty($requestData['search']['value']) ) {   // if there is a search parame
 	$sql.=" OR hl.nama_pemeriksaan LIKE '".$requestData['search']['value']."%' )";
 }
 
+$sql.=" GROUP BY hl.no_rm";
 
 $query=mysqli_query($conn, $sql) or die("2.php: get employees");
 $totalFiltered = mysqli_num_rows($query); // when there is a search parameter then we have to modify total number filtered rows as per search result. 
-$sql.=" ORDER BY hl.id ".$requestData['order'][0]['dir']." LIMIT ".$requestData['start']." ,".$requestData['length']."";
+/*$sql.=" GROUP BY hl.no_rm ".$requestData['order'][0]['dir']." LIMIT ".$requestData['start']." ,".$requestData['length']."";*/
 /* $requestData['order'][0]['column'] contains colmun index, $requestData['order'][0]['dir'] contains order such as asc/desc  */	
 $query=mysqli_query($conn, $sql) or die("3.php: get employees");
 
@@ -88,66 +91,30 @@ else
 	
 	$nestedData[] = $row["no_rm"];
 	$nestedData[] = $row["no_reg"];
-	if($row["no_faktur"] == '')
-	{
-		$nestedData[] = "<p style='color:red'> Belum Penjualan</p>";
-	}
-	else
-	{
-		$nestedData[] = $row["no_faktur"];	
-	}
+
+if($row["no_faktur"] == '')
+{
+	$nestedData[] = "<p style='color:red'> Belum Penjualan</p>";
+}
+else
+{
+	$nestedData[] = $row["no_faktur"];	
+}
 
 	$nestedData[] = $row["nama_pasien"];
 	$nestedData[] = $row["dokter"];
 	$nestedData[] = $row["analis"];
-	$nestedData[] = $row["nama_pemeriksaan"];
-	$nestedData[] = $row["hasil_pemeriksaan"];
+	$nestedData[] = $row["status_pasien"];
+	$nestedData[] = $row["tanggal"];
 
-	
-
-$model_hitung = $row['model_hitung'];
-if($model_hitung == '')
+if($row['no_faktur'] == '')
 {
-   $nestedData[] = "<td>&nbsp; ". '-' ." </td>";
-   $nestedData[] = "  <td>&nbsp; ". '-'." </td>";
+	$nestedData[] = "<p style='color:red'> Belum Penjualan</p>";
 }
 else
 {
-
-switch ($model_hitung) {
-    case "Lebih Kecil Dari":
-        $nestedData[] = "&lt;&nbsp; ". $row['nilai_normal_lk']."&nbsp;". $row['satuan_nilai_normal']."";
-        $nestedData[] = "&lt;&nbsp; ".$row['nilai_normal_pr']."&nbsp;". $row['satuan_nilai_normal']."";
-        
-        break;
-
-    case "Lebih Kecil Sama Dengan":
-        $nestedData[] = "&lt;=&nbsp; ". $row['nilai_normal_lk']."&nbsp;". $row['satuan_nilai_normal']."";  
-        $nestedData[] = " &lt;=&nbsp; ". $row['nilai_normal_pr']."&nbsp;". $row['satuan_nilai_normal']."";
-        break;
-
-    case "Lebih Besar Dari":
-        $nestedData[] = "&gt;&nbsp; ". $row['nilai_normal_lk']."&nbsp;". $row['satuan_nilai_normal']."";
-        $nestedData[] = "&gt;&nbsp; ". $row['nilai_normal_pr']."&nbsp;". $row['satuan_nilai_normal']."";
-        break;
-
-    case "Lebih Besar Sama Dengan":
-        $nestedData[] = "&gt;=&nbsp; ". $row['nilai_normal_lk']."&nbsp;". $row['satuan_nilai_normal']."";
-        $nestedData[] = "&gt;=&nbsp; ". $row['nilai_normal_pr']."&nbsp;". $row['satuan_nilai_normal']."";
-        break;
-    
-    case "Antara Sama Dengan":
-        $nestedData[] = "". $row['nilai_normal_lk']."&nbsp;-&nbsp; ". $row['nilai_normal_lk']."&nbsp;". $row['satuan_nilai_normal']."";
-        $nestedData[] = "". $row['nilai_normal_pr']."&nbsp;-&nbsp; ". $row['nilai_normal_pr']."&nbsp;". $row['satuan_nilai_normal']."";
-        break;
-	} 
+	$nestedData[] = "<td><button class='btn btn-floating  btn-info detail-lab' data-faktur='".$row['no_faktur']."'><i class='fa fa-list'></i></button></td>";
 }
-
-
-
-	$nestedData[] = $row["status_abnormal"];
-	$nestedData[] = $row["status_pasien"];
-	$nestedData[] = $row["tanggal"];
 	$nestedData[] = $row["id"];
 
 	$data[] = $nestedData;

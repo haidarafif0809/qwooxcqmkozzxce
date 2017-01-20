@@ -636,7 +636,7 @@ $data_rj_ri = mysqli_fetch_array($sum_rj_ri);
         <div class="col-xs-6">
           
            <label style="font-size:15px"> <b> Subtotal </b></label><br>
-      <input style="height:25px;font-size:15px" type="text" name="total" id="total2" class="form-control" placeholder="Total" readonly="" onkeydown="return numbersonly(this, event);" onkeyup="javascript:tandaPemisahTitik(this);">
+      <input style="height:25px;font-size:15px" type="text" name="total" id="total2" class="form-control" placeholder="Total" readonly="" >
 
         </div>
 
@@ -1363,6 +1363,7 @@ data = data.replace(/\s+/g, '');
           $("#harga_produk").val(data);
           $("#harga_baru").val(data);
           $("#harga_penjamin").val(data);
+          $('#kolom_cek_harga').val('1');
         });
     });
 });

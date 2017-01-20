@@ -12,7 +12,6 @@ $data = mysqli_fetch_array($ambil_data);
 
 <table id="tableuser" class="table table-bordered">
 		<thead>
-			<th style='background-color: #4CAF50; color: white'>Diskon Nominal</th>
 			<th style='background-color: #4CAF50; color: white'>Diskon Persen</th>
 			<!--
 			<th style='background-color: #4CAF50; color: white'>Pajak</th>
@@ -40,7 +39,6 @@ $diskon_tax = mysqli_num_rows($pilih_akses_diskon_tax);
 			{
 				//menampilkan data
 			echo "<tr>
-			<td>". rp($data1['diskon_nominal']) ."</td>
 			<td>". persen($data1['diskon_persen']) ."</td>";
 			/*
 			<td>". persen($data1['tax']) ."</td>

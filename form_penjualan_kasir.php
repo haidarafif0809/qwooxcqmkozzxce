@@ -516,7 +516,7 @@ Level 7
   </div>
 
 
-    <input style="height:15px;" type="hidden" class="form-control" name="kolom_cek_harga" autocomplete="off" id="kolom_cek_harga" placeholder="Jumlah" value="0" >
+    <input style="height:15px;" type="hidden" class="form-control" name="kolom_cek_harga" autocomplete="off" id="`" placeholder="Jumlah" value="0" >
 
   <div class="col-xs-2">
           
@@ -1159,6 +1159,8 @@ $(document).ready(function(){
 
   var id_produk = $("#id_produk").val();
 
+  $('#kolom_cek_harga').val('0');
+
   if (jumlah_barang == "") {
     alert ("Jumlah Barang Harus Diisi !");
     $("#level_harga").val(level_hidden);
@@ -1168,6 +1170,7 @@ $(document).ready(function(){
 
           $("#harga_produk").val(data);
           $("#harga_baru").val(data);
+          $('#kolom_cek_harga').val('1');
         });
   }
 

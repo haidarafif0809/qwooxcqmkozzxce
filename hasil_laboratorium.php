@@ -102,7 +102,7 @@ $jenis_penjualan = stringdoang($_GET['jenis_penjualan']);
           <th style='background-color: #4CAF50; color: white;' >Hasil Pemeriksaan</th>
           <th style='background-color: #4CAF50; color: white;' >Nilai Pria</th>
           <th style='background-color: #4CAF50; color: white;' >Nilai Wanita</th>
-          <th style='background-color: #4CAF50; color: white;' >Normal / Tidak Normal</th>
+          <!--<th style='background-color: #4CAF50; color: white;' >Normal / Tidak Normal</th>-->
 
     </tr>
     </thead>
@@ -158,7 +158,7 @@ switch ($model_hitung) {
         break;
 		} 
 }
-        echo "<td style='background-color: #33b5e5;' class='edit-status' data-id='".$data['id']."'><span id='text-status-".$data['id']."'>". $data['status_abnormal'] ."</span> <input type='hidden' id='input-status-".$data['id']."' value='".$data['status_abnormal']."' class='input_status' data-id='".$data['id']."' data-status='".$data['status_abnormal']."' autofocus=''> </td>";
+        /*echo "<td style='background-color: #33b5e5;' class='edit-status' data-id='".$data['id']."'><span id='text-status-".$data['id']."'>". $data['status_abnormal'] ."</span> <input type='hidden' id='input-status-".$data['id']."' value='".$data['status_abnormal']."' class='input_status' data-id='".$data['id']."' data-status='".$data['status_abnormal']."' autofocus=''> </td>";*/
 
 
    echo "</tr>";
@@ -239,7 +239,8 @@ $(document).ready(function(){
 </script>
 
 
-<script type="text/javascript">
+<!--<script type="text/javascript">
+
 // untuk update status abnormal
 $(document).on('dblclick','.edit-status',function(e){
   
@@ -277,11 +278,9 @@ $("#input-status-"+id+"").attr("data-status",input_nama);
 
 
 });
-// Finish Proses
         }
 });
-// ending untuk update status abnormal
-</script>
+</script>-->
 
       <script type="text/javascript">
       

@@ -205,13 +205,14 @@ if ($pembayaran_piutang['pembayaran_piutang_hapus'] > 0) {
 			
 //fungsi hapus data 
 		$(document).on('click','.btn-hapus',function(e){
-		var pelanggan = $(this).attr("data-suplier");
+    var pelanggan = $(this).attr("data-suplier");
+    var nama_pelanggan = $(this).attr("data-nama-pelanggan");
 		var id = $(this).attr("data-id");
 		var no_faktur_pembayaran = $(this).attr("data-no-faktur");
 
 
 		$("#no_faktur_hapus").val(no_faktur_pembayaran);
-		$("#pelanggan").val(pelanggan);
+		$("#pelanggan").val(nama_pelanggan);
 		$("#id_hapus").val(id);
 		$("#modal_hapus").modal('show');
 		$("#btn_jadi_hapus").attr("data-id", id);
@@ -220,7 +221,7 @@ if ($pembayaran_piutang['pembayaran_piutang_hapus'] > 0) {
 		});
 
 
-		$("#btn_jadi_hapus").click(function(){
+		$(document).on('click','#btn_jadi_hapus',function(e){
 		
 		var id = $(this).attr("data-id");
 		var no_faktur_pembayaran = $("#no_faktur_hapus").val();

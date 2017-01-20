@@ -771,12 +771,7 @@ else
     var umur = $("#umur").val();
     var tanggal_lahir = $("#tanggal_lahir").val();
 
-if (tanggal_lahir != '')
-{
-    
-}
-
-else if (umur != '')
+ if (umur != '')
 {
 
     var tahun = new Date();

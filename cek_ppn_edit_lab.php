@@ -3,9 +3,18 @@
 include 'sanitasi.php';
 include 'db.php';
 
-$no_reg = stringdoang($_GET['no_reg']);
+if (isset($_GET['no_reg']))
+{
+  $no_reg = stringdoang($_GET['no_reg']);
+  $no_faktur = stringdoang($_GET['no_faktur']);
+}
+else{  
+  $no_reg = "";
+  $no_faktur = stringdoang($_GET['no_faktur']);
+}
 
-$query = $db->query("SELECT * FROM tbs_penjualan WHERE no_reg = '$no_reg' AND tax != '0' LIMIT 1 ");
+
+$query = $db->query("SELECT * FROM tbs_penjualan WHERE no_reg = '$no_reg' AND no_faktur = '$no_faktur' AND tax != '0' AND lab = 'Laboratorium' LIMIT 1 ");
 $data = mysqli_num_rows($query);
 
 if ($data > 0) {
@@ -31,4 +40,3 @@ else
 mysqli_close($db);   
 
  ?>
-

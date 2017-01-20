@@ -302,7 +302,7 @@ $query0 = $db->query("SELECT * FROM tbs_penjualan WHERE kode_barang = '$kode' AN
 
 <?php
   //menampilkan semua data yang ada pada tabel tbs penjualan dalam DB
-                $perintah = $db->query("SELECT * FROM tbs_penjualan WHERE  session_id = '$session_id' AND no_reg = '$no_reg'");
+                $perintah = $db->query("SELECT * FROM tbs_penjualan WHERE  session_id = '$session_id' AND no_reg = '$no_reg' ORDER BY id DESC LIMIT 1");
                 
                 //menyimpan data sementara yang ada pada $perintah
                 

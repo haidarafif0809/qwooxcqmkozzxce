@@ -357,8 +357,9 @@ Level 7
       <div class="modal-body">
 
 
-<span class="modal_baru">
+
 <div class="table-resposive">
+<span class="modal_baru">
   <table id="tabel_cari" class="table table-bordered table-sm">
         <thead> <!-- untuk memberikan nama pada kolom tabel -->
         
@@ -378,8 +379,9 @@ Level 7
         
         </thead> <!-- tag penutup tabel -->
   </table>
+  </span>
   </div>
-</span>
+
 
 </div> <!-- tag penutup modal-body-->
       <div class="modal-footer">
@@ -1010,11 +1012,12 @@ $(document).ready(function(){
   var satuan_konversi = $("#satuan_konversi").val();
   var jumlah_barang = $("#jumlah_barang").val();
   var id_produk = $("#id_produk").val();
-
+$('#kolom_cek_harga').val('0');
 $.post("cek_level_harga_barang.php", {level_harga:level_harga, kode_barang:kode_barang,jumlah_barang:jumlah_barang,id_produk:id_produk,satuan_konversi:satuan_konversi},function(data){
 
           $("#harga_produk").val(data);
           $("#harga_baru").val(data);
+          $('#kolom_cek_harga').val('1');
         });
     });
 });

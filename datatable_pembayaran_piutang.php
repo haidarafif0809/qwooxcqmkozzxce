@@ -53,7 +53,11 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 
 	   
     $perintah5 = $db->query("SELECT * FROM detail_pembayaran_piutang");
-        $data5 = mysqli_fetch_array($perintah5);
+    $data5 = mysqli_fetch_array($perintah5);
+
+
+    $select_pelanggan = $db_pasien->query("SELECT nama_pelanggan FROM pelanggan WHERE kode_pelanggan = '$row[nama_suplier]'");
+    $data_pelanggan = mysqli_fetch_array($select_pelanggan);
 
         //menampilkan data
       $nestedData[] = "<button class='btn btn-info detail' no_faktur_pembayaran='". $row['no_faktur_pembayaran'] ."' ><span class='glyphicon glyphicon-th-list'></span> Detail </button>"; 
@@ -65,7 +69,7 @@ if ($pembayaran_piutang['pembayaran_piutang_edit'] > 0) {
 
 if ($pembayaran_piutang['pembayaran_piutang_hapus'] > 0) {    
 
-      $nestedData[] = "<button class='btn btn-danger btn-hapus' data-id='". $row['id'] ."' data-suplier='". $row['nama_suplier'] ."' data-no-faktur='". $row['no_faktur_pembayaran'] ."'> <span class='glyphicon glyphicon-trash'> </span> Hapus </button>";
+      $nestedData[] = "<button class='btn btn-danger btn-hapus' data-id='". $row['id'] ."' data-suplier='". $row['nama_suplier'] ."' data-nama-pelanggan='". $data_pelanggan['nama_pelanggan'] ."' data-no-faktur='". $row['no_faktur_pembayaran'] ."'> <span class='glyphicon glyphicon-trash'> </span> Hapus </button>";
 }
 
     $nestedData[] = "<a href='cetak_lap_pembayaran_piutang.php?no_faktur_pembayaran=".$row['no_faktur_pembayaran']."'  class='btn btn-primary' target='blank'><span class='glyphicon glyphicon-print'> </span> Cetak Piutang </a>";

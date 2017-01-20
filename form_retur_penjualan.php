@@ -43,8 +43,7 @@ $session_id = session_id();
           <?php 
           
           // menampilkan seluruh data yang ada pada tabel suplier
-          $query = $db->query("SELECT kode_pelanggan,nama FROM penjualan");
-          
+          $query = $db->query("SELECT p.kode_pelanggan,p.nama FROM penjualan p LEFT JOIN hpp_keluar hk ON p.no_faktur = hk.no_faktur WHERE hk.sisa_barang > '0' ");          
           // menyimpan data sementara yang ada pada $query
           while($data = mysqli_fetch_array($query))
           {
@@ -367,20 +366,20 @@ $session_id = session_id();
                          
                          
                          $sett_akun = $db->query("SELECT sa.kas, da.nama_daftar_akun FROM setting_akun sa INNER JOIN daftar_akun da ON sa.kas = da.kode_daftar_akun");
-                         $data_sett = mysqli_fetch_array($sett_akun);
+                         $data_sett = mysqli_fetch_array($sett_akun);                         
                          
                          
-                         
-                         echo "<option selected value='".$data_sett['kas']."'>".$data_sett['nama_daftar_akun'] ."</option>";
                          
                          $query = $db->query("SELECT nama_daftar_akun, kode_daftar_akun FROM daftar_akun WHERE tipe_akun = 'Kas & Bank'");
                          while($data = mysqli_fetch_array($query))
                          {
+                          if ($data_sett['kas'] == $data['kode_daftar_akun']) {
+                         echo "<option selected value='".$data['kode_daftar_akun']."'>".$data['nama_daftar_akun'] ."</option>";
+                          }
+                          else{
+                           echo "<option value='".$data['kode_daftar_akun']."'>".$data['nama_daftar_akun'] ."</option>";
+                          }
                          
-                         
-                         
-                         
-                         echo "<option value='".$data['kode_daftar_akun']."'>".$data['nama_daftar_akun'] ."</option>";
                          
                          
                          
@@ -799,7 +798,7 @@ $(function() {
 
  }
 
- else if (sisa == "")
+ else if (sisa < "")
  {
 
   alert("Jumlah Kas Tidak Mencukupi");
@@ -841,6 +840,8 @@ alert("Kode Pelanggan Harus Di Isi");
 
  $.post("proses_bayar_retur_jual.php",{session_id:session_id,sisa:sisa,kode_pelanggan:kode_pelanggan,total:total,cara_bayar:carabayar,potongan:potongan_pembelian,tax:tax,pembayaran:pembayaran_pembelian,total1:total1,ppn_input:ppn_input,kembalian:kembalian},function(info) {
 
+     var no_faktur = info;
+     $("#cetak_retur").attr('href', 'cetak_retur_penjualan.php?no_faktur_retur='+no_faktur+'');
      $("#demo").html(info);
      $("#result").html(info);
      $("#alert_berhasil").show();

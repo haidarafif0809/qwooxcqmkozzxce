@@ -171,6 +171,32 @@ $data_rj_ri = mysqli_fetch_array($sum_rj_ri);
         </select> 
   </div>
 
+  <div class="col-xs-2">
+          <label> Dokter Pengirim </label><br>
+          
+          <select name="dokter" id="dokter" class="form-control chosen" required="" >
+          <?php 
+        //untuk menampilkan semua data pada tabel pelanggan dalam DB
+    $query01 = $db->query("SELECT nama,id FROM user WHERE tipe = '1'");
+
+    //untuk menyimpan data sementara yang ada pada $query
+    while($data01 = mysqli_fetch_array($query01))
+    {
+    
+
+    if ($data01['nama'] == $dokter) {
+     echo "<option selected value='".$data01['id'] ."'>".$data01['nama'] ."</option>";
+    }
+    else{
+      echo "<option value='".$data01['id'] ."'>".$data01['nama'] ."</option>";
+    }
+
+    
+    }
+?>
+  </select>
+</div>
+
 </div>  <!-- END ROW dari kode pelanggan - ppn -->
 
 <div class="row">
@@ -230,7 +256,7 @@ $data_rj_ri = mysqli_fetch_array($sum_rj_ri);
 <div class="col-xs-2">
           <label>PPN</label>
           <select style="font-size:15px; height:35px" name="ppn" id="ppn" class="form-control">
-          <option value="<?php echo $ppn; ?>"><?php echo $ppn; ?></option>
+            <option selected value="<?php echo $ppn; ?>"><?php echo $ppn; ?></option>
             <option value="Include">Include</option>  
             <option value="Exclude">Exclude</option>
             <option value="Non">Non</option>          
@@ -1172,6 +1198,7 @@ $(document).ready(function(){
     }
     
     var ber_stok = $("#ber_stok").val();
+    var dokter = $("#dokter").val();
     var ppn = $("#ppn").val();
     var apoteker = $("#apoteker").val();
         var dokter = $("#dokter").val();
@@ -1322,7 +1349,7 @@ if (jumlah_barang == ''){
       $("#total2").val(tandaPemisahTitik(total_akhir1));
      $("#kode_barang").focus();
 
-          $.post("proses_tbs_edit_lab.php",{nama_barang:nama_barang,jumlah_barang:jumlah_barang,harga:harga,potongan:potongan,tax:tax,ppn:ppn,tipe_barang:ber_stok,no_rm:no_rm,apoteker:apoteker,penjamin:penjamin,tax:tax,hargaa:hargaa, kode_barang:kode_barang,no_faktur:no_faktur},function(data){ 
+          $.post("proses_tbs_edit_lab.php",{nama_barang:nama_barang,jumlah_barang:jumlah_barang,harga:harga,potongan:potongan,tax:tax,ppn:ppn,tipe_barang:ber_stok,no_rm:no_rm,apoteker:apoteker,penjamin:penjamin,tax:tax,hargaa:hargaa, kode_barang:kode_barang,no_faktur:no_faktur,dokter:dokter},function(data){ 
      
                  $("#ppn").attr("disabled", true);
                  $("#tbody").prepend(data);
@@ -1456,7 +1483,11 @@ alert("Silakan Bayar Piutang");
 
    $.post("cek_simpan_subtotal_penjualan.php",{total:total,no_reg:no_reg,no_faktur:no_faktur,tax:tax,potongan:potongan,biaya_adm:biaya_admin},function(data) {
 
+<<<<<<< HEAD
   if (data == 1) {
+=======
+  if (data == "1") {
+>>>>>>> origin/kosasih
 
   $("#penjualan").hide();
   $("#batal_penjualan").hide();
@@ -2467,54 +2498,13 @@ $(document).ready(function(){
                              </script>
 
 
-<script type="text/javascript">
-$(document).ready(function(){
-var total2 = $("#total2").val();
-var ppn = $("#ppn").val();
-    $("#ppn_input").val(ppn);
-
-  if (ppn == "Include"){
-      $("#tax1").attr("disabled", false);
-  }
-
-  else if (ppn == "Exclude") {
-    $("#tax1").attr("disabled", false);
-  }
-  else{
-    $("#tax1").attr("disabled", true);
-  }
-
-
-  });
-
-</script>
-
 
 <script type="text/javascript">
     $(document).ready(function(){
+/*
+      $("#tax").attr("disabled", true);*/
 
-// cek ppn exclude 
-    var total2 = $("#total2").val();
-    var no_reg = $("#no_reg").val();
-    $.get("cek_ppn_edit_lab.php",{no_reg:no_reg},function(data){
-      if (data == 1) {
-          $("#ppn").val('Exclude');
-     $("#ppn").attr("disabled", true);
-      }
-      else if(data == 2){
 
-    $("#ppn").val('Include');
-     $("#ppn").attr("disabled", true);
-      }
-      else
-      {
-
-     $("#ppn").val('Include');
-
-      }
-
-    });
-    //CHENGE PPN
 
     $("#ppn").change(function(){
 
@@ -2522,18 +2512,50 @@ var ppn = $("#ppn").val();
     $("#ppn_input").val(ppn);
 
   if (ppn == "Include"){
+
       $("#tax1").attr("disabled", false);
+
   }
+
   else if (ppn == "Exclude") {
     $("#tax1").attr("disabled", false);
   }
   else{
+
     $("#tax1").attr("disabled", true);
   }
 
 
   });
   });
+</script>
+<script type="text/javascript">
+$(document).ready(function(){ //UNTUK MENETUKAN APAKAH PPN NYA  INCLUDE ATAU EXCLUDE MAUPUN NON
+    // cek ppn exclude 
+    var no_reg = $("#no_reg").val();
+    var no_faktur = $("#no_faktur").val();
+    $.get("cek_ppn_edit_lab.php",{no_reg:no_reg,no_faktur:no_faktur},function(data){
+      if (data == 1) {
+          $("#ppn").val('Exclude');
+     $("#ppn").attr("disabled", true);
+     $("#tax1").attr("disabled", false);
+      }
+      else if(data == 2){
+
+      $("#ppn").val('Include');
+     $("#ppn").attr("disabled", true);
+       $("#tax1").attr("disabled", false);
+      }
+      else
+      {
+
+     $("#ppn").val('Non');
+     $("#tax1").attr("disabled", true);
+
+      }
+});
+    });
+
 </script>
 
 <script type="text/javascript">
