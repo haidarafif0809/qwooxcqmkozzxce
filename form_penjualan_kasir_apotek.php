@@ -878,7 +878,7 @@ $(document).ready(function(){
   var satuan_konversi = $("#satuan_konversi").val();
   var jumlah_barang = $("#jumlah_barang").val();
   var id_produk = $("#id_produk").val();
-
+$('#kolom_cek_harga').val('0');
 $.post("cek_level_harga_barang.php", {level_harga:level_harga, kode_barang:kode_barang,jumlah_barang:jumlah_barang,id_produk:id_produk,satuan_konversi:satuan_konversi},function(data){
 
           $("#harga_produk").val(data);

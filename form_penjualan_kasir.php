@@ -1159,6 +1159,8 @@ $(document).ready(function(){
 
   var id_produk = $("#id_produk").val();
 
+  $('#kolom_cek_harga').val('0');
+
   if (jumlah_barang == "") {
     alert ("Jumlah Barang Harus Diisi !");
     $("#level_harga").val(level_hidden);
