@@ -516,7 +516,7 @@ Level 7
   </div>
 
 
-    <input style="height:15px;" type="text" class="form-control" name="kolom_cek_harga" autocomplete="off" id="kolom_cek_harga" placeholder="Jumlah" value="0" >
+    <input style="height:15px;" type="hidden" class="form-control" name="kolom_cek_harga" autocomplete="off" id="`" placeholder="Jumlah" value="0" >
 
   <div class="col-xs-2">
           
@@ -558,7 +558,7 @@ Level 7
     <input type="hidden" class="form-control" name="harga_baru" id="harga_baru" placeholder="harga baru">
     <input type="hidden" class="form-control" name="jumlahbarang" id="jumlahbarang">
     <input type="hidden" id="satuan_produk" name="satuan" class="form-control" value="" placeholder="Satuan">
-    <input type="text" id="harga_produk" name="harga" class="form-control" value="" placeholder="Harga Jual">
+    <input type="hidden" id="harga_produk" name="harga" class="form-control" value="" placeholder="Harga Jual">
     <input type="hidden" id="id_produk" name="id_produk" class="form-control" value="" placeholder="Id barang"> 
     <input type="hidden" id="level_hidden" name="level_hidden" class="form-control" value="<?php echo $level_harga;?>">   
     <input type="hidden" id="analis" name="analis" class="form-control" value="<?php echo $analis;?>">        
