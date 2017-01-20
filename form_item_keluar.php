@@ -42,7 +42,7 @@ $session_id = session_id();
 <br>
 <!-- Tampilan Modal -->
 <div id="myModal" class="modal fade" role="dialog">
-  <div class="modal-dialog modal-lg">
+  <div class="modal-dialog ">
 
     <!-- Isi Modal-->
     <div class="modal-content">
@@ -414,7 +414,16 @@ $("#nomorfaktur1").val(data);
 //menyembunyikan notif berhasil
      $("#alert_berhasil").hide();
     /* Act on the event */
-            $("#table_item_keluar").DataTable().destroy();
+  
+
+  });
+
+   </script>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+
+           $("#table_item_keluar").DataTable().destroy();
           var dataTable = $('#table_item_keluar').DataTable( {
           "processing": true,
           "serverSide": true,
@@ -440,12 +449,9 @@ $("#nomorfaktur1").val(data);
 
           }
 
-        });  
-
-  });
-
-   </script>
-
+        });
+        }); 
+</script>
 
 <script type="text/javascript">
 

@@ -35,7 +35,7 @@ $perintah = $db->query("SELECT * FROM item_masuk");
                               
                               <!-- Tampilan Modal -->
                               <div id="myModal" class="modal fade" role="dialog">
-                              <div class="modal-dialog modal-lg">
+                              <div class="modal-dialog ">
                               
                               <!-- Isi Modal-->
                               <div class="modal-content">
@@ -53,7 +53,6 @@ $perintah = $db->query("SELECT * FROM item_masuk");
                           <th> Kode Barang </th>
                           <th> Nama Barang </th>
                           <th> Jumlah Barang </th>
-                          <th> Satuan </th>
                           <th> Kategori </th>
                           <th> Suplier </th>
                           <th> Satuan </th>
@@ -415,7 +414,15 @@ $(document).ready(function() {
                                       //menyembunyikan notif berhasil
                                       $("#alert_berhasil").hide();
                                       /* Act on the event */
-            $("#table_item_masuk").DataTable().destroy();
+           
+
+   });            
+ </script>
+        
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    $("#table_item_masuk").DataTable().destroy();
           var dataTable = $('#table_item_masuk').DataTable( {
           "processing": true,
           "serverSide": true,
@@ -441,11 +448,10 @@ $(document).ready(function() {
 
           }
 
-        });  
+        }); 
+});
+</script>
 
-   });            
- </script>
-             
 
 <script type="text/javascript" language="javascript" >
    $("#cari_item_masuk").click(function() {
