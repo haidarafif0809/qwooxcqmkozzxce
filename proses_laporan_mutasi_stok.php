@@ -8,6 +8,9 @@ include 'db.php';
 $dari_tanggal = stringdoang($_POST['dari_tanggal']);
 $sampai_tanggal = stringdoang($_POST['sampai_tanggal']);
 $sub_nilai_akhir = 0;
+$sub_nilai_masuk = 0;
+$sub_nilai_keluar = 0;
+$sub_nilai_awal = 0;
 
 
 // storing  request (ie, get/post) global array to a variable  
@@ -91,6 +94,9 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 			$nilai_akhir = ($nilai_awal + $nilai_masuk) - $nilai_keluar;
 
 			$sub_nilai_akhir = $sub_nilai_akhir + $nilai_akhir;
+			$sub_nilai_awal = $sub_nilai_awal + $nilai_awal;
+			$sub_nilai_masuk = $sub_nilai_masuk + $nilai_masuk;
+			$sub_nilai_keluar = $sub_nilai_keluar + $nilai_keluar;
 
 
 $nestedData = array();
@@ -114,11 +120,11 @@ $nestedData[] = "<b style='color:red' >TOTAL :</b>";
 $nestedData[] = "";
 $nestedData[] = "";
 $nestedData[] = "";
+$nestedData[] = "<b style='color:red'>". rp($sub_nilai_awal) ."</b>";
 $nestedData[] = "";
+$nestedData[] = "<b style='color:red'>". rp($sub_nilai_masuk) ."</b>";
 $nestedData[] = "";
-$nestedData[] = "";
-$nestedData[] = "";
-$nestedData[] = "";
+$nestedData[] = "<b style='color:red'>". rp($sub_nilai_keluar) ."</b>";
 $nestedData[] = "";
 $nestedData[] = "<b style='color:red'>". rp($sub_nilai_akhir) ."</b>";
 $data[] = $nestedData;

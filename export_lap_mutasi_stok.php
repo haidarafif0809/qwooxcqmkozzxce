@@ -68,6 +68,9 @@ th {
 
       
       $sub_nilai_akhir = 0;
+      $sub_nilai_masuk = 0;
+      $sub_nilai_keluar = 0;
+      $sub_nilai_awal = 0;
 
       //menyimpan data sementara yang ada pada $perintah
       while ($data_barang = mysqli_fetch_array($barang))
@@ -110,8 +113,7 @@ th {
         //menampilkan data
           echo "<tr>";
 
-          if ($nilai_akhir != '' OR $nilai_akhir != '0')
-              {
+     
               echo "<td>". $data_barang['kode_barang'] ."</td>
               <td>". $data_barang['nama_barang'] ."</td>
               <td>". $data_barang['nama'] ."</td>
@@ -123,9 +125,11 @@ th {
               <td style='text-align: right'>".rp($nilai_keluar)."</td>
               <td style='text-align: right'>".rp($akhir)."</td>
               <td style='text-align: right'>".rp($nilai_akhir)."</td>";
-              }
           echo"</tr>";
           $sub_nilai_akhir = $sub_nilai_akhir + $nilai_akhir;
+          $sub_nilai_awal = $sub_nilai_awal + $nilai_awal;
+          $sub_nilai_masuk = $sub_nilai_masuk + $nilai_masuk;
+          $sub_nilai_keluar = $sub_nilai_keluar + $nilai_keluar;
 
       }
           echo "<tr>
@@ -133,11 +137,11 @@ th {
           <td></td>
           <td></td>
           <td></td>
+          <td style='text-align: right; color:red'>".rp($sub_nilai_awal)."</td>
           <td></td>
+          <td style='text-align: right; color:red'>".rp($sub_nilai_masuk)."</td>
           <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
+          <td style='text-align: right; color:red'>".rp($sub_nilai_keluar)."</td>
           <td></td>
           <td style='text-align: right; color:red'>".rp($sub_nilai_akhir)."</td>
           </tr>";
