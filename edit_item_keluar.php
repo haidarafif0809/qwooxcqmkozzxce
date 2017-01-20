@@ -455,6 +455,13 @@ $(function() {
      $("#alert_berhasil").hide();
     /* Act on the event */
 
+
+  });
+
+   </script>
+
+   <script type="text/javascript">
+     $(document).ready(function(){
         $("#table_item_keluar").DataTable().destroy();
           var dataTable = $('#table_item_keluar').DataTable( {
           "processing": true,
@@ -482,9 +489,7 @@ $(function() {
           }
 
         });  
-
-  });
-
+        });
    </script>
 
 
