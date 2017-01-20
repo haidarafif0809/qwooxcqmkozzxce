@@ -1221,6 +1221,7 @@ $.post("cek_level_harga_barang.php",
 
           $("#harga_produk").val(data);
           $("#harga_baru").val(data);
+          $('#kolom_cek_harga').val('1');
         });
     });
 });

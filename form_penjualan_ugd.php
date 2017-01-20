@@ -1017,6 +1017,7 @@ $.post("cek_level_harga_barang.php", {level_harga:level_harga, kode_barang:kode_
 
           $("#harga_produk").val(data);
           $("#harga_baru").val(data);
+          $('#kolom_cek_harga').val('1');
         });
     });
 });

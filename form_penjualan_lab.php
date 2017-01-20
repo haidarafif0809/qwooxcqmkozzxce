@@ -1363,6 +1363,7 @@ data = data.replace(/\s+/g, '');
           $("#harga_produk").val(data);
           $("#harga_baru").val(data);
           $("#harga_penjamin").val(data);
+          $('#kolom_cek_harga').val('1');
         });
     });
 });

@@ -1168,6 +1168,7 @@ $(document).ready(function(){
 
           $("#harga_produk").val(data);
           $("#harga_baru").val(data);
+          $('#kolom_cek_harga').val('1');
         });
   }
 
