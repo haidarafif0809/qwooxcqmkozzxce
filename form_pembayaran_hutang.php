@@ -144,59 +144,8 @@ $query = $db->query("SELECT * FROM pembayaran_hutang ORDER BY id DESC");
 
       <!--perintah agar modal update-->
   <span class="modal_hutang_baru">
-      <!-- membuat agar ada garis pada tabel, disetiap kolom-->
-        <table id="tableuser" class="table table-bordered">
-    <thead> <!-- untuk memberikan nama pada kolom tabel -->
-      
-      <th> Nomor Faktur </th>
-      <th> Suplier </th>
-      <th> Total Beli</th>
-      <th> Tanggal </th>
-      <th> Tanggal Jatuh Tempo </th>
-      <th> Jam </th>
-      <th> User </th>
-      <th> Status </th>
-      <th> Potongan </th>
-      <th> Tax </th>
-      <th> Sisa </th>
-      <th> Kredit </th>
-      
-    </thead> <!-- tag penutup tabel -->
-    
-    <tbody> <!-- tag pembuka tbody, yang digunakan untuk menampilkan data yang ada di database --> 
-    <?php
 
-    // menampilkan seluruh data yang ada pada tabel barang yang terdapat pada DB
-    $perintah = $db->query("SELECT p.id,p.no_faktur,p.total,p.suplier,p.tanggal,p.tanggal_jt,p.jam,p.user,p.status,p.potongan,p.tax,p.sisa,p.kredit,s.nama,g.nama_gudang FROM pembelian p INNER JOIN suplier s ON p.suplier = s.id INNER JOIN gudang g ON p.kode_gudang = g.kode_gudang ORDER BY p.id DESC");
-
-    //menyimpan data sementara yang ada pada $perintah
-      while ($data1 = mysqli_fetch_array($perintah))
-      {
-
-        // menampilkan data
-       echo "<tr class='pilih' no-faktur='". $data1['no_faktur'] ."' kredit='". $data1['kredit'] ."' total='". $data1['total'] ."' tanggal_jt='". $data1['tanggal_jt'] ."' >
-      
-      <td>". $data1['no_faktur'] ."</td>
-      <td>". $data1['nama'] ."</td>
-      <td>". $data1['total'] ."</td>
-      <td>". $data1['tanggal'] ."</td>
-      <td>". $data1['tanggal_jt'] ."</td>
-      <td>". $data1['jam'] ."</td>
-      <td>". $data1['user'] ."</td>
-      <td>". $data1['status'] ."</td>
-      <td>". $data1['potongan'] ."</td>
-      <td>". $data1['tax'] ."</td>
-      <td>". $data1['sisa'] ."</td>
-      <td>". $data1['kredit'] ."</td>
-      </tr>";
-      
-       }
-
-    ?>
-    </tbody> <!--tag penutup tbody-->
-
-  </table> <!-- tag penutup table-->
-</span>
+  </span>
           
       </div> <!-- tag penutup modal body -->
 
@@ -227,16 +176,16 @@ $query = $db->query("SELECT * FROM pembayaran_hutang ORDER BY id DESC");
 <br>
 
 <div class="row">
-  <div class="col-sm-8">
+  <div class="col-sm-9">
 
   <div class="form-group col-sm-2">
           <label> Suplier </label>
           <br>
           <select type="text" name="suplier" id="nama_suplier" class="form-control chosen" required="">
-          <option value="">-Silakan Pilih-</option>
+          <option value="">--SILAKAN PILIH--</option>
           
           <?php 
-          include 'db.php';
+
           $take = $db->query("SELECT id,nama FROM suplier");
           while($data = mysqli_fetch_array($take))
           {
@@ -247,16 +196,20 @@ $query = $db->query("SELECT * FROM pembayaran_hutang ORDER BY id DESC");
   </div>
 
 <div class="form-group col-sm-2">
-  <input type="text" class="form-control" name="no_faktur_pembelian" id="nomorfakturbeli" placeholder="Nomor Faktur Beli" readonly="">
+  <input type="text" class="form-control" name="no_faktur_pembelian" id="nomorfakturbeli" placeholder="Faktur Pembelian" readonly="">
   </div>
   
   <div class="form-group col-sm-2">
-    <input type="text" class="form-control" name="kredit" id="kredit" placeholder="Kredit" readonly="">
+    <input type="text" class="form-control" name="kredit" id="kredit" placeholder="Nilai Hutang" readonly="">
   </div>
 
 
-<div class="form-group col-sm-2">
-          <input type="text" name="potongan" id="potongan_penjualan" class="form-control" placeholder="Potongan" autocomplete="off">
+<div class="form-group col-sm-1">
+    <input type="text" name="potongan" id="potongan_penjualan" class="form-control" placeholder="Diskon" autocomplete="off" onkeydown="return numbersonly(this, event);" onkeyup="javascript:tandaPemisahTitik(this);">
+</div>
+
+<div class="form-group col-sm-1">
+    <input type="text" name="sisa_hutang" id="sisa_hutang" class="form-control" placeholder="Hutang" autocomplete="off" readonly="">
 </div>
 
   <div class="form-group col-sm-2">
@@ -278,7 +231,7 @@ $query = $db->query("SELECT * FROM pembayaran_hutang ORDER BY id DESC");
 
     <input value="<?php echo $data01['id']; ?>" type="hidden" name="suplier" id="n_suplier" class="form-control" required="" >
   </div>
-<br>
+
   <div class="form-group col-sm-2">
        <button type="submit" id="submit_tambah" class="btn btn-success"> <i class='fa fa-plus'> </i> Tambah </button>
 </div>
@@ -355,7 +308,7 @@ $query = $db->query("SELECT * FROM pembayaran_hutang ORDER BY id DESC");
 </div>
 
 
-  <div class="col-sm-4">
+  <div class="col-sm-3">
 <div class="card card-block">
   <div class="row 1">          
           <div class="form-group col-sm-6">
@@ -486,23 +439,28 @@ $(document).ready(function(){
   
    $("#submit_tambah").click(function(){
       
-      var kredit = $("#kredit").val();
+      var sisa_hutang = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#sisa_hutang").val()))));
       var suplier = $("#nama_suplier").val();
       var tanggal_jt = $("#tanggal_jt").val();
       var session_id = $("#session_id").val();
       var tanggal = $("#tanggal").val();
       var cara_bayar = $("#jumlah1").val();
-      var total1 = $("#total").val();
-      var potongan = $("#potongan_penjualan").val();
-      var total_kredit = kredit - potongan;
-      var potongan1 = $("#potongan1").val();
+      var total1 = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#total").val()))));
+      var potongan = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#potongan_penjualan").val()))));
+      var kredit = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#kredit").val()))));
+      var potongan1 = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#potongan1").val()))));
       var faktur = $("#faktur").val();
       var no_faktur_pembelian= $("#nomorfakturbeli").val();
       var total = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#totalbayar").val()))));
       var jumlah_bayar = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#jumlah_bayar").val()))));
 
       var a = cara_bayar - jumlah_bayar;
-      var hasil = jumlah_bayar - kredit;
+      var hasil = jumlah_bayar - sisa_hutang;      
+      var total_kredit = kredit - potongan;
+
+       if (hasil > 0){
+      var jumlah_bayar = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#sisa_hutang").val()))));
+      }
         
         if (total == '') 
         {
@@ -519,15 +477,9 @@ $(document).ready(function(){
       $("#total").val(total_kredit);  
       $("#totalbayar").val('');
       $("#jumlah_bayar").val('');
-      
-      if (hasil > 0 )
-      {
-
-      alert("Jumlah Bayar Anda Melebihi Sisa");
-      
-      }
-      
-      else if (jumlah_bayar == ""){
+     
+     
+      if (jumlah_bayar == ""){
       alert("Jumlah Bayar Harus Diisi");
       }
       else if (suplier == ""){
@@ -553,6 +505,7 @@ $(document).ready(function(){
      $("#kredit").val('');
      $("#jumlah_bayar").val('');
      $("#potongan_penjualan").val('');
+     $("#sisa_hutang").val('');
      
 
 
@@ -581,32 +534,33 @@ $(document).ready(function(){
             });
 
   
-  $("#cari_produk_pembelian").click(function() {
-     $.get('no_faktur_ph.php', function(data) {
-   /*optional stuff to do after getScript */ 
-$("#nomorfaktur_pembayaran").val(data);
- });
-    //modal baru
+
+      
+      
+      </script>
+
+      <script type="text/javascript">
+     $("#cari_produk_pembelian").click(function() {
 
 //menyembunyikan notif berhasil
      $("#alert_berhasil").hide();
 
       var suplier = $("#nama_suplier").val();
+      
       if (suplier == "")
       {
-        alert("Pilih dahulu supliernya !!");
+        alert("Pilih Dahulu Supliernya !!");
+        $("#nama_suplier").focus();
+      }
+      else{
+        $.post("modal_hutang_baru.php", {suplier:suplier}, function(info) {
+                $(".modal_hutang_baru").html(info);           
+      });
+       
       }
 
-      $.post("modal_hutang_baru.php", {suplier:suplier}, function(info) {
-
-      $(".modal_hutang_baru").html(info);
-      
-      
-      });
 
       });
-      
-      
       </script>
 
  <script>
@@ -812,6 +766,25 @@ $(document).ready(function(){
 </script>
 
 
+<script>
+// untuk memunculkan jumlah kas secara otomatis
+  $(document).ready(function(){
+    $("#potongan_penjualan").keyup(function(){
+      var potongan_penjualan = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#potongan_penjualan").val()))));
+      var kredit = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#kredit").val()))));
+      if (potongan_penjualan == "") {
+        potongan_penjualan = 0;
+      }
+      var hutang_harus_dibayar = parseInt(kredit,10) - parseInt(potongan_penjualan,10);
+
+      $("#sisa_hutang").val(tandaPemisahTitik(hutang_harus_dibayar));
+
+    });
+
+  });
+</script>
+
+
       <script type="text/javascript">
       
       $(".chosen").chosen({no_results_text: "Maaf, Data Tidak Ada!"});  
@@ -824,7 +797,7 @@ $(document).ready(function(){
     <script type="text/javascript">
     
     //fungsi hapus data 
-    $(".btn-hapus").click(function(){
+    $(document).on('click','.btn-hapus',function(){
     var no_faktur_pembelian = $(this).attr("data-no-faktur-pembelian");
     var kredit = $(this).attr("data-hutang");
     var jumlah_bayar = $(this).attr("data-jumlah-bayar");
@@ -946,13 +919,6 @@ $(document).ready(function(){
 
     </script>
 
-<script>
-// untuk memunculkan data tabel 
-$(document).ready(function() {
-        $('#table').DataTable({"ordering":false});
-    });
-
-</script>
 
 
 <?php 

@@ -4,10 +4,16 @@ include 'header.php';
 include 'sanitasi.php';
 include 'db.php';
 
-$no_faktur_retur = $_GET['no_faktur_retur'];
 
-    $query0 = $db->query("SELECT p.nama_pelanggan,rp.id,rp.kode_pelanggan,rp.no_faktur_retur,rp.kode_pelanggan,rp.total,rp.potongan,rp.tax,rp.tanggal,rp.jam,rp.user_buat,rp.user_edit,rp.tanggal_edit,rp.tunai,rp.sisa FROM retur_penjualan rp INNER JOIN pelanggan p ON rp.kode_pelanggan = p.kode_pelanggan WHERE rp.no_faktur_retur = '$no_faktur_retur' ");
+$no_faktur_retur = stringdoang($_GET['no_faktur_retur']);
+
+
+    $query0 = $db->query("SELECT p.nama_pelanggan,rp.id,rp.no_faktur_retur,rp.kode_pelanggan,rp.total,rp.potongan,rp.tax,rp.tanggal,rp.jam,rp.user_buat,rp.user_edit,rp.tanggal_edit,rp.tunai,rp.sisa FROM retur_penjualan rp LEFT JOIN pelanggan p ON rp.kode_pelanggan = p.kode_pelanggan WHERE rp.no_faktur_retur = '$no_faktur_retur' ");
     $data0 = mysqli_fetch_array($query0);
+
+    if ($data0['nama_pelanggan'] == NULL) {
+      $data0['nama_pelanggan'] = $data0['kode_pelanggan'];
+     }
 
     $query1 = $db->query("SELECT * FROM perusahaan ");
     $data1 = mysqli_fetch_array($query1);
@@ -21,57 +27,39 @@ $no_faktur_retur = $_GET['no_faktur_retur'];
     $j_retur = $data21['j_retur'];
 
 
+
  ?>
 
 <div class="container">
     
+                 <center><h3> <b> BUKTI RETUR PENJUALAN </b></h3><hr></center>
     <div class="row"><!--row1-->
         <div class="col-sm-2">
-        <br><br>
                 <img src='save_picture/<?php echo $data1['foto']; ?>' class='img-rounded' alt='Cinque Terre' width='160' height='140`'> 
         </div><!--penutup colsm2-->
 
-        <div class="col-sm-4">
-                 <h3> <b> BUKTI RETUR PENJUALAN </b></h3>
-                 <hr>
+        <div class="col-sm-6">
                  <h4> <b> <?php echo $data1['nama_perusahaan']; ?> </b> </h4> 
                  <p> <?php echo $data1['alamat_perusahaan']; ?> </p> 
                  <p> No.Telp:<?php echo $data1['no_telp']; ?> </p> 
                  
         </div><!--penutup colsm4-->
 
+
         <div class="col-sm-4">
-                          <br><br><br><br><br>
-<table>
-  <tbody>
-    <tr><td>No Faktur</td> <td>:&nbsp;</td><td><?php echo $no_faktur_retur; ?></td></tr>
-    <tr><td>Tanggal</td> <td>:&nbsp;</td><td><?php echo tanggal($data0['tanggal']);?></td></tr>
-<?php 
-if ($data0['kode_pelanggan'] == '')
-{
-     echo" <tr><td>Kode Pelanggan</td> <td>:&nbsp;</td><td>Umum</td></tr>";
-}
-else
-{
- ?>
-    <tr><td>Kode Pelanggan</td> <td>:&nbsp;</td><td>(<?php echo $data0['kode_pelanggan']; ?>) <?php echo $data0['nama_pelanggan']; ?></td></tr>
-    
-<?php 
-}
- ?>
-  </tbody>
-</table>      
+          <table>
+            <tbody>
+
+              <tr><td>No Faktur</td> <td>:&nbsp;</td><td><?php echo $no_faktur_retur; ?></td></tr>
+              <tr><td>Tanggal</td> <td>:&nbsp;</td><td><?php echo tanggal($data0['tanggal']);?></td></tr>
+              <tr><td>Kode Pelanggan</td> <td>:&nbsp;</td><td><?php echo $data0['nama_pelanggan']; ?></td></tr>
+              <tr><td>Petugas</td> <td>:&nbsp;</td><td> <?php echo $_SESSION['nama']; ?></td></tr>
+
+
+            </tbody>
+          </table>      
                  
         </div><!--penutup colsm4-->
-
-        <div class="col-sm-2">
-                <br><br><br><br><br>
-                User: <?php echo $_SESSION['user_name']; ?>  <br>
-
-        </div><!--penutup colsm4-->
-
-
-        
     </div><!--penutup row1-->
 </div> <!-- end of container-->
 
@@ -79,9 +67,8 @@ else
 <br>
 <div class="container">
 
-<table id="tableuser" class="table table-bordered">
+<table id="tableuser" class="table table-bordered table-sm">
         <thead>
-
            <th> Kode Barang </th>
            <th> Nama Barang </th>
            <th> Jumlah Retur </th>
@@ -90,35 +77,23 @@ else
            <th> Potongan </th>
            <th> Total </th>
            <th> Subtotal </th>
-           <th> Tax </th>
-           
-            
+           <th> Tax </th>            
         </thead>
         
         <tbody>
         <?php
 
-            $query5 = $db->query("SELECT drp.kode_barang ,drp.nama_barang ,drp.jumlah_retur ,s.nama ,drp.harga ,drp.potongan ,drp.subtotal ,drp.tax,drp.satuan FROM detail_retur_penjualan drp INNER JOIN satuan s ON drp.satuan = s.id  WHERE drp.no_faktur_retur = '$no_faktur_retur' ");
+            $query5 = $db->query("SELECT drp.kode_barang ,drp.nama_barang ,drp.jumlah_retur ,s.nama ,drp.harga ,drp.potongan ,drp.subtotal ,drp.tax FROM detail_retur_penjualan drp INNER JOIN satuan s ON drp.satuan = s.id  WHERE drp.no_faktur_retur = '$no_faktur_retur' ");
             //menyimpan data sementara yang ada pada $perintah
             while ($data5 = mysqli_fetch_array($query5))
             {
-              $ss = $db->query("SELECT konversi FROM satuan_konversi WHERE kode_produk = '$data5[kode_barang]' AND id_satuan = '$data5[satuan]' ");
-              $cek = mysqli_num_rows($ss);
-              $sid = mysqli_fetch_array($ss);
- 
+
+              
             echo "<tr>
                 <td>". $data5['kode_barang'] ."</td>
-                <td>". $data5['nama_barang'] ."</td>";
-                if ($cek > 0) {
-                  $jumlah_retur = $data5['jumlah_retur'] / $sid['konversi'];
-                  echo"<td>". $jumlah_retur ."</td>";
-                }
-                else
-                {
-                  echo"<td>". $data5['jumlah_retur'] ."</td>";
-                }
-                
-                echo"<td>". $data5['nama'] ."</td>
+                <td>". $data5['nama_barang'] ."</td>
+                <td>". $data5['jumlah_retur'] ."</td>
+                <td>". $data5['nama'] ."</td>
                 <td>". rp($data5['harga']) ."</td>
                 <td>". rp($data5['potongan']) ."</td>
                 <td>". rp($data0['total']) ."</td>
@@ -128,11 +103,10 @@ else
 
             }
 
-                    //Untuk Memutuskan Koneksi Ke Database
+//Untuk Memutuskan Koneksi Ke Database
 
-        mysqli_close($db); 
-        
-        
+mysqli_close($db); 
+            
         ?>
         </tbody>
 
@@ -185,13 +159,13 @@ else
 
 
 
+
+
  <script>
 $(document).ready(function(){
   window.print();
 });
 </script>
-
-
 
 
 

@@ -544,7 +544,7 @@ $user = $_SESSION['nama'];
         <div class="col-xs-6">
           
            <label style="font-size:15px"> <b> Subtotal </b></label><br>
-      <input style="height:25px;font-size:15px" type="text" name="total" id="total2" class="form-control" placeholder="Total" readonly="" onkeydown="return numbersonly(this, event);" onkeyup="javascript:tandaPemisahTitik(this);">
+      <input style="height:25px;font-size:15px" type="text" name="total" id="total2" class="form-control" placeholder="Total" readonly="">
 
         </div>
 

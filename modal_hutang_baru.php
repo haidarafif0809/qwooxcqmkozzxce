@@ -47,7 +47,7 @@ include 'db.php';
 
         else{
  
-       echo "<tr class='pilih' no-faktur='". $data1['no_faktur'] ."' kredit='". $data1['kredit'] ."' total='". $data1['total'] ."' tanggal_jt='". $data1['tanggal_jt'] ."'  >
+       echo "<tr class='pilih' no-faktur='". $data1['no_faktur'] ."' kredit='". rp($data1['kredit']) ."' total='". $data1['total'] ."' tanggal_jt='". $data1['tanggal_jt'] ."'  >
       
       <td>". $data1['no_faktur'] ."</td>
       <td>". $data1['nama'] ."</td>
