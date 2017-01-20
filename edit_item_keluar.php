@@ -34,34 +34,15 @@ $ambil = mysqli_fetch_array($perintah);
 <!--membuat agar tabel berada dalam baris tertentu-->
    <div class="row">
  <!--membuat tampilan halaman menjadi 8 bagian-->
-         <div class="col-sm-8">
+         
 
   <!-- membuat form menjadi beberpa bagian -->
-         <form enctype="multipart/form-data" role="form" action="form_item_keluar.php" method="post ">
+         
           
           <!-- membuat teks dengan ukuran h3 -->
-          <h3> Edit Data Item Keluar </h3><br>
+          <h3> EDIT DATA ITEM KELUAR </h3><hr>
 
-          <div class="row">
-            <div class="col-sm-3">
-              <label> Tanggal </label><br>
-                <input type="text" value="<?php echo $ambil['tanggal']; ?>" name="tanggal" id="tanggal" placeholder="Tanggal"  class="form-control tgl" required="" >
-            </div>
-                
-              
-
-            <div class="col-sm-3">
-              <label> No Faktur </label><br>
-
-                <!-- membuat agar teks tidak bisa di ubah, dan hanya bisa dibaca -->
-                <input type="text" name="no_faktur" id="nomorfaktur" class="form-control" readonly="" value="<?php echo $no_faktur; ?>" required="" >
-            </div>
-                
-
-          </div>
-
-          
-         </form>
+<div class="col-sm-8">
 
 
 <!-- membuat tombol agar menampilkan modal -->
@@ -79,9 +60,21 @@ $ambil = mysqli_fetch_array($perintah);
       </div>
       <div class="modal-body"> <!--membuat kerangka untuk tempat tabel -->
 
-<span class="modal_baru">
-
-</span>
+   <div class="table-responsive">
+   <center>                   
+       <table id="table_item_keluar" class="table table-bordered table-sm">
+          <thead> <!-- untuk memberikan nama pada kolom tabel -->
+                          <th> Kode Barang </th>
+                          <th> Nama Barang </th>
+                          <th> Jumlah Barang </th>
+                          <th> Kategori </th>
+                          <th> Suplier </th>
+                          <th> Satuan </th>
+                          <th> Harga Beli</th>
+              </thead> <!-- tag penutup tabel -->
+            </table>
+  </center>           
+      </div> 
           
       </div> <!-- tag penutup modal body -->
 
@@ -123,19 +116,95 @@ $ambil = mysqli_fetch_array($perintah);
   <input type="hidden" name="no_faktur" id="nomorfaktur1" class="form-control" value="<?php echo $no_faktur; ?>" required="" >
   
   <!-- membuat tombol submit-->
-  <button type="submit" id="submit_produk" class="btn btn-success"> <span class='glyphicon glyphicon-plus'> </span> Tambah Produk</button>
+  <button type="submit" id="submit_produk" class="btn btn-success"> <i class='fa fa-plus'> </i> Tambah Produk</button>
 </form>
-                  
+ 
+
+       <span id="result">  
+
+        <div class="table-responsive">
+      <!--tag untuk membuat garis pada tabel-->     
+  <table id="tableuser" class="table table-bordered table-sm">
+    <thead>
+      <th> Nomor Faktur </th>
+      <th> Kode Barang </th>
+      <th> Nama Barang </th>
+      <th> Jumlah </th>
+      <th> Satuan </th>
+      <th> Harga </th>
+      <th> Subtotal </th>
+    
+      <th> Hapus </th>
+      
+    </thead>
+    
+    <tbody>
+    <?php
+
+    //menampilkan semua data yang ada pada tabel tbs penjualan dalam DB
+     $perintah = $db->query("SELECT tik.id,tik.no_faktur,tik.kode_barang,tik.nama_barang,tik.jumlah,tik.harga,tik.subtotal,s.nama FROM tbs_item_keluar tik LEFT JOIN satuan s ON tik.satuan = s.id WHERE tik.no_faktur = '$no_faktur'");
+
+      //menyimpan data sementara yang ada pada $perintah
+
+      while ($data1 = mysqli_fetch_array($perintah))
+      {
+        //menampilkan data
+      echo "<tr class='tr-id-".$data1['id']."'>
+     <td>". $data1['no_faktur'] ."</td>
+      <td>". $data1['kode_barang'] ."</td>
+      <td>". $data1['nama_barang'] ."</td>
+
+
+      <td class='edit-jumlah' data-id='".$data1['id']."'><span id='text-jumlah-".$data1['id']."'>". $data1['jumlah'] ."</span> <input type='hidden' id='input-jumlah-".$data1['id']."' value='".$data1['jumlah']."' class='input_jumlah' data-subtotal='".$data1['subtotal']."' data-id='".$data1['id']."' autofocus='' data-harga='".$data1['harga']."' data-faktur='".$data1['no_faktur']."' data-kode='".$data1['kode_barang']."' > </td>
+
+      <td>". $data1['nama'] ."</td>
+      <td>". rp($data1['harga']) ."</td>
+      <td><span id='text-subtotal-".$data1['id']."'>". rp($data1['subtotal']) ."</span></td>
+
+      <td> <button class='btn btn-danger btn-hapus' id='btn-hapus-".$data1['id']."' data-id='". $data1['id'] ."' data-subtotal='".$data1['subtotal']."' data-nama-barang='". $data1['nama_barang'] ."'> <span class='glyphicon glyphicon-trash'> </span> Hapus </button> </td> 
+
+      </tr>";
+      }
+
+      //Untuk Memutuskan Koneksi Ke Database
+
+mysqli_close($db); 
+    ?>
+    </tbody>
+
+  </table>
+  </div>
+</span>
+
 
   </div><!-- end of col sm 8 --> <!--tag penutup col sm 8-->
 
  <div class="col-sm-4" id="col_sm_4">. <!--tag pembuka col sm 4-->
 
+<div class="card card-block">
+
+       <form enctype="multipart/form-data" role="form" action="form_item_keluar.php" method="post ">
+          <div class="row">
+            <div class="col-sm-6">
+              <label> Tanggal </label><br>
+                <input type="text" value="<?php echo $ambil['tanggal']; ?>" name="tanggal" id="tanggal" placeholder="Tanggal"  class="form-control tgl" required="" >
+            </div>
+                
+              
+
+            <div class="col-sm-6">
+              <label> No Faktur </label><br>
+
+                <!-- membuat agar teks tidak bisa di ubah, dan hanya bisa dibaca -->
+                <input type="text" name="no_faktur" id="nomorfaktur" class="form-control" readonly="" value="<?php echo $no_faktur; ?>" required="" >
+            </div>
+            </div>
+      </form> 
+
   <form action="proses_edit_bayar_item_keluar.php" id="form_item_keluar" method="POST"><!--tag pembuka form-->
 
-      <label> Total </label><br>
-      <!--readonly = agar tek yang ada kolom total tidak bisa diubah hanya bisa dibaca-->
-      <input type="text" name="total" id="total_item_keluar" class="form-control" placeholder="Total" readonly=""  >
+      <label style="font-size:15px"> <b> Total Akhir </b></label><br>
+      <b><input type="text" name="total" id="total_item_keluar" class="form-control" placeholder="Total" readonly="" style="height: 25px; width:90%; font-size:20px;" ></b>
 
       <label>Keterangan </label><br>
       <textarea name="keterangan" id="keterangan" class="form-control" ></textarea>
@@ -149,14 +218,16 @@ $ambil = mysqli_fetch_array($perintah);
 
   <a class="btn btn-primary" href="item_keluar.php" id="transaksi_baru" style="display: none"> Kembali</a>
 
-      <button type="submit" id="pembayaran_item_keluar" class="btn btn-info"><span class='glyphicon glyphicon-ok-sign'> </span> Selesai </a> </button>
+      <button type="submit" id="pembayaran_item_keluar" class="btn btn-info"><i class='fa fa-send'> </i> Selesai </a> </button>
       
 
       <!--membuaat link pada tombol batal-->
-      <a href='batal_item_keluar.php?no_faktur=<?php echo $no_faktur;?>' id='batal' class='btn btn-danger'><span class='glyphicon glyphicon-remove-sign'></span> Batal </a>
+      <a href='batal_item_keluar.php?no_faktur=<?php echo $no_faktur;?>' id='batal' class='btn btn-danger'><i class='fa fa-remove'></i> Batal </a>
      
 
-          </form><!--tag penutup form-->
+</form><!--tag penutup form-->
+
+</div>
 
 <div class="alert alert-success" id="alert_berhasil" style="display:none">
   <strong>Success!</strong> Data Item Keluar Berhasil
@@ -251,62 +322,7 @@ $ambil = mysqli_fetch_array($perintah);
 
 
       <!--untuk mendefinisikan sebuah bagian dalam dokumen-->  
-      <span id="result">  
 
-        <div class="table-responsive">
-      <!--tag untuk membuat garis pada tabel-->     
-  <table id="tableuser" class="table table-bordered">
-    <thead>
-      <th> Nomor Faktur </th>
-      <th> Kode Barang </th>
-      <th> Nama Barang </th>
-      <th> Jumlah </th>
-      <th> Satuan </th>
-      <th> Harga </th>
-      <th> Subtotal </th>
-    
-      <th> Hapus </th>
-      
-    </thead>
-    
-    <tbody>
-    <?php
-
-    //menampilkan semua data yang ada pada tabel tbs penjualan dalam DB
-     $perintah = $db->query("SELECT * FROM tbs_item_keluar
-                WHERE no_faktur = '$no_faktur'");
-
-      //menyimpan data sementara yang ada pada $perintah
-
-      while ($data1 = mysqli_fetch_array($perintah))
-      {
-        //menampilkan data
-      echo "<tr class='tr-id-".$data1['id']."'>
-     <td>". $data1['no_faktur'] ."</td>
-      <td>". $data1['kode_barang'] ."</td>
-      <td>". $data1['nama_barang'] ."</td>
-
-
-      <td class='edit-jumlah' data-id='".$data1['id']."'><span id='text-jumlah-".$data1['id']."'>". $data1['jumlah'] ."</span> <input type='hidden' id='input-jumlah-".$data1['id']."' value='".$data1['jumlah']."' class='input_jumlah' data-subtotal='".$data1['subtotal']."' data-id='".$data1['id']."' autofocus='' data-harga='".$data1['harga']."' data-faktur='".$data1['no_faktur']."' data-kode='".$data1['kode_barang']."' > </td>
-
-      <td>". $data1['satuan'] ."</td>
-      <td>". rp($data1['harga']) ."</td>
-      <td><span id='text-subtotal-".$data1['id']."'>". rp($data1['subtotal']) ."</span></td>
-
-      <td> <button class='btn btn-danger btn-hapus' id='btn-hapus-".$data1['id']."' data-id='". $data1['id'] ."' data-subtotal='".$data1['subtotal']."' data-nama-barang='". $data1['nama_barang'] ."'> <span class='glyphicon glyphicon-trash'> </span> Hapus </button> </td> 
-
-      </tr>";
-      }
-
-      //Untuk Memutuskan Koneksi Ke Database
-
-mysqli_close($db); 
-    ?>
-    </tbody>
-
-  </table>
-  </div>
-        </span>
 
 
       <span id="demo"> </span>
@@ -439,12 +455,33 @@ $(function() {
      $("#alert_berhasil").hide();
     /* Act on the event */
 
-$.get('modal_item_keluar_baru.php', function(data) {
+        $("#table_item_keluar").DataTable().destroy();
+          var dataTable = $('#table_item_keluar').DataTable( {
+          "processing": true,
+          "serverSide": true,
+          "ajax":{
+            url :"modal_edit_item_keluar_baru.php", // json datasource
+            type: "post",  // method  , by default get
+            error: function(){  // error handling
+              $(".employee-grid-error").html("");
+              $("#table_item_keluar").append('<tbody class="employee-grid-error"><tr><th colspan="3">Data Tidak Ditemukan.. !!</th></tr></tbody>');
+              $("#employee-grid_processing").css("display","none");
+              
+            }
+          },
 
-$(".modal_baru").html(data);
+          "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+
+              $(nRow).attr('class', "pilih");
+              $(nRow).attr('data-kode', aData[0]+"("+aData[1]+")");
+              $(nRow).attr('nama-barang', aData[1]);
+              $(nRow).attr('satuan', aData[7]);
+              $(nRow).attr('harga', aData[6]);
 
 
-     })
+          }
+
+        });  
 
   });
 
@@ -667,17 +704,33 @@ $(document).ready(function(){
 
                                     var id = $(this).attr("data-id");
                                     var jumlah_baru = $(this).val();
+
+                                    if (jumlah_baru == "") {
+                                      jumlah_baru = 0;
+                                    }
+
                                     var harga = $(this).attr("data-harga");
                                     var kode_barang = $(this).attr("data-kode");
                                     var subtotal_lama = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($(this).attr("data-subtotal")))));
                                     var subtotal = harga * jumlah_baru;
                                     var subtotal_penjualan = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#total_item_keluar").val()))));
+                                    
+                                    var jumlah_lama = $("#text-jumlah-"+id+"").text();
+
 
                                     
                                     var total_akhir = parseInt(subtotal_penjualan) - parseInt(subtotal_lama) + parseInt(subtotal);
-
-
-                                    $.post("cek_stok_pesanan_barang.php",{kode_barang:kode_barang, jumlah_baru:jumlah_baru},function(data){
+                                       
+                                  if (jumlah_baru == 0) {
+                                       alert("Jumlah barang tidak boleh nol atau kosong");
+                                       
+                                       $("#input-jumlah-"+id+"").val(jumlah_lama);
+                                       $("#text-jumlah-"+id+"").text(jumlah_lama);
+                                       $("#text-jumlah-"+id+"").show();
+                                       $("#input-jumlah-"+id+"").attr("type", "hidden");
+                                  }
+                                  else{
+                                     $.post("cek_stok_pesanan_barang.php",{kode_barang:kode_barang, jumlah_baru:jumlah_baru},function(data){
 
                                        if (data == "ya") {
 
@@ -707,6 +760,9 @@ $(document).ready(function(){
                                      }
 
                                    });
+                                  }
+
+                                   
 
                                    
                                    $("#kode_barang").focus();

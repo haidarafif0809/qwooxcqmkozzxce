@@ -9,7 +9,7 @@ $perintah = $db->query("SELECT * FROM item_keluar");
 
  ?>
 
- <table id="tableuser" class="table table-bordered">
+ <table id="tableuser" class="table table-bordered table-sm">
     <thead>
       <th> Nomor Faktur </th>
       <th> Kode Barang </th>
@@ -27,8 +27,7 @@ $perintah = $db->query("SELECT * FROM item_keluar");
     <?php
 
     //menampilkan semua data yang ada pada tabel tbs penjualan dalam DB
-     $perintah = $db->query("SELECT * FROM tbs_item_keluar
-                WHERE no_faktur = '$no_faktur'");
+     $perintah = $db->query("SELECT tik.id,tik.no_faktur,tik.kode_barang,tik.nama_barang,tik.jumlah,tik.harga,tik.subtotal,s.nama FROM tbs_item_keluar tik LEFT JOIN satuan s ON tik.satuan = s.id WHERE tik.no_faktur = '$no_faktur'");
 
       //menyimpan data sementara yang ada pada $perintah
 
@@ -43,7 +42,7 @@ $perintah = $db->query("SELECT * FROM item_keluar");
 
       <td class='edit-jumlah' data-id='".$data1['id']."'><span id='text-jumlah-".$data1['id']."'>". $data1['jumlah'] ."</span> <input type='hidden' id='input-jumlah-".$data1['id']."' value='".$data1['jumlah']."' class='input_jumlah' data-subtotal='".$data1['subtotal']."' data-id='".$data1['id']."' autofocus='' data-harga='".$data1['harga']."' data-faktur='".$data1['no_faktur']."' data-kode='".$data1['kode_barang']."' > </td>
 
-      <td>". $data1['satuan'] ."</td>
+      <td>". $data1['nama'] ."</td>
       <td>". rp($data1['harga']) ."</td>
       <td><span id='text-subtotal-".$data1['id']."'>". rp($data1['subtotal']) ."</span></td>
 
@@ -90,17 +89,33 @@ $(document).ready(function(){
 
                                     var id = $(this).attr("data-id");
                                     var jumlah_baru = $(this).val();
+
+                                    if (jumlah_baru == "") {
+                                      jumlah_baru = 0;
+                                    }
+
                                     var harga = $(this).attr("data-harga");
                                     var kode_barang = $(this).attr("data-kode");
                                     var subtotal_lama = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($(this).attr("data-subtotal")))));
                                     var subtotal = harga * jumlah_baru;
                                     var subtotal_penjualan = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#total_item_keluar").val()))));
+                                    
+                                    var jumlah_lama = $("#text-jumlah-"+id+"").text();
+
 
                                     
                                     var total_akhir = parseInt(subtotal_penjualan) - parseInt(subtotal_lama) + parseInt(subtotal);
-
-
-                                    $.post("cek_stok_pesanan_barang.php",{kode_barang:kode_barang, jumlah_baru:jumlah_baru},function(data){
+                                       
+                                  if (jumlah_baru == 0) {
+                                       alert("Jumlah barang tidak boleh nol atau kosong");
+                                       
+                                       $("#input-jumlah-"+id+"").val(jumlah_lama);
+                                       $("#text-jumlah-"+id+"").text(jumlah_lama);
+                                       $("#text-jumlah-"+id+"").show();
+                                       $("#input-jumlah-"+id+"").attr("type", "hidden");
+                                  }
+                                  else{
+                                     $.post("cek_stok_pesanan_barang.php",{kode_barang:kode_barang, jumlah_baru:jumlah_baru},function(data){
 
                                        if (data == "ya") {
 
@@ -130,6 +145,9 @@ $(document).ready(function(){
                                      }
 
                                    });
+                                  }
+
+                                   
 
                                    
                                    $("#kode_barang").focus();
