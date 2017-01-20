@@ -58,7 +58,7 @@
 
 
         
-        $perintah = $db->query("SELECT * FROM barang");
+        $perintah = $db->query("SELECT b.kode_barang,b.nama_barang,b.harga_beli,b.harga_jual,b.stok_barang,s.nama,b.kategori,b.status,b.suplier,b.satuan,b.foto FROM barang b LEFT JOIN satuan s ON b.satuan = s.id ");
         
         //menyimpan data sementara yang ada pada $perintah
         while ($data1 = mysqli_fetch_array($perintah))
@@ -128,7 +128,7 @@
             
             
             echo "<td>". $stok_barang ."</td>
-            <td>". $data1['satuan'] ."</td>
+            <td>". $data1['nama'] ."</td>
             <td>". $data1['kategori'] ."</td>
             <td>". $data1['status'] ."</td>
             <td>". $data1['suplier'] ."</td>

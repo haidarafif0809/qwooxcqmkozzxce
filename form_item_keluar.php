@@ -52,9 +52,19 @@ $session_id = session_id();
       </div>
       <div class="modal-body"> <!--membuat kerangka untuk tempat tabel -->
 
-<span class="modal_baru">
-
-</span>
+   <div class="table-responsive">                              
+       <table id="table_item_keluar" class="table table-bordered table-sm">
+          <thead> <!-- untuk memberikan nama pada kolom tabel -->
+                          <th> Kode Barang </th>
+                          <th> Nama Barang </th>
+                          <th> Jumlah Barang </th>
+                          <th> Kategori </th>
+                          <th> Suplier </th>
+                          <th> Satuan </th>
+                          <th> Harga Beli</th>
+              </thead> <!-- tag penutup tabel -->
+            </table>
+      </div> 
           
       </div> <!-- tag penutup modal body -->
 
@@ -402,13 +412,33 @@ $("#nomorfaktur1").val(data);
 //menyembunyikan notif berhasil
      $("#alert_berhasil").hide();
     /* Act on the event */
+            $("#table_item_keluar").DataTable().destroy();
+          var dataTable = $('#table_item_keluar').DataTable( {
+          "processing": true,
+          "serverSide": true,
+          "ajax":{
+            url :"modal_item_keluar_baru.php", // json datasource
+            type: "post",  // method  , by default get
+            error: function(){  // error handling
+              $(".employee-grid-error").html("");
+              $("#table_item_keluar").append('<tbody class="employee-grid-error"><tr><th colspan="3">Data Tidak Ditemukan.. !!</th></tr></tbody>');
+              $("#employee-grid_processing").css("display","none");
+              
+            }
+          },
 
-$.get('modal_item_keluar_baru.php', function(data) {
+          "fnCreatedRow": function( nRow, aData, iDataIndex ) {
 
-$(".modal_baru").html(data);
+              $(nRow).attr('class', "pilih");
+              $(nRow).attr('data-kode', aData[0]+"("+aData[1]+")");
+              $(nRow).attr('nama-barang', aData[1]);
+              $(nRow).attr('satuan', aData[7]);
+              $(nRow).attr('harga', aData[6]);
 
 
-     })
+          }
+
+        });  
 
   });
 

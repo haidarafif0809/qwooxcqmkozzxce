@@ -45,13 +45,24 @@ $perintah = $db->query("SELECT * FROM item_masuk");
                               </div>
                               <div class="modal-body"> <!--membuat kerangka untuk tempat tabel -->
                               
-                              <span class="modal_baru">
-
-                              </span>
+                              <div class="table-responsive">                              
+                              <table id="table_item_masuk" class="table table-bordered table-sm">
+                            <thead> <!-- untuk memberikan nama pada kolom tabel -->
+        
+                          <th> Kode Barang </th>
+                          <th> Nama Barang </th>
+                          <th> Jumlah Barang </th>
+                          <th> Satuan </th>
+                          <th> Kategori </th>
+                          <th> Suplier </th>
+                          <th> Satuan </th>
+                          <th> Harga Beli</th>
+        
+                          </thead> <!-- tag penutup tabel -->
+                              </table>
+                              </div> 
                               
-                              </div> <!-- tag penutup modal body -->
-                              
-                              
+                              </div><!-- tag penutup modal body -->
                               <!-- tag pembuka modal footer -->
                               <div class="modal-footer">
                               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -402,19 +413,47 @@ $(document).ready(function() {
                                       //menyembunyikan notif berhasil
                                       $("#alert_berhasil").hide();
                                       /* Act on the event */
-                                      
-                                      $.get('modal_item_masuk_baru.php', function(data) {
-                                      
-                                      $(".modal_baru").html(data);
-                                      
-                                      
-                                      });
-                                      
-                                      });
-                                      
-                                      
-                              </script>
-                              
+            $("#table_item_masuk").DataTable().destroy();
+          var dataTable = $('#table_item_masuk').DataTable( {
+          "processing": true,
+          "serverSide": true,
+          "ajax":{
+            url :"modal_item_masuk_baru.php", // json datasource
+            type: "post",  // method  , by default get
+            error: function(){  // error handling
+              $(".employee-grid-error").html("");
+              $("#table_item_masuk").append('<tbody class="employee-grid-error"><tr><th colspan="3">Data Tidak Ditemukan.. !!</th></tr></tbody>');
+              $("#employee-grid_processing").css("display","none");
+              
+            }
+          },
+
+          "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+
+              $(nRow).attr('class', "pilih");
+              $(nRow).attr('data-kode', aData[0]+"("+aData[1]+")");
+              $(nRow).attr('nama-barang', aData[1]);
+              $(nRow).attr('satuan', aData[7]);
+              $(nRow).attr('harga', aData[6]);
+
+
+          }
+
+        });  
+
+   });            
+ </script>
+             
+
+<script type="text/javascript" language="javascript" >
+   $("#cari_item_masuk").click(function() {
+       
+     
+  });
+ 
+ </script>
+
+
                               <script type="text/javascript">
                               //perintah javascript yang diambil dari form proses_bayar_beli.php dengan id=form_beli
                               $("#pembayaran_item_masuk").click(function(){
@@ -576,7 +615,7 @@ $(function() {
       {
         $('#nama_barang').val(json.nama_barang);
         $('#satuan_produk').val(json.satuan);
-        $('#harga_produk').val(json.harga_jual);
+        $('#harga_produk').val(json.harga_beli);
       }
                                               
         });
