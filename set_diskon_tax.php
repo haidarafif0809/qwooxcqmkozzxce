@@ -35,7 +35,7 @@ tr:nth-child(even){background-color: #f2f2f2}
       </div>
       <div class="modal-body">
   <form role="form" method="post">
-  <span id="nominal">
+  <span id="nominall" style="display: none">
 					<div class="form-group">
 					<label>Diskon Nominal (Rp)</label><br>
 					<input type="text" name="diskon_nominal" id="nominal_edit"  class="form-control" autocomplete="off" required="" >
@@ -80,7 +80,6 @@ tr:nth-child(even){background-color: #f2f2f2}
 <span id="tabel_baru">
 <table id="tableuser" class="table table-bordered">
 		<thead>
-			<th style='background-color: #4CAF50; color: white'>Diskon Nominal</th>
 			<th style='background-color: #4CAF50; color: white'>Diskon Persen</th>
 			<!--
 			<th style='background-color: #4CAF50; color: white'>Pajak</th>
@@ -108,7 +107,6 @@ $diskon_tax = mysqli_num_rows($pilih_akses_diskon_tax);
 			{
 				//menampilkan data
 			echo "<tr>
-			<td>". rp($data1['diskon_nominal']) ."</td>
 			<td>". persen($data1['diskon_persen']) ."</td>";
 			/*
 			<td>". persen($data1['tax']) ."</td>
