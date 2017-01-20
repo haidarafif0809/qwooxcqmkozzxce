@@ -5,11 +5,15 @@ include 'sanitasi.php';
 include 'db.php';
 
 
-$no_faktur_retur = $_SESSION['no_faktur_retur'];
+$no_faktur_retur = stringdoang($_GET['no_faktur_retur']);
 
 
-    $query0 = $db->query("SELECT p.nama_pelanggan,rp.id,rp.kode_pelanggan,rp.no_faktur_retur,rp.kode_pelanggan,rp.total,rp.potongan,rp.tax,rp.tanggal,rp.jam,rp.user_buat,rp.user_edit,rp.tanggal_edit,rp.tunai,rp.sisa FROM retur_penjualan rp INNER JOIN pelanggan p ON rp.kode_pelanggan = p.kode_pelanggan WHERE rp.no_faktur_retur = '$no_faktur_retur' ");
+    $query0 = $db->query("SELECT p.nama_pelanggan,rp.id,rp.no_faktur_retur,rp.kode_pelanggan,rp.total,rp.potongan,rp.tax,rp.tanggal,rp.jam,rp.user_buat,rp.user_edit,rp.tanggal_edit,rp.tunai,rp.sisa FROM retur_penjualan rp LEFT JOIN pelanggan p ON rp.kode_pelanggan = p.kode_pelanggan WHERE rp.no_faktur_retur = '$no_faktur_retur' ");
     $data0 = mysqli_fetch_array($query0);
+
+    if ($data0['nama_pelanggan'] == NULL) {
+      $data0['nama_pelanggan'] = $data0['kode_pelanggan'];
+     }
 
     $query1 = $db->query("SELECT * FROM perusahaan ");
     $data1 = mysqli_fetch_array($query1);
@@ -31,36 +35,31 @@ $no_faktur_retur = $_SESSION['no_faktur_retur'];
                  <center><h3> <b> BUKTI RETUR PENJUALAN </b></h3><hr></center>
     <div class="row"><!--row1-->
         <div class="col-sm-2">
-        <br><br>
                 <img src='save_picture/<?php echo $data1['foto']; ?>' class='img-rounded' alt='Cinque Terre' width='160' height='140`'> 
         </div><!--penutup colsm2-->
 
-        <div class="col-sm-4">
+        <div class="col-sm-6">
                  <h4> <b> <?php echo $data1['nama_perusahaan']; ?> </b> </h4> 
                  <p> <?php echo $data1['alamat_perusahaan']; ?> </p> 
                  <p> No.Telp:<?php echo $data1['no_telp']; ?> </p> 
                  
         </div><!--penutup colsm4-->
 
-        <div class="col-sm-4">
-<table>
-  <tbody>
-    <tr><td>No Faktur</td> <td>:&nbsp;</td><td><?php echo $data0['no_faktur_retur']; ?></td></tr>
-    <tr><td>Tanggal</td> <td>:&nbsp;</td><td><?php echo tanggal($data0['tanggal']);?></td></tr>
-    <tr><td>Kode Pelanggan</td> <td>:&nbsp;</td><td><?php echo $data0['nama_pelanggan']; ?></td></tr>
 
-  </tbody>
-</table>      
+        <div class="col-sm-4">
+          <table>
+            <tbody>
+
+              <tr><td>No Faktur</td> <td>:&nbsp;</td><td><?php echo $no_faktur_retur; ?></td></tr>
+              <tr><td>Tanggal</td> <td>:&nbsp;</td><td><?php echo tanggal($data0['tanggal']);?></td></tr>
+              <tr><td>Kode Pelanggan</td> <td>:&nbsp;</td><td><?php echo $data0['nama_pelanggan']; ?></td></tr>
+              <tr><td>Petugas</td> <td>:&nbsp;</td><td> <?php echo $_SESSION['nama']; ?></td></tr>
+
+
+            </tbody>
+          </table>      
                  
         </div><!--penutup colsm4-->
-
-        <div class="col-sm-2">
-                User: <?php echo $_SESSION['user_name']; ?>  <br>
-
-        </div><!--penutup colsm4-->
-
-
-        
     </div><!--penutup row1-->
 </div> <!-- end of container-->
 
