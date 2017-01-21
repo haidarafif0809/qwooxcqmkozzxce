@@ -353,7 +353,7 @@ if ($lihat['kartu_stok_lihat'] > 0){
                             echo '<li><a href="lap_mutasi_stok.php" class="waves-effect">Lap. Mutasi Stok</a></li>';
 }
 
-echo '<li><a href="cache_produk_penjualan.php" class="waves-effect">Update Cache Produk</a></li>';
+echo '<li><a href="cache_produk_penjualan.php" target="blank" class="waves-effect">Update Cache Produk</a></li>';
 
 if ($lihat['persediaan_lihat'] > 0){
                         echo '</ul>
