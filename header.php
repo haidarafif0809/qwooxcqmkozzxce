@@ -24,7 +24,7 @@
 
 		
 		<link rel="stylesheet" href="datatables/dataTables.bootstrap.css">
-		
+
 		<link rel="icon" href="save_picture/Andaglos-UKM.jpg" type="image/x-icon">
 
 
@@ -52,6 +52,13 @@
              <link rel="stylesheet" href="bootstrap-master/src/bootstrap-wysihtml5.css" >
              <link rel="stylesheet" href="bootstrap-master/lib/css/bootstrap3-wysiwyg5.css" >
           <link rel="stylesheet" href="bootstrap-master/dist/bootstrap-wysihtml5-0.0.2.css" >
+
+
+		<link rel="stylesheet" href="css/selectize.bootstrap3.css">
+
+		<link rel="stylesheet" href="css/selectize.css">
+
+		<script src="js/selectize.js"></script>
 
 		<script src="ckeditor/ckeditor.js"></script>
 
