@@ -1009,7 +1009,7 @@ Laboratorium  </button>
 <script>
 //untuk menampilkan data tabel
 $(document).ready(function(){
-    $("#kode_barang").focus();
+    $("#kode_barang").trigger('chosen:open');
 
 });
 
@@ -1446,7 +1446,7 @@ if (kolom_cek_harga == '0') {
 }
 else if (a > 0){
   alert("Anda Tidak Bisa Menambahkan Barang Yang Sudah Ada, Silakan Edit atau Pilih Barang Yang Lain !");
-       $("#kode_barang").focus();
+       $("#kode_barang").trigger('chosen:open');
   }
   else if (jumlah_barang == ''){
   alert("Jumlah Barang Harus Diisi");
@@ -1463,7 +1463,7 @@ else if (a > 0){
   else if (ber_stok == 'Jasa' || ber_stok == 'BHP' ){
 
     $("#kode_barang").val('');
-    $("#kode_barang").focus();
+    $("#kode_barang").trigger('chosen:open');
     $("#potongan_penjualan").val(Math.round(potongaaan));
     $("#potongan_persen").val(Math.round(pot_pers));
     $("#total1").val(tandaPemisahTitik(Math.round(total_akhir)));
@@ -1525,7 +1525,9 @@ if (limit_stok > stok)
 
    $.post("proses_tbs_penjualan_raja.php",{id_user:id_user,penjamin:penjamin,asal_poli:asal_poli,level_harga:level_harga,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,no_reg:no_reg,no_rm:no_rm,dokter:dokter,petugas_kasir:petugas_kasir,kode_barang:kode_barang,nama_barang:nama_barang,jumlah_barang:jumlah_barang,harga:harga,potongan:potongan,tax:tax,satuan:satuan,ber_stok:ber_stok,ppn:ppn},function(data){
      
-$("#kode_barang").chosen("destroy");
+
+
+$("#kode_barang").trigger('chosen:open')
       $("#ppn").attr("disabled", true);
      $("#tbody").prepend(data);
      $("#kode_barang").val('');
@@ -1535,7 +1537,7 @@ $("#kode_barang").chosen("destroy");
      $("#tax1").val('');
      $("#sisa_pembayaran_penjualan").val('');
      $("#kredit").val('');
-    $("#kode_barang").focus();
+    $("#kode_barang").trigger('chosen:open');
     $("#sisa_pembayaran_penjualan").val('');
     $("#kolom_cek_harga").val('0');
     $(".chosen").chosen({no_results_text: "Maaf, Data Tidak Ada!"}); 
@@ -2251,7 +2253,7 @@ else
   
   if(data == 1){
     alert("Anda Tidak Bisa Menambahkan Barang Yang Sudah Ada, Silakan Edit atau Pilih Barang Yang Lain !");
-    $("#kode_barang").focus();
+    $("#kode_barang").trigger('chosen:open');
     $("#kode_barang").val('');
     $("#nama_barang").val('');
    }//penutup if
@@ -2884,7 +2886,7 @@ $(document).on('click','.btn-hapus-tbs',function(e){
     }
     /*
     $("#tax_rp").val(Math.round(tax_bener));*/
-    $("#kode_barang").focus();    
+    $("#kode_barang").trigger('chosen:open');    
 
 
     });
@@ -2935,7 +2937,7 @@ AUTOCOMPLETE -->
 
           $("#kode_barang").val('');
           $("#nama_barang").val('');
-          $("#kode_barang").focus();
+          $("#kode_barang").trigger('chosen:open');
           }//penutup if
           
 else
@@ -3078,7 +3080,7 @@ $.post('cek_kode_barang_tbs_penjualan.php',{kode_barang:kode_barang,no_reg:no_re
           $("#kode_barang").chosen("destroy");
           $("#kode_barang").val('');
           $("#nama_barang").val('');
-          $("#kode_barang").focus();
+          $("#kode_barang").trigger('chosen:open');
           $(".chosen").chosen({no_results_text: "Maaf, Data Tidak Ada!"}); 
    }//penutup if     
 
@@ -3161,7 +3163,8 @@ $.post('cek_kode_barang_tbs_penjualan.php',{kode_barang:kode_barang,no_reg:no_re
     shortcut.add("f2", function() {
         // Do something
 
-        $("#kode_barang").focus();
+        $("#kode_barang").trigger('chosen:open');
+
 
     });
 
@@ -3505,7 +3508,7 @@ $(document).ready(function(){
 
 
        
-                                    $("#kode_barang").focus();
+                                    $("#kode_barang").trigger('chosen:open');
                                     
 
                                  });
