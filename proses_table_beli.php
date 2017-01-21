@@ -35,7 +35,7 @@ $columns = array(
 
 // getting total number records without any search
 $sql = "SELECT p.id,p.no_faktur,p.total,p.suplier,p.tanggal,p.tanggal_jt,p.jam,p.user,p.status,p.potongan,p.tax,p.sisa,p.kredit,s.nama,g.nama_gudang, g.kode_gudang";
-$sql.=" FROM pembelian p INNER JOIN suplier s ON p.suplier = s.id INNER JOIN gudang g ON p.kode_gudang = g.kode_gudang ";
+$sql.=" FROM pembelian p LEFT JOIN suplier s ON p.suplier = s.id LEFT JOIN gudang g ON p.kode_gudang = g.kode_gudang ";
 $query = mysqli_query($conn, $sql) or die("eror 1");
 $totalData = mysqli_num_rows($query);
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
