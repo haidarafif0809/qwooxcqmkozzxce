@@ -371,14 +371,7 @@ while ( $data = mysqli_fetch_array($query))
         alert("Harga 1 Harus Diisi");
        $("#harga_1").focus();
     }
-     else if (harga_2 == '') {
-        alert("Harga 2 Harus Diisi");
-       $("#harga_2").focus();
-    }
-     else if (harga_3 == '') {
-        alert("Harga 3 Harus Diisi");
-       $("#harga_3").focus();
-    }
+ 
     else if (bidang == '') {
         alert("Kelompok Pemeriksaan Harus Diisi");
        $("#bidang").focus();
