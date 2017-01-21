@@ -2,9 +2,9 @@
 include 'db.php';
 include 'sanitasi.php';
 
-$id = stringdoang($_POST['id_produk']);
-$kode_barang = stringdoang($_POST['kode_barang']);
-$bulan = stringdoang($_POST['bulan']);
+$id = stringdoang($_POST['id_produk']); 
+$kode_barang = stringdoang($_POST['kode_barang']); 
+$bulan = stringdoang($_POST['bulan']); 
 $tahun = stringdoang($_POST['tahun']);
 
 if ($bulan == '1')
@@ -122,11 +122,11 @@ if ($requestData['start']   == 0) {
 	$nestedData=array();
 
 $nestedData[] = "";
- $nestedData[] = "Saldo Awal";
+$nestedData[] = "<font color='red'>SALDO AWAL</font>";
 $nestedData[] = "";
 $nestedData[] = "";
 $nestedData[] = "";
-$nestedData[] =  $total_saldo ;
+$nestedData[] =  "<font color='red'>".rp($total_saldo)."</font>" ;
 
 
  
@@ -157,7 +157,7 @@ $total_saldo = $total_saldo + $total_saldo_setelah_page_1;
 
 }
 
-
+$bulan = stringdoang($_POST['bulan']);
 
 // getting total number records without any search
 $sql = "SELECT no_faktur,jumlah_kuantitas,jenis_transaksi,tanggal,jenis_hpp FROM hpp_masuk WHERE kode_barang = '$kode_barang' AND MONTH(tanggal) = '$bulan' AND YEAR(tanggal) = '$tahun' UNION SELECT no_faktur, jumlah_kuantitas,jenis_transaksi, tanggal, jenis_hpp FROM hpp_keluar WHERE kode_barang = '$kode_barang' AND MONTH(tanggal) = '$bulan' AND YEAR(tanggal) = '$tahun' ";
@@ -177,7 +177,7 @@ $sql = "SELECT no_faktur,jumlah_kuantitas,jenis_transaksi,tanggal,jenis_hpp FROM
 $query=mysqli_query($conn, $sql) or die("eror 2");
 $totalFiltered = mysqli_num_rows($query); // when there is a search parameter then we have to modify total number filtered rows as per search result. 
 
- $sql.=" ORDER BY tanggal ".$requestData['order'][0]['dir']."  LIMIT ".$requestData['start']." ,".$requestData['length']."  ";
+$sql.=" ORDER BY tanggal ".$requestData['order'][0]['dir']."  LIMIT ".$requestData['start']." ,".$requestData['length']."  ";
  /* $requestData['order'][0]['column'] contains colmun index, $requestData['order'][0]['dir'] contains order such as asc/desc  */	
 $query= mysqli_query($conn, $sql) or die("eror 3");
 

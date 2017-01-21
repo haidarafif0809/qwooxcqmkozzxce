@@ -20,7 +20,7 @@ include 'db.php';
 
 <!--tampilan modal-->
 <div id="myModal" class="modal fade" role="dialog">
-  <div class="modal-dialog modal-lg">
+  <div class="modal-dialog">
 
     <!-- isi modal-->
     <div class="modal-content">
@@ -31,11 +31,24 @@ include 'db.php';
       </div>
       <div class="modal-body">
 
-      <div class="table-resposive">
-<span class="modal_baru">
 
-  </span>
-</div>
+<center>
+      <div class="table-resposive">
+           <table id="table_kartu_stok" class="table table-bordered table-sm">
+           <thead> <!-- untuk memberikan nama pada kolom tabel -->
+                              
+            <th> Kode Barang </th>
+            <th> Nama Barang </th>
+            <th> Jumlah Barang </th>
+            <th> Satuan </th>
+            <th> Kategori </th>
+            <th> Status </th>
+                              
+           </thead> <!-- tag penutup tabel -->
+           </table>
+      </div>
+</center>
+
 </div> <!-- tag penutup modal-body-->
       <div class="modal-footer">
         <center><b><button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
@@ -122,7 +135,7 @@ include 'db.php';
      </table>
 
 </div>
-<a href='export_kartu_stok.php?moon=<?php echo $moon; ?>&id_produk=<?php echo $id; ?>&kode_barang=<?php echo $kode_barang; ?>&nama_barang=<?php echo $nama_barang; ?>&bulan=<?php echo $bulan; ?>&tahun=<?php echo $tahun; ?>' type='submit' id="btn-export" class='btn btn-default btn-lg' style="display: none;">Download Excel</a>
+<a href='export_kartu_stok.php' type='submit' id="btn-export" class='btn btn-default' style="display: none;"><i class="fa fa-download"> Download Excel</i></a>
 
 </div><!--Div Container-->
 
@@ -153,14 +166,12 @@ $("#btn-export").show();
           "ajax":{
             url :"show_kartu_stok.php", // json datasource
              "data": function ( d ) {
-                d.dari_tanggal = $("#daritgl").val();
-                d.sampai_tanggal = $("#sampaitgl").val();
-            var kode_barang = $("#kode_barang").val();
-             d.kode_barang = kode_barang.substr(0, kode_barang.indexOf('('));       
-               d.nama_barang = $("#nama_barang").val();   
-             d.id_produk = $("#id_produk").val();        
-              d.bulan = $("#bulan").val();        
-              d.tahun = $("#tahun").val();
+                var kode_barang = $("#kode_barang").val();
+                d.kode_barang = kode_barang.substr(0, kode_barang.indexOf('('));       
+                d.nama_barang = $("#nama_barang").val();   
+                d.id_produk = $("#id_produk").val();        
+                d.bulan = $("#bulan").val();        
+                d.tahun = $("#tahun").val();
                 // d.custom = $('#myInput').val();
                 // etc
             },
@@ -251,16 +262,41 @@ $(document).ready(function() {
       //menyembunyikan notif berhasil
       $("#alert_berhasil").hide();
       
-      var kode_pelanggan = $("#kd_pelanggan").val();
-      //coding update jumlah barang baru "rabu,(9-3-2016)"
-      $.post('modal_kartu_stok_baru.php',{kode_pelanggan:kode_pelanggan},function(data) {
-      
-      $(".modal_baru").html(data);
-     
-      });
       /* Act on the event */
       });
 
+</script>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    var kode_pelanggan = $("#kd_pelanggan").val();
+    $("#table_kartu_stok").DataTable().destroy();
+          var dataTable = $('#table_kartu_stok').DataTable( {
+          "processing": true,
+          "serverSide": true,
+          "ajax":{
+            url :"modal_kartu_stok_baru.php", // json datasource
+            type: "post",  // method  , by default get
+            error: function(){  // error handling
+              $(".employee-grid-error").html("");
+              $("#table_kartu_stok").append('<tbody class="employee-grid-error"><tr><th colspan="3">Data Tidak Ditemukan.. !!</th></tr></tbody>');
+              $("#employee-grid_processing").css("display","none");
+              
+            }
+          },
+
+          "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+
+              $(nRow).attr('class', "pilih");
+              $(nRow).attr('data-kode', aData[0]+"("+aData[1]+")");
+              $(nRow).attr('nama-barang', aData[1]);
+              $(nRow).attr('id-barang', aData[6]);
+
+
+          }
+
+        }); 
+});
 </script>
 
 

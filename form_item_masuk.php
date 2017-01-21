@@ -46,19 +46,19 @@ $perintah = $db->query("SELECT * FROM item_masuk");
                               <div class="modal-body"> <!--membuat kerangka untuk tempat tabel -->
                               
                               <div class="table-responsive">                              
-                             <center>
+                              <center>
                               <table id="table_item_masuk" class="table table-bordered table-sm">
-                            <thead> <!-- untuk memberikan nama pada kolom tabel -->
-        
-                          <th> Kode Barang </th>
-                          <th> Nama Barang </th>
-                          <th> Jumlah Barang </th>
-                          <th> Kategori </th>
-                          <th> Suplier </th>
-                          <th> Satuan </th>
-                          <th> Harga Beli</th>
-        
-                          </thead> <!-- tag penutup tabel -->
+                              <thead> <!-- untuk memberikan nama pada kolom tabel -->
+                              
+                              <th> Kode Barang </th>
+                              <th> Nama Barang </th>
+                              <th> Jumlah Barang </th>
+                              <th> Kategori </th>
+                              <th> Suplier </th>
+                              <th> Satuan </th>
+                              <th> Harga Beli</th>
+                              
+                              </thead> <!-- tag penutup tabel -->
                               </table>
                               </center>
                               </div> 
