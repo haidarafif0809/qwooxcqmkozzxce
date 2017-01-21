@@ -590,7 +590,6 @@
                   });
                   
                   // #result didapat dari tag span id=result
-                  $("#result").load("tabel_stok_opname.php");
                   //mengambil no_faktur pembelian agar berurutan
                
                   $("form").submit(function(){
