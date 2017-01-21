@@ -287,28 +287,45 @@ echo '<a href="form_stok_opname.php"  class="btn btn-info" > <i class="fa fa-plu
 		
 		
 		});
-
-
-		$("#btn_jadi_hapus").click(function(){
-		
-		var no_faktur = $("#data_faktur").val();
-		var id = $(this).attr("data-id");
-
-		$.post("hapus_data_stok_opname.php",{no_faktur:no_faktur},function(data){
-		if (data != "") {
-
-         
-         $("#modal_hapus").modal('hide');
-         $(".tr-id-"+id).remove();
-		
-		}
-
-		
-		});
-		
-		});
 // end fungsi hapus data
 
+</script>
+
+<script type="text/javascript">
+     $(document).on('click', '#btn_jadi_hapus', function (e) {    
+					var no_faktur = $("#data_faktur").val();
+					var id = $(this).attr("data-id");
+                    
+                    
+                    $("#modal_hapus").modal('hide');
+                    
+                    $.post("hapus_data_stok_opname.php",{no_faktur:no_faktur},function(data){
+                      $('#table_stok_opname').DataTable().destroy();
+     
+                  var dataTable = $('#table_stok_opname').DataTable( {
+                      "processing": true,
+                      "serverSide": true,
+                      "ajax":{
+                        url :"datatable_stok_opname.php", // json datasource
+                        type: "post",  // method  , by default get
+                        error: function(){  // error handling
+                          $(".employee-grid-error").html("");
+                          $("#table_stok_opname").append('<tbody class="employee-grid-error"><tr><th colspan="3">No data found in the server</th></tr></tbody>');
+                          $("#employee-grid_processing").css("display","none");
+                          }
+                      },
+                         "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+
+                          $(nRow).attr('class','tr-id-'+aData[12]+'');         
+
+                      }
+                    });
+                    });
+
+                    
+        }); 
+
+     
 </script>
 
 <script type="text/javascript">
