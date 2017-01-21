@@ -42,7 +42,7 @@
                   <br>
                   <!-- Tampilan Modal -->
                   <div id="myModal" class="modal fade" role="dialog">
-                  <div class="modal-dialog modal-lg">
+                  <div class="modal-dialog">
                   
                   <!-- Isi Modal-->
                   <div class="modal-content">
@@ -53,10 +53,21 @@
                   <div class="modal-body"> <!--membuat kerangka untuk tempat tabel -->
                   
                   <!--perintah agar modal update-->
-                  <span class="modal_stok_baru">
-                  
-                  <!-- membuat agar ada garis pada tabel, disetiap kolom-->
-                  </span>
+                  <center>
+                        <div class="table-responsive">
+                              <table id="table_stok_awal" class="table table-bordered ">
+                              <thead> <!-- untuk memberikan nama pada kolom tabel -->
+                              
+                              <th> Kode Barang </th>
+                              <th> Nama Barang </th>
+                              <th> Satuan </th>
+                              <th> Kategori </th>
+                              <th> Suplier </th>
+                              
+                              </thead> <!-- tag penutup tabel -->
+                              </table>
+                        </div>
+                  </center>
                   
                   </div> <!-- tag penutup modal body -->
                   
@@ -406,19 +417,46 @@
                 
                   //menyembunyikan notif berhasil
                   $("#alert_berhasil").hide();
-                  /* Act on the event */
-                  
-                  $.get('modal_stok_awal_baru.php', function(data) {
-                  
-                  $(".modal_stok_baru").html(data);
-                  
-                  
-                  })
-                  
+
                   });
                   
                   
                   </script>
+
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    $("#table_stok_awal").DataTable().destroy();
+          var dataTable = $('#table_stok_awal').DataTable( {
+          "processing": true,
+          "serverSide": true,
+          "ajax":{
+            url :"modal_stok_awal_baru.php", // json datasource
+            type: "post",  // method  , by default get
+            error: function(){  // error handling
+              $(".employee-grid-error").html("");
+              $("#table_stok_awal").append('<tbody class="employee-grid-error"><tr><th colspan="3">Data Tidak Ditemukan.. !!</th></tr></tbody>');
+              $("#employee-grid_processing").css("display","none");
+              
+            }
+          },
+
+          "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+
+              $(nRow).attr('class', "pilih");
+              $(nRow).attr('data-kode', aData[0]+"("+aData[1]+")");
+              $(nRow).attr('nama-barang', aData[1]);
+              $(nRow).attr('satuan', aData[6]);
+              $(nRow).attr('harga_beli', aData[5]);
+
+
+
+          }
+
+        }); 
+});
+</script>
+
                   
                
                   
