@@ -1,4 +1,4 @@
- <?php session_start();
+ <?php 
 /* Database connection start */
 include 'db.php';
 /* Database connection end */
