@@ -2375,8 +2375,6 @@ $.post('cek_kode_barang_tbs_penjualan_apotek.php',{kode_barang:kode_barang}, fun
           $(".chosen").chosen({no_results_text: "Maaf, Data Tidak Ada!"}); 
    }//penutup if     
 
-  else{
-
     if (level_harga == "harga_1") {
 
         $('#harga_produk').val(harga_jual);
@@ -2439,7 +2437,6 @@ $.post('cek_kode_barang_tbs_penjualan_apotek.php',{kode_barang:kode_barang}, fun
     $("#id_produk").val(id_barang);
 
 
-  }  
 
 
   });
