@@ -1364,6 +1364,10 @@ $(document).ready(function(){
         subtotal = 0;
       };
 
+if (kode_barang != '')
+{
+
+
     if (ppn == 'Exclude') {
   
          var total1 = parseInt(jumlah_barang,10) * parseInt(harga,10) - parseInt(potongan,10);
@@ -1462,8 +1466,7 @@ else if (a > 0){
   }
   else if (ber_stok == 'Jasa' || ber_stok == 'BHP' ){
 
-    $("#kode_barang").val('');
-    $("#kode_barang").trigger('chosen:open');
+
     $("#potongan_penjualan").val(Math.round(potongaaan));
     $("#potongan_persen").val(Math.round(pot_pers));
     $("#total1").val(tandaPemisahTitik(Math.round(total_akhir)));
@@ -1475,11 +1478,12 @@ else if (a > 0){
  $.post("proses_tbs_penjualan_raja.php",{id_user:id_user,penjamin:penjamin,asal_poli:asal_poli,level_harga:level_harga,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,no_reg:no_reg,no_rm:no_rm,dokter:dokter,petugas_kasir:petugas_kasir,kode_barang:kode_barang,nama_barang:nama_barang,jumlah_barang:jumlah_barang,harga:harga,potongan:potongan,tax:tax,satuan:satuan, ber_stok:ber_stok,ppn:ppn},function(data){
      
   
-    $("#kode_barang").chosen("destroy");
 
      $("#ppn").attr("disabled", true);
      $("#tbody").prepend(data);
-     $("#kode_barang").val('');
+     $("#kode_barang").val('').trigger("chosen:updated").trigger('chosen:open');
+        
+
      $("#nama_barang").val('');
      $("#jumlah_barang").val('');
      $("#potongan1").val('');
@@ -1493,7 +1497,6 @@ else if (a > 0){
      $("#harga_lama").val('');
      $("#potongan1").val('');
      $("#tax1").val('');
-     $(".chosen").chosen({no_results_text: "Maaf, Data Tidak Ada!",search_contains:true}); 
 
      });
 
@@ -1527,17 +1530,17 @@ if (limit_stok > stok)
      
 
 
-$("#kode_barang").trigger('chosen:open')
       $("#ppn").attr("disabled", true);
      $("#tbody").prepend(data);
-     $("#kode_barang").val('');
+     $("#kode_barang").val('').trigger("chosen:updated");
      $("#nama_barang").val('');
      $("#jumlah_barang").val('');
      $("#potongan1").val('');
      $("#tax1").val('');
      $("#sisa_pembayaran_penjualan").val('');
      $("#kredit").val('');
-    $("#kode_barang").trigger('chosen:open');
+    $("#kode_barang").trigger("chosen:open");
+
     $("#sisa_pembayaran_penjualan").val('');
     $("#kolom_cek_harga").val('0');
     $(".chosen").chosen({no_results_text: "Maaf, Data Tidak Ada!",search_contains:true}); 
@@ -1547,38 +1550,6 @@ $("#kode_barang").trigger('chosen:open')
 }
     
 
-        
-      
-      
-  });
-
-    $("#formtambahproduk").submit(function(){
-    return false;
-    
-    });
-
-
-
-
-//menampilkan no urut faktur setelah tombol click di pilih
-      $("#cari_produk_penjualan").click(function() {      
- 
-      //menyembunyikan notif berhasil
-      $("#alert_berhasil").hide();     
-      $("#cetak_tunai").hide('');
-      $("#cetak_tunai_besar").hide('');
-      $("#cetak_piutang").hide('');
-      
-      /* Act on the event */
-      });
-
-   </script>
-
-
-   <script type="text/javascript">
-  $(document).ready(function(){
-    $("#submit_produk").click(function(){
-    var no_reg = $("#no_reg").val();
     var pot_fakt_per = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#potongan_persen").val()))));
     var pot_fakt_rp = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#potongan_penjualan").val()))));
     var total_lab = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#total_lab").val()))));
@@ -1643,11 +1614,46 @@ $("#kode_barang").trigger('chosen:open')
         }
 
 
-      });
-  });
+      });       
+ }
 
-  });
+ else {
+
+alert("Kode barang harus terisi");
+    $("#kode_barang").trigger('chosen:open');
+
+
+ }     
+      
+  });/// braket penutup submit_produk
+
+
+    $("#formtambahproduk").submit(function(){
+    return false;
+    
+    });
+
+
+
+
+//menampilkan no urut faktur setelah tombol click di pilih
+      $("#cari_produk_penjualan").click(function() {      
+ 
+      //menyembunyikan notif berhasil
+      $("#alert_berhasil").hide();     
+      $("#cetak_tunai").hide('');
+      $("#cetak_tunai_besar").hide('');
+      $("#cetak_piutang").hide('');
+      
+      /* Act on the event */
+      });
+
+
+
+
    </script>
+
+
 
 
 <!--cetak langsung disini-->

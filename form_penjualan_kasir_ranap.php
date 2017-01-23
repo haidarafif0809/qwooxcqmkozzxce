@@ -557,6 +557,7 @@ Level 7
   <div class="col-xs-3">
 
   <select type="text" style="height:15px" class="form-control chosen" name="kode_barang" autocomplete="off" id="kode_barang" data-placeholder="SILAKAN PILIH" >
+ <option value="">SILAKAN PILIH</option>
  <?php 
 
         include 'cache.class.php';
@@ -1853,8 +1854,8 @@ else
             };
 
         }
-
-
+if (kode_barang != '')
+{
 
 
     var total_tanpa_pajak = parseInt(jumlah_barang,10) * parseInt(harga,10) - parseInt(Math.round(potongan,10));
@@ -2061,7 +2062,17 @@ else if (a > 0){
      });
 }
 
+}
+else
+{
+  alert("Kode Barang Belum Terisi");
+  $("#kode_barang").trigger("chosen:open");
+
+}
+
   });
+
+
 
     $("#formtambahproduk").submit(function(){
     return false;
@@ -2250,6 +2261,7 @@ else
   if(data == 1){
     alert("Anda Tidak Bisa Menambahkan Barang Yang Sudah Ada, Silakan Edit atau Pilih Barang Yang Lain !");
     $("#kode_barang").val('');
+   $("#kode_barang").trigger('chosen:updated').trigger('chosen:open');
     $("#nama_barang").val('');
    }//penutup if
 
