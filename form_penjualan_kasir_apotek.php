@@ -2355,25 +2355,7 @@ else {
     var id_barang = $('#opt-produk-'+kode_barang).attr("id-barang");
     var level_harga = $("#level_harga").val();
 
-    $.post('ambil_jumlah_produk.php',{kode_barang:kode_barang}, function(data){
-      if (data == "") {
-        data = 0;
-      }
-      $("#jumlahbarang").val(data);
-    });
 
-
-$.post('cek_kode_barang_tbs_penjualan_apotek.php',{kode_barang:kode_barang}, function(data){
-          
-  if(data == 1){
-          alert("Anda Tidak Bisa Menambahkan Barang Yang Sudah Ada, Silakan Edit atau Pilih Barang Yang Lain !");
-
-          $("#kode_barang").chosen("destroy");
-          $("#kode_barang").val('');
-          $("#nama_barang").val('');
-          $("#kode_barang").trigger('chosen:open');
-          $(".chosen").chosen({no_results_text: "Maaf, Data Tidak Ada!"}); 
-   }//penutup if     
 
     if (level_harga == "harga_1") {
 
@@ -2437,13 +2419,30 @@ $.post('cek_kode_barang_tbs_penjualan_apotek.php',{kode_barang:kode_barang}, fun
     $("#id_produk").val(id_barang);
 
 
+    $.post('ambil_jumlah_produk.php',{kode_barang:kode_barang}, function(data){
+      if (data == "") {
+        data = 0;
+      }
+      $("#jumlahbarang").val(data);
+    });
+
+$.post('cek_kode_barang_tbs_penjualan_apotek.php',{kode_barang:kode_barang}, function(data){
+          
+  if(data == 1){
+          alert("Anda Tidak Bisa Menambahkan Barang Yang Sudah Ada, Silakan Edit atau Pilih Barang Yang Lain !");
+
+          $("#kode_barang").chosen("destroy");
+          $("#kode_barang").val('');
+          $("#nama_barang").val('');
+          $("#kode_barang").trigger('chosen:open');
+          $(".chosen").chosen({no_results_text: "Maaf, Data Tidak Ada!"}); 
+   }//penutup if     
 
 
   });
   });
   });
-
-      
+  
       
 </script>
 
