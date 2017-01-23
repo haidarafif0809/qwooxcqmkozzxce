@@ -2442,7 +2442,8 @@ $.post('cek_kode_barang_tbs_penjualan_apotek.php',{kode_barang:kode_barang}, fun
   });
   });
   });
-  
+
+    
       
 </script>
 
