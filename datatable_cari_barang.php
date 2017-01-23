@@ -132,10 +132,18 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
             $c = $b - $a;
             $d = $c;
 
-            //Gross Profit Margin itu rumusnya (harga jual-harga beli)/Harga jual x 100
+            if ($d == 0 OR $b == 0) {
+            	$f = 0;
+            }
+            else{
+
+            	 //Gross Profit Margin itu rumusnya (harga jual-harga beli)/Harga jual x 100
             $e =  ($d / $b) * 100;
 
             $f = round($e,2);
+
+            }
+           
           }
 
         }
