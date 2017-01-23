@@ -1058,7 +1058,7 @@ $(document).ready(function(){
 
       <script type="text/javascript">
       
-      $(".chosen").chosen({no_results_text: "Maaf, Data Tidak Ada!"});  
+      $(".chosen").chosen({no_results_text: "Maaf, Data Tidak Ada!",search_contains:true,search_contains:true});  
       
       </script>
 
@@ -1270,7 +1270,7 @@ $("#kode_barang").val('');
                  $("#tax1").val('');
                  $("#tipe_barang").val('');
                  $("#harga_penjamin").val('');
-                $(".chosen").chosen({no_results_text: "Maaf, Data Tidak Ada!"}); 
+                $(".chosen").chosen({no_results_text: "Maaf, Data Tidak Ada!",search_contains:true}); 
               $("#kode_barang").trigger('chosen:open');
 
                  
@@ -2431,11 +2431,11 @@ $.post('cek_kode_barang_tbs_penjualan_apotek.php',{kode_barang:kode_barang}, fun
   if(data == 1){
           alert("Anda Tidak Bisa Menambahkan Barang Yang Sudah Ada, Silakan Edit atau Pilih Barang Yang Lain !");
 
-          $("#kode_barang").chosen("destroy");
           $("#kode_barang").val('');
+          $("#kode_barang").trigger("chosen:updated");
           $("#nama_barang").val('');
           $("#kode_barang").trigger('chosen:open');
-          $(".chosen").chosen({no_results_text: "Maaf, Data Tidak Ada!"}); 
+          $(".chosen").chosen({no_results_text: "Maaf, Data Tidak Ada!",search_contains:true}); 
    }//penutup if     
 
 

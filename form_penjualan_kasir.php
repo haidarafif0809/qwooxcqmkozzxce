@@ -1285,7 +1285,7 @@ $(document).ready(function(){
 
       <script type="text/javascript">
       
-      $(".chosen").chosen({no_results_text: "Maaf, Data Tidak Ada!"});  
+      $(".chosen").chosen({no_results_text: "Maaf, Data Tidak Ada!",search_contains:true});  
       
       </script>
 
@@ -1493,7 +1493,7 @@ else if (a > 0){
      $("#harga_lama").val('');
      $("#potongan1").val('');
      $("#tax1").val('');
-     $(".chosen").chosen({no_results_text: "Maaf, Data Tidak Ada!"}); 
+     $(".chosen").chosen({no_results_text: "Maaf, Data Tidak Ada!",search_contains:true}); 
 
      });
 
@@ -1540,7 +1540,7 @@ $("#kode_barang").trigger('chosen:open')
     $("#kode_barang").trigger('chosen:open');
     $("#sisa_pembayaran_penjualan").val('');
     $("#kolom_cek_harga").val('0');
-    $(".chosen").chosen({no_results_text: "Maaf, Data Tidak Ada!"}); 
+    $(".chosen").chosen({no_results_text: "Maaf, Data Tidak Ada!",search_contains:true}); 
 
      
      });
@@ -3144,7 +3144,7 @@ $.post('cek_kode_barang_tbs_penjualan.php',{kode_barang:kode_barang,no_reg:no_re
           $("#kode_barang").val('');
           $("#nama_barang").val('');
           $("#kode_barang").trigger('chosen:open');
-          $(".chosen").chosen({no_results_text: "Maaf, Data Tidak Ada!"}); 
+          $(".chosen").chosen({no_results_text: "Maaf, Data Tidak Ada!",search_contains:true}); 
    }//penutup if     
 
 
@@ -3632,7 +3632,7 @@ no_reg
                           $('#penjamin').val(json.penjamin);
                           $('#no_reg').val(json.no_reg);
                           $('#level_harga').val(json.provinsi);
-                          $(".chosen").chosen({no_results_text: "Maaf, Data Tidak Ada!"}); 
+                          $(".chosen").chosen({no_results_text: "Maaf, Data Tidak Ada!",search_contains:true}); 
 
                           $("#total").val(tandaPemisahTitik(json.petugas));              
                           $("#subtotal").val(tandaPemisahTitik(json.keterangan));  
