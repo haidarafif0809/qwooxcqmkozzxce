@@ -362,8 +362,6 @@ else
 
               $stmt = $db->query("UPDATE penjualan SET no_faktur = '$no_faktur', no_reg = '$no_reg', penjamin = '$penjamin', apoteker = '$petugas_farmasi', perawat = '$petugas_paramedik', petugas_lain = '$petugas_lain', dokter = '$dokter', kode_gudang = '$kode_gudang', kode_pelanggan = '$no_rm', total = '$total', tanggal = '$tanggal_sekarang', jam = '$jam_sekarang', user = '$nama_petugas', sales = '$petugas_kasir', status = 'Lunas', potongan = '$potongan', tax = '$tax', sisa = '$sisa', cara_bayar = '$cara_bayar', tunai = '$pembayaran', status_jual_awal = 'Tunai', keterangan = '$keterangan', ppn = '$ppn_input',jenis_penjualan = 'Rawat Inap',nama = '$nama_pasien',biaya_admin = '$biaya_admin', no_faktur_jurnal = '$no_jurnal', keterangan_jurnal =  '$ket_jurnal' WHERE no_faktur =  '$no_faktur'");
 
-              echo "UPDATE penjualan SET no_faktur = '$no_faktur', no_reg = '$no_reg', penjamin = '$penjamin', apoteker = '$petugas_farmasi', perawat = '$petugas_paramedik', petugas_lain = '$petugas_lain', dokter = '$dokter', kode_gudang = '$kode_gudang', kode_pelanggan = '$no_rm', total = '$total', tanggal = '$tanggal_sekarang', jam = '$jam_sekarang', user = '$nama_petugas', sales = '$petugas_kasir', status = 'Lunas', potongan = '$potongan', tax = '$tax', sisa = '$sisa', cara_bayar = '$cara_bayar', tunai = '$pembayaran', status_jual_awal = 'Tunai', keterangan = '$keterangan', ppn = '$ppn_input',jenis_penjualan = 'Rawat Inap',nama = '$nama_pasien',biaya_admin = '$biaya_admin', no_faktur_jurnal = '$no_jurnal', keterangan_jurnal =  '$ket_jurnal' WHERE no_faktur =  '$no_faktur'";
-
 $select_setting_akun = $db->query("SELECT * FROM setting_akun");
 $ambil_setting = mysqli_fetch_array($select_setting_akun);
 
