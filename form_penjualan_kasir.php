@@ -1040,7 +1040,7 @@ $(document).ready(function(){
           "fnCreatedRow": function( nRow, aData, iDataIndex ) {
 
               $(nRow).attr('class', "pilih");
-              $(nRow).attr('data-kode', aData[0]+"("+aData[1]+")");
+              $(nRow).attr('data-kode', aData[0]);
               $(nRow).attr('nama-barang', aData[1]);
               $(nRow).attr('harga', aData[2]);
               $(nRow).attr('harga_level_2', aData[3]);
@@ -1078,6 +1078,8 @@ $(document).ready(function(){
 
 
   document.getElementById("kode_barang").value = $(this).attr('data-kode');
+    $("#kode_barang").trigger('chosen:updated');
+
   document.getElementById("nama_barang").value = $(this).attr('nama-barang');
   document.getElementById("limit_stok").value = $(this).attr('limit_stok');
   document.getElementById("satuan_produk").value = $(this).attr('satuan');
@@ -1086,6 +1088,22 @@ $(document).ready(function(){
   document.getElementById("harga_baru").value = $(this).attr('harga');
   document.getElementById("satuan_konversi").value = $(this).attr('satuan');
   document.getElementById("id_produk").value = $(this).attr('id-barang');
+
+    var session_id = $("#session_id").val();
+    var no_reg = $("#no_reg").val();
+    var kode_barang = $("#kode_barang").val();
+
+ $.post('cek_kode_barang_tbs_penjualan.php',{kode_barang:kode_barang,session_id:session_id,no_reg:no_reg}, function(data){
+  
+  if(data == 1){
+    alert("Anda Tidak Bisa Menambahkan Barang Yang Sudah Ada, Silakan Edit atau Pilih Barang Yang Lain !");
+    $("#kode_barang").val('');
+    $("#kode_barang").trigger('chosen:updated');
+    $("#kode_barang").trigger('chosen:open');
+    $("#nama_barang").val('');
+   }//penutup if
+
+    });////penutup function(data)
 
 
 
@@ -1227,9 +1245,6 @@ $(document).ready(function(){
   });
 </script>
 <!-- end cek stok satuan konversi change-->
-
-
-  
 
 
 <script>
@@ -2245,28 +2260,6 @@ else
       
   </script>
 
-
-  <script type="text/javascript">
-//berfunsi untuk mencekal username ganda
- $(document).ready(function(){
-  $(document).on('click', '.pilih', function (e) {
-    var session_id = $("#session_id").val();
-    var no_reg = $("#no_reg").val();
-    var kode_barang = $("#kode_barang").val();
- $.post('cek_kode_barang_tbs_penjualan.php',{kode_barang:kode_barang,session_id:session_id,no_reg:no_reg}, function(data){
-  
-  if(data == 1){
-    alert("Anda Tidak Bisa Menambahkan Barang Yang Sudah Ada, Silakan Edit atau Pilih Barang Yang Lain !");
-    $("#kode_barang").trigger('chosen:open');
-    $("#kode_barang").val('');
-    $("#nama_barang").val('');
-   }//penutup if
-
-    });////penutup function(data)
-
-    });//penutup click(function()
-  });//penutup ready(function()
-</script>
 
 <!--
 <script type="text/javascript">

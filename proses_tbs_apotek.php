@@ -7,6 +7,7 @@ $session_id = session_id();
 $tipe = stringdoang($_POST['tipe_barang']);
 $penjamin = stringdoang($_POST['penjamin']);
 $apoteker = stringdoang($_POST['apoteker']);
+$analis = stringdoang($_POST['analis']);
 $no_rm  = stringdoang($_POST['no_rm']);
 $petugas = $_SESSION['nama'];
 $waktu = date("Y-m-d H:i:s");
@@ -155,7 +156,7 @@ $subtotal = $harga * $jumlah - $potongan_jadi;
                 // ENDING NOMINAL APOTEKER HARGA 1
 
                 // MULAI PERSENTASE UNTUK PETUGAS 1
-                $cek_persen_petugas_harga1 = $db->query("SELECT * FROM fee_produk WHERE nama_petugas = '$id_kasir' AND kode_produk = '$kode'");
+                $cek_persen_petugas_harga1 = $db->query("SELECT * FROM fee_produk WHERE nama_petugas = '$id_kasir' AND kode_produk = '$kode' ");
                 $data_persen_petugas_harga1 = mysqli_fetch_array($cek_persen_petugas_harga1);
                  if ($data_persen_petugas_harga1['jumlah_prosentase'] != 0 AND $data_persen_petugas_harga1['jumlah_uang'] == 0 )
                 {
@@ -176,6 +177,30 @@ $subtotal = $harga * $jumlah - $potongan_jadi;
 
                 }
                 // ENDING UNTUK PETUGAS 1
+
+                // MULAI PERSENTASE UNTUK ANALIS 1
+                $cek_persen_petugas_harga1 = $db->query("SELECT * FROM fee_produk WHERE nama_petugas = '$analis' AND kode_produk = '$kode'");
+                $data_persen_petugas_harga1 = mysqli_fetch_array($cek_persen_petugas_harga1);
+                 if ($data_persen_petugas_harga1['jumlah_prosentase'] != 0 AND $data_persen_petugas_harga1['jumlah_uang'] == 0 )
+                {
+
+                $hasil_hitung_fee_persen_petugas_harga1 = $subtotal * $data_persen_petugas_harga1['jumlah_prosentase'] / 100;
+                $query_persen_petugas1 = $db->query("UPDATE tbs_fee_produk SET jumlah_fee = jumlah_fee + '$hasil_hitung_fee_persen_petugas_harga1' WHERE nama_petugas = '$analis' AND kode_produk = '$kode'");
+
+                }
+                // AKHIR PERSENTASE UNTUK ANALIS 1
+
+                else
+
+                // START NOMINAL UNTUK ANALIS 1
+                {
+
+                $hasil_hitung_fee_nominal_petugas_harga1 = $data_persen_petugas_harga1['jumlah_uang'] * $jumlah;
+                $query_nominal_petugas1 = $db->query("UPDATE tbs_fee_produk SET jumlah_fee = jumlah_fee + '$hasil_hitung_fee_nominal_petugas_harga1' WHERE nama_petugas = '$analis' AND kode_produk = '$kode'");
+
+                }
+                // ENDING UNTUK ANALIS 1
+
 
           }//dont touch me 
 
@@ -274,7 +299,56 @@ $subtotal = $harga * $jumlah - $potongan_jadi;
               }
            }
           } // penutup if petugas di harga 1 > 0
-          // ENDING PERHITUNGAN UNTUK FEE PETUGAS                      
+          // ENDING PERHITUNGAN UNTUK FEE PETUGAS  
+
+
+
+          // PERHITUNGAN UNTUK FEE ANALIS
+          $cek_petugas = $db->query("SELECT * FROM fee_produk WHERE nama_petugas = '$analis' AND kode_produk = '$kode'");
+          $cek_fee_petugas1 = mysqli_num_rows($cek_petugas);
+          $dataui_petugas = mysqli_fetch_array($cek_petugas);
+
+          if ($cek_fee_petugas1 > 0) 
+          {
+
+          if ($dataui_petugas['jumlah_prosentase'] != 0 AND $dataui_petugas['jumlah_uang'] == 0 )
+
+          {  
+          $hasil_hitung_fee_persen_petugas = $subtotal * $dataui_petugas['jumlah_prosentase'] / 100;
+
+          $insert1_petugas = "INSERT INTO tbs_fee_produk 
+          (session_id,no_rm,nama_petugas,kode_produk,nama_produk,jumlah_fee,tanggal,jam) VALUES 
+          ('$session_id','$no_rm','$analis','$kode','$nama','$hasil_hitung_fee_persen_petugas','$tanggal_sekarang','$jam_sekarang')";
+          if ($db->query($insert1_petugas) === TRUE) 
+          {
+            
+          } 
+          else 
+                  {
+              echo "Error: " . $insert1_petugas . "<br>" . $db->error;
+                  }
+          }
+
+          else
+          {
+          $hasil_hitung_fee_nominal_petugas = $dataui_petugas['jumlah_uang'] * $jumlah;
+
+          $insert2_petugas = "INSERT INTO tbs_fee_produk 
+          (session_id,no_rm,nama_petugas,kode_produk,nama_produk,jumlah_fee,tanggal,jam) VALUES 
+          ('$session_id',$no_rm','$analis','$kode','$nama','$hasil_hitung_fee_nominal_petugas','$tanggal_sekarang','$jam_sekarang')";
+          if ($db->query($insert2_petugas) === TRUE) 
+          {
+            
+            } 
+          else 
+              {
+              echo "Error: " . $insert2_petugas . "<br>" . $db->error;
+              }
+           }
+          } // penutup if petugas di harga 1 > 0
+          // ENDING PERHITUNGAN UNTUK FEE ANALIS  
+
+
 
           $query6 = " INSERT INTO tbs_penjualan (session_id,kode_barang,nama_barang,jumlah_barang,satuan,harga,subtotal,tipe_barang,potongan,tax,tanggal,jam) VALUES ('$session_id','$kode','$nama','$jumlah','$satuan','$harga','$subtotal','$tipe','$potongan_tampil','$tax_persen','$tanggal_sekarang','$jam_sekarang')";
 
