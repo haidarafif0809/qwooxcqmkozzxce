@@ -56,9 +56,9 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 	$perintah10 = $db->query("SELECT km.id, km.no_faktur, km.keterangan, km.dari_akun, km.jumlah, km.tanggal, km.jam, km.user, da.nama_daftar_akun FROM daftar_akun da INNER JOIN kas_mutasi km ON da.kode_daftar_akun = km.dari_akun WHERE da.kode_daftar_akun = '$row[dari_akun]'");
 	$data1 = mysqli_fetch_array($perintah10);
 
-if ($kas_mutasi['kas_mutasi_hapus'] > 0) {
+
 	$nestedData[] = "<a href='cetak_kas_mutasi.php?id=".$row['id']."' target='blank' class='btn btn-primary' data-target='blank'> <i class='fa fa-print'></i> Cetak </a>";
-	}
+
 	$nestedData[] = $row["no_faktur"];
 	$nestedData[] = $row["keterangan"];
 	$nestedData[] = $data1["nama_daftar_akun"];
