@@ -83,12 +83,17 @@ include 'db.php';
 
 <div class="form-group">
     <input type="text" class="form-control dsds" id="sampaitgl" autocomplete="off" name="sampaitanggal" placeholder="Sampai Tanggal ">
+
+
 </div>
+
 
 
 <button type="submit" name="submit" id="lihat_kartu_stok" class="btn btn-default" style="background-color:#0277bd"><i class="fa fa-eye"> </i> Lihat </button>
 </form>
 
+
+    <span id="total_saldo"></span>
 
 <span style="display: none" id="result">
 <div class="card card-block" >  <center><h2 style="display: none;" id="judul"></h2></center>
@@ -185,8 +190,8 @@ $(document).on('click','#lihat_kartu_stok',function(e) {
                 d.sampai_tanggal = $("#sampaitgl").val();
                 d.kode_barang = $("#kode_barang").val();  
 
-        		d.kode_barang =  d.kode_barang.substr(0,  d.kode_barang.indexOf('('));     
-                d.id_produk = $("#id_produk").val();        
+        		    d.kode_barang =  d.kode_barang.substr(0,  d.kode_barang.indexOf('('));     
+                d.id_produk = $("#id_produk").val();   
                 // d.custom = $('#myInput').val();
                 // etc
             },

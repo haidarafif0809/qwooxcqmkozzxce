@@ -8,12 +8,12 @@ $dari_tanggal = stringdoang($_POST['dari_tanggal']);
 $sampai_tanggal = stringdoang($_POST['sampai_tanggal']);
 
 // awal Select untuk hitung Saldo Awal
-$hpp_masuk = $db->query("SELECT SUM(jumlah_kuantitas) AS jumlah FROM hpp_masuk WHERE kode_barang = '$kode_barang' AND waktu <= '$dari_tanggal' ");
+$hpp_masuk = $db->query("SELECT SUM(jumlah_kuantitas) AS jumlah FROM hpp_masuk WHERE kode_barang = '$kode_barang' AND waktu <'$dari_tanggal' ");
 $out_masuk = mysqli_fetch_array($hpp_masuk);
 $jumlah_masuk = $out_masuk['jumlah'];
 
 
-$hpp_keluar = $db->query("SELECT SUM(jumlah_kuantitas) AS jumlah FROM hpp_keluar WHERE kode_barang = '$kode_barang' AND waktu <= '$dari_tanggal' ");
+$hpp_keluar = $db->query("SELECT SUM(jumlah_kuantitas) AS jumlah FROM hpp_keluar WHERE kode_barang = '$kode_barang' AND waktu < '$dari_tanggal' ");
 $out_keluar = mysqli_fetch_array($hpp_keluar);
 $jumlah_keluar = $out_keluar['jumlah'];
 
@@ -22,8 +22,29 @@ $total_saldo = $jumlah_masuk - $jumlah_keluar;
 
 // storing  request (ie, get/post) global array to a variable  
 $requestData= $_REQUEST;
+$stok_hal_selanjutnya = 0;
+if ($requestData['start'] > 0) {
 
+	$stokmulai = $requestData['start'] - $requestData['length'];
 
+$sql = $db->query("SELECT jumlah_kuantitas,jenis_hpp,waktu FROM hpp_masuk WHERE kode_barang = '$kode_barang' AND tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' UNION SELECT  jumlah_kuantitas,jenis_hpp,waktu  FROM hpp_keluar WHERE kode_barang = '$kode_barang' AND tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' ORDER BY waktu LIMIT $stokmulai , $requestData[length] ");
+	while ($abc = mysqli_fetch_array($sql)) {
+
+			if ($abc['jenis_hpp'] == '1')
+			{
+				$masuk = $abc['jumlah_kuantitas'];
+				 $total_saldo = ($total_saldo + $masuk);
+				}
+			else
+			{
+
+			$keluar = $abc['jumlah_kuantitas'];
+			$total_saldo = $total_saldo - $keluar;
+			}
+	}
+
+}
+	$total_saldo = $stok_hal_selanjutnya + $total_saldo;
 
 $columns = array( 
 // datatable column index  => database column name
@@ -41,13 +62,13 @@ $columns = array(
 
 
 // getting total number records without any search
-$sql = "SELECT no_faktur,jumlah_kuantitas,jenis_transaksi,tanggal,jenis_hpp,waktu FROM hpp_masuk WHERE kode_barang = '$kode_barang' AND tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' UNION SELECT no_faktur, jumlah_kuantitas,jenis_transaksi, tanggal, jenis_hpp,waktu FROM hpp_keluar WHERE kode_barang = '$kode_barang' AND tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' ";
+$sql = "SELECT no_faktur,jumlah_kuantitas,jenis_transaksi,tanggal,jenis_hpp,waktu, id FROM hpp_masuk WHERE kode_barang = '$kode_barang' AND tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' UNION SELECT no_faktur, jumlah_kuantitas,jenis_transaksi, tanggal, jenis_hpp,waktu, id FROM hpp_keluar WHERE kode_barang = '$kode_barang' AND tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' ";
 
 $query = mysqli_query($conn, $sql) or die("eror 1");
 $totalData = mysqli_num_rows($query);
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
-$sql = "SELECT no_faktur,jumlah_kuantitas,jenis_transaksi,tanggal,jenis_hpp,waktu FROM hpp_masuk WHERE kode_barang = '$kode_barang' AND tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' UNION SELECT no_faktur, jumlah_kuantitas,jenis_transaksi, tanggal, jenis_hpp,waktu FROM hpp_keluar WHERE kode_barang = '$kode_barang' AND tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' ";
+$sql = "SELECT no_faktur,jumlah_kuantitas,jenis_transaksi,tanggal,jenis_hpp,waktu, id FROM hpp_masuk WHERE kode_barang = '$kode_barang' AND tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' UNION SELECT no_faktur, jumlah_kuantitas,jenis_transaksi, tanggal, jenis_hpp,waktu,id FROM hpp_keluar WHERE kode_barang = '$kode_barang' AND tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' ";
 if( !empty($requestData['search']['value']) ) { 
   // if there is a search parameter, $requestData['search']['value'] contains search parameter
 
@@ -59,18 +80,11 @@ if( !empty($requestData['search']['value']) ) {
 
 $query=mysqli_query($conn, $sql) or die("eror 2");
 $totalFiltered = mysqli_num_rows($query); // when there is a search parameter then we have to modify total number filtered rows as per search result. 
-
  $sql.=" ORDER BY waktu ".$requestData['order'][0]['dir']."  LIMIT ".$requestData['start']." ,".$requestData['length']."  ";
  /* $requestData['order'][0]['column'] contains colmun index, $requestData['order'][0]['dir'] contains order such as asc/desc  */	
 $query= mysqli_query($conn, $sql) or die("eror 3");
 
 $data = array();
-
-
-
-
-// akhir hitungan saldo awal
-//untuk menentukan saldo awal 
 
 
 		# code...
@@ -98,11 +112,13 @@ $nestedData=array();
 			$nestedData[] = $row['tanggal'];
 
 
+
+
 if ($row['jenis_hpp'] == '1')
 {
-	$masuk = $row['jumlah_kuantitas'];
-	 $total_saldo = ($total_saldo + $masuk);
-
+			$masuk = $row['jumlah_kuantitas'];
+				 $total_saldo = ($total_saldo + $masuk);
+	
 		$nestedData[] = rp($masuk);
 		$nestedData[] = "0";
 		$nestedData[] =  rp($total_saldo);
@@ -113,8 +129,8 @@ else
 {
 
 $keluar = $row['jumlah_kuantitas'];
-$total_saldo = $total_saldo - $keluar;
-		
+			$total_saldo = $total_saldo - $keluar;
+
 		$nestedData[] =	"0";
 		 $nestedData[] = rp($keluar);
 		$nestedData[] =  rp($total_saldo);		
