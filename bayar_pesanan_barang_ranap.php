@@ -2848,7 +2848,7 @@ $(function() {
           var kode_barang = kode_barang.substr(0, kode_barang.indexOf('('));
           
 
-          $.post('cek_kode_barang_edit_tbs_penjualan.php',{kode_barang:kode_barang,no_faktur:no_faktur}, function(data){
+          $.post('cek_kode_barang_tbs_ranap.php',{kode_barang:kode_barang,no_reg:no_reg}, function(data){
           
           if(data == 1){
 
