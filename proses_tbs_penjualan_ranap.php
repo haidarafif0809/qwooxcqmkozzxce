@@ -299,7 +299,7 @@ else{
                              // START PERHITUNGAN FEE HARGA 1 INSERT
 
 // PERHITUNGAN UNTUK FEE DOKTER
-$ceking = $db->query("SELECT * FROM fee_produk WHERE nama_petugas = '$dokterpenanggungjawab' AND kode_produk = '$kode'");
+$ceking = $db->query("SELECT * FROM fee_produk WHERE nama_petugas = '$dokter' AND kode_produk = '$kode'");
 $cek_fee_dokter1 = mysqli_num_rows($ceking);
 $dataui = mysqli_fetch_array($ceking);
 
@@ -311,7 +311,7 @@ $hasil_hitung_fee_persen = $subtotal * $dataui['jumlah_prosentase'] / 100;
 
 $insert1 = "INSERT INTO tbs_fee_produk 
 (no_reg,no_rm,nama_petugas,kode_produk,nama_produk,jumlah_fee,tanggal,jam,waktu,session_id) VALUES 
-('$no_reg','$no_rm','$dokterpenanggungjawab','$kode','$nama','$hasil_hitung_fee_persen','$tanggal_sekarang','$jam','$waktu','$session_id')";
+('$no_reg','$no_rm','$dokter','$kode','$nama','$hasil_hitung_fee_persen','$tanggal_sekarang','$jam','$waktu','$session_id')";
 if ($db->query($insert1) === TRUE) {
   
   } 
@@ -330,7 +330,7 @@ $hasil_hitung_fee_nominal = $dataui['jumlah_uang'] * $jumlah;
 
 $insert2 = "INSERT INTO tbs_fee_produk 
 (no_reg,no_rm,session_id,nama_petugas,kode_produk,nama_produk,jumlah_fee,tanggal,jam,waktu) VALUES 
-('$no_reg','$no_rm','$session_id','$dokterpenanggungjawab','$kode','$nama','$hasil_hitung_fee_nominal','$tanggal_sekarang','$jam','$waktu')";
+('$no_reg','$no_rm','$session_id','$dokter','$kode','$nama','$hasil_hitung_fee_nominal','$tanggal_sekarang','$jam','$waktu')";
 if ($db->query($insert2) === TRUE) {
   
     } 
