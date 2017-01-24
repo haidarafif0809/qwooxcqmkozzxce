@@ -1205,20 +1205,6 @@ $(document).ready(function(){
 
   
 
-     var session_id = $("#session_id").val();
-     var no_reg = $("#no_reg").val();
-     var kode_barang = $("#kode_barang").val();
-     
-       $.post('cek_kode_barang_tbs_ranap.php',{kode_barang:kode_barang,no_reg:no_reg}, function(data){
-        
-            if(data == 1){
-              alert("Anda Tidak Bisa Menambahkan Barang Yang Sudah Ada, Silakan Edit atau Pilih Barang Yang Lain !");
-              $("#kode_barang").val('');
-              $("#kode_barang").trigger('chosen:updated').trigger('chosen:open');
-              $("#nama_barang").val('');
-             }//penutup if
-
-      });
 
   document.getElementById("kode_barang").value = $(this).attr('data-kode');
   $("#kode_barang").trigger('chosen:updated');
@@ -1233,6 +1219,29 @@ $(document).ready(function(){
   document.getElementById("id_produk").value = $(this).attr('id-barang');
 
 
+
+
+     var session_id = $("#session_id").val();
+     var no_reg = $("#no_reg").val();
+     var kode_barang = $("#kode_barang").val();
+     
+       $.post('cek_kode_barang_tbs_ranap.php',{kode_barang:kode_barang,no_reg:no_reg}, function(data){
+        
+            if(data == 1){
+              var pesan_alert = confirm("Anda Tidak Bisa Menambahkan Barang Yang Sudah Ada, Silakan Edit atau Pilih Barang Yang Lain !");
+
+              if (pesan_alert == true) {
+                $("#jumlah_barang").focus();
+              }
+              else{                
+                $("#kode_barang").val('');
+                $("#kode_barang").trigger('chosen:updated').trigger('chosen:open');
+                $("#nama_barang").val('');
+              }
+             }//penutup if
+
+      });
+       
 
 var level_harga = $("#level_harga").val();
 
@@ -3063,13 +3072,16 @@ $(document).ready(function(){
 $.post('cek_kode_barang_tbs_ranap.php',{kode_barang:kode_barang,no_reg:no_reg}, function(data){
           
   if(data == 1){
-          alert("Anda Tidak Bisa Menambahkan Barang Yang Sudah Ada, Silakan Edit atau Pilih Barang Yang Lain !");
+          var pesan_alert = confirm("Anda Tidak Bisa Menambahkan Barang Yang Sudah Ada, Silakan Edit atau Pilih Barang Yang Lain !");
 
-          $("#kode_barang").val('');
-          $("#kode_barang").trigger("chosen:updated");
-          $("#nama_barang").val('');
-          $("#kode_barang").trigger('chosen:open');
-          $(".chosen").chosen({no_results_text: "Maaf, Data Tidak Ada!",search_contains:true}); 
+              if (pesan_alert == true) {
+                $("#jumlah_barang").focus();
+              }
+              else{                
+                $("#kode_barang").val('');
+                $("#kode_barang").trigger('chosen:updated').trigger('chosen:open');
+                $("#nama_barang").val('');
+              }
    }//penutup if     
 
 
