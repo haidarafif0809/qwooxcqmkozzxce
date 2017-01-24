@@ -75,6 +75,9 @@ th {
 				<?php 
 
 	$select = $db->query("SELECT DATE(waktu_jurnal) AS waktu_jurnal, no_faktur, keterangan_jurnal, debit, kredit FROM jurnal_trans WHERE DATE(waktu_jurnal) = '$tanggal' AND kode_akun_jurnal = '$daftar_akun' GROUP BY DATE(waktu_jurnal) ORDER BY waktu_jurnal ASC");
+	
+	$tt_debit = 0;
+	$tt_kredit = 0;
 
 				//menyimpan data sementara yang ada pada $perintah
 				while ($cek = mysqli_fetch_array($select))
@@ -139,6 +142,8 @@ th {
 
 				}
 
+
+
 				echo "<tr style='color:red'>
 				<td></td>
 				<td></td>
@@ -188,7 +193,12 @@ th {
 
 				<?php 
 
-	$select = $db->query("SELECT waktu_jurnal, no_faktur, keterangan_jurnal, debit, kredit FROM jurnal_trans WHERE DATE(waktu_jurnal) = '$tanggal' AND kode_akun_jurnal = '$daftar_akun' ORDER BY waktu_jurnal ASC");
+	$select = $db->query("SELECT waktu_jurnal, no_faktur, keterangan_jurnal, debit, kredit FROM jurnal_trans WHERE DATE(waktu_jurnal) = '$tanggal' AND kode_akun_jurnal = '$daftar_akun' AND   ORDER BY waktu_jurnal ASC");
+	
+
+$tt_debit = 0;
+$tt_kredit = 0;
+$num_rows = 0;
 
 				//menyimpan data sementara yang ada pada $perintah
 				while ($cek = mysqli_fetch_array($select))

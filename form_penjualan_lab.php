@@ -1093,7 +1093,7 @@ $(document).ready(function() {
           },
               "fnCreatedRow": function( nRow, aData, iDataIndex ) {
               $(nRow).attr('class','pilih');
-              $(nRow).attr('data-kode',aData[0]+ "(" + aData[1] + ")");
+              $(nRow).attr('data-kode',aData[0]);
               $(nRow).attr('data-id-jasa',aData[12]);
               $(nRow).attr('data-nama',aData[1]);
               $(nRow).attr('data-bidang',aData[3]);
@@ -1122,6 +1122,21 @@ $(document).ready(function() {
   document.getElementById("nama_barang").value = $(this).attr('data-nama');
   document.getElementById("bidang").value = $(this).attr('data-bidang');
   document.getElementById("id_jasa").value = $(this).attr('data-id-jasa');
+
+
+    var session_id = $("#session_id").val();
+    var kode_barang = $("#kode_barang").val();
+    var no_reg = $("#no_reg").val();
+ $.post('cek_tbs_penjualan_lab.php',{kode_barang:kode_barang,session_id:session_id,no_reg:no_reg}, function(data){
+  
+  if(data == 1){
+    alert("Anda Tidak Bisa Menambahkan Barang Yang Sudah Ada, Silakan Edit atau Pilih Barang Yang Lain !");
+    $("#kode_barang").trigger('chosen:open');
+    $("#kode_barang").val('');
+    $("#nama_barang").val('');
+   }//penutup if
+
+    });////penutup function(data)
 
 
 var level_harga = $("#level_harga").val();
@@ -2113,29 +2128,6 @@ alert("Silakan Bayar Piutang");
                });
   </script>   
 
-
-  <script type="text/javascript">
-//berfunsi untuk mencekal username ganda
- $(document).ready(function(){
-  $(document).on('click', '.pilih', function (e) {
-    var session_id = $("#session_id").val();
-    var kode_barang = $("#kode_barang").val();
-    var no_reg = $("#no_reg").val();
-    var kode_barang = kode_barang.substr(0, kode_barang.indexOf('('));
- $.post('cek_tbs_penjualan_lab.php',{kode_barang:kode_barang, session_id:session_id,no_reg:no_reg}, function(data){
-  
-  if(data == 1){
-    alert("Anda Tidak Bisa Menambahkan Barang Yang Sudah Ada, Silakan Edit atau Pilih Barang Yang Lain !");
-    $("#kode_barang").trigger('chosen:open');
-    $("#kode_barang").val('');
-    $("#nama_barang").val('');
-   }//penutup if
-
-    });////penutup function(data)
-
-    });//penutup click(function()
-  });//penutup ready(function()
-</script>
 
 
 <script type="text/javascript">
