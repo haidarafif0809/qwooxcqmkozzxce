@@ -1185,6 +1185,20 @@ $(document).ready(function(){
   $(document).on('click', '.pilih', function (e) {
 
 
+     var session_id = $("#session_id").val();
+     var no_reg = $("#no_reg").val();
+     var kode_barang = $("#kode_barang").val();
+     var kode_barang = kode_barang.substr(0, kode_barang.indexOf('('));
+       $.post('cek_kode_barang_tbs_ranap.php',{kode_barang:kode_barang,no_reg:no_reg}, function(data){
+        
+            if(data == 1){
+              alert("Anda Tidak Bisa Menambahkan Barang Yang Sudah Ada, Silakan Edit atau Pilih Barang Yang Lain !");
+              $("#kode_barang").val('');
+              $("#nama_barang").val('');
+             }//penutup if
+
+      });
+
   document.getElementById("kode_barang").value = $(this).attr('data-kode');
   document.getElementById("nama_barang").value = $(this).attr('nama-barang');
   document.getElementById("limit_stok").value = $(this).attr('limit_stok');
@@ -1297,6 +1311,7 @@ $.post("cek_level_harga_barang.php",
       var kode_barang = $("#kode_barang").val();
       var kode_barang = kode_barang.substr(0, kode_barang.indexOf('('));
       var id_produk = $("#id_produk").val();
+      var ber_stok = $("#ber_stok").val();
       var prev = $("#satuan_produk").val();
       
 
@@ -1305,10 +1320,11 @@ $.post("cek_level_harga_barang.php",
 
       
 
-          if (data < 0) {
+          if (data < 0 && ber_stok == 'Barang') {
+         
             alert("Jumlah Melebihi Stok");
             $("#jumlah_barang").val('');
-          $("#satuan_konversi").val(prev);
+            $("#satuan_konversi").val(prev);
 
           }
 
@@ -1334,21 +1350,14 @@ $.post("cek_level_harga_barang.php",
       var limit_stok = $("#limit_stok").val();
       var ber_stok = $("#ber_stok").val();
       var stok = jumlahbarang - jumlah_barang;
-
-        if (ber_stok == 'Jasa' || ber_stok == 'BHP') {
-
-          }
-
-       else if (stok < 0) {
+        
+         if (stok < 0 && ber_stok == 'Barang') {
 
             alert("Jumlah Melebihi Stok");
             $("#jumlah_barang").val('');
-          $("#satuan_konversi").val(prev);
-          }// cek stok barang       
-
-      else{
-
-        }
+            $("#satuan_konversi").val(prev);
+          
+          }
 
     });
   });
@@ -2125,7 +2134,7 @@ if (jumlah_barang == ''){
   } 
   else if (stok < 0 && ber_stok == 'Barang') {
 
-    alert ("Jumlah Melebihi Stok Barang !");
+         alert ("Jumlah Melebihi Stok Barang !");
          $("#jumlah_barang").val('');
 
 
@@ -2191,33 +2200,6 @@ if (jumlah_barang == ''){
 
    </script>
 
-
-
-
- 
-
-
-  <script type="text/javascript">
-//berfunsi untuk mencekal username ganda
- $(document).ready(function(){
-  $(document).on('click', '.pilih', function (e) {
-    var session_id = $("#session_id").val();
-     var no_reg = $("#no_reg").val();
-    var kode_barang = $("#kode_barang").val();
-    var kode_barang = kode_barang.substr(0, kode_barang.indexOf('('));
- $.post('cek_kode_barang_tbs_ranap.php',{kode_barang:kode_barang,no_reg:no_reg}, function(data){
-  
-  if(data == 1){
-    alert("Anda Tidak Bisa Menambahkan Barang Yang Sudah Ada, Silakan Edit atau Pilih Barang Yang Lain !");
-    $("#kode_barang").val('');
-    $("#nama_barang").val('');
-   }//penutup if
-
-    });////penutup function(data)
-
-    });//penutup click(function()
-  });//penutup ready(function()
-</script>
 
 <script type="text/javascript">
 $(document).ready(function(){
