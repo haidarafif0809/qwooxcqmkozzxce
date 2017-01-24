@@ -1252,6 +1252,7 @@ $.post("cek_level_harga_barang.php",{level_harga:level_harga,kode_barang:kode_ba
       var kode_barang = kode_barang.substr(0, kode_barang.indexOf('('));
       var id_produk = $("#id_produk").val();
       var prev = $("#satuan_produk").val();
+      var ber_stok = $("#ber_stok").val();
       
 
 
@@ -1259,10 +1260,11 @@ $.post("cek_level_harga_barang.php",{level_harga:level_harga,kode_barang:kode_ba
 
       
 
-          if (data < 0) {
+          if (data < 0 && ber_stok == 'Barang') {
+
             alert("Jumlah Melebihi Stok");
             $("#jumlah_barang").val('');
-          $("#satuan_konversi").val(prev);
+            $("#satuan_konversi").val(prev);
 
           }
 
@@ -1290,20 +1292,12 @@ $.post("cek_level_harga_barang.php",{level_harga:level_harga,kode_barang:kode_ba
       var ber_stok = $("#ber_stok").val();
       var stok = jumlahbarang - jumlah_barang;
 
-        if (ber_stok == 'Jasa' || ber_stok == 'BHP') {
-
-          }
-
-       else if (stok < 0) {
-
+        if (stok < 0 && ber_stok == 'Barang') {
+            
             alert("Jumlah Melebihi Stok");
             $("#jumlah_barang").val('');
-          $("#satuan_konversi").val(prev);
-          }// cek stok barang       
-
-      else{
-
-        }
+            $("#satuan_konversi").val(prev);
+        }  
 
     });
   });
