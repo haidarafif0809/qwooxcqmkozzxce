@@ -216,16 +216,16 @@ padding-right: 5%;
   <?php 
     
     
-    $query01 = $db->query("SELECT nama FROM user WHERE tipe = '1'");
+    $query01 = $db->query("SELECT nama,id FROM user WHERE tipe = '1'");
 
     
     while($data01 = mysqli_fetch_array($query01))
     { 
       if ($data01['id'] == $data_penj['dokter']) {
-        echo "<option selected value='".$data_penj['dokter'] ."'>".$data01['nama'] ."</option>";
+        echo "<option selected value='".$data01['id'] ."'>".$data01['nama'] ."</option>";
       }
       else {
-        echo "<option value='".$data_penj['dokter'] ."'>".$data01['nama'] ."</option>";
+        echo "<option value='".$data01['id'] ."'>".$data01['nama'] ."</option>";
       }
     
 
@@ -236,6 +236,8 @@ padding-right: 5%;
 
 </select>
 </div>
+
+
 
 
 
@@ -1201,7 +1203,7 @@ $(document).ready(function(){
 // jika dipilih, nim akan masuk ke input dan modal di tutup
   $(document).on('click', '.pilih', function (e) {
 
-  $("#kode_barang").trigger('chosen:updated').trigger('chosen:open');
+  
 
      var session_id = $("#session_id").val();
      var no_reg = $("#no_reg").val();
@@ -1219,6 +1221,8 @@ $(document).ready(function(){
       });
 
   document.getElementById("kode_barang").value = $(this).attr('data-kode');
+  $("#kode_barang").trigger('chosen:updated');
+
   document.getElementById("nama_barang").value = $(this).attr('nama-barang');
   document.getElementById("limit_stok").value = $(this).attr('limit_stok');
   document.getElementById("satuan_produk").value = $(this).attr('satuan');
@@ -2816,7 +2820,7 @@ $(document).on('click','.btn-hapus-tbs',function(e){
      $("#pembayaran_penjualan").val('');
      $("#sisa_pembayaran_penjualan").val('');
      $("#kredit").val('');
-    $.post("hapustbs_penjualan.php",{id:id,kode_barang:kode_barang,no_reg:no_reg},function(data){
+    $.post("hapustbs_penjualan_ranap.php",{id:id,kode_barang:kode_barang,no_reg:no_reg},function(data){
 
     });
 
@@ -3776,7 +3780,7 @@ $(document).ready(function(){
           "fnCreatedRow": function( nRow, aData, iDataIndex ) {
 
               $(nRow).attr('class', "pilih");
-              $(nRow).attr('data-kode', aData[0]+" ( "+aData[1]+" )");
+              $(nRow).attr('data-kode', aData[0]);
               $(nRow).attr('nama-barang', aData[1]);
               $(nRow).attr('harga', aData[2]);
               $(nRow).attr('harga_level_2', aData[3]);

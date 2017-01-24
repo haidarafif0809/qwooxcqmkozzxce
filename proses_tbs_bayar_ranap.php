@@ -90,7 +90,7 @@ $waktus = $tanggal." ".$jam3;
 
 $query65 = $db->query("SELECT HOUR(TIMEDIFF('$waktu' , '$waktus')) AS waktu_selisih ");
 $my22 = mysqli_fetch_array($query65);
-$waktu_selisih = $my22['waktu_selisih'];
+echo $waktu_selisih = $my22['waktu_selisih'];
 
                        // AWAL DARI PERHITUNGAN HARGA 1 UNTUK PERSONAL 
 
@@ -111,7 +111,6 @@ if ($ppn_input == 'Include') {
 else{
    $subtotal = $subtotal_tanpa_pajak + $pajak_tbs_rupiah;
 }
-
 
 $query687 = " INSERT INTO tbs_penjualan
 (no_reg,kode_barang,nama_barang,jumlah_barang,harga,subtotal,tipe_barang,tanggal,jam,potongan,tax,no_faktur,satuan)
