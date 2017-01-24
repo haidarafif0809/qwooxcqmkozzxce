@@ -2379,7 +2379,7 @@ else {
     var tipe_barang = $('#opt-produk-'+kode_barang).attr("tipe_barang");
     var id_barang = $('#opt-produk-'+kode_barang).attr("id-barang");
     var level_harga = $("#level_harga").val();
-
+    var session_id  = $("#session_id").val();
 
 
     if (level_harga == "harga_1") {
@@ -2451,7 +2451,7 @@ else {
       $("#jumlahbarang").val(data);
     });
 
-$.post('cek_kode_barang_tbs_penjualan_apotek.php',{kode_barang:kode_barang}, function(data){
+$.post('cek_tbs_penjualan_apotek.php',{kode_barang:kode_barang, session_id:session_id}, function(data){
           
   if(data == 1){
           alert("Anda Tidak Bisa Menambahkan Barang Yang Sudah Ada, Silakan Edit atau Pilih Barang Yang Lain !");
