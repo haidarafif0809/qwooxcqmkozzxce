@@ -11,6 +11,7 @@ $no_reg = stringdoang($_POST['no_reg']);
 $total = angkadoang($_POST['total']);
 $potongan = angkadoang($_POST['potongan']);
 $biaya_admin = angkadoang($_POST['biaya_admin']);
+$no_rm = stringdoang($_POST['no_rm']);
 
 
 // menampilakn hasil penjumlah subtotal ALIAS total penjualan dari tabel tbs_penjualan berdasarkan data no faktur
@@ -18,8 +19,8 @@ $biaya_admin = angkadoang($_POST['biaya_admin']);
  $data111 = mysqli_fetch_array($query111);
  $total111 = $data111['total_penjualan'];
 
-     $select_kode_pelanggan = $db->query("SELECT nama_pelanggan FROM pelanggan WHERE kode_pelanggan = '$no_rm'");
-    $ambil_kode_pelanggan = mysqli_fetch_array($select_kode_pelanggan);
+$select_kode_pelanggan = $db->query("SELECT nama_pelanggan FROM pelanggan WHERE kode_pelanggan = '$no_rm'");
+$ambil_kode_pelanggan = mysqli_fetch_array($select_kode_pelanggan);
 
 
 // menampilakn hasil penjumlah subtotal ALIAS total penjualan dari tabel tbs_penjualan berdasarkan data no faktur
@@ -53,7 +54,7 @@ echo $no_faktur = stringdoang($_POST['no_faktur']);
 $no_rm = stringdoang($_POST['no_rm']);
 $ber_stok = stringdoang($_POST['ber_stok']);
 $tanggal_jt = tanggal_mysql($_POST['tanggal_jt']);
-$tanggal = tanggal_mysql($_POST['tanggal']);
+$tanggal = tanggal_mysql($tanggal_sekarang);
 $nama_petugas = stringdoang($_SESSION['nama']);
 $kode_gudang = stringdoang($_POST['kode_gudang']);
 $ppn_input = stringdoang($_POST['ppn_input']);
@@ -230,20 +231,6 @@ $delete_lap_fee = $db->query("DELETE FROM laporan_fee_faktur WHERE no_reg = '$no
     }
 // end laporan fee produk
 
-$delete_penjualan = $db->query("DELETE FROM penjualan WHERE no_reg = '$no_reg' ");
-
-$ket_jurnal = "Penjualan Rawat Inap Simpan Sementara ".$ambil_kode_pelanggan['nama_pelanggan']." ";
-
-
-            $stmt = $db->prepare("INSERT INTO penjualan (no_faktur, no_reg, penjamin, apoteker, perawat, petugas_lain, dokter, kode_gudang, kode_pelanggan, total, tanggal, jam, user, sales, status, potongan, tax, sisa, cara_bayar, tunai, keterangan, ppn, jenis_penjualan, nama,kredit, nilai_kredit, biaya_admin, no_faktur_jurnal, keterangan_jurnal) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,'Simpan Sementara',?,?,?,?,?,?,?,'Rawat Inap',?,?,?,?,?,?)");
-              
-    // hubungkan "data" dengan prepared statements
-              $stmt->bind_param("sssssssssissssiiisisssiiiss",
-              $no_faktur,$no_reg,$penjamin,$petugas_farmasi, $petugas_paramedik, $petugas_lain, $dokter, $kode_gudang, $no_rm, $total, $tanggal, $jam_sekarang, $nama_petugas, $petugas_kasir, $potongan, $tax, $sisa, $cara_bayar, $pembayaran, $keterangan, $ppn_input,$nama_pasien,$sisa_kredit,$sisa_kredit,$biaya_admin, $no_jurnal,$ket_jurnal);
-
-              
-    // jalankan query
-              $stmt->execute();
 
 
  $z = $db->query("DELETE FROM detail_penjualan WHERE no_reg = '$no_reg' ");
@@ -312,12 +299,22 @@ else
     }
 
 
+
+$ket_jurnal = "Penjualan Rawat Inap Simpan Sementara ".$ambil_kode_pelanggan['nama_pelanggan']." ";
+
+
+            $stmt = $db->prepare("UPDATE penjualan SET no_faktur = ?, no_reg = ?, penjamin = ?, apoteker = ?, perawat = ?, petugas_lain = ?, dokter = ?, kode_gudang = ?, kode_pelanggan = ?, total = ?, tanggal = ?, jam = ?, user = ?, sales = ?, status = 'Simpan Sementara', potongan = ?, tax = ?, sisa = ?, cara_bayar = ?, tunai = ?, keterangan = ?, ppn = ?, jenis_penjualan = 'Rawat Inap', nama = ?,kredit = ?, nilai_kredit = ?, biaya_admin = ?, no_faktur_jurnal = ?, keterangan_jurnal = ? WHERE no_faktur = ?");
+              
+    // hubungkan "data" dengan prepared statements
+              $stmt->bind_param("sssssssssissssiiisisssiiisss",
+              $no_faktur,$no_reg,$penjamin,$petugas_farmasi, $petugas_paramedik, $petugas_lain, $dokter, $kode_gudang, $no_rm, $total, $tanggal, $jam_sekarang, $nama_petugas, $petugas_kasir, $potongan, $tax, $sisa, $cara_bayar, $pembayaran, $keterangan, $ppn_input,$nama_pasien,$sisa_kredit,$sisa_kredit,$biaya_admin, $no_jurnal,$ket_jurnal,$no_faktur);
+
+              
+    // jalankan query
+              $stmt->execute();
+
+
     echo "Success";
-
-
-
-
-$delete_jurnal = $db->query("DELETE FROM jurnal_trans WHERE no_faktur = '$no_faktur' ");
 
 $select_setting_akun = $db->query("SELECT * FROM setting_akun");
 $ambil_setting = mysqli_fetch_array($select_setting_akun);
