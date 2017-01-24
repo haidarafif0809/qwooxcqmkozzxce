@@ -362,7 +362,8 @@ $user = $_SESSION['nama'];
 
   <div class="col-xs-3">
 
-    <select type="text" style="height:15px" class="form-control chosen" name="kode_barang" autocomplete="off" id="kode_barang" data-placeholder="SILAKAN PILIH " >
+  <select type="text" style="height:15px" class="form-control chosen" name="kode_barang" autocomplete="off" id="kode_barang" data-placeholder="SILAKAN PILIH " >
+       <option value="">SILAKAN PILIH</option>
         <?php 
 
         include 'cache.class.php';

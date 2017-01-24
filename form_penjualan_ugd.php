@@ -1389,6 +1389,8 @@ else if (a > 0){
      $("#tbody").prepend(data);
      $("#kode_barang").val('');
      $("#kode_barang").trigger('chosen:update');
+     $("#kode_barang").trigger('chosen:open');
+
      $("#nama_barang").val('');
      $("#jumlah_barang").val('');
      $("#potongan1").val('');
@@ -1398,7 +1400,6 @@ else if (a > 0){
      $("#sisa_pembayaran_penjualan").val('');
      $("#kolom_cek_harga").val('0');
       
-     $("#kode_barang").trigger('chosen:open');
      $("#harga_baru").val('');
      $("#harga_produk").val('');
      $("#harga_lama").val('');

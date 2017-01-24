@@ -1481,8 +1481,8 @@ else if (a > 0){
 
      $("#ppn").attr("disabled", true);
      $("#tbody").prepend(data);
-     $("#kode_barang").val('').trigger("chosen:updated").trigger('chosen:open');
-        
+     $("#kode_barang").val('').trigger("chosen:updated");
+     $("#kode_barang").trigger('chosen:open');
 
      $("#nama_barang").val('');
      $("#jumlah_barang").val('');
@@ -1532,18 +1532,16 @@ if (limit_stok > stok)
 
       $("#ppn").attr("disabled", true);
      $("#tbody").prepend(data);
-     $("#kode_barang").val('').trigger("chosen:updated");
+     $("#kode_barang").val('').trigger("chosen:updated").trigger("chosen:open");
      $("#nama_barang").val('');
      $("#jumlah_barang").val('');
      $("#potongan1").val('');
      $("#tax1").val('');
      $("#sisa_pembayaran_penjualan").val('');
      $("#kredit").val('');
-    $("#kode_barang").trigger("chosen:open");
 
     $("#sisa_pembayaran_penjualan").val('');
     $("#kolom_cek_harga").val('0');
-    $(".chosen").chosen({no_results_text: "Maaf, Data Tidak Ada!",search_contains:true}); 
 
      
      });
@@ -2763,26 +2761,6 @@ $(document).ready(function(){
         
         });
         </script>
-
-
-
-<!--
-<script type="text/javascript">
-      
-      $(document).ready(function(){
-
-
-      $("#tax").keyup(function(){
-
-
-      });
-    });
-      
-</script>-->
-
-
-
-
 
 
 
