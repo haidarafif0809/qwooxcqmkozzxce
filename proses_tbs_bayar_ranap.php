@@ -286,7 +286,7 @@ else{
                              // START PERHITUNGAN FEE HARGA 1 INSERT
 
 // PERHITUNGAN UNTUK FEE DOKTER
-$ceking = $db->query("SELECT * FROM fee_produk WHERE nama_petugas = '$dokterpenanggungjawab' AND kode_produk = '$kode'");
+$ceking = $db->query("SELECT * FROM fee_produk WHERE nama_petugas = '$dokter' AND kode_produk = '$kode'");
 $cek_fee_dokter1 = mysqli_num_rows($ceking);
 $dataui = mysqli_fetch_array($ceking);
 
