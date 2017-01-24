@@ -52,14 +52,14 @@ $columns = array(
 );
 
 // getting total number records without any search
-$sql = "SELECT *";
+$sql = "SELECT no_faktur, kode_pelanggan, no_reg, dokter, penjamin, tanggal, user, total, jenis_penjualan, status, jam, id";
 $sql.=" FROM penjualan";
 $query = mysqli_query($conn, $sql) or die("show_data_penjualan.php: get employees");
 $totalData = mysqli_num_rows($query);
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
 
-$sql = "SELECT *";
+$sql = "SELECT no_faktur, kode_pelanggan, no_reg, dokter, penjamin, tanggal, user, total, jenis_penjualan, status, jam, id";
 $sql.=" FROM penjualan ";
 $sql.="WHERE 1=1 ";
 
@@ -190,7 +190,7 @@ else
       
       else {
       
-     $nestedData[] =" <td> <button class='btn btn-danger btn-floating btn-hapus' data-id='".$row['id']."' data-pelanggan='".$row['kode_pelanggan']."' data-faktur='".$row['no_faktur']."' kode_meja='".$row['kode_meja']."'> <i class='fa fa-trash'> </i></button></td>";
+     $nestedData[] =" <td> <button class='btn btn-danger btn-floating btn-hapus' data-id='".$row['id']."' data-pelanggan='".$row['kode_pelanggan']."' data-faktur='".$row['no_faktur']."' > <i class='fa fa-trash'> </i></button></td>";
       }
 
 }
