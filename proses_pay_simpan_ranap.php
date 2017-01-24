@@ -357,34 +357,12 @@ else
 
             {
 
-              $delete_penjualan = $db->query("DELETE FROM penjualan WHERE no_reg = '$no_reg' ");
               $ket_jurnal = "Penjualan Rawat Inap Lunas ".$ambil_kode_pelanggan['nama_pelanggan']." ";
 
 
-              $stmt = $db->prepare("INSERT INTO penjualan (no_faktur, no_reg, penjamin, apoteker, perawat, petugas_lain, dokter, kode_gudang, kode_pelanggan, total, tanggal, jam, user, sales, status, potongan, tax, sisa, cara_bayar, tunai, status_jual_awal, keterangan, ppn,jenis_penjualan,nama,biaya_admin, no_faktur_jurnal, keterangan_jurnal) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,'Lunas',?,?,?,?,?,'Tunai',?,?,'Rawat Inap',?,?,?,?)");
-              
-    // hubungkan "data" dengan prepared statements
-              $stmt->bind_param("sssssssssissssiiisisssiss",
-              $no_faktur,$no_reg,$penjamin,$petugas_farmasi, $petugas_paramedik, $petugas_lain, $dokter, $kode_gudang, $no_rm, $total, $tanggal_sekarang, $jam_sekarang, $nama_petugas, $petugas_kasir, $potongan, $tax, $sisa, $cara_bayar, $pembayaran, $keterangan, $ppn_input,$nama_pasien,$biaya_admin, $no_jurnal,$ket_jurnal);
- 
+              $stmt = $db->query("UPDATE penjualan SET no_faktur = '$no_faktur', no_reg = '$no_reg', penjamin = '$penjamin', apoteker = '$petugas_farmasi', perawat = '$petugas_paramedik', petugas_lain = '$petugas_lain', dokter = '$dokter', kode_gudang = '$kode_gudang', kode_pelanggan = '$no_rm', total = '$total', tanggal = '$tanggal_sekarang', jam = '$jam_sekarang', user = '$nama_petugas', sales = '$petugas_kasir', status = 'Lunas', potongan = '$potongan', tax = '$tax', sisa = '$sisa', cara_bayar = '$cara_bayar', tunai = '$pembayaran', status_jual_awal = 'Tunai', keterangan = '$keterangan', ppn = '$ppn_input',jenis_penjualan = 'Rawat Inap',nama = '$nama_pasien',biaya_admin = '$biaya_admin', no_faktur_jurnal = '$no_jurnal', keterangan_jurnal =  '$ket_jurnal' WHERE no_faktur =  '$no_faktur'");
 
-              $_SESSION['no_faktur']=$no_faktur;
-              
-    // jalankan query
-              $stmt->execute();
-
-
-                // cek query
-            if (!$stmt) 
-                  {
-                    die('Query Error : '.$db->errno.
-                      ' - '.$db->error);
-                  }
-
-            else 
-                  {
-                
-                  }
+              echo "UPDATE penjualan SET no_faktur = '$no_faktur', no_reg = '$no_reg', penjamin = '$penjamin', apoteker = '$petugas_farmasi', perawat = '$petugas_paramedik', petugas_lain = '$petugas_lain', dokter = '$dokter', kode_gudang = '$kode_gudang', kode_pelanggan = '$no_rm', total = '$total', tanggal = '$tanggal_sekarang', jam = '$jam_sekarang', user = '$nama_petugas', sales = '$petugas_kasir', status = 'Lunas', potongan = '$potongan', tax = '$tax', sisa = '$sisa', cara_bayar = '$cara_bayar', tunai = '$pembayaran', status_jual_awal = 'Tunai', keterangan = '$keterangan', ppn = '$ppn_input',jenis_penjualan = 'Rawat Inap',nama = '$nama_pasien',biaya_admin = '$biaya_admin', no_faktur_jurnal = '$no_jurnal', keterangan_jurnal =  '$ket_jurnal' WHERE no_faktur =  '$no_faktur'";
 
 $select_setting_akun = $db->query("SELECT * FROM setting_akun");
 $ambil_setting = mysqli_fetch_array($select_setting_akun);
@@ -478,34 +456,10 @@ if ($potongan != "" || $potongan != 0 ) {
             else if ($tunai_i < 0)              
             {
 
-            $delete_penjualan = $db->query("DELETE FROM penjualan WHERE no_reg = '$no_reg' ");
             $ket_jurnal = "Penjualan Rawat Inap Piutang ".$ambil_kode_pelanggan['nama_pelanggan']." ";
 
               
-             $stmt = $db->prepare("INSERT INTO penjualan (no_faktur, no_reg, penjamin, apoteker, perawat, petugas_lain, dokter, kode_gudang, kode_pelanggan, total, tanggal, jam, user, sales, status, potongan, tax, kredit, cara_bayar, tunai, status_jual_awal, keterangan, ppn, jenis_penjualan, nama,tanggal_jt, biaya_admin, no_faktur_jurnal, keterangan_jurnal) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,'Piutang',?,?,?,?,?,'Kredit',?,?,'Rawat Inap',?,?,?,?,?)");
-              
-    // hubungkan "data" dengan prepared statements
-              $stmt->bind_param("sssssssssissssiiisissssiss",
-              $no_faktur,$no_reg,$penjamin,$petugas_farmasi, $petugas_paramedik, $petugas_lain, $dokter, $kode_gudang, $no_rm, $total, $tanggal_sekarang, $jam_sekarang, $nama_petugas, $petugas_kasir, $potongan, $tax, $sisa_kredit, $cara_bayar, $pembayaran, $keterangan, $ppn_input,$nama_pasien,$tanggal_jt,$biaya_admin, $no_jurnal,$ket_jurnal);
- 
-
-              $_SESSION['no_faktur']=$no_faktur;
-              
-    // jalankan query
-              $stmt->execute();
-
-
-                // cek query
-            if (!$stmt) 
-                  {
-                    die('Query Error : '.$db->errno.
-                      ' - '.$db->error);
-                  }
-
-            else 
-                  {
-                
-                  }
+             $stmt = $db->query("UPDATE penjualan SET no_faktur = '$no_faktur', no_reg = '$no_reg', penjamin = '$penjamin', apoteker = '$petugas_farmasi', perawat = '$petugas_paramedik', petugas_lain = '$petugas_lain', dokter = '$dokter', kode_gudang = '$kode_gudang', kode_pelanggan = '$no_rm', total = '$total', tanggal = '$tanggal_sekarang', jam = '$jam_sekarang', user = '$nama_petugas', sales = '$petugas_kasir', status = 'Piutang', potongan = '$potongan', tax = '$tax', kredit = '$sisa_kredit', cara_bayar = '$cara_bayar', tunai = '$pembayaran', status_jual_awal = 'Kredit', keterangan = '$keterangan', ppn = '$ppn_input', jenis_penjualan = 'Rawat Inap', nama = '$nama_pasien',tanggal_jt = '$tanggal_jt', biaya_admin = '$biaya_admin', no_faktur_jurnal = '$no_jurnal', keterangan_jurnal = '$ket_jurnal' WHERE no_faktur = '$no_faktur'");
               
               
               
