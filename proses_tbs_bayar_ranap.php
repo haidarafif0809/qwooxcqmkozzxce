@@ -266,7 +266,7 @@ $query_nominal_petugas3 = $db->query("UPDATE tbs_fee_produk SET nama_petugas= '$
 
 } // WARNING DO NOT ANYTING ABOUT THIS BREAKET !!!
 
-
+else{
 
 $harga_1 = angkadoang($_POST['harga']);
 $subtotal = $harga_1 * $jumlah;
@@ -529,6 +529,9 @@ else
     echo "Error: " . $query6 . "<br>" . $db->error;
       }
 
+
+
+}
 
  ?>
   <?php

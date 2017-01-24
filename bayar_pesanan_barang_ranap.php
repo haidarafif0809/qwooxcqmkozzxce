@@ -691,8 +691,8 @@ Level 7
                 <td style='font-size:15px'>". $data1['kode_barang'] ."</td>
                 <td style='font-size:15px;'>". $data1['nama_barang'] ."</td>";
 
-         $kd = $db->query("SELECT f.nama_petugas,u.nama FROM tbs_fee_produk f INNER JOIN user u ON f.nama_petugas = u.id WHERE f.kode_produk = '$data1[kode_barang]' AND  no_reg = '$data1[no_reg]'");
-          $kdD = $db->query("SELECT f.nama_petugas,u.nama FROM tbs_fee_produk f INNER JOIN user u ON f.nama_petugas = u.id WHERE f.kode_produk = '$data1[kode_barang]' AND no_reg = '$data1[no_reg]'");
+ $kd = $db->query("SELECT f.nama_petugas,u.nama FROM tbs_fee_produk f INNER JOIN user u ON f.nama_petugas = u.id WHERE f.kode_produk = '$data1[kode_barang]'  AND f.jam = '$data1[jam]' ");
+  $kdD = $db->query("SELECT f.nama_petugas,u.nama FROM tbs_fee_produk f INNER JOIN user u ON f.nama_petugas = u.id WHERE f.kode_produk = '$data1[kode_barang]' AND  f.jam = '$data1[jam]' ");
           
                     $nu = mysqli_fetch_array($kd);
                       if ($nu['nama'] != '')
