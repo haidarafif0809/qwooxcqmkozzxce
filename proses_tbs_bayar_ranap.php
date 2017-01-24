@@ -90,7 +90,7 @@ $waktus = $tanggal." ".$jam3;
 
 $query65 = $db->query("SELECT HOUR(TIMEDIFF('$waktu' , '$waktus')) AS waktu_selisih ");
 $my22 = mysqli_fetch_array($query65);
-$waktu_selisih = $my22['waktu_selisih'];
+echo $waktu_selisih = $my22['waktu_selisih'];
 
                        // AWAL DARI PERHITUNGAN HARGA 1 UNTUK PERSONAL 
 
@@ -112,7 +112,6 @@ else{
    $subtotal = $subtotal_tanpa_pajak + $pajak_tbs_rupiah;
 }
 
-
 $query687 = " INSERT INTO tbs_penjualan
 (no_reg,kode_barang,nama_barang,jumlah_barang,harga,subtotal,tipe_barang,tanggal,jam,potongan,tax,no_faktur,satuan)
  VALUES ('$no_reg','$kode','$nama','$jumlah','$harga_1','$subtotal','$tipe_produk','$tanggal_sekarang','$jam','$potongan_tampil','$tax_persen','$no_faktur','$satuan')";
@@ -126,14 +125,13 @@ else
 
 
 
-
-$cek_persen_dokter1 = $db->query("SELECT * FROM fee_produk WHERE nama_petugas = '$dokterpenanggungjawab' AND kode_produk = '$kode'");
+$cek_persen_dokter1 = $db->query("SELECT * FROM fee_produk WHERE nama_petugas = '$dokter' AND kode_produk = '$kode'");
 $data_persen_dokter1 = mysqli_fetch_array($cek_persen_dokter1);
 
 if ($data_persen_dokter1['jumlah_prosentase'] != 0 AND $data_persen_dokter1['jumlah_uang'] == 0 )
 {
 $hasil_hitung_fee_persen_harga1 = $subtotal * $data_persen_dokter1['jumlah_prosentase'] / 100;
-$query_persen_dok3 = $db->query("UPDATE tbs_fee_produk SET nama_petugas= '$dokterpenanggungjawab' , jumlah_fee = jumlah_fee + '$hasil_hitung_fee_persen_harga1' WHERE nama_petugas = '$dokterpenanggungjawab' AND kode_produk = '$kode'");
+$query_persen_dok3 = $db->query("UPDATE tbs_fee_produk SET nama_petugas= '$dokter' , jumlah_fee = jumlah_fee + '$hasil_hitung_fee_persen_harga1' WHERE nama_petugas = '$dokter' AND kode_produk = '$kode'");
 
 } 
 
@@ -146,7 +144,7 @@ else
 {
 
 $hasil_hitung_fee_nominal_dokter_harga1 = $data_persen_dokter1['jumlah_uang'] * $jumlah;
-$query_nominal_dok3 = $db->query("UPDATE tbs_fee_produk SET nama_petugas= '$dokterpenanggungjawab' , jumlah_fee = jumlah_fee + '$hasil_hitung_fee_nominal_dokter_harga1'  WHERE nama_petugas = '$dokterpenanggungjawab' AND kode_produk = '$kode'");
+$query_nominal_dok3 = $db->query("UPDATE tbs_fee_produk SET nama_petugas= '$dokter' , jumlah_fee = jumlah_fee + '$hasil_hitung_fee_nominal_dokter_harga1'  WHERE nama_petugas = '$dokter' AND kode_produk = '$kode'");
 
 }
 // END Hitung Nominal dokter update harga 1
@@ -298,7 +296,7 @@ $hasil_hitung_fee_persen = $subtotal * $dataui['jumlah_prosentase'] / 100;
 
 $insert1 = "INSERT INTO tbs_fee_produk 
 (no_reg,no_rm,nama_petugas,kode_produk,nama_produk,jumlah_fee,tanggal,jam,waktu,no_faktur) VALUES 
-('$no_reg','$no_rm','$dokterpenanggungjawab','$kode','$nama','$hasil_hitung_fee_persen','$tanggal_sekarang','$jam','$waktu','$no_faktur')";
+('$no_reg','$no_rm','$dokter','$kode','$nama','$hasil_hitung_fee_persen','$tanggal_sekarang','$jam','$waktu','$no_faktur')";
 if ($db->query($insert1) === TRUE) {
   
   } 
@@ -317,7 +315,7 @@ $hasil_hitung_fee_nominal = $dataui['jumlah_uang'] * $jumlah;
 
 $insert2 = "INSERT INTO tbs_fee_produk 
 (no_reg,no_rm,no_faktur,nama_petugas,kode_produk,nama_produk,jumlah_fee,tanggal,jam,waktu) VALUES 
-('$no_reg','$no_rm','$no_faktur','$dokterpenanggungjawab','$kode','$nama','$hasil_hitung_fee_nominal','$tanggal_sekarang','$jam','$waktu')";
+('$no_reg','$no_rm','$no_faktur','$dokter','$kode','$nama','$hasil_hitung_fee_nominal','$tanggal_sekarang','$jam','$waktu')";
 if ($db->query($insert2) === TRUE) {
   
     } 
