@@ -2087,10 +2087,7 @@ else {
 
 
      
-  if (a > 0){
-  alert("Anda Tidak Bisa Menambahkan Barang Yang Sudah Ada, Silakan Edit atau Pilih Barang Yang Lain !");
-  }
-  else if (jumlah_barang == ''){
+if (jumlah_barang == ''){
   alert("Jumlah Barang Harus Diisi");
        $("#jumlah_barang").focus();
 
