@@ -2,6 +2,7 @@
 
 include 'sanitasi.php';
 include 'db.php';
+
 $session_id = session_id();
 
 $query = $db->query("SELECT * FROM satuan");
