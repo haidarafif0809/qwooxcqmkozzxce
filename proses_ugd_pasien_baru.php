@@ -79,7 +79,7 @@ if ($keluar['nama_pasien'] == $nama_lengkap AND $keluar['no_rm'] == $no_rm)
 else{
 
 // START NO. RM PASIEN
-$ambil_rm = $db_pasien->query("SELECT kode_pelanggan FROM pelanggan ORDER BY id DESC LIMIT 1 ");
+$ambil_rm = $db_pasien->query("SELECT kode_pelanggan FROM pelanggan WHERE kode_pelanggan != 0 ORDER BY id DESC LIMIT 1 ");
 $no_ter = mysqli_fetch_array($ambil_rm);
 $no_rm = $no_ter['kode_pelanggan'] + 1;
 
@@ -162,7 +162,7 @@ $sql9->execute();
 
 
 
-$delete_one = $db_pasien->query("DELETE FROM pelanggan WHERE no_rm_lama = '$no_rm_lama' AND no_rm IS NULL ");
+$delete_one = $db_pasien->query("DELETE FROM pelanggan WHERE no_rm_lama = '$no_rm_lama' AND (kode_pelanggan IS NULL OR kode_pelanggan = 0)  ");
 
 
 }

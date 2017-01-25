@@ -84,9 +84,9 @@ header('location:rawat_jalan_lama.php');
 }
 else{
 
-$ambil_rm = $db_pasien->query("SELECT kode_pelanggan FROM pelanggan ORDER BY id DESC LIMIT 1 ");
+$ambil_rm = $db_pasien->query("SELECT kode_pelanggan FROM pelanggan WHERE kode_pelanggan != 0 ORDER BY id DESC LIMIT 1 ");
 $no_ter = mysqli_fetch_array($ambil_rm);
-$no_rm = $no_ter['kode_pelanggan'] + 1;
+ECHO $no_rm = $no_ter['kode_pelanggan'] + 1;
 
 
 // START UNTUK AMBIL NO REG NYA LEWAT PROSES SAJA
@@ -164,7 +164,7 @@ $rawat_jalan_nya = 'Rawat Jalan';
 
       if ($no_rm_lama != '' ){
 
-         $delete_one = $db_pasien->query("DELETE FROM pelanggan WHERE no_rm_lama = '$no_rm_lama' AND no_rm IS NULL ");
+         $delete_one = $db_pasien->query("DELETE FROM pelanggan WHERE no_rm_lama = '$no_rm_lama' AND (kode_pelanggan IS NULL OR kode_pelanggan = 0)  ");
 
       
 
@@ -228,13 +228,13 @@ $rawat_jalan_nya2 = 'Rawat Jalan';
 
 if ($no_rm_lama != ''){
 
-$sql9991 = $db_pasien->prepare("INSERT INTO pelanggan (alergi,no_kk,nama_kk,kode_pelanggan,nama_pelanggan,tempat_lahir,tgl_lahir,umur,alamat_sekarang,alamat_ktp,no_telp,no_ktp,  naa_msuamiortu,pekerjaan_suamiortu,nama_penanggungjawab,hubungan_dengan_pasien, alamat_penanggung,no_hp_penanggung,jenis_kelamin,pendidikan_terakhir,stauts_kawin,agama,penjamin,gol_darah,tanggal,no_rm_lama) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+$sql9991 = $db_pasien->prepare("INSERT INTO pelanggan (alergi,no_kk,nama_kk,kode_pelanggan,nama_pelanggan,tempat_lahir,tgl_lahir,umur,alamat_sekarang,alamat_ktp,no_telp,no_ktp,  nama_suamiortu,pekerjaan_suamiortu,nama_penanggungjawab,hubungan_dengan_pasien, alamat_penanggung,no_hp_penanggung,jenis_kelamin,pendidikan_terakhir,status_kawin,agama,penjamin,gol_darah,tanggal,no_rm_lama) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
 $sql9991->bind_param("ssssssssssssssssssssssssss",$alergi,$no_kk,$nama_kk,$no_rm,$nama_lengkap,$tempat_lahir,$tanggal_lahir,$umur,$alamat_sekarang,$alamat_ktp,$no_telepon,$no_ktp,$nama_suamiortu,$pekerjaan_pasien,$nama_penanggungjawab,$hubungan_dengan_pasien,$alamat_penanggung,$no_hp_penanggung,$jenis_kelamin,$pendidikan_terakhir,$status_kawin,$agama,$penjamin,$gol_darah,$tanggal_sekarang,$no_rm_lama);
 
 $sql9991->execute();
 
-$delete_one1 = $db_pasien->query("DELETE FROM pelanggan WHERE no_rm_lama = '$no_rm_lama' AND kode_pelanggan IS NULL ");
+$delete_one1 = $db_pasien->query("DELETE FROM pelanggan WHERE no_rm_lama = '$no_rm_lama' AND (kode_pelanggan IS NULL OR kode_pelanggan = 0)  ");
 
 
 }

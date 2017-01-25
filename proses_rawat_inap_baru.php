@@ -89,7 +89,7 @@ else{
 
 
 // START NO. RM PASIEN
-$ambil_rm = $db_pasien->query("SELECT kode_pelanggan FROM pelanggan ORDER BY id DESC LIMIT 1 ");
+$ambil_rm = $db_pasien->query("SELECT kode_pelanggan FROM pelanggan WHERE kode_pelanggan != 0 ORDER BY id DESC LIMIT 1 ");
 $no_ter = mysqli_fetch_array($ambil_rm);
 $no_rm = $no_ter['kode_pelanggan'] + 1;
 // END NO. RM PASIEN
@@ -176,7 +176,7 @@ $sql91->bind_param("ssssssssssssssssssssssss",$alergi,$no_kk,$nama_kk,$no_rm,$na
 $sql91->execute();
 
 
-$delete_one = $db_pasien->query("DELETE FROM pelanggan WHERE no_rm_lama = '$no_rm_lama' AND (kode_pelanggan IS NULL OR kode_pelanggan = '')  ");
+$delete_one = $db_pasien->query("DELETE FROM pelanggan WHERE no_rm_lama = '$no_rm_lama' AND (kode_pelanggan IS NULL OR kode_pelanggan = 0)  ");
 
 
 }
