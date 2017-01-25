@@ -1,13 +1,10 @@
 <?php include_once 'session_login.php';
- 
-
 // memasukan file session login,  header, navbar, db.php,
 include 'header.php';
 include 'navbar.php';
 include 'db.php';
 include 'sanitasi.php';
 
- 
 // menampilkan seluruh data yang ada pada tabel penjualan yang terdapt pada DB
 
 $no_reg = stringdoang($_GET['no_reg']);
@@ -18,7 +15,6 @@ else
 {
   $analis = '';
 }
-
 
 
 $registrasi = $db->query("SELECT * FROM registrasi WHERE no_reg = '$no_reg' ");
@@ -783,13 +779,23 @@ Laboratorium  </button>
            
            </div>
 
-         <div class="col-xs-6">
+        
 
-                <label> Biaya Admin</label><br>
-              <input type="text" name="biaya_adm" style="height:15px;font-size:15px" id="biaya_adm" class="form-control" placeholder="Biaya Admin" autocomplete="off"  onkeydown="return numbersonly(this, event);" onkeyup="javascript:tandaPemisahTitik(this);">
-            
-          </div>
 
+
+<div class="col-xs-6">
+    <label>Biaya Admin </label><br>
+    <select class="form-control chosen" id="biaya_admin_select" name="biaya_admin_select" >
+    <option value="0"> Silahkan Pilih </option>
+      <?php 
+      $get_biaya_admin = $db->query("SELECT * FROM biaya_admin");
+      while ( $take_admin = mysqli_fetch_array($get_biaya_admin))
+      {
+      echo "<option value='".$take_admin['persentase']."'>".$take_admin['nama']."</option>";
+      }
+      ?>
+    </select>
+    </div>
 
       </div>
       
@@ -935,7 +941,7 @@ Laboratorium  </button>
        </div>
 
           
-          
+           <input type="hidden" name="biaya_adm" id="biaya_adm" class="form-control"> 
           <input style="height:15px" type="hidden" name="jumlah" id="jumlah1" class="form-control" placeholder="jumlah">
           
           
@@ -1019,6 +1025,34 @@ $(document).ready(function(){
   $(document).on('click', '.tidak_punya_otoritas', function (e) {
     alert("Anda Tidak Punya Otoritas Untuk Edit Jumlah Produk !!");
   });
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+  //Hitung Biaya Admin
+
+  $("#biaya_admin_select").change(function(){
+  
+  var biaya_admin = $("#biaya_admin_select").val();
+  var total2 = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#total2").val()))));
+  var total1 = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#total1").val()))));
+
+  var hitung_biaya = parseInt(biaya_admin,10) * parseInt(total2,10) / 100;
+
+$("#biaya_adm").val(tandaPemisahTitik(hitung_biaya));
+var biaya_adm = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#biaya_adm").val()))));
+var diskon = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#potongan_penjualan").val()))));
+if(diskon == '')
+{
+  diskon = 0
+}
+var hasilnya = parseInt(total2,10) + parseInt(biaya_adm,10) - parseInt(diskon,10);
+
+      $("#total1").val(tandaPemisahTitik(hasilnya));
+
+    });
+});
+//end Hitu8ng Biaya Admin
 </script>
 
 <script type="text/javascript" language="javascript" >
@@ -2282,7 +2316,7 @@ $("#cari_produk_penjualan").click(function(){
 </script>-->
 
 
-<script type="text/javascript">
+<!--<script type="text/javascript">
   $(document).ready(function(){
     $("#biaya_adm").keyup(function(){
       var biaya_adm = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#biaya_adm").val()))));
@@ -2340,7 +2374,7 @@ $("#cari_produk_penjualan").click(function(){
     });
   });
   
-</script>
+</script>-->
 
 
 <script type="text/javascript">

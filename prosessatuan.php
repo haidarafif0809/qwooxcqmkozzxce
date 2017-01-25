@@ -3,19 +3,15 @@
 include 'db.php';
 include 'sanitasi.php';
 
+$nama = stringdoang($_POST['nama']);
 
 //masukan data ke database satuan
-$perintah = $db->prepare("INSERT INTO satuan (nama,nama_cetak,dari_satuan,qty)
-			VALUES (?,?,?,?)");
+$perintah = $db->prepare("INSERT INTO satuan (nama)
+			VALUES (?)");
 
-$perintah->bind_param("sssi",
-	$nama,$nama_cetak,$satuan,$qty);
+$perintah->bind_param("s",
+	$nama);
 
-	
-	$nama = stringdoang($_POST['nama']);
-	$nama_cetak = stringdoang($_POST['nama_cetak']);
-	$satuan = stringdoang($_POST['satuan']);
-	$qty = stringdoang($_POST['qty']);
 
 $perintah->execute();
 

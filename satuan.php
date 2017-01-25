@@ -52,6 +52,7 @@ echo '<button type="button" class="btn btn-info " data-toggle="modal" data-targe
 					<input type="text" name="nama" id="nama_satuan" class="form-control" autocomplete="off" required="" >
 					</div>
 
+					<!--
 					<div class="form-group">
 					<label> Nama Cetak </label>
 					<br>
@@ -69,7 +70,7 @@ echo '<button type="button" class="btn btn-info " data-toggle="modal" data-targe
 					<div class="form-group">
 					<label> Quantity </label><br>
 					<input type="text" name="qty" id="qty" autocomplete="off" class="form-control" required="" >
-					</div>
+					</div>-->
 
      
    </div>
@@ -297,15 +298,16 @@ $(document).ready(function(){
 $(document).on('click','#submit_tambah',function(e){
 
 		var nama = $("#nama_satuan").val();
+		/*/
 		var nama_cetak = $("#nama_cetak").val();
 		var satuan = $("#dari_satuan").val();
-		var qty = $("#qty").val();
+		var qty = $("#qty").val();/*/
 
 		if (nama == "")
 			{
 				alert("Satuan Harus Diisi");
 			}
-
+/*/
 		else if (nama_cetak = "") 
 			{
 				alert("Nama Cetak Harus Diisi");
@@ -318,11 +320,11 @@ $(document).on('click','#submit_tambah',function(e){
 		else if (qty = "") 
 			{
 				alert("Quantity Harus Diisi");
-			}
+			}/*/
 
 		else{
 
-		$.post('prosessatuan.php',{nama:nama,nama_cetak:nama_cetak,satuan:satuan,qty:qty},function(data){
+		$.post('prosessatuan.php',{nama:nama/*/,nama_cetak:nama_cetak,satuan:satuan,qty:qty/*/},function(data){
 
 		if (data != '') {
 		$("#nama_satuan").val('');
@@ -405,7 +407,7 @@ else
 // cek namanya
  $.post('cek_nama_satuan.php',{nama:nama}, function(data){
         if(data == 1){
-          alert('Nama Bidang Laboratorium yang anda masukkan sudah ada!');
+          alert('Nama Satuan yang anda masukkan sudah ada!');
           $("#nama_edit").val(show_name); // menampilkan NAMA yang sebelumnya
           $("#nama_edit").focus();
         }

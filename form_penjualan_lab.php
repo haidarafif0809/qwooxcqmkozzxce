@@ -1,6 +1,4 @@
 <?php include 'session_login.php';
- 
-
 // memasukan file session login,  header, navbar, db.php,
 include 'header.php';
 include 'navbar.php';
@@ -671,12 +669,21 @@ $data_rj_ri = mysqli_fetch_array($sum_rj_ri);
 
                   ?>
 
-            <div class="col-xs-6">
-            <label>Biaya Admin </label><br>
-            <input style="height:25px;font-size:15px" name="biaya_admin" type="text" id="biaya_admin"  placeholder="Biaya Admin" onkeydown="return numbersonly(this, event);" onkeyup="javascript:tandaPemisahTitik(this);" autocomplete="off"  class="form-control">
-          </div>
+        <div class="col-xs-6">
+    <label>Biaya Admin </label><br>
+    <select class="form-control chosen" id="biaya_admin_select" name="biaya_admin_select" >
+    <option value="0"> Silahkan Pilih </option>
+      <?php 
+      $get_biaya_admin = $db->query("SELECT * FROM biaya_admin");
+      while ( $take_admin = mysqli_fetch_array($get_biaya_admin))
+      {
+      echo "<option value='".$take_admin['persentase']."'>".$take_admin['nama']."</option>";
+      }
+      ?>
+    </select>
+    </div>
           
-
+ <input type="hidden" name="biaya_admin" id="biaya_admin" class="form-control"> 
 
       </div>
       
@@ -1037,6 +1044,33 @@ $(document).ready(function(){
 
 </script>
 
+<script type="text/javascript">
+$(document).ready(function(){
+  //Hitung Biaya Admin
+
+  $("#biaya_admin_select").change(function(){
+  
+  var biaya_admin = $("#biaya_admin_select").val();
+  var total2 = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#total2").val()))));
+  var total1 = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#total1").val()))));
+
+  var hitung_biaya = parseInt(biaya_admin,10) * parseInt(total2,10) / 100;
+
+$("#biaya_admin").val(tandaPemisahTitik(hitung_biaya));
+var biaya_admin = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#biaya_admin").val()))));
+var diskon = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#potongan_penjualan").val()))));
+if(diskon == '')
+{
+  diskon = 0
+}
+var hasilnya = parseInt(total2,10) + parseInt(biaya_admin,10) - parseInt(diskon,10);
+
+      $("#total1").val(tandaPemisahTitik(hasilnya));
+
+    });
+});
+//end Hitu8ng Biaya Admin
+</script>
 
 <script type="text/javascript">
   // Rawat jalan
@@ -2353,7 +2387,7 @@ $("#cari_produk_penjualan").click(function(){
         </script>
 
 <!-- Key-up Biaya Admin-->
-<script type="text/javascript">
+<!--<script type="text/javascript">
   $(document).ready(function(){
     $("#biaya_admin").keyup(function(){
 
@@ -2407,7 +2441,7 @@ $("#cari_produk_penjualan").click(function(){
 
     });
   });
-</script>
+</script>-->
 <!-- Key-up Biaya Admin-->
 
 
