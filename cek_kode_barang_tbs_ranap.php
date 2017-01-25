@@ -22,13 +22,13 @@ $my22 = mysqli_fetch_array($query65);
 $waktu_selisih = $my22['waktu_selisih'];
 
 
-if ($waktu_selisih < 30 AND $my > 0)
+if ($waktu_selisih < 1 AND $my > 0)
 {
-	echo "1";
+	echo 1;
 }
 else
 	{
-	echo "2";
+	echo 2;
 	}
 
 

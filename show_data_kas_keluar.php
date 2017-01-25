@@ -47,9 +47,9 @@ while($row=mysqli_fetch_array($query) ) {  // preparing an array
 	$pilih_akses_kas_keluar = $db->query("SELECT * FROM otoritas_kas_keluar WHERE id_otoritas = '$_SESSION[otoritas_id]'");
 $kas_keluar = mysqli_fetch_array($pilih_akses_kas_keluar);
 
-if ($kas_keluar['kas_keluar_lihat'] == 1) {
+
 	$nestedData[] = "<a href='cetak_kas_keluar.php?no_faktur=".$row['no_faktur']."' target='blank' class='btn btn-primary' data-target='blank'> <i class='fa fa-print'></i> Cetak </a>";
-	}
+
 
 	$nestedData[] = $row["no_faktur"];
 	$nestedData[] = $row["nama_daftar_akun"];

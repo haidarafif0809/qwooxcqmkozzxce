@@ -1,6 +1,4 @@
 <?php include_once 'session_login.php';
- 
-
 // memasukan file session login,  header, navbar, db.php,
 include 'header.php';
 include 'navbar.php';
@@ -687,14 +685,21 @@ else{
            
         </div>
 
-        <div class="col-xs-6">
-           
-           <label style="font-size:15px">  Biaya Admin (Rp)</label><br>
-           <input style="height:10px;font-size:15px" type="text" name="biaya_admin" id="biaya_admin" class="form-control" placeholder="Biaya Admin" onkeydown="return numbersonly(this, event);" onkeyup="javascript:tandaPemisahTitik(this);">
-           
-        </div>
+<div class="col-xs-6">
+    <label>Biaya Admin </label><br>
+    <select class="form-control chosen" id="biaya_admin_select" name="biaya_admin_select" >
+    <option value="0"> Silahkan Pilih </option>
+      <?php 
+      $get_biaya_admin = $db->query("SELECT * FROM biaya_admin");
+      while ( $take_admin = mysqli_fetch_array($get_biaya_admin))
+      {
+      echo "<option value='".$take_admin['persentase']."'>".$take_admin['nama']."</option>";
+      }
+      ?>
+    </select>
+    </div>
 
-
+ <input type="hidden" name="biaya_admin" id="biaya_admin" class="form-control">  
       </div>
       
 
@@ -924,6 +929,35 @@ $(document).ready(function(){
   });
 </script>
 
+<script type="text/javascript">
+$(document).ready(function(){
+  //Hitung Biaya Admin
+
+  $("#biaya_admin_select").change(function(){
+  
+  var biaya_admin = $("#biaya_admin_select").val();
+  var total2 = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#total2").val()))));
+  var total1 = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#total1").val()))));
+
+  var hitung_biaya = parseInt(biaya_admin,10) * parseInt(total2,10) / 100;
+
+$("#biaya_admin").val(tandaPemisahTitik(hitung_biaya));
+var biaya_admin = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#biaya_admin").val()))));
+var diskon = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#potongan_penjualan").val()))));
+if(diskon == '')
+{
+  diskon = 0
+}
+var hasilnya = parseInt(total2,10) + parseInt(biaya_admin,10) - parseInt(diskon,10);
+
+      $("#total1").val(tandaPemisahTitik(hasilnya));
+
+    });
+});
+//end Hitu8ng Biaya Admin
+</script>
+
+
 <!--untuk memasukkan perintah java script-->
 <script type="text/javascript">
 
@@ -932,6 +966,8 @@ $(document).ready(function(){
 
 
   document.getElementById("kode_barang").value = $(this).attr('data-kode');
+        $("#kode_barang").trigger('chosen:updated');
+
   document.getElementById("nama_barang").value = $(this).attr('nama-barang');
   document.getElementById("limit_stok").value = $(this).attr('limit_stok');
   document.getElementById("satuan_produk").value = $(this).attr('satuan');
@@ -941,6 +977,20 @@ $(document).ready(function(){
   document.getElementById("satuan_konversi").value = $(this).attr('satuan');
   document.getElementById("id_produk").value = $(this).attr('id-barang');
 
+
+  var kode_barang = $("#kode_barang").val();
+   var no_reg = $("#no_reg").val();
+ $.post('cek_kode_barang_tbs_penjualan.php',{kode_barang:kode_barang,no_reg:no_reg}, function(data){
+  
+  if(data == 1){
+    alert("Anda Tidak Bisa Menambahkan Barang Yang Sudah Ada, Silakan Edit atau Pilih Barang Yang Lain !");
+    $("#kode_barang").val('');
+      $("#kode_barang").trigger('chosen:updated');
+        $("#kode_barang").trigger('chosen:open');
+    $("#nama_barang").val('');
+   }//penutup if
+
+    });////penutup function(data)
 
 
 var level_harga = $("#level_harga").val();
@@ -1389,6 +1439,8 @@ else if (a > 0){
      $("#tbody").prepend(data);
      $("#kode_barang").val('');
      $("#kode_barang").trigger('chosen:update');
+     $("#kode_barang").trigger('chosen:open');
+
      $("#nama_barang").val('');
      $("#jumlah_barang").val('');
      $("#potongan1").val('');
@@ -1398,7 +1450,6 @@ else if (a > 0){
      $("#sisa_pembayaran_penjualan").val('');
      $("#kolom_cek_harga").val('0');
       
-     $("#kode_barang").trigger('chosen:open');
      $("#harga_baru").val('');
      $("#harga_produk").val('');
      $("#harga_lama").val('');
@@ -1789,28 +1840,6 @@ else
   </script>
 
 
-  <script type="text/javascript">
-//berfunsi untuk mencekal username ganda
- $(document).ready(function(){
-  $(document).on('click', '.pilih', function (e) {
-    var kode_barang = $("#kode_barang").val();
-    var no_reg = $("#no_reg").val();
-    var kode_barang = kode_barang.substr(0, kode_barang.indexOf('('));
- $.post('cek_kode_barang_tbs_edit.php',{kode_barang:kode_barang,no_reg:no_reg}, function(data){
-  
-  if(data == 1){
-    alert("Anda Tidak Bisa Menambahkan Barang Yang Sudah Ada, Silakan Edit atau Pilih Barang Yang Lain !");
-    $("#kode_barang").trigger('chosen:open');
-    $("#kode_barang").val('');
-    $("#nama_barang").val('');
-   }//penutup if
-
-    });////penutup function(data)
-
-    });//penutup click(function()
-  });//penutup ready(function()
-</script>
-
 
 
 <script type="text/javascript">
@@ -2104,7 +2133,7 @@ else
         
         </script>
 
-  <script type="text/javascript">
+  <!--<script type="text/javascript">
   $(document).ready(function(){ 
 
       $("#biaya_admin").keyup(function(){
@@ -2165,7 +2194,7 @@ else
 
         });
         
-        </script>
+        </script>-->
 
 
 <!--
@@ -3575,7 +3604,7 @@ $(document).ready(function(){
           "fnCreatedRow": function( nRow, aData, iDataIndex ) {
 
             $(nRow).attr('class', "pilih");
-              $(nRow).attr('data-kode', aData[0]+"("+aData[1]+")");
+              $(nRow).attr('data-kode', aData[0]);
               $(nRow).attr('nama-barang', aData[1]);
               $(nRow).attr('harga', aData[2]);
               $(nRow).attr('harga_level_2', aData[3]);

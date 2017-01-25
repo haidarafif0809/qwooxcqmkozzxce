@@ -46,7 +46,11 @@ $barang = $db->query("SELECT * FROM barang WHERE kode_barang = '$data_fee[kode_p
 $y = mysqli_num_rows($barang);
 
 if ($y > 0) {
-	$insert2 = "INSERT INTO tbs_fee_produk (no_faktur,no_reg,no_rm,nama_petugas,kode_produk,nama_produk,jumlah_fee,tanggal,jam) VALUES ('$data_fee[no_faktur]','$data_fee[no_reg]','$data_fee[no_rm]','$data_fee[nama_petugas]','$data_fee[kode_produk]','$data_fee[nama_produk]','$data_fee[jumlah_fee]','$data_fee[tanggal]','$data_fee[jam]')";
+
+$perintah = $db->query("SELECT tanggal, jam FROM detail_penjualan WHERE no_faktur = '$data_fee[no_faktur]'");
+$data_per = mysqli_fetch_array($perintah);
+
+	$insert2 = "INSERT INTO tbs_fee_produk (no_faktur,no_reg,no_rm,nama_petugas,kode_produk,nama_produk,jumlah_fee,tanggal,jam,waktu) VALUES ('$data_fee[no_faktur]','$data_fee[no_reg]','$data_fee[no_rm]','$data_fee[nama_petugas]','$data_fee[kode_produk]','$data_fee[nama_produk]','$data_fee[jumlah_fee]','$data_fee[tanggal]','$data_fee[jam]','$data_per[tanggal] $data_per[jam]')";
 
       if ($db->query($insert2) === TRUE) {
       
