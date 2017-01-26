@@ -445,7 +445,7 @@ $("#nomorfaktur1").val(data);
               $(nRow).attr('nama-barang', aData[1]);
               $(nRow).attr('satuan', aData[7]);
               $(nRow).attr('harga', aData[6]);
-
+              $(nRow).attr('jumlah-barang', aData[2]);
 
           }
 
@@ -608,7 +608,7 @@ $.post("cek_total_item_keluar.php",
           
     $.post('cek_kode_barang_tbs_item_keluar.php',{kode_barang:kode_barang,session_id:session_id}, function(data){
     
-    if(data != ''){
+    if(data == 1){
     alert("Anda Tidak Bisa Menambahkan Barang Yang Sudah Ada, Silakan Edit atau Pilih Barang Yang Lain !");
     $("#kode_barang").val('');
     $("#nama_barang").val('');
