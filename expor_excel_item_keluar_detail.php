@@ -15,7 +15,7 @@ $sampai_tanggal= $_GET['sampai_tanggal'];
 
 
 //menampilkan seluruh data yang ada pada tabel penjualan
-$perintah = $db->query("SELECT *, s.nama FROM detail_item_keluar dik INNER JOIN satuan s ON dik.satuan = s.id WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' order by tanggal asc");
+$perintah = $db->query("SELECT dik.id,dik.no_faktur, dik.kode_barang, dik.nama_barang, dik.gudang_item_keluar, dik.jumlah, dik.harga, dik.subtotal, s.nama FROM detail_item_keluar dik INNER JOIN satuan s ON dik.satuan = s.id WHERE dik.tanggal >= '$dari_tanggal' AND dik.tanggal <= '$sampai_tanggal' order by dik.tanggal ASC");
 
 ?>
 <style>
