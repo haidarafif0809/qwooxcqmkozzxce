@@ -17,10 +17,10 @@ $nama = $cek['id'];
 
     if ($nama_petugas_fee == ""){
 
-            $perintah = $db->prepare("INSERT INTO fee_produk (nama_petugas, kode_produk, nama_produk, jumlah_prosentase, jumlah_uang, user_buat) VALUES (?,?,?,?,?,?)");
+            $perintah = $db->prepare("INSERT INTO fee_produk (nama_petugas, kode_produk, nama_produk, jumlah_prosentase, jumlah_uang, user_buat, jabatan) VALUES (?,?,?,?,?,?,?)");
 
-    $perintah->bind_param("sssiis",
-        $nama, $kode_produk, $nama_produk, $jumlah_prosentase, $jumlah_nominal, $user);
+    $perintah->bind_param("sssiiss",
+        $nama, $kode_produk, $nama_produk, $jumlah_prosentase, $jumlah_nominal, $user, $jabatan);
 
     $kode_produk = stringdoang($_POST['kode_produk']);
     $nama_produk = stringdoang($_POST['nama_produk']);

@@ -171,8 +171,28 @@ $ambil_otoritas = $db->query("SELECT * FROM hak_otoritas");
 					</select>
 					</div>
 
+					<label>KOMISI PRODUK</label><br>
+						<div class="row">
+
+						<div class="col-sm-2">
+							<fieldset class="form-group">
+						        <input name="komisi" value="1" type="radio" id="radio11" checked="checked">
+						        <label for="radio11">Ya</label>
+						    </fieldset>
+						</div>
+
+						<div class="col-sm-1">
+							<fieldset class="form-group">
+						        <input name="komisi" value="0" type="radio" id="radio21">
+						        <label for="radio21">Tidak</label>
+						    </fieldset>
+						</div>
+
+						</div>
+
+
 					
-					<button type="submit" class="btn btn-info"><span class='glyphicon glyphicon-plus'> </span>Tambah</button>
+					<button type="submit" class="btn btn-info"><i class='fa fa-plus'> </i>Tambah</button>
 					</form>
 							</div>
 
@@ -431,6 +451,9 @@ $(document).on('click', '#btn_jadi_hapus', function (e) {
                });
                });
 
-</script>                    
+</script>   
+
+
+                
 
 <?php include 'footer.php'; ?>

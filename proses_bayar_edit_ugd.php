@@ -36,7 +36,6 @@ if ($total != $total_tbs) {
                $petugas_paramedik = stringdoang($_POST['petugas_paramedik']);
                $petugas_lain = stringdoang($_POST['petugas_lain']);
                $kode_gudang = stringdoang($_POST['kode_gudang']);
-               $jam = date('H:i:s');
                /*$tax = stringdoang($_POST['tax']);*/
                $sisa_pembayaran = stringdoang($_POST['sisa_pembayaran']);
                $cara_bayar = stringdoang($_POST['cara_bayar']);
@@ -52,9 +51,9 @@ if ($total != $total_tbs) {
 $tahun_sekarang = date('Y');
 $bulan_sekarang = date('m');
 $tanggal_sekarang = date('Y-m-d');
-$jam_sekarang = date('H:i:s');
+$jam_sekarang = stringdoang($_POST['jam']);
 $tahun_terakhir = substr($tahun_sekarang, 2);
-$waktu = $tanggal_sekarang." ".$jam_sekarang;
+$waktu = $tanggal_edit." ".$jam_sekarang;
            
     
     $select_kode_pelanggan = $db->query("SELECT nama_pelanggan FROM pelanggan WHERE kode_pelanggan = '$kode_pelanggan'");
@@ -150,7 +149,7 @@ $delete1 = $db->query("DELETE FROM jurnal_trans WHERE no_faktur = '$nomor_faktur
               
     // hubungkan "data" dengan prepared statements
               $stmt->bind_param("sssisisiisissssssss",
-                $petugas_farmasi, $petugas_paramedik, $petugas_lain, $biaya_adm, $kode_gudang, $total, $jam, $potongan, $sisa_pembayaran, $cara_bayar, $pembayaran, $ppn_input, $keterangan, $nama_petugas, $tanggal_edit,$no_jurnal,$ket_jurnal, $nomor_faktur,  $no_reg );
+                $petugas_farmasi, $petugas_paramedik, $petugas_lain, $biaya_adm, $kode_gudang, $total, $jam_sekarang, $potongan, $sisa_pembayaran, $cara_bayar, $pembayaran, $ppn_input, $keterangan, $nama_petugas, $tanggal_edit,$no_jurnal,$ket_jurnal, $nomor_faktur,  $no_reg );
               
 
             
@@ -256,7 +255,7 @@ if ($potongan != "") {
       
   // hubungkan "data" dengan prepared statements
               $stmt->bind_param("sssisisiisisssisssss",
-                $petugas_farmasi, $petugas_paramedik, $petugas_lain, $biaya_adm, $kode_gudang, $total, $jam, $potongan, $sisa_kredit, $cara_bayar, $pembayaran, $ppn_input, $keterangan, $nama_petugas, $sisa_kredit,$tanggal_edit,$no_jurnal,$ket_jurnal, $nomor_faktur,$no_reg );
+                $petugas_farmasi, $petugas_paramedik, $petugas_lain, $biaya_adm, $kode_gudang, $total, $jam_sekarang, $potongan, $sisa_kredit, $cara_bayar, $pembayaran, $ppn_input, $keterangan, $nama_petugas, $sisa_kredit,$tanggal_edit,$no_jurnal,$ket_jurnal, $nomor_faktur,$no_reg );
               
  
 

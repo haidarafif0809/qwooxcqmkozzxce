@@ -6,19 +6,21 @@ $tahun_sekarang = date('Y');
 $bulan_sekarang = date('m');
 $tanggal_sekarang = date('Y-m-d');
 $jam_sekarang = date('H:i:s');
-$waktu = date('Y-m-d H:i:s');
 $tahun_terakhir = substr($tahun_sekarang, 2);
 $user_buat = $_SESSION['user_name'];
 
 
 
 
-    $data_tbs = $db->query("SELECT * FROM kas_mutasi WHERE tanggal >= '2017-01-01' AND tanggal <= '$tanggal_sekarang' ");
+    $data_tbs = $db->query("SELECT * FROM kas_mutasi WHERE tanggal >= '2016-12-23' AND tanggal <= '$tanggal_sekarang' ");
     while ($data = mysqli_fetch_array($data_tbs))
 
 {
 
-                $pilih = $db->query("SELECT da.nama_daftar_akun, da.kode_daftar_akun, dk.dari_akun FROM daftar_akun da INNER JOIN kas_mutasi dk ON dk.dari_akun = da.kode_daftar_akun");
+
+$waktu = $data['tanggal']." ".$data['jam'];
+
+            $pilih = $db->query("SELECT da.nama_daftar_akun, da.kode_daftar_akun, dk.dari_akun FROM daftar_akun da INNER JOIN kas_mutasi dk ON dk.dari_akun = da.kode_daftar_akun");
             $dari_akun_select = mysqli_fetch_array($pilih);
 
             $select = $db->query("SELECT da.nama_daftar_akun, da.kode_daftar_akun, dk.ke_akun FROM daftar_akun da INNER JOIN kas_mutasi dk ON dk.ke_akun = da.kode_daftar_akun INNER JOIN jurnal_trans jt ON jt.kode_akun_jurnal = da.kode_daftar_akun WHERE jt.kode_akun_jurnal = '$data[ke_akun]'");
