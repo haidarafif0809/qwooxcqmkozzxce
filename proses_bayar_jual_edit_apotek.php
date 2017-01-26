@@ -4,11 +4,12 @@ include_once 'sanitasi.php';
 
 
 $tanggal = stringdoang($_POST['tanggal']);
+$jam = stringdoang($_POST['jam']);
 $session_id = session_id();
 $tahun_sekarang = date('Y');
 $bulan_sekarang = date('m');
 $tanggal_sekarang = $tanggal;
-$jam_sekarang = date('H:i:s');
+$jam_sekarang = $jam;
 $tahun_terakhir = substr($tahun_sekarang, 2);
 
 $petugas_edit = $_SESSION['id'];
@@ -31,7 +32,7 @@ $no_faktur = stringdoang($_POST['no_faktur']);
  $data = mysqli_fetch_array($query);
 
  $total_ss = $data['total_penjualan'];
- echo $total_tbs = ($total_ss - $potongan) + $biaya_admin;
+ $total_tbs = ($total_ss - $potongan) + $biaya_admin;
 
 
 if ($total != $total_tbs) {
