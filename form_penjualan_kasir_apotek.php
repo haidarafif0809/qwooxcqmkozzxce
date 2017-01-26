@@ -135,7 +135,7 @@ $user = $_SESSION['nama'];
     <label for="email">Penjamin:</label>
     <select class="form-control chosen" id="penjamin" name="penjamin" required="">
       <?php 
-      $query = $db->query("SELECT nama FROM penjamin");
+      $query = $db->query("SELECT nama FROM penjamin ORDER BY id ASC");
       while ( $icd = mysqli_fetch_array($query))
       {
       echo "<option value='".$icd['nama']."'>".$icd['nama']."</option>";
