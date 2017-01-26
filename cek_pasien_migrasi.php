@@ -36,7 +36,7 @@ $totalFiltered = $totalData;  // when there is no search parameter then total nu
 $sql = "SELECT no_rm_lama,nama_pelanggan,jenis_kelamin,alamat_sekarang,tgl_lahir,no_telp,gol_darah,no_telp,penjamin ";
 $sql.=" FROM pelanggan WHERE 1=1 AND kode_pelanggan IS NULL OR kode_pelanggan = '' ";
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
-	$sql.=" AND ( kode_pelanggan LIKE '".$requestData['search']['value']."%' ";    
+	$sql.=" AND ( no_rm_lama LIKE '".$requestData['search']['value']."%' ";    
 	$sql.=" OR nama_pelanggan LIKE '".$requestData['search']['value']."%' ";  
 	$sql.=" OR alamat_sekarang LIKE '".$requestData['search']['value']."%' ";
 	$sql.=" OR tgl_lahir LIKE '".$requestData['search']['value']."%' ";
