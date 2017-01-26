@@ -288,7 +288,7 @@ $subtotal = $harga * $jumlah - $potongan_jadi;
 
           $insert2_petugas = "INSERT INTO tbs_fee_produk 
           (session_id,no_rm,nama_petugas,kode_produk,nama_produk,jumlah_fee,tanggal,jam) VALUES 
-          ('$session_id',$no_rm','$id_kasir','$kode','$nama','$hasil_hitung_fee_nominal_petugas','$tanggal_sekarang','$jam_sekarang')";
+          ('$session_id','$no_rm','$id_kasir','$kode','$nama','$hasil_hitung_fee_nominal_petugas','$tanggal_sekarang','$jam_sekarang')";
           if ($db->query($insert2_petugas) === TRUE) 
           {
             
