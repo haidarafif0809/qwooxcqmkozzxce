@@ -1,8 +1,7 @@
-<?php 
+<?php session_start();
 include 'db.php';
 include_once 'sanitasi.php';
 
-session_start();
  
  $session_id = session_id();
 
