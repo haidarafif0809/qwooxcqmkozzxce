@@ -114,7 +114,7 @@ $total_udah_kelar = $total_udah_kelar + $jumlah;
  <table>
   <tbody>
 
-      <tr><td><i> <b> Terbilang </b></td> <td> &nbsp;:&nbsp;</td> <td> <?php echo kekata($jumlah); ?> </i> </td></tr>
+      <tr><td><i> <b> Terbilang </b></td> <td> &nbsp;:&nbsp;</td> <td> <?php echo kekata($total_fee); ?> </i> </td></tr>
 
   </tbody>
   </table>
