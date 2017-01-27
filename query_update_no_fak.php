@@ -4,7 +4,7 @@ include 'db.php';
 $no_faktur_terakhir_bener = 4345;
 
 
-$gantis = $db->query("SELECT * FROM penjualan WHERE tanggal = '2017-01-27' ");
+$gantis = $db->query("SELECT * FROM penjualan WHERE tanggal = '2017-01-27'  AND jam < '21:00:00' ");
 while($ganti = mysqli_fetch_array($gantis))
 {
  
