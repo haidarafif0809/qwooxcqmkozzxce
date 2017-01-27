@@ -22,13 +22,13 @@ $waktu_sampai = $sampai_tanggal." ".$sampai_jam;
 
     $query10 = $db->query("SELECT SUM(jumlah_fee) AS total_fee FROM laporan_fee_produk WHERE nama_petugas = '$nama_petugas' AND waktu >= '$waktu_dari' AND waktu <= '$waktu_sampai'");
     $cek0 = mysqli_fetch_array($query10);
-    $total_fee = $cek0['total_fee'];
+    $total_fee = rp($cek0['total_fee']);
     
  ?>
 
 <div style="padding-right: 5%; padding-left: 5%;">
     
-                 <h3> <b> <center>BUKTI KOMISI PRODUK / PETUGAS </center></b></h3><hr>
+                 <h3> <b> <center>BUKTI KOMISI REKAP PRODUK / PETUGAS </center></b></h3><hr>
     <div class="row"><!--row1-->
         <div class="col-sm-2">
                 <img src='save_picture/<?php echo $data1['foto']; ?>' class='img-rounded' alt='Cinque Terre' width='160' height='140`'> 
@@ -64,56 +64,50 @@ $waktu_sampai = $sampai_tanggal." ".$sampai_jam;
 <br>
 <div class="container">
 
-<table id="tableuser" class="table table-bordered table-sm">
-            <thead>
-                  <th> Kode Produk </th>
-                  <th> Nama Produk </th>
-                  <th> Jumlah Produk </th>
-                  <th> Jumlah Fee </th>
+<table id="table-pelamar" class="table table-bordered table-sm">
+ 
+    <thead>
+      <tr>
+        <th>Nomor</th>
+        <th>Nama Produk</th>
+        <th>Jumlah Produk</th>
+        <th>Jumlah Komisi</th>
 
+    </tr>
+    </thead>
+    <tbody>
+  
+     
+   <?php 
+$nomor = 0;
+$total_udah_kelar = 0;
+ $query10 = $db->query("SELECT lfp.nama_petugas,lfp.no_faktur,lfp.kode_produk,lfp.nama_produk,lfp.jumlah_fee,lfp.tanggal,lfp.jam ,u.nama FROM laporan_fee_produk lfp INNER JOIN user u ON lfp.nama_petugas = u.id  WHERE lfp.nama_petugas = '$nama_petugas' AND lfp.waktu >= '$waktu_dari' AND lfp.waktu <= '$waktu_sampai' GROUP BY lfp.kode_produk ");
+   while($data = mysqli_fetch_array($query10))
+      
+            {
+$nomor = $nomor + 1; 
+              $num_row = $db->query("SELECT nama_produk FROM laporan_fee_produk WHERE  nama_petugas = '$nama_petugas' AND waktu >= '$waktu_dari' AND waktu <= '$waktu_sampai' AND kode_produk = '$data[kode_produk]' ");
+                $kel = mysqli_num_rows($num_row);
 
-                  <?php 
+               $SS = $db->query("SELECT SUM(jumlah_fee) AS jumlah FROM laporan_fee_produk WHERE nama_petugas = '$nama_petugas' AND waktu >= '$waktu_dari' AND waktu <= '$waktu_sampai' AND kode_produk = '$data[kode_produk]'");
+                $kel2 = mysqli_fetch_array($SS); 
+                $jumlah = $kel2['jumlah'];
 
-                  
-                  ?>
-                  
-            </thead>
-            
-            <tbody>
-            <?php
-                $query10 = $db->query("SELECT lfp.nama_petugas,lfp.no_faktur,lfp.kode_produk,lfp.nama_produk,lfp.jumlah_fee,lfp.tanggal,lfp.jam ,u.nama FROM laporan_fee_produk lfp INNER JOIN user u ON lfp.nama_petugas = u.id  WHERE lfp.nama_petugas = '$nama_petugas' AND lfp.waktu >= '$waktu_dari' AND lfp.waktu <= '$waktu_sampai' GROUP BY lfp.kode_produk  ");
-         
+$total_udah_kelar = $total_udah_kelar + $jumlah;
 
-                while ($data10 = mysqli_fetch_array($query10))
-                {
-
-                  $select_jumlah = $db->query("SELECT SUM(jumlah_fee) AS jum FROM laporan_fee_produk WHERE nama_petugas = '$nama_petugas' AND kode_produk = '$data10[kode_produk]' AND waktu >= '$waktu_dari' AND waktu <= '$waktu_sampai' ");
-                  $ambil = mysqli_fetch_array($select_jumlah);
-                  $jumlah_fee_sum = $ambil['jum'];
-                  
-
-                  $select_jumlah = $db->query("SELECT kode_produk FROM laporan_fee_produk WHERE nama_petugas = '$nama_petugas' AND kode_produk = '$data10[kode_produk]' AND waktu >= '$waktu_dari' AND waktu <= '$waktu_sampai' ");
-                  $ambil_row = mysqli_num_rows($select_jumlah);
-
-                  echo "<tr>
-                  <td>". $data10['kode_produk'] ."</td>
-                  <td>". $data10['nama_produk'] ."</td>
-                  <td>". $ambil_row ."</td>
-                  <td>". rp($jumlah_fee_sum) ."</td>
-                  </tr>";
-                }
-
-                        //Untuk Memutuskan Koneksi Ke Database
-                        
-                        mysqli_close($db); 
-        
-
-        
-            ?>
-            </tbody>
-
-      </table>
-      <br>
+            echo "<tr>
+            <td>".$nomor."</td>
+            <td>". $data['nama_produk']."</td>
+            <td>". $kel."</td>
+            <td>". rp($jumlah)."</td>
+          
+                      
+            </tr>";
+      
+      }
+    ?>
+  </tbody>
+ </table>
       <div class="row">
       <div class="col-sm-8">
         
@@ -133,7 +127,8 @@ $waktu_sampai = $sampai_tanggal." ".$sampai_jam;
  <table>
   <tbody>
 
-      <tr><td width="75%"><b>Jumlah Komisi Petugas</b></td> <td> &nbsp;:&nbsp;</td> <td> <?php echo rp($total_fee); ?> </td></tr>
+      <tr><td width="75%"><b>Jumlah Komisi Petugas</b></td> <td> &nbsp;:&nbsp;</td> <td> <?php echo $total_fee; ?> </td></tr>
+
   </tbody>
   </table>
 

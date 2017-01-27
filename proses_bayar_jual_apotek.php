@@ -438,8 +438,8 @@ else
 
 
 
-    $query3 = $db->query("DELETE  FROM tbs_penjualan WHERE session_id = '$session_id' AND (no_reg = '' AND no_reg IS NULL) ");
-    $query30 = $db->query("DELETE  FROM tbs_fee_produk WHERE session_id = '$session_id' AND (no_reg = '' AND no_reg IS NULL) ");
+    $query3 = $db->query("DELETE  FROM tbs_penjualan WHERE session_id = '$session_id' AND (no_reg = '' OR no_reg IS NULL) ");
+    $query30 = $db->query("DELETE  FROM tbs_fee_produk WHERE session_id = '$session_id' AND (no_reg = '' OR no_reg IS NULL) ");
 
   }// braket if cek subtotal 
 
