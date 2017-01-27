@@ -2654,33 +2654,7 @@ function myFunction(event) {
 
 -->
 
-        <script type="text/javascript">
 
-$(document).ready(function(){
-
-    $("#kd_pelanggan").change(function(){
-        var kode_pelanggan = $("#kd_pelanggan").val();
-        
-        var level_harga = $(".opt-pelanggan-"+kode_pelanggan+"").attr("data-level");
-        
-        
-        
-        if(kode_pelanggan == 'Umum')
-        {
-           $("#level_harga").val('Level 1');
-        }
-        else 
-        {
-           $("#level_harga").val(level_harga);
-        
-        }
-        
-        
-    });
-});
-
-          
-        </script>
 
                   <script type="text/javascript">
                                  
