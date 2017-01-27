@@ -110,6 +110,7 @@ include 'db.php';
 </div>
 <span id="cetak" style="display: none;">
   <a href='cetak_lap_jumlah_fee_produk.php' target="blank" id="cetak_lap" class='btn btn-success'><i class='fa fa-print'> </i> Cetak Komisi / Petugas</a>
+  <a href='cetak_lap_jumlah_fee_produk_rekap.php' target="blank" id="cetak_lap_rekap" class='btn btn-warning'><i class='fa fa-print'> </i> Cetak Rekap Komisi / Petugas</a>
 </span>
 </div>
 
@@ -250,6 +251,8 @@ include 'db.php';
     $("#cetak").show();
 
           $("#cetak_lap").attr("href", "cetak_lap_jumlah_fee_produk.php?dari_tanggal="+dari_tanggal+"&dari_jam="+dari_jam+"&sampai_tanggal="+sampai_tanggal+"&sampai_jam="+sampai_jam+"&nama_petugas="+nama_petugas+"");
+
+          $("#cetak_lap_rekap").attr("href", "cetak_lap_jumlah_fee_produk_rekap.php?dari_tanggal="+dari_tanggal+"&dari_jam="+dari_jam+"&sampai_tanggal="+sampai_tanggal+"&sampai_jam="+sampai_jam+"&nama_petugas="+nama_petugas+"");
 }//end else
         });
         $("form").submit(function(){
