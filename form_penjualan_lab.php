@@ -1751,14 +1751,7 @@ if (jumlah_barang == ''){
         var penjamin = $("#penjamin").val()
         var sisa_pembayaran = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#sisa_pembayaran_penjualan").val()))));
         var kredit = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#kredit").val())))); 
-            var kode_pelanggan = $("#kd_pelanggan1").val();
-    if (kode_pelanggan != 'Umum') {
-      var kode_pelanggan = kode_pelanggan.substr(0, kode_pelanggan.indexOf('('));
-    }
-    else
-    {
         var kode_pelanggan = $("#kd_pelanggan1").val();
-    }   
         var tanggal_jt = $("#tanggal_jt").val();
         var total = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#total1").val())))); 
         var total2 = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah( $("#total2").val() )))); 
@@ -2041,15 +2034,6 @@ alert("Silakan Bayar Piutang");
         var dokter = $("#dokter").val();
         var sisa_pembayaran = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#sisa_pembayaran_penjualan").val()))));
         var kredit = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#kredit").val() )))); 
-        
-    var kode_pelanggan = $("#kd_pelanggan1").val();
-    if (kode_pelanggan != 'Umum') {
-      var kode_pelanggan = kode_pelanggan.substr(0, kode_pelanggan.indexOf('('));
-    }
-    else
-    {
-        var kode_pelanggan = $("#kd_pelanggan1").val();
-    }
         var tanggal_jt = $("#tanggal_jt").val();
         var total = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#total1").val())))); 
         var total2 = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#total2").val())))); 
