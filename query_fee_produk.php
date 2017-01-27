@@ -7,7 +7,7 @@ include 'db.php';
     while ($data = mysqli_fetch_array($select)) {
 
       $query = $db->query("UPDATE laporan_fee_produk SET jam = '$data[jam]', waktu = '$data[tanggal] $data[jam]' WHERE tanggal = '$data[tanggal]'");
-        
+        echo "UPDATE laporan_fee_produk SET jam = '$data[jam]', waktu = '$data[tanggal] $data[jam]' WHERE tanggal = '$data[tanggal]'";
      
     }
 echo "Sukses";
