@@ -18,7 +18,7 @@ include 'db.php';
         <br><br>
         <!-- Tampilan Modal -->
         <div id="myModal" class="modal fade" role="dialog">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog">
         
         <!-- Isi Modal-->
         <div class="modal-content">
@@ -29,7 +29,7 @@ include 'db.php';
         <div class="modal-body"> <!--membuat kerangka untuk tempat tabel -->
         
         <!--perintah agar modal update-->
-<span class="modal_baru">
+
  <div class="table-responsive">       
 <table id="table_fee_petugas" class="table table-bordered">
     <thead>
@@ -43,7 +43,7 @@ include 'db.php';
 
   </table>
 </div>
-</span>
+
           
 </div> <!-- tag penutup modal body -->
         
