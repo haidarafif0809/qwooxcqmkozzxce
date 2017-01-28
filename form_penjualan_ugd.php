@@ -1396,7 +1396,9 @@ else if (a > 0){
      $("#ppn").attr("disabled", true);
      $("#tbody").prepend(data);
      $("#kode_barang").val('');
-     $("#kode_barang").trigger('chosen:update');
+          $("#kode_barang").trigger('chosen:updated');
+          $("#kode_barang").trigger('chosen:open');
+          $("#jumlah_barang").val('');
      $("#nama_barang").val('');
      $("#jumlah_barang").val('');
      $("#potongan1").val('');
@@ -1438,10 +1440,10 @@ else if (a > 0){
       $("#ppn").attr("disabled", true);
      $("#tbody").prepend(data);
      $("#kode_barang").val('');
-     $("#kode_barang").trigger('chosen:update');
-     $("#kode_barang").trigger('chosen:open');
-
+          $("#kode_barang").trigger('chosen:updated');
+          $("#kode_barang").trigger('chosen:open');
      $("#nama_barang").val('');
+     $("#jumlah_barang").val('');
      $("#jumlah_barang").val('');
      $("#potongan1").val('');
      $("#tax1").val('');
