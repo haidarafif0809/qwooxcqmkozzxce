@@ -6,26 +6,6 @@ include 'sanitasi.php';
 $requestData= $_REQUEST;
 
 
-$jumlah_total_bersih = $db->query("SELECT SUM(total) AS total_bersih FROM penjualan");
-$ambil = mysqli_fetch_array($jumlah_total_bersih);
-
-$sub_total_bersih = $ambil['total_bersih'];
-
-
-$jumlah_total_kotor = $db->query("SELECT SUM(subtotal) AS total_kotor FROM detail_penjualan");
-$ambil_kotor = mysqli_fetch_array($jumlah_total_kotor);
-
-$sub_total_kotor = $ambil_kotor['total_kotor'];
-
-$jumlah_potongan = $db->query("SELECT SUM(potongan) AS total_potongan FROM penjualan");
-$ambil_potongan = mysqli_fetch_array($jumlah_potongan);
-
-$sub_total_potongan = $ambil_potongan['total_potongan'];
-
-$jumlah_total_tax = $db->query("SELECT SUM(tax) AS total_tax FROM penjualan");
-$ambil_tax = mysqli_fetch_array($jumlah_total_tax);
-
-$sub_total_tax = $ambil_tax['total_tax'];
 
 $pilih_akses_penjualan = $db->query("SELECT penjualan_lihat, penjualan_tambah, penjualan_edit, penjualan_hapus FROM otoritas_penjualan WHERE id_otoritas = '$_SESSION[otoritas_id]'");
 $penjualan = mysqli_fetch_array($pilih_akses_penjualan);
@@ -140,34 +120,19 @@ else{
 // end EDIT
 
 
-// Start Tombol Hapus
 
-$pilih_akses_penjualan_hapus = $db->query("SELECT penjualan_hapus FROM otoritas_penjualan WHERE id_otoritas = '$_SESSION[otoritas_id]' AND penjualan_hapus = '1'");
-$penjualan_hapus = mysqli_num_rows($pilih_akses_penjualan_hapus);
-
-        $query_penj = $db->query("SELECT nama FROM penjualan WHERE no_faktur = '$row[no_faktur]' ");
+        $query_penj = $db->query("SELECT p.nama, p.kode_pelanggan, u.nama AS nama_dokter FROM penjualan p LEFT JOIN user u ON p.dokter = u.id WHERE p.no_faktur = '$row[no_faktur]' ");
         $data_pej = mysqli_fetch_array($query_penj);
-        if ($data_pej['nama'] == 'Umum') {
+
+        if ($data_pej['nama'] == 'Umum' OR $data_pej['kode_pelanggan'] == 'Umum') {
           $pelanggan = 'Umum';    
         }
         else{
-        $query_pel = $db_pasien->query("SELECT nama_pelanggan FROM pelanggan WHERE kode_pelanggan = '$row[kode_pelanggan]' ");
-        $data_pelanggan = mysqli_fetch_array($query_pel);
-        $pelanggan = $data_pelanggan['nama_pelanggan'];
+          $pelanggan = $data_pej['nama'];
         }
 
-        $query_dok = $db->query("SELECT nama FROM user WHERE id = '$row[dokter]' ");
-        $data_dok = mysqli_fetch_array($query_dok);
 
-				$sum_subtotal = $db->query("SELECT SUM(subtotal) AS total_kotor FROM detail_penjualan WHERE no_faktur = '$row[no_faktur]' ");
-
-				$ambil_sum_subtotal = mysqli_fetch_array($sum_subtotal);
-				$total_kotor = $ambil_sum_subtotal['total_kotor'];
-
-
-
-
-  if ($penjualan_hapus > 0){
+if ($penjualan['penjualan_hapus'] > 0) {
 
       $pilih = $db->query("SELECT no_faktur_penjualan FROM detail_retur_penjualan WHERE no_faktur_penjualan = '$row[no_faktur]'");
       $row_retur = mysqli_num_rows($pilih);
@@ -175,25 +140,25 @@ $penjualan_hapus = mysqli_num_rows($pilih_akses_penjualan_hapus);
       $pilih = $db->query("SELECT no_faktur_penjualan FROM detail_pembayaran_piutang WHERE no_faktur_penjualan = '$row[no_faktur]'");
       $row_piutang = mysqli_num_rows($pilih);
 
-// if untuk sumputin tombol Hapus
-if ($row['status'] == 'Simpan Sementara') 
-{
-    $nestedData[] ="<td> </td>";
-}
-else
-{
-      if ($row_retur > 0 || $row_piutang > 0) {
-      
-     $nestedData[] ="<td> <button class='btn btn-danger btn-floating btn-alert' data-id='".$row['id']."' data-faktur='".$row['no_faktur']."'> <i class='fa fa-trash'> </i></button></td>";
-      
-      } 
-      
-      else {
-      
-     $nestedData[] =" <td> <button class='btn btn-danger btn-floating btn-hapus' data-id='".$row['id']."' data-pelanggan='".$row['kode_pelanggan']."' data-faktur='".$row['no_faktur']."' > <i class='fa fa-trash'> </i></button></td>";
-      }
+        // if untuk sumputin tombol Hapus
+        if ($row['status'] == 'Simpan Sementara') 
+        {
+            $nestedData[] ="<td> </td>";
+        }
+        else
+        {
+              if ($row_retur > 0 || $row_piutang > 0) {
+              
+             $nestedData[] ="<td> <button class='btn btn-danger btn-floating btn-alert' data-id='".$row['id']."' data-faktur='".$row['no_faktur']."'> <i class='fa fa-trash'> </i></button></td>";
+              
+              } 
+              
+              else {
+              
+             $nestedData[] =" <td> <button class='btn btn-danger btn-floating btn-hapus' data-id='".$row['id']."' data-pelanggan='".$row['kode_pelanggan']."' data-faktur='".$row['no_faktur']."' > <i class='fa fa-trash'> </i></button></td>";
+              }
 
-}
+        }
 
     }
 // End Tombol Hapus
@@ -246,7 +211,7 @@ else
 	$nestedData[] = $row["kode_pelanggan"];
 	$nestedData[] = $row["no_reg"];
 	$nestedData[] = $pelanggan;
-	$nestedData[] = $data_dok['nama'];
+	$nestedData[] = $data_pej["nama_dokter"];
 	$nestedData[] = $row["penjamin"];
   $nestedData[] = tanggal_terbalik($row["tanggal"]);
   $nestedData[] = $row["jam"];
