@@ -6,12 +6,12 @@ include 'sanitasi.php';
 // mengirim data no faktur menggunakan metode POST
 
  $no_reg = stringdoang($_POST['no_reg']);
-$total_akhir = angkadoang($_POST['total']);
+ $total_akhir = angkadoang($_POST['total']);
  $diskon = angkadoang($_POST['potongan']);
  /*
  $pajak = angkadoang($_POST['tax']);*/
 
- $biaya_admin = angkadoang($_POST['biaya_adm']);
+ echo $biaya_admin = angkadoang($_POST['biaya_adm']); echo "<br>";
 
 
 // menampilakn hasil penjumlah subtotal ALIAS total penjualan dari tabel tbs_penjualan berdasarkan data no faktur
@@ -25,10 +25,10 @@ $total_akhir = angkadoang($_POST['total']);
  $data2 = mysqli_fetch_array($query2);
  $total2 = $data2['harga_jual'];
 
- $total_sum = ($total + $total2);
+ echo $total_sum = ($total + $total2);
 
 
-$total_tbs = ($total_sum - $diskon) + $biaya_admin;
+echo $total_tbs = ($total_sum - $diskon) + $biaya_admin;
 
 if ($total_akhir == $total_tbs) {
 		echo 1;
