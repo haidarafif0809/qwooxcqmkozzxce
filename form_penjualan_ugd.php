@@ -1122,41 +1122,7 @@ $.post("cek_level_harga_barang.php", {level_harga:level_harga, kode_barang:kode_
 <!-- end cek stok satuan konversi change-->
 
 
-<!-- cek stok  blur-->
-<script type="text/javascript">
-  $(document).ready(function(){
-    $("#jumlah_barang").blur(function(){
-      var jumlah_barang = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#jumlah_barang").val()))));
-      var jumlahbarang = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#jumlahbarang").val()))));
 
-      var satuan_konversi = $("#satuan_konversi").val();
-      var kode_barang = $("#kode_barang").val();
-      var kode_barang = kode_barang.substr(0, kode_barang.indexOf('('));
-      var id_produk = $("#id_produk").val();
-      var prev = $("#satuan_produk").val();
-      var limit_stok = $("#limit_stok").val();
-      var ber_stok = $("#ber_stok").val();
-      var stok = jumlahbarang - jumlah_barang;
-
-        if (ber_stok == 'Jasa' || ber_stok == 'BHP') {
-
-          }
-
-       else if (stok < 0) {
-
-            alert("Jumlah Melebihi Stok");
-            $("#jumlah_barang").val('');
-          $("#satuan_konversi").val(prev);
-          }// cek stok barang       
-
-      else{
-
-        }
-
-    });
-  });
-</script>
-<!-- cek stok blur-->
 
 
 
@@ -1392,15 +1358,15 @@ else if (a > 0){
   ,ppn:ppn},function(data){
      
   
+     $("#jumlah_barang").val('');
 
      $("#ppn").attr("disabled", true);
      $("#tbody").prepend(data);
      $("#kode_barang").val('');
-          $("#kode_barang").trigger('chosen:updated');
-          $("#kode_barang").trigger('chosen:open');
-          $("#jumlah_barang").val('');
+     $("#kode_barang").val('').trigger("chosen:updated");
+     $("#kode_barang").trigger('chosen:open');
+     
      $("#nama_barang").val('');
-     $("#jumlah_barang").val('');
      $("#potongan1").val('');
      $("#tax1").val('');
      $("#pembayaran_penjualan").val('');
@@ -1437,11 +1403,12 @@ else if (a > 0){
    $.post("proses_tbs_penjualan_ugd.php",{penjamin:penjamin,asal_poli:asal_poli,level_harga:level_harga,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,no_reg:no_reg,no_rm:no_rm,dokter:dokter,petugas_kasir:petugas_kasir,kode_barang:kode_barang,nama_barang:nama_barang,jumlah_barang:jumlah_barang,harga:harga,potongan:potongan,tax:tax,satuan:satuan,ber_stok:ber_stok, id_user:id_user,ppn:ppn},function(data){
      
 
+     $("#jumlah_barang").val('');
       $("#ppn").attr("disabled", true);
      $("#tbody").prepend(data);
      $("#kode_barang").val('');
-          $("#kode_barang").trigger('chosen:updated');
-          $("#kode_barang").trigger('chosen:open');
+     $("#kode_barang").val('').trigger("chosen:updated");
+     $("#kode_barang").trigger('chosen:open');
      $("#nama_barang").val('');
      $("#jumlah_barang").val('');
      $("#jumlah_barang").val('');
@@ -2736,13 +2703,17 @@ $(document).on('click','.btn-hapus-tbs',function(e){
     $("#ber_stok").val(ber_stok);
     $("#id_produk").val(id_barang);
 
-
+if (ber_stok == 'Barang') {
     $.post('ambil_jumlah_produk.php',{kode_barang:kode_barang}, function(data){
       if (data == "") {
         data = 0;
       }
-      $("#jumlahbarang").val(data);
+      $("#jumlahbarang").val(data);      
     });
+} 
+      
+$('#keterangan').val(ber_stok);
+$('#kolom_cek_harga').val('1');
 
 $.post('cek_kode_barang_tbs_penjualan.php',{kode_barang:kode_barang,no_reg:no_reg}, function(data){
           
@@ -2764,6 +2735,48 @@ $.post('cek_kode_barang_tbs_penjualan.php',{kode_barang:kode_barang,no_reg:no_re
     
       
 </script>
+
+
+<!-- cek stok  blur-->
+<script type="text/javascript">
+  $(document).ready(function(){
+    $("#jumlah_barang").blur(function(){
+      var jumlah_barang = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#jumlah_barang").val()))));
+      var jumlahbarang = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#jumlahbarang").val()))));
+
+      var satuan_konversi = $("#satuan_konversi").val();
+      var kode_barang = $("#kode_barang").val();
+      var kode_barang = kode_barang.substr(0, kode_barang.indexOf('('));
+      var id_produk = $("#id_produk").val();
+      var prev = $("#satuan_produk").val();
+      var limit_stok = $("#limit_stok").val();
+      var ber_stok = $("#ber_stok").val();
+      var stok = jumlahbarang - jumlah_barang;
+
+  if (kolom_cek_harga == '0') {
+       alert ("Klik TOmbol OK!");
+  }
+  else{
+
+      if (stok < 0) {
+
+        if (ber_stok = 'Barang') {
+        
+        alert("Jumlah Melebihi Stok");
+        $("#jumlah_barang").val('');
+        $("#satuan_konversi").val(prev);
+        
+        }
+      }
+
+  }
+
+  $("#keterangan").val(stok);
+
+    });
+  });
+</script>
+<!-- cek stok blur-->
 
 
 <script> 

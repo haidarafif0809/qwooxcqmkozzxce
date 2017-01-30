@@ -1346,12 +1346,24 @@ $.post("cek_level_harga_barang.php",{level_harga:level_harga,kode_barang:kode_ba
       var ber_stok = $("#ber_stok").val();
       var stok = jumlahbarang - jumlah_barang;
 
-        if (stok < 0 && ber_stok == 'Barang') {
-            
-            alert("Jumlah Melebihi Stok");
-            $("#jumlah_barang").val('');
-            $("#satuan_konversi").val(prev);
-        }  
+
+  if (kolom_cek_harga == '0') {
+       alert ("Klik TOmbol OK!");
+  }
+  else{
+
+      if (stok < 0) {
+
+        if (ber_stok = 'Barang') {
+        
+        alert("Jumlah Melebihi Stok");
+        $("#jumlah_barang").val('');
+        $("#satuan_konversi").val(prev);
+        
+        }
+      }
+
+  }
 
     });
   });
@@ -3168,13 +3180,16 @@ $(document).on('click','.delete',function(e){
     $("#ber_stok").val(ber_stok);
     $("#id_produk").val(id_barang);
 
-
+if (ber_stok == 'Barang') {
     $.post('ambil_jumlah_produk.php',{kode_barang:kode_barang}, function(data){
       if (data == "") {
         data = 0;
       }
       $("#jumlahbarang").val(data);
+      $("#kolom_cek_harga").val(1);
     });
+
+}
 
 $.post('cek_kode_barang_tbs_ranap.php',{kode_barang:kode_barang,no_reg:no_reg}, function(data){
           

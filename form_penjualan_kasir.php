@@ -2698,28 +2698,24 @@ $("#cari_produk_penjualan").click(function(){
       var stok = jumlahbarang - jumlah_barang;
 
 	if (kolom_cek_harga == '0') {
-	  alert ("Harga Tidak Sesuai, Tunggu Sebentar !");  
-
+	     alert ("Klik TOmbol OK!");
 	}
+  else{
 
       if (stok < 0) {
 
-      	if (ber_stok = 'Barang') {
-
-			alert("Jumlah Melebihi Stok");
-			$("#jumlah_barang").val('');
-			$("#satuan_konversi").val(prev);
-
-		}
-		else{
-
-		}
-
-      }// cek stok barang       
-
-      else{
-
+        if (ber_stok = 'Barang') {
+        
+        alert("Jumlah Melebihi Stok");
+        $("#jumlah_barang").val('');
+        $("#satuan_konversi").val(prev);
+        
         }
+      }
+
+  }
+
+
 
     });
   });
