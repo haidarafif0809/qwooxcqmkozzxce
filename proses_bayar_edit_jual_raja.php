@@ -68,8 +68,6 @@ $no_jurnal = no_jurnal();
  $select_kode_pelanggan = $db_pasien->query("SELECT nama_pelanggan FROM pelanggan WHERE kode_pelanggan = '$no_rm'");
     $ambil_kode_pelanggan = mysqli_fetch_array($select_kode_pelanggan);
 
-     $quer10 = $db->query("DELETE  FROM laporan_fee_produk WHERE no_reg = '$no_reg' ");
-
 
 
      $quer10000 = $db->query("DELETE  FROM jurnal_trans WHERE no_faktur = '$nomor_faktur' ");
@@ -188,6 +186,10 @@ $no_jurnal = no_jurnal();
       $perintah01 = $db->query("INSERT INTO laporan_fee_faktur (nama_petugas, no_faktur, jumlah_fee, tanggal, jam, no_reg, no_rm) VALUES ('$data_fee_dokter[nama_petugas]', '$nomor_faktur', '$fee_prosentase', '$tanggal_edit', '$jam_sekarang','$no_reg', '$no_rm')");
       
     }
+
+
+            $delete44 = $db->query("DELETE FROM laporan_fee_produk WHERE no_reg = '$no_reg'");
+
 
     // laporan fee produk
               
