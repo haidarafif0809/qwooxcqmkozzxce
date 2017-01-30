@@ -11,7 +11,7 @@ include 'sanitasi.php';
  /*
  $pajak = angkadoang($_POST['tax']);*/
 
- echo $biaya_admin = angkadoang($_POST['biaya_adm']); echo "<br>";
+ $biaya_admin = angkadoang($_POST['biaya_adm']);
 
 
 // menampilakn hasil penjumlah subtotal ALIAS total penjualan dari tabel tbs_penjualan berdasarkan data no faktur
@@ -25,10 +25,10 @@ include 'sanitasi.php';
  $data2 = mysqli_fetch_array($query2);
  $total2 = $data2['harga_jual'];
 
- echo $total_sum = ($total + $total2);
+ $total_sum = ($total + $total2);
 
 
-echo $total_tbs = ($total_sum - $diskon) + $biaya_admin;
+$total_tbs = ($total_sum - $diskon) + $biaya_admin;
 
 if ($total_akhir == $total_tbs) {
 		echo 1;
