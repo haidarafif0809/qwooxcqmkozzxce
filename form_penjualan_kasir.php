@@ -1260,6 +1260,7 @@ $(document).ready(function(){
       var kode_barang = kode_barang.substr(0, kode_barang.indexOf('('));
       var id_produk = $("#id_produk").val();
       var prev = $("#satuan_produk").val();
+      var ber_stok = $("#ber_stok").val();
       
 
 
@@ -1268,9 +1269,14 @@ $(document).ready(function(){
       
 
           if (data < 0) {
-            alert("Jumlah Melebihi Stok");
-            $("#jumlah_barang").val('');
-          $("#satuan_konversi").val(prev);
+          	if (ber_stok == 'Barang') {
+				alert("Jumlah Melebihi Stok");
+				$("#jumlah_barang").val('');
+				$("#satuan_konversi").val(prev);
+			}
+			else{
+
+			}
 
           }
 
@@ -2690,16 +2696,20 @@ $("#cari_produk_penjualan").click(function(){
       var ber_stok = $("#ber_stok").val();
       var stok = jumlahbarang - jumlah_barang;
 
-        if (ber_stok == 'Jasa' || ber_stok == 'BHP') {
+      if (stok < 0) {
 
-          }
+      	if (ber_stok = 'Barang') {
 
-       else if (stok < 0) {
+			alert("Jumlah Melebihi Stok");
+			$("#jumlah_barang").val('');
+			$("#satuan_konversi").val(prev);
 
-            alert("Jumlah Melebihi Stok");
-            $("#jumlah_barang").val('');
-          $("#satuan_konversi").val(prev);
-          }// cek stok barang       
+		}
+		else{
+			
+		}
+
+      }// cek stok barang       
 
       else{
 
