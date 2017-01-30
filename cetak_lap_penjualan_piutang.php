@@ -8,7 +8,8 @@ include 'db.php';
 
   $no_faktur = $_GET['no_faktur'];
 
-    $query0 = $db->query("SELECT p.no_reg,p.biaya_admin,p.id,p.no_faktur,p.total,p.kode_pelanggan,p.keterangan,p.cara_bayar,p.tanggal,p.tanggal_jt,p.jam,p.user,p.sales,p.kode_meja,p.status,p.potongan,p.tax,p.sisa,p.kredit,p.kode_gudang,p.tunai,pl.nama_pelanggan,pl.wilayah,dp.jumlah_barang,dp.subtotal,dp.nama_barang,dp.harga, da.nama_daftar_akun, pl.alamat_sekarang FROM penjualan p LEFT JOIN detail_penjualan dp ON p.no_faktur = dp.no_faktur LEFT JOIN pelanggan pl ON p.kode_pelanggan = pl.kode_pelanggan LEFT JOIN daftar_akun da ON p.cara_bayar = da.kode_daftar_akun WHERE p.no_faktur = '$no_faktur' ORDER BY p.id DESC");
+
+    $query0 = $db->query("SELECT p.penjamin,p.no_reg,p.biaya_admin,p.id,p.no_faktur,p.total,p.kode_pelanggan,p.keterangan,p.cara_bayar,p.tanggal,p.tanggal_jt,p.jam,p.user,p.sales,p.kode_meja,p.status,p.potongan,p.tax,p.sisa,p.kredit,p.kode_gudang,p.tunai,pl.nama_pelanggan,pl.wilayah,dp.jumlah_barang,dp.subtotal,dp.nama_barang,dp.harga, da.nama_daftar_akun, pl.alamat_sekarang FROM penjualan p LEFT JOIN detail_penjualan dp ON p.no_faktur = dp.no_faktur LEFT JOIN pelanggan pl ON p.kode_pelanggan = pl.kode_pelanggan LEFT JOIN daftar_akun da ON p.cara_bayar = da.kode_daftar_akun WHERE p.no_faktur = '$no_faktur' ORDER BY p.id DESC");
      $data0 = mysqli_fetch_array($query0);
 
     $select_pasien = $db_pasien->query("SELECT nama_pelanggan, alamat_sekarang FROM pelanggan WHERE kode_pelanggan = '$data0[kode_pelanggan]' ORDER BY id DESC");
@@ -97,6 +98,7 @@ include 'db.php';
        <tr><td width="50%"><font class="satu"> Tanggal JT</td> <td> :&nbsp;&nbsp;</td> <td><?php echo tanggal($data0['tanggal_jt']); ?></font> </td></tr> 
        <tr><td width="50%"><font class="satu"> Kasir</td> <td> :&nbsp;&nbsp;</td> <td><?php echo $_SESSION['nama']; ?></font></td></tr> 
        <tr><td width="50%"><font class="satu"> Status </td> <td> :&nbsp;&nbsp;</td> <td><?php echo $data0['status']; ?></font></td></tr> 
+       <tr><td width="50%"><font class="satu"> Penjamin </td> <td> :&nbsp;&nbsp;</td> <td><?php echo $data0['penjamin']; ?></font></td></tr> 
 
       </tbody>
 </table>
@@ -262,22 +264,24 @@ div.mix {border-style: dotted dashed solid double;}
 
   </tbody>
 </table>
+<br><br>
 
         </div>
+<div class="col-sm-12"></div>
 
 
-    <div class="col-sm-9">
-    
+<div class="row">
+
+    <div class="col-sm-5">    
     <font class="satu"><b>Nama <?php echo $data200['kata_ubah']; ?> <br><br><br> <font class="satu"><?php echo $data0['nama_pelanggan']; ?></font> </b></font>
-    
-    </div> <!--/ col-sm-6-->
-    
-    <div class="col-sm-3">
-    
+    </div>
+    <div class="col-sm-5">
+    <font class="satu"><b>Manager <br><br><br> <font class="satu">................</font> </b></font>
+    </div>    
+    <div class="col-sm-2">
     <font class="satu"><b>Petugas <br><br><br> <font class="satu"><?php echo $_SESSION['nama']; ?></font></b></font>
-
     </div> <!--/ col-sm-6-->
-
+</div>
 
 
 

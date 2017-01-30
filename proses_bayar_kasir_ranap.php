@@ -123,7 +123,7 @@ $group_bed = stringdoang($_POST['group_bed']);
 $no_jurnal = no_jurnal();
 
 
-    $select_kode_pelanggan = $db->query("SELECT nama_pelanggan FROM pelanggan WHERE kode_pelanggan = '$no_rm'");
+    $select_kode_pelanggan = $db_pasien->query("SELECT nama_pelanggan FROM pelanggan WHERE kode_pelanggan = '$no_rm'");
     $ambil_kode_pelanggan = mysqli_fetch_array($select_kode_pelanggan);
 
     // petugas analis
@@ -407,7 +407,7 @@ $jumlah_tax = mysqli_fetch_array($sum_tax_tbs);
 $total_tax = $jumlah_tax['total_tax'];
 
     $ppn_input = stringdoang($_POST['ppn_input']);
-    $select_kode_pelanggan = $db->query("SELECT nama_pelanggan FROM pelanggan WHERE kode_pelanggan = '$no_rm'");
+    $select_kode_pelanggan = $db_pasien->query("SELECT nama_pelanggan FROM pelanggan WHERE kode_pelanggan = '$no_rm'");
     $ambil_kode_pelanggan = mysqli_fetch_array($select_kode_pelanggan);
 
 
@@ -531,7 +531,7 @@ $jumlah_tax = mysqli_fetch_array($sum_tax_tbs);
 $total_tax = $jumlah_tax['total_tax'];
 
     $ppn_input = stringdoang($_POST['ppn_input']);
-    $select_kode_pelanggan = $db->query("SELECT nama_pelanggan FROM pelanggan WHERE kode_pelanggan = '$no_rm'");
+    $select_kode_pelanggan = $db_pasien->query("SELECT nama_pelanggan FROM pelanggan WHERE kode_pelanggan = '$no_rm'");
     $ambil_kode_pelanggan = mysqli_fetch_array($select_kode_pelanggan);
 
                 $pembayaran = stringdoang($_POST['pembayaran']);

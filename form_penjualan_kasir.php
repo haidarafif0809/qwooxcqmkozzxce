@@ -956,7 +956,7 @@ Laboratorium  </button>
  
            <?php if ($otoritas_tombol['tombol_bayar'] > 0):?>              
           <button type="submit" id="penjualan" class="btn btn-info" style="font-size:15px;">Bayar (F8)</button>
-          <a class="btn btn-info" href="pasien_sudah_masuk.php" id="transaksi_baru" style="display: none">  Transaksi Baru </a>
+          <a class="btn btn-info" href="pasien_sudah_masuk.php" id="transaksi_baru" style="display: none">  Transaksi Baru (Ctrl + T)</a>
           <?php endif;?>
         
           
@@ -1260,6 +1260,7 @@ $(document).ready(function(){
       var kode_barang = kode_barang.substr(0, kode_barang.indexOf('('));
       var id_produk = $("#id_produk").val();
       var prev = $("#satuan_produk").val();
+      var ber_stok = $("#ber_stok").val();
       
 
 
@@ -1268,9 +1269,14 @@ $(document).ready(function(){
       
 
           if (data < 0) {
-            alert("Jumlah Melebihi Stok");
-            $("#jumlah_barang").val('');
-          $("#satuan_konversi").val(prev);
+          	if (ber_stok == 'Barang') {
+				alert("Jumlah Melebihi Stok");
+				$("#jumlah_barang").val('');
+				$("#satuan_konversi").val(prev);
+			}
+			else{
+
+			}
 
           }
 
@@ -1813,6 +1819,7 @@ if (info == 1)
 } 
 else
 {
+	info = info.replace(/\s/g, '');
      $("#table-baru").html(info);
      var no_faktur = info;
      $("#cetak_tunai").attr('href', 'cetak_penjualan_tunai.php?no_faktur='+no_faktur+'');
@@ -2690,20 +2697,25 @@ $("#cari_produk_penjualan").click(function(){
       var ber_stok = $("#ber_stok").val();
       var stok = jumlahbarang - jumlah_barang;
 
-        if (ber_stok == 'Jasa' || ber_stok == 'BHP') {
+	if (kolom_cek_harga == '0') {
+	     alert ("Klik TOmbol OK!");
+	}
+  else{
 
-          }
+      if (stok < 0) {
 
-       else if (stok < 0) {
-
-            alert("Jumlah Melebihi Stok");
-            $("#jumlah_barang").val('');
-          $("#satuan_konversi").val(prev);
-          }// cek stok barang       
-
-      else{
-
+        if (ber_stok = 'Barang') {
+        
+        alert("Jumlah Melebihi Stok");
+        $("#jumlah_barang").val('');
+        $("#satuan_konversi").val(prev);
+        
         }
+      }
+
+  }
+
+
 
     });
   });
@@ -3137,13 +3149,17 @@ else
     $("#ber_stok").val(ber_stok);
     $("#id_produk").val(id_barang);
 
+if (ber_stok == 'Barang') {
 
     $.post('ambil_jumlah_produk.php',{kode_barang:kode_barang}, function(data){
       if (data == "") {
         data = 0;
       }
       $("#jumlahbarang").val(data);
+      $('#kolom_cek_harga').val('1');
     });
+
+}
 
 
 $.post('cek_kode_barang_tbs_penjualan.php',{kode_barang:kode_barang,no_reg:no_reg}, function(data){
@@ -3231,6 +3247,15 @@ $.post('cek_kode_barang_tbs_penjualan.php',{kode_barang:kode_barang,no_reg:no_re
         // Do something
 
         $("#simpan_sementara").click();
+
+    }); 
+
+
+        shortcut.add("ctrl+t", function() {
+
+        // Do something
+
+        window.location.href="pasien_sudah_masuk.php";
 
     }); 
 

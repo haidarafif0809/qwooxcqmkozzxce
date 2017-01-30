@@ -94,8 +94,8 @@ include 'db.php';
           </div>
 
 <div class="table-responsive">
-<span id="result">
-<table id="table_petugas" class="table table-bordered">
+<span id="result" style="display: none;"><center><h3>Komisi Sudah Closing</h3></center></span>
+<table id="table_petugas" class="table table-bordered" style="display: none;">
             <thead>
                   <th style="background-color: #4CAF50; color: white;"> Nama Petugas </th>
                   <th style="background-color: #4CAF50; color: white;"> Nomor Faktur </th>
@@ -106,8 +106,30 @@ include 'db.php';
                   <th style="background-color: #4CAF50; color: white;"> Jam </th>
             </thead>
 </table>
-</span>
+
+
+<span id="result2" style="display: none;"><center><h3>Komisi Belum Closing</h3></center></span>
+<table id="table_petugas2" class="table table-bordered" style="display: none;">
+            <thead>
+                  <th style="background-color: #4CAF50; color: white;"> Nama Petugas </th>
+                  <th style="background-color: #4CAF50; color: white;"> Nomor Faktur </th>
+                  <th style="background-color: #4CAF50; color: white;"> Kode Produk </th>
+                  <th style="background-color: #4CAF50; color: white;"> Nama Produk </th>
+                  <th style="background-color: #4CAF50; color: white;"> Jumlah Komisi </th>
+                  <th style="background-color: #4CAF50; color: white;"> Tanggal </th>
+                  <th style="background-color: #4CAF50; color: white;"> Jam </th>
+            </thead>
+</table>
+
 </div>
+
+<span id="note" style="display: none;">
+Note : <br>
+* Komisi Sudah Closing => Komisi dari transaksi yang sudah terselesaikan (Lunas,Piutang,Simpan Semantara) <br>
+* Komisi Belum Closing => Komisi dari transaksi yang bulum terselesaikan (Lunas,Piutang,Simpan Sementara->Rawat Inap) <br>
+</span>
+
+
 <span id="cetak" style="display: none;">
   <a href='cetak_lap_jumlah_fee_produk.php' target="blank" id="cetak_lap" class='btn btn-success'><i class='fa fa-print'> </i> Cetak Komisi / Petugas</a>
   <a href='cetak_lap_jumlah_fee_produk_rekap.php' target="blank" id="cetak_lap_rekap" class='btn btn-warning'><i class='fa fa-print'> </i> Cetak Rekap Komisi / Petugas</a>
@@ -190,11 +212,14 @@ include 'db.php';
   $(document).on('click','#submit',function(e) {
 
         $('#table_petugas').DataTable().destroy();
+        $('#table_petugas2').DataTable().destroy();
+
         var nama_petugas = $("#nama_petugas").val();
         var dari_tanggal = $("#dari_tanggal").val();        
         var sampai_tanggal = $("#sampai_tanggal").val();
        var dari_jam = $("#dari_jam").val();        
         var sampai_jam = $("#sampai_jam").val();
+
 
           if (nama_petugas == '') {
             alert("Silakan nama petugas diisi terlebih dahulu.");
@@ -218,7 +243,13 @@ include 'db.php';
           }
 
             else{ 
-              //TABLE KOMISI PRODUK
+
+
+          $("#table_petugas").show();
+          $("#table_petugas2").show();
+
+
+              //TABLE KOMISI PRODUK (SUDAH CLOSING)
               var dataTable = $('#table_petugas').DataTable( {
                 "processing": true,
                 "serverSide": true,
@@ -247,8 +278,42 @@ include 'db.php';
                 }
           
               });
+
+
+               //TABLE KOMISI PRODUK (BELUM CLOSING)
+              var dataTable = $('#table_petugas2').DataTable( {
+                "processing": true,
+                "serverSide": true,
+                "info":     false,
+                "language": {
+              "emptyTable":   "My Custom Message On Empty Table"
+          },
+                "ajax":{
+                  url :"datatable_fee_belum_closing.php", // json datasource
+                   "data": function ( d ) {
+                      d.nama_petugas = $("#nama_petugas").val();
+                      d.dari_tanggal = $("#dari_tanggal").val();
+                      d.sampai_tanggal = $("#sampai_tanggal").val();
+                      d.dari_jam = $("#dari_jam").val();
+                      d.sampai_jam = $("#sampai_jam").val();
+                      // d.custom = $('#myInput').val();
+                      // etc
+                  },
+                      type: "post",  // method  , by default get
+                  error: function(){  // error handling
+                    $(".tbody").html("");
+                    $("#table_petugas2").append('<tbody class="tbody"><tr><th colspan="3"></th></tr></tbody>');
+                    $("#tableuser_processing").css("display","none");
+                    
+                  }
+                }
+          
+              });
     
-    $("#cetak").show();
+          $("#cetak").show();
+          $("#result").show();
+          $("#result2").show();
+          $("#note").show();
 
           $("#cetak_lap").attr("href", "cetak_lap_jumlah_fee_produk.php?dari_tanggal="+dari_tanggal+"&dari_jam="+dari_jam+"&sampai_tanggal="+sampai_tanggal+"&sampai_jam="+sampai_jam+"&nama_petugas="+nama_petugas+"");
 

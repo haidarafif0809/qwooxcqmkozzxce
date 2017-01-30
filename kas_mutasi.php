@@ -10,15 +10,11 @@ include 'db.php';
 //menampilkan seluruh data yang ada pada tabel pembelian dalan DB
 
 
-$perintah = $db->query("SELECT km.id, km.no_faktur, km.keterangan, km.ke_akun, km.dari_akun, km.jumlah, km.tanggal, km.jam, km.user, da.nama_daftar_akun FROM kas_mutasi km INNER JOIN daftar_akun da ON km.ke_akun = da.kode_daftar_akun");
+$perintah = $db->query("SELECT km.id, km.no_faktur, km.keterangan, km.ke_akun, km.dari_akun, km.jumlah, km.tanggal, km.jam, km.user, da.nama_daftar_akun FROM kas_mutasi km INNER JOIN daftar_akun da ON km.ke_akun = da.kode_daftar_akun ORDER BY km.id DESC");
 
- 
-
- // menampilkan seluruh data yang ada pada tabel penjualan secara berurutan dari yang terbesar ke yang trkecil berdsarkan id
- $query1 = $db->query("SELECT * FROM kas_mutasi ORDER BY id DESC LIMIT 1");
 
 // menyimpan data sementara yang ada pada $query1
- $data = mysqli_fetch_array($query1);
+ $data = mysqli_fetch_array($perintah);
 
  // mengambil dan menyimpan data id pada variabel ($nomor_terkhir)
  $nomor_terakhir = $data['id'];

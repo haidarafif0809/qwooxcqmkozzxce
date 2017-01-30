@@ -29,8 +29,12 @@ $qu = $db->query("SELECT poli FROM registrasi WHERE no_reg = '$no_reg' ");
 $da = mysqli_fetch_array($qu);
 $poli = $da['poli'];
 
-    $perintah = $db->query("SELECT tanggal, tunai, nilai_kredit, total,tax,potongan,dokter,penjamin,biaya_admin,tunai FROM penjualan WHERE no_faktur = '$no_faktur' AND no_reg = '$no_reg'");
+    $perintah = $db->query("SELECT tanggal, tunai, nilai_kredit, total,tax,potongan,dokter,penjamin,biaya_admin,tunai,jam,perawat,apoteker,petugas_lain FROM penjualan WHERE no_faktur = '$no_faktur' AND no_reg = '$no_reg'");
     $ambil_tanggal = mysqli_fetch_array($perintah);
+
+$perintah_detail = $db->query("SELECT SUM(subtotal) AS total_detail FROM detail_penjualan WHERE no_faktur = '$no_faktur' AND no_reg = '$no_reg'");
+    $data_detail = mysqli_fetch_array($perintah_detail);
+
 
     $dp = $ambil_tanggal['tunai'];
     $nilai_kredit = $ambil_tanggal['nilai_kredit'];
@@ -38,8 +42,17 @@ $poli = $da['poli'];
     $tax = $ambil_tanggal['tax']; 
     $potongan_p = $ambil_tanggal['potongan']; 
     $dokter = $ambil_tanggal['dokter']; 
+    $apoteker = $ambil_tanggal['apoteker']; 
+    $perawat = $ambil_tanggal['perawat'];
+    $petugas_lain = $ambil_tanggal['petugas_lain'];
+
     $penjamin = $ambil_tanggal['penjamin']; 
     $biaya_adm = $ambil_tanggal['biaya_admin']; 
+
+    $biaya_admi = ($biaya_adm *  $data_detail['total_detail']) / 100;
+    $biaya_admin = round($biaya_admi);
+
+
     $pembayaran_awal = $ambil_tanggal['tunai'];
     $total_akhir = $ambil_tanggal['total'];
 
@@ -99,12 +112,21 @@ $otoritas_tombol = mysqli_fetch_array($pilih_akses_tombol);
   });
   </script>
 
+
+<script type="text/javascript">
+            $(document).ready(function() {
+                $('.jam_cari').timepicker({
+                    showPeriodLabels: false
+                });
+              });
+</script>
+
 <!--untuk membuat agar tampilan form terlihat rapih dalam satu tempat -->
  <div style="padding-left: 5%; padding-right: 5%">
 
 
   <!--membuat teks dengan ukuran h3-->      
-  <h3>EDIT PENJUALAN RAWAT JALAN</h3><br>
+  <h3>EDIT PENJUALAN RAWAT JALAN : <?php echo $no_faktur;?></h3><hr><br>
 
 
 <!--membuat agar tabel berada dalam baris tertentu-->
@@ -120,28 +142,46 @@ $otoritas_tombol = mysqli_fetch_array($pilih_akses_tombol);
 
       <div style="display: none" class="form-group col-xs-2">
           <label> No. Faktur </label>
-          <input type="text" name="no_faktur" id="nomor_faktur_penjualan" class="form-control" readonly="" value="<?php echo $no_faktur; ?>" required="" >
+          <input type="text" style="height:20px;" name="no_faktur" id="nomor_faktur_penjualan" class="form-control" readonly="" value="<?php echo $no_faktur; ?>" required="" >
 
             <input type="hidden" name="tanggal" id="tanggal"  value="<?php echo $ambil_tanggal['tanggal']; ?>" class="form-control tanggal" >
-
       </div>
 
 
       <div class="form-group col-xs-2">
-         <label> No. RM / Pasien </label><br>
-        <input type="text" name="no_rm" id="no_rm" class="form-control"  autofocus="" readonly="" value="<?php echo $no_rm; ?>|<?php echo $nama_pasien; ?>">
+         <label> No. RM / Pasien </label>
+        <input type="text" name="no_rm" style="height:20px;" id="no_rm" class="form-control" value="<?php echo $no_rm; ?>|<?php echo $nama_pasien; ?>">
        <input type="hidden" name="nama_pasien" id="nama_pasien" class="form-control" autofocus="" readonly="" value="<?php echo $nama_pasien; ?>">
       </div>
 
-     <div class="form-group  col-xs-2">
-          <label> Gudang </label><br><br>
+
+
+      <div class="col-xs-2">
+      <label>Kasir</label>
+      <input style="height:20px;" type="text" class="form-control"  id="petugas_kasir" name="petugas_kasir" value="<?php echo $user; ?>" readonly="">   
+      </div>
+      <input style="height:20px;" type="hidden" class="form-control"  id="id_user" name="id_user" value="<?php echo $id_user; ?>" readonly="">   
+
+
+
+
+
+    <div class="col-xs-2">
+      <label>No. REG :</label>
+      <input style="height:20px" type="text" class="form-control"  id="no_reg" name="no_reg" value="<?php echo $no_reg; ?>" readonly="">   
+</div>
+
+
+ 
+      <div class="form-group  col-xs-2">
+          <label> Gudang </label>
           
-          <select name="kode_gudang" id="kode_gudang" class="form-control chosen" required="" >
+          <select name="kode_gudang" id="kode_gudang" class="form-control " required="" >
           <option value=<?php echo $kode_gudang; ?>><?php echo $nama_gudang; ?></option>
           <?php 
           
           // menampilkan seluruh data yang ada pada tabel suplier
-          $query = $db->query("SELECT * FROM gudang");
+          $query = $db->query("SELECT kode_gudang,nama_gudang FROM gudang");
           
           // menyimpan data sementara yang ada pada $query
           while($data = mysqli_fetch_array($query))
@@ -164,29 +204,17 @@ $otoritas_tombol = mysqli_fetch_array($pilih_akses_tombol);
           </select>
       </div>
 
-
-      <div class="col-xs-2">
-      <label>Kasir</label>
-      <input style="height:20px;" type="text" class="form-control"  id="petugas_kasir" name="petugas_kasir" value="<?php echo $user; ?>" readonly="">   
-      </div>
-
-      <input style="height:20px;" type="hidden" class="form-control"  id="id_user" name="id_user" value="<?php echo $id_user; ?>" readonly="">   
-
-
-
       <?php 
 
       $ses = $db->query("SELECT nama FROM user WHERE id = '$dokter'");
       $kel = mysqli_fetch_array($ses);
-
+      $ses2 = $db->query("SELECT nama FROM user WHERE id = '$apoteker'");
+      $kel2 = mysqli_fetch_array($ses2);
+      $ses3 = $db->query("SELECT nama FROM user WHERE id = '$perawat'");
+      $kel3 = mysqli_fetch_array($ses3);
+      $ses4 = $db->query("SELECT nama FROM user WHERE id = '$petugas_lain'");
+      $kel4 = mysqli_fetch_array($ses4);
       ?>
-
-      <div class="col-xs-2">
-      <label> Tanggal  :</label>
-      <input style="height:20px;" type="text" class="form-control"  id="tanggal_tmpl" name="tanggal_tmpl" placeholder="Isi Poli" autocomplete="off" value="<?php echo $ambil_tanggal['tanggal'];  ?>">   
-      </div>
-
-
 
       <div class="col-xs-2">
       <label>Dokter Pelaksana</label>
@@ -202,10 +230,8 @@ $otoritas_tombol = mysqli_fetch_array($pilih_akses_tombol);
             while($data01 = mysqli_fetch_array($query01))
             {
             
-                $petugas = $db->query("SELECT nama_dokter FROM penetapan_petugas WHERE nama_dokter = '$data01[nama]'");
-                $data_petugas = mysqli_fetch_array($petugas);
 
-            if ($data01['nama'] == $data_petugas['nama_dokter']) {
+            if ($dokter == '') {
              echo "<option selected value='".$data01['id'] ."'>".$data01['nama'] ."</option>";
             }
             else{
@@ -224,7 +250,8 @@ $otoritas_tombol = mysqli_fetch_array($pilih_akses_tombol);
   <div class="col-xs-2">
         <label>Petugas Paramedik</label>
         <select style="font-size:15px; height:35px" name="petugas_paramedik" id="petugas_paramedik" class="form-control chosen">
-        <option value="">Cari Petugas</option>
+                 <option value="<?php echo $paramedik;?>"><?php echo $kel3['nama'];?></option>
+
          <?php 
             
             //untuk menampilkan semua data pada tabel pelanggan dalam DB
@@ -233,11 +260,9 @@ $otoritas_tombol = mysqli_fetch_array($pilih_akses_tombol);
             //untuk menyimpan data sementara yang ada pada $query
             while($data01 = mysqli_fetch_array($query01))
             {
-            
-                $petugas = $db->query("SELECT nama_paramedik FROM penetapan_petugas WHERE nama_paramedik = '$data01[nama]'");
-                $data_petugas = mysqli_fetch_array($petugas);
 
-            if ($data01['nama'] == $data_petugas['nama_paramedik']) {
+
+            if ($paramedik == '') {
              echo "<option selected value='".$data01['id'] ."'>".$data01['nama'] ."</option>";
             }
             else{
@@ -258,10 +283,25 @@ $otoritas_tombol = mysqli_fetch_array($pilih_akses_tombol);
 
 <div class="row"><!--div class="row"-->
 
-    <div class="col-xs-2">
-      <label>No. REG :</label>
-      <input style="height:20px" type="text" class="form-control"  id="no_reg" name="no_reg" value="<?php echo $no_reg; ?>" readonly="">   
-    </div>
+
+<div class="col-xs-2">
+    <label> Tanggal  :</label>
+    <input style="height:20px;" type="text" class="form-control"  id="tanggal_tmpl" name="tanggal_tmpl" placeholder="Isi Poli" autocomplete="off" value="<?php echo $ambil_tanggal['tanggal'];  ?>">   
+ </div>
+
+
+
+ <div class="col-xs-2">
+<label> Jam :</label>
+    <input style="height:20px;" type="text" class="form-control jam_cari"  id="jam" name="jam" placeholder="Isi Poli" autocomplete="off" value="<?php echo $ambil_tanggal['jam']; ?>" readonly="" > 
+</div>
+
+
+   <div class="col-xs-2">
+      <label> Asal Poli :</label>
+      <input style="height:20px;" type="text" class="form-control"  id="asal_poli" name="asal_poli" placeholder="Isi Poli" autocomplete="off" value="<?php echo $poli; ?>">   
+  </div>
+
 
 
 
@@ -281,16 +321,10 @@ $otoritas_tombol = mysqli_fetch_array($pilih_akses_tombol);
 </div>
 
 
-   <div class="col-xs-2">
-      <label> Asal Poli :</label>
-      <input style="height:20px;" type="text" class="form-control"  id="asal_poli" name="asal_poli" placeholder="Isi Poli" autocomplete="off" value="<?php echo $poli; ?>">   
-  </div>
-
-
 
     <div class="form-group col-xs-2">
-   <label> Level Harga </label><br>
-  <select style="font-size:15px; height:40px" type="text" name="level_harga" id="level_harga" class="form-control" >
+   <label> Level Harga </label>
+     <select style="font-size:15px; height:40px" type="text" name="level_harga" id="level_harga" class="form-control" >
         <option value="<?php echo $level_harga;?>"> 
       <?php if ($level_harga == 'harga_1' )
       {?>
@@ -321,10 +355,43 @@ $otoritas_tombol = mysqli_fetch_array($pilih_akses_tombol);
     </select>
       </div>
 
+
+  <div class="col-xs-2">
+  <label>Petugas Farmasi</label>
+  <select style="font-size:15px; height:35px" name="petugas_farmasi" id="petugas_farmasi" class="form-control chosen">
+        <option value="<?php echo $farmasi;?>"><?php echo $kel2['nama'];?></option>
+    <?php 
+      
+      //untuk menampilkan semua data pada tabel pelanggan dalam DB
+      $query01 = $db->query("SELECT nama,id FROM user WHERE otoritas = 'Petugas Farmasi'");
+
+      //untuk menyimpan data sementara yang ada pada $query
+      while($data01 = mysqli_fetch_array($query01))
+      {
+      
+      if ($apoteker == '') {
+       echo "<option selected value='".$data01['id'] ."'>".$data01['nama'] ."</option>";
+      }
+      else{
+        echo "<option value='".$data01['id'] ."'>".$data01['nama'] ."</option>";
+      }
+
+      
+      }
+      
+      
+      ?>
+
+  </select> 
+</div>  
+
+
+
+
 <div class="col-xs-2">
 <label>Petugas Lain</label>
 <select style="font-size:15px; height:35px" name="petugas_lain" id="petugas_lain" class="form-control chosen">
-<option value="">Cari Petugas</option>
+        <option value="<?php echo $petugas_lain;?>"><?php echo $kel4['nama'];?></option>
   <?php 
     
     //untuk menampilkan semua data pada tabel pelanggan dalam DB
@@ -345,41 +412,6 @@ $otoritas_tombol = mysqli_fetch_array($pilih_akses_tombol);
 
 </select>
 </div>
-
-  <div class="col-xs-2">
-  <label>Petugas Farmasi</label>
-  <select style="font-size:15px; height:35px" name="petugas_farmasi" id="petugas_farmasi" class="form-control chosen">
-  <option value="">Cari Petugas</option>
-    <?php 
-      
-      //untuk menampilkan semua data pada tabel pelanggan dalam DB
-      $query01 = $db->query("SELECT nama,id FROM user WHERE otoritas = 'Petugas Farmasi'");
-
-      //untuk menyimpan data sementara yang ada pada $query
-      while($data01 = mysqli_fetch_array($query01))
-      {
-      
-      $petugas = $db->query("SELECT nama_farmasi FROM penetapan_petugas WHERE nama_farmasi = '$data01[nama]'");
-          $data_petugas = mysqli_fetch_array($petugas);
-
-      if ($data01['nama'] == $data_petugas['nama_farmasi']) {
-       echo "<option selected value='".$data01['id'] ."'>".$data01['nama'] ."</option>";
-      }
-      else{
-        echo "<option value='".$data01['id'] ."'>".$data01['nama'] ."</option>";
-      }
-
-      
-      }
-      
-      
-      ?>
-
-  </select> 
-</div>  
-
-
-
 
 
 </div><!--div class="row"-->
@@ -573,7 +605,22 @@ $otoritas_tombol = mysqli_fetch_array($pilih_akses_tombol);
 <br>
   <div class="col-xs-3">
     <div class="form-group">
-    <input type="text" class="form-control" style="height:15px;" name="kode_barang" id="kode_barang" autocomplete="off" accesskey="k" placeholder="Kode Produk">
+    <select class="form-control chosen" style="height:15px;" name="kode_barang" id="kode_barang" autocomplete="off" accesskey="k" placeholder="Kode Produk">
+     <option value="">SILAKAN PILIH</option>
+        <?php 
+
+        include 'cache.class.php';
+          $c = new Cache();
+          $c->setCache('produk');
+          $data_c = $c->retrieveAll();
+
+          foreach ($data_c as $key) {
+            echo '<option id="opt-produk-'.$key['kode_barang'].'" value="'.$key['kode_barang'].'" data-kode="'.$key['kode_barang'].'" nama-barang="'.$key['nama_barang'].'" harga="'.$key['harga_jual'].'" harga_jual_2="'.$key['harga_jual2'].'" harga_jual_3="'.$key['harga_jual3'].'" harga_jual_4="'.$key['harga_jual4'].'" harga_jual_5="'.$key['harga_jual5'].'" harga_jual_6="'.$key['harga_jual6'].'" harga_jual_7="'.$key['harga_jual7'].'" satuan="'.$key['satuan'].'" kategori="'.$key['kategori'].'" status="'.$key['status'].'" suplier="'.$key['suplier'].'" limit_stok="'.$key['limit_stok'].'" ber-stok="'.$key['berkaitan_dgn_stok'].'" tipe_barang="'.$key['tipe_barang'].'" id-barang="'.$key['id'].'" > '. $key['kode_barang'].' ( '.$key['nama_barang'].' ) </option>';
+          }
+
+        ?>
+  </select>
+
     <input type="hidden" class="form-control" name="nama_barang" id="nama_barang" placeholder="Nama Barang" readonly="">
     </div>
 
@@ -582,7 +629,7 @@ $otoritas_tombol = mysqli_fetch_array($pilih_akses_tombol);
 
   <div class="col-xs-2">
       <div class="form-group">
-    <input type="text" style="height:15px;" class="form-control" name="jumlah_barang" autocomplete="off" id="jumlah_barang" placeholder="Jumlah " onkeydown="return numbersonly(this, event);" onkeyup="javascript:tandaPemisahTitik(this);">
+    <input type="text" style="height:15px;" class="form-control" name="jumlah_barang" autocomplete="off" id="jumlah_barang" placeholder="Jumlah ">
       </div>
   </div>
 
@@ -860,14 +907,37 @@ Laboratorium  </button>
            </div>
 
           <div class="col-xs-6">
-                <label> Biaya Admin</label><br>
-              <input type="text" name="biaya_adm" style="height:15px;font-size:15px" id="biaya_adm" value="<?php echo $biaya_adm ?>" class="form-control" placeholder="Biaya Admin" autocomplete="off"  onkeydown="return numbersonly(this, event);" onkeyup="javascript:tandaPemisahTitik(this);">
-            
+              <label>Biaya Admin </label><br>
+            <select class="form-control chosen" id="biaya_admin_select" name="biaya_admin_select" data-admin="" >
+            <option value="0"> Silahkan Pilih </option>
+              <?php 
+              $get_biaya_admin = $db->query("SELECT * FROM biaya_admin");
+              while ( $take_admin = mysqli_fetch_array($get_biaya_admin))
+              {
+                if ($biaya_admin == $take_admin['persentase']) {
+                    echo "<option selected value='".$take_admin['persentase']."'>".$take_admin['nama']." ".$take_admin['persentase']."%</option>";
+                }
+                else{
+                    echo "<option value='".$take_admin['persentase']."'>".$take_admin['nama']." ".$take_admin['persentase']."%</option>";
+                }
+
+              }
+              ?>
+            </select>            
           </div>
 
+                    <input type="hidden" name="biaya_adm" style="height:15px;font-size:15px" id="biaya_adm"  >
 
-      </div>
 
+<div class="col-xs-6">
+ </div>
+
+          <div class="col-xs-6">
+          <br>
+          <label>Biaya Admin %</label>
+          <input type="text" name="biaya_admin_persen" style="height:15px;font-size:15px" id="biaya_admin_persen" class="form-control" placeholder="Biaya Admin %" autocomplete="off" >
+          </div>
+</div>
 
 <div class="row">
   
@@ -1137,6 +1207,19 @@ if ($_SESSION['otoritas'] == 'Pimpinan') {
 
     </div><!-- end of container -->
 
+
+<!-- AUTOCOMPLETE Pelanggan/pasien-->
+
+<script>
+$(function() {
+    $( "#no_rm" ).autocomplete({
+        source: 'kode_pelanggan_autocomplete.php'
+    });
+});
+</script>
+<!-- AUTOCOMPLETE --> 
+
+
 <script type="text/javascript">
   $(document).on('click', '.tidak_punya_otoritas', function (e) {
     alert("Anda Tidak Punya Otoritas Untuk Edit Jumlah Produk !!");
@@ -1152,6 +1235,8 @@ if ($_SESSION['otoritas'] == 'Pimpinan') {
 
 
   document.getElementById("kode_barang").value = $(this).attr('data-kode');
+  $("#kode_barang").trigger('chosen:updated');
+
   document.getElementById("nama_barang").value = $(this).attr('nama-barang');
   document.getElementById("limit_stok").value = $(this).attr('limit_stok');
   document.getElementById("satuan_produk").value = $(this).attr('satuan');
@@ -1161,7 +1246,18 @@ if ($_SESSION['otoritas'] == 'Pimpinan') {
   document.getElementById("satuan_konversi").value = $(this).attr('satuan');
   document.getElementById("id_produk").value = $(this).attr('id-barang');
 
+    var no_faktur = $("#nomor_faktur_penjualan").val();
+    var kode_barang = $("#kode_barang").val();
+    
+ $.post('cek_kode_barang_edit_tbs_penjualan.php',{kode_barang:kode_barang,no_faktur:no_faktur}, function(data){
+  
+  if(data == 1){
+    alert("Anda Tidak Bisa Menambahkan Barang Yang Sudah Ada, Silakan Edit atau Pilih Barang Yang Lain !");
+    $("#kode_barang").val('');
+    $("#nama_barang").val('');
+   }//penutup if
 
+ });
 
 var level_harga = $("#level_harga").val();
 
@@ -1229,7 +1325,7 @@ else if (level_harga == "harga_7") {
 <script>
 //untuk menampilkan data tabel
 $(document).ready(function(){
-    $("#kode_barang").focus();
+    $("#kode_barang").trigger('chosen:open');
 
 });
 
@@ -1244,14 +1340,14 @@ $(document).ready(function(){
 
       var satuan_konversi = $("#satuan_konversi").val();
       var kode_barang = $("#kode_barang").val();
-      var kode_barang = kode_barang.substr(0, kode_barang.indexOf('('));
+      
       var id_produk = $("#id_produk").val();
       var prev = $("#satuan_produk").val();
       var limit_stok = $("#limit_stok").val();
       var ber_stok = $("#ber_stok").val();
       var stok = jumlahbarang - jumlah_barang;
 
-        if (ber_stok == 'Jasa' || ber_stok == 'BHP') {
+        if (ber_stok == 'Jasa') {
 
           }
 
@@ -1281,7 +1377,7 @@ $(document).ready(function(){
       var jumlah_barang = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#jumlah_barang").val()))));;
       var satuan_konversi = $("#satuan_konversi").val();
       var kode_barang = $("#kode_barang").val();
-      var kode_barang = kode_barang.substr(0, kode_barang.indexOf('('));
+      
       var no_faktur = $("#no_faktur0").val();
       var id_produk = $("#id_produk").val();
       var prev = $("#satuan_produk").val();
@@ -1315,7 +1411,7 @@ $(document).ready(function(){
       var jumlah_barang = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#jumlah_barang").val()))));;
       var kode_barang = $("#kode_barang").val();
       
-      var kode_barang = kode_barang.substr(0, kode_barang.indexOf('('));
+      
 
       $.getJSON("cek_konversi_penjualan.php",{kode_barang:kode_barang,satuan_konversi:satuan_konversi, id_produk:id_produk,harga_produk:harga_produk,jumlah_barang:jumlah_barang},function(info){
 
@@ -1386,7 +1482,10 @@ $(document).ready(function(){
     var petugas_farmasi = $("#petugas_farmasi").val();
     var petugas_lain = $("#petugas_lain").val();
     var kode_barang = $("#kode_barang").val();
-    var kode_barang = kode_barang.substr(0, kode_barang.indexOf('('));
+    
+    var tanggal = $("#tanggal_tmpl").val();
+    var jam = $("#jam").val();
+
     var nama_barang = $("#nama_barang").val();
     var jumlah_barang = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#jumlah_barang").val()))));
     var harga = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#harga_produk").val()))));
@@ -1457,14 +1556,12 @@ $(document).ready(function(){
       var potongaaan = pot_fakt_rp;
 
       var potongaaan = parseInt(potongaaan,10) / parseInt(total_akhir1,10) * 100;
-      $("#potongan_persen").val(Math.round(potongaaan));
       /*
       var hitung_tax = parseInt(total_akhir1,10) - parseInt(pot_fakt_rp,10);
       var tax_bener = parseInt(hitung_tax,10) * parseInt(tax_faktur,10) / 100;*/
 
         var total_akhir = parseInt(total_akhir1,10) - parseInt(pot_fakt_rp,10) + parseInt(biaya_adm,10); /* + parseInt(Math.round(tax_bener,10));*/
 
-    $("#total1").val(Math.round(total_akhir));
 
     }
     else if(pot_fakt_rp == 0)
@@ -1474,7 +1571,6 @@ $(document).ready(function(){
       var potongan_persen = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah(potongaaan))));
           potongan_persen = potongan_persen.replace("%","");
       potongaaan = total_akhir1 * potongan_persen / 100;
-      $("#potongan_penjualan").val(Math.round(potongaaan));
        /*
       var hitung_tax = parseInt(total_akhir1,10) - parseInt(Math.round(potongaaan,10));
       var tax_bener = parseInt(hitung_tax,10) * parseInt(tax_faktur,10) / 100; */
@@ -1482,7 +1578,6 @@ $(document).ready(function(){
      var total_akhir = parseInt(total_akhir1,10) - parseInt(Math.round(potongaaan,10)) + parseInt(biaya_adm,10); /* + parseInt(Math.round(tax_bener,10))*/
 
 
-    $("#total1").val(Math.round(total_akhir));
     }
      else if(pot_fakt_rp != 0 && pot_fakt_rp != 0)
     {
@@ -1491,28 +1586,24 @@ $(document).ready(function(){
       var potongan_persen = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah(potongaaan))));
           potongan_persen = potongan_persen.replace("%","");
       potongaaan = total_akhir1 * potongan_persen / 100;
-      $("#potongan_penjualan").val(Math.round(potongaaan));
        /*
       var hitung_tax = parseInt(total_akhir1,10) - parseInt(Math.round(potongaaan,10));
       var tax_bener = parseInt(hitung_tax,10) * parseInt(tax_faktur,10) / 100;*/
 
           var total_akhir = parseInt(total_akhir1,10) - parseInt(Math.round(potongaaan,10)) + parseInt(biaya_adm,10); /* + parseInt(Math.round(tax_bener,10));*/
 
-    $("#total1").val(Math.round(total_akhir));
 
     }
 
-
     
 
-    $("#total2").val(tandaPemisahTitik(total_akhir1));
      /*
     $("#tax_rp").val(Math.round(tax_bener));*/
 
      
   if (a > 0){
   alert("Anda Tidak Bisa Menambahkan Barang Yang Sudah Ada, Silakan Edit atau Pilih Barang Yang Lain !");
-       $("#kode_barang").focus();
+       $("#kode_barang").trigger('chosen:open');
   }
   else if (jumlah_barang == ''){
   alert("Jumlah Barang Harus Diisi");
@@ -1524,16 +1615,20 @@ $(document).ready(function(){
 
 
   }
-  else if (ber_stok == 'Jasa' || ber_stok == 'BHP' ){
-$("#kode_barang").focus();
+  else if (ber_stok == 'Jasa' ){
 
- $.post("proses_tbs_pesanan_barang_raja.php",{penjamin:penjamin,asal_poli:asal_poli,level_harga:level_harga,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,no_reg:no_reg,no_rm:no_rm,dokter:dokter,petugas_kasir:petugas_kasir,kode_barang:kode_barang,nama_barang:nama_barang,jumlah_barang:jumlah_barang,harga:harga,potongan:potongan,tax:tax,satuan:satuan, ber_stok:ber_stok,no_faktur:no_faktur,ppn:ppn},function(data){
+ $.post("proses_tbs_pesanan_barang_raja.php",{penjamin:penjamin,asal_poli:asal_poli,level_harga:level_harga,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,no_reg:no_reg,no_rm:no_rm,dokter:dokter,petugas_kasir:petugas_kasir,kode_barang:kode_barang,nama_barang:nama_barang,jumlah_barang:jumlah_barang,harga:harga,potongan:potongan,tax:tax,satuan:satuan, ber_stok:ber_stok,no_faktur:no_faktur,ppn:ppn,tanggal:tanggal,jam:jam},function(data){
      
-  
+    $("#potongan_persen").val(Math.round(potongaaan));
+    $("#total1").val(Math.round(total_akhir));
+    $("#total2").val(tandaPemisahTitik(total_akhir1));
 
      $("#ppn").attr("disabled", true);
      $("#tbody").prepend(data);
      $("#kode_barang").val('');
+     $("#kode_barang").trigger('chosen:updated');
+     $("#kode_barang").trigger('chosen:open');
+
      $("#nama_barang").val('');
      $("#jumlah_barang").val('');
      $("#potongan1").val('');
@@ -1559,18 +1654,23 @@ $("#kode_barang").focus();
           alert("Persediaan Barang Ini Sudah Mencapai Batas Limit Stok, Segera Lakukan Pembelian !");
         }
 
-   $.post("proses_tbs_pesanan_barang_raja.php",{penjamin:penjamin,asal_poli:asal_poli,level_harga:level_harga,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,no_reg:no_reg,no_rm:no_rm,dokter:dokter,petugas_kasir:petugas_kasir,kode_barang:kode_barang,nama_barang:nama_barang,jumlah_barang:jumlah_barang,harga:harga,potongan:potongan,tax:tax,satuan:satuan,ber_stok:ber_stok,no_faktur:no_faktur,ppn:ppn},function(data){
+   $.post("proses_tbs_pesanan_barang_raja.php",{penjamin:penjamin,asal_poli:asal_poli,level_harga:level_harga,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,no_reg:no_reg,no_rm:no_rm,dokter:dokter,petugas_kasir:petugas_kasir,kode_barang:kode_barang,nama_barang:nama_barang,jumlah_barang:jumlah_barang,harga:harga,potongan:potongan,tax:tax,satuan:satuan,ber_stok:ber_stok,no_faktur:no_faktur,ppn:ppn,tanggal:tanggal,jam:jam},function(data){
      
+    $("#potongan_persen").val(Math.round(potongaaan));
+    $("#total1").val(Math.round(total_akhir));
+    $("#total2").val(tandaPemisahTitik(total_akhir1));
 
       $("#ppn").attr("disabled", true);
      $("#tbody").prepend(data);
      $("#kode_barang").val('');
+     $("#kode_barang").trigger('chosen:updated');
+     $("#kode_barang").trigger('chosen:open');
+
      $("#nama_barang").val('');
      $("#jumlah_barang").val('');
      $("#potongan1").val('');
      $("#tax1").val('');
      $("#pembayaran_penjualan").val('');
-    $("#kode_barang").focus();
      
      });
 }
@@ -1827,7 +1927,7 @@ $("#cari_produk_penjualan").click(function(){
 
 
        
-                                    $("#kode_barang").focus();
+                                    $("#kode_barang").trigger('chosen:open');
 
                                  });
 
@@ -1921,7 +2021,7 @@ $("#cari_produk_penjualan").click(function(){
     }
    /* $("#tax_rp").val(Math.round(tax_bener));*/
     $("#pembayaran_penjualan").val('');
-    $("#kode_barang").focus();
+    $("#kode_barang").trigger('chosen:open');
 
     $(".tr-id-"+id+"").remove();
     $.post("hapus_pesanan_barang.php",{id:id,kode_barang:kode_barang},function(data){
@@ -2014,7 +2114,9 @@ $("#cari_produk_penjualan").click(function(){
         var penjamin = $("#penjamin").val();
         var nama_pasien = $("#nama_pasien").val();
         var jenis_penjualan = 'Rawat Jalan';
-        var tanggal = $("#tanggal_tmpl").val();      
+        var tanggal = $("#tanggal_tmpl").val();  
+        var jam = $("#jam").val();  
+
         var sisa = pembayaran - total;
         
         var sisa_kredit = total - pembayaran;
@@ -2063,7 +2165,7 @@ alert("Silakan Bayar Piutang");
 
   if (data == 1) {
             
- $.post("proses_bayar_edit_jual_raja.php",{no_faktur:no_faktur,sisa_pembayaran:sisa_pembayaran, kredit:kredit,no_rm:no_rm,no_reg:no_reg,tanggal_jt:tanggal_jt,total:total,total2:total2,potongan:potongan,potongan_persen:potongan_persen,/*/tax:tax,/*/cara_bayar:cara_bayar,pembayaran:pembayaran,total_hpp:total_hpp,harga:harga,kode_gudang:kode_gudang,dokter:dokter,petugas_kasir:petugas_kasir,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,sisa:sisa,ppn:ppn,penjamin:penjamin,nama_pasien:nama_pasien,jenis_penjualan:jenis_penjualan,biaya_adm:biaya_adm,sisa_kredit:sisa_kredit,tanggal:tanggal},function(info) {
+ $.post("proses_bayar_edit_jual_raja.php",{no_faktur:no_faktur,sisa_pembayaran:sisa_pembayaran, kredit:kredit,no_rm:no_rm,no_reg:no_reg,tanggal_jt:tanggal_jt,total:total,total2:total2,potongan:potongan,potongan_persen:potongan_persen,/*/tax:tax,/*/cara_bayar:cara_bayar,pembayaran:pembayaran,total_hpp:total_hpp,harga:harga,kode_gudang:kode_gudang,dokter:dokter,petugas_kasir:petugas_kasir,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,sisa:sisa,ppn:ppn,penjamin:penjamin,nama_pasien:nama_pasien,jenis_penjualan:jenis_penjualan,biaya_adm:biaya_adm,sisa_kredit:sisa_kredit,tanggal:tanggal,jam:jam},function(info) {
 
 if (info == 1)
 {
@@ -2125,11 +2227,6 @@ if (info == 1)
   </script>
   
 
-<!--cetak langsung disini-->
-
-
-
-
 
 <script>
    //perintah javascript yang diambil dari form proses_bayar_beli.php dengan id=form_beli
@@ -2169,6 +2266,7 @@ if (info == 1)
         var penjamin = $("#penjamin").val();
         var nama_pasien = $("#nama_pasien").val();
         var tanggal = $("#tanggal_tmpl").val();
+        var jam = $("#jam").val();
         var jenis_penjualan = 'Rawat Jalan';
         
         var sisa = pembayaran - total;
@@ -2220,7 +2318,7 @@ alert("Silakan Bayar Piutang");
   if (data == 1) {
 
             
- $.post("proses_bayar_edit_jual_raja.php",{no_faktur:no_faktur,sisa_pembayaran:sisa_pembayaran, kredit:kredit,no_rm:no_rm,no_reg:no_reg,tanggal_jt:tanggal_jt,total:total,total2:total2,potongan:potongan,potongan_persen:potongan_persen,/*/tax:tax,/*/cara_bayar:cara_bayar,pembayaran:pembayaran,total_hpp:total_hpp,harga:harga,kode_gudang:kode_gudang,dokter:dokter,petugas_kasir:petugas_kasir,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,sisa:sisa,ppn:ppn,penjamin:penjamin,nama_pasien:nama_pasien,jenis_penjualan:jenis_penjualan,biaya_adm:biaya_adm,sisa_kredit:sisa_kredit,tanggal:tanggal},function(info) {
+ $.post("proses_bayar_edit_jual_raja.php",{no_faktur:no_faktur,sisa_pembayaran:sisa_pembayaran, kredit:kredit,no_rm:no_rm,no_reg:no_reg,tanggal_jt:tanggal_jt,total:total,total2:total2,potongan:potongan,potongan_persen:potongan_persen,/*/tax:tax,/*/cara_bayar:cara_bayar,pembayaran:pembayaran,total_hpp:total_hpp,harga:harga,kode_gudang:kode_gudang,dokter:dokter,petugas_kasir:petugas_kasir,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,sisa:sisa,ppn:ppn,penjamin:penjamin,nama_pasien:nama_pasien,jenis_penjualan:jenis_penjualan,biaya_adm:biaya_adm,sisa_kredit:sisa_kredit,tanggal:tanggal,jam:jam},function(info) {
 
 if (info == 1)
 {
@@ -2275,7 +2373,7 @@ else {
   </script>
   
 
-<script type="text/javascript">
+<!--<script type="text/javascript">
   $(document).ready(function(){
     $("#biaya_adm").keyup(function(){
       var biaya_adm = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#biaya_adm").val()))));
@@ -2311,7 +2409,171 @@ else {
     });
   });
   
+</script>-->
+
+
+
+<script type="text/javascript">
+$(document).ready(function(){
+  //Hitung Biaya Admin
+
+  
+  var biaya_admin = $("#biaya_admin_select").val();
+  var total1 = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#total1").val()))));
+  var diskon = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#potongan_penjualan").val()))));
+
+  var no_faktur = $("#nomor_faktur_penjualan").val();
+  var no_reg = $("#no_reg").val();
+
+  if(diskon == '')
+      {
+      diskon = 0
+      }
+
+        $.post("cek_total_bayar_pesanan_barang.php",
+        {
+        no_faktur: no_faktur,no_reg:no_reg
+        },
+        function(data){
+          data = data.replace(/\s+/g, '');
+
+          if (biaya_admin == "" || biaya_admin == 0) {
+          var data_admin = '<?php echo $biaya_admin; ?>';
+          }
+          else{
+            var data_admin = biaya_admin;
+          }
+          
+          if (data_admin == 0) {
+          var hasilnya = parseInt(data,10) - parseInt(diskon,10);
+          $("#total1").val(tandaPemisahTitik(hasilnya));          
+          $("#biaya_adm").val(0);
+          $("#biaya_admin_persen").val(0);
+          
+          }
+          else if (data_admin > 0) {
+          
+          var hitung_biaya = parseInt(data,10) * parseInt(data_admin,10) / 100;          
+          var hasilnya = parseInt(data,10) + parseInt(hitung_biaya,10) - parseInt(diskon,10);
+          
+          $("#total1").val(tandaPemisahTitik(hasilnya));
+          $("#biaya_adm").val(hitung_biaya);
+          $("#biaya_admin_persen").val(data_admin);
+          
+          
+          
+          }
+
+        });
+
+
+});
+//end Hitu8ng Biaya Admin
 </script>
+
+
+ <script type="text/javascript">
+$(document).ready(function(){
+  //Hitung Biaya Admin
+
+  $("#biaya_admin_select").change(function(){
+  
+  var biaya_admin = $("#biaya_admin_select").val();  
+  var total2 = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#total2").val()))));
+  var total1 = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#total1").val()))));
+  var diskon = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#potongan_penjualan").val()))));
+      if(diskon == '')
+      {
+      diskon = 0
+      }
+
+  var data_admin = biaya_admin;
+
+  if (biaya_admin == 0) {
+      var hasilnya = parseInt(total2,10) - parseInt(diskon,10);
+      $("#total1").val(tandaPemisahTitik(hasilnya));
+      $("#biaya_adm").val(0);
+      $("#biaya_admin_persen").val(data_admin);
+
+  }
+  else if (biaya_admin > 0) {
+
+      var hitung_biaya = parseInt(total2,10) * parseInt(data_admin,10) / 100;
+      
+      $("#biaya_adm").val(Math.round(hitung_biaya));
+      var biaya_admin = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#biaya_adm").val()))));      
+      var hasilnya = parseInt(total2,10) + parseInt(biaya_admin,10) - parseInt(diskon,10);
+      
+      $("#total1").val(tandaPemisahTitik(hasilnya));
+      $("#biaya_admin_persen").val(data_admin);
+      
+
+
+  }
+      
+    });
+});
+//end Hitu8ng Biaya Admin
+</script>
+
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    $("#biaya_admin_persen").keyup(function(){
+      var biaya_adm = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#biaya_admin_persen").val()))));
+      var biaya_admin_rp = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#biaya_adm").val()))));
+      if (biaya_adm == '') {
+        biaya_adm = 0;
+      }
+      var subtotal = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#total2").val()))));
+      if (subtotal == '') {
+        subtotal = 0;
+      }
+      var potongan = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#potongan_penjualan").val()))));
+      if (potongan == '') {
+        potongan = 0;
+      }
+      /*/
+      var tax = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#tax").val()))));
+      if (tax == '') {
+        tax = 0;
+      }/*/
+
+      if (biaya_adm > 100) {
+
+      var t_total = parseInt(subtotal,10) - parseInt(potongan,10);
+
+        alert ("Biaya Admin Tidak Boleh Lebih Dari 100% !");
+         $("#biaya_admin_persen").val('');
+         $("#biaya_adm").val('');
+         $("#total1").val(tandaPemisahTitik(t_total));
+
+      }
+      else{
+
+
+      var t_total = parseInt(subtotal,10) - parseInt(potongan,10);
+      var data_admin = parseInt(t_total,10) * parseInt(biaya_adm,10) / 100;
+
+      /*/
+      var t_tax = parseInt(t_total,10) * parseInt(tax,10) / 100;
+      /*/
+
+      var total_akhir1 = t_total;// + Math.round(parseInt(t_tax,10));//
+
+      var total_akhir = parseInt(total_akhir1,10) + parseInt(data_admin,10);
+      $("#total1").val(tandaPemisahTitik(total_akhir));
+      $("#biaya_adm").val(data_admin);
+
+      }
+
+
+    });
+  });
+  
+</script>
+
+
 
  <script>
    //perintah javascript yang diambil dari form proses_bayar_beli.php dengan id=form_beli
@@ -2357,6 +2619,7 @@ else {
         var nama_pasien = $("#nama_pasien").val();
         var jenis_penjualan = 'Rawat Jalan';
         var tanggal = $("#tanggal_tmpl").val();
+        var jam = $("#jam").val();
 
         
         var sisa = pembayaran - total;
@@ -2400,7 +2663,7 @@ else {
   $("#piutang").hide();
   $("#transaksi_baru").show();
 
- $.post("proses_bayar_edit_jual_raja.php",{no_faktur:no_faktur,sisa_pembayaran:sisa_pembayaran, kredit:kredit,no_rm:no_rm,no_reg:no_reg,tanggal_jt:tanggal_jt,total:total,total2:total2,potongan:potongan,potongan_persen:potongan_persen,/*/tax:tax,/*/cara_bayar:cara_bayar,pembayaran:pembayaran,total_hpp:total_hpp,harga:harga,kode_gudang:kode_gudang,dokter:dokter,petugas_kasir:petugas_kasir,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,sisa:sisa,ppn:ppn,penjamin:penjamin,nama_pasien:nama_pasien,jenis_penjualan:jenis_penjualan,biaya_adm:biaya_adm,sisa_kredit:sisa_kredit,tanggal:tanggal},function(info) {
+ $.post("proses_bayar_edit_jual_raja.php",{no_faktur:no_faktur,sisa_pembayaran:sisa_pembayaran, kredit:kredit,no_rm:no_rm,no_reg:no_reg,tanggal_jt:tanggal_jt,total:total,total2:total2,potongan:potongan,potongan_persen:potongan_persen,/*/tax:tax,/*/cara_bayar:cara_bayar,pembayaran:pembayaran,total_hpp:total_hpp,harga:harga,kode_gudang:kode_gudang,dokter:dokter,petugas_kasir:petugas_kasir,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,sisa:sisa,ppn:ppn,penjamin:penjamin,nama_pasien:nama_pasien,jenis_penjualan:jenis_penjualan,biaya_adm:biaya_adm,sisa_kredit:sisa_kredit,tanggal:tanggal,jam:jam},function(info) {
 
 if (info == 1)
 {
@@ -2468,20 +2731,6 @@ $(document).ready(function(){
   })
   });
 </script>
-
-
-
-<script>
-$(function() {
-    $( "#kode_barang" ).autocomplete({
-        source: 'kode_barang_autocomplete.php'
-    });
-});
-</script>
-
-<!-- AUTOCOMPLETE -->
-
-
 
 
   <script type="text/javascript">
@@ -2732,14 +2981,14 @@ $(document).ready(function(){
       </script>
 
 
-<script type="text/javascript">
+<!--<script type="text/javascript">
   
         $(document).ready(function(){
         $("#kode_barang").blur(function(){
 
           var no_faktur = $("#nomor_faktur_penjualan").val();
           var kode_barang = $(this).val();
-          var kode_barang = kode_barang.substr(0, kode_barang.indexOf('('));
+          
           var level_harga = $("#level_harga").val();
           
        $.post('cek_kode_barang_edit_tbs_penjualan.php',{kode_barang:kode_barang,no_faktur:no_faktur}, function(data){
@@ -2748,7 +2997,7 @@ $(document).ready(function(){
           alert("Anda Tidak Bisa Menambahkan Barang Yang Sudah Ada, Silakan Edit atau Pilih Barang Yang Lain");
           $("#kode_barang").val('');
           $("#nama_barang").val('');
-          $("#kode_barang").focus();
+          $("#kode_barang").trigger('chosen:open');
           }//penutup if
   
 else {          
@@ -2835,8 +3084,125 @@ else {
 
         });
  });   
-</script>
+</script>-->
 
+
+<script type="text/javascript">
+  
+  $(document).ready(function(){
+  $("#kode_barang").change(function(){
+
+    var kode_barang = $(this).val();
+    var nama_barang = $('#opt-produk-'+kode_barang).attr("nama-barang");
+    var harga_jual = $('#opt-produk-'+kode_barang).attr("harga");
+    var harga_jual2 = $('#opt-produk-'+kode_barang).attr('harga_jual_2');  
+    var harga_jual3 = $('#opt-produk-'+kode_barang).attr('harga_jual_3');
+    var harga_jual4 = $('#opt-produk-'+kode_barang).attr('harga_jual_4');
+    var harga_jual5 = $('#opt-produk-'+kode_barang).attr('harga_jual_5');  
+    var harga_jual6 = $('#opt-produk-'+kode_barang).attr('harga_jual_6');
+    var harga_jual7 = $('#opt-produk-'+kode_barang).attr('harga_jual_7');
+    var jumlah_barang = $('#opt-produk-'+kode_barang).attr("jumlah-barang");
+    var satuan = $('#opt-produk-'+kode_barang).attr("satuan");
+    var kategori = $('#opt-produk-'+kode_barang).attr("kategori");
+    var status = $('#opt-produk-'+kode_barang).attr("status");
+    var suplier = $('#opt-produk-'+kode_barang).attr("suplier");
+    var limit_stok = $('#opt-produk-'+kode_barang).attr("limit_stok");
+    var ber_stok = $('#opt-produk-'+kode_barang).attr("ber-stok");
+    var tipe_barang = $('#opt-produk-'+kode_barang).attr("tipe_barang");
+    var id_barang = $('#opt-produk-'+kode_barang).attr("id-barang");
+    var level_harga = $("#level_harga").val();
+    var no_reg = $("#no_reg").val();
+     var no_faktur = $("#nomor_faktur_penjualan").val();
+
+
+
+    if (level_harga == "harga_1") {
+
+        $('#harga_produk').val(harga_jual);
+        $('#harga_baru').val(harga_jual);
+        $('#harga_lama').val(harga_jual);
+        $('#kolom_cek_harga').val('1');
+        }
+    else if (level_harga == "harga_2") {
+
+        $('#harga_produk').val(harga_jual2);
+        $('#harga_baru').val(harga_jual2);
+        $('#harga_lama').val(harga_jual2);
+        $('#kolom_cek_harga').val('1');
+        }
+    else if (level_harga == "harga_3") {
+
+        $('#harga_produk').val(harga_jual3);
+        $('#harga_baru').val(harga_jual3);
+        $('#harga_lama').val(harga_jual3);
+        $('#kolom_cek_harga').val('1');
+        }
+    else if (level_harga == "harga_4") {
+
+        $('#harga_produk').val(harga_jual4);
+        $('#harga_baru').val(harga_jual4);
+        $('#harga_lama').val(harga_jual4);
+        $('#kolom_cek_harga').val('1');
+        }
+    else if (level_harga == "harga_5") {
+
+        $('#harga_produk').val(harga_jual5);
+        $('#harga_baru').val(harga_jual5);
+        $('#harga_lama').val(harga_jual5);
+        $('#kolom_cek_harga').val('1');
+        }
+    else if (level_harga == "harga_6") {
+
+        $('#harga_produk').val(harga_jual6);
+        $('#harga_baru').val(harga_jual6);
+        $('#harga_lama').val(harga_jual6);
+        $('#kolom_cek_harga').val('1');
+        }
+    else if (level_harga == "harga_7") {
+
+        $('#harga_produk').val(harga_jual7);
+        $('#harga_baru').val(harga_jual7);
+        $('#harga_lama').val(harga_jual7);
+        $('#kolom_cek_harga').val('1');
+        }
+
+
+
+    $("#kode_barang").val(kode_barang);
+    $("#nama_barang").val(nama_barang);
+    $("#jumlah_barang").val(jumlah_barang);
+    $("#satuan_produk").val(satuan);
+    $("#satuan_konversi").val(satuan);
+    $("#limit_stok").val(limit_stok);
+    $("#ber_stok").val(ber_stok);
+    $("#id_produk").val(id_barang);
+
+
+    $.post('ambil_jumlah_produk.php',{kode_barang:kode_barang}, function(data){
+      if (data == "") {
+        data = 0;
+      }
+      $("#jumlahbarang").val(data);
+    });
+
+$.post('cek_kode_barang_edit_tbs_penjualan.php',{kode_barang:kode_barang,no_faktur:no_faktur}, function(data){
+          
+          if(data == 1){
+          alert("Anda Tidak Bisa Menambahkan Barang Yang Sudah Ada, Silakan Edit atau Pilih Barang Yang Lain");
+          $("#kode_barang").val('');
+          $("#nama_barang").val('');
+          $("#kode_barang").trigger('chosen:open');
+          }//penutup if
+     
+
+
+  });
+  });
+  });
+
+    
+      
+</script>
 
 
 <script type="text/javascript">
@@ -2894,7 +3260,7 @@ $(document).ready(function(){
   
   var level_harga = $("#level_harga").val();
   var kode_barang = $("#kode_barang").val();
-  var kode_barang = kode_barang.substr(0, kode_barang.indexOf('('));
+  
   var satuan_konversi = $("#satuan_konversi").val();
   var jumlah_barang = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#jumlah_barang").val()))));;
   var level_hidden = $("#level_hidden").val();
@@ -2992,24 +3358,7 @@ $(document).ready(function(){
                                     });
 </script>
 
- <script type="text/javascript">
-//berfunsi untuk mencekal username ganda
-$(document).on('click', '.pilih', function (e) {
-    var no_faktur = $("#nomor_faktur_penjualan").val();
-    var kode_barang = $("#kode_barang").val();
-    var kode_barang = kode_barang.substr(0, kode_barang.indexOf('('));
- $.post('cek_kode_barang_edit_tbs_penjualan.php',{kode_barang:kode_barang,no_faktur:no_faktur}, function(data){
-  
-  if(data == 1){
-    alert("Anda Tidak Bisa Menambahkan Barang Yang Sudah Ada, Silakan Edit atau Pilih Barang Yang Lain !");
-    $("#kode_barang").val('');
-    $("#nama_barang").val('');
-   }//penutup if
 
-
-    });////penutup function(data)
-    });//penutup click(function()
-</script>
 
 
 
@@ -3045,7 +3394,7 @@ $(document).ready(function(){ //UNTUK MENETUKAN APAKAH PPN NYA  INCLUDE ATAU EXC
     shortcut.add("f2", function() {
         // Do something
 
-        $("#kode_barang").focus();
+        $("#kode_barang").trigger('chosen:open');
 
     });
 
@@ -3144,7 +3493,7 @@ $(document).ready(function(){ //UNTUK MENETUKAN APAKAH PPN NYA  INCLUDE ATAU EXC
           "fnCreatedRow": function( nRow, aData, iDataIndex ) {
 
               $(nRow).attr('class', "pilih");
-              $(nRow).attr('data-kode', aData[0]+"("+aData[1]+")");
+              $(nRow).attr('data-kode', aData[0]);
               $(nRow).attr('nama-barang', aData[1]);
               $(nRow).attr('harga', aData[2]);
               $(nRow).attr('harga_level_2', aData[3]);

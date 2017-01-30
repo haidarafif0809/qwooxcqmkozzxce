@@ -27,7 +27,6 @@ if ($total != $total_tbs) {
 $tahun_sekarang = date('Y');
 $bulan_sekarang = date('m');
 $tanggal_sekarang = date('Y-m-d');
-$jam_sekarang = date('H:i:s');
 $waktu = date('Y-m-d H:i:s');
 $tahun_terakhir = substr($tahun_sekarang, 2);
 
@@ -52,6 +51,9 @@ $keterangan = stringdoang($_POST['keterangan']);
 $total2 = angkadoang($_POST['total2']);
 $harga = angkadoang($_POST['harga']);
 $tanggal_edit = stringdoang($_POST['tanggal']);
+$jam_sekarang = stringdoang($_POST['jam']);
+
+$waktu_edit = $tanggal_edit." ".$jam_sekarang;
 
 /*/$tax = angkadoang($_POST['tax']);/*/
 
@@ -65,8 +67,6 @@ $no_jurnal = no_jurnal();
     
  $select_kode_pelanggan = $db_pasien->query("SELECT nama_pelanggan FROM pelanggan WHERE kode_pelanggan = '$no_rm'");
     $ambil_kode_pelanggan = mysqli_fetch_array($select_kode_pelanggan);
-
-     $quer10 = $db->query("DELETE  FROM laporan_fee_produk WHERE no_reg = '$no_reg' ");
 
 
 
@@ -187,6 +187,10 @@ $no_jurnal = no_jurnal();
       
     }
 
+
+            $delete44 = $db->query("DELETE FROM laporan_fee_produk WHERE no_reg = '$no_reg'");
+
+
     // laporan fee produk
               
     $fee_produk_ksir = $db->query("SELECT * FROM tbs_fee_produk WHERE no_reg = '$no_reg'");
@@ -194,7 +198,7 @@ $no_jurnal = no_jurnal();
 
 
 
-          $query10 = $db->query("INSERT INTO laporan_fee_produk (nama_petugas, no_faktur, kode_produk, nama_produk, jumlah_fee, tanggal, jam,no_reg,no_rm) VALUES ('$data_fee_produk[nama_petugas]', '$nomor_faktur', '$data_fee_produk[kode_produk]', '$data_fee_produk[nama_produk]', '$data_fee_produk[jumlah_fee]', '$data_fee_produk[tanggal]', '$data_fee_produk[jam]','$no_reg','$no_rm')");
+          $query10 = $db->query("INSERT INTO laporan_fee_produk (nama_petugas, no_faktur, kode_produk, nama_produk, jumlah_fee, tanggal, jam,no_reg,no_rm,waktu) VALUES ('$data_fee_produk[nama_petugas]', '$nomor_faktur', '$data_fee_produk[kode_produk]', '$data_fee_produk[nama_produk]', '$data_fee_produk[jumlah_fee]', '$tanggal_edit', '$jam_sekarang','$no_reg','$no_rm','$waktu_edit')");
 
 
     }
@@ -222,7 +226,7 @@ $no_jurnal = no_jurnal();
       }
         
     
-        $query2 = "INSERT INTO detail_penjualan (no_faktur,no_rm, no_reg, tanggal, jam, kode_barang, nama_barang, jumlah_barang, asal_satuan,satuan, harga, subtotal, potongan, tax, sisa,tipe_produk,lab) VALUES ('$nomor_faktur','$no_rm', '$no_reg', '$data[tanggal]', '$data[jam]', '$data[kode_barang]','$data[nama_barang]','$jumlah_barang','$satuan','$data[satuan]','$harga','$data[subtotal]','$data[potongan]','$data[tax]', '$jumlah_barang','$data[tipe_barang]','$data[lab]')";
+        $query2 = "INSERT INTO detail_penjualan (no_faktur,no_rm, no_reg, tanggal, jam, kode_barang, nama_barang, jumlah_barang, asal_satuan,satuan, harga, subtotal, potongan, tax, sisa,tipe_produk,lab) VALUES ('$nomor_faktur','$no_rm', '$no_reg', '$tanggal_edit', '$jam_sekarang', '$data[kode_barang]','$data[nama_barang]','$jumlah_barang','$satuan','$data[satuan]','$harga','$data[subtotal]','$data[potongan]','$data[tax]', '$jumlah_barang','$data[tipe_barang]','$data[lab]')";
 
         if ($db->query($query2) === TRUE) {
         } 
