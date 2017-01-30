@@ -93,10 +93,6 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 			$akhir = ($awal + $masuk) - $keluar;
 			$nilai_akhir = ($nilai_awal + $nilai_masuk) - $nilai_keluar;
 
-			$sub_nilai_akhir = $sub_nilai_akhir + $nilai_akhir;
-			$sub_nilai_awal = $sub_nilai_awal + $nilai_awal;
-			$sub_nilai_masuk = $sub_nilai_masuk + $nilai_masuk;
-			$sub_nilai_keluar = $sub_nilai_keluar + $nilai_keluar;
 
 
 $nestedData = array();
@@ -114,9 +110,60 @@ $nestedData[] = rp($nilai_akhir);
 $data[] = $nestedData;
 
 }
+
+			$pembelian = $db->query("SELECT dp.kode_barang, SUM(p.potongan) AS diskon_faktur FROM pembelian p INNER JOIN detail_pembelian dp ON p.no_faktur = dp.no_faktur WHERE p.tanggal >= '$dari_tanggal' AND p.tanggal <= '$sampai_tanggal'");
+			$cek_pembelian = mysqli_fetch_array($pembelian);
+			$diskon = $cek_pembelian['diskon_faktur'];
+
+
+			$hpp_masuk = $db->query("SELECT SUM(jumlah_kuantitas) AS jumlah_kuantitas, SUM(total_nilai) AS total_hpp FROM hpp_masuk WHERE tanggal <'$dari_tanggal'");
+			$cek_awal_masuk = mysqli_fetch_array($hpp_masuk);
+
+			$hpp_keluar = $db->query("SELECT SUM(jumlah_kuantitas) AS jumlah_kuantitas, SUM(total_nilai) AS total_hpp FROM hpp_keluar WHERE tanggal <'$dari_tanggal'");
+			$cek_awal_keluar = mysqli_fetch_array($hpp_keluar);
+
+			$awal = $cek_awal_masuk['jumlah_kuantitas'] - $cek_awal_keluar['jumlah_kuantitas'];
+			$nilai_awal = $cek_awal_masuk['total_hpp'] - $cek_awal_keluar['total_hpp'];
+
+			$hpp_masuk = $db->query("SELECT SUM(jumlah_kuantitas) AS jumlah_kuantitas, SUM(total_nilai) AS total_hpp FROM hpp_masuk WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' ");
+			$cek_hpp_masuk = mysqli_fetch_array($hpp_masuk);
+
+			$masuk = $cek_hpp_masuk['jumlah_kuantitas'];
+			$nilai_masuk = $cek_hpp_masuk['total_hpp'];
+			$nilai_masuk = $nilai_masuk;
+
+			$hpp_keluar = $db->query("SELECT SUM(jumlah_kuantitas) AS jumlah_kuantitas, SUM(total_nilai) AS total_hpp FROM hpp_keluar WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' ");
+			$cek_hpp_keluar = mysqli_fetch_array($hpp_keluar);
+
+			$keluar = $cek_hpp_keluar['jumlah_kuantitas'];
+			$nilai_keluar = $cek_hpp_keluar['total_hpp'];
+
+			$akhir = ($awal + $masuk) - $keluar;
+			$nilai_akhir = ($nilai_awal + $nilai_masuk) - $nilai_keluar;
+
+			$sub_nilai_akhir = $sub_nilai_akhir + $nilai_akhir;
+			$sub_nilai_awal = $sub_nilai_awal + $nilai_awal;
+			$sub_nilai_masuk = $sub_nilai_masuk + $nilai_masuk;
+			$sub_nilai_keluar = $sub_nilai_keluar + $nilai_keluar;
 		
 $nestedData = array();
-$nestedData[] = "<b style='color:red' >TOTAL :</b>";
+
+$nestedData[] = "";
+$nestedData[] = "";
+$nestedData[] = "";
+$nestedData[] = "";
+$nestedData[] = "";
+$nestedData[] = "";
+$nestedData[] = "";
+$nestedData[] = "";
+$nestedData[] = "";
+$nestedData[] = "";
+$nestedData[] = "";
+$data[] = $nestedData;
+
+
+$nestedData = array();
+$nestedData[] = "<b style='color:red' >TOTAL AKHIR :</b>";
 $nestedData[] = "";
 $nestedData[] = "";
 $nestedData[] = "";
