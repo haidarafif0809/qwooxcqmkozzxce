@@ -189,7 +189,7 @@ $out_apoteker = mysqli_fetch_array($select_apoteker);
 <option value="<?php echo $ss_paramedik['id']; ?>"><?php echo $ss_paramedik['nama_paramedik']; ?></option>
 
     <?php 
-    $query99 = $db->query("SELECT * FROM user WHERE otoritas = 'Petugas Paramedik' ");
+    $query99 = $db->query("SELECT id,nama FROM user WHERE otoritas = 'Petugas Paramedik' ");
     while ( $data99 = mysqli_fetch_array($query99)) {
     echo "<option value='".$data99['id']."'>".$data99['nama']."</option>";
     }
@@ -207,7 +207,7 @@ $out_apoteker = mysqli_fetch_array($select_apoteker);
      <select type="text" class="form-control" id="apoteker" placeholder="Isi Apoteker" autocomplete="off">
 <option value="<?php echo $ss_farmasi['id']; ?>"><?php echo $ss_farmasi['nama_farmasi']; ?></option>
      <?php 
-     $query09 = $db->query("SELECT * FROM user WHERE otoritas = 'Petugas Farmasi' ");
+     $query09 = $db->query("SELECT id, nama FROM user WHERE otoritas = 'Petugas Farmasi' ");
      while ( $data09 = mysqli_fetch_array($query09)) {
      echo "<option value='".$data09['nama']."'>".$data09['nama']."</option>";
      }
@@ -337,7 +337,7 @@ tr:nth-child(even){background-color: #f2f2f2}
          <th style='background-color: #4CAF50; color: white'>Jumlah</th>
 
          <?php 
-         $sss = $db->query("SELECT * FROM detail_penjualan dp  LEFT JOIN barang b ON dp.kode_barang = b.kode_barang  WHERE dp.no_reg ='$no_reg' AND b.tipe_barang = 'Obat Obatan' ORDER BY dp.id DESC");
+         $sss = $db->query("SELECT dp.kode_barang FROM detail_penjualan dp  LEFT JOIN barang b ON dp.kode_barang = b.kode_barang  WHERE dp.no_reg ='$no_reg' AND b.tipe_barang = 'Obat Obatan' ORDER BY dp.id DESC");
          $asa1 = mysqli_num_rows($sss);
          if($asa1 > 0) {?>
 
@@ -351,7 +351,6 @@ tr:nth-child(even){background-color: #f2f2f2}
     
    <?php 
 
-$query5 = $db->query("SELECT * FROM tbs_penjualan WHERE no_reg ='$no_reg' AND tipe_barang = 'Obat Obatan' ORDER BY id DESC");
 
 $ss = $db->query("SELECT dp.no_reg,dp.kode_barang,dp.nama_barang,dp.dosis,dp.id,dp.jumlah_barang FROM detail_penjualan dp  LEFT JOIN barang b ON dp.kode_barang = b.kode_barang  WHERE dp.no_reg ='$no_reg' AND b.tipe_barang = 'Obat Obatan' 
           ORDER BY dp.id DESC");
@@ -389,6 +388,9 @@ if ($asa > 0)
 
 else
       {
+
+        $query5 = $db->query("SELECT id,kode_barang,no_reg,nama_barang,jumlah_barang,dosis FROM tbs_penjualan WHERE no_reg ='$no_reg' AND tipe_barang = 'Obat Obatan' ORDER BY id DESC");
+
 
  while($data01 = mysqli_fetch_array($query5))
       
@@ -470,7 +472,7 @@ if (dosis == 0)
 }
 else
   {
-$.post('proses_dosis.php',{id:id,dosis:dosis},function(data){ // INI PROSES POST NYA
+$.post('proses_dosis.php',{id:id,dosis:dosis},function(){ // INI PROSES POST NYA
  
      $("#input-dosis-"+id+"").attr('type','hidden'); // di hidden dari double clicknya
        $("#text-dosis-"+id+"").show(); // text dosis tampilkan lagi
