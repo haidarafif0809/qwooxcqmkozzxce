@@ -6,7 +6,7 @@ include 'sanitasi.php';
 // mengirim data no faktur menggunakan metode POST
 
  $no_reg = stringdoang($_POST['no_reg']);
-$total_akhir = angkadoang($_POST['total']);
+ $total_akhir = angkadoang($_POST['total']);
  $diskon = angkadoang($_POST['potongan']);
  /*
  $pajak = angkadoang($_POST['tax']);*/
