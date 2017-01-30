@@ -1819,6 +1819,7 @@ if (info == 1)
 } 
 else
 {
+	info = info.replace(/\s/g, '');
      $("#table-baru").html(info);
      var no_faktur = info;
      $("#cetak_tunai").attr('href', 'cetak_penjualan_tunai.php?no_faktur='+no_faktur+'');
@@ -2706,7 +2707,7 @@ $("#cari_produk_penjualan").click(function(){
 
 		}
 		else{
-			
+
 		}
 
       }// cek stok barang       
