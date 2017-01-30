@@ -87,7 +87,7 @@ $harga = mysqli_fetch_array($query3);
 	
 
                        // AWAL DARI PERHITUNGAN HARGA 1 UNTUK PERSONAL 
-
+/*
 if ($cek > 0 )
   //hitung persentase dokter update harga 1
 {
@@ -252,7 +252,7 @@ $query_nominal_petugas3 = $db->query("UPDATE tbs_fee_produk SET nama_petugas= '$
 // SELESAI UNTUK UPDATE DOKTER,PERAWAT DAN APOTEKER & PETUGAS UNTUK (PERSENTASE DAN NOMINAL) HARGA 1
 
 
-} // WARNING DO NOT ANYTING ABOUT THIS BREAKET !!!
+} // WARNING DO NOT ANYTING ABOUT THIS BREAKET !!!*/
 
 
 

@@ -956,7 +956,7 @@ Laboratorium  </button>
  
            <?php if ($otoritas_tombol['tombol_bayar'] > 0):?>              
           <button type="submit" id="penjualan" class="btn btn-info" style="font-size:15px;">Bayar (F8)</button>
-          <a class="btn btn-info" href="pasien_sudah_masuk.php" id="transaksi_baru" style="display: none">  Transaksi Baru </a>
+          <a class="btn btn-info" href="pasien_sudah_masuk.php" id="transaksi_baru" style="display: none">  Transaksi Baru (Ctrl + T)</a>
           <?php endif;?>
         
           
@@ -3251,6 +3251,15 @@ $.post('cek_kode_barang_tbs_penjualan.php',{kode_barang:kode_barang,no_reg:no_re
         // Do something
 
         $("#simpan_sementara").click();
+
+    }); 
+
+
+        shortcut.add("ctrl+t", function() {
+
+        // Do something
+
+        window.location.href="pasien_sudah_masuk.php";
 
     }); 
 
