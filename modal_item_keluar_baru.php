@@ -119,7 +119,7 @@ while( $row=mysqli_fetch_array($query) ) {
             $stok_barang = $total_1 - $total_2;
 
        $cek_harga_hpp = $db->query("SELECT total_nilai,jumlah_kuantitas FROM hpp_masuk WHERE kode_barang = '$row[kode_barang]' AND sisa != 0 ORDER BY waktu DESC LIMIT 1  ");
-        $harga_kel = mysqli_fetch_array($cek_harga_hpp);
+       $harga_kel = mysqli_fetch_array($cek_harga_hpp);
 
         $jumlah_kuantitas = $harga_kel['jumlah_kuantitas'];
 
