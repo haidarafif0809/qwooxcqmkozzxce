@@ -12,7 +12,7 @@ $otoritas_tombol = mysqli_fetch_array($pilih_akses_tombol);
  $nama = stringdoang($_POST['nama_barang']);
  $jumlah = angkadoang($_POST['jumlah_barang']);
  $no_reg = stringdoang($_POST['no_reg']);
- $diskon = stringdoang($_POST['potongan']);
+ $diskon = angkadoang($_POST['potongan']);
  $pajak = angkadoang($_POST['tax']); 
  $apoteker = stringdoang($_POST['petugas_farmasi']);
  $perawat = stringdoang($_POST['petugas_paramedik']);
@@ -27,6 +27,8 @@ $otoritas_tombol = mysqli_fetch_array($pilih_akses_tombol);
  $tipe_produk = stringdoang($_POST['ber_stok']);
  $ppn = stringdoang($_POST['ppn']);
 
+$tanggal_sekarang = stringdoang($_POST['tanggal']);
+$jam = stringdoang($_POST['jam']);
 
 
           if(strpos($diskon, "%") !== false)
@@ -69,8 +71,7 @@ $otoritas_tombol = mysqli_fetch_array($pilih_akses_tombol);
 
 
 
-$tanggal_sekarang = date('Y-m-d');
-$jam = date('H:i:sa');
+
 
 
 $tbs_penjualan = $db->query("SELECT * FROM tbs_penjualan WHERE kode_barang = '$kode' AND no_faktur='$no_faktur'");
