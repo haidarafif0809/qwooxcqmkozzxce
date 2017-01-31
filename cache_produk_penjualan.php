@@ -25,6 +25,7 @@ while ($data = $query->fetch_array()) {
     $c->store($data['kode_barang'], array(
       'kode_barang' => $data['kode_barang'],
       'nama_barang' => $data['nama_barang'],
+      'harga_beli' => $data['harga_beli'],
       'harga_jual' => $data['harga_jual'],
       'harga_jual2' => $data['harga_jual2'],
       'harga_jual3' => $data['harga_jual3'],
@@ -35,6 +36,7 @@ while ($data = $query->fetch_array()) {
       'kategori' => $data['kategori'],
       'suplier' => $data['suplier'],
       'limit_stok' => $data['limit_stok'],
+      'over_stok' => $data['over_stok'],
       'berkaitan_dgn_stok' => $data['berkaitan_dgn_stok'],
       'tipe_barang' => $data['tipe_barang'],
       'status' => $data['status'],
@@ -57,4 +59,3 @@ foreach ($retrieve as $key) {
   echo $key['kode_barang'];echo "<br>";
   echo $key['nama_barang'];echo "<br>";
 }
-   

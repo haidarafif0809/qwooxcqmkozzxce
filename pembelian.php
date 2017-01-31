@@ -180,6 +180,7 @@ $pembelian_hapus = mysqli_num_rows($pilih_akses_pembelian_hapus);
 			<th style='background-color: #4CAF50; color: white'> Cetak Hutang </th>
 			<th style='background-color: #4CAF50; color: white'> Nomor Faktur </th>
 			<th style='background-color: #4CAF50; color: white'> Gudang </th>
+			<th style='background-color: #4CAF50; color: white'> No. faktur Suplier </th>
 			<th style='background-color: #4CAF50; color: white'> Suplier </th>
 			<th style='background-color: #4CAF50; color: white'> Total </th>
 			<th style='background-color: #4CAF50; color: white'> Tanggal </th>

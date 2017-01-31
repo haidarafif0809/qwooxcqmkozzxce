@@ -22,8 +22,15 @@ $waktu_sampai = $sampai_tanggal." ".$sampai_jam;
 
     $query10 = $db->query("SELECT SUM(jumlah_fee) AS total_fee FROM laporan_fee_produk WHERE nama_petugas = '$nama_petugas' AND waktu >= '$waktu_dari' AND waktu <= '$waktu_sampai'");
     $cek0 = mysqli_fetch_array($query10);
-    $total_fee = rp($cek0['total_fee']);
+    $total_fee = $cek0['total_fee'];
+
+$query11 = $db->query("SELECT SUM(tfp.jumlah_fee) AS total_fee FROM tbs_fee_produk tfp LEFT JOIN registrasi r ON tfp.no_reg = r.no_reg WHERE tfp.nama_petugas = '$nama_petugas' AND (tfp.waktu >= '$waktu_dari' AND tfp.waktu <= '$waktu_sampai') AND r.jenis_pasien = 'Rawat Inap' ");
+    $cek1 = mysqli_fetch_array($query11);
+    $total_fee_no_closing = $cek1['total_fee'];
     
+$total_seluruh = $total_fee + $total_fee_no_closing;
+
+
  ?>
 
 <div style="padding-right: 5%; padding-left: 5%;">
@@ -63,7 +70,7 @@ $waktu_sampai = $sampai_tanggal." ".$sampai_jam;
 
 <br>
 <div class="container">
-
+<center><h4>Komisi Sudah Closing</h4></center>
 <table id="tableuser" class="table table-bordered table-sm">
             <thead>
                   <th> Nama Petugas </th>
@@ -75,16 +82,11 @@ $waktu_sampai = $sampai_tanggal." ".$sampai_jam;
                   <th> Jam </th>
 
 
-                  <?php 
-
-                  
-                  ?>
-                  
             </thead>
             
             <tbody>
             <?php
-                $query10 = $db->query("SELECT lfp.nama_petugas,lfp.no_faktur,lfp.kode_produk,lfp.nama_produk,lfp.jumlah_fee,lfp.tanggal,lfp.jam ,u.nama FROM laporan_fee_produk lfp INNER JOIN user u ON lfp.nama_petugas = u.id  WHERE lfp.nama_petugas = '$nama_petugas' AND lfp.waktu >= '$waktu_dari' AND lfp.waktu <= '$waktu_sampai'  ");
+                $query10 = $db->query("SELECT lfp.nama_petugas,lfp.no_faktur,lfp.kode_produk,lfp.nama_produk,lfp.jumlah_fee,lfp.tanggal,lfp.jam ,u.nama FROM laporan_fee_produk lfp LEFT JOIN user u ON lfp.nama_petugas = u.id  WHERE lfp.nama_petugas = '$nama_petugas' AND (lfp.waktu >= '$waktu_dari' AND lfp.waktu <= '$waktu_sampai' ) ");
                 while ($data10 = mysqli_fetch_array($query10))
                 {
                   
@@ -96,6 +98,46 @@ $waktu_sampai = $sampai_tanggal." ".$sampai_jam;
                   <td>". rp($data10['jumlah_fee']) ."</td>
                   <td>". tanggal($data10['tanggal']) ."</td>
                   <td>". $data10['jam'] ."</td>
+                  </tr>";
+                }
+
+                        //Untuk Memutuskan Koneksi Ke Database
+                              
+
+        
+            ?>
+            </tbody>
+
+      </table>
+
+<center><h4>Komisi Belum Closing</h4></center>
+<table id="tableuser" class="table table-bordered table-sm">
+            <thead>
+                  <th> Nama Petugas </th>
+                  <th> Nomor Faktur </th>
+                  <th> Kode Produk </th>
+                  <th> Nama Produk </th>
+                  <th> Jumlah Komisi </th>
+                  <th> Tanggal </th>
+                  <th> Jam </th>
+
+
+            </thead>
+            
+            <tbody>
+            <?php
+                $query100 = $db->query("SELECT lfp.nama_petugas,lfp.no_faktur,lfp.kode_produk,lfp.nama_produk,lfp.jumlah_fee,lfp.tanggal,lfp.jam ,u.nama FROM tbs_fee_produk lfp LEFT JOIN user u ON lfp.nama_petugas = u.id  LEFT JOIN registrasi r ON lfp.no_reg = r.no_reg WHERE lfp.nama_petugas = '$nama_petugas' AND (lfp.waktu >= '$waktu_dari' AND lfp.waktu <= '$waktu_sampai') AND r.jenis_pasien = 'Rawat Inap'   ");
+                while ($data100 = mysqli_fetch_array($query100))
+                {
+                  
+                  echo "<tr>
+                  <td>". $data100['nama'] ."</td>
+                  <td>". $data100['no_faktur'] ."</td>
+                  <td>". $data100['kode_produk'] ."</td>
+                  <td>". $data100['nama_produk'] ."</td>
+                  <td>". rp($data100['jumlah_fee']) ."</td>
+                  <td>". tanggal($data100['tanggal']) ."</td>
+                  <td>". $data100['jam'] ."</td>
                   </tr>";
                 }
 
@@ -116,7 +158,7 @@ $waktu_sampai = $sampai_tanggal." ".$sampai_jam;
  <table>
   <tbody>
 
-      <tr><td><i> <b> Terbilang </b></td> <td> &nbsp;:&nbsp;</td> <td> <?php echo kekata($total_fee); ?> </i> </td></tr>
+      <tr><td><i> <b> Terbilang </b></td> <td> &nbsp;:&nbsp;</td> <td> <?php echo kekata($total_seluruh); ?> rupiah </i> </td></tr>
 
   </tbody>
   </table>
@@ -129,7 +171,9 @@ $waktu_sampai = $sampai_tanggal." ".$sampai_jam;
  <table>
   <tbody>
 
-      <tr><td width="75%"><b>Jumlah Komisi Petugas</b></td> <td> &nbsp;:&nbsp;</td> <td> <?php echo $total_fee; ?> </td></tr>
+      <tr><td width="75%"><b>Total Komisi Sudah Closing</b></td> <td> &nbsp;:&nbsp;</td> <td> <?php echo rp($total_fee); ?> </td></tr>
+      <tr><td width="75%"><b>Total Komisi Sudah Closing</b></td> <td> &nbsp;:&nbsp;</td> <td> <?php echo rp($total_fee_no_closing); ?> </td></tr>
+      <tr><td width="75%"><b>Total Komisi </b></td> <td> &nbsp;:&nbsp;</td> <td> <b><?php echo rp($total_seluruh); ?> </b></td></tr>
 
   </tbody>
   </table>

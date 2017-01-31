@@ -371,13 +371,15 @@ if ($registrasi_rj['registrasi_rj_lihat'] > 0) {
     
     //untuk menampilkan semua data pada tabel pelanggan dalam DB
     $query01 = $db->query("SELECT nama FROM user WHERE tipe = '1'");
+    
+      $petugas = $db->query("SELECT nama_dokter FROM penetapan_petugas");
+        $data_petugas = mysqli_fetch_array($petugas);
 
     //untuk menyimpan data sementara yang ada pada $query
     while($data01 = mysqli_fetch_array($query01))
     {
     
-        $petugas = $db->query("SELECT nama_dokter FROM penetapan_petugas WHERE nama_dokter = '$data01[nama]'");
-        $data_petugas = mysqli_fetch_array($petugas);
+      
 
     if ($data01['nama'] == $data_petugas['nama_dokter']) {
      echo "<option selected value='".$data01['nama'] ."'>".$data01['nama'] ."</option>";

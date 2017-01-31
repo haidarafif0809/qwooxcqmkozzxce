@@ -31,9 +31,9 @@ $query10 = $db->query("INSERT INTO laporan_fee_produk (nama_petugas, no_faktur, 
 else
 {
 
-$hasil_hitung_fee_nominal = $dataui['jumlah_uang'] * $my2['jumlah'];
+$hasil_hitung_fee_nominal = $dataui['jumlah_uang'] * $my2['jumlah_barang'];
 
-$query10 = $db->query("INSERT INTO laporan_fee_produk (nama_petugas, no_faktur, kode_produk, nama_produk, jumlah_fee, tanggal, jam, no_rm, no_reg,waktu) VALUES ('296', '$my2[no_faktur]', '$my2[kode_barang]', '$my2[nama_barang]', '$hasil_hitung_fee_nominal', '$my2[tanggal]', '$my2[jam]', '$my2[no_rm]', '$my2[no_reg]',$waktu')");
+$query10 = $db->query("INSERT INTO laporan_fee_produk (nama_petugas, no_faktur, kode_produk, nama_produk, jumlah_fee, tanggal, jam, no_rm, no_reg,waktu) VALUES ('296', '$my2[no_faktur]', '$my2[kode_barang]', '$my2[nama_barang]', '$hasil_hitung_fee_nominal', '$my2[tanggal]', '$my2[jam]', '$my2[no_rm]', '$my2[no_reg]','$waktu')");
 
   }
 

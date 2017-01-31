@@ -102,6 +102,10 @@ $no_faktur = $nomor."/JL/".$data_bulan_terakhir."/".$tahun_terakhir;
  
           <!-- membuat agar teks tidak bisa di ubah, dan hanya bisa dibaca -->
           <input type="hidden" name="session_id" id="session_id" class="form-control" readonly="" value="<?php echo $session_id; ?>" required="" >
+    <div class="col-sm-3">
+          <label>No. Faktur Suplier </label><br>
+          <input  name="suplier" id="no_faktur_suplier" >
+    </div> 
           
     <div class="col-sm-3">
       
@@ -806,6 +810,7 @@ $("#submit_produk").show('');
    //perintah javascript yang diambil dari form proses_bayar_beli.php dengan id=form_beli
   $("#pembayaran").click(function(){
 
+       var no_faktur_suplier = $("#no_faktur_suplier").val();
        var session_id = $("#session_id").val();
        var no_faktur = $("#nomorfaktur").val();
        var sisa_pembayaran = $("#sisa_pembayaran_pembelian").val();
@@ -892,7 +897,7 @@ alert(" Kode Gudang Harus Diisi ");
   $("#transaksi_baru").show();  
     $("#cetak_tunai").show();
 
- $.post("proses_bayar_beli.php",{total_1:total_1,kode_gudang:kode_gudang,session_id:session_id,no_faktur:no_faktur,sisa_pembayaran:sisa_pembayaran,kredit:kredit,suplier:suplier1,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,tax1:tax1,cara_bayar:cara_bayar,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,ppn:ppn,ppn_input:ppn_input,tax_rp:tax_rp},function(info) {
+ $.post("proses_bayar_beli.php",{no_faktur_suplier:no_faktur_suplier,total_1:total_1,kode_gudang:kode_gudang,session_id:session_id,no_faktur:no_faktur,sisa_pembayaran:sisa_pembayaran,kredit:kredit,suplier:suplier1,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,tax1:tax1,cara_bayar:cara_bayar,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,ppn:ppn,ppn_input:ppn_input,tax_rp:tax_rp},function(info) {
     
 
     var no_faktur = info;
@@ -923,6 +928,8 @@ alert(" Kode Gudang Harus Diisi ");
        //perintah javascript yang diambil dari form proses_bayar_beli.php dengan id=form_beli
        $("#hutang").click(function(){
        
+
+       var no_faktur_suplier = $("#no_faktur_suplier").val();
        var session_id = $("#session_id").val();
        var no_faktur = $("#nomorfaktur").val();
 
@@ -1005,7 +1012,7 @@ alert(" Kode Gudang Harus Diisi ");
          $("#transaksi_baru").show();
           $("#cetak_hutang").show();
 
-       $.post("proses_bayar_beli.php",{total_1:total_1,kode_gudang:kode_gudang,session_id:session_id,no_faktur:no_faktur,sisa_pembayaran:sisa_pembayaran,kredit:kredit,suplier:suplier,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,tax1:tax1,cara_bayar:cara_bayar,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,ppn:ppn,ppn_input:ppn_input,tax_rp:tax_rp},function(info) {
+       $.post("proses_bayar_beli.php",{no_faktur_suplier:no_faktur_suplier,total_1:total_1,kode_gudang:kode_gudang,session_id:session_id,no_faktur:no_faktur,sisa_pembayaran:sisa_pembayaran,kredit:kredit,suplier:suplier,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,tax1:tax1,cara_bayar:cara_bayar,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,ppn:ppn,ppn_input:ppn_input,tax_rp:tax_rp},function(info) {
 
        var no_faktur = info;
 

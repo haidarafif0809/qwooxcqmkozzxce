@@ -1,4 +1,4 @@
-<?php include 'session_login.php';
+	<?php include 'session_login.php';
 /* Database connection start */
 include 'db.php';
 /* Database connection end */
@@ -25,7 +25,7 @@ $columns = array(
 
 // getting total number records without any search
 $sql = "SELECT no_faktur, tanggal, jam, user, user_edit, tanggal_edit, keterangan, total, id ";
-$sql.=" FROM item_keluar ORDER BY tanggal DESC";
+$sql.=" FROM item_keluar";
 $query=mysqli_query($conn, $sql) or die("datatable_item_keluar.php: get employees");
 $totalData = mysqli_num_rows($query);
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
@@ -33,7 +33,7 @@ $totalFiltered = $totalData;  // when there is no search parameter then total nu
 
 
 $sql = "SELECT no_faktur, tanggal, jam, user, user_edit, tanggal_edit, keterangan, total, id ";
-$sql.=" FROM item_keluar WHERE 1=1";
+$sql.= " FROM item_keluar WHERE 1=1";
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
 
 
@@ -42,6 +42,9 @@ if( !empty($requestData['search']['value']) ) {   // if there is a search parame
 	$sql.=" OR keterangan LIKE '".$requestData['search']['value']."%' )";
 
 }
+
+$sql.= " ORDER BY tanggal DESC LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
+
 
 
 $query=mysqli_query($conn, $sql) or die("datatable_item_keluar.phpppp: get employees");
