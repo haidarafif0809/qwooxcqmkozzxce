@@ -565,11 +565,11 @@ Level 7
 
     <input type="hidden" class="form-control" name="limit_stok" autocomplete="off" id="limit_stok" placeholder="Limit Stok" >
     <input type="hidden" class="form-control" name="ber_stok" id="ber_stok" placeholder="Ber Stok" >
-    <input type="hidden" class="form-control" name="harga_lama" id="harga_lama" placeholder="harga lama">
-    <input type="hidden" class="form-control" name="harga_baru" id="harga_baru" placeholder="harga baru">
+    <input type="text" class="form-control" name="harga_lama" id="harga_lama" placeholder="harga lama">
+    <input type="text" class="form-control" name="harga_baru" id="harga_baru" placeholder="harga baru">
     <input type="hidden" class="form-control" name="jumlahbarang" id="jumlahbarang" placeholder="stok">
     <input type="hidden" id="satuan_produk" name="satuan" class="form-control" value="" placeholder="Satuan">
-    <input type="hidden" id="harga_produk" name="harga" class="form-control" value="" placeholder="Harga Jual">
+    <input type="text" id="harga_produk" name="harga" class="form-control" value="" placeholder="Harga Jual">
     <input type="hidden" id="id_produk" name="id_produk" class="form-control" value="" placeholder="Id barang"> 
     <input type="hidden" id="level_hidden" name="level_hidden" class="form-control" value="<?php echo $level_harga;?>">   
     <input type="hidden" id="analis" name="analis" class="form-control" value="<?php echo $analis;?>">        
@@ -1218,8 +1218,7 @@ $(document).ready(function(){
   $("#level_harga").change(function(){
   
   var level_harga = $("#level_harga").val();
-  var kode_barang = $("#kode_barang").val();
-  var kode_barang = kode_barang.substr(0, kode_barang.indexOf('('));
+  var kode_barang = $("#kode_barang").val()
   var satuan_konversi = $("#satuan_konversi").val();
   var jumlah_barang = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#jumlah_barang").val()))));
   var level_hidden = $("#level_hidden").val();
@@ -1257,7 +1256,7 @@ $(document).ready(function(){
       var jumlah_barang = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#jumlah_barang").val()))));
       var satuan_konversi = $("#satuan_konversi").val();
       var kode_barang = $("#kode_barang").val();
-      var kode_barang = kode_barang.substr(0, kode_barang.indexOf('('));
+ 
       var id_produk = $("#id_produk").val();
       var prev = $("#satuan_produk").val();
       var ber_stok = $("#ber_stok").val();
@@ -1298,7 +1297,7 @@ $(document).ready(function(){
       var harga_produk = $("#harga_lama").val();
       var jumlah_barang = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#jumlah_barang").val()))));
       var kode_barang = $("#kode_barang").val();
-      var kode_barang = kode_barang.substr(0, kode_barang.indexOf('('));
+ 
 
       
 
@@ -2690,7 +2689,7 @@ $("#cari_produk_penjualan").click(function(){
 
       var satuan_konversi = $("#satuan_konversi").val();
       var kode_barang = $("#kode_barang").val();
-      var kode_barang = kode_barang.substr(0, kode_barang.indexOf('('));
+ 
       var id_produk = $("#id_produk").val();
       var prev = $("#satuan_produk").val();
       var limit_stok = $("#limit_stok").val();
@@ -2951,7 +2950,7 @@ AUTOCOMPLETE -->
           var level_harga = $("#level_harga").val();
           var session_id = $("#session_id").val();
           var no_reg = $("#no_reg").val();
-          var kode_barang = kode_barang.substr(0, kode_barang.indexOf('('));
+     
         
           $.post('cek_kode_barang_tbs_penjualan.php',{kode_barang:kode_barang,no_reg:no_reg}, function(data){
           
