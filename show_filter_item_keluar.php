@@ -15,7 +15,7 @@ $item_masuk = mysqli_fetch_array($pilih_akses_item_masuk);
 
 
 //menampilkan seluruh data yang ada pada tabel penjualan
-$perintah = $db->query("SELECT * FROM item_keluar WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' order by tanggal asc");
+$perintah = $db->query("SELECT ik.id, ik.no_faktur, ik.tanggal, ik.jam, ik.user, ik.user_edit, ik.tanggal_edit, ik.keterangan, ik.total, u.nama, uu.nama AS nama_edit FROM item_keluar ik LEFT JOIN user u ON ik.user = u.username LEFT JOIN  user uu ON ik.user_edit = uu.username WHERE ik.tanggal >= '$dari_tanggal' AND ik.tanggal <= '$sampai_tanggal' order by ik.tanggal asc");
 
 ?>
 
@@ -201,8 +201,8 @@ if ($item_masuk['item_keluar_hapus'] > 0) {
 			<td>". $data1['no_faktur'] ."</td>
 			<td>". $data1['tanggal'] ."</td>
 			<td>". $data1['jam'] ."</td>
-			<td>". $data1['user'] ."</td>
-			<td>". $data1['user_edit'] ."</td>
+			<td>". $data1['nama'] ."</td>
+			<td>". $data1['nama_edit'] ."</td>
 			<td>". $data1['tanggal_edit'] ."</td>
 			<td>". $data1['keterangan'] ."</td>
 			<td>". rp($data1['total']) ."</td>

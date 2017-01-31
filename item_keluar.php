@@ -14,7 +14,7 @@ $perintah = $db->query("SELECT * FROM item_keluar");
 
 
 
-<div class="container"><!--start of container-->
+<div style="padding-right: 5%; padding-left: 5%"><!--start of container-->
 
 <h3><b> DATA ITEM KELUAR </b></h3><hr>
 
@@ -159,7 +159,7 @@ tr:nth-child(even){background-color: #f2f2f2}
 
 <div class="table-responsive"><!--membuat agar ada garis pada tabel disetiap kolom-->
 <span id="tabel_baru">
-<table id="table_item_keluar" class="table table-bordered">
+<table id="table_item_keluar" class="table table-bordered table-sm">
 		<thead>
 			<th style='background-color: #4CAF50; color:white'> Nomor Faktur </th>
 			<th style='background-color: #4CAF50; color:white'> Tanggal </th>
@@ -184,6 +184,9 @@ if ($item_masuk['item_keluar_hapus'] > 0) {
 		}
 
 ?>
+
+		
+			<th style='background-color: #4CAF50; color:white'> Cetak </th>
 		
 		</thead>
 
@@ -266,7 +269,6 @@ if ($item_masuk['item_keluar_hapus'] > 0) {
 		var id = $(this).attr("data-id");
 		
 		$.post("hapus_item_keluar.php",{no_faktur:no_faktur},function(data){
-
 
 		
 		$("#modal_hapus").modal('hide');
