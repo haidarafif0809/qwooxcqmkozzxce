@@ -57,26 +57,28 @@ $columns = array(
 );
 
 // getting total number records without any search
-$sql = "SELECT * ";
-$sql.=" FROM registrasi WHERE jenis_pasien = 'Rawat Inap' AND status = 'menginap' AND status != 'Batal Rawat Inap' AND TO_DAYS(NOW()) - TO_DAYS(tanggal) <= 7 ";
+$sql = "SELECT reg.no_rm, reg.no_reg, reg.status, reg.nama_pasien, reg.jam, reg.penjamin, reg.poli, reg.dokter_pengirim, reg.dokter, reg.bed, reg.group_bed, reg.tanggal_masuk, reg.penanggung_jawab, reg.umur_pasien, reg.id, rek.tanggal_periksa,rek.id AS id_rek ";
+$sql.=" FROM registrasi reg INNER JOIN rekam_medik_inap rek ON reg.no_reg = rek.no_reg WHERE reg.jenis_pasien = 'Rawat Inap' AND reg.status = 'menginap' AND reg.status != 'Batal Rawat Inap' AND TO_DAYS(NOW()) - TO_DAYS(reg.tanggal) <= 7 ";
+
+
+
 $query = mysqli_query($conn, $sql) or die("query 1: get employees");
 $totalData = mysqli_num_rows($query);
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
 
-$sql = "SELECT * ";
-
-$sql.=" FROM registrasi WHERE 1=1 AND jenis_pasien = 'Rawat Inap' AND status = 'menginap' AND status != 'Batal Rawat Inap' AND TO_DAYS(NOW()) - TO_DAYS(tanggal) <= 7 ";
+$sql = "SELECT reg.no_rm, reg.no_reg, reg.status, reg.nama_pasien, reg.jam, reg.penjamin, reg.poli, reg.dokter_pengirim, reg.dokter, reg.bed, reg.group_bed, reg.tanggal_masuk, reg.penanggung_jawab, reg.umur_pasien, reg.id, rek.tanggal_periksa,rek.id AS id_rek ";
+$sql.=" FROM registrasi reg INNER JOIN rekam_medik_inap rek ON reg.no_reg = rek.no_reg WHERE reg.jenis_pasien = 'Rawat Inap' AND reg.status = 'menginap' AND reg.status != 'Batal Rawat Inap' AND TO_DAYS(NOW()) - TO_DAYS(reg.tanggal) <= 7 ";
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
-	$sql.=" AND ( no_reg LIKE '".$requestData['search']['value']."%' ";    
-	$sql.=" OR no_rm LIKE '".$requestData['search']['value']."%' ";
-	$sql.=" OR status LIKE '".$requestData['search']['value']."%' ";
-	$sql.=" OR nama_pasien LIKE '".$requestData['search']['value']."%' ";
-	$sql.=" OR penjamin LIKE '".$requestData['search']['value']."%' ";
-	$sql.=" OR poli LIKE '".$requestData['search']['value']."%' ";
-	$sql.=" OR dokter LIKE '".$requestData['search']['value']."%' ";
-	$sql.=" OR dokter_pengirim LIKE '".$requestData['search']['value']."%' ";
-	$sql.=" OR group_bed LIKE '".$requestData['search']['value']."%' )";
+	$sql.=" AND ( reg.no_reg LIKE '".$requestData['search']['value']."%' ";    
+	$sql.=" OR reg.no_rm LIKE '".$requestData['search']['value']."%' ";
+	$sql.=" OR reg.status LIKE '".$requestData['search']['value']."%' ";
+	$sql.=" OR reg.nama_pasien LIKE '".$requestData['search']['value']."%' ";
+	$sql.=" OR reg.penjamin LIKE '".$requestData['search']['value']."%' ";
+	$sql.=" OR reg.poli LIKE '".$requestData['search']['value']."%' ";
+	$sql.=" OR reg.dokter LIKE '".$requestData['search']['value']."%' ";
+	$sql.=" OR reg.dokter_pengirim LIKE '".$requestData['search']['value']."%' ";
+	$sql.=" OR reg.group_bed LIKE '".$requestData['search']['value']."%' )";
 }
 
 
@@ -86,6 +88,8 @@ $totalFiltered = mysqli_num_rows($query); // when there is a search parameter th
 $sql.=" ORDER BY id   ".$requestData['order'][0]['dir']."  LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
 /* $requestData['order'][0]['column'] contains colmun index, $requestData['order'][0]['dir'] contains order such as asc/desc  */	
 $query=mysqli_query($conn, $sql) or die("query 3: get employees");
+
+
 
 $data = array();
 while( $row=mysqli_fetch_array($query) ) {  // preparing an array
@@ -191,7 +195,7 @@ $take = mysqli_num_rows($show);
 
         if ($rekam_medik['rekam_medik_ri_lihat']) 
         {
-           $nestedData[] =  "<a href='rekam_medik_ranap.php' class='btn btn-floating btn-small btn-danger'><i class='fa fa-medkit'></i></a>";
+           $nestedData[] =  "<a href='input_rekam_medik_ranap.php?no_reg=".$row['no_reg']."&tgl=".$row['tanggal_periksa']."&jam=".$row['jam']."&id=".$row['id_rek']."' class='btn-floating btn-info btn-small'><i class='fa fa-medkit '></i></a>";
         }
 
 
