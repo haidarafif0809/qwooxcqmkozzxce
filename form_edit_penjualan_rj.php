@@ -2236,7 +2236,7 @@ if (info == 1)
         var sisa_pembayaran = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah( $("#sisa_pembayaran_penjualan").val() ))));
         var kredit = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah( $("#kredit").val() )))); 
         var no_rm = $("#no_rm").val();
-        var no_rm = no_rm.substr(0, no_rm.indexOf('('));
+        var no_rm = no_rm.substr(0, no_rm.indexOf('|'));
         var no_reg = $("#no_reg").val();
         var tanggal_jt = $("#tanggal_jt").val();
         var total = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah( $("#total1").val() )))); 
