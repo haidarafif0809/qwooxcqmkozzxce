@@ -152,11 +152,13 @@ $user = $_SESSION['nama'];
         
 
          <?php 
+           $petugas = $db->query("SELECT nama_farmasi FROM penetapan_petugas");
+         $data_petugas = mysqli_fetch_array($petugas);
+
          $query09 = $db->query("SELECT nama,id FROM user WHERE tipe = '3'  ");
          while ( $data09 = mysqli_fetch_array($query09)) {
          
-         $petugas = $db->query("SELECT nama_farmasi FROM penetapan_petugas WHERE nama_farmasi = '$data01[nama]'");
-         $data_petugas = mysqli_fetch_array($petugas);
+       
 
             if ($data09['nama'] == $data_petugas['nama_farmasi']) {
              echo "<option selected value='".$data09['id'] ."'>".$data09['nama'] ."</option>";
@@ -179,11 +181,12 @@ $user = $_SESSION['nama'];
         
 
          <?php 
+                  $petugas = $db->query("SELECT nama_paramedik FROM penetapan_petugas ");
+         $data_petugas = mysqli_fetch_array($petugas);
          $query09 = $db->query("SELECT nama,id FROM user WHERE tipe = '2' ");
          while ( $data09 = mysqli_fetch_array($query09)) {
          
-         $petugas = $db->query("SELECT nama_paramedik FROM penetapan_petugas WHERE nama_paramedik = '$data01[nama]'");
-         $data_petugas = mysqli_fetch_array($petugas);
+
 
             if ($data09['nama'] == $data_petugas['nama_paramedik']) {
              echo "<option selected value='".$data09['id'] ."'>".$data09['nama'] ."</option>";
