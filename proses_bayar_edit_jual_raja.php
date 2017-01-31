@@ -39,7 +39,7 @@ $nama_petugas = stringdoang($_SESSION['nama']);
 $kode_gudang = stringdoang($_POST['kode_gudang']);
 $ppn_input = stringdoang($_POST['ppn_input']);
 $penjamin = stringdoang($_POST['penjamin']);
-$nama_pasien = stringdoang($_POST['nama_pasien']);
+$nama_pasienx = stringdoang($_POST['nama_pasien']);
 
     $petugas_kasir = stringdoang($_POST['petugas_kasir']);
     $petugas_paramedik = stringdoang($_POST['petugas_paramedik']);
@@ -64,6 +64,11 @@ $cara_bayar = stringdoang($_POST['cara_bayar']);
 $pembayaran = angkadoang($_POST['pembayaran']);
 $jenis_penjualan = stringdoang($_POST['jenis_penjualan']);
 $no_jurnal = no_jurnal();
+
+  $ambil_pelanggan = $db_pasien("SELECT alamat_sekarang, no_telp , umur, jenis_kelamin,nama_pelanggan FROM pelanggan WHERE kode_pelanggan = '$no_rm' ");
+  $data_pasien = mysqli_fetch_array($ambil_pelanggan);
+
+  $nama_pasien = $data_pasien['nama_pelanggan'];
     
      $quer10000 = $db->query("DELETE  FROM jurnal_trans WHERE no_faktur = '$nomor_faktur' ");
 
@@ -461,8 +466,7 @@ if ($potongan != "" || $potongan != 0 ) {
    
 }
 
-  $ambil_pelanggan = $db_pasien("SELECT alamat_sekarang, no_telp , umur, jenis_kelamin FROM pelanggan WHERE kode_pelanggan = '$no_rm' ");
-  $data_pasien = mysqli_fetch_array($ambil_pelanggan);
+
             
     $update_registrasi = $db->query("UPDATE registrasi SET status = 'Sudah Pulang' , nama_pasien = '$nama_pasien', no_rm = '$no_rm', alamat_pasien = '$data_pasien[alamat_sekarang]', hp_pasien = '$ambil_pelanggan[no_telp]' , umur_pasien = '$ambil_pelanggan[umur]' , jenis_kelamin = '$ambil_pelanggan[jenis_kelamin]' WHERE no_reg ='$no_reg'");
 
