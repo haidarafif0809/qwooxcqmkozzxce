@@ -22,7 +22,7 @@ include 'sanitasi.php';
 
 $a =  intval($total);
 
-echo rp($a);
+echo$a;
 
         //Untuk Memutuskan Koneksi Ke Database
 
