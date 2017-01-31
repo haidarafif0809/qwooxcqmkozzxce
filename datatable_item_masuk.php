@@ -25,23 +25,24 @@ $columns = array(
 );
 
 // getting total number records without any search
-$sql = "SELECT * ";
-$sql.=" FROM item_masuk";
+$sql = "SELECT ik.no_faktur, ik.tanggal, ik.jam, ik.user, ik.user_edit, ik.tanggal_edit, ik.keterangan, ik.total, ik.id, u.nama, uu.nama AS nama_edit ";
+$sql.=" FROM item_masuk ik LEFT JOIN user u ON ik.user = u.username LEFT JOIN  user uu ON ik.user_edit = uu.username";
 $query=mysqli_query($conn, $sql) or die("datatable_item_masuk.php: get employees");
 $totalData = mysqli_num_rows($query);
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
 
-$sql = "SELECT * ";
-$sql.=" FROM item_masuk WHERE 1=1";
+$sql = "SELECT ik.no_faktur, ik.tanggal, ik.jam, ik.user, ik.user_edit, ik.tanggal_edit, ik.keterangan, ik.total, ik.id, u.nama, uu.nama AS nama_edit ";
+$sql.=" FROM item_masuk ik LEFT JOIN user u ON ik.user = u.username LEFT JOIN  user uu ON ik.user_edit = uu.username WHERE 1=1";
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
 	$sql.=" AND ( no_faktur LIKE '".$requestData['search']['value']."%' ";    
-	$sql.=" OR tanggal LIKE '".$requestData['search']['value']."%' )";
+  $sql.=" OR keterangan LIKE '".$requestData['search']['value']."%' ";
+  $sql.=" OR tanggal LIKE '".$requestData['search']['value']."%' )";
 }
 $query=mysqli_query($conn, $sql) or die("datatable_item_masuk.php: get employees");
 $totalFiltered = mysqli_num_rows($query); // when there is a search parameter then we have to modify total number filtered rows as per search result. 
-$sql.=" ORDER BY ". $columns[$requestData['order'][0]['column']]."   ".$requestData['order'][0]['dir']."  LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
-/* $requestData['order'][0]['column'] contains colmun index, $requestData['order'][0]['dir'] contains order such as asc/desc  */	
+
+$sql.= " ORDER BY tanggal DESC LIMIT ".$requestData['start']." ,".$requestData['length']."   ";/* $requestData['order'][0]['column'] contains colmun index, $requestData['order'][0]['dir'] contains order such as asc/desc  */	
 $query=mysqli_query($conn, $sql) or die("employee-grid-data.php: get employees");
 
 $data = array();
@@ -51,17 +52,17 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
       $nestedData[] = $row["no_faktur"];
       $nestedData[] = $row["tanggal"];
       $nestedData[] = $row["jam"];
-      $nestedData[] = $row["user"];
-      $nestedData[] = $row["user_edit"];
+      $nestedData[] = $row["nama"];
+      $nestedData[] = $row["nama_edit"];
       $nestedData[] = $row["tanggal_edit"];
       $nestedData[] = $row["keterangan"];
       $nestedData[] = rp($row["total"]);
 
 
-      $nestedData[] = "<button class='btn btn-info detail' no_faktur='". $row['no_faktur'] ."' ><span class='glyphicon glyphicon-th-list'></span> Detail </button>";
+      $nestedData[] = "<button class='btn btn-info detail' no_faktur='". $row['no_faktur'] ."' ><i class='fa fa-th-list'></i> Detail </button>";
 
       if ($item_masuk['item_masuk_edit'] > 0) {
-              $nestedData[] = "<a href='proses_edit_item_masuk.php?no_faktur=". $row['no_faktur']."' class='btn btn-success'> <span class='glyphicon glyphicon-edit'></span> Edit </a>";
+              $nestedData[] = "<a href='proses_edit_item_masuk.php?no_faktur=". $row['no_faktur']."' class='btn btn-success'> <i class='fa fa-edit'></i> Edit </a>";
              }
 
 
@@ -74,16 +75,19 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
                 if ($row_hpp_keluar > 0 ) 
                 {
 
-                  $nestedData[] = "<button class='btn btn-danger btn-alert' data-faktur='". $row['no_faktur'] ."'> <span class='glyphicon glyphicon-trash'> </span> Hapus </button>";
+                  $nestedData[] = "<button class='btn btn-danger btn-alert' data-faktur='". $row['no_faktur'] ."'> <i class='fa fa-trash'> </i> Hapus </button>";
 
                 } 
 
                 else
                 {
 
-                  $nestedData[] = "<button class='btn btn-danger btn-hapus' data-id='".$row['id']."' data-item='". $row['no_faktur'] ."'> <span class='glyphicon glyphicon-trash'> </span> Hapus </button>";     
+                  $nestedData[] = "<button class='btn btn-danger btn-hapus' data-id='".$row['id']."' data-item='". $row['no_faktur'] ."'> <i class='fa fa-trash'> </i> Hapus </button>";     
                 }		
         }
+
+         $nestedData[] = "<a href='cetak_item_masuk.php?no_faktur=". $row['no_faktur']."&keterangan=".$row["keterangan"]."' class='btn btn-warning' target='blank'> <i class='fa fa-print'></i> Cetak  </a>";
+
 	$nestedData[] = $row["id"];
 	$data[] = $nestedData;
 }

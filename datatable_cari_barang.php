@@ -38,14 +38,14 @@ if ($tipe == 'barang') {
 	if ($kategori == 'semua' AND $tipe = 'barang') {
 
 		$sql = "SELECT s.id AS id_satuan,s.nama,b.id,b.nama_barang,b.kode_barang,b.harga_beli,b.harga_jual,b.harga_jual2,b.id,b.harga_jual3,b.harga_jual4,b.harga_jual5,b.harga_jual6,b.harga_jual7,b.berkaitan_dgn_stok,b.stok_barang,b.satuan,b.kategori,b.gudang";
-		$sql.=" FROM barang b LEFT JOIN satuan s ON b.satuan = s.id WHERE b.berkaitan_dgn_stok = '$tipe' ";
+		$sql.=" FROM barang b INNER JOIN satuan s ON b.satuan = s.id WHERE b.berkaitan_dgn_stok = '$tipe' ";
 
 
 	}
 
 	else{
 		$sql = "SELECT s.id AS id_satuan,s.nama,b.id,b.nama_barang,b.kode_barang,b.harga_beli,b.harga_jual,b.harga_jual2,b.id,b.harga_jual3,b.harga_jual4,b.harga_jual5,b.harga_jual6,b.harga_jual7,b.berkaitan_dgn_stok,b.stok_barang,b.satuan,b.kategori,b.gudang";
-		$sql.=" FROM barang b LEFT JOIN satuan s ON b.satuan = s.id WHERE b.kategori = '$kategori' AND b.berkaitan_dgn_stok = '$tipe' ";
+		$sql.=" FROM barang b INNER JOIN satuan s ON b.satuan = s.id WHERE b.kategori = '$kategori' AND b.berkaitan_dgn_stok = '$tipe' ";
     }
 
 }
@@ -54,13 +54,13 @@ else
 {
 	if ($kategori == 'semua') {
     	$sql = "SELECT s.id AS id_satuan,s.nama,b.id,b.nama_barang,b.kode_barang,b.harga_beli,b.harga_jual,b.harga_jual2,b.id,b.harga_jual3,b.harga_jual4,b.harga_jual5,b.harga_jual6,b.harga_jual7,b.berkaitan_dgn_stok,b.stok_barang,b.satuan,b.kategori,b.gudang";
-		$sql.=" FROM barang b LEFT JOIN satuan s ON b.satuan = s.id";
+		$sql.=" FROM barang b INNER JOIN satuan s ON b.satuan = s.id";
     
     }
     
     else{
     	$sql = "SELECT s.id AS id_satuan,s.nama,b.id,b.nama_barang,b.kode_barang,b.harga_beli,b.harga_jual,b.harga_jual2,b.id,b.harga_jual3,b.harga_jual4,b.harga_jual5,b.harga_jual6,b.harga_jual7,b.berkaitan_dgn_stok,b.stok_barang,b.satuan,b.kategori,b.gudang";
-		$sql.=" FROM barang b LEFT JOIN satuan s ON b.satuan = s.id WHERE b.kategori = '$kategori'";
+		$sql.=" FROM barang b INNER JOIN satuan s ON b.satuan = s.id WHERE b.kategori = '$kategori'";
     }
 }
 $query=mysqli_query($conn, $sql) or die("datatable_cari_barang.php: get employees");
@@ -72,14 +72,14 @@ if ($tipe == 'barang') {
 	if ($kategori == 'semua' AND $tipe = 'barang') {
 
 		$sql = "SELECT s.id AS id_satuan,s.nama,b.id,b.nama_barang,b.kode_barang,b.harga_beli,b.harga_jual,b.harga_jual2,b.id,b.harga_jual3,b.harga_jual4,b.harga_jual5,b.harga_jual6,b.harga_jual7,b.berkaitan_dgn_stok,b.stok_barang,b.satuan,b.kategori,b.gudang";
-		$sql.=" FROM barang b LEFT JOIN satuan s ON b.satuan = s.id WHERE 1=1 AND b.berkaitan_dgn_stok = '$tipe' ";
+		$sql.=" FROM barang b INNER JOIN satuan s ON b.satuan = s.id WHERE 1=1 AND b.berkaitan_dgn_stok = '$tipe' ";
 
 
 	}
 
 	else{
 		$sql = "SELECT s.id AS id_satuan,s.nama,b.id,b.nama_barang,b.kode_barang,b.harga_beli,b.harga_jual,b.harga_jual2,b.id,b.harga_jual3,b.harga_jual4,b.harga_jual5,b.harga_jual6,b.harga_jual7,b.berkaitan_dgn_stok,b.stok_barang,b.satuan,b.kategori,b.gudang";
-		$sql.=" FROM barang b LEFT JOIN satuan s ON b.satuan = s.id";
+		$sql.=" FROM barang b INNER JOIN satuan s ON b.satuan = s.id";
 		$sql.="WHERE 1=1 AND b.kategori = '$kategori' AND b.berkaitan_dgn_stok = '$tipe' ";
     }
 
@@ -89,13 +89,13 @@ else
 {
 	if ($kategori == 'semua') {
     	$sql = "SELECT s.id AS id_satuan,s.nama,b.id,b.nama_barang,b.kode_barang,b.harga_beli,b.harga_jual,b.harga_jual2,b.id,b.harga_jual3,b.harga_jual4,b.harga_jual5,b.harga_jual6,b.harga_jual7,b.berkaitan_dgn_stok,b.stok_barang,b.satuan,b.kategori,b.gudang";
-		$sql.=" FROM barang b LEFT JOIN satuan s ON b.satuan = s.id";
+		$sql.=" FROM barang b INNER JOIN satuan s ON b.satuan = s.id";
     
     }
     
     else{
     	$sql = "SELECT s.id AS id_satuan,s.nama,b.id,b.nama_barang,b.kode_barang,b.harga_beli,b.harga_jual,b.harga_jual2,b.id,b.harga_jual3,b.harga_jual4,b.harga_jual5,b.harga_jual6,b.harga_jual7,b.berkaitan_dgn_stok,b.stok_barang,b.satuan,b.kategori,b.gudang";
-		$sql.=" FROM barang b LEFT JOIN satuan s ON b.satuan = s.id WHERE 1=1 AND b.kategori = '$kategori'";
+		$sql.=" FROM barang b INNER JOIN satuan s ON b.satuan = s.id WHERE 1=1 AND b.kategori = '$kategori'";
     }
 }
 
@@ -109,6 +109,8 @@ $totalFiltered = mysqli_num_rows($query); // when there is a search parameter th
 $sql.=" ORDER BY ". $columns[$requestData['order'][0]['column']]."   ".$requestData['order'][0]['dir']."  LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
 /* $requestData['order'][0]['column'] contains colmun index, $requestData['order'][0]['dir'] contains order such as asc/desc  */	
 $query=mysqli_query($conn, $sql) or die("employee-grid-data.php: get employees");
+
+
 
 $data = array();
 while( $row=mysqli_fetch_array($query) ) {  // preparing an array

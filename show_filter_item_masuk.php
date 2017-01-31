@@ -11,7 +11,8 @@ include 'db.php';
 $dari_tanggal = stringdoang($_POST['dari_tanggal']);
 $sampai_tanggal = stringdoang($_POST['sampai_tanggal']);
 //menampilkan seluruh data yang ada pada tabel penjualan
-$perintah = $db->query("SELECT * FROM item_masuk WHERE  tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal'");
+$perintah = $db->query("SELECT ik.no_faktur, ik.tanggal, ik.jam, ik.user, ik.user_edit, ik.tanggal_edit, ik.keterangan, ik.total, ik.id, u.nama, uu.nama AS nama_edit
+FROM item_masuk ik LEFT JOIN user u ON ik.user = u.username LEFT JOIN  user uu ON ik.user_edit = uu.username WHERE  tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal'");
 
 
 
@@ -194,7 +195,7 @@ tr:nth-child(even){background-color: #f2f2f2}
 
 <div class="table-responsive"><!--membuat agar ada garis pada tabel disetiap kolom-->
 <span id="tabel_baru">
-<table id="tableuser" class="table table-bordered">
+<table id="tableuser" class="table table-bordered table-sm">
 		<thead>
 			<th style='background-color: #4CAF50; color:white'> Nomor Faktur </th>
 			<th style='background-color: #4CAF50; color:white'> Tanggal </th>
@@ -236,8 +237,8 @@ if ($item_masuk['item_masuk_hapus'] > 0) {
 			<td>". $data1['no_faktur'] ."</td>
 			<td>". $data1['tanggal'] ."</td>
 			<td>". $data1['jam'] ."</td>
-			<td>". $data1['user'] ."</td>
-			<td>". $data1['user_edit'] ."</td>
+			<td>". $data1['nama'] ."</td>
+			<td>". $data1['nama_edit'] ."</td>
 			<td>". $data1['tanggal_edit'] ."</td>
 			<td>". $data1['keterangan'] ."</td>
 			<td>". rp($data1['total']) ."</td>
