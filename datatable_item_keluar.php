@@ -24,16 +24,16 @@ $columns = array(
 );
 
 // getting total number records without any search
-$sql = "SELECT no_faktur, tanggal, jam, user, user_edit, tanggal_edit, keterangan, total, id ";
-$sql.=" FROM item_keluar";
+$sql = "SELECT ik.no_faktur, ik.tanggal, ik.jam, ik.user, ik.user_edit, ik.tanggal_edit, ik.keterangan, ik.total, ik.id, u.nama, uu.nama AS nama_edit ";
+$sql.=" FROM item_keluar ik LEFT JOIN user u ON ik.user = u.username LEFT JOIN  user uu ON ik.user_edit = uu.username";
 $query=mysqli_query($conn, $sql) or die("datatable_item_keluar.php: get employees");
 $totalData = mysqli_num_rows($query);
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
 
 
-$sql = "SELECT no_faktur, tanggal, jam, user, user_edit, tanggal_edit, keterangan, total, id ";
-$sql.= " FROM item_keluar WHERE 1=1";
+$sql = "SELECT ik.no_faktur, ik.tanggal, ik.jam, ik.user, ik.user_edit, ik.tanggal_edit, ik.keterangan, ik.total, ik.id, u.nama, uu.nama AS nama_edit ";
+$sql.=" FROM item_keluar ik LEFT JOIN user u ON ik.user = u.username LEFT JOIN  user uu ON ik.user_edit = uu.username  WHERE 1=1";
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
 
 
@@ -42,13 +42,11 @@ if( !empty($requestData['search']['value']) ) {   // if there is a search parame
 	$sql.=" OR keterangan LIKE '".$requestData['search']['value']."%' )";
 
 }
-
-$sql.= " ORDER BY tanggal DESC LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
-
-
-
 $query=mysqli_query($conn, $sql) or die("datatable_item_keluar.phpppp: get employees");
 $totalFiltered = mysqli_num_rows($query); // when there is a search parameter then we have to modify total number filtered rows as per search result. 
+
+
+$sql.= " ORDER BY tanggal DESC LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
 
 /* $requestData['order'][0]['column'] contains colmun index, $requestData['order'][0]['dir'] contains order such as asc/desc  */	
 $query=mysqli_query($conn, $sql) or die("employee-grid-data.php: get employees");
@@ -60,23 +58,28 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
     	$nestedData[] = $row['no_faktur'];
       $nestedData[] = $row['tanggal'];
       $nestedData[] = $row['jam'];
-      $nestedData[] = $row['user'];
-      $nestedData[] = $row['user_edit'];
+      $nestedData[] = $row['nama'];
+      $nestedData[] = $row['nama_edit'];
       $nestedData[] = $row['tanggal_edit'];
       $nestedData[] = $row['keterangan'];
       $nestedData[] = rp($row['total']);
 
-      $nestedData[] = "<button class='btn btn-info detail' no_faktur='". $row['no_faktur'] ."' ><span class='glyphicon glyphicon-th-list'></span> Detail </button>";
+
+
+      $nestedData[] = "<button class='btn detail btn-info' no_faktur='". $row['no_faktur'] ."'> <i class='fa fa-th-list'></i> Detail </button>";
 
 if ($item_masuk['item_keluar_edit'] > 0) {
-        $nestedData[] = "<a href='proses_edit_item_keluar.php?no_faktur=". $row['no_faktur']."' class='btn btn-success'> Edit  </a>";
+    $nestedData[] = "<a href='proses_edit_item_keluar.php?no_faktur=". $row['no_faktur']."' class='btn btn-success'> <i class='fa fa-edit'></i> Edit  </a>";
        }
 
 if ($item_masuk['item_keluar_hapus'] > 0) {
 
-      $nestedData[] = "<button class='btn btn-danger btn-hapus' data-item='". $row['no_faktur'] ."' data-id='". $row['id'] ."'> <span class='glyphicon glyphicon-trash'> </span> Hapus </button>"; 
+   $nestedData[] = "<button class='btn btn-hapus btn-danger' data-item='". $row['no_faktur'] ."' data-id='". $row['id'] ."'> <i class='fa fa-trash'> </i> Hapus </button>"; 
        } 
-		
+
+
+	  $nestedData[] = "<a href='cetak_item_keluar.php?no_faktur=". $row['no_faktur']."&keterangan=".$row["keterangan"]."' class='btn btn-warning' target='blank'> <i class='fa fa-print'></i> Cetak  </a>";
+
 	$nestedData[] = $row["id"];
 	$data[] = $nestedData;
 }
