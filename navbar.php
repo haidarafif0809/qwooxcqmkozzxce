@@ -178,6 +178,9 @@ if ($lihat['perujuk_lihat'] > 0){
     echo '<li><a href="perujuk.php" class="waves-effect">Perujuk</a></li>';
 }
 
+if ($lihat['perujuk_lihat'] > 0){
+    echo '<li><a href="perujuk.php" class="waves-effect">Perujuk</a></li>';
+}
 
 ?>
 
@@ -221,7 +224,7 @@ if ($lihat['operasi_lihat'] > 0){
            
 
 ?>
-
+   <li><a href="penyesuaian_stok.php" class="waves-effect" >Penyesuaian Stok</a></li>
 
 <?php
 if ($lihat['satuan_lihat'] > 0){
