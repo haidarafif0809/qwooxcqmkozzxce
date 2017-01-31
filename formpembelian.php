@@ -361,6 +361,7 @@ $no_faktur = $nomor."/JL/".$data_bulan_terakhir."/".$tahun_terakhir;
           <input type="hidden" id="satuan_produk" name="satuan" class="form-control" value="" placeholder="Satuan Produk" required="">
 
           <input type="hidden" id="id_produk" name="id_produk" class="form-control" value="" placeholder="Id Produk" required="">
+
  
   </form>
       
@@ -562,9 +563,9 @@ $no_faktur = $nomor."/JL/".$data_bulan_terakhir."/".$tahun_terakhir;
           <!--membuaat link pada tombol batal-->
           <a href='batal_pembelian.php?session_id=<?php echo $session_id;?>' id='batal' class='btn btn-danger'><span class='glyphicon glyphicon-trash'></span> Batal (F10) </a>
 
-          <a href="cetak_pembelian_tunai.php" id="cetak_tunai" style="display: none;" class="btn btn-success" target="blank"><span class="glyphicon glyphicon-print"> </span> Cetak Tunai (Ctrl + U) </a>
+          <a href="cetak_pembelian_tunai.php" id="cetak_tunai" style="display: none;" class="btn btn-success" target="blank"><span class="glyphicon glyphicon-print"> </span> Cetak Tunai </a>
 
-          <a href="cetak_pembelian_hutang.php" id="cetak_hutang" style="display: none;" class="btn btn-success" target="blank"> <span class="  glyphicon glyphicon-print"> </span> Cetak Hutang (Ctrl + H) </a>
+          <a href="cetak_pembelian_hutang.php" id="cetak_hutang" style="display: none;" class="btn btn-success" target="blank"> <span class="  glyphicon glyphicon-print"> </span> Cetak Hutang </a>
      
 
 
@@ -888,15 +889,16 @@ alert(" Kode Gudang Harus Diisi ");
   $("#pembayaran").hide();
   $("#hutang").hide();
   $("#batal").hide();
-  $("#transaksi_baru").show();
+  $("#transaksi_baru").show();  
+    $("#cetak_tunai").show();
 
  $.post("proses_bayar_beli.php",{total_1:total_1,kode_gudang:kode_gudang,session_id:session_id,no_faktur:no_faktur,sisa_pembayaran:sisa_pembayaran,kredit:kredit,suplier:suplier1,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,tax1:tax1,cara_bayar:cara_bayar,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,ppn:ppn,ppn_input:ppn_input,tax_rp:tax_rp},function(info) {
     
 
-    $("#result").html(info);
+    var no_faktur = info;
+    $("#cetak_tunai").attr('href', 'cetak_pembelian_tunai.php?no_faktur='+no_faktur+'');
     $("#tax").val('');
     $("#alert_berhasil").show();
-    $("#cetak_tunai").show();
     $("#pembayaran_pembelian").val('');
     $("#sisa_pembayaran_pembelian").val('');
     $("#tax").val('');
@@ -1001,13 +1003,14 @@ alert(" Kode Gudang Harus Diisi ");
          $("#hutang").hide();
          $("#batal").hide();
          $("#transaksi_baru").show();
+          $("#cetak_hutang").show();
 
        $.post("proses_bayar_beli.php",{total_1:total_1,kode_gudang:kode_gudang,session_id:session_id,no_faktur:no_faktur,sisa_pembayaran:sisa_pembayaran,kredit:kredit,suplier:suplier,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,tax1:tax1,cara_bayar:cara_bayar,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,ppn:ppn,ppn_input:ppn_input,tax_rp:tax_rp},function(info) {
 
-       $("#demo").html(info);
-       
+       var no_faktur = info;
+
+       $("#cetak_hutang").attr('href', 'cetak_pembelian_hutang.php?no_faktur='+no_faktur+'');
        $("#alert_berhasil").show();
-       $("#cetak_hutang").show();
        $("#result").load("tabel_pembelian.php");
        $("#pembayaran_pembelian").val('');
        $("#sisa_pembayaran_pembelian").val('');
@@ -1819,25 +1822,6 @@ $.post('cek_jumlah_kas1.php', {cara_bayar : cara_bayar}, function(data) {
 
     }); 
 
-    
-    shortcut.add("ctrl+u", function() {
-        // Do something
-
-
-        window.location.href="cetak_pembelian_tunai.php";
-
-
-    }); 
-
-    
-    shortcut.add("ctrl+h", function() {
-        // Do something
-
-
-        window.location.href="cetak_pembelian_hutang.php";
-
-
-    }); 
 
    
 </script>
