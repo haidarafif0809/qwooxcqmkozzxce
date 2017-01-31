@@ -42,21 +42,21 @@ $columns = array(
 // getting total number records without any search
 
 
-$sql = "SELECT no_urut, poli, dokter, no_reg, no_rm, tanggal, nama_pasien, penjamin, umur_pasien, jenis_kelamin, keterangan, id, status ";
-$sql.=" FROM registrasi WHERE jenis_pasien = 'Rawat Jalan' AND  (status = 'Proses' OR status = 'Rujuk Keluar Ditangani')";
+$sql = "SELECT reg.no_urut, reg.poli, reg.dokter, reg.no_reg, reg.no_rm, reg.tanggal, reg.nama_pasien, reg.penjamin, reg.umur_pasien, reg.jenis_kelamin, reg.keterangan, reg.id, reg.status, reg.jam, rek.tanggal_periksa ";
+$sql.=" FROM registrasi reg INNER JOIN rekam_medik rek ON reg.no_reg = rek.no_reg WHERE reg.jenis_pasien = 'Rawat Jalan' AND  (reg.status = 'Proses' OR reg.status = 'Rujuk Keluar Ditangani')";
 $query=mysqli_query($conn, $sql) or die("datatable_pasien_masuk_rj_1.php: get employees");
 $totalData = mysqli_num_rows($query);
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
 
-$sql = "SELECT no_urut, poli, dokter, no_reg, no_rm, tanggal, nama_pasien, penjamin, umur_pasien, jenis_kelamin, keterangan, id, status ";
-$sql.=" FROM registrasi WHERE 1=1 AND jenis_pasien = 'Rawat Jalan' AND (status = 'Proses' OR status = 'Rujuk Keluar Ditangani')";
+$sql = "SELECT reg.no_urut, reg.poli, reg.dokter, reg.no_reg, reg.no_rm, reg.tanggal, reg.nama_pasien, reg.penjamin, reg.umur_pasien, reg.jenis_kelamin, reg.keterangan, reg.id, reg.status, reg.jam, rek.tanggal_periksa ";
+$sql.=" FROM registrasi reg INNER JOIN rekam_medik rek ON reg.no_reg = rek.no_reg WHERE reg.jenis_pasien = 'Rawat Jalan' AND  (reg.status = 'Proses' OR reg.status = 'Rujuk Keluar Ditangani')";
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
-	$sql.=" AND ( no_urut LIKE '".$requestData['search']['value']."%' ";    
-	$sql.=" OR no_rm LIKE '".$requestData['search']['value']."%' ";
-  $sql.=" OR no_reg LIKE '".$requestData['search']['value']."%' ";
-	$sql.=" OR nama_pasien LIKE '".$requestData['search']['value']."%' ";
-	$sql.=" OR penjamin LIKE '".$requestData['search']['value']."%' )";
+	$sql.=" AND ( reg.no_urut LIKE '".$requestData['search']['value']."%' ";    
+	$sql.=" OR reg.no_rm LIKE '".$requestData['search']['value']."%' ";
+  $sql.=" OR reg.no_reg LIKE '".$requestData['search']['value']."%' ";
+	$sql.=" OR reg.nama_pasien LIKE '".$requestData['search']['value']."%' ";
+	$sql.=" OR reg.penjamin LIKE '".$requestData['search']['value']."%' )";
 
 }
 $query=mysqli_query($conn, $sql) or die("datatable_pasien_masuk_rj_2.php: get employees");
@@ -160,8 +160,7 @@ $take = mysqli_num_rows($show);
 
 
 if ($rekam_medik['rekam_medik_rj_lihat'] > 0) {
-  $nestedData[] = " <a href='rekam_medik_raja.php' class='btn btn-floating btn-small btn-info penjualan' ><i class='fa fa-medkit'></i></a>
-  ";
+  $nestedData[] = "<a href='input_rekammedik_raja.php?no_reg=".$row['no_reg']."&tgl=".$row['tanggal_periksa']."&jam=".$row['jam']."' class='btn-floating btn-info btn-small'><i class='fa fa-medkit '></i></a>";
 }
 
 if ($registrasi_rj['registrasi_rj_edit'] > 0) {  

@@ -46,28 +46,30 @@ $columns = array(
 );
 
 // getting total number records without any search
-$sql = "SELECT no_reg,no_rm,penjamin,nama_pasien,jenis_kelamin,umur_pasien,hp_pasien,keterangan,dokter,pengantar_pasien,nama_pengantar,hp_pengantar,tanggal,alamat_pengantar,hubungan_dengan_pasien,id,status ";
-$sql.=" FROM registrasi WHERE jenis_pasien = 'UGD' AND status = 'Masuk Ruang UGD' AND status != 'Batal UGD' AND status != 'Rujuk Rumah Sakit' AND TO_DAYS(NOW()) - TO_DAYS(tanggal) <= 7";
+$sql = "SELECT reg.no_reg, reg.no_rm, reg.penjamin, reg.nama_pasien, reg.jenis_kelamin, reg.umur_pasien, reg.hp_pasien, reg.keterangan, reg.dokter, reg.pengantar_pasien, reg.nama_pengantar, reg.hp_pengantar, reg.tanggal, reg.alamat_pengantar, reg.hubungan_dengan_pasien, reg.id, reg.status, reg.jam, rek.id AS id_rek ";
+$sql.=" FROM registrasi reg INNER JOIN rekam_medik_ugd rek ON reg.no_reg = rek.no_reg WHERE reg.jenis_pasien = 'UGD' AND reg.status = 'Masuk Ruang UGD' AND reg.status != 'Batal UGD' AND reg.status != 'Rujuk Rumah Sakit' AND TO_DAYS(NOW()) - TO_DAYS(reg.tanggal) <= 7";
 
-$query=mysqli_query($conn, $sql) or die("datatable_registrasi_ugd.php: get employees");
+$query=mysqli_query($conn, $sql) or die("datatable_registrasi_ugd.php: get employeess1");
 $totalData = mysqli_num_rows($query);
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
 
-$sql = "SELECT no_reg,no_rm,penjamin,nama_pasien,jenis_kelamin,umur_pasien,hp_pasien,keterangan,dokter,pengantar_pasien,nama_pengantar,hp_pengantar,tanggal,alamat_pengantar,hubungan_dengan_pasien,id,status ";
-$sql.=" FROM registrasi WHERE 1=1 AND jenis_pasien = 'UGD' AND status = 'Masuk Ruang UGD' AND status != 'Batal UGD' AND status != 'Rujuk Rumah Sakit' AND TO_DAYS(NOW()) - TO_DAYS(tanggal) <= 7";
+$sql = "SELECT reg.no_reg, reg.no_rm, reg.penjamin, reg.nama_pasien, reg.jenis_kelamin, reg.umur_pasien, reg.hp_pasien, reg.keterangan, reg.dokter, reg.pengantar_pasien, reg.nama_pengantar, reg.hp_pengantar, reg.tanggal, reg.alamat_pengantar, reg.hubungan_dengan_pasien, reg.id, reg.status, reg.jam, rek.id AS id_rek ";
+$sql.=" FROM registrasi reg INNER JOIN rekam_medik_ugd rek ON reg.no_reg = rek.no_reg WHERE reg.jenis_pasien = 'UGD' AND reg.status = 'Masuk Ruang UGD' AND reg.status != 'Batal UGD' AND reg.status != 'Rujuk Rumah Sakit' AND TO_DAYS(NOW()) - TO_DAYS(reg.tanggal) <= 7";
+
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
-	$sql.=" AND ( nama_pasien LIKE '".$requestData['search']['value']."%' "; 
-	$sql.=" OR no_reg LIKE '".$requestData['search']['value']."%' ";  
-	$sql.=" OR tanggal LIKE '".$requestData['search']['value']."%' "; 
-	$sql.=" OR no_rm LIKE '".$requestData['search']['value']."%' )";
+	$sql.=" AND ( reg.nama_pasien LIKE '".$requestData['search']['value']."%' "; 
+	$sql.=" OR reg.no_reg LIKE '".$requestData['search']['value']."%' ";  
+	$sql.=" OR reg.tanggal LIKE '".$requestData['search']['value']."%' "; 
+	$sql.=" OR reg.no_rm LIKE '".$requestData['search']['value']."%' )";
 
 }
-$query=mysqli_query($conn, $sql) or die("datatable_registrasi_ugd.php: get employees");
+$query=mysqli_query($conn, $sql) or die("datatable_registrasi_ugd.php: get employeess2");
 $totalFiltered = mysqli_num_rows($query); // when there is a search parameter then we have to modify total number filtered rows as per search result. 
 $sql.=" ORDER BY ". $columns[$requestData['order'][0]['column']]."   ".$requestData['order'][0]['dir']."  LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
 /* $requestData['order'][0]['column'] contains colmun index, $requestData['order'][0]['dir'] contains order such as asc/desc  */	
-$query=mysqli_query($conn, $sql) or die("datatable_registrasi_ugd.php: get employees");
+$query=mysqli_query($conn, $sql) or die("datatable_registrasi_ugd.php: get employeess3");
+
 
 $data = array();
 while( $row=mysqli_fetch_array($query) ) {  // preparing an array
@@ -116,7 +118,7 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 	
 
 	if ($rekam_medik['rekam_medik_ugd_lihat'] > 0) {
-	  $nestedData[] = "<a href='rekam_medik_ugd.php' class='btn btn-floating btn-small btn-info penjualan' ><i class='fa fa-medkit'></i></a>";
+	  $nestedData[] = "<a href='input_rekam_medik_ugd.php?no_reg=".$row['no_reg']."&tgl=".$row['tanggal']."&id=".$row['id_rek']."&jam=".$row['jam']."' class='btn-floating btn-info btn-small' ><i class='fa fa-medkit '></i></a>";
 	}
 
 	if ($registrasi_ugd['registrasi_ugd_edit'] > 0) {
