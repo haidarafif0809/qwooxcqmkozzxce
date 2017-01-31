@@ -204,7 +204,7 @@ $no_jurnal = no_jurnal();
     }
     
       
-            $delete = $db->query("DELETE FROM detail_penjualan WHERE no_faktur = '$nomor_faktur'");
+            $delete = $db->query("DELETE FROM detail_penjualan WHERE no_reg = '$no_reg'");
             
             
    $query = $db->query("SELECT * FROM tbs_penjualan WHERE no_faktur = '$nomor_faktur' AND no_reg = '$no_reg'");

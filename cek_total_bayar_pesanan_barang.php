@@ -21,7 +21,9 @@ include 'sanitasi.php';
 
 $a =  intval($total);
 
-echo$a;
+echo $a;
+
+
 
         //Untuk Memutuskan Koneksi Ke Database
 
