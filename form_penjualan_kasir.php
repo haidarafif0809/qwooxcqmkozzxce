@@ -565,11 +565,11 @@ Level 7
 
     <input type="hidden" class="form-control" name="limit_stok" autocomplete="off" id="limit_stok" placeholder="Limit Stok" >
     <input type="hidden" class="form-control" name="ber_stok" id="ber_stok" placeholder="Ber Stok" >
-    <input type="text" class="form-control" name="harga_lama" id="harga_lama" placeholder="harga lama">
-    <input type="text" class="form-control" name="harga_baru" id="harga_baru" placeholder="harga baru">
+    <input type="hidden" class="form-control" name="harga_lama" id="harga_lama" placeholder="harga lama">
+    <input type="hidden" class="form-control" name="harga_baru" id="harga_baru" placeholder="harga baru">
     <input type="hidden" class="form-control" name="jumlahbarang" id="jumlahbarang" placeholder="stok">
     <input type="hidden" id="satuan_produk" name="satuan" class="form-control" value="" placeholder="Satuan">
-    <input type="text" id="harga_produk" name="harga" class="form-control" value="" placeholder="Harga Jual">
+    <input type="hidden" id="harga_produk" name="harga" class="form-control" value="" placeholder="Harga Jual">
     <input type="hidden" id="id_produk" name="id_produk" class="form-control" value="" placeholder="Id barang"> 
     <input type="hidden" id="level_hidden" name="level_hidden" class="form-control" value="<?php echo $level_harga;?>">   
     <input type="hidden" id="analis" name="analis" class="form-control" value="<?php echo $analis;?>">        
