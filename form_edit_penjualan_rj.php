@@ -150,7 +150,7 @@ $otoritas_tombol = mysqli_fetch_array($pilih_akses_tombol);
 
       <div class="form-group col-xs-2">
          <label> No. RM / Pasien </label>
-        <input type="text" name="no_rm" style="height:20px;" id="no_rm" class="form-control" value="<?php echo $no_rm; ?>|<?php echo $nama_pasien; ?>">
+        <input type="text" name="no_rm" style="height:20px;" id="no_rm" class="form-control" value="<?php echo $no_rm; ?>(<?php echo $nama_pasien; ?>)">
        <input type="hidden" name="nama_pasien" id="nama_pasien" class="form-control" autofocus="" readonly="" value="<?php echo $nama_pasien; ?>">
       </div>
 
@@ -1469,7 +1469,7 @@ $(document).ready(function(){
     var no_faktur = $(this).attr("data-faktur");
     var no_reg = $("#no_reg").val();
     var no_rm = $("#no_rm").val();
-    var no_rm = no_rm.substr(0, no_rm.indexOf('|'));
+    var no_rm = no_rm.substr(0, no_rm.indexOf('('));
     var dokter = $("#dokter").val();
     var penjamin = $("#penjamin").val();
     var asal_poli = $("#asal_poli").val();
@@ -2084,7 +2084,7 @@ $("#cari_produk_penjualan").click(function(){
         var sisa_pembayaran = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah( $("#sisa_pembayaran_penjualan").val() ))));
         var kredit = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah( $("#kredit").val() )))); 
         var no_rm = $("#no_rm").val();
-        var no_rm = no_rm.substr(0, no_rm.indexOf('|'));
+        var no_rm = no_rm.substr(0, no_rm.indexOf('('));
         var no_reg = $("#no_reg").val();
         var tanggal_jt = $("#tanggal_jt").val();
         var total = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah( $("#total1").val() )))); 
@@ -2236,7 +2236,7 @@ if (info == 1)
         var sisa_pembayaran = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah( $("#sisa_pembayaran_penjualan").val() ))));
         var kredit = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah( $("#kredit").val() )))); 
         var no_rm = $("#no_rm").val();
-        var no_rm = no_rm.substr(0, no_rm.indexOf('|'));
+        var no_rm = no_rm.substr(0, no_rm.indexOf('('));
         var no_reg = $("#no_reg").val();
         var tanggal_jt = $("#tanggal_jt").val();
         var total = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah( $("#total1").val() )))); 
@@ -2583,7 +2583,7 @@ $(document).ready(function(){
         var sisa_pembayaran = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah( $("#sisa_pembayaran_penjualan").val() ))));
         var kredit = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah( $("#kredit").val() )))); 
         var no_rm = $("#no_rm").val();
-        var no_rm = no_rm.substr(0, no_rm.indexOf('|'));
+        var no_rm = no_rm.substr(0, no_rm.indexOf('('));
         var no_reg = $("#no_reg").val();
         var tanggal_jt = $("#tanggal_jt").val();
         var total = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah( $("#total1").val() )))); 

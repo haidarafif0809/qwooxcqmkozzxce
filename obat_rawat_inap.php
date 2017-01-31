@@ -690,40 +690,30 @@ $("select").chosen({no_results_text: "Oops, Tidak Ada !"});
                          $('#nama_produk').val(''); 
                           $('#nama_produk').focus(); 
                       }
-                      else
-                      {
-                          $.post('hitung_stok_update.php',{nama:nama},function(data)
-                          { 
-
-                           $('#stok').val(data); 
-
-                         }); 
-                      }
-
-
             });
 
 
 
-      $.getJSON('lihat_produk_stok_opname.php',{nama_produk:$(this).val()}, function(json){
-      
-      if (json == null)
-      {
-        $('#nama_produk').val('');
-        $('#kode_produk').val('');
-        $('#stok').val('');
-        $('#tipe_produk').val('');
-      }
+            $.getJSON('lihat_produk_stok_opname.php',{nama_produk:$(this).val()}, function(json){
+            
+                  if (json == null)
+                  {
+                    $('#nama_produk').val('');
+                    $('#kode_produk').val('');
+                    $('#stok').val('');
+                    $('#tipe_produk').val('');
+                  }
 
-      else 
-      {
-        $('#kode_produk').val(json.kode_barang);
-        $('#tipe_produk').val(json.tipe_barang);
-       $('#limit').val(json.limit_stok);
+                  else 
+                  {
+                    $('#stok').val(json.kategori);
+                    $('#kode_produk').val(json.kode_barang);
+                    $('#tipe_produk').val(json.tipe_barang);
+                   $('#limit').val(json.limit_stok);
 
-      }
-                                              
-        });
+                  }
+                                                    
+              });
   
 
 
@@ -731,7 +721,6 @@ $("select").chosen({no_results_text: "Oops, Tidak Ada !"});
     });
 
 </script>
-<!-- Akhir Script Datalist Produk -->
 
 
 

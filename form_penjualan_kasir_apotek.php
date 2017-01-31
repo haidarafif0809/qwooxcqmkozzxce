@@ -1577,6 +1577,7 @@ if (info == 1)
 }
 
 else{
+  info = info.replace(/\s/g, '');
      $("#table-baru").html(info);
      var no_faktur = info;
      var kode_pelanggan = $('#kd_pelanggan').val();
@@ -1698,7 +1699,7 @@ else{
   if (data == 1) {
 
 $.post("proses_bayar_jual_apotek.php",{biaya_admin:biaya_admin,total2:total2,sisa_pembayaran:sisa_pembayaran,kredit:kredit,kode_pelanggan:kode_pelanggan,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,cara_bayar:cara_bayar,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,total_hpp:total_hpp,kode_gudang:kode_gudang,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,apoteker:apoteker,no_resep_dokter:no_resep_dokter,resep_dokter:resep_dokter,penjamin:penjamin,analis:analis},function(info) {
-
+info = info.replace(/\s/g, '');
      $("#table-baru").html(info);
             var no_faktur = info;
             $("#cetak_piutang").attr('href','cetak_penjualan_piutang.php?no_faktur='+no_faktur+'');

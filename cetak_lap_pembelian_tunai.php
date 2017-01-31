@@ -8,6 +8,7 @@ include 'db.php';
 
 
 $no_faktur = $_GET['no_faktur'];
+$no_suplier = $_GET['no_suplier'];
 $suplier = $_GET['suplier'];
 
     $query0 = $db->query("SELECT * FROM pembelian WHERE no_faktur = '$no_faktur' ");
@@ -62,6 +63,7 @@ $suplier = $_GET['suplier'];
       <tr><td width="50%">No Faktur</td> <td> :&nbsp;</td>  <td>  <?php echo $data0['no_faktur']; ?> </td></tr>
       <tr><td  width="50%">Tanggal</td> <td> :&nbsp;</td>  <td> <?php echo tanggal($data0['tanggal']);?> </td>
       </tr>
+      <tr><td  width="50%">No. Faktur Suplier</td> <td> :&nbsp;</td>  <td> <?php echo $no_suplier; ?> </td></tr>
       <tr><td  width="50%">Suplier</td> <td> :&nbsp;</td>  <td> <?php echo $suplier; ?> </td></tr>
 </tbody>
   </table>           
@@ -70,7 +72,7 @@ $suplier = $_GET['suplier'];
 
         <div class="col-sm-2">
                 <br><br><br><br><br>
-                User: <?php echo $_SESSION['user_name']; ?>  <br>
+                Petugas: <?php echo $_SESSION['user_name']; ?>  <br>
 
         </div><!--penutup colsm4-->
 

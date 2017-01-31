@@ -57,7 +57,7 @@ if( !empty($requestData['search']['value']) ) {   // if there is a search parame
 
 $query=mysqli_query($conn, $sql) or die("proses_table_rekam_medik_raja.php: get employees");
 $totalFiltered = mysqli_num_rows($query); // when there is a search parameter then we have to modify total number filtered rows as per search result. 
-$sql.=" ORDER BY rekam_medik.tanggal_periksa DESC  LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
+$sql.=" ORDER BY rekam_medik.id DESC  LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
 /* $requestData['order'][0]['column'] contains colmun index, $requestData['order'][0]['dir'] contains order such as asc/desc  */	
 $query=mysqli_query($conn, $sql) or die("proses_table_rekam_medik_raja.php: get employees");
 
@@ -81,12 +81,9 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 	      $nestedData[] = "<a href='input_rekammedik_raja.php?no_reg=".$row['no_reg']."&tgl=".$row['tanggal_periksa']."&jam=".$row['jam']."' class='btn-floating btn-info btn-small'><i class='fa fa-medkit '></i></a>";
 	            
         $table23 = $db->query("SELECT status FROM penjualan WHERE no_reg = '$row[no_reg]' ");
-        $dataki = mysqli_fetch_array($table23);
+        $data_penj = mysqli_fetch_array($table23);
 
-        $ambil_dosis = $db->query("SELECT dp.dosis FROM detail_penjualan dp  LEFT JOIN barang b ON dp.kode_barang = b.kode_barang  WHERE dp.no_reg ='$row[no_reg]' AND b.tipe_barang = 'Obat Obatan'");		
-		$data_dosis = mysqli_fetch_array($ambil_dosis);
-
-        if ( ($dataki['status'] == 'Lunas' OR $dataki['status'] == 'Piutang'  OR  $dataki['status'] == 'Piutang Apotek') AND $data_dosis['dosis'] != "" )
+        if ( $data_penj['status'] == 'Lunas' OR $data_penj['status'] == 'Piutang'  OR  $data_penj['status'] == 'Piutang Apotek' )
         {
         	$nestedData[] = "<a href='selesai_rj.php?no_reg=".$row['no_reg']."' class='btn-floating btn-info btn-small'><i class='fa  fa-check'></i> </a>";
         }

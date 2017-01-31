@@ -5,7 +5,7 @@ include 'db.php';
 
 
 
-$no_faktur = $_SESSION['no_faktur'];
+$no_faktur = $_GET['no_faktur'];
 
 $perintah = $db->query("SELECT p.id,p.no_faktur,p.total,p.suplier,p.tanggal,p.tanggal_jt,p.jam,p.user,p.status,p.potongan,p.tax,p.sisa,p.kredit,s.nama,g.nama_gudang FROM pembelian p INNER JOIN suplier s ON p.suplier = s.id INNER JOIN gudang g ON p.kode_gudang = g.kode_gudang ORDER BY p.id DESC");
 

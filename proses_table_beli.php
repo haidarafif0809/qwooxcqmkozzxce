@@ -34,19 +34,20 @@ $columns = array(
 );
 
 // getting total number records without any search
-$sql = "SELECT p.id,p.no_faktur,p.total,p.suplier,p.tanggal,p.tanggal_jt,p.jam,p.user,p.status,p.potongan,p.tax,p.sisa,p.kredit,s.nama,g.nama_gudang, g.kode_gudang";
+$sql = "SELECT p.id,p.no_faktur,p.no_faktur_suplier,p.total,p.suplier,p.tanggal,p.tanggal_jt,p.jam,p.user,p.status,p.potongan,p.tax,p.sisa,p.kredit,s.nama,g.nama_gudang, g.kode_gudang";
 $sql.=" FROM pembelian p LEFT JOIN suplier s ON p.suplier = s.id LEFT JOIN gudang g ON p.kode_gudang = g.kode_gudang ";
 $query = mysqli_query($conn, $sql) or die("eror 1");
 $totalData = mysqli_num_rows($query);
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
 
-$sql = "SELECT p.id,p.no_faktur,p.total,p.suplier,p.tanggal,p.tanggal_jt,p.jam,p.user,p.status,p.potongan,p.tax,p.sisa,p.kredit,s.nama,g.nama_gudang, g.kode_gudang";
+$sql = "SELECT p.id,p.no_faktur,p.no_faktur_suplier,p.total,p.suplier,p.tanggal,p.tanggal_jt,p.jam,p.user,p.status,p.potongan,p.tax,p.sisa,p.kredit,s.nama,g.nama_gudang, g.kode_gudang";
 $sql.=" FROM pembelian p LEFT JOIN suplier s ON p.suplier = s.id LEFT JOIN gudang g ON p.kode_gudang = g.kode_gudang"; 
 $sql.=" WHERE 1=1 ";
 
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
 	$sql.=" AND ( p.no_faktur LIKE '".$requestData['search']['value']."%' "; 
+	$sql.=" OR p.no_faktur_suplier LIKE '".$requestData['search']['value']."%' ";
 	$sql.=" OR s.nama LIKE '".$requestData['search']['value']."%' ";
 	$sql.=" OR g.nama_gudang LIKE '".$requestData['search']['value']."%' ";
 	$sql.=" OR p.total LIKE '".$requestData['search']['value']."%' ";
@@ -74,7 +75,7 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 
 
     if ($pembelian_edit > 0){
-    $nestedData[] = "<a href='proses_edit_pembelian.php?no_faktur=". $row['no_faktur']."&suplier=". $row['suplier']."&nama_gudang=".$row['nama_gudang']."&kode_gudang=".$row['kode_gudang']."&nama_suplier=".$row['nama']."' class='btn btn-success'> <span class='glyphicon glyphicon-edit'></span> Edit </a>";
+    $nestedData[] = "<a href='proses_edit_pembelian.php?no_faktur=". $row['no_faktur']."&no_suplier=".$row['no_faktur_suplier']."&suplier=". $row['suplier']."&nama_gudang=".$row['nama_gudang']."&kode_gudang=".$row['kode_gudang']."&nama_suplier=".$row['nama']."' class='btn btn-success'> <span class='glyphicon glyphicon-edit'></span> Edit </a>";
     }
 
     $pilih_akses_pembelian_hapus = $db->query("SELECT pembelian_hapus FROM otoritas_pembelian WHERE id_otoritas = '$_SESSION[otoritas_id]' AND pembelian_hapus = '1'");
@@ -104,7 +105,7 @@ $pembelian_hapus = mysqli_num_rows($pilih_akses_pembelian_hapus);
     }//if ($pembelian_hapus > 0){
 
 		if ($row['status'] == 'Lunas') {//if ($row['status'] == 'Lunas') {
-			$nestedData[] = "<a href='cetak_lap_pembelian_tunai.php?no_faktur=".$row['no_faktur']."&suplier=".$row['nama']."' id='cetak_tunai' class='btn btn-primary' target='blank'><span class='glyphicon glyphicon-print' > </span> Cetak Tunai </a>";
+			$nestedData[] = "<a href='cetak_lap_pembelian_tunai.php?no_faktur=".$row['no_faktur']."&no_suplier=".$row['no_faktur_suplier']."&suplier=".$row['nama']."' id='cetak_tunai' class='btn btn-primary' target='blank'><span class='glyphicon glyphicon-print' > </span> Cetak Tunai </a>";
 		}//if ($row['status'] == 'Lunas') {
 		else
 		{//else if ($row['status'] == 'Lunas') {
@@ -112,7 +113,7 @@ $pembelian_hapus = mysqli_num_rows($pilih_akses_pembelian_hapus);
 		}//else if ($row['status'] == 'Lunas') {
 
 		if ($row['status'] == 'Hutang'){//if ($row['status'] == 'Hutang'){
-			$nestedData[] = "<a href='cetak_lap_pembelian_hutang.php?no_faktur=".$row['no_faktur']."&suplier=".$row['nama']."' id='cetak_piutang' class='btn btn-primary' target='blank'><span class='glyphicon glyphicon-print' > </span> Cetak Hutang </a> </td>";
+			$nestedData[] = "<a href='cetak_lap_pembelian_hutang.php?no_faktur=".$row['no_faktur']."&no_suplier=".$row['no_faktur_suplier']."&suplier=".$row['nama']."' id='cetak_piutang' class='btn btn-primary' target='blank'><span class='glyphicon glyphicon-print' > </span> Cetak Hutang </a> </td>";
 		}//if ($row['status'] == 'Hutang'){
 
 		else {// else if ($row['status'] == 'Hutang'){
@@ -121,6 +122,7 @@ $pembelian_hapus = mysqli_num_rows($pilih_akses_pembelian_hapus);
 
 			$nestedData[] = $row["no_faktur"];
 			$nestedData[] = $row["nama_gudang"];
+			$nestedData[] = $row["no_faktur_suplier"];
 			$nestedData[] = $row["nama"];
 			$nestedData[] = rp($row["total"]);
 			$nestedData[] = $row["tanggal"];

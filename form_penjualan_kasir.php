@@ -956,7 +956,7 @@ Laboratorium  </button>
  
            <?php if ($otoritas_tombol['tombol_bayar'] > 0):?>              
           <button type="submit" id="penjualan" class="btn btn-info" style="font-size:15px;">Bayar (F8)</button>
-          <a class="btn btn-info" href="pasien_sudah_masuk.php" id="transaksi_baru" style="display: none">  Transaksi Baru (Ctrl + T)</a>
+          <a class="btn btn-info" href="pasien_sudah_masuk.php" id="transaksi_baru" style="display: none">  Transaksi Baru (Ctrl + M)</a>
           <?php endif;?>
         
           
@@ -1218,8 +1218,7 @@ $(document).ready(function(){
   $("#level_harga").change(function(){
   
   var level_harga = $("#level_harga").val();
-  var kode_barang = $("#kode_barang").val();
-  var kode_barang = kode_barang.substr(0, kode_barang.indexOf('('));
+  var kode_barang = $("#kode_barang").val()
   var satuan_konversi = $("#satuan_konversi").val();
   var jumlah_barang = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#jumlah_barang").val()))));
   var level_hidden = $("#level_hidden").val();
@@ -1257,7 +1256,7 @@ $(document).ready(function(){
       var jumlah_barang = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#jumlah_barang").val()))));
       var satuan_konversi = $("#satuan_konversi").val();
       var kode_barang = $("#kode_barang").val();
-      var kode_barang = kode_barang.substr(0, kode_barang.indexOf('('));
+ 
       var id_produk = $("#id_produk").val();
       var prev = $("#satuan_produk").val();
       var ber_stok = $("#ber_stok").val();
@@ -1298,7 +1297,7 @@ $(document).ready(function(){
       var harga_produk = $("#harga_lama").val();
       var jumlah_barang = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#jumlah_barang").val()))));
       var kode_barang = $("#kode_barang").val();
-      var kode_barang = kode_barang.substr(0, kode_barang.indexOf('('));
+ 
 
       
 
@@ -2690,7 +2689,7 @@ $("#cari_produk_penjualan").click(function(){
 
       var satuan_konversi = $("#satuan_konversi").val();
       var kode_barang = $("#kode_barang").val();
-      var kode_barang = kode_barang.substr(0, kode_barang.indexOf('('));
+ 
       var id_produk = $("#id_produk").val();
       var prev = $("#satuan_produk").val();
       var limit_stok = $("#limit_stok").val();
@@ -2951,7 +2950,7 @@ AUTOCOMPLETE -->
           var level_harga = $("#level_harga").val();
           var session_id = $("#session_id").val();
           var no_reg = $("#no_reg").val();
-          var kode_barang = kode_barang.substr(0, kode_barang.indexOf('('));
+     
         
           $.post('cek_kode_barang_tbs_penjualan.php',{kode_barang:kode_barang,no_reg:no_reg}, function(data){
           
@@ -3251,7 +3250,7 @@ $.post('cek_kode_barang_tbs_penjualan.php',{kode_barang:kode_barang,no_reg:no_re
     }); 
 
 
-        shortcut.add("ctrl+t", function() {
+        shortcut.add("ctrl+m", function() {
 
         // Do something
 

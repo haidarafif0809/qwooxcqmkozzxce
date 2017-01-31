@@ -43,7 +43,7 @@ jika tidak maka nomor terakhir ditambah dengan 1
  */
  if ($v_bulan_terakhir['bulan'] != $bulan_sekarang) {
   # code...
-$no_faktur = "1/BL/".$data_bulan_terakhir."/".$tahun_terakhir;
+echo $no_faktur = "1/BL/".$data_bulan_terakhir."/".$tahun_terakhir;
 
  }
 
@@ -52,7 +52,7 @@ $no_faktur = "1/BL/".$data_bulan_terakhir."/".$tahun_terakhir;
 
 $nomor = 1 + $ambil_nomor ;
 
-$no_faktur = $nomor."/BL/".$data_bulan_terakhir."/".$tahun_terakhir;
+echo $no_faktur = $nomor."/BL/".$data_bulan_terakhir."/".$tahun_terakhir;
 
 }
 
@@ -68,6 +68,7 @@ $no_faktur = $nomor."/BL/".$data_bulan_terakhir."/".$tahun_terakhir;
            $a = $total_1 - $potongan;
            $tax_persen = angkadoang($_POST['tax_rp']);
            $suplier = stringdoang($_POST['suplier']);
+           $nomor_suplier = stringdoang($_POST['no_faktur_suplier']);
 
 $select_suplier = $db->query("SELECT id,nama FROM suplier WHERE id = '$suplier'");
 $ambil_suplier = mysqli_fetch_array($select_suplier);
@@ -75,13 +76,13 @@ $ambil_suplier = mysqli_fetch_array($select_suplier);
         if ($sisa_kredit == 0 ) {
 
   // buat prepared statements
-        $stmt = $db->prepare("INSERT INTO pembelian (no_faktur, kode_gudang, suplier, total, tanggal, jam, user, status, potongan, tax, sisa, cara_bayar,tunai, status_beli_awal, ppn) VALUES (?,?,?,?,?,?,?,'Lunas',?,?,?,?,?,'Tunai',?)");
+        $stmt = $db->prepare("INSERT INTO pembelian (no_faktur_suplier,no_faktur, kode_gudang, suplier, total, tanggal, jam, user, status, potongan, tax, sisa, cara_bayar,tunai, status_beli_awal, ppn) VALUES (?,?,?,?,?,?,?,?,'Lunas',?,?,?,?,?,'Tunai',?)");
         
         
         
   // hubungkan "data" dengan prepared statements
-        $stmt->bind_param("sssisssiiisis", 
-        $no_faktur, $kode_gudang, $suplier, $total , $tanggal_sekarang, $jam_sekarang, $user, $potongan, $tax_persen, $sisa, $cara_bayar, $pembayaran, $ppn_input);
+        $stmt->bind_param("ssssisssiiisis", 
+        $nomor_suplier,$no_faktur, $kode_gudang, $suplier, $total , $tanggal_sekarang, $jam_sekarang, $user, $potongan, $tax_persen, $sisa, $cara_bayar, $pembayaran, $ppn_input);
         
   // siapkan "data" query
            
@@ -180,15 +181,15 @@ if ($potongan != "" || $potongan != 0 ) {
         {
         
   // buat prepared statements
-        $stmt = $db->prepare("INSERT INTO pembelian (no_faktur, kode_gudang, suplier, total, tanggal,tanggal_jt, jam, user, status, potongan, tax, kredit, nilai_kredit, cara_bayar,tunai,status_beli_awal,ppn) VALUES (?,?,?,?,?,?,?,?,'Hutang',?,?,?,?,?,?,'Kredit',?)");
+        $stmt = $db->prepare("INSERT INTO pembelian (no_faktur_suplier,no_faktur, kode_gudang, suplier, total, tanggal,tanggal_jt, jam, user, status, potongan, tax, kredit, nilai_kredit, cara_bayar,tunai,status_beli_awal,ppn) VALUES (?,?,?,?,?,?,?,?,?,'Hutang',?,?,?,?,?,?,'Kredit',?)");
         
         
   // hubungkan "data" dengan prepared statements
-        $stmt->bind_param("sssissssiiiisis", 
-        $no_faktur, $kode_gudang, $suplier, $total , $tanggal_sekarang, $tanggal_jt, $jam_sekarang, $user, $potongan, $tax_persen, $sisa_kredit, $sisa_kredit, $cara_bayar, $pembayaran, $ppn_input);
+        $stmt->bind_param("ssssissssiiiisis", 
+        $nomor_suplier,$no_faktur, $kode_gudang, $suplier, $total , $tanggal_sekarang, $tanggal_jt, $jam_sekarang, $user, $potongan, $tax_persen, $sisa_kredit, $sisa_kredit, $cara_bayar, $pembayaran, $ppn_input);
         
   // siapkan "data" query
-           
+           $nomor_suplier = stringdoang($_POST['no_faktur_suplier']);
            $suplier = stringdoang($_POST['suplier']);
            $total = angkadoang($_POST['total']);
            $total_1 = angkadoang($_POST['total_1']);
