@@ -25,7 +25,7 @@
         <tbody> <!-- tag pembuka tbody, yang digunakan untuk menampilkan data yang ada di database --> 
 <?php
  
-        $perintah = $db->query("SELECT s.nama,b.kode_barang,b.tipe_barang,b.nama_barang,b.harga_beli,b.harga_jual,b.harga_jual2,b.harga_jual3,b.harga_jual4,b.harga_jual5,b.harga_jual6,b.harga_jual7,b.kategori,b.status,b.suplier,b.limit_stok,b.satuan,b.id,b.berkaitan_dgn_stok FROM barang b INNER JOIN satuan s ON b.satuan = s.id WHERE b.tipe_barang = 'Obat Obatan' ");
+        $perintah = $db->query("SELECT s.nama,b.kode_barang,b.tipe_barang,b.nama_barang,b.harga_beli,b.harga_jual,b.harga_jual2,b.harga_jual3,b.harga_jual4,b.harga_jual5,b.harga_jual6,b.harga_jual7,b.kategori,b.status,b.suplier,b.limit_stok,b.satuan,b.id,b.berkaitan_dgn_stok FROM barang b LEFT JOIN satuan s ON b.satuan = s.id WHERE b.tipe_barang = 'Obat Obatan' ");
         
         //menyimpan data sementara yang ada pada $perintah
         while ($data1 = mysqli_fetch_array($perintah))
