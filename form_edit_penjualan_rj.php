@@ -359,7 +359,7 @@ $otoritas_tombol = mysqli_fetch_array($pilih_akses_tombol);
   <div class="col-xs-2">
   <label>Petugas Farmasi</label>
   <select style="font-size:15px; height:35px" name="petugas_farmasi" id="petugas_farmasi" class="form-control chosen">
-        <option value="<?php echo $farmasi;?>"><?php echo $kel2['nama'];?></option>
+        <option value="<?php echo $apoteker;?>"><?php echo $kel2['nama'];?></option>
     <?php 
       
       //untuk menampilkan semua data pada tabel pelanggan dalam DB
@@ -1218,6 +1218,26 @@ $(function() {
 });
 </script>
 <!-- AUTOCOMPLETE --> 
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    $(document).on('change','#no_rm', function(e){
+
+      var no_rm = $(this).val();
+    var no_rm = no_rm.substr(0, no_rm.indexOf('('));
+
+      $.getJSON("update_registrasi_pasien.php",{no_rm:no_rm},function(data){
+        $("#asal_poli").val(data.poli);
+        $("#penjamin").val(data.penjamin);
+           
+
+      });
+
+
+    });
+  })
+
+</script>
 
 
 <script type="text/javascript">
