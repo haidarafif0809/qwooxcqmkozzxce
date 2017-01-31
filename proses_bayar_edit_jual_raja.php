@@ -65,7 +65,7 @@ $pembayaran = angkadoang($_POST['pembayaran']);
 $jenis_penjualan = stringdoang($_POST['jenis_penjualan']);
 $no_jurnal = no_jurnal();
 
-  $ambil_pelanggan = $db_pasien("SELECT alamat_sekarang, no_telp , umur, jenis_kelamin,nama_pelanggan FROM pelanggan WHERE kode_pelanggan = '$no_rm' ");
+  $ambil_pelanggan = $db_pasien->query("SELECT alamat_sekarang, no_telp , umur, jenis_kelamin,nama_pelanggan FROM pelanggan WHERE kode_pelanggan = '$no_rm' ");
   $data_pasien = mysqli_fetch_array($ambil_pelanggan);
 
   $nama_pasien = $data_pasien['nama_pelanggan'];
