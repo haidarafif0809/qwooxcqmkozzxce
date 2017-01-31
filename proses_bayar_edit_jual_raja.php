@@ -468,7 +468,7 @@ if ($potongan != "" || $potongan != 0 ) {
 
 
             
-    $update_registrasi = $db->query("UPDATE registrasi SET status = 'Sudah Pulang' , nama_pasien = '$nama_pasien', no_rm = '$no_rm', alamat_pasien = '$data_pasien[alamat_sekarang]', hp_pasien = '$ambil_pelanggan[no_telp]' , umur_pasien = '$ambil_pelanggan[umur]' , jenis_kelamin = '$ambil_pelanggan[jenis_kelamin]' WHERE no_reg ='$no_reg'");
+    $update_registrasi = $db->query("UPDATE registrasi SET status = 'Sudah Pulang' , nama_pasien = '$nama_pasien', no_rm = '$no_rm', alamat_pasien = '$data_pasien[alamat_sekarang]', hp_pasien = '$data_pasien[no_telp]' , umur_pasien = '$data_pasien[umur]' , jenis_kelamin = '$data_pasien[jenis_kelamin]' WHERE no_reg ='$no_reg'");
 
     $updatemedik = $db->query("UPDATE rekam_medik SET no_rm = '$no_rm' , nama = '$nama_pasien', alamat = '$data_pasien[alamat_sekarang]' ,umur = '$data_pasien[umur]', jenis_kelamin = '$data_pasien[jenis_kelamin]' WHERE no_reg = '$no_reg'  ");
 
