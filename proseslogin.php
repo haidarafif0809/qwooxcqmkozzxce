@@ -6,7 +6,7 @@
     $username = stringdoang($_POST['username']);
     $password = $_POST['password'];
 
-   $querymaster =  $db->query("SELECT * FROM user WHERE username = '$username' ");
+   $querymaster =  $db->query("SELECT id,nama,password,otoritas FROM user WHERE username = '$username' ");
    
    $jumlah = mysqli_num_rows($querymaster);
 
@@ -29,14 +29,14 @@
 
                 if (password_verify($password,$passwordku)) 
                 {
-                echo "Mohon Tunggu...";
+       
                 $_SESSION['otoritas_id'] = $otoritas_id;
                 $_SESSION['otoritas'] = $otoritas;
                 $_SESSION['user_name'] = $username;
                 $_SESSION['nama'] = $nama;
                 $_SESSION['id'] = $id_user;
                 
-                echo '<META HTTP-EQUIV="Refresh" Content="0; URL=home.php">';
+               header('location:home.php');
                 
                 
                 }
