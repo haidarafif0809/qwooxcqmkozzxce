@@ -451,7 +451,7 @@ echo '<br><button type="button" class="btn btn-info" data-toggle="modal" data-ta
                 <input type="hidden" id="kode_barang_hapus" class="form-control" > 
 
     </div>
-   
+    
    </form>
    
   <div class="alert alert-success" style="display:none">

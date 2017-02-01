@@ -16,7 +16,7 @@ echo "sukses";
 else
 {
 	
-}
+} 
 
 $kode = $_POST['kode'];
 // update chache setelah hapus barang

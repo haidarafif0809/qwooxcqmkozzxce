@@ -170,7 +170,7 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
         //otoritas hapus
                 $pilih_akses_barang_hapus = $db->query("SELECT item_hapus FROM otoritas_master_data WHERE id_otoritas = '$_SESSION[otoritas_id]' AND item_hapus = '1'");
 				$barang_hapus = mysqli_num_rows($pilih_akses_barang_hapus);
-
+				
 
 			    if ($barang_hapus > 0)  
 			    {
