@@ -63,7 +63,7 @@ console.log(jumlah_data);
 
 						 
   		//ambil data dari server dan masukan ke index db
-						$.getJSON("proses_json.php",function(data){
+						$.getJSON("proses_contoh_json.php",function(data){
 						   
 
 					hapus_semua();
