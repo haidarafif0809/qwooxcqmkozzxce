@@ -745,6 +745,7 @@ if (tanggal_lahir != '')
       var tanggal_lahir = $("#tanggal_lahir").val();
       var umur = hitung_umur(tanggal_lahir);
       $("#umur").val(umur);
+      $("#gol_darah").focus();
     }
     else if (tanggal_lahir == '')
     {
@@ -753,6 +754,7 @@ if (tanggal_lahir != '')
     else
     {
     $("#umur").val(umur);
+    $("#gol_darah").focus();
     }
 }
 

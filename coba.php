@@ -18,7 +18,7 @@
 
 
 //menampilkan seluruh data yang ada pada tabel pembelian
-    $perintah = $db->query("SELECT tanggal FROM pembelian WHERE no_faktur = '$nomor_faktur'");
+    $perintah = $db->query("SELECT tanggal,no_faktur_suplier FROM pembelian WHERE no_faktur = '$nomor_faktur'");
     $ambil_tanggal = mysqli_fetch_array($perintah);
 
     $jumlah_bayar_hutang = $db->query("SELECT SUM(jumlah_bayar) AS jumlah_bayar FROM detail_pembayaran_hutang WHERE no_faktur_pembelian = '$nomor_faktur'");
@@ -92,6 +92,12 @@
 
       <!-- membuat form menjadi beberpa bagian -->
         <form enctype="multipart/form-data" role="form" method="post ">
+
+
+        <div class="col-sm-2">
+         <input type="text" class="form-control" name="no_faktur_suplier" id="no_faktur_suplier" autocomplete="off" placeholder="No. Faktur Suplier" value="<?php echo $ambil_tanggal['no_faktur_suplier']; ?>">
+          
+        </div>
 
               <div class="col-sm-2">
               <label> Suplier </label><br>
@@ -229,7 +235,22 @@
               <form class="form-group" action="proses_coba.php" role="form" id="formtambahproduk">
             
             <div class="col-sm-3">
-              <input style="height:20px" type="text" class="form-control" name="kode_barang" accesskey="k" id="kode_barang" placeholder="Kode / Nama  Produk" autocomplete="off">
+
+  <select style="font-size:15px; height:20px" type="text" name="kode_barang" id="kode_barang" class="form-control chosen" data-placeholder="SILAKAN PILIH...">
+    <option value="">SILAKAN PILIH...</option>
+       <?php 
+
+        include 'cache.class.php';
+          $c = new Cache();
+          $c->setCache('produk');
+          $data_c = $c->retrieveAll();
+
+          foreach ($data_c as $key) {
+            echo '<option id="opt-produk-'.$key['kode_barang'].'" value="'.$key['kode_barang'].'" data-kode="'.$key['kode_barang'].'" nama-barang="'.$key['nama_barang'].'" harga="'.$key['harga_jual'].'" harga_jual_2="'.$key['harga_jual2'].'" harga_jual_3="'.$key['harga_jual3'].'" harga_jual_4="'.$key['harga_jual4'].'" harga_jual_5="'.$key['harga_jual5'].'" harga_jual_6="'.$key['harga_jual6'].'" harga_jual_7="'.$key['harga_jual7'].'" harga_beli="'.$key['harga_beli'].'" satuan="'.$key['satuan'].'" kategori="'.$key['kategori'].'" status="'.$key['status'].'" suplier="'.$key['suplier'].'" limit_stok="'.$key['limit_stok'].'" over_stok="'.$key['over_stok'].'" ber-stok="'.$key['berkaitan_dgn_stok'].'" tipe_barang="'.$key['tipe_barang'].'" id-barang="'.$key['id'].'" > '. $key['kode_barang'].' ( '.$key['nama_barang'].' ) </option>';
+          }
+
+        ?>
+    </select>
             </div>      
 
               <!-- memasukan teks pada kolom kode barang -->
@@ -281,7 +302,7 @@
 <!--HIDEN HIDDEN HIDDEN HIDDEN -->
               <input type="hidden" class="form-control"  name="over_stok" id="over_stok" autocomplete="off" placeholder="Over Stok">
               <input type="hidden" id="harga_lama" name="harga_lama" class="form-control" required="">
-              <input type="hidden" class="form-control"  name="over_stok" id="over_stok" autocomplete="off" placeholder="Over Stok">
+
               <input type="hidden" class="form-control" name="jumlahbarang" id="jumlahbarang">
               <!-- memasukan teks pada kolom satuan, harga, dan nomor faktur namun disembunyikan -->
               <input type="hidden" id="satuan_produk" name="satuan" class="form-control" value="" required="">
@@ -524,32 +545,32 @@
             <div class="row">
               <div class="col-sm-6">
                 <label> <b> Subtotal </b></label><br>
-                <input style="height:10px;font-size:15px" type="text" name="total" id="total_pembelian1" class="form-control" placeholder="" readonly=""  >                
+                <input style="height:20px;font-size:15px" type="text" name="total" id="total_pembelian1" class="form-control" placeholder="" readonly=""  >                
               </div>
 
               <div class="col-sm-6">
                 <label> Potongan ( Rp ) </label><br>
-                <input style="height:10px;font-size:15px" type="text" name="potongan" id="potongan_pembelian" value="<?php echo $potongan; ?>" class="form-control" autocomplete="off" placeholder=" ">
+                <input style="height:20px;font-size:15px" type="text" name="potongan" id="potongan_pembelian" value="<?php echo $potongan; ?>" class="form-control" autocomplete="off" placeholder=" ">
               </div>
             </div>
 
             <div class="row">
               <div class="col-sm-6">
                 <label> Potongan ( % ) </label><br>
-                <input style="height:10px;font-size:15px" type="text" name="potongan_persen" id="potongan_persen" value="<?php echo $hasil_persen; ?>" class="form-control" autocomplete="off" placeholder="">
+                <input style="height:20px;font-size:15px" type="text" name="potongan_persen" id="potongan_persen" value="<?php echo $hasil_persen; ?>" class="form-control" autocomplete="off" placeholder="">
               </div>        
                 
                 
               <div class="col-sm-6">
                 <label> Tax </label><br>
-                <input style="height:10px;font-size:15px" type="text" name="tax" id="tax" class="form-control" value="<?php echo $hasil_tax; ?>" autocomplete="off" placeholder="" >
+                <input style="height:20px;font-size:15px" type="text" name="tax" id="tax" class="form-control" value="<?php echo $hasil_tax; ?>" autocomplete="off" placeholder="" >
               </div>
             </div>
 
             <div class="row">
               <div class="col-sm-6">
                 <label> Tanggal Jatuh Tempo </label><br>
-                <input style="height:10px;font-size:15px" type="text" name="tanggal_jt" id="tanggal_jt" placeholder="  " value="" class="form-control tanggal" >
+                <input style="height:20px;font-size:15px" type="text" name="tanggal_jt" id="tanggal_jt" placeholder="  " value="" class="form-control tanggal" >
               </div> 
 
 
@@ -598,12 +619,12 @@
             <div class="row">
               <div class="col-sm-6">
                 <label> Kembalian </label><br>
-                <b><input style="height:10px;font-size:15px" type="text" name="sisa_pembayaran" id="sisa_pembayaran_pembelian" class="form-control" placeholder=" " readonly="" style="font-size: 20px"></b>
+                <b><input style="height:20px;font-size:15px" type="text" name="sisa_pembayaran" id="sisa_pembayaran_pembelian" class="form-control" placeholder=" " readonly="" style="font-size: 20px"></b>
               </div>
 
               <div class="col-sm-6">
                 <label> Kredit </label><br>
-              <b><input style="height:10px;font-size:15px" type="text" name="kredit" id="kredit" class="form-control" placeholder="" readonly=""  style="font-size: 20px" ></b>
+              <b><input style="height:20px;font-size:15px" type="text" name="kredit" id="kredit" class="form-control" placeholder="" readonly=""  style="font-size: 20px" ></b>
               </div>
             </div>
              
@@ -694,7 +715,6 @@
     var no_faktur = $("#nomorfaktur").val();
     var suplier = $("#nama_suplier").val();
     var kode_barang = $("#kode_barang").val();
-    var kode_barang = kode_barang.substr(0, kode_barang.indexOf('('));
     var nama_barang = $("#nama_barang").val();
     var jumlah_barang = $("#jumlah_barang").val();
     var harga = $("#harga_produk").val();
@@ -754,9 +774,11 @@
  
     $.post("proses_coba.php",{no_faktur:no_faktur,kode_barang:kode_barang,nama_barang:nama_barang,jumlah_barang:jumlah_barang,harga:harga,harga_baru:harga_baru,potongan:potongan,tax:tax,satuan:satuan},function(data){
       
-      $("#tbody").prepend(data);
-      $("#kode_barang").focus();
+      $("#tbody").prepend(data);    
+      $("#kode_barang").val('').trigger("chosen:updated");
+      $("#kode_barang").trigger('chosen:open');
       $("#ppn").attr("disabled", true);
+      $("#no_faktur_suplier").attr("disabled", true);
       $("#nama_barang").val('');
       $("#kode_barang").val('');
       $("#jumlah_barang").val('');
@@ -818,6 +840,7 @@
   $("#pembayaran").click(function(){
 
        var no_faktur = $("#nomorfaktur").val();
+       var no_faktur_suplier = $("#no_faktur_suplier").val();
        var sisa_pembayaran = $("#sisa_pembayaran_pembelian").val();
        var kredit = $("#kredit").val();
        var suplier1 = $("#nama_suplier").val();
@@ -879,7 +902,7 @@ alert("Silakan Bayar Hutang");
        $("#hutang").hide();
        $("#transaksi_baru").show(); 
        
-       $.post("proses_bayar_coba.php",{total_1:total_1,no_faktur:no_faktur,sisa_pembayaran:sisa_pembayaran,kredit:kredit,suplier:suplier1,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,tax1:tax1,cara_bayar:cara_bayar,jumlah_barang:jumlah_barang,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,tanggal:tanggal,total_1:total_1,jumlah_kredit_baru:jumlah_kredit_baru,x:x,ppn:ppn,ppn_input:ppn_input},function(info) {
+       $.post("proses_bayar_coba.php",{total_1:total_1,no_faktur:no_faktur,sisa_pembayaran:sisa_pembayaran,kredit:kredit,suplier:suplier1,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,tax1:tax1,cara_bayar:cara_bayar,jumlah_barang:jumlah_barang,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,tanggal:tanggal,total_1:total_1,jumlah_kredit_baru:jumlah_kredit_baru,x:x,ppn:ppn,ppn_input:ppn_input,no_faktur_suplier:no_faktur_suplier},function(info) {
        
        
        $("#alert_berhasil").show();
@@ -933,6 +956,7 @@ else
        $("#hutang").click(function(){
        
        var no_faktur = $("#nomorfaktur").val();
+       var no_faktur_suplier = $("#no_faktur_suplier").val();
        var sisa_pembayaran = $("#sisa_pembayaran_pembelian").val();
        var kredit = $("#kredit").val();
        var suplier = $("#nama_suplier").val();
@@ -987,7 +1011,7 @@ else
           $("#hutang").hide();
           $("#transaksi_baru").show();
        
-       $.post("proses_bayar_coba.php",{total_1:total_1,tax1:tax1,tanggal:tanggal,no_faktur:no_faktur,sisa_pembayaran:sisa_pembayaran,kredit:kredit,suplier:suplier,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,cara_bayar:cara_bayar,jumlah_barang:jumlah_barang,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,total_1:total_1,jumlah_kredit_baru:jumlah_kredit_baru,x:x,ppn:ppn,ppn_input:ppn_input},function(info) {
+       $.post("proses_bayar_coba.php",{total_1:total_1,tax1:tax1,tanggal:tanggal,no_faktur:no_faktur,sisa_pembayaran:sisa_pembayaran,kredit:kredit,suplier:suplier,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,cara_bayar:cara_bayar,jumlah_barang:jumlah_barang,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,total_1:total_1,jumlah_kredit_baru:jumlah_kredit_baru,x:x,ppn:ppn,ppn_input:ppn_input,no_faktur_suplier:no_faktur_suplier},function(info) {
 
        
        $("#alert_berhasil").show();
@@ -1521,6 +1545,16 @@ $("#pembayaran_pembelian").keyup(function(){
       </script>
 
 
+      <script>
+//untuk menampilkan data tabel
+$(document).ready(function(){
+    $("#kode_barang").trigger('chosen:open');
+
+});
+
+</script>
+
+
 <script type="text/javascript">
  
 $(".btn-alert-hapus").click(function(){
@@ -1557,12 +1591,13 @@ $(document).ready(function(){
       $("#total_pembelian1").val(tandaPemisahTitik(total_akhir));
 
 $(".tr-id-"+id+"").remove();
+
     $.post("hapus_coba.php",{id:id,kode_barang:kode_barang},function(data){
     
 
     });
     
-    
+        $("#kode_barang").trigger('chosen:open');   
     });
 
 //end fungsi hapus data
@@ -1815,11 +1850,87 @@ $(document).ready(function(){
 });
 </script>
 
+
+<script type="text/javascript">
+  
+  $(document).ready(function(){
+  $("#kode_barang").change(function(){
+
+    var kode_barang = $(this).val();
+    var nama_barang = $('#opt-produk-'+kode_barang).attr("nama-barang");
+    var harga_beli = $('#opt-produk-'+kode_barang).attr("harga_beli");
+    var harga_jual = $('#opt-produk-'+kode_barang).attr("harga");
+    var harga_jual2 = $('#opt-produk-'+kode_barang).attr('harga_jual_2');  
+    var harga_jual3 = $('#opt-produk-'+kode_barang).attr('harga_jual_3');
+    var harga_jual4 = $('#opt-produk-'+kode_barang).attr('harga_jual_4');
+    var harga_jual5 = $('#opt-produk-'+kode_barang).attr('harga_jual_5');  
+    var harga_jual6 = $('#opt-produk-'+kode_barang).attr('harga_jual_6');
+    var harga_jual7 = $('#opt-produk-'+kode_barang).attr('harga_jual_7');
+    var jumlah_barang = $('#opt-produk-'+kode_barang).attr("jumlah-barang");
+    var satuan = $('#opt-produk-'+kode_barang).attr("satuan");
+    var kategori = $('#opt-produk-'+kode_barang).attr("kategori");
+    var status = $('#opt-produk-'+kode_barang).attr("status");
+    var suplier = $('#opt-produk-'+kode_barang).attr("suplier");
+    var limit_stok = $('#opt-produk-'+kode_barang).attr("limit_stok");
+    var over_stok = $('#opt-produk-'+kode_barang).attr("over_stok");
+    var ber_stok = $('#opt-produk-'+kode_barang).attr("ber-stok");
+    var tipe_barang = $('#opt-produk-'+kode_barang).attr("tipe_barang");
+    var id_barang = $('#opt-produk-'+kode_barang).attr("id-barang");
+    var no_faktur = $("#nomorfaktur").val();
+
+    
+    $("#kode_barang").val(kode_barang);
+    $("#nama_barang").val(nama_barang);
+    $("#over_stok").val(over_stok);
+    $("#jumlah_barang").val(jumlah_barang);
+    $("#satuan_produk").val(satuan);
+    $("#satuan_konversi").val(satuan);
+    $("#ber_stok").val(ber_stok);
+    $("#id_produk").val(id_barang);
+    $("#harga_produk").val(harga_beli);
+    $("#harga_lama").val(harga_beli);    
+
+
+if (ber_stok == 'Barang') {
+
+    $.post('ambil_jumlah_produk.php',{kode_barang:kode_barang}, function(data){
+      if (data == "") {
+        data = 0;
+      }
+      $("#jumlahbarang").val(data);
+    });
+
+}
+
+
+$.post('cek_kode_barang_edit_tbs_pembelian.php',{kode_barang:kode_barang,no_faktur:no_faktur}, function(data){
+          
+  if(data == 1){
+          alert("Anda Tidak Bisa Menambahkan Barang Yang Sudah Ada, Silakan Edit atau Pilih Barang Yang Lain !");
+
+          $("#kode_barang").chosen("destroy");
+          $("#kode_barang").val('');
+          $("#nama_barang").val('');
+          $("#kode_barang").trigger('chosen:open');
+          $(".chosen").chosen({no_results_text: "Maaf, Data Tidak Ada!",search_contains:true}); 
+   }//penutup if     
+
+
+
+  });
+  });
+  });
+
+      
+      
+</script>
+
+
 <script type="text/javascript"> 
     shortcut.add("f2", function() {
         // Do something
 
-        $("#kode_barang").focus();
+        $("#kode_barang").trigger('chosen:open');
 
     });
 
