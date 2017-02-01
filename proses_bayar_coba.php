@@ -16,6 +16,7 @@ $select_suplier = $db->query("SELECT id,nama FROM suplier WHERE id = '$suplier'"
 $ambil_suplier = mysqli_fetch_array($select_suplier);
 
 
+            $no_faktur_suplier = stringdoang($_POST['no_faktur_suplier']);
     $nomor_faktur = stringdoang($_POST['no_faktur']);
 
             $perintah1 = $db->query("DELETE FROM detail_pembelian WHERE no_faktur = '$nomor_faktur'");
@@ -31,13 +32,12 @@ $ambil_suplier = mysqli_fetch_array($select_suplier);
             
             
             // hubungkan "data" dengan prepared statements
-            $stmt2->bind_param("ssisssiiiisiss", 
+            $stmt2->bind_param("ssisssiiiisisss", 
             $nomor_faktur, $suplier, $total , $tanggal, $jam_sekarang, $user, $potongan, $tax_persen, $sisa, $sisa_kredit, $cara_bayar, $pembayaran, $ppn_input,$no_faktur_suplier, $nomor_faktur);
 
             
             // siapkan "data" query
             $nomor_faktur = stringdoang($_POST['no_faktur']);
-            $no_faktur_suplier = stringdoang($_POST['no_faktur_suplier']);
             $suplier = stringdoang($_POST['suplier']);
             $total = angkadoang($_POST['total']);
             $total_1 = angkadoang($_POST['total_1']);
@@ -150,7 +150,7 @@ if ($potongan != "" || $potongan != 0 ) {
             
             
             // hubungkan "data" dengan prepared statements
-            $stmt2->bind_param("ssissssiiiisiss", 
+            $stmt2->bind_param("ssissssiiiisisss", 
             $nomor_faktur, $suplier, $total , $tanggal, $jam_sekarang, $tanggal_jt, $user, $potongan, $tax, $sisa, $sisa_kredit, $cara_bayar, $pembayaran, $ppn_input,$no_faktur_suplier, $nomor_faktur);
             
             // siapkan "data" query
@@ -327,7 +327,6 @@ else {
 }
 
     echo "Success";
-    echo$no_faktur_suplier;
 
 //Untuk Memutuskan Koneksi Ke Database
 mysqli_close($db);   
