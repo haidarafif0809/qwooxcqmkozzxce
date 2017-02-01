@@ -537,7 +537,7 @@ $("#jumlah_produk").focus();
 
  <!--script chossen-->
 <script>
-$("select").chosen({no_results_text: "Oops, Tidak Ada !"});
+$("select").chosen({no_results_text: "Oops, Tidak Ada !",search_contains:true});
 </script>
 <!--script end chossen-->
 
@@ -746,6 +746,16 @@ $("#reg2").val(reg);
         // Do something
 
         $("#submit_produk").click();
+
+    });
+</script>
+
+
+<script> 
+    shortcut.add("f2", function() {
+        // Do something
+
+        $("#kode_produk").trigger("chosen:open");
 
     });
 </script>

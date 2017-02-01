@@ -262,27 +262,29 @@ if ($status_bayar == 'Lunas' OR $status_bayar == 'Piutang'):?>
 
 <div class="col-sm-3">
 <div class="form-group">  
-    <select style="height: 15px;" type="text" class="form-control chosen" accesskey="q" id="nama_produk" autocomplete="off" style="width:400px" name="nama_produk">
-    <option>Nama Produk</option>
-     <?php 
-     $produk = $db->query("SELECT kode_barang, nama_barang FROM barang WHERE tipe_barang = 'Jasa' ");
-     while ( $data09 = mysqli_fetch_array($produk)) {
-     echo "<option value='".$data09['nama_barang']."'>".$data09['nama_barang']."</option>";
-     }
-     ?>
+  <select style="height: 15px;" type="text" class="form-control chosen" accesskey="q" id="kode_produk" autocomplete="off" style="width:400px" name="kode_produk">
+    <option value="">SILAKAN PILIH</option>
+ <?php 
+        include 'cache.class.php';
+          $c = new Cache();
+          $c->setCache('produk_tindakan');
+          $data_c = $c->retrieveAll();
+
+          foreach ($data_c as $key) {
+            echo '<option id="opt-produk-'.$key['kode_barang'].'" value="'.$key['kode_barang'].'" data-kode="'.$key['kode_barang'].'" nama-barang="'.$key['nama_barang'].'" harga="'.$key['harga_jual'].'" harga_jual_2="'.$key['harga_jual2'].'" harga_jual_3="'.$key['harga_jual3'].'" harga_jual_4="'.$key['harga_jual4'].'" harga_jual_5="'.$key['harga_jual5'].'" harga_jual_6="'.$key['harga_jual6'].'" harga_jual_7="'.$key['harga_jual7'].'" satuan="'.$key['satuan'].'" kategori="'.$key['kategori'].'" status="'.$key['status'].'" suplier="'.$key['suplier'].'" limit_stok="'.$key['limit_stok'].'" ber-stok="'.$key['berkaitan_dgn_stok'].'" tipe_barang="'.$key['tipe_barang'].'" id-barang="'.$key['id'].'" > '. $key['kode_barang'].' ( '.$key['nama_barang'].' ) </option>';
+          }
+
+        ?>
     </select>
 
 </div>
 </div>
  
 
-<div class="col-sm-2">
 <div class="form-group">    
-    <input style="height: 15px;" type="text" class="form-control" id="kode_produk" name="kode_produk" style="width:150px" placeholder="Kode Produk" readonly=""  >
+    <input style="height: 15px;" type="hidden" class="form-control" id="nama_produk" name="nama_produk" style="width:150px" >
 </div>
-</div>
-    
-
+  
 
 <div class="col-sm-2">
 <div class="form-group"> 
@@ -333,6 +335,8 @@ tr:nth-child(even){background-color: #f2f2f2}
          <th style='background-color: #4CAF50; color: white'>Kode  </th>
          <th style='background-color: #4CAF50; color: white'>Nama  </th>
          <th style='background-color: #4CAF50; color: white'>Jumlah</th>
+                  <th style='background-color: #4CAF50; color: white'>Waktu</th>
+
           <?php 
          $sss = $db->query("SELECT * FROM detail_penjualan WHERE no_reg ='$no_reg' AND tipe_produk = 'Jasa' ORDER BY id DESC");
          $asa1 = mysqli_num_rows($sss);
@@ -363,6 +367,7 @@ if ($asa == 0)
       <td>". $data['kode_barang']."</td>
       <td>". $data['nama_barang']."</td>
       <td>". $data['jumlah_barang']."</td>
+      <td>". $data['tanggal']." ".$data['jam']."</td>
     <td><button class='btn btn-danger btn-sm batal' data-id='".$data['id']."' data-reg='". $data['no_reg']."' data-kode-barang='". $data['kode_barang']."'>
       <i class='fa fa-remove'></i> Batal </button></td>
       </tr>";
@@ -410,18 +415,45 @@ else
   });
 </script>
 
+
+
+<script> 
+    shortcut.add("f2", function() {
+        // Do something
+
+        $("#kode_produk").trigger("chosen:open");
+
+    });
+</script>
+
 <!— SCRIPT AMBIL DATA FORM PRODUK —>
 <script type="text/javascript">
 
     $(document).on('click', '.pilih', function (e) {
 
-            $("select").chosen("destroy");
             document.getElementById("kode_produk").value = $(this).attr('data-kode-x');
+            $("#kode_produk").trigger("chosen:updated");
+
             document.getElementById("nama_produk").value = $(this).attr('nama-barang');
             document.getElementById("limit").value = $(this).attr('limit_stok');
             document.getElementById("tipe_produk").value = $(this).attr('ber-stok');
             document.getElementById("stok").value = $(this).attr('jumlah-barang');
 
+      var no_reg = $("#no_reg").val();
+      var kode = $("#kode_produk").val();
+    
+$.post("cek_kode_barang_tbs_penjualan.php",{kode_barang:kode,no_reg:no_reg},function(data){
+
+               if(data == 1)
+               {
+                alert("Anda Tidak Bisa Menambahkan Jasa / Tindakan Yang Sudah Ada");
+               $("#kode_produk").val('');
+               $("#kode_produk").trigger('chosen:updated');
+               $("#kode_produk").trigger('chosen:open');
+               $("#nama_produk").val('');
+                
+                }                      
+            });
 
             $("#jumlah_produk").focus();
            $("select").chosen();
@@ -436,7 +468,7 @@ else
 
 <!--script chossen-->
 <script>
-$("select").chosen({no_results_text: "Oops, Tidak Ada !"});
+$("select").chosen({no_results_text: "Oops, Tidak Ada !",search_contains:true});
 </script>
 <!--script end chossen-->
 
@@ -471,18 +503,7 @@ $("select").chosen({no_results_text: "Oops, Tidak Ada !"});
 
       else if(jumlah == 0){
         window.alert("Jumlah Obat Obatan Tidak boleh 0 ");}
-     else if (kode == cek_barang){
-        window.alert("Tindakan yang anda masukan sudah ada, silahkan pilih tindakan lain");
-        $("#kode_produk").val('');
-        $("#nama_produk").val('');
-        $("#jumlah_produk").val('');
-        $("#stok").val('');
-        $("#tipe_produk").val('');
-        $("#limit").val('');
-        $("select").chosen();
-        
-      }
-
+   
       else {
 
           $.post("proses_tambah_tindakan.php",{no_rm:no_rm,dokter:dokter,no_reg:no_reg,tipe:tipe,
@@ -490,15 +511,14 @@ $("select").chosen({no_results_text: "Oops, Tidak Ada !"});
           ,petugas:petugas,apoteker:apoteker,perawat:perawat},function(data){ 
 
              $("#tbody").prepend(data);
-             $("#nama_produk").chosen("destroy");
              $("#kode_produk").val('');
+             $("#kode_produk").trigger("chosen:updated");
+             $("#kode_produk").trigger("chosen:open");
              $("#jumlah_produk").val('');
              $("#stok").val('');
-             $("#potongan").val('');
-             $("#pajak").val('');
+             $("#limit").val('');
+             $("#tipe_produk").val('');
              $("#nama_produk").val('');
-             $("#nama_produk").chosen();
-             $("#nama_produk").focus();
           
           });                    
 
@@ -540,84 +560,56 @@ $("select").chosen({no_results_text: "Oops, Tidak Ada !"});
    </script>
 
 
-
-
-<!-- Script langsung FOCUS jumlah produk  -->                          
- <script type="text/javascript">
-      $("#kode_produk").focus(function()
-      {
-
-            $("#jumlah_produk").focus();
-        
-      }); 
-</script>
-<!-- Akhir Script FOCUS jumlah produk -->
-
-
 <!-- Script Datalist Produk -->
  <script type="text/javascript">
-          $("#nama_produk").change(function(){
-              var nama = $("#nama_produk").val();
-              var no_reg = $("#no_reg").val();
+   $(document).ready(function(){
 
-        if (nama == '')
+          $("#kode_produk").change(function(){
+    var kode = $(this).val();
+    var nama = $('#opt-produk-'+kode).attr("nama-barang");
+    var harga_jual = $('#opt-produk-'+kode).attr("harga");
+    var harga_jual2 = $('#opt-produk-'+kode).attr('harga_jual_2');  
+    var harga_jual3 = $('#opt-produk-'+kode).attr('harga_jual_3');
+    var harga_jual4 = $('#opt-produk-'+kode).attr('harga_jual_4');
+    var harga_jual5 = $('#opt-produk-'+kode).attr('harga_jual_5');  
+    var harga_jual6 = $('#opt-produk-'+kode).attr('harga_jual_6');
+    var harga_jual7 = $('#opt-produk-'+kode).attr('harga_jual_7');
+    var jumlah_barang = $('#opt-produk-'+kode).attr("jumlah-barang");
+    var satuan = $('#opt-produk-'+kode).attr("satuan");
+    var kategori = $('#opt-produk-'+kode).attr("kategori");
+    var status = $('#opt-produk-'+kode).attr("status");
+    var suplier = $('#opt-produk-'+kode).attr("suplier");
+    var limit_stok = $('#opt-produk-'+kode).attr("limit_stok");
+    var ber_stok = $('#opt-produk-'+kode).attr("ber-stok");
+    var tipe_barang = $('#opt-produk-'+kode).attr("tipe_barang");
+    var id_barang = $('#opt-produk-'+kode).attr("id-barang");
+     var no_reg = $("#no_reg").val();
 
-        {
-          $('#kode_produk').val('');
-          $('#stok').val('');
-          $('#tipe_produk').val('');
-          }
-        else
-        {
+                    
+                    $("#nama_produk").val(nama);
+                    $("#tipe_produk").val(tipe_barang);
+                   $("#limit").val(limit_stok);         
 
-   $.post("cek_tbs_rekam_medik_tindakan.php",{nama:nama,no_reg:no_reg},function(data){
-                      
-                      if (data == 1) {
-                        alert("Barang Yang Anda Masukan Sudah Ada");
-                        
-                         $('#kode_produk').val(''); 
-                         $('#nama_produk').val(''); 
-                          $('#nama_produk').focus(); 
-                      }
-                      else
-                      {
-                          $.post('hitung_stok_update.php',{nama:nama},function(data)
-                          { 
+    
 
-                           $('#stok').val(data); 
+$.post("cek_kode_barang_tbs_penjualan.php",{kode_barang:kode,no_reg:no_reg},function(data){
 
-                         }); 
-                      }
-
-
+               if(data == 1)
+               {
+                alert("Anda Tidak Bisa Menambahkan Jasa / Tindakan Yang Sudah Ada");
+              $("#kode_produk").val('');
+              $("#kode_produk").trigger('chosen:updated');
+              $("#kode_produk").trigger('chosen:open');
+               $("#nama_produk").val('');
+                
+                }                      
             });
 
-
-      $.getJSON('lihat_produk_stok_opname.php',{nama_produk:$(this).val()}, function(json){
-      
-      if (json == null)
-      {
-        $('#nama_produk').val('');
-        $('#kode_produk').val('');
-        $('#stok').val('');
-        $('#tipe_produk').val('');
-      }
-
-      else 
-      {
-        $('#kode_produk').val(json.kode_barang);
-        $('#tipe_produk').val(json.tipe_barang);
-       $('#limit').val(json.limit_stok);
-
-      }
-                                              
-        });
-  
-      }
-    });
-
+});
+                                                    
+});
 </script>
-<!-- Akhir Script Datalist Produk -->
+
 
 
 <!--   script modal confirmasi SELESAI -->
@@ -640,7 +632,7 @@ $("#reg2").val(reg);
 
       <script type="text/javascript">
       
-      $(".chosen").chosen({no_results_text: "Maaf, Data Tidak Ada!"});  
+      $(".chosen").chosen({no_results_text: "Maaf, Data Tidak Ada!",search_contains:true});  
       
       </script>
 
