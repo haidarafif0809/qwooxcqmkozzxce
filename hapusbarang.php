@@ -16,7 +16,27 @@ echo "sukses";
 else
 {
 	
-}
-//Untuk Memutuskan Koneksi Ke Database
+} 
+
+$kode = $_POST['kode'];
+// update chache setelah hapus barang
+include 'sanitasi.php';
+include 'cache.class.php';
+   // setup 'default' cache
+    $c = new Cache();
+
+     // store a string
+
+    // generate a new cache file with the name 'newcache'
+ 
+    $c->setCache('produk');
+
+    $c->erase($kode);
+
+
+
+
+// ending update chache setelah hapus barang
+
 mysqli_close($db);   
 ?>

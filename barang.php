@@ -1,4 +1,4 @@
-<?php  include 'session_login.php';
+    <?php  include 'session_login.php';
     // memasukan file login, header, navbar, dan db.
     
     include 'header.php';
@@ -60,8 +60,11 @@ $barang_tambah = mysqli_num_rows($pilih_akses_barang_tambah);
 
     if ($barang_tambah > 0){
 
-echo '<br><button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"> </i> ITEM </button> <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#my_Modal"><i class="fa fa-upload"> </i> Import Data Excell
-</button>';
+echo '<br><button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"> </i> ITEM </button>   
+    <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#my_Modal"><i class="fa fa-upload"> </i> Import Data Excell</button>
+
+    <a href="export_barang.php" style="width: 170px;" type="submit" id="btn-export" class="btn btn-danger"><i class="fa fa-download"> </i> Download Excel</a>
+        ';
     }
 ?>
     </div>
@@ -448,8 +451,10 @@ echo '<br><button type="button" class="btn btn-info" data-toggle="modal" data-ta
         <label> Nama Barang :</label>
         <input type="text" id="data_barang" class="form-control" autocomplete="off" readonly=""> 
         <input type="hidden" id="id_hapus" class="form-control" > 
+                <input type="hidden" id="kode_barang_hapus" class="form-control" > 
+
     </div>
-   
+    
    </form>
    
   <div class="alert alert-success" style="display:none">
@@ -653,7 +658,9 @@ $barang_edit = mysqli_num_rows($pilih_akses_barang_edit);
                                 $(document).on('click', '.btn-hapus', function (e) {
                                 var nama = $(this).attr("data-nama");
                                 var id = $(this).attr("data-id");
+                                var kode = $(this).attr("data-kode");
                                 $("#data_barang").val(nama);
+                                $("#kode_barang_hapus").val(kode);
                                 $("#id_hapus").val(id);
                                 $("#modal_hapus").modal('show');
                                 
@@ -662,10 +669,11 @@ $barang_edit = mysqli_num_rows($pilih_akses_barang_edit);
                                 $("#btn_jadi_hapus").click(function(){
                                 
                                 var id = $("#id_hapus").val();
+                                var kode = $("#kode_barang_hapus").val();
 
                                  $(".tr-id-"+id).remove();
                                 $("#modal_hapus").modal('hide');
-                                $.post("hapusbarang.php",{id:id},function(data){
+                                $.post("hapusbarang.php",{id:id,kode:kode},function(data){
                              
                                 
                                 });

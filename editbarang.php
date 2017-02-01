@@ -21,6 +21,8 @@
 <form enctype="multipart/form-data" action="proseseditbarang.php" method="post">
 <div class="container">
 
+<div class="card card-block">
+
 					<!-- membuat agar tampilan form berada dalam satu group-->
 					<div class="form-group">
 							<label>Nama Barang </label><br>
@@ -249,8 +251,9 @@
 
 					<input type="hidden" name="id" value="<?php echo $id; ?>">
 					<!-- membuat tombol Edit -->
-					<button type="submit" class="btn btn-info">Simpan</button>
+					<button type="submit" class="btn btn-info"> <i class="fa fa-save"></i> Simpan</button>
 
+</div>
 </div><!-- tag penutup div class=container -->
 
 </form>
