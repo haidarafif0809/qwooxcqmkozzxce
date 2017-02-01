@@ -205,13 +205,14 @@ $otoritas_tombol = mysqli_fetch_array($pilih_akses_tombol);
     //untuk menampilkan semua data pada tabel pelanggan dalam DB
     $query01 = $db->query("SELECT nama,id FROM user WHERE tipe = '2' ");
 
+ $petugas_paramedik = $db->query("SELECT nama_paramedik FROM penetapan_petugas ");
+        $data_petugas = mysqli_fetch_array($petugas_paramedik);
+
     //untuk menyimpan data sementara yang ada pada $query
     while($data01 = mysqli_fetch_array($query01))
     {
     
-        $petugas = $db->query("SELECT nama_paramedik FROM penetapan_petugas WHERE nama_paramedik = '$data01[nama]'");
-        $data_petugas = mysqli_fetch_array($petugas);
-
+       
     if ($data01['nama'] == $data_petugas['nama_paramedik']) {
      echo "<option selected value='".$data01['id'] ."'>".$data01['nama'] ."</option>";
     }
@@ -306,12 +307,14 @@ Level 7
     $query01 = $db->query("SELECT nama,id FROM user WHERE tipe = '3'");
 
     //untuk menyimpan data sementara yang ada pada $query
+      $petugas_farmasi = $db->query("SELECT nama_farmasi FROM penetapan_petugas ");
+
+        $data_petugas = mysqli_fetch_array($petugas_farmasi);
+
     while($data01 = mysqli_fetch_array($query01))
     {
     
-    $petugas = $db->query("SELECT nama_farmasi FROM penetapan_petugas WHERE nama_farmasi = '$data01[nama]'");
-        $data_petugas = mysqli_fetch_array($petugas);
-
+  
     if ($data01['nama'] == $data_petugas['nama_farmasi']) {
      echo "<option selected value='".$data01['id'] ."'>".$data01['nama'] ."</option>";
     }
