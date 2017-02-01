@@ -27,16 +27,17 @@ $ambil_suplier = mysqli_fetch_array($select_suplier);
             if ($sisa_kredit == 0 ) 
             {
                             // buat prepared statements
-            $stmt2 = $db->prepare("UPDATE pembelian SET no_faktur = ?, suplier = ?, total = ?, tanggal = ?, jam = ?, user = ?, status = 'Lunas', potongan = ?, tax = ?, sisa = ?, kredit = ?, cara_bayar = ?, tunai = ?, status_beli_awal = 'Tunai', ppn = ? WHERE no_faktur = ?");
+            $stmt2 = $db->prepare("UPDATE pembelian SET no_faktur = ?, suplier = ?, total = ?, tanggal = ?, jam = ?, user = ?, status = 'Lunas', potongan = ?, tax = ?, sisa = ?, kredit = ?, cara_bayar = ?, tunai = ?, status_beli_awal = 'Tunai', ppn = ?, no_faktur_suplier = ? WHERE no_faktur = ? ");
             
             
             // hubungkan "data" dengan prepared statements
             $stmt2->bind_param("ssisssiiiisiss", 
-            $nomor_faktur, $suplier, $total , $tanggal, $jam_sekarang, $user, $potongan, $tax_persen, $sisa, $sisa_kredit, $cara_bayar, $pembayaran, $ppn_input, $nomor_faktur);
+            $nomor_faktur, $suplier, $total , $tanggal, $jam_sekarang, $user, $potongan, $tax_persen, $sisa, $sisa_kredit, $cara_bayar, $pembayaran, $ppn_input,$no_faktur_suplier, $nomor_faktur);
 
             
             // siapkan "data" query
             $nomor_faktur = stringdoang($_POST['no_faktur']);
+            $no_faktur_suplier = stringdoang($_POST['no_faktur_suplier']);
             $suplier = stringdoang($_POST['suplier']);
             $total = angkadoang($_POST['total']);
             $total_1 = angkadoang($_POST['total_1']);
@@ -145,15 +146,16 @@ if ($potongan != "" || $potongan != 0 ) {
 
             {
             
-            $stmt2 = $db->prepare("UPDATE pembelian SET no_faktur = ?, suplier = ?, total = ?, tanggal = ?, jam = ?, tanggal_jt = ?, user = ?, status = 'Hutang', potongan = ?, tax = ?, sisa = ?, kredit = ?, cara_bayar = ?, tunai = ?, status_beli_awal = 'Kredit', ppn = ? WHERE no_faktur = ?");
+            $stmt2 = $db->prepare("UPDATE pembelian SET no_faktur = ?, suplier = ?, total = ?, tanggal = ?, jam = ?, tanggal_jt = ?, user = ?, status = 'Hutang', potongan = ?, tax = ?, sisa = ?, kredit = ?, cara_bayar = ?, tunai = ?, status_beli_awal = 'Kredit', ppn = ? , no_faktur_suplier = ? WHERE no_faktur = ?");
             
             
             // hubungkan "data" dengan prepared statements
             $stmt2->bind_param("ssissssiiiisiss", 
-            $nomor_faktur, $suplier, $total , $tanggal, $jam_sekarang, $tanggal_jt, $user, $potongan, $tax, $sisa, $sisa_kredit, $cara_bayar, $pembayaran, $ppn_input, $nomor_faktur);
+            $nomor_faktur, $suplier, $total , $tanggal, $jam_sekarang, $tanggal_jt, $user, $potongan, $tax, $sisa, $sisa_kredit, $cara_bayar, $pembayaran, $ppn_input,$no_faktur_suplier, $nomor_faktur);
             
             // siapkan "data" query
             $nomor_faktur = stringdoang($_POST['no_faktur']);
+            $no_faktur_suplier = stringdoang($_POST['no_faktur_suplier']);
             $suplier = stringdoang($_POST['suplier']);
             $total = angkadoang($_POST['total']);
             $total_1 = angkadoang($_POST['total_1']);
@@ -325,7 +327,7 @@ else {
 }
 
     echo "Success";
-
+    echo$no_faktur_suplier;
 
 //Untuk Memutuskan Koneksi Ke Database
 mysqli_close($db);   
