@@ -448,6 +448,8 @@ echo '<br><button type="button" class="btn btn-info" data-toggle="modal" data-ta
         <label> Nama Barang :</label>
         <input type="text" id="data_barang" class="form-control" autocomplete="off" readonly=""> 
         <input type="hidden" id="id_hapus" class="form-control" > 
+                <input type="hidden" id="kode_barang_hapus" class="form-control" > 
+
     </div>
    
    </form>
@@ -653,7 +655,9 @@ $barang_edit = mysqli_num_rows($pilih_akses_barang_edit);
                                 $(document).on('click', '.btn-hapus', function (e) {
                                 var nama = $(this).attr("data-nama");
                                 var id = $(this).attr("data-id");
+                                var kode = $(this).attr("data-kode");
                                 $("#data_barang").val(nama);
+                                $("#kode_barang_hapus").val(kode);
                                 $("#id_hapus").val(id);
                                 $("#modal_hapus").modal('show');
                                 
@@ -662,10 +666,11 @@ $barang_edit = mysqli_num_rows($pilih_akses_barang_edit);
                                 $("#btn_jadi_hapus").click(function(){
                                 
                                 var id = $("#id_hapus").val();
+                                var kode = $("#kode_barang_hapus").val();
 
                                  $(".tr-id-"+id).remove();
                                 $("#modal_hapus").modal('hide');
-                                $.post("hapusbarang.php",{id:id},function(data){
+                                $.post("hapusbarang.php",{id:id,kode:kode},function(data){
                              
                                 
                                 });

@@ -177,7 +177,7 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 			    	if ($ambil_sisa['jumlah_barang'] == '0' OR $ambil_sisa['jumlah_barang'] == '')
 			    	{
 			         
-			             $nestedData[] = "<button class='btn btn-danger btn-hapus' data-id='". $row['id'] ."'  data-nama='". $row['nama_barang'] ."'> <span class='glyphicon glyphicon-trash'> </span> Hapus </button> ";
+			             $nestedData[] = "<button class='btn btn-danger btn-hapus' data-id='". $row['id'] ."'  data-nama='". $row['nama_barang'] ."' data-kode='". $row['kode_barang'] ."'> <span class='glyphicon glyphicon-trash'> </span> Hapus </button> ";
 			        }
 			        else
 			        {
