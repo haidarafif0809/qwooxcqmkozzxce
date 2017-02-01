@@ -47,123 +47,7 @@ if ($level_harga == 'harga_1')
 
 {
 
-if ($cek > 0 )
-  //hitung persentase dokter update harga 1
-{
-$harga_1 = $harga['harga_jual'];
-$subtotal = $harga_1 * $jumlah;
-$subtotaljadi = $subtotal;
 
-$query_persen_dok1 = $db->query("UPDATE tbs_penjualan SET jumlah_barang = jumlah_barang + '$jumlah', dosis = '$dosis', subtotal = subtotal + '$subtotaljadi' WHERE kode_barang = '$kode' AND no_reg = '$no_reg'");
-
-
-$cek_persen_dokter1 = $db->query("SELECT * FROM fee_produk WHERE nama_petugas = '$dokterpenanggungjawab' AND kode_produk = '$kode'");
-$data_persen_dokter1 = mysqli_fetch_array($cek_persen_dokter1);
-
-if ($data_persen_dokter1['jumlah_prosentase'] != 0 AND $data_persen_dokter1['jumlah_uang'] == 0 )
-{
-$hasil_hitung_fee_persen_harga1 = $subtotaljadi * $data_persen_dokter1['jumlah_prosentase'] / 100;
-$query_persen_dok3 = $db->query("UPDATE tbs_fee_produk SET jumlah_fee = jumlah_fee + '$hasil_hitung_fee_persen_harga1' WHERE nama_petugas = '$dokterpenanggungjawab' AND kode_produk = '$kode'");
-
-}
-
-// END hitung persentase dokter update harga 1
-
-else
-
-// Hitung Nominal dokter update harga 1
-
-{
-
-$hasil_hitung_fee_nominal_dokter_harga1 = $data_persen_dokter1['jumlah_uang'] * $jumlah;
-$query_nominal_dok3 = $db->query("UPDATE tbs_fee_produk SET jumlah_fee = jumlah_fee + '$hasil_hitung_fee_nominal_dokter_harga1' WHERE nama_petugas = '$dokterpenanggungjawab' AND kode_produk = '$kode'");
-
-}
-// END Hitung Nominal dokter update harga 1
-
-
-// MULAI PERSENTASE APOTEKER HARGA 1
-
-$cek_persen_apoteker1 = $db->query("SELECT * FROM fee_produk WHERE nama_petugas = '$apoteker' AND kode_produk = '$kode'");
-$data_persen_apoteker1 = mysqli_fetch_array($cek_persen_apoteker1);
-
-if ($data_persen_apoteker1['jumlah_prosentase'] != 0 AND $data_persen_apoteker1['jumlah_uang'] == 0 )
-{
-
-$hasil_hitung_fee_persen_apoteker_harga1 = $subtotaljadi * $data_persen_apoteker1['jumlah_prosentase'] / 100;
-$query_persen_apoteker3 = $db->query("UPDATE tbs_fee_produk SET jumlah_fee = jumlah_fee + '$hasil_hitung_fee_persen_apoteker_harga1' WHERE nama_petugas = '$apoteker' AND kode_produk = '$kode'");
-
-}
-// AKHIR PSERSENTASE APOTEKER HARGA 1
-
-else
-
-// HITUNGAN NOMINAL APOTEKER HARGA 1
-{
-
-$hasil_hitung_fee_nominal_apoteker_harga1 = $data_persen_apoteker1['jumlah_uang'] * $jumlah;
-$query_nominal_apoteker3 = $db->query("UPDATE tbs_fee_produk SET jumlah_fee = jumlah_fee + '$hasil_hitung_fee_nominal_apoteker_harga1' WHERE nama_petugas = '$apoteker' AND kode_produk = '$kode'");
-
-}
-// ENDING NOMINAL APOTEKER HARGA 1
-
-// mulai persentase perawat harga 1
-$cek_persen_perawat_harga1 = $db->query("SELECT * FROM fee_produk WHERE nama_petugas = '$perawat' AND kode_produk = '$kode'");
-$data_persen_perawat_harga1 = mysqli_fetch_array($cek_persen_perawat_harga1);
-
-if ($data_persen_perawat_harga1['jumlah_prosentase'] != 0 AND $data_persen_perawat_harga1['jumlah_uang'] == 0 )
-{
-
-$hasil_hitung_fee_persen_perawat_harga1 = $subtotaljadi * $data_persen_perawat_harga1['jumlah_prosentase'] / 100;
-$query_persen_perawat3 = $db->query("UPDATE tbs_fee_produk SET jumlah_fee = jumlah_fee + '$hasil_hitung_fee_persen_perawat_harga1' WHERE nama_petugas = '$perawat' AND kode_produk = '$kode'");
-
-}
-// akhir persentase perawat harga 1
-
-else
-
-// nominal perawat harga 1
-{
-
-$hasil_hitung_fee_nominal_perawat_harga1 = $data_persen_perawat_harga1['jumlah_uang'] * $jumlah;
-$query_nominal_perawat3 = $db->query("UPDATE tbs_fee_produk SET jumlah_fee = jumlah_fee + '$hasil_hitung_fee_nominal_perawat_harga1' WHERE nama_petugas = '$perawat' AND kode_produk = '$kode'");
-
-}
-// akhir nominal perawat harga 1
-
-
-// MULAI PERSENTASE UNTUK PETUGAS 1
-$cek_persen_petugas_harga1 = $db->query("SELECT * FROM fee_produk WHERE nama_petugas = '$petugas' AND kode_produk = '$kode'");
-$data_persen_petugas_harga1 = mysqli_fetch_array($cek_persen_petugas_harga1);
-
-if ($data_persen_petugas_harga1['jumlah_prosentase'] != 0 AND $data_persen_petugas_harga1['jumlah_uang'] == 0 )
-{
-
-$hasil_hitung_fee_persen_petugas_harga1 = $subtotaljadi * $data_persen_petugas_harga1['jumlah_prosentase'] / 100;
-$query_persen_petugas3 = $db->query("UPDATE tbs_fee_produk SET jumlah_fee = jumlah_fee + '$hasil_hitung_fee_persen_petugas_harga1' WHERE nama_petugas = '$petugas' AND kode_produk = '$kode'");
-
-}
-// AKHIR PERSENTASE UNTUK PETUGAS 1
-
-else
-
-// START NOMINAL UNTUK PETUGAS 1
-{
-
-$hasil_hitung_fee_nominal_petugas_harga1 = $data_persen_petugas_harga1['jumlah_uang'] * $jumlah;
-$query_nominal_petugas3 = $db->query("UPDATE tbs_fee_produk SET jumlah_fee = jumlah_fee + '$hasil_hitung_fee_nominal_petugas_harga1' WHERE nama_petugas = '$petugas' AND kode_produk = '$kode'");
-
-}
-// ENDING UNTUK PETUGAS 1
-
-
-// SELESAI UNTUK UPDATE DOKTER,PERAWAT DAN APOTEKER & PETUGAS UNTUK (PERSENTASE DAN NOMINAL) HARGA 1
-
-
-} // WARNING DO NOT ANYTING ABOUT THIS BREAKET !!!
-
-else
- {
 $harga_1 = $harga['harga_jual'];
 $subtotal = $harga_1 * $jumlah;
 $subtotaljadi = $subtotal;
@@ -369,9 +253,6 @@ else
     echo "Error: " . $query6 . "<br>" . $db->error;
       }
 
-
-}
-
 }
 //  AKHIR INSERT TBS_PENJUALAN DAN PERHITUNGAN AKHIR DARI FEE PRODUK HARGA 1 DAN SUDAH UPDATENYA JUGA !!!
 
@@ -384,120 +265,7 @@ elseif ($level_harga == 'harga_2')
 
 {
 
-	if ($cek > 0 )
-{
-   $harga_2 = $harga['harga_jual2'];
-   $subtotal2 = $harga_2 * $jumlah;  
-   $subtotaljadi2 = $subtotal2;
 
-$query8 = $db->query("UPDATE tbs_penjualan SET jumlah_barang = jumlah_barang + '$jumlah', dosis = '$dosis', subtotal = subtotal + '$subtotaljadi2' WHERE kode_barang = '$kode' AND no_reg='$no_reg'");
-
-
-$cek_persen_dokter2 = $db->query("SELECT * FROM fee_produk WHERE nama_petugas = '$dokterpenanggungjawab' AND kode_produk = '$kode'");
-$data_persen_dokter2 = mysqli_fetch_array($cek_persen_dokter2);
-
-if ($data_persen_dokter2['jumlah_prosentase'] != 0 AND $data_persen_dokter2['jumlah_uang'] == 0 )
-{
-$hasil_hitung_fee_persen_harga2 = $subtotaljadi2 * $data_persen_dokter2['jumlah_prosentase'] / 100;
-$query_persen_dokter_harga_ke2 = $db->query("UPDATE tbs_fee_produk SET jumlah_fee = jumlah_fee + '$hasil_hitung_fee_persen_harga2' WHERE nama_petugas = '$dokterpenanggungjawab' AND kode_produk = '$kode'");
-
-}
-// END hitung persentase dokter update harga 2
-
-else
-
-// Hitung Nominal dokter update harga 2
-{
-
-$hasil_hitung_fee_nominal_dokter_harga2 = $data_persen_dokter2['jumlah_uang'] * $jumlah;
-$query_nominal_dokter_harga_ke2 = $db->query("UPDATE tbs_fee_produk SET jumlah_fee = jumlah_fee + '$hasil_hitung_fee_nominal_dokter_harga2' WHERE nama_petugas = '$dokterpenanggungjawab' AND kode_produk = '$kode'");
-
-}
-// END Hitung Nominal dokter update harga 2
-
-
-// MULAI PERSENTASE APOTEKER HARGA 2
-
-$cek_persen_apoteker2 = $db->query("SELECT * FROM fee_produk WHERE nama_petugas = '$apoteker' AND kode_produk = '$kode'");
-$data_persen_apoteker2 = mysqli_fetch_array($cek_persen_apoteker2);
-
-if ($data_persen_apoteker2['jumlah_prosentase'] != 0 AND $data_persen_apoteker2['jumlah_uang'] == 0 )
-{
-
-$hasil_hitung_fee_persen_apoteker_harga2 = $subtotaljadi2 * $data_persen_apoteker2['jumlah_prosentase'] / 100;
-$query_persen_apoteker_harga_ke2 = $db->query("UPDATE tbs_fee_produk SET jumlah_fee = jumlah_fee + '$hasil_hitung_fee_persen_apoteker_harga2' WHERE nama_petugas = '$apoteker' AND kode_produk = '$kode'");
-
-}
-// AKHIR PSERSENTASE APOTEKER HARGA 2
-
-else
-
-// HITUNGAN NOMINAL APOTEKER HARGA 2
-{
-
-$hasil_hitung_fee_nominal_apoteker_harga2 = $data_persen_apoteker2['jumlah_uang'] * $jumlah;
-$query_nominal_apoteker_harga_ke2 = $db->query("UPDATE tbs_fee_produk SET jumlah_fee = jumlah_fee + '$hasil_hitung_fee_nominal_apoteker_harga2' WHERE nama_petugas = '$apoteker' AND kode_produk = '$kode'");
-
-}
-// ENDING NOMINAL APOTEKER HARGA 2
-
-// mulai persentase perawat harga 2
-$cek_persen_perawat_harga2 = $db->query("SELECT * FROM fee_produk WHERE nama_petugas = '$perawat' AND kode_produk = '$kode'");
-$data_persen_perawat_harga2 = mysqli_fetch_array($cek_persen_perawat_harga2);
-
-if ($data_persen_perawat_harga2['jumlah_prosentase'] != 0 AND $data_persen_perawat_harga2['jumlah_uang'] == 0 )
-{
-
-$hasil_hitung_fee_persen_perawat_harga2 = $subtotaljadi2 * $data_persen_perawat_harga2['jumlah_prosentase'] / 100;
-$query_persen_perawat_harga_ke2 = $db->query("UPDATE tbs_fee_produk SET jumlah_fee = jumlah_fee + '$hasil_hitung_fee_persen_perawat_harga2' WHERE nama_petugas = '$perawat' AND kode_produk = '$kode'");
-
-}
-// akhir persentase perawat harga 2
-
-else
-
-// nominal perawat harga 2
-{
-
-$hasil_hitung_fee_nominal_perawat_harga2 = $data_persen_perawat_harga2['jumlah_uang'] * $jumlah;
-$query_nominal_perawat_harga_ke2 = $db->query("UPDATE tbs_fee_produk SET jumlah_fee = jumlah_fee + '$hasil_hitung_fee_nominal_perawat_harga2' WHERE nama_petugas = '$perawat' AND kode_produk = '$kode'");
-
-}
-// akhir nominal perawat harga 2
-
-
-// MULAI PERSENTASE UNTUK PETUGAS 2
-$cek_persen_petugas_harga2 = $db->query("SELECT * FROM fee_produk WHERE nama_petugas = '$petugas' AND kode_produk = '$kode'");
-$data_persen_petugas_harga2 = mysqli_fetch_array($cek_persen_petugas_harga2);
-
-if ($data_persen_petugas_harga2['jumlah_prosentase'] != 0 AND $data_persen_petugas_harga2['jumlah_uang'] == 0 )
-{
-
-$hasil_hitung_fee_persen_petugas_harga2 = $subtotaljadi2 * $data_persen_petugas_harga2['jumlah_prosentase'] / 100;
-$query_persen_petugas_harga2 = $db->query("UPDATE tbs_fee_produk SET jumlah_fee = jumlah_fee + '$hasil_hitung_fee_persen_petugas_harga2' WHERE nama_petugas = '$petugas' AND kode_produk = '$kode'");
-
-}
-// AKHIR PERSENTASE UNTUK PETUGAS 2
-
-else
-
-// START NOMINAL UNTUK PETUGAS 2
-{
-
-$hasil_hitung_fee_nominal_petugas_harga2 = $data_persen_petugas_harga2['jumlah_uang'] * $jumlah;
-$query_nominal_petugas_harga2 = $db->query("UPDATE tbs_fee_produk SET jumlah_fee = jumlah_fee + '$hasil_hitung_fee_nominal_petugas_harga2' WHERE nama_petugas = '$petugas' AND kode_produk = '$kode'");
-
-}
-// ENDING UNTUK PETUGAS 2
-
-// SELESAI UNTUK UPDATE DOKTER,PERAWAT, APOTEKER DAN PETUGAS (PERSENTASE DAN NOMINIL) UNTUK HARGA 2
-
-
-} // WARNING DO NOT ANYTING ABOUT THIS BREAKET !!!
-
-
-else 
-{
 $harga_2 = $harga['harga_jual2'];
 $subtotal2 = $harga_2 * $jumlah;
 $subtotaljadi2 = $subtotal2;
@@ -715,7 +483,7 @@ else
     echo "Error: " . $query10 . "<br>" . $db->error;
       }
   
-}
+
 
 }
             // AKHIR TOTAL SEMUA DARI UPDATE, FEE DAN INSERT TBS 
@@ -727,122 +495,7 @@ elseif ($level_harga == 'harga_3' )
 
 {
 
-if ($cek > 0 )
-{
-  $harga_3 = $harga['harga_jual3'];
-  $subtotal3 = $harga_3 * $jumlah;
-  $subtotaljadi3 = $subtotal3;
 
-$query12 = $db->query("UPDATE tbs_penjualan SET jumlah_barang = jumlah_barang + '$jumlah', dosis = '$dosis',
- subtotal = subtotal + '$subtotaljadi3' WHERE kode_barang = '$kode' AND no_reg='$no_reg'  ");
-
-
-$cek_persen_dokter3 = $db->query("SELECT * FROM fee_produk WHERE nama_petugas = '$dokterpenanggungjawab' AND kode_produk = '$kode'");
-$data_persen_dokter3 = mysqli_fetch_array($cek_persen_dokter3);
-
-if ($data_persen_dokter3['jumlah_prosentase'] != 0 AND $data_persen_dokter3['jumlah_uang'] == 0 )
-{
-$hasil_hitung_fee_persen_harga3 = $subtotaljadi3 * $data_persen_dokter3['jumlah_prosentase'] / 100;
-$query_persen_dokter_harga_ke3 = $db->query("UPDATE tbs_fee_produk SET jumlah_fee = jumlah_fee + '$hasil_hitung_fee_persen_harga3' WHERE nama_petugas = '$dokterpenanggungjawab' AND kode_produk = '$kode'");
-
-}
-// END hitung persentase dokter update harga 3
-
-else
-
-// Hitung Nominal dokter update harga 3
-{
-
-$hasil_hitung_fee_nominal_dokter_harga3 = $data_persen_dokter3['jumlah_uang'] * $jumlah;
-$query_nominal_dokter_harga_ke3 = $db->query("UPDATE tbs_fee_produk SET jumlah_fee = jumlah_fee + '$hasil_hitung_fee_nominal_dokter_harga3' WHERE nama_petugas = '$dokterpenanggungjawab' AND kode_produk = '$kode'");
-
-}
-// END Hitung Nominal dokter update harga 3
-
-
-
-// MULAI PERSENTASE APOTEKER HARGA 3
-
-$cek_persen_apoteker3 = $db->query("SELECT * FROM fee_produk WHERE nama_petugas = '$apoteker' AND kode_produk = '$kode'");
-$data_persen_apoteker3 = mysqli_fetch_array($cek_persen_apoteker3);
-
-if ($data_persen_apoteker3['jumlah_prosentase'] != 0 AND $data_persen_apoteker3['jumlah_uang'] == 0 )
-{
-
-$hasil_hitung_fee_persen_apoteker_harga3 = $subtotaljadi3 * $data_persen_apoteker3['jumlah_prosentase'] / 100;
-$query_persen_apoteker_harga_ke3 = $db->query("UPDATE tbs_fee_produk SET jumlah_fee = jumlah_fee + '$hasil_hitung_fee_persen_apoteker_harga3' WHERE nama_petugas = '$apoteker' AND kode_produk = '$kode'");
-
-}
-// AKHIR PSERSENTASE APOTEKER HARGA 3
-
-else
-
-// HITUNGAN NOMINAL APOTEKER HARGA 3
-{
-
-$hasil_hitung_fee_nominal_apoteker_harga3 = $data_persen_apoteker3['jumlah_uang'] * $jumlah;
-$query_nominal_apoteker_harga_ke3 = $db->query("UPDATE tbs_fee_produk SET jumlah_fee = jumlah_fee + '$hasil_hitung_fee_nominal_apoteker_harga3' WHERE nama_petugas = '$apoteker' AND kode_produk = '$kode'");
-
-}
-// ENDING NOMINAL APOTEKER HARGA 3
-
-// mulai persentase perawat harga 3
-$cek_persen_perawat_harga3 = $db->query("SELECT * FROM fee_produk WHERE nama_petugas = '$perawat' AND kode_produk = '$kode'");
-$data_persen_perawat_harga3 = mysqli_fetch_array($cek_persen_perawat_harga3);
-
-if ($data_persen_perawat_harga3['jumlah_prosentase'] != 0 AND $data_persen_perawat_harga3['jumlah_uang'] == 0 )
-{
-
-$hasil_hitung_fee_persen_perawat_harga3 = $subtotaljadi3 * $data_persen_perawat_harga3['jumlah_prosentase'] / 100;
-$query_persen_perawat_harga_ke3 = $db->query("UPDATE tbs_fee_produk SET jumlah_fee = jumlah_fee + '$hasil_hitung_fee_persen_perawat_harga3' WHERE nama_petugas = '$perawat' AND kode_produk = '$kode'");
-
-}
-// akhir persentase perawat harga 3
-
-else
-
-// nominal perawat harga 3
-{
-
-$hasil_hitung_fee_nominal_perawat_harga3 = $data_persen_perawat_harga3['jumlah_uang'] * $jumlah;
-$query_nominal_perawat_harga_ke3 = $db->query("UPDATE tbs_fee_produk SET jumlah_fee = jumlah_fee + '$hasil_hitung_fee_nominal_perawat_harga3' WHERE nama_petugas = '$perawat' AND kode_produk = '$kode'");
-
-}
-// akhir nominal perawat harga 3
-
-
-// MULAI PERSENTASE UNTUK PETUGAS 3
-$cek_persen_petugas_harga3 = $db->query("SELECT * FROM fee_produk WHERE nama_petugas = '$petugas' AND kode_produk = '$kode'");
-$data_persen_petugas_harga3 = mysqli_fetch_array($cek_persen_petugas_harga3);
-
-if ($data_persen_petugas_harga3['jumlah_prosentase'] != 0 AND $data_persen_petugas_harga3['jumlah_uang'] == 0 )
-{
-
-$hasil_hitung_fee_persen_petugas_harga3 = $subtotaljadi3 * $data_persen_petugas_harga3['jumlah_prosentase'] / 100;
-$query_persen_petugas_harga3 = $db->query("UPDATE tbs_fee_produk SET jumlah_fee = jumlah_fee + '$hasil_hitung_fee_persen_petugas_harga3' WHERE nama_petugas = '$petugas' AND kode_produk = '$kode'");
-
-}
-// AKHIR PERSENTASE UNTUK PETUGAS 3
-
-else
-
-// START NOMINAL UNTUK PETUGAS 3
-{
-
-$hasil_hitung_fee_nominal_petugas_harga3 = $data_persen_petugas_harga3['jumlah_uang'] * $jumlah;
-$query_nominal_petugas_harga3 = $db->query("UPDATE tbs_fee_produk SET jumlah_fee = jumlah_fee + '$hasil_hitung_fee_nominal_petugas_harga3' WHERE nama_petugas = '$petugas' AND kode_produk = '$kode'");
-
-}
-// ENDING UNTUK PETUGAS 3
-
-// SELESAI UNTUK UPDATE DOKTER,PERAWAT, APOTEKER DAN PETUGAS (PERSENTASE DAN NOMINAL) UNTUK HARGA 3
-
-
-} // WARNING DO NOT ANYTING ABOUT THIS BREAKET !!!
-
-else 
-
-{
 
 $harga_3 = $harga['harga_jual3'];
 $subtotal3 = $harga_3 * $jumlah;
@@ -1058,130 +711,13 @@ else
       }
 
 
-
-} 
-
-}
+}// DONT TOUCH ME
 
 
 elseif ($level_harga == 'harga_4')
 
 {
 
-  if ($cek > 0 )
-{
-   $harga_4 = $harga['harga_jual4'];
-   $subtotal4 = $harga_4 * $jumlah;  
-   $subtotaljadi4 = $subtotal4;
-
-$query8 = $db->query("UPDATE tbs_penjualan SET jumlah_barang = jumlah_barang + '$jumlah', dosis = '$dosis', subtotal = subtotal + '$subtotaljadi4' WHERE kode_barang = '$kode' AND no_reg='$no_reg'");
-
-
-$cek_persen_dokter4 = $db->query("SELECT * FROM fee_produk WHERE nama_petugas = '$dokterpenanggungjawab' AND kode_produk = '$kode'");
-$data_persen_dokter4 = mysqli_fetch_array($cek_persen_dokter4);
-
-if ($data_persen_dokter4['jumlah_prosentase'] != 0 AND $data_persen_dokter4['jumlah_uang'] == 0 )
-{
-$hasil_hitung_fee_persen_harga4 = $subtotaljadi4 * $data_persen_dokter4['jumlah_prosentase'] / 100;
-$query_persen_dokter_harga_ke4 = $db->query("UPDATE tbs_fee_produk SET jumlah_fee = jumlah_fee + '$hasil_hitung_fee_persen_harga4' WHERE nama_petugas = '$dokterpenanggungjawab' AND kode_produk = '$kode'");
-
-}
-// END hitung persentase dokter update harga 4
-
-else
-
-// Hitung Nominal dokter update harga 4
-{
-
-$hasil_hitung_fee_nominal_dokter_harga4 = $data_persen_dokter4['jumlah_uang'] * $jumlah;
-$query_nominal_dokter_harga_ke4 = $db->query("UPDATE tbs_fee_produk SET jumlah_fee = jumlah_fee + '$hasil_hitung_fee_nominal_dokter_harga4' WHERE nama_petugas = '$dokterpenanggungjawab' AND kode_produk = '$kode'");
-
-}
-// END Hitung Nominal dokter update harga 4
-
-
-// MULAI PERSENTASE APOTEKER HARGA 4
-
-$cek_persen_apoteker4 = $db->query("SELECT * FROM fee_produk WHERE nama_petugas = '$apoteker' AND kode_produk = '$kode'");
-$data_persen_apoteker4 = mysqli_fetch_array($cek_persen_apoteker4);
-
-if ($data_persen_apoteker4['jumlah_prosentase'] != 0 AND $data_persen_apoteker4['jumlah_uang'] == 0 )
-{
-
-$hasil_hitung_fee_persen_apoteker_harga4 = $subtotaljadi4 * $data_persen_apoteker4['jumlah_prosentase'] / 100;
-$query_persen_apoteker_harga_ke4 = $db->query("UPDATE tbs_fee_produk SET jumlah_fee = jumlah_fee + '$hasil_hitung_fee_persen_apoteker_harga4' WHERE nama_petugas = '$apoteker' AND kode_produk = '$kode'");
-
-}
-// AKHIR PSERSENTASE APOTEKER HARGA 4
-
-else
-
-// HITUNGAN NOMINAL APOTEKER HARGA 4
-{
-
-$hasil_hitung_fee_nominal_apoteker_harga4 = $data_persen_apoteker4['jumlah_uang'] * $jumlah;
-$query_nominal_apoteker_harga_ke4 = $db->query("UPDATE tbs_fee_produk SET jumlah_fee = jumlah_fee + '$hasil_hitung_fee_nominal_apoteker_harga4' WHERE nama_petugas = '$apoteker' AND kode_produk = '$kode'");
-
-}
-// ENDING NOMINAL APOTEKER HARGA 4
-
-// mulai persentase perawat harga 4
-$cek_persen_perawat_harga4 = $db->query("SELECT * FROM fee_produk WHERE nama_petugas = '$perawat' AND kode_produk = '$kode'");
-$data_persen_perawat_harga4 = mysqli_fetch_array($cek_persen_perawat_harga4);
-
-if ($data_persen_perawat_harga4['jumlah_prosentase'] != 0 AND $data_persen_perawat_harga4['jumlah_uang'] == 0 )
-{
-
-$hasil_hitung_fee_persen_perawat_harga4 = $subtotaljadi4 * $data_persen_perawat_harga4['jumlah_prosentase'] / 100;
-$query_persen_perawat_harga_ke4 = $db->query("UPDATE tbs_fee_produk SET jumlah_fee = jumlah_fee + '$hasil_hitung_fee_persen_perawat_harga4' WHERE nama_petugas = '$perawat' AND kode_produk = '$kode'");
-
-}
-// akhir persentase perawat harga 4
-
-else
-
-// nominal perawat harga 4
-{
-
-$hasil_hitung_fee_nominal_perawat_harga4 = $data_persen_perawat_harga4['jumlah_uang'] * $jumlah;
-$query_nominal_perawat_harga_ke4 = $db->query("UPDATE tbs_fee_produk SET jumlah_fee = jumlah_fee + '$hasil_hitung_fee_nominal_perawat_harga4' WHERE nama_petugas = '$perawat' AND kode_produk = '$kode'");
-
-}
-// akhir nominal perawat harga 4
-
-
-// MULAI PERSENTASE UNTUK PETUGAS 4
-$cek_persen_petugas_harga4 = $db->query("SELECT * FROM fee_produk WHERE nama_petugas = '$petugas' AND kode_produk = '$kode'");
-$data_persen_petugas_harga4 = mysqli_fetch_array($cek_persen_petugas_harga4);
-
-if ($data_persen_petugas_harga4['jumlah_prosentase'] != 0 AND $data_persen_petugas_harga4['jumlah_uang'] == 0 )
-{
-
-$hasil_hitung_fee_persen_petugas_harga4 = $subtotaljadi4 * $data_persen_petugas_harga4['jumlah_prosentase'] / 100;
-$query_persen_petugas_harga4 = $db->query("UPDATE tbs_fee_produk SET jumlah_fee = jumlah_fee + '$hasil_hitung_fee_persen_petugas_harga4' WHERE nama_petugas = '$petugas' AND kode_produk = '$kode'");
-
-}
-// AKHIR PERSENTASE UNTUK PETUGAS 4
-
-else
-
-// START NOMINAL UNTUK PETUGAS 4
-{
-
-$hasil_hitung_fee_nominal_petugas_harga4 = $data_persen_petugas_harga4['jumlah_uang'] * $jumlah;
-$query_nominal_petugas_harga4 = $db->query("UPDATE tbs_fee_produk SET jumlah_fee = jumlah_fee + '$hasil_hitung_fee_nominal_petugas_harga4' WHERE nama_petugas = '$petugas' AND kode_produk = '$kode'");
-
-}
-// ENDING UNTUK PETUGAS 4
-
-// SELESAI UNTUK UPDATE DOKTER,PERAWAT, APOTEKER DAN PETUGAS (PERSENTASE DAN NOMINIL) UNTUK HARGA 4
-
-
-} // WARNING DO NOT ANYTING ABOUT THIS BREAKET !!!
-
-
-else 
-{
 $harga_4 = $harga['harga_jual4'];
 $subtotal4 = $harga_4 * $jumlah;
 $subtotaljadi4 = $subtotal4;
@@ -1399,7 +935,7 @@ else
     echo "Error: " . $query10 . "<br>" . $db->error;
       }
   
-}
+
 
 }
             // AKHIR TOTAL SEMUA DARI UPDATE, FEE DAN INSERT TBS 
@@ -1409,120 +945,7 @@ elseif ($level_harga == 'harga_5')
 
 {
 
-  if ($cek > 0 )
-{
-   $harga_5 = $harga['harga_jual5'];
-   $subtotal5 = $harga_5 * $jumlah;  
-   $subtotaljadi5 = $subtotal5;
 
-$query8 = $db->query("UPDATE tbs_penjualan SET jumlah_barang = jumlah_barang + '$jumlah', dosis = '$dosis', subtotal = subtotal + '$subtotaljadi5' WHERE kode_barang = '$kode' AND no_reg='$no_reg'");
-
-
-$cek_persen_dokter5 = $db->query("SELECT * FROM fee_produk WHERE nama_petugas = '$dokterpenanggungjawab' AND kode_produk = '$kode'");
-$data_persen_dokter5 = mysqli_fetch_array($cek_persen_dokter5);
-
-if ($data_persen_dokter5['jumlah_prosentase'] != 0 AND $data_persen_dokter5['jumlah_uang'] == 0 )
-{
-$hasil_hitung_fee_persen_harga5 = $subtotaljadi5 * $data_persen_dokter5['jumlah_prosentase'] / 100;
-$query_persen_dokter_harga_ke5 = $db->query("UPDATE tbs_fee_produk SET jumlah_fee = jumlah_fee + '$hasil_hitung_fee_persen_harga5' WHERE nama_petugas = '$dokterpenanggungjawab' AND kode_produk = '$kode'");
-
-}
-// END hitung persentase dokter update harga 5
-
-else
-
-// Hitung Nominal dokter update harga 5
-{
-
-$hasil_hitung_fee_nominal_dokter_harga5 = $data_persen_dokter5['jumlah_uang'] * $jumlah;
-$query_nominal_dokter_harga_ke5 = $db->query("UPDATE tbs_fee_produk SET jumlah_fee = jumlah_fee + '$hasil_hitung_fee_nominal_dokter_harga5' WHERE nama_petugas = '$dokterpenanggungjawab' AND kode_produk = '$kode'");
-
-}
-// END Hitung Nominal dokter update harga 5
-
-
-// MULAI PERSENTASE APOTEKER HARGA 5
-
-$cek_persen_apoteker5 = $db->query("SELECT * FROM fee_produk WHERE nama_petugas = '$apoteker' AND kode_produk = '$kode'");
-$data_persen_apoteker5 = mysqli_fetch_array($cek_persen_apoteker5);
-
-if ($data_persen_apoteker5['jumlah_prosentase'] != 0 AND $data_persen_apoteker5['jumlah_uang'] == 0 )
-{
-
-$hasil_hitung_fee_persen_apoteker_harga5 = $subtotaljadi5 * $data_persen_apoteker5['jumlah_prosentase'] / 100;
-$query_persen_apoteker_harga_ke5 = $db->query("UPDATE tbs_fee_produk SET jumlah_fee = jumlah_fee + '$hasil_hitung_fee_persen_apoteker_harga5' WHERE nama_petugas = '$apoteker' AND kode_produk = '$kode'");
-
-}
-// AKHIR PSERSENTASE APOTEKER HARGA 5
-
-else
-
-// HITUNGAN NOMINAL APOTEKER HARGA 5
-{
-
-$hasil_hitung_fee_nominal_apoteker_harga5 = $data_persen_apoteker5['jumlah_uang'] * $jumlah;
-$query_nominal_apoteker_harga_ke5 = $db->query("UPDATE tbs_fee_produk SET jumlah_fee = jumlah_fee + '$hasil_hitung_fee_nominal_apoteker_harga5' WHERE nama_petugas = '$apoteker' AND kode_produk = '$kode'");
-
-}
-// ENDING NOMINAL APOTEKER HARGA 5
-
-// mulai persentase perawat harga 5
-$cek_persen_perawat_harga5 = $db->query("SELECT * FROM fee_produk WHERE nama_petugas = '$perawat' AND kode_produk = '$kode'");
-$data_persen_perawat_harga5 = mysqli_fetch_array($cek_persen_perawat_harga5);
-
-if ($data_persen_perawat_harga5['jumlah_prosentase'] != 0 AND $data_persen_perawat_harga5['jumlah_uang'] == 0 )
-{
-
-$hasil_hitung_fee_persen_perawat_harga5 = $subtotaljadi5 * $data_persen_perawat_harga5['jumlah_prosentase'] / 100;
-$query_persen_perawat_harga_ke5 = $db->query("UPDATE tbs_fee_produk SET jumlah_fee = jumlah_fee + '$hasil_hitung_fee_persen_perawat_harga5' WHERE nama_petugas = '$perawat' AND kode_produk = '$kode'");
-
-}
-// akhir persentase perawat harga 5
-
-else
-
-// nominal perawat harga 5
-{
-
-$hasil_hitung_fee_nominal_perawat_harga5 = $data_persen_perawat_harga5['jumlah_uang'] * $jumlah;
-$query_nominal_perawat_harga_ke5 = $db->query("UPDATE tbs_fee_produk SET jumlah_fee = jumlah_fee + '$hasil_hitung_fee_nominal_perawat_harga5' WHERE nama_petugas = '$perawat' AND kode_produk = '$kode'");
-
-}
-// akhir nominal perawat harga 5
-
-
-// MULAI PERSENTASE UNTUK PETUGAS 5
-$cek_persen_petugas_harga5 = $db->query("SELECT * FROM fee_produk WHERE nama_petugas = '$petugas' AND kode_produk = '$kode'");
-$data_persen_petugas_harga5 = mysqli_fetch_array($cek_persen_petugas_harga5);
-
-if ($data_persen_petugas_harga5['jumlah_prosentase'] != 0 AND $data_persen_petugas_harga5['jumlah_uang'] == 0 )
-{
-
-$hasil_hitung_fee_persen_petugas_harga5 = $subtotaljadi5 * $data_persen_petugas_harga5['jumlah_prosentase'] / 100;
-$query_persen_petugas_harga5 = $db->query("UPDATE tbs_fee_produk SET jumlah_fee = jumlah_fee + '$hasil_hitung_fee_persen_petugas_harga5' WHERE nama_petugas = '$petugas' AND kode_produk = '$kode'");
-
-}
-// AKHIR PERSENTASE UNTUK PETUGAS 5
-
-else
-
-// START NOMINAL UNTUK PETUGAS 5
-{
-
-$hasil_hitung_fee_nominal_petugas_harga5 = $data_persen_petugas_harga5['jumlah_uang'] * $jumlah;
-$query_nominal_petugas_harga5 = $db->query("UPDATE tbs_fee_produk SET jumlah_fee = jumlah_fee + '$hasil_hitung_fee_nominal_petugas_harga5' WHERE nama_petugas = '$petugas' AND kode_produk = '$kode'");
-
-}
-// ENDING UNTUK PETUGAS 5
-
-// SELESAI UNTUK UPDATE DOKTER,PERAWAT, APOTEKER DAN PETUGAS (PERSENTASE DAN NOMINIL) UNTUK HARGA 5
-
-
-} // WARNING DO NOT ANYTING ABOUT THIS BREAKET !!!
-
-
-else 
-{
 $harga_5 = $harga['harga_jual5'];
 $subtotal5 = $harga_5 * $jumlah;
 $subtotaljadi5 = $subtotal5;
@@ -1741,7 +1164,6 @@ else
     echo "Error: " . $query10 . "<br>" . $db->error;
       }
   
-}
 
 }
             // AKHIR TOTAL SEMUA DARI UPDATE, FEE DAN INSERT TBS 
@@ -1751,120 +1173,7 @@ elseif ($level_harga == 'harga_6')
 
 {
 
-  if ($cek > 0 )
-{
-   $harga_6 = $harga['harga_jual6'];
-   $subtotal6 = $harga_6 * $jumlah;  
-   $subtotaljadi6 = $subtotal6;
-
-$query8 = $db->query("UPDATE tbs_penjualan SET jumlah_barang = jumlah_barang + '$jumlah', dosis = '$dosis', subtotal = subtotal + '$subtotaljadi6' WHERE kode_barang = '$kode' AND no_reg='$no_reg'");
-
-
-$cek_persen_dokter6 = $db->query("SELECT * FROM fee_produk WHERE nama_petugas = '$dokterpenanggungjawab' AND kode_produk = '$kode'");
-$data_persen_dokter6 = mysqli_fetch_array($cek_persen_dokter6);
-
-if ($data_persen_dokter6['jumlah_prosentase'] != 0 AND $data_persen_dokter6['jumlah_uang'] == 0 )
-{
-$hasil_hitung_fee_persen_harga6 = $subtotaljadi6 * $data_persen_dokter6['jumlah_prosentase'] / 100;
-$query_persen_dokter_harga_ke6 = $db->query("UPDATE tbs_fee_produk SET jumlah_fee = jumlah_fee + '$hasil_hitung_fee_persen_harga6' WHERE nama_petugas = '$dokterpenanggungjawab' AND kode_produk = '$kode'");
-
-}
-// END hitung persentase dokter update harga 6
-
-else
-
-// Hitung Nominal dokter update harga 6
-{
-
-$hasil_hitung_fee_nominal_dokter_harga6 = $data_persen_dokter6['jumlah_uang'] * $jumlah;
-$query_nominal_dokter_harga_ke6 = $db->query("UPDATE tbs_fee_produk SET jumlah_fee = jumlah_fee + '$hasil_hitung_fee_nominal_dokter_harga6' WHERE nama_petugas = '$dokterpenanggungjawab' AND kode_produk = '$kode'");
-
-}
-// END Hitung Nominal dokter update harga 6
-
-
-// MULAI PERSENTASE APOTEKER HARGA 6
-
-$cek_persen_apoteker6 = $db->query("SELECT * FROM fee_produk WHERE nama_petugas = '$apoteker' AND kode_produk = '$kode'");
-$data_persen_apoteker6 = mysqli_fetch_array($cek_persen_apoteker6);
-
-if ($data_persen_apoteker6['jumlah_prosentase'] != 0 AND $data_persen_apoteker6['jumlah_uang'] == 0 )
-{
-
-$hasil_hitung_fee_persen_apoteker_harga6 = $subtotaljadi6 * $data_persen_apoteker6['jumlah_prosentase'] / 100;
-$query_persen_apoteker_harga_ke6 = $db->query("UPDATE tbs_fee_produk SET jumlah_fee = jumlah_fee + '$hasil_hitung_fee_persen_apoteker_harga6' WHERE nama_petugas = '$apoteker' AND kode_produk = '$kode'");
-
-}
-// AKHIR PSERSENTASE APOTEKER HARGA 6
-
-else
-
-// HITUNGAN NOMINAL APOTEKER HARGA 6
-{
-
-$hasil_hitung_fee_nominal_apoteker_harga6 = $data_persen_apoteker6['jumlah_uang'] * $jumlah;
-$query_nominal_apoteker_harga_ke6 = $db->query("UPDATE tbs_fee_produk SET jumlah_fee = jumlah_fee + '$hasil_hitung_fee_nominal_apoteker_harga6' WHERE nama_petugas = '$apoteker' AND kode_produk = '$kode'");
-
-}
-// ENDING NOMINAL APOTEKER HARGA 6
-
-// mulai persentase perawat harga 6
-$cek_persen_perawat_harga6 = $db->query("SELECT * FROM fee_produk WHERE nama_petugas = '$perawat' AND kode_produk = '$kode'");
-$data_persen_perawat_harga6 = mysqli_fetch_array($cek_persen_perawat_harga6);
-
-if ($data_persen_perawat_harga6['jumlah_prosentase'] != 0 AND $data_persen_perawat_harga6['jumlah_uang'] == 0 )
-{
-
-$hasil_hitung_fee_persen_perawat_harga6 = $subtotaljadi6 * $data_persen_perawat_harga6['jumlah_prosentase'] / 100;
-$query_persen_perawat_harga_ke6 = $db->query("UPDATE tbs_fee_produk SET jumlah_fee = jumlah_fee + '$hasil_hitung_fee_persen_perawat_harga6' WHERE nama_petugas = '$perawat' AND kode_produk = '$kode'");
-
-}
-// akhir persentase perawat harga 6
-
-else
-
-// nominal perawat harga 6
-{
-
-$hasil_hitung_fee_nominal_perawat_harga6 = $data_persen_perawat_harga6['jumlah_uang'] * $jumlah;
-$query_nominal_perawat_harga_ke6 = $db->query("UPDATE tbs_fee_produk SET jumlah_fee = jumlah_fee + '$hasil_hitung_fee_nominal_perawat_harga6' WHERE nama_petugas = '$perawat' AND kode_produk = '$kode'");
-
-}
-// akhir nominal perawat harga 6
-
-
-// MULAI PERSENTASE UNTUK PETUGAS 6
-$cek_persen_petugas_harga6 = $db->query("SELECT * FROM fee_produk WHERE nama_petugas = '$petugas' AND kode_produk = '$kode'");
-$data_persen_petugas_harga6 = mysqli_fetch_array($cek_persen_petugas_harga6);
-
-if ($data_persen_petugas_harga6['jumlah_prosentase'] != 0 AND $data_persen_petugas_harga6['jumlah_uang'] == 0 )
-{
-
-$hasil_hitung_fee_persen_petugas_harga6 = $subtotaljadi6 * $data_persen_petugas_harga6['jumlah_prosentase'] / 100;
-$query_persen_petugas_harga6 = $db->query("UPDATE tbs_fee_produk SET jumlah_fee = jumlah_fee + '$hasil_hitung_fee_persen_petugas_harga6' WHERE nama_petugas = '$petugas' AND kode_produk = '$kode'");
-
-}
-// AKHIR PERSENTASE UNTUK PETUGAS 6
-
-else
-
-// START NOMINAL UNTUK PETUGAS 6
-{
-
-$hasil_hitung_fee_nominal_petugas_harga6 = $data_persen_petugas_harga6['jumlah_uang'] * $jumlah;
-$query_nominal_petugas_harga6 = $db->query("UPDATE tbs_fee_produk SET jumlah_fee = jumlah_fee + '$hasil_hitung_fee_nominal_petugas_harga6' WHERE nama_petugas = '$petugas' AND kode_produk = '$kode'");
-
-}
-// ENDING UNTUK PETUGAS 6
-
-// SELESAI UNTUK UPDATE DOKTER,PERAWAT, APOTEKER DAN PETUGAS (PERSENTASE DAN NOMINIL) UNTUK HARGA 6
-
-
-} // WARNING DO NOT ANYTING ABOUT THIS BREAKET !!!
-
-
-else 
-{
+  
 $harga_6 = $harga['harga_jual6'];
 $subtotal6 = $harga_6 * $jumlah;
 $subtotaljadi6 = $subtotal6;
@@ -2082,8 +1391,6 @@ else
       {
     echo "Error: " . $query10 . "<br>" . $db->error;
       }
-  
-}
 
 }
             // AKHIR TOTAL SEMUA DARI UPDATE, FEE DAN INSERT TBS 
@@ -2093,120 +1400,7 @@ elseif ($level_harga == 'harga_7')
 
 {
 
-  if ($cek > 0 )
-{
-   $harga_7 = $harga['harga_jual7'];
-   $subtotal7 = $harga_7 * $jumlah;  
-   $subtotaljadi7 = $subtotal7;
-
-$query8 = $db->query("UPDATE tbs_penjualan SET jumlah_barang = jumlah_barang + '$jumlah', dosis = '$dosis', subtotal = subtotal + '$subtotaljadi7' WHERE kode_barang = '$kode' AND no_reg='$no_reg'");
-
-
-$cek_persen_dokter7 = $db->query("SELECT * FROM fee_produk WHERE nama_petugas = '$dokterpenanggungjawab' AND kode_produk = '$kode'");
-$data_persen_dokter7 = mysqli_fetch_array($cek_persen_dokter7);
-
-if ($data_persen_dokter7['jumlah_prosentase'] != 0 AND $data_persen_dokter7['jumlah_uang'] == 0 )
-{
-$hasil_hitung_fee_persen_harga7 = $subtotaljadi7 * $data_persen_dokter7['jumlah_prosentase'] / 100;
-$query_persen_dokter_harga_ke7 = $db->query("UPDATE tbs_fee_produk SET jumlah_fee = jumlah_fee + '$hasil_hitung_fee_persen_harga7' WHERE nama_petugas = '$dokterpenanggungjawab' AND kode_produk = '$kode'");
-
-}
-// END hitung persentase dokter update harga 7
-
-else
-
-// Hitung Nominal dokter update harga 7
-{
-
-$hasil_hitung_fee_nominal_dokter_harga7 = $data_persen_dokter7['jumlah_uang'] * $jumlah;
-$query_nominal_dokter_harga_ke7 = $db->query("UPDATE tbs_fee_produk SET jumlah_fee = jumlah_fee + '$hasil_hitung_fee_nominal_dokter_harga7' WHERE nama_petugas = '$dokterpenanggungjawab' AND kode_produk = '$kode'");
-
-}
-// END Hitung Nominal dokter update harga 7
-
-
-// MULAI PERSENTASE APOTEKER HARGA 7
-
-$cek_persen_apoteker7 = $db->query("SELECT * FROM fee_produk WHERE nama_petugas = '$apoteker' AND kode_produk = '$kode'");
-$data_persen_apoteker7 = mysqli_fetch_array($cek_persen_apoteker7);
-
-if ($data_persen_apoteker7['jumlah_prosentase'] != 0 AND $data_persen_apoteker7['jumlah_uang'] == 0 )
-{
-
-$hasil_hitung_fee_persen_apoteker_harga7 = $subtotaljadi7 * $data_persen_apoteker7['jumlah_prosentase'] / 100;
-$query_persen_apoteker_harga_ke7 = $db->query("UPDATE tbs_fee_produk SET jumlah_fee = jumlah_fee + '$hasil_hitung_fee_persen_apoteker_harga7' WHERE nama_petugas = '$apoteker' AND kode_produk = '$kode'");
-
-}
-// AKHIR PSERSENTASE APOTEKER HARGA 7
-
-else
-
-// HITUNGAN NOMINAL APOTEKER HARGA 7
-{
-
-$hasil_hitung_fee_nominal_apoteker_harga7 = $data_persen_apoteker7['jumlah_uang'] * $jumlah;
-$query_nominal_apoteker_harga_ke7 = $db->query("UPDATE tbs_fee_produk SET jumlah_fee = jumlah_fee + '$hasil_hitung_fee_nominal_apoteker_harga7' WHERE nama_petugas = '$apoteker' AND kode_produk = '$kode'");
-
-}
-// ENDING NOMINAL APOTEKER HARGA 7
-
-// mulai persentase perawat harga 7
-$cek_persen_perawat_harga7 = $db->query("SELECT * FROM fee_produk WHERE nama_petugas = '$perawat' AND kode_produk = '$kode'");
-$data_persen_perawat_harga7 = mysqli_fetch_array($cek_persen_perawat_harga7);
-
-if ($data_persen_perawat_harga7['jumlah_prosentase'] != 0 AND $data_persen_perawat_harga7['jumlah_uang'] == 0 )
-{
-
-$hasil_hitung_fee_persen_perawat_harga7 = $subtotaljadi7 * $data_persen_perawat_harga7['jumlah_prosentase'] / 100;
-$query_persen_perawat_harga_ke7 = $db->query("UPDATE tbs_fee_produk SET jumlah_fee = jumlah_fee + '$hasil_hitung_fee_persen_perawat_harga7' WHERE nama_petugas = '$perawat' AND kode_produk = '$kode'");
-
-}
-// akhir persentase perawat harga 7
-
-else
-
-// nominal perawat harga 7
-{
-
-$hasil_hitung_fee_nominal_perawat_harga7 = $data_persen_perawat_harga7['jumlah_uang'] * $jumlah;
-$query_nominal_perawat_harga_ke7 = $db->query("UPDATE tbs_fee_produk SET jumlah_fee = jumlah_fee + '$hasil_hitung_fee_nominal_perawat_harga7' WHERE nama_petugas = '$perawat' AND kode_produk = '$kode'");
-
-}
-// akhir nominal perawat harga 7
-
-
-// MULAI PERSENTASE UNTUK PETUGAS 7
-$cek_persen_petugas_harga7 = $db->query("SELECT * FROM fee_produk WHERE nama_petugas = '$petugas' AND kode_produk = '$kode'");
-$data_persen_petugas_harga7 = mysqli_fetch_array($cek_persen_petugas_harga7);
-
-if ($data_persen_petugas_harga7['jumlah_prosentase'] != 0 AND $data_persen_petugas_harga7['jumlah_uang'] == 0 )
-{
-
-$hasil_hitung_fee_persen_petugas_harga7 = $subtotaljadi7 * $data_persen_petugas_harga7['jumlah_prosentase'] / 100;
-$query_persen_petugas_harga7 = $db->query("UPDATE tbs_fee_produk SET jumlah_fee = jumlah_fee + '$hasil_hitung_fee_persen_petugas_harga7' WHERE nama_petugas = '$petugas' AND kode_produk = '$kode'");
-
-}
-// AKHIR PERSENTASE UNTUK PETUGAS 7
-
-else
-
-// START NOMINAL UNTUK PETUGAS 7
-{
-
-$hasil_hitung_fee_nominal_petugas_harga7 = $data_persen_petugas_harga7['jumlah_uang'] * $jumlah;
-$query_nominal_petugas_harga7 = $db->query("UPDATE tbs_fee_produk SET jumlah_fee = jumlah_fee + '$hasil_hitung_fee_nominal_petugas_harga7' WHERE nama_petugas = '$petugas' AND kode_produk = '$kode'");
-
-}
-// ENDING UNTUK PETUGAS 7
-
-// SELESAI UNTUK UPDATE DOKTER,PERAWAT, APOTEKER DAN PETUGAS (PERSENTASE DAN NOMINIL) UNTUK HARGA 7
-
-
-} // WARNING DO NOT ANYTING ABOUT THIS BREAKET !!!
-
-
-else 
-{
+  
 $harga_7 = $harga['harga_jual7'];
 $subtotal7 = $harga_7 * $jumlah;
 $subtotaljadi7 = $subtotal7;
@@ -2424,8 +1618,6 @@ else
       {
     echo "Error: " . $query10 . "<br>" . $db->error;
       }
-  
-}
 
 }
             // AKHIR TOTAL SEMUA DARI UPDATE, FEE DAN INSERT TBS 
@@ -2482,6 +1674,8 @@ $data01 = mysqli_fetch_array($query5);
       <td>". $data01['nama_barang']."</td>
       <td>". $data01['dosis']."</td>
       <td>". $data01['jumlah_barang']."</td>
+       <td>". $data01['tanggal']." ".$data01['jam']."</td>
+       
       <td><button class='btn btn-danger btn-sm batal' data-id='".$data01['id']."' data-reg='". $data01['no_reg']."' data-kode-barang='". $data01['kode_barang']."'><i class='fa fa-remove'></i> Batal </button></td>
 
 
