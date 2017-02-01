@@ -53,8 +53,8 @@ th {
 				<th> No Faktur </th>
 				<th> Keterangan </th>
 				<th> Tanggal </th>
-				<th> Debet </th>
-				<th> Kredit </th>
+				<th> Debet (Kas Masuk)</th>
+				<th> Kredit (Kas keluar + Kas Mutasi)</th>
 				<th> Saldo </th>
 
 
@@ -169,8 +169,8 @@ th {
 				<th> No Faktur </th>
 				<th> Keterangan </th>
 				<th> Tanggal </th>
-				<th> Debet </th>
-				<th> Kredit </th>
+				<th> Debet (Kas Masuk)</th>
+				<th> Kredit (Kas keluar + Kas Mutasi)</th>
 				<th> Saldo </th>
 
 
@@ -286,7 +286,7 @@ $num_rows = 0;
 		<br><br>
 
 	       <a href='cetak_laporan_buku_besar_pertanggal.php?tanggal=<?php echo $tanggal; ?>&daftar_akun=<?php echo $daftar_akun; ?>&rekap=<?php echo $rekap; ?>'
-	       class='btn btn-success' target='blank'><i class='fa fa-print'> </i> Cetak Buku Besar </a>
+	       class='btn btn-success' target='blank'><i class='fa fa-print'> </i> Cetak Buku Besar (Cashflow) </a>
 	     
 </div>
 

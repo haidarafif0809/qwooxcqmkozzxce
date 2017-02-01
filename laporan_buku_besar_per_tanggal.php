@@ -11,8 +11,7 @@ include 'db.php';
  ?>
 
 <div class="container">
-<h1> BUKU BESAR PER TANGGAL</h1><hr>
-
+<h1> BUKU BESAR (CASHFLOW) PER TANGGAL</h1><hr>
 
 <form id="perhari" class="form-inline" action="proses_buku_besar_pertanggal.php" method="POST" role="form">
 
