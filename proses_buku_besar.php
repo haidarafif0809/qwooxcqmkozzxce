@@ -1,9 +1,6 @@
-	<?php 
-
-
+<?php 
 	include 'sanitasi.php';
 	include 'db.php';
-
 
 	$dari_tanggal = stringdoang($_POST['dari_tanggal']);
 	$sampai_tanggal = stringdoang($_POST['sampai_tanggal']);
@@ -54,8 +51,8 @@ th {
 				<th> No Faktur </th>
 				<th> Keterangan </th>
 				<th> Tanggal </th>
-				<th> Debet </th>
-				<th> Kredit </th>
+				<th> Debet (Kas Masuk)</th>
+				<th> Kredit (Kas keluar + Kas Mutasi)</th>
 				<th> Saldo </th>
 
 
@@ -166,8 +163,8 @@ th {
 				<th> No Faktur </th>
 				<th> Keterangan </th>
 				<th> Tanggal </th>
-				<th> Debet </th>
-				<th> Kredit </th>
+				<th> Debet (Kas Masuk)</th>
+				<th> Kredit (Kas keluar + Kas Mutasi)</th>
 				<th> Saldo </th>
 
 
@@ -277,7 +274,7 @@ th {
 		<br><br>
 
 	       <a href='cetak_laporan_buku_besar.php?dari_tanggal=<?php echo $dari_tanggal; ?>&sampai_tanggal=<?php echo $sampai_tanggal; ?>&daftar_akun=<?php echo $daftar_akun; ?>&rekap=<?php echo $rekap; ?>'
-	       class='btn btn-success' target='blank'><i class='fa fa-print'> </i> Cetak Buku Besar </a>
+	       class='btn btn-success' target='blank'><i class='fa fa-print'> </i> Cetak Buku Besar (Cashflow)</a>
 	     
 </div>
 
