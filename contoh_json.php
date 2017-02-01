@@ -15,22 +15,32 @@ echo $jumlah_db = $data['jumlah'];
 	<title></title>
 
 	   <script src="jquery/jquery.js"></script>
+	   <link rel="stylesheet" href="chosen/chosen.css">
+<script src="chosen/chosen.jquery.js"></script>
 
 
 <script src="http://cdn.jsdelivr.net/alasql/0.3/alasql.min.js"></script>
 
+
 </head>
 <body>
 <button id="btnRefresh">Refresh Cache</button>
+
+<button id="btnChosen">Refresh Chosen</button>
 <table border="1">
 <thead><th>Kode Barang</th><th>Nama Barang</th></thead>
-	<tbody id="badan">
+	<tbody id="">
 		
 
 
 	</tbody>
 
 </table>
+
+<select id="badan" class="chosen">
+	
+
+</select>
 
 
 
@@ -52,7 +62,6 @@ echo $jumlah_db = $data['jumlah'];
         // Select data from IndexedDB
         alasql.promise('SELECT COUNT(*) AS jumlah FROM barang ')
               .then(function(res){
-                 console.log(res);
 
                  var i = 0;
                  var text = "";
@@ -63,7 +72,7 @@ console.log(jumlah_data);
 
 						 
   		//ambil data dari server dan masukan ke index db
-						$.getJSON("proses_contoh_json.php",function(data){
+				$.getJSON("proses_contoh_json.php",function(data){
 						   
 
 					hapus_semua();
@@ -74,7 +83,7 @@ console.log(jumlah_data);
 
                      tambah_data(data.barang[k].kode_barang,data.barang[k].nama_barang);
 
-						     $("#badan").prepend("<tr><td>"+data.barang[k].kode_barang+"</td><td>"+data.barang[k].nama_barang+"</td></tr>");
+						     $("#badan").prepend("<option>"+data.barang[k].kode_barang+" "+data.barang[k].nama_barang+"</option>");
 
 						    }
 
@@ -85,7 +94,11 @@ console.log(jumlah_data);
       }
       else {
 
+ 
+		 
 		tampil_data();
+
+
       }
 
            
@@ -93,8 +106,22 @@ console.log(jumlah_data);
 
         });
 
+
     });
 
+$("#badan").focus(function(){
+
+      $(".chosen").chosen({no_results_text: "Maaf, Data Tidak Ada!",search_contains:true}); 
+
+});
+
+
+$("#btnChosen").click(function(){
+
+         $("#badan").trigger("chosen:updated");
+});
+
+ 
 
 	    $("#btnRefresh").click(function(){
 	    	hapus_semua();
@@ -130,7 +157,7 @@ console.log(jumlah_data);
 
                      tambah_data(data.barang[k].kode_barang,data.barang[k].nama_barang);
 
-						     $("#badan").prepend("<tr><td>"+data.barang[k].kode_barang+"</td><td>"+data.barang[k].nama_barang+"</td></tr>");
+						$("#badan").prepend("<option value='"+ data.barang[k].kode_barang+"'>"+data.barang[k].kode_barang+" "+data.barang[k].nama_barang+"</option>");
 
 						    }
 
@@ -142,6 +169,7 @@ console.log(jumlah_data);
       else {
 
 		tampil_data();
+
       }
 
            
@@ -191,12 +219,15 @@ console.log(jumlah_data);
 	                  for (;res[i];) {
 	             
 
-	                      $("#badan").prepend("<tr><td>"+res[i]['kode_barang'] +"</td><td>"+res[i]['nama_barang'] +"</td></tr>");
+	                     text += "<option value='"+res[i]['kode_barang'] +"'>"+res[i]['kode_barang'] +" "+res[i]['nama_barang'] +"</option>";
 
 	                      i++;
 
 
-	                    }
+	                    } //end for
+
+	                     $('#badan').append(text);
+
 	 
 
 
@@ -208,6 +239,14 @@ console.log(jumlah_data);
 	  
 });// end document ready
 </script>
+
+
+
+      <script type="text/javascript">
+      
+  
+      
+      </script>
 
 </body>
 </html>
