@@ -32,14 +32,14 @@ $columns = array(
 );
 
 // getting total number records without any search
-$sql = "SELECT no_faktur, kode_pelanggan, no_reg, dokter, penjamin, tanggal, user, total, jenis_penjualan, status, jam, id";
+$sql = "SELECT nama,no_faktur, kode_pelanggan, no_reg, dokter, penjamin, tanggal, user, total, jenis_penjualan, status, jam, id";
 $sql.=" FROM penjualan";
 $query = mysqli_query($conn, $sql) or die("show_data_penjualan.php: get employees");
 $totalData = mysqli_num_rows($query);
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
 
-$sql = "SELECT no_faktur, kode_pelanggan, no_reg, dokter, penjamin, tanggal, user, total, jenis_penjualan, status, jam, id";
+$sql = "SELECT nama,no_faktur, kode_pelanggan, no_reg, dokter, penjamin, tanggal, user, total, jenis_penjualan, status, jam, id";
 $sql.=" FROM penjualan ";
 $sql.="WHERE 1=1 ";
 
@@ -124,7 +124,7 @@ else{
         $query_penj = $db->query("SELECT p.nama, p.kode_pelanggan, u.nama AS nama_dokter FROM penjualan p LEFT JOIN user u ON p.dokter = u.id WHERE p.no_faktur = '$row[no_faktur]' ");
         $data_pej = mysqli_fetch_array($query_penj);
 
-        if ($data_pej['nama'] == '') {
+        if ($data_pej['nama'] == 'Umum' OR $data_pej['kode_pelanggan'] == 'Umum') {
           $pelanggan = 'Umum';    
         }
         else{
@@ -210,7 +210,7 @@ else
 	$nestedData[] = $row["no_faktur"];
 	$nestedData[] = $row["kode_pelanggan"];
 	$nestedData[] = $row["no_reg"];
-	$nestedData[] = $pelanggan;
+  $nestedData[] = $row["nama"];
 	$nestedData[] = $data_pej["nama_dokter"];
 	$nestedData[] = $row["penjamin"];
   $nestedData[] = tanggal_terbalik($row["tanggal"]);
