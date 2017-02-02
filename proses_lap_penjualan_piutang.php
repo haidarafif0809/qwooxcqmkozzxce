@@ -35,7 +35,7 @@ $columns = array(
 // getting total number records without any search
 $sql = "SELECT pel.nama_pelanggan,p.id,p.penjamin,p.tanggal,p.tanggal_jt,p.no_faktur,p.kode_pelanggan,p.total,p.jam,p.user,p.status,p.potongan,p.tax,p.tunai,p.kredit";
 $sql.=" FROM penjualan p LEFT JOIN pelanggan pel ON p.kode_pelanggan = pel.kode_pelanggan ";
-$sql.=" WHERE p.tanggal <= '$sampai_tanggal' ";
+$sql.=" WHERE p.tanggal = '$sampai_tanggal' ";
 $sql.=" AND p.kredit != 0";
 $sql.=" ";
 
@@ -46,7 +46,7 @@ $totalFiltered = $totalData;  // when there is no search parameter then total nu
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
 $sql = "SELECT pel.nama_pelanggan,p.id,p.penjamin,p.tanggal,p.tanggal_jt,p.no_faktur,p.kode_pelanggan,p.total,p.jam,p.user,p.status,p.potongan,p.tax,p.tunai,p.kredit";
 $sql.=" FROM penjualan p LEFT JOIN pelanggan pel ON p.kode_pelanggan = pel.kode_pelanggan ";
-$sql.=" WHERE p.tanggal <= '$sampai_tanggal' ";
+$sql.=" WHERE p.tanggal = '$sampai_tanggal' ";
 $sql.=" AND p.kredit != 0";
 
 	$sql.=" AND ( p.no_faktur LIKE '".$requestData['search']['value']."%'";  
