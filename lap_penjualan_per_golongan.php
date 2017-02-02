@@ -64,6 +64,14 @@ tr:nth-child(even){background-color: #f2f2f2}
   </tbody>
  </table>
 </div> <!--  end table responsive  -->
+
+
+        <b><h4>Total Keseluruhan </h4>
+       <h4>Total Produk : <span id="total_produk"> </span></h4>        
+        <h4>Total Nila : <span id="total_nilai"> </span></h4></b>
+
+
+
 </div>
 </span>
 <span id="cetak" style="display: none;">
@@ -78,8 +86,6 @@ tr:nth-child(even){background-color: #f2f2f2}
   $(function() {
     $( ".tanggal_cari" ).pickadate({ selectYears: 100, format: 'yyyy-mm-dd'});
   });
-
-
 </script>
 
 <script type="text/javascript">
@@ -104,6 +110,13 @@ tr:nth-child(even){background-color: #f2f2f2}
         var sampai_tanggal = $("#sampai_tanggal").val();
         var dari_jam = $("#dari_jam").val();        
         var sampai_jam = $("#sampai_jam").val();
+
+$.getJSON('ambil_total_seluruh.php',{golongan:golongan,dari_tanggal:dari_tanggal,sampai_tanggal:sampai_tanggal,dari_jam:dari_jam,sampai_jam:sampai_jam},function(json){
+
+    $("#total_nilai").html(tandaPemisahTitik(json.total));
+      $("#total_produk").html(tandaPemisahTitik(json.jumlah));
+  });
+
           if (golongan == '') {
             alert("Silakan Pilih Golongan terlebih dahulu.");
             $("#golongan").focus();
@@ -147,12 +160,19 @@ tr:nth-child(even){background-color: #f2f2f2}
           
               });
     
+
+
+
           $("#cetak").show();
           $("#cetak_lap").attr("href", "cetak_penjualan_rekap_golongan.php?golongan="+golongan+"&dari_tanggal="+dari_tanggal+"&sampai_tanggal="+sampai_tanggal+"&dari_jam="+dari_jam+"&sampai_jam="+sampai_jam+"");
 
           $("#export_lap").attr("href", "export_lap_penjualan_golongan.php?golongan="+golongan+"&dari_tanggal="+dari_tanggal+"&sampai_tanggal="+sampai_tanggal+"&dari_jam="+dari_jam+"&sampai_jam="+sampai_jam+"");
-}//end else
-  $("#result").show();
+      
+      }//end else
+
+                $("#result").show();
+
+
         });
         $("form").submit(function(){
         
