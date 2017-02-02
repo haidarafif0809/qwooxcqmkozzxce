@@ -24,11 +24,11 @@ $query5 = $db->query("DELETE FROM detail_kas_keluar WHERE no_faktur = '$no_faktu
 
 // siapkan "data" query
         $no_faktur = stringdoang($_POST['no_faktur']);
+        $dari_akun = stringdoang($_POST['dari_akun']);
+         $keterangan = stringdoang($_POST['keterangan']);
+        $jumlah = angkadoang($_POST['jumlah']);
         $tanggal = stringdoang($_POST['tanggal']);
          $jam = stringdoang($_POST['jam']);
-         $keterangan = stringdoang($_POST['keterangan']);
-        $dari_akun = stringdoang($_POST['dari_akun']);
-        $jumlah = angkadoang($_POST['jumlah']);
         $user = $_SESSION['user_name'];
 
         $no_faktur = stringdoang($_POST['no_faktur']);
