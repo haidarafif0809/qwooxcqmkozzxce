@@ -827,7 +827,7 @@ Laboratorium  </button>
           <div class="col-xs-4">
             
            <label> Pajak (%)</label>
-           <input type="text" name="tax" id="tax" style="height:15px;font-size:15px" value="<?php echo $data_diskon['tax']; ?>" style="height:15px;font-size:15px" class="form-control" autocomplete="off" >
+           <input type="text" name="tax" id="tax" style="height:15px;font-size:15px" value="<?php //echo $data_diskon['tax']; ?>" style="height:15px;font-size:15px" class="form-control" autocomplete="off" >
 
            </div>-->
 
@@ -2084,7 +2084,7 @@ $("#kode_gudang").focus()
 alert("Silakan Bayar Piutang");
 
  }
-                else if (total ==  0 || total == "") 
+                else if (total2 ==  0 || total2 == "") 
         {
         
         alert("Anda Belum Melakukan Pemesanan");

@@ -249,21 +249,14 @@ $ambil1 = mysqli_fetch_array($query10);
 
 </form>
 
-<form action="proses_kas_keluar.php" id="form_submit" method="POST"><!--tag pembuka form-->
 <style type="text/css">
 	.disabled {
     opacity: 0.6;
     cursor: not-allowed;
     disabled: false;
 }
-</style>
-
-      
+</style>     
   <!--membuat tombol submit bayar & Hutang-->
-
-     
-
-          </form><!--tag penutup form-->
   <!--untuk mendefinisikan sebuah bagian dalam dokumen-->  
   <div class="alert alert-success" id="alert_berhasil" style="display:none">
   <strong>Success!</strong> Data Kas Keluar Berhasil
@@ -363,6 +356,7 @@ $(document).ready(function(){
    	var dari_akun = $("#dariakun").val();
    	var ke_akun = $("#keakun").val();
    	var tanggal = $("#tanggal1").val();
+    var jam = $("#jam").val();
     var jumlah = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#jumlah").val()))));
     var total = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#jumlahtotal").val()))));
 
@@ -399,7 +393,7 @@ else {
 
   $("#jumlahtotal").val(tandaPemisahTitik(subtotal))
 
-	$.post("proses_edit_tbs_kas_keluar.php", {no_faktur:no_faktur,keterangan:keterangan,dari_akun:dari_akun,ke_akun:ke_akun,jumlah:jumlah,tanggal:tanggal}, function(info) {
+	$.post("proses_edit_tbs_kas_keluar.php", {no_faktur:no_faktur,keterangan:keterangan,dari_akun:dari_akun,ke_akun:ke_akun,jumlah:jumlah,tanggal:tanggal,jam:jam}, function(info) {
 
     $("#result").html(info);
      $("#keakun").val('');
