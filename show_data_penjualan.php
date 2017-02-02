@@ -124,7 +124,7 @@ else{
         $query_penj = $db->query("SELECT p.nama, p.kode_pelanggan, u.nama AS nama_dokter FROM penjualan p LEFT JOIN user u ON p.dokter = u.id WHERE p.no_faktur = '$row[no_faktur]' ");
         $data_pej = mysqli_fetch_array($query_penj);
 
-        if ($data_pej['nama'] == 'Umum' OR $data_pej['kode_pelanggan'] == 'Umum') {
+        if ($data_pej['nama'] == '') {
           $pelanggan = 'Umum';    
         }
         else{
