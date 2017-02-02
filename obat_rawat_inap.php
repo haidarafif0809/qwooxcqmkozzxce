@@ -578,7 +578,7 @@ $("#jumlah_produk").focus();
 
 <!--script chossen-->
 <script>
-$("select").chosen({no_results_text: "Oops, Tidak Ada !"});
+$("select").chosen({no_results_text: "Oops, Tidak Ada !",search_contains:true});
 </script>
 <!--script end chossen-->
 

@@ -129,12 +129,12 @@ $delete1 = $db->query("DELETE FROM laporan_fee_faktur WHERE no_faktur = '$no_fak
     // delete llaporan_fee_produk
 $delete_agi1 = $db->query("DELETE FROM laporan_fee_produk WHERE no_faktur = '$no_faktur' AND nama_petugas = '$petugas' ");   
 
-    $query0 = $db->query("SELECT * FROM tbs_fee_produk WHERE nama_petugas = '$petugas' AND no_faktur = '$no_faktur'");
+    $query0 = $db->query("SELECT * FROM tbs_fee_produk WHERE  no_faktur = '$no_faktur'");
    while  ($cek0 = mysqli_fetch_array($query0)){
 
 
 
-          $query10 = $db->query("INSERT INTO laporan_fee_produk (nama_petugas, no_faktur, kode_produk, nama_produk, jumlah_fee, tanggal, jam) VALUES ('$cek0[nama_petugas]', '$no_faktur', '$cek0[kode_produk]', '$cek0[nama_produk]', '$cek0[jumlah_fee]', '$tanggal_sekarang', '$jam_sekarang')");
+          $query10 = $db->query("INSERT INTO laporan_fee_produk (nama_petugas, no_faktur, kode_produk, nama_produk, jumlah_fee, tanggal, jam,waktu) VALUES ('$cek0[nama_petugas]', '$no_faktur', '$cek0[kode_produk]', '$cek0[nama_produk]', '$cek0[jumlah_fee]', '$tanggal_sekarang', '$jam_sekarang','$waktu')");
 
 
     }
@@ -154,7 +154,7 @@ $delete_agi1 = $db->query("DELETE FROM laporan_fee_produk WHERE no_faktur = '$no
       {
         
     
-        $query2 = "INSERT INTO detail_penjualan (no_faktur,no_rm, tanggal, jam, kode_barang, nama_barang, jumlah_barang, harga, subtotal, potongan, tax, sisa,tipe_produk,lab) VALUES ('$no_faktur','$no_rm', '$tanggal_sekarang', '$jam_sekarang', '$data[kode_barang]','$data[nama_barang]','$data[jumlah_barang]','$data[harga]','$data[subtotal]','$data[potongan]','$data[tax]', '$data[jumlah_barang]','$data[tipe_barang]','$data[lab]')";
+        $query2 = "INSERT INTO detail_penjualan (no_faktur,no_rm, tanggal, jam, kode_barang, nama_barang, jumlah_barang, harga, subtotal, potongan, tax, sisa,tipe_produk,lab,waktu) VALUES ('$no_faktur','$no_rm', '$tanggal_sekarang', '$jam_sekarang', '$data[kode_barang]','$data[nama_barang]','$data[jumlah_barang]','$data[harga]','$data[subtotal]','$data[potongan]','$data[tax]', '$data[jumlah_barang]','$data[tipe_barang]','$data[lab]','$waktu')";
 
         if ($db->query($query2) === TRUE) {
         } 

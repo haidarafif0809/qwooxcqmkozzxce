@@ -467,7 +467,7 @@ $.post("cek_kode_barang_tbs_penjualan.php",{kode_barang:kode,no_reg:no_reg},func
 
 <!--script chossen-->
 <script>
-$("select").chosen({no_results_text: "Oops, Tidak Ada !"});
+$("select").chosen({no_results_text: "Oops, Tidak Ada !",search_contains:true});
 </script>
 <!--script end chossen-->
 
@@ -627,7 +627,7 @@ $("#reg2").val(reg);
 
       <script type="text/javascript">
       
-      $(".chosen").chosen({no_results_text: "Maaf, Data Tidak Ada!"});  
+      $(".chosen").chosen({no_results_text: "Maaf, Data Tidak Ada!",search_contains:true});  
       
       </script>
 

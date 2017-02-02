@@ -1,5 +1,4 @@
 <?php 
-
 include 'sanitasi.php';
 include 'header.php';
 include 'db.php';
@@ -49,7 +48,7 @@ $select_nofaktur = $db->query("SELECT no_faktur FROM jurnal_trans WHERE DATE(wak
 
 <hr>
 
-                 <h3>Cetak Buku Besar</h3>
+                 <h3>Cetak Buku Besar (Cashflow)</h3>
                  </center>
                  
         </div><!--penutup colsm5-->
@@ -90,8 +89,8 @@ $select_nofaktur = $db->query("SELECT no_faktur FROM jurnal_trans WHERE DATE(wak
 			<th> No Faktur </th>
 			<th> Keterangan </th>
 			<th> Tanggal </th>
-			<th> Debet </th>
-			<th> Kredit </th>
+			<th> Debet (Kas Masuk)</th>
+			<th> Kredit (Kas keluar + Kas Mutasi)</th>
 			<th> Saldo </th>
 
 
@@ -221,8 +220,8 @@ $select = $db->query("SELECT DATE(waktu_jurnal) AS waktu_jurnal, no_faktur, kete
 			<th> No Faktur </th>
 			<th> Keterangan </th>
 			<th> Tanggal </th>
-			<th> Debet </th>
-			<th> Kredit </th>
+			<th> Debet (Kas Masuk)</th>
+			<th> Kredit (Kas keluar + Kas Mutasi)</th>
 			<th> Saldo </th>
 
 
