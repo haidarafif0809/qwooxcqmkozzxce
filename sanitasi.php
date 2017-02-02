@@ -368,7 +368,7 @@ function url_get_contents ($url) {
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-        curl_setopt ($ch, CURLOPT_CAINFO, "C:/xampp/htdocs/toko-full/cacert.pem");
+        curl_setopt ($ch, CURLOPT_CAINFO, "cacert.pem");
 
 
         $output = curl_exec($ch);
