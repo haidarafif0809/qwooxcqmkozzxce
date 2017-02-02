@@ -104,7 +104,7 @@ $no_faktur = $nomor."/JL/".$data_bulan_terakhir."/".$tahun_terakhir;
           <input type="hidden" name="session_id" id="session_id" class="form-control" readonly="" value="<?php echo $session_id; ?>" required="" >
     <div class="col-sm-3">
           <label>No. Faktur Suplier </label><br>
-          <input  name="suplier" id="no_faktur_suplier" >
+          <input type="text" style="height:15px;"  name="no_faktur_suplier" class="form-control" id="no_faktur_suplier" >
     </div> 
           
     <div class="col-sm-3">
@@ -305,7 +305,7 @@ $no_faktur = $nomor."/JL/".$data_bulan_terakhir."/".$tahun_terakhir;
         
 
        <div class="col-sm-3"><br>
-         <select style="font-size:15px; height:30px" type="text" name="kode_barang" id="kode_barang" class="form-control chosen" data-placeholder="SILAKAN PILIH...">
+         <select style="font-size:15px; height:30px" type="text" name="text" id="kode_barang" class="form-control chosen" data-placeholder="SILAKAN PILIH...">
     <option value="">SILAKAN PILIH...</option>
        <?php 
 
@@ -323,12 +323,13 @@ $no_faktur = $nomor."/JL/".$data_bulan_terakhir."/".$tahun_terakhir;
        </div>
         
 
+
         <div class="col-sm-1">
           <input  style="height:20px" type="text" class="form-control" accesskey="j" name="jumlah_barang" id="jumlah_barang" autocomplete="off" placeholder="Qty">
         </div>
         
 
-        <div class="col-sm-2" style="width:90px">
+        <div class="col-sm-4" style="width:100px">
           <select style="font-size:13px" type="text" name="satuan_konversi" id="satuan_konversi" class="form-control"  required="">
           
           <?php 
@@ -708,10 +709,10 @@ $.post('cek_kode_barang_tbs_pembelian.php',{kode_barang:kode_barang,session_id:s
   if(data == 1){
           alert("Anda Tidak Bisa Menambahkan Barang Yang Sudah Ada, Silakan Edit atau Pilih Barang Yang Lain !");
 
-          $("#kode_barang").chosen("destroy");
           $("#kode_barang").val('');
-          $("#nama_barang").val('');
+          $("#kode_barang").trigger('chosen:updated');
           $("#kode_barang").trigger('chosen:open');
+          $("#nama_barang").val('');
           $(".chosen").chosen({no_results_text: "Maaf, Data Tidak Ada!",search_contains:true}); 
    }//penutup if     
 
@@ -752,7 +753,8 @@ $(document).ready(function(){
     var kode_gudang = $("#kode_gudang").val();
     var ppn = $("#ppn").val();
     var total = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#total_pembelian1").val()))));
-
+    var over_stok = $("#over_stok").val();
+    var stok = parseInt(jumlah_barang) + parseInt(jumlahbarang);
                               
     if (total == '') 
     {
@@ -819,6 +821,9 @@ $(document).ready(function(){
      var total_bener = parseInt(hitung_tax,10) + parseInt(Math.round(tax_bener,10));
  
 
+
+
+
       
 
 
@@ -851,6 +856,13 @@ $(document).ready(function(){
         $("#total_pembelian1").val(tandaPemisahTitik(total_akhir));
         $("#potongan_pembelian").val(tandaPemisahTitik(Math.round(potongaaan)))
         $("#tax_rp").val(tandaPemisahTitik(Math.round(tax_bener)))
+
+
+    if( over_stok < stok ){
+
+      alert ("Persediaan Barang Ini Sudah Melebihi Batas Stok!");
+      
+    } 
 
         $.post("prosestbspembelian.php",{session_id:session_id,kode_barang:kode_barang,nama_barang:nama_barang,jumlah_barang:jumlah_barang,harga:harga,harga_baru:harga_baru,potongan:potongan,tax:tax,satuan:satuan},function(data){
       
@@ -1222,33 +1234,7 @@ else
 </script>
 
 
-<script>
 
-//untuk menampilkan sisa penjualan secara otomatis
-  $(document).ready(function(){
-
-  $("#jumlah_barang").keyup(function(){
-
-    var jumlah_barang = $("#jumlah_barang").val();
-    if (jumlah_barang == "") {
-      jumlah_barang = 0;
-    }
-    var jumlahbarang =$("#jumlahbarang").val();
-     var over_stok = $("#over_stok").val();
-    var stok = parseInt(jumlah_barang) + parseInt(jumlahbarang);
-
-
-if( over_stok < stok ){
-
-      alert ("Persediaan Barang Ini Sudah Melebihi Batas Stok!");
-      
-    }
-
-
-  });
-});
-
-</script>
 
 
 <!--membuat menampilkan no faktur dan suplier pada tax-->
@@ -1968,10 +1954,10 @@ $.post('cek_jumlah_kas1.php', {cara_bayar : cara_bayar}, function(data) {
               $(nRow).attr('class', "pilih");
               $(nRow).attr('data-kode', aData[0]);
               $(nRow).attr('nama-barang', aData[1]);
-              $(nRow).attr('over_stok', aData[7]);
+              $(nRow).attr('over_stok', aData[8]);
               $(nRow).attr('satuan', aData[7]);
               $(nRow).attr('harga', aData[2]);
-              $(nRow).attr('id-barang', aData[8]);
+              $(nRow).attr('id-barang', aData[9]);
               $(nRow).attr('jumlah-barang', aData[3]);
               $(nRow).attr('kategori', aData[5]);
               $(nRow).attr('suplier', aData[6]);
