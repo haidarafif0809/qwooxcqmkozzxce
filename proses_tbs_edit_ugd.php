@@ -26,6 +26,9 @@ $otoritas_tombol = mysqli_fetch_array($pilih_akses_tombol);
  $dokter = stringdoang($_POST['dokter']);
  $tipe_produk = stringdoang($_POST['ber_stok']);
  $ppn = stringdoang($_POST['ppn']);
+$tanggal_sekarang = stringdoang($_POST['tanggal']);
+$jam = stringdoang($_POST['jam']);
+
 
 $a = $harga * $jumlah;
 
@@ -75,8 +78,7 @@ else{
 }
 
 
-$tanggal_sekarang = date('Y-m-d');
-$jam = date('H:i:s');
+
 
 
 $tbs_penjualan = $db->query("SELECT * FROM tbs_penjualan WHERE kode_barang = '$kode' AND no_faktur='$no_faktur'");

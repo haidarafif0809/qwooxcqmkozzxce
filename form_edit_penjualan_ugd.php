@@ -1469,7 +1469,8 @@ $(document).ready(function(){
     
     var nama_barang = $("#nama_barang").val();
     var limit_stok = $("#limit_stok").val();
-
+    var tanggal = $("#tanggal").val();
+    var jam = $("#jam").val();
 
     var jumlah_barang = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#jumlah_barang").val()))));
     var harga = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#harga_produk").val()))));
@@ -1641,10 +1642,10 @@ $(document).ready(function(){
   $("#jumlah_barang").focus();
 
   }
-  else if (ber_stok == 'Jasa' || ber_stok == 'BHP' )
+  else if (ber_stok == 'Jasa')
   {
 
- $.post("proses_tbs_edit_ugd.php",{no_faktur:no_faktur, penjamin:penjamin,asal_poli:asal_poli,level_harga:level_harga,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,no_reg:no_reg,no_rm:no_rm,dokter:dokter,petugas_kasir:petugas_kasir,kode_barang:kode_barang,nama_barang:nama_barang,jumlah_barang:jumlah_barang,harga:harga,potongan:potongan,tax:tax,satuan:satuan, ber_stok:ber_stok,ppn:ppn},function(data){
+ $.post("proses_tbs_edit_ugd.php",{no_faktur:no_faktur, penjamin:penjamin,asal_poli:asal_poli,level_harga:level_harga,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,no_reg:no_reg,no_rm:no_rm,dokter:dokter,petugas_kasir:petugas_kasir,kode_barang:kode_barang,nama_barang:nama_barang,jumlah_barang:jumlah_barang,harga:harga,potongan:potongan,tax:tax,satuan:satuan, ber_stok:ber_stok,ppn:ppn,tanggal:tanggal,jam:jam},function(data){
      
   
 
@@ -1679,7 +1680,7 @@ $(document).ready(function(){
           alert("Persediaan Barang Ini Sudah Mencapai Batas Limit Stok, Segera Lakukan Pembelian !");
         }
 
-   $.post("proses_tbs_edit_ugd.php",{no_faktur:no_faktur,penjamin:penjamin,asal_poli:asal_poli,level_harga:level_harga,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,no_reg:no_reg,no_rm:no_rm,dokter:dokter,petugas_kasir:petugas_kasir,kode_barang:kode_barang,nama_barang:nama_barang,jumlah_barang:jumlah_barang,harga:harga,potongan:potongan,tax:tax,satuan:satuan,ber_stok:ber_stok,ppn:ppn},function(data){
+   $.post("proses_tbs_edit_ugd.php",{no_faktur:no_faktur,penjamin:penjamin,asal_poli:asal_poli,level_harga:level_harga,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,no_reg:no_reg,no_rm:no_rm,dokter:dokter,petugas_kasir:petugas_kasir,kode_barang:kode_barang,nama_barang:nama_barang,jumlah_barang:jumlah_barang,harga:harga,potongan:potongan,tax:tax,satuan:satuan,ber_stok:ber_stok,ppn:ppn,tanggal:tanggal,jam:jam},function(data){
      
 
       $("#ppn").attr("disabled", true);

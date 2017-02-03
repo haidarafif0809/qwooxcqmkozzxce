@@ -1637,7 +1637,7 @@ $(document).ready(function(){
   }
   else if (ber_stok == 'Jasa' ){
 
- $.post("proses_tbs_pesanan_barang_raja.php",{penjamin:penjamin,asal_poli:asal_poli,level_harga:level_harga,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,no_reg:no_reg,no_rm:no_rm,dokter:dokter,petugas_kasir:petugas_kasir,kode_barang:kode_barang,nama_barang:nama_barang,jumlah_barang:jumlah_barang,harga:harga,potongan:potongan,tax:tax,satuan:satuan, ber_stok:ber_stok,no_faktur:no_faktur,ppn:ppn,tanggal:tanggal,jam:jam},function(data){
+ $.post("proses_tbs_pesanan_barang_raja.php",{penjamin:penjamin,asal_poli:asal_poli,level_harga:level_harga,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,no_reg:no_reg,no_rm:no_rm,dokter:dokter,petugas_kasir:petugas_kasir,kode_barang:kode_barang,nama_barang:nama_barang,jumlah_barang:jumlah_barang,harga:harga,potongan:potongan,tax:tax,satuan:satuan, ber_stok:ber_stok,no_faktur:no_faktur,ppn:ppn,tanggal:tanggal,jam:jam,status:'0'},function(data){
      
     $("#potongan_persen").val(Math.round(potongaaan));
     $("#total1").val(Math.round(total_akhir));
@@ -1669,12 +1669,15 @@ $(document).ready(function(){
 
   else{
 
+     
   if (limit_stok > stok)
         {
           alert("Persediaan Barang Ini Sudah Mencapai Batas Limit Stok, Segera Lakukan Pembelian !");
         }
 
-   $.post("proses_tbs_pesanan_barang_raja.php",{penjamin:penjamin,asal_poli:asal_poli,level_harga:level_harga,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,no_reg:no_reg,no_rm:no_rm,dokter:dokter,petugas_kasir:petugas_kasir,kode_barang:kode_barang,nama_barang:nama_barang,jumlah_barang:jumlah_barang,harga:harga,potongan:potongan,tax:tax,satuan:satuan,ber_stok:ber_stok,no_faktur:no_faktur,ppn:ppn,tanggal:tanggal,jam:jam},function(data){
+   $.post("proses_tbs_pesanan_barang_raja.php",{penjamin:penjamin,asal_poli:asal_poli,level_harga:level_harga,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,no_reg:no_reg,no_rm:no_rm,dokter:dokter,petugas_kasir:petugas_kasir,kode_barang:kode_barang,nama_barang:nama_barang,jumlah_barang:jumlah_barang,harga:harga,potongan:potongan,tax:tax,satuan:satuan,ber_stok:ber_stok,no_faktur:no_faktur,ppn:ppn,tanggal:tanggal,jam:jam,status:'0'},function(data){
+
+
      
     $("#potongan_persen").val(Math.round(potongaaan));
     $("#total1").val(Math.round(total_akhir));

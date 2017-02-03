@@ -7,6 +7,7 @@ session_start();
 $pilih_akses_tombol = $db->query("SELECT * FROM otoritas_penjualan_rj WHERE id_otoritas = '$_SESSION[otoritas_id]' ");
 $otoritas_tombol = mysqli_fetch_array($pilih_akses_tombol);
 
+ $status = stringdoang($_POST['status']);
  $no_faktur = stringdoang($_POST['no_faktur']);
  $kode = stringdoang($_POST['kode_barang']);
  $nama = stringdoang($_POST['nama_barang']);
@@ -27,8 +28,17 @@ $otoritas_tombol = mysqli_fetch_array($pilih_akses_tombol);
  $tipe_produk = stringdoang($_POST['ber_stok']);
  $ppn = stringdoang($_POST['ppn']);
 
+if ($status == 0)
+{
 $tanggal_sekarang = stringdoang($_POST['tanggal']);
 $jam = stringdoang($_POST['jam']);
+}
+else
+{
+  $tanggal_sekarang = date('Y-m-d');
+  $jam = date('H:i:s');
+}
+
 
 
           if(strpos($diskon, "%") !== false)
