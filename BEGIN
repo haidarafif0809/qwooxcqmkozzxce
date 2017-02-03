@@ -1,0 +1,111 @@
+BEGIN
+declare jumlah_r int; 
+declare harga int;
+ declare subtotal int;
+  declare jumlah_hpp_masuk int;
+   declare id_hpp_masuk int;
+    declare no_faktur_hpp_masukk varchar(100);
+     declare tipe_barang varchar(100); 
+     declare sisa_harga_hppmasuk int; 
+     declare status_masuk int; 
+
+
+          declare no_faktur_masuk varchar(100); 
+          declare total_nilai_masuk int; 
+
+
+     SET tipe_barang = (SELECT berkaitan_dgn_stok FROM barang WHERE kode_barang = new.kode_barang);
+
+      set jumlah_r = new.jumlah_barang; 
+
+
+      if (tipe_barang = "Barang") then 
+
+      while jumlah_r > 0 do 
+
+      SET jumlah_hpp_masuk = (SELECT sisa FROM hpp_masuk WHERE kode_barang = new.kode_barang AND sisa != 0 ORDER BY id ASC LIMIT 1); 
+
+      SET id_hpp_masuk = (SELECT id FROM hpp_masuk WHERE kode_barang = new.kode_barang AND sisa != 0 ORDER BY id ASC LIMIT 1);
+
+       SET no_faktur_hpp_masukk = (SELECT no_faktur FROM hpp_masuk WHERE kode_barang = new.kode_barang AND sisa != 0 ORDER BY id ASC LIMIT 1); 
+
+       SET harga = (SELECT harga_unit FROM hpp_masuk WHERE kode_barang = new.kode_barang AND sisa != 0 ORDER BY id ASC LIMIT 1);
+
+        SET sisa_harga_hppmasuk = (SELECT sisa_harga FROM hpp_masuk WHERE no_faktur = no_faktur_hpp_masukk AND kode_barang = new.kode_barang ORDER BY id ASC LIMIT 1); 
+
+       SET status_masuk = (SELECT COUNT(*) from hpp_masuk WHERE kode_barang = new.kode_barang AND sisa != 0 ORDER BY id ASC LIMIT 1);
+
+
+
+if (status_masuk = 0) then
+
+      
+
+      SET jumlah_hpp_masuk = jumlah_r; 
+
+       SET no_faktur_masuk = (SELECT RAND(new.id));
+
+       SET harga = (SELECT harga_unit FROM hpp_masuk WHERE kode_barang = new.kode_barang ORDER BY id DESC LIMIT 1);
+
+       SET total_nilai_masuk = harga * jumlah_r;
+
+        
+
+  INSERT INTO hpp_masuk (no_faktur,kode_barang,jenis_transaksi,jumlah_kuantitas,harga_unit,total_nilai,sisa,tanggal,jam,waktu) VALUES (no_faktur_masuk,new.kode_barang,'Penyesuaian Stok Penjualan',jumlah_r,harga,total_nilai_masuk,jumlah_r,new.tanggal,new.jam,CONCAT(new.tanggal," ",new.jam));
+
+
+
+      SET id_hpp_masuk = (SELECT id FROM hpp_masuk WHERE kode_barang = new.kode_barang AND sisa != 0 ORDER BY id ASC LIMIT 1);
+
+    SET sisa_harga_hppmasuk = 0;
+
+       SET no_faktur_hpp_masukk = no_faktur_masuk; 
+
+
+END IF;
+
+
+        set subtotal = jumlah_r * harga; 
+
+        if(jumlah_r = jumlah_hpp_masuk) then
+
+
+         set subtotal = (jumlah_r * harga) + sisa_harga_hppmasuk; 
+
+        INSERT INTO hpp_keluar (no_faktur,no_faktur_hpp_masuk,kode_barang,jenis_transaksi,jumlah_kuantitas,harga_unit,total_nilai,tanggal,jam,sisa_barang) VALUES (new.no_faktur,no_faktur_hpp_masukk,new.kode_barang,"Penjualan",jumlah_r,harga,subtotal,new.tanggal,new.jam,jumlah_r); 
+
+        UPDATE hpp_masuk SET sisa = 0 WHERE id = id_hpp_masuk; 
+
+
+        set jumlah_r = 0; 
+
+
+
+        ELSEIF (jumlah_r > jumlah_hpp_masuk) then 
+
+
+        SET subtotal = jumlah_hpp_masuk * harga;
+
+         INSERT INTO hpp_keluar (no_faktur,no_faktur_hpp_masuk,kode_barang,jenis_transaksi,jumlah_kuantitas,harga_unit,total_nilai,tanggal,jam,sisa_barang) VALUES (new.no_faktur,no_faktur_hpp_masukk,new.kode_barang,"Penjualan",jumlah_hpp_masuk,harga,subtotal,new.tanggal,new.jam,jumlah_hpp_masuk); 
+
+         UPDATE hpp_masuk SET sisa = 0 WHERE id = id_hpp_masuk ; 
+
+
+         set jumlah_r = jumlah_r - jumlah_hpp_masuk; 
+
+
+
+         ELSEIF (jumlah_r < jumlah_hpp_masuk) then 
+
+         INSERT INTO hpp_keluar (no_faktur,no_faktur_hpp_masuk,kode_barang,jenis_transaksi,jumlah_kuantitas,harga_unit,total_nilai,tanggal,jam,sisa_barang) VALUES (new.no_faktur,no_faktur_hpp_masukk,new.kode_barang,"Penjualan",jumlah_r,harga,subtotal,new.tanggal,new.jam,jumlah_r); 
+
+         UPDATE hpp_masuk SET sisa = sisa - jumlah_r WHERE id = id_hpp_masuk ; 
+
+         set jumlah_r = 0;
+
+          end if; 
+          
+          end while; 
+
+          end if;
+END
