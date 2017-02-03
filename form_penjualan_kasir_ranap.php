@@ -1278,7 +1278,6 @@ $(document).ready(function(){
   
   var level_harga = $("#level_harga").val();
   var kode_barang = $("#kode_barang").val();
-  var kode_barang = kode_barang.substr(0, kode_barang.indexOf('('));
   var satuan_konversi = $("#satuan_konversi").val();
   var jumlah_barang = $("#jumlah_barang").val();
   var id_produk = $("#id_produk").val();
@@ -1354,7 +1353,7 @@ $.post("cek_level_harga_barang.php",{level_harga:level_harga,kode_barang:kode_ba
 
       if (stok < 0) {
 
-        if (ber_stok = 'Barang') {
+        if (ber_stok == 'Barang') {
         
         alert("Jumlah Melebihi Stok");
         $("#jumlah_barang").val('');
@@ -2036,6 +2035,10 @@ else if (a > 0){
   alert("Jumlah Barang Harus Diisi");
   $("#jumlah_barang").focus();
   }
+
+else if (harga == '0') {
+      alert("Harga jual Rp. 0. Maaf, Anda tidak dapat menjual barang ini. Silakan ganti level harga atau pilih barang yang lain.");
+    }
 
   else if (ber_stok == 'Jasa' || ber_stok == 'BHP' ){
 
@@ -3118,7 +3121,6 @@ $(document).on('click','.delete',function(e){
     var no_reg = $("#no_reg").val();
 
 
-
     if (level_harga == "harga_1") {
 
         $('#harga_produk').val(harga_jual);
@@ -3180,6 +3182,8 @@ $(document).on('click','.delete',function(e){
     $("#ber_stok").val(ber_stok);
     $("#id_produk").val(id_barang);
 
+
+
 if (ber_stok == 'Barang') {
     $.post('ambil_jumlah_produk.php',{kode_barang:kode_barang}, function(data){
       if (data == "") {
@@ -3191,6 +3195,7 @@ if (ber_stok == 'Barang') {
 
 }
 
+// cek kode barang yang sama dalam selang wangtu yang di tentukan
 $.post('cek_kode_barang_tbs_ranap.php',{kode_barang:kode_barang,no_reg:no_reg}, function(data){
           
   if(data == 1){
