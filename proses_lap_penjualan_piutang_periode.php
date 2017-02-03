@@ -5,8 +5,8 @@ include 'db.php';
 
 /* Database connection end */
 
-$sampai_tanggal = stringdoang($_POST['sampai_tanggal']);
-
+$dari_tanggal = stringdoang($_POST['dari_tanggal_periode']);
+$sampai_tanggal = stringdoang($_POST['sampai_tanggal_periode']);
 // storing  request (ie, get/post) global array to a variable  
 $requestData= $_REQUEST;
 
@@ -35,7 +35,7 @@ $columns = array(
 // getting total number records without any search
 $sql = "SELECT pel.nama_pelanggan,p.id,p.penjamin,p.tanggal,p.tanggal_jt,p.no_faktur,p.kode_pelanggan,p.total,p.jam,p.user,p.status,p.potongan,p.tax,p.tunai,p.kredit";
 $sql.=" FROM penjualan p LEFT JOIN pelanggan pel ON p.kode_pelanggan = pel.kode_pelanggan ";
-$sql.=" WHERE p.tanggal <= '$sampai_tanggal' ";
+$sql.=" WHERE p.tanggal >= '$dari_tanggal' AND p.tanggal <= '$sampai_tanggal' ";
 $sql.=" AND p.kredit != 0";
 $sql.=" ";
 
@@ -46,7 +46,7 @@ $totalFiltered = $totalData;  // when there is no search parameter then total nu
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
 $sql = "SELECT pel.nama_pelanggan,p.id,p.penjamin,p.tanggal,p.tanggal_jt,p.no_faktur,p.kode_pelanggan,p.total,p.jam,p.user,p.status,p.potongan,p.tax,p.tunai,p.kredit";
 $sql.=" FROM penjualan p LEFT JOIN pelanggan pel ON p.kode_pelanggan = pel.kode_pelanggan ";
-$sql.=" WHERE p.tanggal <= '$sampai_tanggal' ";
+$sql.=" WHERE p.tanggal >= '$dari_tanggal' AND p.tanggal <= '$sampai_tanggal' ";
 $sql.=" AND p.kredit != 0";
 
 	$sql.=" AND ( p.no_faktur LIKE '".$requestData['search']['value']."%'";  
@@ -99,19 +99,19 @@ while( $row=mysqli_fetch_array($query) ) {
 }
 
 
-$query02 = $db->query("SELECT SUM(total) AS total_akhir FROM penjualan WHERE tanggal <= '$sampai_tanggal' AND kredit != 0");
+$query02 = $db->query("SELECT SUM(total) AS total_akhir FROM penjualan WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' AND kredit != 0");
 $cek02 = mysqli_fetch_array($query02);
 $total_akhir = $cek02['total_akhir'];
 
-$query01 = $db->query("SELECT SUM(potongan) AS total_potongan FROM penjualan WHERE tanggal <= '$sampai_tanggal' AND kredit != 0");
+$query01 = $db->query("SELECT SUM(potongan) AS total_potongan FROM penjualan WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' AND kredit != 0");
 $cek01 = mysqli_fetch_array($query01);
 $total_potongan = $cek01['total_potongan'];
 
-$query20 = $db->query("SELECT SUM(tax) AS total_tax FROM penjualan WHERE tanggal <= '$sampai_tanggal' AND kredit != 0");
+$query20 = $db->query("SELECT SUM(tax) AS total_tax FROM penjualan WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' AND kredit != 0");
 $cek20 = mysqli_fetch_array($query20);
 $total_tax = $cek20['total_tax'];
 
-$query30 = $db->query("SELECT SUM(kredit) AS total_kredit FROM penjualan WHERE tanggal <= '$sampai_tanggal' AND kredit != 0");
+$query30 = $db->query("SELECT SUM(kredit) AS total_kredit FROM penjualan WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' AND kredit != 0");
 $cek30 = mysqli_fetch_array($query30);
 $total_kredit = $cek30['total_kredit'];
 
