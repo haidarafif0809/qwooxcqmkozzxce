@@ -68,8 +68,8 @@ tr:nth-child(even){background-color: #f2f2f2}
 
         <b><h4>Total Keseluruhan </h4>
        <h4>Total Produk : <span id="total_produk"> </span></h4>        
-        <h4>Total Nila : <span id="total_nilai"> </span></h4></b>
-
+        <h4>Total Nilai : <span id="total_nilai"> </span></h4></b>
+        <span id="total_lab" style="display: none"> </span>
 
 
 </div>
@@ -111,10 +111,30 @@ tr:nth-child(even){background-color: #f2f2f2}
         var dari_jam = $("#dari_jam").val();        
         var sampai_jam = $("#sampai_jam").val();
 
-$.getJSON('ambil_total_seluruh.php',{golongan:golongan,dari_tanggal:dari_tanggal,sampai_tanggal:sampai_tanggal,dari_jam:dari_jam,sampai_jam:sampai_jam},function(json){
 
-    $("#total_nilai").html(tandaPemisahTitik(json.total));
+
+    $.getJSON('ambil_total_seluruh.php',{golongan:golongan,dari_tanggal:dari_tanggal,sampai_tanggal:sampai_tanggal,dari_jam:dari_jam,sampai_jam:sampai_jam},function(json){
+
+      if (golongan == 'Jasa') 
+      {
+
+              $.getJSON('ambil_total_seluruh_lab.php',{golongan:golongan,dari_tanggal:dari_tanggal,sampai_tanggal:sampai_tanggal,dari_jam:dari_jam,sampai_jam:sampai_jam},function(data){
+
+                var total_nilai = json.total + data.total;
+                var total_produk = json.jumlah + data.jumlah;
+
+                $("#total_nilai").html(tandaPemisahTitik(total_nilai));
+                $("#total_produk").html(tandaPemisahTitik(total_produk));
+
+            });
+
+      }
+      else{
+      $("#total_nilai").html(tandaPemisahTitik(json.total));
       $("#total_produk").html(tandaPemisahTitik(json.jumlah));
+      }
+
+
   });
 
           if (golongan == '') {
