@@ -120,6 +120,14 @@ tr:nth-child(even){background-color: #f2f2f2}
 
               $.getJSON('ambil_total_seluruh_lab.php',{golongan:golongan,dari_tanggal:dari_tanggal,sampai_tanggal:sampai_tanggal,dari_jam:dari_jam,sampai_jam:sampai_jam},function(data){
 
+                if (data.total == '') {
+                  data.total = 0;
+                }
+
+                if (data.jumlah == '') {
+                  data.jumlah = 0;
+                }
+
                 var total_nilai = parseInt(json.total,10) + parseInt(data.total,10);
                 var total_produk = parseInt(json.jumlah,10) + parseInt(data.jumlah,10);
 
