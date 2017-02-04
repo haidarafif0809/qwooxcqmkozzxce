@@ -691,6 +691,8 @@ $no_faktur = $nomor."/JL/".$data_bulan_terakhir."/".$tahun_terakhir;
     $("#ber_stok").val(ber_stok);
     $("#id_produk").val(id_barang);
 
+    
+
 if (ber_stok == 'Barang') {
 
     $.post('ambil_jumlah_produk.php',{kode_barang:kode_barang}, function(data){
@@ -846,6 +848,9 @@ $(document).ready(function(){
   }    else if (tax > 100){
   alert("Tax Tidak Boleh Lebih Dari 100%");
   }
+  else if (harga_produk == '0' || harga_baru == '0') {
+      alert("Harga Rp. 0; Maaf,  Silakan tentukan harga barang atau pilih produk lain.");
+    }
 
 
   
