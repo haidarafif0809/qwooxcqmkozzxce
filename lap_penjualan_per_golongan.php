@@ -69,7 +69,7 @@ tr:nth-child(even){background-color: #f2f2f2}
         <b><h4>Total Keseluruhan </h4>
        <h4>Total Produk : <span id="total_produk"> </span></h4>        
         <h4>Total Nilai : <span id="total_nilai"> </span></h4></b>
-        <span id="total_lab" style="display: none"> </span>
+    
 
 
 </div>
@@ -120,8 +120,8 @@ tr:nth-child(even){background-color: #f2f2f2}
 
               $.getJSON('ambil_total_seluruh_lab.php',{golongan:golongan,dari_tanggal:dari_tanggal,sampai_tanggal:sampai_tanggal,dari_jam:dari_jam,sampai_jam:sampai_jam},function(data){
 
-                var total_nilai = json.total + data.total;
-                var total_produk = json.jumlah + data.jumlah;
+                var total_nilai = parseInt(json.total,10) + parseInt(data.total,10);
+                var total_produk = parseInt(json.jumlah,10) + parseInt(data.jumlah,10);
 
                 $("#total_nilai").html(tandaPemisahTitik(total_nilai));
                 $("#total_produk").html(tandaPemisahTitik(total_produk));
