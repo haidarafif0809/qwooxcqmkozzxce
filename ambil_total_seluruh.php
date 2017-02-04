@@ -15,7 +15,7 @@ $sampai_waktu = $sampai_tanggal." ".$sampai_jam;
 
 
 $select = $db->query("SELECT SUM(dp.jumlah_barang) AS jumlah, SUM(dp.subtotal) AS total 
-FROM detail_penjualan dp LEFT JOIN barang p ON dp.kode_barang = p.kode_barang  WHERE p.berkaitan_dgn_stok = '$golongan' AND dp.waktu >= '$dari_waktu' AND dp.waktu <= '$sampai_waktu'");
+FROM detail_penjualan dp LEFT JOIN barang p ON dp.kode_barang = p.kode_barang  WHERE p.golongan_barang = '$golongan' AND dp.waktu >= '$dari_waktu' AND dp.waktu <= '$sampai_waktu'");
 $row = mysqli_fetch_array($select);
 
  echo json_encode($row);
