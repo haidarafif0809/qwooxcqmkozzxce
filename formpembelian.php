@@ -757,7 +757,8 @@ $(document).ready(function(){
     var total = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#total_pembelian1").val()))));
     var over_stok = $("#over_stok").val();
     var stok = parseInt(jumlah_barang) + parseInt(jumlahbarang);
-                              
+    var munculalert = parseInt(jumlah_barang) * parseInt(harga_baru) * parseInt(harga);   
+                    
     if (total == '') 
     {
     total = 0;
@@ -848,8 +849,8 @@ $(document).ready(function(){
   }    else if (tax > 100){
   alert("Tax Tidak Boleh Lebih Dari 100%");
   }
-  else if (harga_produk == '0' || harga_baru == '0') {
-      alert("Harga Rp. 0; Maaf,  Silakan tentukan harga barang atau pilih produk lain.");
+  else if (munculalert == 0) {
+      alert("Harga Rp. 0; Maaf, Anda tidak bisa membeli barang ini. Silakan tentukan harga barang atau pilih produk lain.");
     }
 
 
