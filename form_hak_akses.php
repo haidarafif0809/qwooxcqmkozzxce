@@ -4268,7 +4268,7 @@ else{
 
 
 
-<div style="display: none" class="form-group col-sm-2"> <!-- start otoritas cash_flow_tanggal -->
+<div  class="form-group col-sm-2"> <!-- start otoritas cash_flow_tanggal -->
 <label> Laporan Cash Flow</label><br>
 
 <?php 
