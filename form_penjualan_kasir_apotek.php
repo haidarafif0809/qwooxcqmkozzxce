@@ -1309,12 +1309,6 @@ $(document).ready(function(){
 
     }
 
-
-
-
-
-
-
 if (jumlah_barang == ''){
   alert("Jumlah Barang Harus Diisi");
        $("#jumlah_barang").focus();
@@ -1550,12 +1544,78 @@ alert("Pembayaran Harus Di Isi");
 alert("Silakan Bayar Piutang");
 
  }
-                else if (total ==  0 || total == "") 
+    else if (total ==  0 &&(potongan_persen != 100) || total == "" &&(potongan_persen != 100)) 
         {
         
         alert("Anda Belum Melakukan Pemesanan");
         
         }
+
+// jika diskon per faktur 100%
+else if(total == 0 && potongan_persen == '100'){
+
+  $("#penjualan").hide();
+  $("#batal_penjualan").hide();
+  $("#piutang").hide();
+  $("#transaksi_baru").show();
+
+
+
+ $.post("cek_subtotal_apotek.php",{total:total,biaya_admin:biaya_admin,potongan:potongan/*,tax:tax*/},function(data) {
+
+  if (data == 1) {
+
+
+ $.post("proses_bayar_jual_apotek.php",{biaya_admin:biaya_admin,total2:total2,sisa_pembayaran:sisa_pembayaran,kredit:kredit,kode_pelanggan:kode_pelanggan,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,cara_bayar:cara_bayar,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,total_hpp:total_hpp,harga:harga,kode_gudang:kode_gudang,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,apoteker:apoteker,no_resep_dokter:no_resep_dokter,resep_dokter:resep_dokter,penjamin:penjamin,analis:analis},function(info) {
+
+if (info == 1)
+{
+
+   alert("Maaf Subtotal Penjualan Tidak Sesuai, Silakan Tunggu Sebentar! (2) ");       
+        window.location.href="form_penjualan_kasir_apotek.php";
+
+}
+
+else{
+  info = info.replace(/\s/g, '');
+     $("#table-baru").html(info);
+     var no_faktur = info;
+     var kode_pelanggan = $('#kd_pelanggan').val();
+     var kode_pelanggan = kode_pelanggan.substr(0, kode_pelanggan.indexOf('('));
+     $("#cetak_tunai").attr('href', 'cetak_penjualan_tunai.php?no_faktur='+no_faktur+'');
+     $("#cetak_tunai_besar").attr('href', 'cetak_besar_apotek.php?no_faktur='+no_faktur+'');
+     $("#alert_berhasil").show();
+     $("#pembayaran_penjualan").val('');
+     $("#sisa_pembayaran_penjualan").val('');
+     $("#kredit").val('');
+     $("#apoteker").val('')
+     $("#analis").val('')
+     $("#no_resep_dokter").val('')
+     $("#resep_dokter").val('')
+     $("#penjamin").val('')
+     $("#apoteker").val('')
+     $("#no_resep_dokter").val('')
+     $("#resep_dokter").val('')
+     $("#penjamin").val('')
+     $("#cetak_tunai").show();
+     $("#cetak_tunai_besar").show('');
+    }
+       
+   });
+}
+  else{
+
+
+
+    alert("Maaf Subtotal Penjualan Tidak Sesuai, Silakan Tunggu Sebentar! (1) ");       
+        window.location.href="form_penjualan_kasir_apotek.php";
+  }
+
+ });
+
+
+
+ }
 
  else
 
