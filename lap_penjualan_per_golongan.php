@@ -67,8 +67,11 @@ tr:nth-child(even){background-color: #f2f2f2}
 
 
         <b><h4>Total Keseluruhan </h4>
-       <h4>Total Produk : <span id="total_produk"> </span></h4>        
-        <h4>Total Nilai : <span id="total_nilai"> </span></h4></b>
+        <h4>Total Produk : <span id="total_produk"> </span></h4>        
+        <h4>Total Nilai : <span id="total_nilai"> </span></h4>
+        <h4>Total Produk Lab : <span id="total_lab"> </span></h4>
+        <h4>Total Nilai Lab : <span id="total_nilai_lab"> </span></h4></b>
+
     
 
 
@@ -113,37 +116,27 @@ tr:nth-child(even){background-color: #f2f2f2}
 
 
 
-    $.getJSON('ambil_total_seluruh.php',{golongan:golongan,dari_tanggal:dari_tanggal,sampai_tanggal:sampai_tanggal,dari_jam:dari_jam,sampai_jam:sampai_jam},function(json){
+           $.getJSON('ambil_total_seluruh.php',{golongan:golongan,dari_tanggal:dari_tanggal,sampai_tanggal:sampai_tanggal,dari_jam:dari_jam,sampai_jam:sampai_jam},function(json){
 
-      if (golongan == 'Jasa') 
-      {
-
-              $.getJSON('ambil_total_seluruh_lab.php',{golongan:golongan,dari_tanggal:dari_tanggal,sampai_tanggal:sampai_tanggal,dari_jam:dari_jam,sampai_jam:sampai_jam},function(data){
-
-                if (data.total == '') {
-                  data.total = 0;
-                }
-
-                if (data.jumlah == '') {
-                  data.jumlah = 0;
-                }
-
-                var total_nilai = parseInt(json.total,10) + parseInt(data.total,10);
-                var total_produk = parseInt(json.jumlah,10) + parseInt(data.jumlah,10);
-
-                $("#total_nilai").html(tandaPemisahTitik(total_nilai));
-                $("#total_produk").html(tandaPemisahTitik(total_produk));
-
+            $("#total_nilai").html(tandaPemisahTitik(json.total));
+            $("#total_produk").html(tandaPemisahTitik(json.jumlah));
+      
             });
 
-      }
-      else{
-      $("#total_nilai").html(tandaPemisahTitik(json.total));
-      $("#total_produk").html(tandaPemisahTitik(json.jumlah));
-      }
+          $.getJSON('ambil_total_seluruh_lab.php',{golongan:golongan,dari_tanggal:dari_tanggal,sampai_tanggal:sampai_tanggal,dari_jam:dari_jam,sampai_jam:sampai_jam},function(data){
+            
+              if (json.total_nilai == '') {
+                json.total_nilai = 0;
+              }
+              if (json.total_produk == '') {
+                json.total_produk = 0;
+              }
 
+              $("#total_nilai_lab").html(tandaPemisahTitik(json.total_nilai));
+              $("#total_lab").html(tandaPemisahTitik(json.total_produk));
+   
+            });
 
-  });
 
           if (golongan == '') {
             alert("Silakan Pilih Golongan terlebih dahulu.");

@@ -1227,6 +1227,7 @@ $(function() {
     var no_rm = no_rm.substr(0, no_rm.indexOf('('));
 
       $.getJSON("update_registrasi_pasien.php",{no_rm:no_rm},function(data){
+
         $("#asal_poli").val(data.poli);
         $("#penjamin").val(data.penjamin);
            
@@ -1273,8 +1274,11 @@ $(function() {
   
   if(data == 1){
     alert("Anda Tidak Bisa Menambahkan Barang Yang Sudah Ada, Silakan Edit atau Pilih Barang Yang Lain !");
-    $("#kode_barang").val('');
-    $("#nama_barang").val('');
+          $("#nama_barang").val('');
+          $("#kode_barang").val('');
+          $("#kode_barang").trigger('chosen:updated');
+          $("#kode_barang").trigger('chosen:open');
+  
    }//penutup if
 
  });
@@ -3211,9 +3215,12 @@ else {
 $.post('cek_kode_barang_edit_tbs_penjualan.php',{kode_barang:kode_barang,no_faktur:no_faktur}, function(data){
           
           if(data == 1){
+
           alert("Anda Tidak Bisa Menambahkan Barang Yang Sudah Ada, Silakan Edit atau Pilih Barang Yang Lain");
-          $("#kode_barang").val('');
+
           $("#nama_barang").val('');
+          $("#kode_barang").val('');
+          $("#kode_barang").trigger('chosen:updated');
           $("#kode_barang").trigger('chosen:open');
           }//penutup if
      
