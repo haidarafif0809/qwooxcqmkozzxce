@@ -1442,7 +1442,7 @@ $(document).ready(function(){
     
   var level_harga = $("#level_harga").val();
   var kode_barang = $("#kode_barang").val();
-  var kode_barang = kode_barang.substr(0, kode_barang.indexOf('('));
+  //var kode_barang = kode_barang.substr(0, kode_barang.indexOf('('));
   var jumlah_barang = $("#jumlah_barang").val();
   var id_produk = $("#id_jasa").val();
 
@@ -1486,6 +1486,7 @@ $(document).on('click','#submit_produk',function(e){
     var jumlah_barang = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#jumlah_barang").val()))));
     var harga = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#harga_produk").val()))));
     var potongan = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#potongan1").val()))));
+    var munculalert = parseInt(jumlah_barang) * parseInt(harga);
         if (potongan == '') {
       potongan = 0;
     }
@@ -1626,7 +1627,13 @@ if (jumlah_barang == ''){
       $("#kode_barang").trigger('chosen:open');
     }
 
+else if (munculalert == 0){
+  alert("Harga Rp. 0; Maaf, Anda tidak dapat menjual Barang ini. Silakan ganti level harga atau pilih barang yang lain.");
+  $("#level_harga").focus();
+  }
 
+  else if (ber_stok == 'Jasa')
+  {
 
   else 
   {
@@ -2917,7 +2924,7 @@ if (data != '1970-01-01' )
     var jumlah_barang = $("#jumlah_barang").val();
     var penjamin = $("#penjamin").val();
     var kode_barang = $("#kode_barang").val();
-    var kode_barang = kode_barang.substr(0, kode_barang.indexOf('('));
+    //var kode_barang = kode_barang.substr(0, kode_barang.indexOf('('));
     $.post("cek_harga_lab_penjamin.php",{penjamin:penjamin,kode_barang:kode_barang,jumlah_barang:jumlah_barang},function(data){
         data = data.replace(/\s+/g, '');
           $("#harga_produk").val(data);

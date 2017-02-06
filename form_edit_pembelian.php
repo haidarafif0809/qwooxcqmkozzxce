@@ -232,7 +232,7 @@
               </div>
               
               
-              <form class="form-group" action="proses_coba.php" role="form" id="formtambahproduk">
+              <form class="form-group" action="proses_tbs_edit_pembelian.php" role="form" id="formtambahproduk">
             
             <div class="col-sm-3">
 
@@ -463,31 +463,8 @@
             <td>". $data1['kode_barang'] ."</td>
             <td>". $data1['nama_barang'] ."</td>";
 
-      $pilih = $db->query("SELECT no_faktur_pembelian FROM detail_retur_pembelian WHERE no_faktur_pembelian = '$data1[no_faktur]' AND kode_barang = '$data1[kode_barang]'");
-      $row_retur = mysqli_num_rows($pilih);
-
-       $hpp_masuk_pembelian = $db->query ("SELECT no_faktur FROM hpp_masuk WHERE no_faktur = '$nomor_faktur' AND sisa != jumlah_kuantitas AND kode_barang = '$data1[kode_barang]'");
-       $row_hpp_masuk = mysqli_num_rows($hpp_masuk_pembelian);
-
-
-      $pilih = $db->query("SELECT no_faktur_pembelian FROM detail_pembayaran_hutang WHERE no_faktur_pembelian = '$data1[no_faktur]'");
-      $row_hutang = mysqli_num_rows($pilih);
-
-      if ($row_retur > 0 || $row_hutang > 0 || $row_hpp_masuk > 0 ) {
-
-
-              echo"<td class='edit-jumlah-alert' data-faktur='".$data1['no_faktur']."' data-kode='".$data1['kode_barang']."'><span id='text-jumlah-".$data1['id']."'>". $data1['jumlah_barang'] ."</span> <input type='hidden' id='input-jumlah-".$data1['id']."' value='".$data1['jumlah_barang']."' class='input_jumlah' data-id='".$data1['id']."' autofocus='' data-kode='".$data1['kode_barang']."' data-harga='".$data1['harga']."' > </td>"; 
-
-      } 
-
-      else {
-
 
       echo"<td class='edit-jumlah' data-id='".$data1['id']."' data-faktur='".$data1['no_faktur']."' data-kode='".$data1['kode_barang']."'><span id='text-jumlah-".$data1['id']."'>". $data1['jumlah_barang'] ."</span> <input type='hidden' id='input-jumlah-".$data1['id']."' value='".$data1['jumlah_barang']."' class='input_jumlah' data-id='".$data1['id']."' autofocus='' data-kode='".$data1['kode_barang']."' data-harga='".$data1['harga']."' > </td>"; 
-
-      }
-
-
 
 
             echo"<td>". $data1['nama'] ."</td>
@@ -496,9 +473,17 @@
             <td><span id='text-potongan-".$data1['id']."'>". $data1['potongan'] ."</span></td>
             <td><span id='text-tax-".$data1['id']."'>". $data1['tax'] ."</span></td>";
 
-      if ($row_retur > 0 || $row_hutang > 0 || $row_hpp_masuk > 0 ) {
 
-            echo "<td> <button class='btn btn-danger btn-alert-hapus' data-id='".$data1['id']."' data-faktur='".$data1['no_faktur']."' data-kode='".$data1['kode_barang']."'><span class='glyphicon glyphicon-trash'></span> Hapus </button></td>";
+       $hpp_masuk_pembelian = $db->query ("SELECT no_faktur_hpp_masuk FROM hpp_keluar WHERE no_faktur_hpp_masuk = '$data1[no_faktur]' AND kode_barang = '$data1[kode_barang]'");
+       $row_hpp_keluar = mysqli_num_rows($hpp_masuk_pembelian);
+
+
+      $pilih = $db->query("SELECT no_faktur_pembelian FROM detail_pembayaran_hutang WHERE no_faktur_pembelian = '$data1[no_faktur]'");
+      $row_hutang = mysqli_num_rows($pilih);
+
+      if ($row_hutang > 0 || $row_hpp_keluar > 0 ) {
+
+            echo "<td> <button class='btn btn-danger btn-sm btn-alert-hapus' data-id='".$data1['id']."' data-faktur='".$data1['no_faktur']."' data-kode='".$data1['kode_barang']."'><span class='glyphicon glyphicon-trash'></span> Hapus </button></td>";
 
       } 
 
@@ -706,11 +691,29 @@
   </script> <!--tag penutup perintah java script-->
 
 
+<script type="text/javascript">
+ 
+$(".btn-alert-hapus").click(function(){
+     var no_faktur = $(this).attr("data-faktur");
+    var kode_barang = $(this).attr("data-kode");
+
+    $.post('alert_edit_pembelian.php',{no_faktur:no_faktur, kode_barang:kode_barang},function(data){
+    
+ 
+    $("#modal_alert").modal('show');
+    $("#span_modal_alert").html(data); 
+
+});
+
+  });
+</script>
+
+
    <script>
    //perintah javascript yang diambil dari form tbs pembelian dengan id=form tambah produk
     
   
-   $("#submit_produk").click(function(){
+  $(document).on('click', '#submit_produk', function (e) {
 
     var no_faktur = $("#nomorfaktur").val();
     var suplier = $("#nama_suplier").val();
@@ -772,7 +775,7 @@
         $("#total_pembelian1").val(tandaPemisahTitik(total_akhir));
 
  
-    $.post("proses_coba.php",{no_faktur:no_faktur,kode_barang:kode_barang,nama_barang:nama_barang,jumlah_barang:jumlah_barang,harga:harga,harga_baru:harga_baru,potongan:potongan,tax:tax,satuan:satuan},function(data){
+    $.post("proses_tbs_edit_pembelian.php",{no_faktur:no_faktur,kode_barang:kode_barang,nama_barang:nama_barang,jumlah_barang:jumlah_barang,harga:harga,harga_baru:harga_baru,potongan:potongan,tax:tax,satuan:satuan},function(data){
       
       $("#tbody").prepend(data);    
       $("#kode_barang").val('').trigger("chosen:updated");
@@ -902,7 +905,7 @@ alert("Silakan Bayar Hutang");
        $("#hutang").hide();
        $("#transaksi_baru").show(); 
        
-       $.post("proses_bayar_coba.php",{total_1:total_1,no_faktur:no_faktur,sisa_pembayaran:sisa_pembayaran,kredit:kredit,suplier:suplier1,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,tax1:tax1,cara_bayar:cara_bayar,jumlah_barang:jumlah_barang,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,tanggal:tanggal,total_1:total_1,jumlah_kredit_baru:jumlah_kredit_baru,x:x,ppn:ppn,ppn_input:ppn_input,no_faktur_suplier:no_faktur_suplier},function(info) {
+       $.post("proses_bayar_edit_pembelian.php",{total_1:total_1,no_faktur:no_faktur,sisa_pembayaran:sisa_pembayaran,kredit:kredit,suplier:suplier1,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,tax1:tax1,cara_bayar:cara_bayar,jumlah_barang:jumlah_barang,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,tanggal:tanggal,total_1:total_1,jumlah_kredit_baru:jumlah_kredit_baru,x:x,ppn:ppn,ppn_input:ppn_input,no_faktur_suplier:no_faktur_suplier},function(info) {
        
        
        $("#alert_berhasil").show();
@@ -1011,7 +1014,7 @@ else
           $("#hutang").hide();
           $("#transaksi_baru").show();
        
-       $.post("proses_bayar_coba.php",{total_1:total_1,tax1:tax1,tanggal:tanggal,no_faktur:no_faktur,sisa_pembayaran:sisa_pembayaran,kredit:kredit,suplier:suplier,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,cara_bayar:cara_bayar,jumlah_barang:jumlah_barang,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,total_1:total_1,jumlah_kredit_baru:jumlah_kredit_baru,x:x,ppn:ppn,ppn_input:ppn_input,no_faktur_suplier:no_faktur_suplier},function(info) {
+       $.post("proses_bayar_edit_pembelian.php",{total_1:total_1,tax1:tax1,tanggal:tanggal,no_faktur:no_faktur,sisa_pembayaran:sisa_pembayaran,kredit:kredit,suplier:suplier,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,cara_bayar:cara_bayar,jumlah_barang:jumlah_barang,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,total_1:total_1,jumlah_kredit_baru:jumlah_kredit_baru,x:x,ppn:ppn,ppn_input:ppn_input,no_faktur_suplier:no_faktur_suplier},function(info) {
 
        
        $("#alert_berhasil").show();
@@ -1540,7 +1543,7 @@ $("#pembayaran_pembelian").keyup(function(){
 
       <script type="text/javascript">
         
-        $(".chosen").chosen({no_results_text: "Maaf, Data Tidak Ada!"});
+        $(".chosen").chosen({no_results_text: "Maaf, Data Tidak Ada!",search_contains:true});
 
       </script>
 
@@ -1555,30 +1558,17 @@ $(document).ready(function(){
 </script>
 
 
-<script type="text/javascript">
- 
-$(".btn-alert-hapus").click(function(){
-     var no_faktur = $(this).attr("data-faktur");
-    var kode_barang = $(this).attr("data-kode");
-
-    $.post('alert_edit_pembelian.php',{no_faktur:no_faktur, kode_barang:kode_barang},function(data){
-    
- 
-    $("#modal_alert").modal('show');
-    $("#span_modal_alert").html(data); 
-
-});
-
-  });
-</script>
 
 <script type="text/javascript">
 $(document).ready(function(){
+
   $(document).on('click', '.btn-hapus-tbs', function (e) {
     var nama_barang = $(this).attr("data-barang");
     var kode_barang = $(this).attr("data-kode-barang");
     var id = $(this).attr("data-id");
     var subtotal_tbs = $(this).attr("data-subtotal");
+    var no_faktur = $("#nomorfaktur").val();
+
     var total = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#total_pembelian1").val()))));
 
       if (total == '') 
@@ -1586,33 +1576,27 @@ $(document).ready(function(){
           total = 0;
         };
       var total_akhir = parseInt(total,10) - parseInt(subtotal_tbs,10);
+     
+    
 
-      $("#total_pembelian").val(tandaPemisahTitik(total_akhir));
-      $("#total_pembelian1").val(tandaPemisahTitik(total_akhir));
-
-$(".tr-id-"+id+"").remove();
-
+    $(".tr-id-"+id+"").remove();
     $.post("hapus_coba.php",{id:id,kode_barang:kode_barang},function(data){
     
+     $("#total_pembelian").val(tandaPemisahTitik(total_akhir));
+      $("#total_pembelian1").val(tandaPemisahTitik(total_akhir));
+      $("#kode_barang").trigger('chosen:open');   
 
     });
-    
-        $("#kode_barang").trigger('chosen:open');   
-    });
+
 
 //end fungsi hapus data
 
-
-
               $('form').submit(function(){
               
               return false;
               });
         });
-
-
-    
-     
+   });
      function tutupmodal() {
      $(".modal").modal("hide")
      }
@@ -1622,81 +1606,22 @@ $(".tr-id-"+id+"").remove();
 </script>
 
 
-<script type="text/javascript">
-//fungsi edit data 
-$(document).ready(function(){
-        $(".btn-edit-tbs").click(function(){
-        
-        $("#modal_edit").modal('show');
-        var jumlah_barang = $(this).attr("data-jumlah-barang");
-        var harga = $(this).attr("data-harga");
-        var no_faktur = $(this).attr("data-faktur");
-        var kode_barang = $(this).attr("data-kode");
-        var potongan  = $(this).attr("data-potongan");
-        var tax  = $(this).attr("data-tax");
-        var id  = $(this).attr("data-id");
-        $("#harga_edit").val(harga);
-        $("#barang_lama").val(jumlah_barang);
-        $("#faktur_edit").val(no_faktur);
-        $("#kode_edit").val(kode_barang);
-        $("#id_edit").val(id);
-        $("#potongan_edit").val(potongan);
-        $("#tax_edit").val(tax);
-        
-        
-        });
-        
-        $("#submit_edit").click(function(){
-        var jumlah_barang = $("#barang_lama").val();
-        var jumlah_baru = $("#barang_edit").val();
-        var harga = $("#harga_edit").val();
-        var potongan = $("#potongan_edit").val();
-        var tax = $("#tax_edit").val();
-        var kode_barang = $("#kode_edit").val();
-        var id = $("#id_edit").val();
-
-        $.post("update_coba.php",{id:id,jumlah_barang:jumlah_barang,jumlah_baru:jumlah_baru,harga:harga,potongan:potongan,tax:tax,kode_barang:kode_barang},function(data){
-
-          $("#kode_barang").focus();
-        $("#alert").html(data);
-        $("#result").load('tabel-coba.php?no_faktur=<?php echo $nomor_faktur; ?>');
-        setTimeout(tutupmodal, 2000);
-        setTimeout(tutupalert, 2000);
-      
-        });
-        });
-//end function edit data
-
-              $('form').submit(function(){
-              
-              return false;
-              });
-});
-
-     function tutupmodal() {
-     $(".modal").modal("hide")
-     }
-     function tutupalert() {
-     $(".alert").hide("fast")
-     }
-
-
-</script>
 
 
                               <script type="text/javascript">
-                                 
+                         
                                  $(".edit-jumlah").dblclick(function(){
 
                                       var id = $(this).attr("data-id");
+
                    
                                      
                                         $("#text-jumlah-"+id+"").hide();                                        
                                         $("#input-jumlah-"+id+"").attr("type", "text");
 
 
-                                 });
 
+                                 });
 
                                  $(".input_jumlah").blur(function(){
 
@@ -1705,7 +1630,8 @@ $(document).ready(function(){
                                     var kode_barang = $(this).attr("data-kode");
                                     var harga = $(this).attr("data-harga");
                                     var jumlah_lama = $("#text-jumlah-"+id+"").text();
-                                    
+                                    var no_faktur = $("#nomorfaktur").val();
+
                                     var subtotal_lama = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#text-subtotal-"+id+"").text()))));
                                     
                                     var potongan = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#text-potongan-"+id+"").text()))));
@@ -1721,7 +1647,13 @@ $(document).ready(function(){
                                     var tax_tbs = tax / subtotal_lama * 100;
                                     var jumlah_tax = Math.round(tax_tbs) * subtotal / 100;
 
-                                     $.post("update_pesanan_barang_beli.php",{harga:harga,jumlah_lama:jumlah_lama,jumlah_tax:jumlah_tax,potongan:potongan,id:id,jumlah_baru:jumlah_baru,kode_barang:kode_barang},function(info){
+                                    $.post("cek_edit_hpp_keluar.php",{kode_barang:kode_barang,no_faktur:no_faktur,jumlah_baru:jumlah_baru},function(data){
+
+
+                                      if (data == 0)
+                                      {
+
+                              $.post("update_pesanan_barang_beli.php",{harga:harga,jumlah_lama:jumlah_lama,jumlah_tax:jumlah_tax,potongan:potongan,id:id,jumlah_baru:jumlah_baru,kode_barang:kode_barang},function(info){
 
                                     
                                     $("#text-jumlah-"+id+"").show();
@@ -1733,32 +1665,42 @@ $(document).ready(function(){
                                     $("#total_pembelian").val(tandaPemisahTitik(subtotal_penjualan));
                                     $("#total_pembelian1").val(tandaPemisahTitik(subtotal_penjualan));         
 
-                                    });
+                                           });
+                                  
+                                 }
 
+
+                                      else
+                                      {
+
+
+
+                                        $.post('alert_edit_pembelian.php',{no_faktur:no_faktur,kode_barang:kode_barang},function(data){
+
+                                      $("#modal_alert").modal('show');
+                                     $("#span_modal_alert").html(data);    
+                                     $("#text-jumlah-"+id+"").show();
+                                    $("#input-jumlah-"+id+"").val(jumlah_lama); 
+                                     $("#input-jumlah-"+id+"").attr("type", "hidden"); 
+
+                                     });
+                                 
+                                   
+
+                                  }
+
+                                    });
 
                                     $("#kode_barang").focus();
                                     $("#pembayaran_pembelian").val("");
 
                                  });
-
-                             </script>
+      </script>
 
 
 <script type="text/javascript">
   
-      $(".edit-jumlah-alert").dblclick(function(){
 
-      var no_faktur = $(this).attr("data-faktur");
-      var kode_barang = $(this).attr("data-kode");
-                                      
-      $.post('alert_edit_pembelian.php',{no_faktur:no_faktur, kode_barang:kode_barang},function(data){
-
-      $("#modal_alert").modal('show');
-      $("#span_modal_alert").html(data);
-
-                                      
-});
-});
 </script>
 
 <script type="text/javascript">

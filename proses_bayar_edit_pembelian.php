@@ -16,10 +16,13 @@ $select_suplier = $db->query("SELECT id,nama FROM suplier WHERE id = '$suplier'"
 $ambil_suplier = mysqli_fetch_array($select_suplier);
 
 
+
+
+
+
             $no_faktur_suplier = stringdoang($_POST['no_faktur_suplier']);
     $nomor_faktur = stringdoang($_POST['no_faktur']);
 
-            $perintah1 = $db->query("DELETE FROM detail_pembelian WHERE no_faktur = '$nomor_faktur'");
 
 
 
@@ -72,6 +75,9 @@ $ambil_suplier = mysqli_fetch_array($select_suplier);
             // jalankan query
             
             $stmt2->execute(); 
+
+
+
 
 
 $select_setting_akun = $db->query("SELECT * FROM setting_akun");
@@ -266,20 +272,26 @@ if ($potongan != "" || $potongan != 0 ) {
             }
             
             
-            
+            $delete_detail_pembelian = $db->query("DELETE FROM detail_pembelian WHERE no_faktur = '$nomor_faktur' ");
+
             
             $query12 = $db->query("SELECT * FROM tbs_pembelian WHERE no_faktur = '$nomor_faktur' ");
             while ($data = mysqli_fetch_array($query12))
             {
 
-            $select_hpp_keluar = $db->query("SELECT jumlah_kuantitas FROM hpp_keluar WHERE no_faktur_hpp_masuk = '$nomor_faktur' AND kode_barang = '$data[kode_barang]'");
+            $select_hpp_keluar = $db->query("SELECT SUM(jumlah_kuantitas) as jum FROM hpp_keluar WHERE no_faktur_hpp_masuk = '$nomor_faktur' AND kode_barang = '$data[kode_barang]'");
             $data_hpp_keluar = mysqli_fetch_array($select_hpp_keluar);
-            $jumlah_keluar = $data_hpp_keluar['jumlah_kuantitas'];
+            $jumlah_keluar = $data_hpp_keluar['jum'];
             
-            $select_hpp_masuk = $db->query("SELECT * FROM hpp_masuk WHERE no_faktur = '$nomor_faktur' AND kode_barang = '$data[kode_barang]' AND sisa != jumlah_kuantitas ");
-            $row_hpp_masuk = mysqli_num_rows($select_hpp_masuk);
+            $select_hpp_masuk = $db->query("SELECT SUM(jumlah_kuantitas) as sum_hpp FROM hpp_keluar WHERE no_faktur_hpp_masuk = '$nomor_faktur' AND kode_barang = '$data[kode_barang]' ");
+            $kel_hpp_kel = mysqli_num_rows($select_hpp_masuk);
 
-            if ($row_hpp_masuk == 0) {
+
+              $select_hpp_keluar2 = $db->query("SELECT COUNT(*) FROM hpp_keluar WHERE no_faktur_hpp_masuk = '$nomor_faktur' AND kode_barang = '$kode_barang'");
+                $cek_hpp_kel2 = mysqli_num_rows($select_hpp_keluar2);
+
+
+            if ($kel_hpp_kel['sum_hpp'] < $data['jumlah_barang'] AND $cek_hpp_kel2 > 0) {
 
 
             $delete_detail_pembelian = $db->query("DELETE FROM detail_pembelian WHERE no_faktur = '$nomor_faktur' AND kode_barang = '$data[kode_barang]'");
