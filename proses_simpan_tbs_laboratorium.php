@@ -99,7 +99,7 @@ $dokter = stringdoang($_POST['dokter']);
 
       $fee_nominal_produk = $nominal * $jumlah;
 
-      $query100 = $db->query("INSERT INTO tbs_fee_produk (nama_petugas, no_faktur, kode_produk, nama_produk, jumlah_fee, tanggal, jam,waktu,no_rm,no_reg) VALUES ('$dokter', '$no_faktur', '$kode', '$nama', '$fee_nominal_produk', '$tanggal_sekarang', '$jam_sekarang','$waktu','$no_rm','$no_reg')");
+      $query100 = "INSERT INTO tbs_fee_produk (nama_petugas, no_faktur, kode_produk, nama_produk, jumlah_fee, tanggal, jam,waktu,no_rm,no_reg) VALUES ('$dokter', '$no_faktur', '$kode', '$nama', '$fee_nominal_produk', '$tanggal_sekarang', '$jam_sekarang','$waktu','$no_rm','$no_reg')";
               if ($db->query($query100) === TRUE) 
                 {
                 
@@ -142,7 +142,7 @@ $dokter = stringdoang($_POST['dokter']);
 
       $fee_nominal_produk = $nominal * $jumlah;
 
-      $query100 = $db->query("INSERT INTO tbs_fee_produk (nama_petugas, no_faktur, kode_produk, nama_produk, jumlah_fee, tanggal, jam,waktu,no_rm,no_reg) VALUES ('$analis', '$no_faktur', '$kode', '$nama', '$fee_nominal_produk', '$tanggal_sekarang', '$jam_sekarang','$waktu','$no_rm','$no_reg')");
+      $query100 = "INSERT INTO tbs_fee_produk (nama_petugas, no_faktur, kode_produk, nama_produk, jumlah_fee, tanggal, jam,waktu,no_rm,no_reg) VALUES ('$analis', '$no_faktur', '$kode', '$nama', '$fee_nominal_produk', '$tanggal_sekarang', '$jam_sekarang','$waktu','$no_rm','$no_reg')";
               if ($db->query($query100) === TRUE) 
                 {
                 
@@ -224,7 +224,7 @@ $dokter = stringdoang($_POST['dokter']);
           {
                           
 
-          $query6 = " INSERT INTO tbs_penjualan (no_faktur,kode_barang,nama_barang,jumlah_barang,harga,subtotal,tipe_barang,potongan,tax,tanggal,jam,lab,no_reg) VALUES 
+          $query6 = "INSERT INTO tbs_penjualan (no_faktur,kode_barang,nama_barang,jumlah_barang,harga,subtotal,tipe_barang,potongan,tax,tanggal,jam,lab,no_reg) VALUES 
           ('$no_faktur','$kode','$nama','$jumlah','$hargaa','$subtotal','$tipe','$potongan_tampil','$tax_persen','$tanggal_sekarang','$jam_sekarang','Laboratorium','$no_reg')";
 
           if ($db->query($query6) === TRUE)
@@ -249,7 +249,7 @@ $dokter = stringdoang($_POST['dokter']);
  <?php
                
                   //menampilkan semua data yang ada pada tabel tbs penjualan dalam DB
-                $perintah = $db->query("SELECT * FROM tbs_penjualan WHERE no_faktur = '$no_faktur'  AND no_reg = '$no_reg' AND lab = 'Laboratorium'");
+                $perintah = $db->query("SELECT * FROM tbs_penjualan WHERE no_faktur = '$no_faktur'  AND no_reg = '$no_reg' AND lab = 'Laboratorium' ORDER BY id DESC");
                             
                 
                 //menyimpan data sementara yang ada pada $perintah  
@@ -292,9 +292,6 @@ $dokter = stringdoang($_POST['dokter']);
                echo "<td style='font-size:15px' align='right'> <button class='btn btn-danger btn-sm btn-hapus-tbs' id='btn-hapus-id-".$data1['id']."' data-id='". $data1['id'] ."' data-kode-barang='". $data1['kode_barang'] ."' data-barang='". $data1['nama_barang'] ."' data-subtotal='". $data1['subtotal'] ."'>Hapus</button> </td> 
 
                 </tr>";
-
-
-                
-
+                mysqli_close($db);
                 ?>
       

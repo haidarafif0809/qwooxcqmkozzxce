@@ -1153,6 +1153,7 @@ $(document).ready(function() {
 
 
   document.getElementById("kode_barang").value = $(this).attr('data-kode');
+  $("#kode_barang").trigger('chosen:updated');
   document.getElementById("nama_barang").value = $(this).attr('data-nama');
   document.getElementById("bidang").value = $(this).attr('data-bidang');
   document.getElementById("id_jasa").value = $(this).attr('data-id-jasa');
@@ -1643,10 +1644,11 @@ else if (munculalert == 0){
           $.post("proses_tbs_laboratorium.php",{nama_barang:nama_barang,jumlah_barang:jumlah_barang,harga:harga,potongan:potongan,tax:tax,tipe_barang:ber_stok,no_rm:no_rm,apoteker:apoteker,penjamin:penjamin,hargaa:hargaa,ppn:ppn, kode_barang:kode_barang,no_reg:no_reg,dokter:dokter},function(data){ 
      
 
-                   $("#kode_barang").val('');
-                   $("#kode_barang").trigger('chosen:updated');
+                   
                  $("#ppn").attr("disabled", true);
                  $("#tbody").prepend(data);
+
+                 $("#kode_barang").trigger('chosen:updated').trigger('chosen:open');
                  $("#nama_barang").val('');
                  $("#jumlah_barang").val('');
                  $("#potongan1").val(''); 
@@ -1655,8 +1657,6 @@ else if (munculalert == 0){
                  $("#harga_penjamin").val('');
                  $("#sisa_pembayaran_penjualan").val('');
                  $("#kredit").val('');
-                   $("#kode_barang").trigger('chosen:open');
-
                  
                  });
 
