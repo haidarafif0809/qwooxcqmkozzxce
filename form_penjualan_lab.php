@@ -674,7 +674,7 @@ $data_rj_ri = mysqli_fetch_array($sum_rj_ri);
     <select class="form-control chosen" id="biaya_admin_select" name="biaya_admin_select" >
     <option value="0"> Silahkan Pilih </option>
       <?php 
-      $get_biaya_admin = $db->query("SELECT * FROM biaya_admin");
+      $get_biaya_admin = $db->query("SELECT * FROM biaya_admin ORDER BY id ASC");
       while ( $take_admin = mysqli_fetch_array($get_biaya_admin))
       {
       echo "<option value='".$take_admin['persentase']."'>".$take_admin['nama']."</option>";
@@ -1130,7 +1130,7 @@ $(document).ready(function() {
               $(nRow).attr('data-kode',aData[0]);
               $(nRow).attr('data-id-jasa',aData[12]);
               $(nRow).attr('data-nama',aData[1]);
-              $(nRow).attr('data-bidang',aData[3]);
+              $(nRow).attr('data-bidang',aData[13]);
               $(nRow).attr('data-1',aData[5]);
               $(nRow).attr('data-2',aData[6]);
               $(nRow).attr('data-3',aData[7]);
@@ -1631,9 +1631,6 @@ else if (munculalert == 0){
   alert("Harga Rp. 0; Maaf, Anda tidak dapat menjual Barang ini. Silakan ganti level harga atau pilih barang yang lain.");
   $("#level_harga").focus();
   }
-
-  else if (ber_stok == 'Jasa')
-  {
 
   else 
   {
