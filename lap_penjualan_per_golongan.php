@@ -118,22 +118,26 @@ tr:nth-child(even){background-color: #f2f2f2}
 
            $.getJSON('ambil_total_seluruh.php',{golongan:golongan,dari_tanggal:dari_tanggal,sampai_tanggal:sampai_tanggal,dari_jam:dari_jam,sampai_jam:sampai_jam},function(json){
 
-            $("#total_nilai").html(tandaPemisahTitik(json.total));
-            $("#total_produk").html(tandaPemisahTitik(json.jumlah));
+            $("#total_nilai").html(json.total);
+            $("#total_produk").html(json.jumlah);
       
             });
 
           $.getJSON('ambil_total_seluruh_lab.php',{golongan:golongan,dari_tanggal:dari_tanggal,sampai_tanggal:sampai_tanggal,dari_jam:dari_jam,sampai_jam:sampai_jam},function(data){
-            
-              if (json.total_nilai == '') {
-                json.total_nilai = 0;
+
+            var total_nilai = data.total;
+            var total_produk = data.jumlah;
+
+              if (total_nilai == '') {
+                total_nilai = 0;
               }
-              if (json.total_produk == '') {
-                json.total_produk = 0;
+              if (total_produk == '') {
+                total_produk = 0;
               }
 
-              $("#total_nilai_lab").html(tandaPemisahTitik(json.total_nilai));
-              $("#total_lab").html(tandaPemisahTitik(json.total_produk));
+              $("#total_nilai_lab").html(total_nilai);
+              $("#total_lab").html(total_produk);
+
    
             });
 
