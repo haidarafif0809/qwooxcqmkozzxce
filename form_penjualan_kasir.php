@@ -1521,6 +1521,13 @@ else if (a > 0){
 
 
   }
+  else if (harga == 0 || harga == ""){
+       alert("Harga "+nama_barang+" = 0, Anda Tidak Dapat Melakukan Penjualan, Silakan Pilih Produk atau Level Harga Yang Lain !");
+       $("#jumlah_barang").val('');
+       $("#nama_barang").val('');
+       $("#kode_barang").val('');
+       $("#kode_barang").trigger('chosen:updated');
+}
   else if (ber_stok == 'Jasa' || ber_stok == 'BHP' ){
 
 
