@@ -406,6 +406,14 @@ if ($lihat['buku_besar_lihat'] > 0){
                             echo '<li><a href="laporan_buku_besar_per_tanggal.php" class="waves-effect">Buku Besar Per Tanggal</a></li>';
 }
 
+ if ($lihat['cash_flow_tanggal_lihat'] > 0){
+                            echo '<li><a href="cashflow_tanggal.php" class="waves-effect"> Cashflow Per Tanggal</a></li>';
+}
+
+ if ($lihat['cash_flow_periode_lihat'] > 0){
+                            echo '<li><a href="cashflow_periode.php" class="waves-effect"> Cashflow Per Periode</a></li>';
+}
+
  if ($lihat['laporan_neraca_lihat'] > 0){
                             echo '<li><a href="laporan_neraca.php" class="waves-effect"> Neraca</a></li>';
 }

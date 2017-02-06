@@ -2,7 +2,7 @@
 include 'sanitasi.php';
 include 'db.php';
 
-$daftar_akun = stringdoang($_GET['kas_detail']);
+$daftar_akun = stringdoang($_GET['kas_rekap']);
 $dari_tanggal = stringdoang($_GET['dari_tanggal']);
 $sampai_tanggal = stringdoang($_GET['sampai_tanggal']);
 

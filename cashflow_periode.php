@@ -233,7 +233,7 @@ include 'sanitasi.php';
 <h4><b>Kas Masuk</b></h4>
 <table id="rekap_masuk" class="table table-hover table-sm">
         <thead>
-            <th style="background-color: #4CAF50; color: white;"> Tanggal </th>
+            <th style="background-color: #4CAF50; color: white;"> Waktu </th>
             <th style="background-color: #4CAF50; color: white;"> Dari Akun </th>
             <th style="background-color: #4CAF50; color: white;"> Ke Akun </th>
             <th style="background-color: #4CAF50; color: white;"> Total </th>
@@ -255,7 +255,7 @@ include 'sanitasi.php';
 <h4><b>Kas Keluar</b></h4>
 <table id="rekap_keluar" class="table table-hover table-sm">
         <thead>
-            <th style="background-color: #4CAF50; color: white;"> Tanggal </th>
+            <th style="background-color: #4CAF50; color: white;"> Waktu </th>
             <th style="background-color: #4CAF50; color: white;"> Dari Akun </th>
             <th style="background-color: #4CAF50; color: white;"> Ke Akun </th>
             <th style="background-color: #4CAF50; color: white;"> Total </th>
@@ -276,7 +276,7 @@ include 'sanitasi.php';
 <h4><b>Kas Mutasi</b></h4>
 <table id="rekap_mutasi" class="table table-hover table-sm">
         <thead>
-            <th style="background-color: #4CAF50; color: white;"> Tanggal </th>
+            <th style="background-color: #4CAF50; color: white;"> Waktu </th>
             <th style="background-color: #4CAF50; color: white;"> Dari Akun </th>
             <th style="background-color: #4CAF50; color: white;"> Ke Akun </th>
             <th style="background-color: #4CAF50; color: white;"> Total </th>
@@ -510,7 +510,7 @@ $.getJSON('proses_cashflow_periode_rekap.php',{kas_rekap:kas_rekap,dari_tanggal:
              "data": function ( d ) {
                 d.kas_rekap = $("#kas_rekap").val();
                 d.dari_tanggal = $("#dari_tanggal_rekap").val();
-                d.ampai_tanggal = $("#sampai_tanggal_rekap").val();
+                d.sampai_tanggal = $("#sampai_tanggal_rekap").val();
                 // d.custom = $('#myInput').val();
                 // etc
             },
@@ -538,10 +538,11 @@ $.getJSON('proses_cashflow_periode_rekap.php',{kas_rekap:kas_rekap,dari_tanggal:
         "emptyTable":     "My Custom Message On Empty Table"
     },
           "ajax":{
-            url :"proses_cashflow_rekap_keluar.php", // json datasource
+            url :"proses_cashflow_rekap_keluar_periode.php", // json datasource
              "data": function ( d ) {
                 d.kas_rekap = $("#kas_rekap").val();
-                d.tanggal_rekap = $("#tanggal_rekap").val();
+                d.dari_tanggal = $("#dari_tanggal_rekap").val();
+                d.sampai_tanggal = $("#sampai_tanggal_rekap").val();
                 // d.custom = $('#myInput').val();
                 // etc
             },
@@ -570,10 +571,11 @@ $.getJSON('proses_cashflow_periode_rekap.php',{kas_rekap:kas_rekap,dari_tanggal:
         "emptyTable":     "My Custom Message On Empty Table"
     },
           "ajax":{
-            url :"proses_cashflow_rekap_mutasi.php", // json datasource
+            url :"proses_cashflow_rekap_mutasi_periode.php", // json datasource
              "data": function ( d ) {
                 d.kas_rekap = $("#kas_rekap").val();
-                d.tanggal_rekap = $("#tanggal_rekap").val();
+                d.dari_tanggal = $("#dari_tanggal_rekap").val();
+                d.sampai_tanggal = $("#sampai_tanggal_rekap").val();
                 // d.custom = $('#myInput').val();
                 // etc
             },
@@ -637,7 +639,7 @@ $("#show_table_detail").hide();
 
     <script>
     $(function() {
-    $( "#sapai_tanggal_rekap" ).datepicker({dateFormat: "yy-mm-dd"});
+    $( "#sampai_tanggal_rekap" ).datepicker({dateFormat: "yy-mm-dd"});
     });
     </script>
     
