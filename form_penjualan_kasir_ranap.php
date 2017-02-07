@@ -1492,16 +1492,14 @@ $.post("cek_level_harga_barang.php",{level_harga:level_harga,kode_barang:kode_ba
   }
   else{
 
-      if (stok < 0) {
 
-        if (ber_stok = 'Barang') {
+        if (stok < 0 && ber_stok == 'Barang' ) {
         
         alert("Jumlah Melebihi Stok");
         $("#jumlah_barang").val('');
         $("#satuan_konversi").val(prev);
         
         }
-      }
 
   }
 
@@ -5033,6 +5031,14 @@ var penjamin = $("#penjamin").val();
 
 });
 </script>
+
+
+<script type="text/javascript">
+  $(window).bind('beforeunload', function(){
+  return 'Apakah Yakin Ingin Meninggalkan Halaman Ini ? Karena Akan Membutuhkan Beberapa Waktu Untuk Membuka Kembali Halaman Ini!';
+});
+</script>
+
 
 
 <!-- memasukan file footer.php -->
