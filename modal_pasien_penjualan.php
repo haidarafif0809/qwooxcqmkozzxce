@@ -27,7 +27,7 @@ $columns = array(
 
 // getting total number records without any search
 $sql = "SELECT r.no_reg, r.no_rm, r.nama_pasien, r.jenis_pasien, r.tanggal, r.penjamin, r.poli, r.dokter, r.id, u.id  AS id_dokter, p.harga AS level_harga";
-$sql.=" FROM registrasi r INNER JOIN user u ON r.dokter = u.nama INNER JOIN penjamin p ON r.penjamin = p.nama LEFT JOIN penjualan penj ON r.no_reg = penj.no_reg ";
+$sql.=" FROM registrasi r LEFT JOIN user u ON r.dokter = u.nama INNER JOIN penjamin p ON r.penjamin = p.nama LEFT JOIN penjualan penj ON r.no_reg = penj.no_reg ";
 $sql.=" WHERE r.jenis_pasien = 'Rawat Jalan' AND  (r.status = 'Proses' OR r.status = 'Rujuk Keluar Ditangani') AND penj.no_faktur IS NULL ";
 
 $query = mysqli_query($conn, $sql) or die("eror 1");
