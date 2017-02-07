@@ -10,10 +10,10 @@ $no_reg = $_POST['no_reg'];
 
 
 // menampilakn hasil penjumlah subtotal ALIAS total penjualan dari tabel tbs_penjualan berdasarkan data no faktur
- $query = $db->query("SELECT SUM(subtotal) AS total_penjualan FROM tbs_penjualan WHERE  no_reg = '$no_reg'");
+ $query = $db->query("SELECT SUM(subtotal) AS total_penjualan FROM tbs_penjualan WHERE  no_reg = '$no_reg' AND no_faktur IS NULL");
  $data = mysqli_fetch_array($query);
 
- $query_op = $db->query("SELECT SUM(harga_jual) AS total_operasi FROM tbs_operasi WHERE  no_reg = '$no_reg'");
+ $query_op = $db->query("SELECT SUM(harga_jual) AS total_operasi FROM tbs_operasi WHERE  no_reg = '$no_reg' AND no_faktur IS NULL");
  $data_op = mysqli_fetch_array($query_op);
 
 $total_penjualan = $data['total_penjualan'];
