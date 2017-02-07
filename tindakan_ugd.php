@@ -173,7 +173,13 @@ $out_perawat = mysqli_fetch_array($select_perawat);
 $select_apoteker = $db->query("SELECT p.apoteker,u.nama FROM penjualan p LEFT JOIN user u ON p.apoteker = u.id WHERE p.no_reg = '$no_reg' "); 
 $out_apoteker = mysqli_fetch_array($select_apoteker);
 
-if ($status_bayar == 'Lunas' OR $status_bayar == 'Piutang'):?> 
+?>
+
+<!--
+
+<?php if ($status_bayar == 'Lunas' OR $status_bayar == 'Piutang'):?> 
+
+  -->
 
 <div class="col-sm-2">
 <div class="form-group">
@@ -190,6 +196,7 @@ if ($status_bayar == 'Lunas' OR $status_bayar == 'Piutang'):?>
 </div>
 
 
+<!--
 
 <?php else: ?>
 
@@ -233,24 +240,35 @@ if ($status_bayar == 'Lunas' OR $status_bayar == 'Piutang'):?>
 <?php endif;?>
 
 
+-->
+
 <?php
 $select_to = $db->query("SELECT no_reg,status FROM penjualan WHERE no_reg = '$no_reg'"); 
 $out_of = mysqli_fetch_array($select_to);
 $status_bayar = $out_of['status'];
 
-if ($status_bayar == 'Lunas' OR $status_bayar == 'Piutang'):?> 
+?>
+
+<!--
+<?php if ($status_bayar == 'Lunas' OR $status_bayar == 'Piutang'):?> 
+  -->
+
 
 <div class="col-sm-12">
-<button data-no-reg='".$no_reg."' style='background-color:#80deea;' class='btn btn-default selesai'><i class='fa fa-send'></i> Selesai </button>
-
-<br><br>
+  <button data-no-reg='".$no_reg."' style='background-color:#80deea;' class='btn btn-default selesai'><i class='fa fa-send'></i> Selesai </button>
 </div>
+
+<!--
 
 <?php else: ?>
 
 
 <div class="col-sm-12">
+
+-->
+
 <!-- OPEN FORM CARI PRODUK -->
+<!--
 <button type="button" accesskey="c" id="cari_produk" class="btn btn-danger" data-target="#myModal2" data-toggle="modal"><i class="fa fa-search"></i> Cari (F1)</button>
 <br>
 <br>
@@ -304,8 +322,11 @@ if ($status_bayar == 'Lunas' OR $status_bayar == 'Piutang'):?>
 
 
 
-
 <?php endif;?>
+
+
+-->
+
 <!-- AKHIR confirmasi SELESAI -->
 
 <!-- YANG DI HIDDEN DI PRODUK -->
@@ -323,6 +344,7 @@ tr:nth-child(even){background-color: #f2f2f2}
 </style>
 
 <div class="col-sm-12">
+<br>
 <span id="result">
   <div class="table-responsive">
 <table id="table-pelamar" class="table table-sm">
@@ -333,59 +355,58 @@ tr:nth-child(even){background-color: #f2f2f2}
          <th style='background-color: #4CAF50; color: white'>Kode  </th>
          <th style='background-color: #4CAF50; color: white'>Nama  </th>
          <th style='background-color: #4CAF50; color: white'>Jumlah</th>
-          <?php 
-         $sss = $db->query("SELECT * FROM detail_penjualan WHERE no_reg ='$no_reg' AND tipe_produk = 'Jasa' ORDER BY id DESC");
-         $asa1 = mysqli_num_rows($sss);
-         if($asa1 > 0) {?>
-
-       <?php } else { ?>
-       <th style='background-color: #4CAF50; color: white'>Batal</th>
-       <?php } ?>
+         <th style='background-color: #4CAF50; color: white'>Waktu</th>       
 
     </tr>
     </thead>
     <tbody id="tbody">
     
    <?php 
-$query5 = $db->query("SELECT * FROM tbs_penjualan WHERE no_reg = '$no_reg' AND tipe_barang = 'Jasa' ORDER BY id DESC");
- 
+       
 
-$ss = $db->query("SELECT * FROM detail_penjualan WHERE no_reg ='$no_reg' AND tipe_produk = 'Jasa' ORDER BY id DESC");
-$asa = mysqli_num_rows($ss);
-if ($asa == 0)
-{
+      $ss = $db->query("SELECT * FROM detail_penjualan WHERE no_reg ='$no_reg' AND tipe_produk = 'Jasa' ORDER BY id DESC");
 
-   while($data = mysqli_fetch_array($query5))
+/*
+
+      $query5 = $db->query("SELECT * FROM tbs_penjualan WHERE no_reg = '$no_reg' AND tipe_barang = 'Jasa' ORDER BY id DESC");
+      $asa = mysqli_num_rows($ss);
+      if ($asa == 0)
       {
-      echo 
-      "<tr class='tr-id-".$data['id']." tr-kode-".$data['kode_barang']."' data-kode-barang='".$data['kode_barang']."' >
-      <td>". $data['no_reg']."</td>
-      <td>". $data['kode_barang']."</td>
-      <td>". $data['nama_barang']."</td>
-      <td>". $data['jumlah_barang']."</td>
-    <td><button class='btn btn-danger btn-sm batal' data-id='".$data['id']."' data-reg='". $data['no_reg']."' data-kode-barang='". $data['kode_barang']."'>
-      <i class='fa fa-remove'></i> Batal </button></td>
-      </tr>";
-       }
+
+         while($data = mysqli_fetch_array($query5))
+            {
+            echo 
+            "<tr class='tr-id-".$data['id']." tr-kode-".$data['kode_barang']."' data-kode-barang='".$data['kode_barang']."' >
+            <td>". $data['no_reg']."</td>
+            <td>". $data['kode_barang']."</td>
+            <td>". $data['nama_barang']."</td>
+            <td>". $data['jumlah_barang']."</td>
+          <td><button class='btn btn-danger btn-sm batal' data-id='".$data['id']."' data-reg='". $data['no_reg']."' data-kode-barang='". $data['kode_barang']."'>
+            <i class='fa fa-remove'></i> Batal </button></td>
+            </tr>";
+             }
 
 
-}
-else
-{
-
-
-   while($data = mysqli_fetch_array($ss))
-      
-      {
-      echo 
-      "<tr>
-      <td>". $data['no_reg']."</td>
-      <td>". $data['kode_barang']."</td>
-      <td>". $data['nama_barang']."</td>
-      <td>". $data['jumlah_barang']."</td>
-      </tr>";
       }
- }
+      else
+      {
+        }
+
+*/
+
+
+         while($data = mysqli_fetch_array($ss))
+            
+            {
+            echo 
+            "<tr>
+            <td>". $data['no_reg']."</td>
+            <td>". $data['kode_barang']."</td>
+            <td>". $data['nama_barang']."</td>
+            <td>". $data['jumlah_barang']."</td>
+            <td>". $data['waktu']."</td>
+            </tr>";
+            }
       
 
     ?>
@@ -410,7 +431,7 @@ else
   });
 </script>
 
-<!— SCRIPT AMBIL DATA FORM PRODUK —>
+<!-- SCRIPT AMBIL DATA FORM PRODUK -->
 <script type="text/javascript">
 
     $(document).on('click', '.pilih', function (e) {
