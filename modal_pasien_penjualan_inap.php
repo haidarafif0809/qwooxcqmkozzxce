@@ -27,7 +27,7 @@ $columns = array(
 
 // getting total number records without any search
 $sql ="SELECT reg.no_rm, reg.no_reg, reg.nama_pasien, reg.penjamin, reg.poli, reg.dokter_pengirim, reg.dokter, reg.bed, reg.group_bed, reg.tanggal, reg.id, reg.jenis_pasien, u.id  AS id_dokter, uu.id  AS id_dokter_pengirim, p.harga AS level_harga ";
-$sql.=" FROM registrasi reg INNER JOIN user u ON reg.dokter = u.nama INNER JOIN user uu ON reg.dokter_pengirim = uu.nama INNER JOIN penjamin p ON reg.penjamin = p.nama LEFT JOIN penjualan penj ON reg.no_reg = penj.no_reg ";
+$sql.=" FROM registrasi reg LEFT JOIN user u ON reg.dokter = u.nama LEFT JOIN user uu ON reg.dokter_pengirim = uu.nama LEFT JOIN penjamin p ON reg.penjamin = p.nama LEFT JOIN penjualan penj ON reg.no_reg = penj.no_reg ";
 $sql.=" WHERE reg.jenis_pasien = 'Rawat Inap' AND reg.status = 'menginap' AND reg.status != 'Batal Rawat Inap' AND penj.no_faktur IS NULL ";
 
 $query = mysqli_query($conn, $sql) or die("eror 1");
@@ -36,7 +36,7 @@ $totalFiltered = $totalData;  // when there is no search parameter then total nu
 
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
 $sql ="SELECT reg.no_rm, reg.no_reg, reg.nama_pasien, reg.penjamin, reg.poli, reg.dokter_pengirim, reg.dokter, reg.bed, reg.group_bed, reg.tanggal, reg.id, reg.jenis_pasien, u.id  AS id_dokter, p.harga AS level_harga ";
-$sql.=" FROM registrasi reg INNER JOIN user u ON reg.dokter = u.nama INNER JOIN user uu ON reg.dokter_pengirim = uu.nama INNER JOIN penjamin p ON reg.penjamin = p.nama LEFT JOIN penjualan penj ON reg.no_reg = penj.no_reg ";
+$sql.=" FROM registrasi reg LEFT JOIN user u ON reg.dokter = u.nama LEFT JOIN user uu ON reg.dokter_pengirim = uu.nama LEFT JOIN penjamin p ON reg.penjamin = p.nama LEFT JOIN penjualan penj ON reg.no_reg = penj.no_reg ";
 $sql.=" WHERE reg.jenis_pasien = 'Rawat Inap' AND reg.status = 'menginap' AND reg.status != 'Batal Rawat Inap' AND penj.no_faktur IS NULL ";
 
     $sql.=" AND (reg.no_rm LIKE '".$requestData['search']['value']."%'";  
