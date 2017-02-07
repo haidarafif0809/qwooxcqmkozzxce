@@ -24,15 +24,7 @@ include 'db.php';
 </div>
 
 <div class="col-sm-2"> 
-    <input style="height: 17px" type="text" name="dari_jam" id="dari_jam" class="form-control jam_cari" placeholder="Dari Jam" required="">
-</div>
-
-<div class="col-sm-2"> 
     <input style="height: 17px" type="text" name="sampai_tanggal" id="sampai_tanggal" autocomplete="off" class="form-control tanggal_cari" placeholder="Sampai Tanggal"  required="">
-</div>
-
-<div class="col-sm-2"> 
-    <input style="height: 17px" type="text" name="sampai_jam" id="sampai_jam" class="form-control jam_cari" placeholder="Sampai Jam" required="">
 </div>
 
 <button type="submit" name="submit" id="btntgl" class="btn btn-default" style="background-color:blue"><i class='fa fa-list'></i> Lihat </button>
@@ -88,13 +80,6 @@ tr:nth-child(even){background-color: #f2f2f2}
   });
 </script>
 
-<script type="text/javascript">
-            $(document).ready(function() {
-                $('.jam_cari').timepicker({
-                    showPeriodLabels: false
-                });
-              });
-</script>
 
 
 <!--  end date and time picker  -->
@@ -108,23 +93,22 @@ tr:nth-child(even){background-color: #f2f2f2}
         var golongan = $("#golongan").val();
         var dari_tanggal = $("#dari_tanggal").val();        
         var sampai_tanggal = $("#sampai_tanggal").val();
-        var dari_jam = $("#dari_jam").val();        
-        var sampai_jam = $("#sampai_jam").val();
 
 
 
-    $.getJSON('ambil_total_seluruh.php',{golongan:golongan,dari_tanggal:dari_tanggal,sampai_tanggal:sampai_tanggal,dari_jam:dari_jam,sampai_jam:sampai_jam},function(json){
+
+    $.getJSON('ambil_total_seluruh.php',{golongan:golongan,dari_tanggal:dari_tanggal,sampai_tanggal:sampai_tanggal},function(json){
 
       if (golongan == 'Jasa') 
       {
 
-              $.getJSON('ambil_total_seluruh_lab.php',{golongan:golongan,dari_tanggal:dari_tanggal,sampai_tanggal:sampai_tanggal,dari_jam:dari_jam,sampai_jam:sampai_jam},function(data){
+              $.getJSON('ambil_total_seluruh_lab.php',{golongan:golongan,dari_tanggal:dari_tanggal,sampai_tanggal:sampai_tanggal},function(data){
 
-                if (data.total == '') {
+                if (data.total == null) {
                   data.total = 0;
                 }
 
-                if (data.jumlah == '') {
+                if (data.jumlah == null) {
                   data.jumlah = 0;
                 }
 
@@ -172,8 +156,6 @@ tr:nth-child(even){background-color: #f2f2f2}
                       d.golongan = $("#golongan").val();
                       d.dari_tanggal = $("#dari_tanggal").val();
                       d.sampai_tanggal = $("#sampai_tanggal").val();
-                      d.dari_jam = $("#dari_jam").val();
-                      d.sampai_jam = $("#sampai_jam").val();
                       // d.custom = $('#myInput').val();
                       // etc
                   },
@@ -189,17 +171,14 @@ tr:nth-child(even){background-color: #f2f2f2}
               });
     
 
-
-
           $("#cetak").show();
-          $("#cetak_lap").attr("href", "cetak_penjualan_rekap_golongan.php?golongan="+golongan+"&dari_tanggal="+dari_tanggal+"&sampai_tanggal="+sampai_tanggal+"&dari_jam="+dari_jam+"&sampai_jam="+sampai_jam+"");
+        $("#cetak_lap").attr("href", "cetak_penjualan_rekap_golongan.php?golongan="+golongan+"&dari_tanggal="+dari_tanggal+"&sampai_tanggal="+sampai_tanggal+"");
 
-          $("#export_lap").attr("href", "export_lap_penjualan_golongan.php?golongan="+golongan+"&dari_tanggal="+dari_tanggal+"&sampai_tanggal="+sampai_tanggal+"&dari_jam="+dari_jam+"&sampai_jam="+sampai_jam+"");
+        $("#export_lap").attr("href", "export_lap_penjualan_golongan.php?golongan="+golongan+"&dari_tanggal="+dari_tanggal+"&sampai_tanggal="+sampai_tanggal+"");
       
       }//end else
 
                 $("#result").show();
-
 
         });
         $("form").submit(function(){

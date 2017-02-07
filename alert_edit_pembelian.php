@@ -9,10 +9,11 @@ $hpp_keluaran = $db->query("SELECT no_faktur,jenis_transaksi,tanggal,kode_barang
 
 
       $detail_hutang = $db->query("SELECT * FROM detail_pembayaran_hutang WHERE no_faktur_pembelian = '$no_faktur'");
+      $ss = mysqli_num_rows($detail_hutang);
 
  ?>
 
-
+<h5></h5>
 <table id="tableuser" class="table table-hover">
     <thead>
 
@@ -47,6 +48,7 @@ $hpp_keluaran = $db->query("SELECT no_faktur,jenis_transaksi,tanggal,kode_barang
     </tbody>
 </table>
 
+<?php if ($ss > 0){?>
 
 <table id="table_hutang" class="table table-hover">
     <thead>
@@ -80,7 +82,7 @@ mysqli_close($db);
     
     </tbody>
 </table>
-
+<?php } ?>
 
 
 <script>

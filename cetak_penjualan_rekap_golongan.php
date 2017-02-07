@@ -5,12 +5,8 @@ include 'db.php';
 
 $dari_tanggal = stringdoang($_GET['dari_tanggal']);
 $sampai_tanggal = stringdoang($_GET['sampai_tanggal']);
-$dari_jam = stringdoang($_GET['dari_jam']);
-$sampai_jam = stringdoang($_GET['sampai_jam']);
 $golongan = stringdoang($_GET['golongan']);
 
-$dari_waktu = $dari_tanggal." ".$dari_jam;
-$sampai_waktu = $sampai_tanggal." ".$sampai_jam;
 $tanggal_sekarang = date('Y-m-d');
 
 $jumlah_jual_awal = 0;
@@ -19,7 +15,7 @@ $jumlah_beli_awal = 0;
 
     $query1 = $db->query("SELECT * FROM perusahaan ");
     $data1 = mysqli_fetch_array($query1);
-	$perintah = $db->query("SELECT SUM(dp.jumlah_barang) AS jumlah, SUM(dp.subtotal) AS total FROM detail_penjualan dp LEFT JOIN barang p ON dp.kode_barang = p.kode_barang  WHERE p.berkaitan_dgn_stok = '$golongan' AND dp.waktu >= '$dari_waktu' AND dp.waktu <= '$sampai_waktu'");
+	$perintah = $db->query("SELECT SUM(dp.jumlah_barang) AS jumlah, SUM(dp.subtotal) AS total FROM detail_penjualan dp LEFT JOIN barang p ON dp.kode_barang = p.kode_barang  WHERE p.berkaitan_dgn_stok = '$golongan' AND dp.tanggal >= '$dari_tanggal' AND dp.tanggal <= '$sampai_tanggal'");
 	$data = mysqli_fetch_array($perintah);
     
  ?>
@@ -70,7 +66,7 @@ $jumlah_beli_awal = 0;
             <tbody>
             <?php
               $perintah = $db->query("SELECT dp.nama_barang, SUM(dp.jumlah_barang) AS jumlah, SUM(dp.subtotal) AS total
-              	FROM detail_penjualan dp INNER JOIN barang p ON dp.kode_barang = p.kode_barang  WHERE p.golongan_barang = '$golongan' AND dp.waktu >= '$dari_waktu' AND dp.waktu <= '$sampai_waktu' GROUP BY dp.kode_barang ORDER BY dp.id ASC ");
+              	FROM detail_penjualan dp INNER JOIN barang p ON dp.kode_barang = p.kode_barang  WHERE p.golongan_barang = '$golongan' AND dp.tanggal >= '$dari_tanggal' AND dp.tanggal <= '$sampai_tanggal' GROUP BY dp.kode_barang ORDER BY dp.id ASC ");
                 while ($data10 = mysqli_fetch_array($perintah))
                 {
                   
