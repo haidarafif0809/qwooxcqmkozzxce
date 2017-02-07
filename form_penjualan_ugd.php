@@ -396,7 +396,8 @@ $obat = $otoritas_produk['tipe_obat'];
             </center>
       </div>
       <div class="modal-footer">
-        <button type="button" accesskey="e" class="btn btn-danger" data-dismiss="modal">Clos<u>e</u></button>
+        <button type="button" class="btn btn-warning" id="btnRefreshPasien"> <i class='fa fa-refresh'></i> Refresh Pasien</button>
+        <button type="button" accesskey="e" class="btn btn-danger" data-dismiss="modal"><i class='fa fa-close'></i> Close</button>
       </div>
     </div>
 
@@ -4453,6 +4454,43 @@ $(document).ready(function(){
 });
 </script>
 
+
+<script type="text/javascript">
+    $(document).on('click','#btnRefreshPasien',function(e){
+
+       $('#tabel_cari_pasien').DataTable().destroy();
+        var dataTable = $('#tabel_cari_pasien').DataTable( {
+          "processing": true,
+          "serverSide": true,
+          "ajax":{
+            url :"modal_pasien_penjualan_ugd.php", // json datasource
+            type: "post",  // method  , by default get
+            error: function(){  // error handling
+              $(".employee-grid-error").html("");
+              $("#tabel_cari_pasien").append('<tbody class="employee-grid-error"><tr><th colspan="3">Data Tidak Ditemukan.. !!</th></tr></tbody>');
+              $("#employee-grid_processing").css("display","none");
+              
+            }
+          },
+
+          "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+
+              $(nRow).attr('class', "pilih-reg");
+              $(nRow).attr('no_reg', aData[0]);
+              $(nRow).attr('no_rm', aData[1]+" | "+aData[2]+"");
+              $(nRow).attr('nama_pasien', aData[2]);
+              $(nRow).attr('penjamin', aData[5]);
+              $(nRow).attr('poli', aData[6]);
+              $(nRow).attr('dokter', aData[7]);
+              $(nRow).attr('level_harga', aData[8]);
+
+
+          }
+
+       }); 
+
+    }); 
+</script>
 
 
 <?php include 'footer.php'; ?>
