@@ -329,7 +329,8 @@ $obat = $otoritas_produk['tipe_obat'];
 <button type="button" class="btn btn-warning" id="cari_pasien" data-toggle="modal" data-target="#modal_reg"><i class="fa fa-user"></i> Cari Pasien (Alt + P)</button>
 
 <a href="form_penjualan_lab.php" id="btnRujukLab" class="btn btn-default" style="display: none"> <i class="fa fa-flask"></i> Rujuk Lab</a>  
-
+  
+<button type="button" class="btn btn-default" id="btnRefreshsubtotal"> <i class='fa fa-refresh'></i> Refresh Subtotal</button>
 
 <!--tampilan modal-->
 <div id="myModal" class="modal fade" role="dialog">
@@ -571,6 +572,7 @@ $obat = $otoritas_produk['tipe_obat'];
 
 <div class="col-xs-2">
   <button type="submit" id="submit_produk" class="btn btn-success" style="font-size:15px" > <i class="fa fa-plus"></i> Submit (F3)</button>
+
 </div>
 
 </div>
@@ -887,9 +889,11 @@ Laboratorium  </button>
 
            <?php if ($otoritas_tombol['tombol_batal'] > 0):?>              
 
-          <button type="submit" id="batal_penjualan" class="btn btn-danger" style="font-size:15px">  Batal (Ctrl + B)</button>
+          
 
          <?php endif;?>
+
+         <button type="submit" id="batal_penjualan" class="btn btn-danger" style="font-size:15px">  Batal (Ctrl + B)</button>
 
           <a href='cetak_penjualan_tunai_besar.php' id="cetak_tunai_besar" style="display: none;" class="btn btn-warning" target="blank"> Cetak Tunai  Besar </a>
           
@@ -932,6 +936,45 @@ $(document).ready(function(){
   $(document).on('click', '.tidak_punya_otoritas', function (e) {
     alert("Anda Tidak Punya Otoritas Untuk Edit Jumlah Produk !!");
   });
+</script>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+
+  $(document).on('click','#btnRefreshsubtotal',function(e){
+
+    var no_reg = $("#no_reg").val();
+
+
+    if (no_reg == '') {
+      alert("No. Reg tidak boleh kosong");
+    }
+    else
+    {
+      $.post("proses_refresh_subtotal.php",{no_reg:no_reg},function(data){
+
+            var biaya_admin = $("#biaya_admin_select").val();
+            var hitung_biaya = parseInt(biaya_admin,10) * parseInt(data,10) / 100;
+
+            $("#biaya_adm").val(tandaPemisahTitik(Math.round(hitung_biaya)));
+
+            var biaya_adm = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#biaya_adm").val()))));
+            var diskon = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#potongan_penjualan").val()))));
+            if(diskon == '')
+            {
+              diskon = 0
+            }
+            var hasilnya = parseInt(data,10) + parseInt(biaya_adm,10) - parseInt(diskon,10);
+
+            $("#total1").val(tandaPemisahTitik(hasilnya));
+            $("#total2").val(tandaPemisahTitik(data));
+
+      });
+    }
+
+  });
+
+});
 </script>
 
 <script type="text/javascript">
@@ -3134,7 +3177,7 @@ $("#cari_produk_penjualan").click(function(){
 
       if (stok < 0) {
 
-        if (ber_stok = 'Barang') {
+        if (ber_stok == 'Barang') {
         
         alert("Jumlah Melebihi Stok");
         $("#jumlah_barang").val('');
