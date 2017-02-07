@@ -27,7 +27,7 @@ $columns = array(
 
 // getting total number records without any search
 $sql = "SELECT r.no_reg, r.no_rm, r.nama_pasien, r.jenis_pasien, r.tanggal, r.penjamin, r.poli, r.dokter, r.id, u.id  AS id_dokter, p.harga AS level_harga";
-$sql.=" FROM registrasi r INNER JOIN user u ON r.dokter = u.nama INNER JOIN penjamin p ON r.penjamin = p.nama LEFT JOIN penjualan penj ON r.no_reg = penj.no_reg ";
+$sql.=" FROM registrasi r LEFT JOIN user u ON r.dokter = u.nama LEFT JOIN penjamin p ON r.penjamin = p.nama LEFT JOIN penjualan penj ON r.no_reg = penj.no_reg ";
 $sql.=" WHERE r.jenis_pasien = 'UGD' AND  (r.status != 'Batal UGD' AND r.status != 'Rujuk Rumah Sakit') AND penj.no_faktur IS NULL ";
 
 $query = mysqli_query($conn, $sql) or die("eror 1");
@@ -36,7 +36,7 @@ $totalFiltered = $totalData;  // when there is no search parameter then total nu
 
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
 $sql = "SELECT r.no_reg, r.no_rm, r.nama_pasien, r.jenis_pasien, r.tanggal, r.penjamin, r.poli, r.dokter, r.id, u.id  AS id_dokter, p.harga AS level_harga";
-$sql.=" FROM registrasi r INNER JOIN user u ON r.dokter = u.nama INNER JOIN penjamin p ON r.penjamin = p.nama LEFT JOIN penjualan penj ON r.no_reg = penj.no_reg ";
+$sql.=" FROM registrasi r LEFT JOIN user u ON r.dokter = u.nama LEFT JOIN penjamin p ON r.penjamin = p.nama LEFT JOIN penjualan penj ON r.no_reg = penj.no_reg ";
 $sql.=" WHERE r.jenis_pasien = 'UGD' AND  (r.status != 'Batal UGD' AND r.status != 'Rujuk Rumah Sakit') AND penj.no_faktur IS NULL ";
 
     $sql.=" AND (r.no_reg LIKE '".$requestData['search']['value']."%'";  
