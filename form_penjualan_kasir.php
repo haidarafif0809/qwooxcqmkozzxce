@@ -953,6 +953,10 @@ $(document).ready(function(){
     {
       $.post("proses_refresh_subtotal.php",{no_reg:no_reg},function(data){
 
+        if (data == '') {
+          data = 0;
+        }
+
             var biaya_admin = $("#biaya_admin_select").val();
             var hitung_biaya = parseInt(biaya_admin,10) * parseInt(data,10) / 100;
 
