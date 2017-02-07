@@ -16,7 +16,7 @@
             $perintah = $db->prepare("INSERT INTO fee_produk (nama_petugas, kode_produk, nama_produk, jumlah_prosentase, jumlah_uang, user_buat)
             VALUES (?,?,?,?,?,?)");
 
-    $perintah->bind_param("sssiis",
+    $perintah->bind_param("ssssss",
         $nama_petugas, $kode_produk, $nama_produk, $jumlah_prosentase, $jumlah_nominal, $user);
 
     $nama_petugas = stringdoang($_POST['nama_petugas']);
