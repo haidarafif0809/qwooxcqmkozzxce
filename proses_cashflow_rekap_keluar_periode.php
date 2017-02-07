@@ -22,7 +22,7 @@ $columns = array(
 // getting total number records without any search
 $sql = "SELECT SUM(js.kredit) AS keluar,js.jenis_transaksi,js.id,da.nama_daftar_akun,js.waktu_jurnal,js.no_faktur";
 $sql.=" FROM jurnal_trans js LEFT JOIN daftar_akun da ON js.kode_akun_jurnal = da.kode_daftar_akun";
-$sql.=" WHERE DATE(js.waktu_jurnal) >= '$dari_tanggal' AND DATE(js.waktu_jurnal) <= '$sampai_tanggal' AND js.kode_akun_jurnal = '$kas' AND js.kredit != '0' AND jenis_transaksi != 'Kas Mutasi' GROUP BY js.no_faktur";
+$sql.=" WHERE DATE(js.waktu_jurnal) >= '$dari_tanggal' AND DATE(js.waktu_jurnal) <= '$sampai_tanggal' AND js.kode_akun_jurnal = '$kas' AND js.kredit != '0' AND jenis_transaksi != 'Kas Mutasi' GROUP BY DATE(js.waktu_jurnal)";
 $sql.=" ";
 
 
@@ -38,7 +38,7 @@ $sql.=" WHERE DATE(js.waktu_jurnal) >= '$dari_tanggal' AND DATE(js.waktu_jurnal)
 
 
 	$sql.=" AND ( js.jenis_transaksi LIKE '".$requestData['search']['value']."%'";
-	$sql.=" OR da.nama_daftar_akun LIKE '".$requestData['search']['value']."%' ) GROUP BY js.no_faktur";
+	$sql.=" OR da.nama_daftar_akun LIKE '".$requestData['search']['value']."%' ) GROUP BY DATE(js.waktu_jurnal)";
 
 }
 

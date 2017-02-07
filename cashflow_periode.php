@@ -145,7 +145,7 @@ include 'sanitasi.php';
 <!--TABLE KAS MASUK-->
 <span id="result_detail_masuk">
 <div class="table-responsive"><!--membuat agar ada garis pada tabel disetiap kolom-->
-<h4><b>Kas Masuk</b></h4>
+<h4><b>Kas Masuk</b> <u>Rp. <span id="hasil_masuk_detail"></span></u> </h4>
 <table id="detail_masuk" class="table table-hover table-sm">
     <thead>
       <th style="background-color: #4CAF50; color: white;"> No Faktur </th>
@@ -171,7 +171,7 @@ include 'sanitasi.php';
 <!--TABLE KAS KELUAR-->
 <span id="result_detail_keluar">
 <div class="table-responsive"><!--membuat agar ada garis pada tabel disetiap kolom-->
-<h4><b>Kas Keluar</b></h4>
+<h4><b>Kas Keluar</b> <u>Rp. <span id="hasil_keluar_detail"></span></u> </h4>
 <table id="detail_keluar" class="table table-hover table-sm">
     <thead>
       
@@ -194,10 +194,38 @@ include 'sanitasi.php';
 </div> <!--/ responsive-->
 <hr>
 </span>
-<!--TABLE KAS MUTASI-->
+<!--TABLE KAS MUTASI MASUK-->
+<span id="result_detail_mutasi_masuk">
+<div class="table-responsive"><!--membuat agar ada garis pada tabel disetiap kolom-->
+<h4><b>Kas Mutasi (Masuk)</b> <u>Rp. <span id="hasil_mutasi_masuk_detail"></span></u> </h4>
+<table id="detail_mutasi_masuk" class="table table-hover table-sm">
+    <thead>
+      <th style="background-color: #4CAF50; color: white;"> No Faktur </th>
+      <th style="background-color: #4CAF50; color: white;"> Keterangan </th>
+      <th style="background-color: #4CAF50; color: white;"> Dari Akun </th>
+      <th style="background-color: #4CAF50; color: white;"> Ke Akun </th>
+      <th style="background-color: #4CAF50; color: white;"> Total </th>
+      <th style="background-color: #4CAF50; color: white;"> Petugas </th>
+      <th style="background-color: #4CAF50; color: white;"> Petugas Edit </th>
+      <th style="background-color: #4CAF50; color: white;"> Waktu</th>
+            
+    </thead>
+    <tbody class="tbody_mutasi_in">
+
+      
+
+    </tbody>
+
+  </table>
+</div> <!--/ responsive-->
+<hr>
+</span>
+<!--END MUTASI MASUK-->
+
+<!--TABLE KAS MUTASI KELUAR-->
 <span id="result_detail_mutasi">
 <div class="table-responsive"><!--membuat agar ada garis pada tabel disetiap kolom-->
-<h4><b>Kas Mutasi</b></h4>
+<h4><b>Kas Mutasi (Keluar)</b> <u>Rp. <span id="hasil_mutasi_detail"></span></u> </h4>
 <table id="detail_mutasi" class="table table-hover table-sm">
     <thead>
       <th style="background-color: #4CAF50; color: white;"> No Faktur </th>
@@ -220,6 +248,8 @@ include 'sanitasi.php';
 </div> <!--/ responsive-->
 <hr>
 </span>
+<!--END MUTASI KELUAR-->
+
 </span>
 <!--ENDING DETAIL SHO TABLE-->
 
@@ -230,7 +260,7 @@ include 'sanitasi.php';
 <!--TABLE KAS MASUK-->
 <span id="result_rekap_masuk">
 <div class="table-responsive"><!--membuat agar ada garis pada tabel disetiap kolom-->
-<h4><b>Kas Masuk</b></h4>
+<h4><b>Kas Masuk</b> <u>Rp. <span id="hasil_masuk"></span></u> </h4>
 <table id="rekap_masuk" class="table table-hover table-sm">
         <thead>
             <th style="background-color: #4CAF50; color: white;"> Waktu </th>
@@ -252,7 +282,7 @@ include 'sanitasi.php';
 <!--TABLE KAS KELUAR-->
 <span id="result_rekap_keluar">
 <div class="table-responsive"><!--membuat agar ada garis pada tabel disetiap kolom-->
-<h4><b>Kas Keluar</b></h4>
+<h4><b>Kas Keluar</b> <u>Rp. <span id="hasil_keluar"></span></u> </h4>
 <table id="rekap_keluar" class="table table-hover table-sm">
         <thead>
             <th style="background-color: #4CAF50; color: white;"> Waktu </th>
@@ -270,10 +300,36 @@ include 'sanitasi.php';
 </div> <!--/ responsive-->
 <hr>
 </span>
-<!--TABLE KAS MUTASI-->
+<!--ENDING TABLE REKAP KAS KELUAR-->
+
+<!--TABLE KAS MUTASI MASUK-->
+<span id="result_rekap_mutasi_masuk">
+<div class="table-responsive"><!--membuat agar ada garis pada tabel disetiap kolom-->
+<h4><b>Kas Mutasi (Masuk)</b> <u>Rp. <span id="hasil_mutasi_masuk"></span></u> </h4>
+<table id="rekap_mutasi_masuk" class="table table-hover table-sm">
+        <thead>
+            <th style="background-color: #4CAF50; color: white;"> Waktu </th>
+            <th style="background-color: #4CAF50; color: white;"> Dari Akun </th>
+            <th style="background-color: #4CAF50; color: white;"> Ke Akun </th>
+            <th style="background-color: #4CAF50; color: white;"> Total </th>
+                        
+        </thead>
+        <tbody class="tbody_mutasi_masuk">
+
+            
+
+        </tbody>
+
+    </table>
+</div> <!--/ responsive-->
+<hr>
+</span>
+<!--ENDING KAS MUTASI MASUK-->
+
+<!--TABLE KAS MUTASI KELUAR-->
 <span id="result_rekap_mutasi">
 <div class="table-responsive"><!--membuat agar ada garis pada tabel disetiap kolom-->
-<h4><b>Kas Mutasi</b></h4>
+<h4><b>Kas Mutasi (Keluar)</b> <u>Rp. <span id="hasil_mutasi"></span></u> </h4>
 <table id="rekap_mutasi" class="table table-hover table-sm">
         <thead>
             <th style="background-color: #4CAF50; color: white;"> Waktu </th>
@@ -292,6 +348,8 @@ include 'sanitasi.php';
 </div> <!--/ responsive-->
 <hr>
 </span>
+<!--ENDING KAS MUTASI KELUAR-->
+
 </span>
 <!--END TABLE REKAP-->
 
@@ -320,14 +378,18 @@ var kas_detail = $("#kas_detail").val();
 var dari_tanggal = $("#dari_tanggal_detail").val();
 var sampai_tanggal = $("#sampai_tanggal_detail").val();
 
-
-
 $.getJSON('proses_cashflow_periode_detail.php',{kas_detail:kas_detail,dari_tanggal:dari_tanggal,sampai_tanggal:sampai_tanggal},function(json){
 
     $("#saldo_awal").html(tandaPemisahTitik(json.keterangan));
-      $("#perubahan_saldo").html(tandaPemisahTitik(json.provinsi));
-      $("#saldo_akhir").html(tandaPemisahTitik(json.petugas));
-                $("#show_total").show();
+    $("#perubahan_saldo").html(tandaPemisahTitik(json.provinsi));
+    $("#saldo_akhir").html(tandaPemisahTitik(json.petugas));
+
+    $("#hasil_masuk_detail").html(tandaPemisahTitik(json.kelurahan));
+    $("#hasil_keluar_detail").html(tandaPemisahTitik(json.kecamatan));
+    $("#hasil_mutasi_detail").html(tandaPemisahTitik(json.kabupaten));
+
+    $("#hasil_mutasi_masuk_detail").html(tandaPemisahTitik(json.petugas_lain));
+    $("#show_total").show();
 
   });
 
@@ -396,8 +458,38 @@ $.getJSON('proses_cashflow_periode_detail.php',{kas_detail:kas_detail,dari_tangg
 //Ending untuk tampilkan table kas KELUAR detail
 
 
+//untuk tampilkan table kas MUTASI MASUK detail
+     $('#detail_mutasi_masuk').DataTable().destroy();
+          var dataTable = $('#detail_mutasi_masuk').DataTable( {
+          "processing": true,
+          "serverSide": true,
+          "info":     true,
+          "language": {
+        "emptyTable":     "My Custom Message On Empty Table"
+    },
+          "ajax":{
+            url :"proses_cashflow_detail_mutasi_masuk_periode.php", // json datasource
+             "data": function ( d ) {
+                d.kas_detail = $("#kas_detail").val();
+                d.dari_tanggal = $("#dari_tanggal_detail").val();
+                d.sampai_tanggal = $("#sampai_tanggal_detail").val();
+                // d.custom = $('#myInput').val();
+                // etc
+            },
+                type: "post",  // method  , by default get
+            error: function(){  // error handling
+              $(".tbody_mutasi_in").html("");
+              $("#detail_mutasi_masuk").append('<tbody class="tbody_mutasi_in"><tr><th colspan="3"></th></tr></tbody>');
+              $("#detail_mutasi_masuk_processing").css("display","none");
+              
+         
+            }
+          }
+    
+        });
+//Ending untuk tampilkan table kas MUTASI MASUK detail
 
-//untuk tampilkan table kas MUTASI detail
+//untuk tampilkan table kas MUTASI KELUAR detail
      $('#detail_mutasi').DataTable().destroy();
           var dataTable = $('#detail_mutasi').DataTable( {
           "processing": true,
@@ -426,7 +518,7 @@ $.getJSON('proses_cashflow_periode_detail.php',{kas_detail:kas_detail,dari_tangg
           }
     
         });
-//Ending untuk tampilkan table kas MUTASI detail
+//Ending untuk tampilkan table kas MUTASI KELUAR detail
 
 
 // show table id resultnya and input form jadi kosong
@@ -453,26 +545,6 @@ $("#show_table_detail").show();
  <!--ENDING SCRIPT DETAIL-->
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <!--SCRIPT PROSES REKAP-->
 <script type="text/javascript" language="javascript" >
    $(document).ready(function() {
@@ -488,8 +560,15 @@ var sampai_tanggal = $("#sampai_tanggal_rekap").val();
 $.getJSON('proses_cashflow_periode_rekap.php',{kas_rekap:kas_rekap,dari_tanggal:dari_tanggal,sampai_tanggal:sampai_tanggal},function(json){
 
     $("#saldo_awal").html(tandaPemisahTitik(json.keterangan));
-      $("#perubahan_saldo").html(tandaPemisahTitik(json.provinsi));
-      $("#saldo_akhir").html(tandaPemisahTitik(json.petugas));
+    $("#perubahan_saldo").html(tandaPemisahTitik(json.provinsi));
+    $("#saldo_akhir").html(tandaPemisahTitik(json.petugas));
+
+    $("#hasil_masuk").html(tandaPemisahTitik(json.kelurahan));
+    $("#hasil_keluar").html(tandaPemisahTitik(json.kecamatan));
+    $("#hasil_mutasi").html(tandaPemisahTitik(json.kabupaten));
+    $("#hasil_mutasi_masuk").html(tandaPemisahTitik(json.petugas_lain));
+
+
                 $("#show_total").show();
 
   });
@@ -560,8 +639,39 @@ $.getJSON('proses_cashflow_periode_rekap.php',{kas_rekap:kas_rekap,dari_tanggal:
 //Ending untuk tampilkan table kas KELUAR
 
 
+//untuk tampilkan table kas MUTASI MASUK
+     $('#rekap_mutasi_masuk').DataTable().destroy();
+          var dataTable = $('#rekap_mutasi_masuk').DataTable( {
+          "processing": true,
+          "serverSide": true,
+          "info":     true,
+          "language": {
+        "emptyTable":     "My Custom Message On Empty Table"
+    },
+          "ajax":{
+            url :"proses_cashflow_rekap_mutasi_masuk_periode.php", // json datasource
+             "data": function ( d ) {
+                d.kas_rekap = $("#kas_rekap").val();
+                d.dari_tanggal = $("#dari_tanggal_rekap").val();
+                d.sampai_tanggal = $("#sampai_tanggal_rekap").val();
+                // d.custom = $('#myInput').val();
+                // etc
+            },
+                type: "post",  // method  , by default get
+            error: function(){  // error handling
+              $(".tbody_mutasi_masuk").html("");
+              $("#rekap_mutasi_masuk").append('<tbody class="tbody_mutasi_masuk"><tr><th colspan="3"></th></tr></tbody>');
+              $("#rekap_mutasi_masuk_processing").css("display","none");
+              
+         
+            }
+          }
+    
+        });
+//Ending untuk tampilkan table kas MUTASI MASUK
 
-//untuk tampilkan table kas MUTASI
+
+//untuk tampilkan table kas MUTASI KELUAR
      $('#rekap_mutasi').DataTable().destroy();
           var dataTable = $('#rekap_mutasi').DataTable( {
           "processing": true,
@@ -590,13 +700,14 @@ $.getJSON('proses_cashflow_periode_rekap.php',{kas_rekap:kas_rekap,dari_tanggal:
           }
     
         });
-//Ending untuk tampilkan table kas MUTASI
+//Ending untuk tampilkan table kas MUTASI KELUAR
 
 
 // show table id resultnya and input form jadi kosong
           $("#result_rekap_masuk").show();
           $("#result_rekap_keluar").show();
           $("#result_rekap_mutasi").show();
+          $("#result_rekap_mutasi_masuk").show();
           $("#show_rekap").show();
 
 $("#show_table_rekap").show();
