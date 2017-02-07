@@ -240,6 +240,7 @@ tr:nth-child(even){background-color: #f2f2f2}
 <table id="pasien_masuk" class="display table table-bordered table-sm">
     <thead>
       <tr>
+             <th style='background-color: #4CAF50; color: white' >Transaksi Penjualan</th>
 <?php if ($registrasi_rj['registrasi_rj_lihat'] > 0): ?>         
              <th style='background-color: #4CAF50; color: white' >Rujuk Dengan Penanganan</th>
              <th style='background-color: #4CAF50; color: white' >Rujuk Tanpa Penanganan </th>

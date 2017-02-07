@@ -79,7 +79,23 @@ $data_z = mysqli_fetch_array($query_z);
 
 
 
+if ($penjualan['penjualan_tambah'] > 0) {
+  if ($data_z['status'] == 'Simpan Sementara') {
 
+       $nestedData[] = "
+       			<a href='proses_pesanan_barang_raja.php?no_faktur=".$data_z['no_faktur']."&no_reg=".$row['no_reg']."&no_rm=".$row['no_rm']."&nama_pasien=".$data_z['nama']."&kode_gudang=".$data_z['kode_gudang']."&nama_gudang=".$data_z['nama_gudang']."'class='btn btn-floating btn-small btn btn-info'><i class='fa fa-credit-card'></i></a>
+       			"; 
+      }
+      else
+      {
+      $nestedData[] = "";
+      }
+}
+else{
+
+       $nestedData[] = "";
+
+}
       
  
 if ($registrasi_rj['registrasi_rj_lihat'] > 0) {
