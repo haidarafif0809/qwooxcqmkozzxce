@@ -4350,6 +4350,8 @@ $(document).ready(function(){
        
                    $.post("cek_total_seluruh_inap.php",{no_reg:no_reg},function(data){
                     data = data.replace(/\s+/g, '');
+
+
                     $("#total2").val(tandaPemisahTitik(data))
                     
                     
@@ -4596,7 +4598,15 @@ $(document).ready(function(){
   
        
                    $.post("cek_total_seluruh_inap.php",{no_reg:no_reg},function(data){
-                    data = data.replace(/\s+/g, '');
+                    
+
+                     if (no_reg == "") {
+                       data = 0;
+                    }
+                    else{
+                       data = data.replace(/\s+/g, '');
+                    }
+
                     $("#total2").val(tandaPemisahTitik(data))
                     
                     
