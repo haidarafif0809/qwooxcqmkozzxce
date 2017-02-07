@@ -32,6 +32,15 @@ $angka1 = filter_var($angka, FILTER_SANITIZE_NUMBER_INT);
  return $angka1;
 }
 
+function angkadecimal($angka){
+
+$angka1 = filter_var($angka,
+              FILTER_SANITIZE_NUMBER_FLOAT, 
+              FILTER_FLAG_ALLOW_FRACTION);
+ return $angka1;
+}
+
+
 function emaildoang($email){
 
 $angka1 = filter_var($email, FILTER_SANITIZE_EMAIL);
