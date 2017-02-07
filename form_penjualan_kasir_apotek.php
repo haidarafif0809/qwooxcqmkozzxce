@@ -222,7 +222,7 @@ $user = $_SESSION['nama'];
 
 <div class="col-xs-2">
     <label> Level Harga </label><br>
-  <select style="font-size:13px; height:35px" type="text" name="level_harga" id="level_harga" class="form-control" required="" >
+  <select style="font-size:15px; height:35px" type="text" name="level_harga" id="level_harga" class="form-control" required="" >
   <option value="harga_1">Level 1</option>
   <option value="harga_2">Level 2</option>
   <option value="harga_3">Level 3</option>
@@ -237,7 +237,7 @@ $user = $_SESSION['nama'];
 
 <div class="col-xs-2">
           <label>PPN</label>
-          <select style="font-size:13px; height:35px" name="ppn" id="ppn" class="form-control">
+          <select style="font-size:15px; height:35px" name="ppn" id="ppn" class="form-control">
             <option value="Include">Include</option>  
             <option value="Exclude">Exclude</option>
             <option value="Non">Non</option>          
@@ -977,7 +977,7 @@ $(document).ready(function(){
   
   var level_harga = $("#level_harga").val();
   var kode_barang = $("#kode_barang").val();
-  //var kode_barang = kode_barang.substr(0, kode_barang.indexOf('('));
+  var kode_barang = kode_barang.substr(0, kode_barang.indexOf('('));
   var satuan_konversi = $("#satuan_konversi").val();
   var jumlah_barang = $("#jumlah_barang").val();
   var id_produk = $("#id_produk").val();
@@ -1004,7 +1004,7 @@ $.post("cek_level_harga_barang.php", {level_harga:level_harga, kode_barang:kode_
       var satuan_konversi = $("#satuan_konversi").val();
       var kode_barang = $("#kode_barang").val();
       
-  //var kode_barang = kode_barang.substr(0, kode_barang.indexOf('('));
+  var kode_barang = kode_barang.substr(0, kode_barang.indexOf('('));
       var id_produk = $("#id_produk").val();
       var prev = $("#satuan_produk").val();
       
@@ -1103,7 +1103,7 @@ $(document).ready(function(){
       var kode_barang = $("#kode_barang").val();
 
 
-  //var kode_barang = kode_barang.substr(0, kode_barang.indexOf('('));
+  var kode_barang = kode_barang.substr(0, kode_barang.indexOf('('));
       
 
       
@@ -1171,7 +1171,7 @@ $(document).ready(function(){
     var jumlah_barang = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#jumlah_barang").val()))));
     var harga = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#harga_produk").val()))));
     var potongan = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#potongan1").val()))));
-    var munculalert = parseInt(jumlah_barang,10) * parseInt(harga,10);
+
     if (potongan == '') {
       potongan = 0;
     };
@@ -1325,10 +1325,6 @@ $("#kode_barang").val('');
       $("#kode_barang").trigger('chosen:open');
 }
 
- else if (munculalert == 0){
-  alert("Harga Rp. 0; Maaf, Anda tidak dapat menjual Barang ini. Silakan ganti level harga atau pilih barang yang lain.");
-  $("#level_harga").focus();
-  }
 
   else if (ber_stok == 'Jasa')
   {
@@ -2242,7 +2238,7 @@ $(function() {
 
     var penjamin = $(this).val();
     var kode_barang = $("#kode_barang").val();
-    //var kode_barang = kode_barang.substr(0, kode_barang.indexOf('('));
+    var kode_barang = kode_barang.substr(0, kode_barang.indexOf('('));
 
     $.post("cek_harga_penjamin.php",{penjamin:penjamin,kode_barang:kode_barang},function(data){
           $("#harga_produk").val(data);
@@ -3094,7 +3090,7 @@ $(document).ready(function(){
   
   var level_harga = $("#level_harga").val();
   var kode_barang = $("#kode_barang").val();
-  //var kode_barang = kode_barang.substr(0, kode_barang.indexOf('('));
+  var kode_barang = kode_barang.substr(0, kode_barang.indexOf('('));
 
 
 $.post("cek_level_harga_apotek.php", {level_harga:level_harga,kode_barang:kode_barang},function(data){

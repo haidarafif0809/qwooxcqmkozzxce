@@ -26,8 +26,6 @@ session_start();
  $no_faktur = stringdoang($_POST['no_faktur']);
  $pajak_tbs_rupiah = stringdoang($_POST['pajak_tbs_rupiah']);
  $ppn_input = stringdoang($_POST['ppn_input']);
- $status = stringdoang($_POST['status']);
-
 
 $session_id = session_id();
 
@@ -65,10 +63,9 @@ if ($ppn_input == 'Include') {
     }
 
 $tanggal_sekarang = date('Y-m-d');
-$jam = date('H:i:s');
 
 $waktu = date('Y-m-d H:i:s');
-
+$jam = date('H:i:s');
 
 
 

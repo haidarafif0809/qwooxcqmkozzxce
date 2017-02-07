@@ -368,11 +368,10 @@ else
          }
       }
 
-
         
-        $query2 = $db->query("INSERT INTO detail_penjualan (no_faktur, tanggal, kode_barang, nama_barang, jumlah_barang, asal_satuan,satuan,harga, subtotal, potongan, tax, hpp, sisa, no_pesanan, komentar,jam,tipe_produk,dosis,no_reg,no_rm, lab,waktu) 
+        $query2 = $db->query("INSERT INTO detail_penjualan (no_faktur, tanggal, kode_barang, nama_barang, jumlah_barang, asal_satuan,satuan,harga, subtotal, potongan, tax, hpp, sisa, no_pesanan, komentar,jam,tipe_produk,dosis,no_reg,no_rm, lab) 
           VALUES 
-          ('$no_faktur','$data[tanggal]','$data[kode_barang]','$data[nama_barang]','$data[jumlah_barang]','$satuan','$data[satuan]','$data[harga]','$data[subtotal]','$data[potongan]','$data[tax]','$data[hpp]','$data[jumlah_barang]', '1', '$data[komentar]','$data[jam]','$data[tipe_barang]','$data[dosis]','$data[no_reg]','$no_rm','$data[lab]','$waktu')");
+          ('$no_faktur','$data[tanggal]','$data[kode_barang]','$data[nama_barang]','$data[jumlah_barang]','$satuan','$data[satuan]','$data[harga]','$data[subtotal]','$data[potongan]','$data[tax]','$data[hpp]','$data[jumlah_barang]', '1', '$data[komentar]','$data[jam]','$data[tipe_barang]','$data[dosis]','$data[no_reg]','$no_rm','$data[lab]')");
 
 
     }

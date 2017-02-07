@@ -26,7 +26,7 @@ while ($data = mysqli_fetch_array($perintah))
 {
 
 
-$perintah1 = $db->query("INSERT INTO tbs_kas_masuk (no_faktur, keterangan, dari_akun, ke_akun, jumlah, tanggal, jam, user) VALUES ('$data[no_faktur]', '$data[keterangan]', '$data[dari_akun]', '$data[ke_akun]', '$data[jumlah]','$data[tanggal]','$data[jam]', '$data[user]')");
+$perintah1 = $db->query("INSERT INTO tbs_kas_masuk (no_faktur, keterangan, dari_akun, ke_akun, jumlah, tanggal, jam, user) VALUES ('$data[no_faktur]', '$data[keterangan]', '$data[dari_akun]', '$data[ke_akun]', '$data[jumlah]','$tanggal_sekarang','$jam_sekarang', '$data[user]')");
 
 
 }

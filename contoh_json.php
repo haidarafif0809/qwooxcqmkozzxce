@@ -63,69 +63,57 @@ echo $jumlah_db = $data['jumlah'];
         alasql.promise('SELECT COUNT(*) AS jumlah FROM barang ')
               .then(function(res){
 
-                 var i = 0;
-                 var text = "";
-                jumlah_data = res[i]['jumlah'];
-console.log(jumlah_data);
+              	var i = 0;
+              	var text = "";
+              	jumlah_data = res[i]['jumlah'];
+              	console.log(jumlah_data);
 
-                   if (jumlah_data != <?php echo $jumlah_db ?> ) {
+			      if (jumlah_data != <?php echo $jumlah_db ?> ) {
+									 
+				  		//ambil data dari server dan masukan ke index db
+						$.getJSON("proses_contoh_json.php",function(data){						   
 
-						 
-  		//ambil data dari server dan masukan ke index db
-				$.getJSON("proses_contoh_json.php",function(data){
-						   
-
-					hapus_semua();
-
+							hapus_semua();
 
 							for (k in data.barang){
 
+								tambah_data(data.barang[k].kode_barang,data.barang[k].nama_barang);
 
-                     tambah_data(data.barang[k].kode_barang,data.barang[k].nama_barang);
+								$("#badan").prepend("<option>"+data.barang[k].kode_barang+" "+data.barang[k].nama_barang+"</option>");
 
-						     $("#badan").prepend("<option>"+data.barang[k].kode_barang+" "+data.barang[k].nama_barang+"</option>");
-
-						    }
-
-
+							}
 						}); 
 
 
-      }
-      else {
-
- 
-		 
-		tampil_data();
+			      }
+			      else { 		 
+						tampil_data();
+			      }           
 
 
-      }
-
-           
+        }); // END Select data from IndexedDB
 
 
-        });
+    }); // END alasql('CREATE INDEXEDDB DATABASE IF NOT EXISTS geo;\ ATTACH INDEXEDDB DATABASE geo; \ USE geo;  CREATE TABLE IF NOT EXISTS  barang; ' ,function(){
 
 
-    });
+	$("#badan").focus(function(){
 
-$("#badan").focus(function(){
+	      $(".chosen").chosen({no_results_text: "Maaf, Data Tidak Ada!",search_contains:true}); 
 
-      $(".chosen").chosen({no_results_text: "Maaf, Data Tidak Ada!",search_contains:true}); 
-
-});
+	});
 
 
-$("#btnChosen").click(function(){
+	$("#btnChosen").click(function(){
 
-         $("#badan").trigger("chosen:updated");
-});
+	         $("#badan").trigger("chosen:updated");
+	});
 
  
 
-	    $("#btnRefresh").click(function(){
+	$("#btnRefresh").click(function(){
 	    	hapus_semua();
-	    	  var jumlah_data = "";
+	    	var jumlah_data = "";
 
 	    alasql('CREATE INDEXEDDB DATABASE IF NOT EXISTS geo;\
         ATTACH INDEXEDDB DATABASE geo; \
@@ -133,55 +121,45 @@ $("#btnChosen").click(function(){
         ,function(){
 
         // Select data from IndexedDB
-        alasql.promise('SELECT COUNT(*) AS jumlah FROM barang ')
-              .then(function(res){
-                 console.log(res);
+        alasql.promise('SELECT COUNT(*) AS jumlah FROM barang ').then(function(res){
+        	console.log(res);
 
-                 var i = 0;
-                 var text = "";
+                var i = 0;
+                var text = "";
                 jumlah_data = res[i]['jumlah'];
-console.log(jumlah_data);
+                console.log(jumlah_data);
 
-                   if (jumlah_data != <?php echo $jumlah_db ?> ) {
-
-						 
-  		//ambil data dari server dan masukan ke index db
+                	if (jumlah_data != <?php echo $jumlah_db ?> ) {
+                		//ambil data dari server dan masukan ke index db
 						$.getJSON("proses_contoh_json.php",function(data){
-						   
-
-			
-
 
 							for (k in data.barang){
 
+								tambah_data(data.barang[k].kode_barang,data.barang[k].nama_barang);
 
-                     tambah_data(data.barang[k].kode_barang,data.barang[k].nama_barang);
+								$("#badan").prepend("<option value='"+ data.barang[k].kode_barang+"'>"+data.barang[k].kode_barang+" "+data.barang[k].nama_barang+"</option>");
 
-						$("#badan").prepend("<option value='"+ data.barang[k].kode_barang+"'>"+data.barang[k].kode_barang+" "+data.barang[k].nama_barang+"</option>");
-
-						    }
-
-
-						}); 
+						 	} // for (k in data.barang){
 
 
-      }
-      else {
+						}); // $.getJSON("proses_contoh_json.php",function(data){
 
-		tampil_data();
 
-      }
+				     } // if (jumlah_data != <?php #echo $jumlah_db ?> ) {
+				     else {
+
+						tampil_data();
+
+				     }
 
            
 
 
-        });
+	        }); // alasql.promise('SELECT COUNT(*) AS jumlah FROM barang ').then(function(res){console.log(res);
 
-    });
+	    }); // alasql('CREATE INDEXEDDB DATABASE IF NOT EXISTS geo;\ ATTACH INDEXEDDB DATABASE geo; \ USE geo;  CREATE TABLE IF NOT EXISTS  barang; ' ,function(){
 
-
-
-	    });
+	}); // $("#btnRefresh").click(function(){
   
 	    function tambah_data(city,population) {
 	    	// body...
@@ -190,7 +168,7 @@ console.log(jumlah_data);
             USE geo;\
             INSERT INTO barang(kode_barang,nama_barang,hapus) VALUES("'+city+'","'+population+'",1);\
             ',function(){});
-	    }
+	    } // function tambah_data(city,population) {
 
 
   function hapus_semua() {
@@ -199,7 +177,7 @@ console.log(jumlah_data);
 	  alasql('ATTACH INDEXEDDB DATABASE geo; USE geo; DELETE FROM barang WHERE hapus = 1;',
         function(){});
 
-	    }
+	    } // function hapus_semua() {
 	function tampil_data() {
 		// body...
 
@@ -234,7 +212,7 @@ console.log(jumlah_data);
 	        });
 	    });
 
-	}
+	} // function tampil_data() {
 
 	  
 });// end document ready

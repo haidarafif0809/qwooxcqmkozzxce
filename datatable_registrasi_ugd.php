@@ -93,22 +93,7 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 
 
 
-	if ($penjualan['penjualan_tambah'] > 0) {
 
-      if ($data_z['status'] == 'Simpan Sementara') {
-
-       $nestedData[] = "<a href='proses_pesanan_barang_ugd.php?no_faktur=".$data_z['no_faktur']."&no_reg=".$row['no_reg']."&no_rm=".$row['no_rm']."&nama_pasien=".$data_z['nama']."&kode_gudang=".$data_z['kode_gudang']."'class='btn btn-floating btn-small btn btn-danger'><i class='fa fa-credit-card'></i></a>"; 
-      }
-      else
-      {
-      $nestedData[] = "<a href='form_penjualan_ugd.php?no_reg=". $row['no_reg']."' class='btn btn-floating btn-small btn-info penjualan' ><i class='fa fa-shopping-cart'></a>";
-
-      }
-
-	  }
-	  else{
-		$nestedData[] = "";
-	  }
 
 	if ($registrasi_ugd['registrasi_ugd_lihat'] > 0) {
 	    $nestedData[] = "<button  type='button' data-reg='".$row['no_reg']."' data-id='".$row['id']."'  class='btn btn-floating btn-small btn-info rujuk' ><i class='fa fa-bus'></i>   </button>";

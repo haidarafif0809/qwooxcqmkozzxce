@@ -10,7 +10,7 @@
     $nama = $_GET['nama'];
     $id = $_GET['id'];
 
-    $otoritas_akses = $db->query("SELECT * FROM hak_otoritas ho LEFT JOIN otoritas_penjualan open ON ho.id = open.id_otoritas LEFT JOIN otoritas_pembelian opem ON ho.id = opem.id_otoritas LEFT JOIN otoritas_master_data omd ON ho.id = omd.id_otoritas LEFT JOIN otoritas_pembayaran opemb ON ho.id = opemb.id_otoritas LEFT JOIN otoritas_transaksi_kas otk ON ho.id = otk.id_otoritas LEFT JOIN otoritas_kas_keluar okk ON ho.id = okk.id_otoritas LEFT JOIN otoritas_kas_masuk okm ON ho.id = okm.id_otoritas LEFT JOIN otoritas_kas_mutasi okmut ON ho.id = okmut.id_otoritas LEFT JOIN otoritas_persediaan operse ON ho.id = operse.id_otoritas LEFT JOIN otoritas_stok_opname oso ON ho.id = oso.id_otoritas LEFT JOIN otoritas_stok_awal osa ON ho.id = osa.id_otoritas LEFT JOIN otoritas_item_masuk oim ON ho.id = oim.id_otoritas LEFT JOIN otoritas_item_keluar oik ON ho.id = oik.id_otoritas LEFT JOIN otoritas_kas ok ON ho.id = ok.id_otoritas LEFT JOIN otoritas_laporan ol ON ho.id = ol.id_otoritas LEFT JOIN otoritas_registrasi oreg ON ho.id = oreg.id_otoritas LEFT JOIN otoritas_rekam_medik orm ON ho.id = orm.id_otoritas LEFT JOIN otoritas_setting os ON ho.id = os.id_otoritas  WHERE ho.id = '$id'");
+    $otoritas_akses = $db->query("SELECT * FROM hak_otoritas ho LEFT JOIN otoritas_penjualan open ON ho.id = open.id_otoritas LEFT JOIN otoritas_pembelian opem ON ho.id = opem.id_otoritas LEFT JOIN otoritas_master_data omd ON ho.id = omd.id_otoritas LEFT JOIN otoritas_pembayaran opemb ON ho.id = opemb.id_otoritas LEFT JOIN otoritas_transaksi_kas otk ON ho.id = otk.id_otoritas LEFT JOIN otoritas_kas_keluar okk ON ho.id = okk.id_otoritas LEFT JOIN otoritas_kas_masuk okm ON ho.id = okm.id_otoritas LEFT JOIN otoritas_kas_mutasi okmut ON ho.id = okmut.id_otoritas LEFT JOIN otoritas_persediaan operse ON ho.id = operse.id_otoritas LEFT JOIN otoritas_stok_opname oso ON ho.id = oso.id_otoritas LEFT JOIN otoritas_stok_awal osa ON ho.id = osa.id_otoritas LEFT JOIN otoritas_item_masuk oim ON ho.id = oim.id_otoritas LEFT JOIN otoritas_item_keluar oik ON ho.id = oik.id_otoritas LEFT JOIN otoritas_kas ok ON ho.id = ok.id_otoritas LEFT JOIN otoritas_laporan ol ON ho.id = ol.id_otoritas LEFT JOIN otoritas_registrasi oreg ON ho.id = oreg.id_otoritas LEFT JOIN otoritas_rekam_medik orm ON ho.id = orm.id_otoritas LEFT JOIN otoritas_setting os ON ho.id = os.id_otoritas LEFT JOIN otoritas_tipe_produk otp ON ho.id = otp.id_otoritas  WHERE ho.id = '$id'");
     $data_otoritas = mysqli_fetch_array($otoritas_akses);
 
 
@@ -905,8 +905,12 @@ else{
     OTORITAS FORM PENJUALAN APOTEK
 </div>
 
-<div class="form-group col-sm-8">
+<div class="form-group col-sm-4">
     OTORITAS FORM PENJUALAN LABORATORIUM
+</div>
+
+<div class="form-group col-sm-4">
+    OTORITAS TIPE PRODUK
 </div>
 
 
@@ -1105,6 +1109,91 @@ else{
 
     
 </div>
+
+
+<div class="form-group col-sm-2">
+
+
+    <?php 
+
+    if ($data_otoritas['tipe_barang'] == '1'){
+        echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="tipe_barang" name="tipe_barang" checked="">
+        <label for="tipe_barang">Barang</label> <br>';
+    }
+
+    else{
+        echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="tipe_barang" name="tipe_barang">
+        <label for="tipe_barang">Barang</label> <br>';  
+    }
+
+     ?>
+
+    <?php 
+
+    if ($data_otoritas['tipe_jasa'] == '1'){
+        echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="tipe_jasa" name="tipe_jasa" checked="">
+        <label for="tipe_jasa">Jasa</label> <br>';
+    }
+
+    else{
+        echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="tipe_jasa" name="tipe_jasa">
+        <label for="tipe_jasa">Jasa</label> <br>';  
+    }
+
+     ?>
+
+
+
+    <?php 
+
+    if ($data_otoritas['tipe_alat'] == '1'){
+        echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="tipe_alat" name="tipe_alat" checked="">
+        <label for="tipe_alat">Alat</label> <br>';
+    }
+
+    else{
+        echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="tipe_alat" name="tipe_alat">
+        <label for="tipe_alat">Alat</label> <br>';  
+    }
+
+     ?>
+
+</div>
+
+<div class="form-group col-sm-2">
+
+    <?php 
+
+    if ($data_otoritas['tipe_bhp'] == '1'){
+        echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="tipe_bhp" name="tipe_bhp" checked="">
+        <label for="tipe_bhp">BHP</label> <br>';
+    }
+
+    else{
+        echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="tipe_bhp" name="tipe_bhp">
+        <label for="tipe_bhp">BHP</label> <br>';  
+    }
+
+     ?>
+
+
+
+    <?php 
+
+    if ($data_otoritas['tipe_obat'] == '1'){
+        echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="tipe_obat" name="tipe_obat" checked="">
+        <label for="tipe_obat">Obat Obatan</label> <br>';
+    }
+
+    else{
+        echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="tipe_obat" name="tipe_obat">
+        <label for="tipe_obat">Obat Obatan</label> <br>';  
+    }
+
+     ?>
+    
+</div>
+
 
 <div class="form-group col-sm-12">
     
@@ -4268,7 +4357,7 @@ else{
 
 
 
-<div  class="form-group col-sm-2"> <!-- start otoritas cash_flow_tanggal -->
+<div style="display: none" class="form-group col-sm-2"> <!-- start otoritas cash_flow_tanggal -->
 <label> Laporan Cash Flow</label><br>
 
 <?php 

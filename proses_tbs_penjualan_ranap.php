@@ -25,6 +25,7 @@ session_start();
  $petugas_lain = stringdoang($_POST['petugas_lain']);
  $pajak_tbs_rupiah = stringdoang($_POST['pajak_tbs_rupiah']);
  $ppn_input = stringdoang($_POST['ppn_input']);
+ $dosis_obat = stringdoang($_POST['dosis_obat']);
 
  $session_id = session_id();
 
@@ -349,8 +350,7 @@ else
 // QUERY UNTUK INSERT KE TBS PENJUALAN SETELAH PERHITUNGAN SELESAI
 
 $query6 = " INSERT INTO tbs_penjualan
-(no_reg,kode_barang,nama_barang,jumlah_barang,harga,subtotal,tipe_barang,tanggal,jam,potongan,tax,session_id,satuan)
- VALUES ('$no_reg','$kode','$nama','$jumlah','$harga_1','$subtotal','$tipe_produk','$tanggal_sekarang','$jam','$potongan_tampil','$tax_persen','$session_id','$satuan')";
+(no_reg,kode_barang,nama_barang,jumlah_barang,harga,subtotal,tipe_barang,tanggal,jam,potongan,tax,session_id,satuan,dosis) VALUES ('$no_reg','$kode','$nama','$jumlah','$harga_1','$subtotal','$tipe_produk','$tanggal_sekarang','$jam','$potongan_tampil','$tax_persen','$session_id','$satuan','$dosis_obat')";
 if ($db->query($query6) === TRUE) {
   
 } 

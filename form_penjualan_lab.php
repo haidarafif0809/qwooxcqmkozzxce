@@ -46,10 +46,15 @@ $rujukan = '';
 
 
 
+$select_penjamin = $db->query("SELECT penjamin, poli, dokter_pengirim, bed, group_bed FROM registrasi WHERE no_reg = '$no_reg' ");
+$data_penjamin = mysqli_fetch_array($select_penjamin);
+
+$select_level = $db->query("SELECT harga FROM penjamin WHERE nama = '$data_penjamin[penjamin]' ");
+$data_level = mysqli_fetch_array($select_level);
+$level_harga = $data_level['harga'];
 
 
-$select_penjualan = $db->query("SELECT p.status,p.no_faktur,p.nama,p.kode_gudang,g.nama_gudang FROM penjualan p INNER JOIN gudang g ON p.kode_gudang = g.kode_gudang WHERE p.no_reg = '$no_reg' ");
-
+$select_penjualan = $db->query("SELECT status,p.no_faktur,p.nama,p.kode_gudang,g.nama_gudang FROM penjualan p INNER JOIN gudang g ON p.kode_gudang = g.kode_gudang WHERE p.no_reg = '$no_reg' ");
 $kel = mysqli_fetch_array($select_penjualan);
 
 
@@ -128,14 +133,24 @@ $data_rj_ri = mysqli_fetch_array($sum_rj_ri);
 <div class="col-xs-2 form-group"> 
     <label> No. RM / Pasien </label><br>
   <input  name="kode_pelanggan" type="hidden" style="height:15px;" id="kd_pelanggan" class="form-control" required="" autofocus="" value="<?php echo $pasien_rm; ?>" >
-  <input  name="nama_pelanggan" type="hidden" style="height:15px;" id="nama_pelanggan" class="form-control" required="" autofocus="" value="Umum" >
+  <input  name="nama_pelanggan" type="text" style="height:15px;" id="nama_pelanggan" class="form-control" required="" autofocus="" value="<?php echo $nama; ?>" >
   <input  name="kode_pelanggan1" type="text" style="height:15px;" id="kd_pelanggan1" class="form-control" required="" autofocus="" value="<?php echo $pasien; ?>" >
 </div>
 
 <input  name="" type="hidden" style="height:15px;" id="rujukan" class="form-control" required="" autofocus="" value="<?php echo $rujukan; ?>" >
+<input  name="nama_pasien" type="hidden" style="height:15px;" id="nama_pasien" class="form-control" required="" autofocus="" value="<?php echo $kel['nama']; ?>" >
+<!-- INPUTAN U/ GET KEMBALI KE FORM PENJUALAN -->
+<input  name="asal_poli" type="hidden" style="height:15px;" id="asal_poli" class="form-control" required="" autofocus="" value="<?php echo $data_penjamin['poli']; ?>" >
 
-  <input  name="nama_pasien" type="hidden" style="height:15px;" id="nama_pasien" class="form-control" required="" autofocus="" value="<?php echo $kel['nama']; ?>" >
-  <input  name="nama_gudang" type="hidden" style="height:15px;" id="nama_gudang" class="form-control" required="" autofocus="" value="<?php echo $kel['nama_gudang']; ?>" >
+<input  name="dokter_pj" type="hidden" style="height:15px;" id="dokter_pj" class="form-control" required="" autofocus="" value="<?php echo $data_penjamin['dokter_pengirim']; ?>" >
+
+<input  name="bed" type="hidden" style="height:15px;" id="bed" class="form-control" required="" autofocus="" value="<?php echo $data_penjamin['bed']; ?>" >
+
+<input  name="kamar" type="hidden" style="height:15px;" id="kamar" class="form-control" required="" autofocus="" value="<?php echo $data_penjamin['group_bed']; ?>" >
+  
+
+<!-- INPUTAN U/ GET KEMBALI KE FORM PENJUALAN -->
+<input  name="nama_gudang" type="hidden" style="height:15px;" id="nama_gudang" class="form-control" required="" autofocus="" value="<?php echo $kel['nama_gudang']; ?>" >
 
     <input  name="kode_gudang" type="hidden" style="height:15px;" id="kode_gudang" class="form-control" required="" autofocus="" value="<?php echo $kel['kode_gudang']; ?>" >
 
@@ -157,8 +172,9 @@ $data_rj_ri = mysqli_fetch_array($sum_rj_ri);
          <select type="text" class="form-control chosen" id="apoteker" autocomplete="off">        
 
          <?php 
-         $query09 = $db->query("SELECT nama,id FROM user WHERE tipe = '6' ");
+         $query09 = $db->query("SELECT nama,id FROM user WHERE tipe = '2' ");
          while ( $data09 = mysqli_fetch_array($query09)) {
+
 
           echo "<option value='".$data09['id'] ."'>".$data09['nama'] ."</option>";
 
@@ -171,10 +187,10 @@ $data_rj_ri = mysqli_fetch_array($sum_rj_ri);
 
 
   <div class="col-xs-2">
-          <label> Dokter Pengirim </label><br>
+   <label> Dokter Pengirim </label><br>
           
-          <select name="dokter" id="dokter" class="form-control chosen" required="" >
-          <?php 
+    <select name="dokter" id="dokter" class="form-control chosen" required="" >
+  <?php 
         //untuk menampilkan semua data pada tabel pelanggan dalam DB
     $query01 = $db->query("SELECT nama,id FROM user WHERE tipe = '1'");
 
@@ -183,12 +199,12 @@ $data_rj_ri = mysqli_fetch_array($sum_rj_ri);
     {
     
 
-    if ($data01['nama'] == $dokter) {
-     echo "<option selected value='".$data01['id'] ."'>".$data01['nama'] ."</option>";
-    }
-    else{
-      echo "<option value='".$data01['id'] ."'>".$data01['nama'] ."</option>";
-    }
+      if ($data01['id'] == $dokter) {
+       echo "<option selected value='".$data01['id'] ."'>".$data01['nama'] ."</option>";
+      }
+      else{
+        echo "<option value='".$data01['id'] ."'>".$data01['nama'] ."</option>";
+      }
 
     
     }
@@ -211,7 +227,16 @@ $data_rj_ri = mysqli_fetch_array($sum_rj_ri);
       $query = $db->query("SELECT nama FROM penjamin");
       while ( $icd = mysqli_fetch_array($query))
       {
-      echo "<option value='".$icd['nama']."'>".$icd['nama']."</option>";
+        if ($data_penjamin['penjamin'] == $icd['nama']) {
+             
+             echo "<option selected value='".$icd['nama']."'>".$icd['nama']."</option>";
+
+          }
+          else{
+            
+             echo "<option value='".$icd['nama']."'>".$icd['nama']."</option>";
+
+          }
       }
       ?>
     </select>
@@ -221,6 +246,24 @@ $data_rj_ri = mysqli_fetch_array($sum_rj_ri);
 <div class="col-xs-2">
     <label> Level Harga </label><br>
   <select style="font-size:15px; height:35px" type="text" name="level_harga" id="level_harga" class="form-control" required="" >
+    <option value="<?php echo $level_harga;?>"> 
+<?php if ($level_harga == 'harga_1' )
+{?>
+Level 1
+<?php } elseif ($level_harga == 'harga_2' ){?>
+Level 2
+<?php }elseif ($level_harga == 'harga_3' ){?>
+Level 3
+<?php }elseif ($level_harga == 'harga_4' ){?>
+Level 4
+<?php }elseif ($level_harga == 'harga_5' ){?>
+Level 5
+<?php }elseif ($level_harga == 'harga_6' ){?>
+Level 6
+<?php }elseif ($level_harga == 'harga_7' ){?>
+Level 7
+<?php }?>
+  </option>
   <option value="harga_1">Level 1</option>
   <option value="harga_2">Level 2</option>
   <option value="harga_3">Level 3</option>
@@ -674,7 +717,7 @@ $data_rj_ri = mysqli_fetch_array($sum_rj_ri);
     <select class="form-control chosen" id="biaya_admin_select" name="biaya_admin_select" >
     <option value="0"> Silahkan Pilih </option>
       <?php 
-      $get_biaya_admin = $db->query("SELECT * FROM biaya_admin ORDER BY id ASC");
+      $get_biaya_admin = $db->query("SELECT * FROM biaya_admin");
       while ( $take_admin = mysqli_fetch_array($get_biaya_admin))
       {
       echo "<option value='".$take_admin['persentase']."'>".$take_admin['nama']."</option>";
@@ -1076,18 +1119,33 @@ var hasilnya = parseInt(total2,10) + parseInt(biaya_admin,10) - parseInt(diskon,
   // Rawat jalan
   $(document).on('click','#raja',function(e){
     var no_reg = $("#no_reg").val();
+    var nama_pasien = $("#nama_pelanggan").val();
+    var no_rm = $("#no_rm").val();
+    var penjamin = $("#penjamin").val();
+    var dokter = $("#dokter").val();
+    var level_harga = $("#level_harga").val();
+    var poli = $("#asal_poli").val();
     var analis = $("#apoteker").val();
 
-    window.location.href="form_penjualan_kasir.php?no_reg="+no_reg+"&analis="+analis+"";
+    window.location.href="form_penjualan_kasir.php?no_reg="+no_reg+"&nama_pasien="+nama_pasien+"&no_rm="+no_rm+"&penjamin="+penjamin+"&dokter="+dokter+"&level_harga="+level_harga+"&poli="+poli+"&analis="+analis+"";
 
   });
 
   //Rawat Inap
    $(document).on('click','#ranap',function(e){
-    var no_reg = $("#no_reg").val();
+     var no_reg = $("#no_reg").val();
+    var nama_pasien = $("#nama_pelanggan").val();
+    var no_rm = $("#no_rm").val();
+    var penjamin = $("#penjamin").val();
+    var dokter = $("#dokter").val();
+    var level_harga = $("#level_harga").val();
+    var poli = $("#asal_poli").val();
+    var dokter_pj = $("#dokter_pj").val();
+    var bed = $("#bed").val();
+    var kamar = $("#kamar").val();
     var analis = $("#apoteker").val();
 
-    window.location.href="form_penjualan_kasir_ranap.php?no_reg="+no_reg+"&analis="+analis+"";
+    window.location.href="form_penjualan_kasir_ranap.php?no_reg="+no_reg+"&nama_pasien="+nama_pasien+"&no_rm="+no_rm+"&penjamin="+penjamin+"&dokter="+dokter+"&level_harga="+level_harga+"&poli="+poli+"&bed="+bed+"&kamar="+kamar+"&analis="+analis+"&analis="+analis+"";
 
   });
 
@@ -1130,7 +1188,7 @@ $(document).ready(function() {
               $(nRow).attr('data-kode',aData[0]);
               $(nRow).attr('data-id-jasa',aData[12]);
               $(nRow).attr('data-nama',aData[1]);
-              $(nRow).attr('data-bidang',aData[13]);
+              $(nRow).attr('data-bidang',aData[3]);
               $(nRow).attr('data-1',aData[5]);
               $(nRow).attr('data-2',aData[6]);
               $(nRow).attr('data-3',aData[7]);
@@ -1442,7 +1500,7 @@ $(document).ready(function(){
     
   var level_harga = $("#level_harga").val();
   var kode_barang = $("#kode_barang").val();
-  //var kode_barang = kode_barang.substr(0, kode_barang.indexOf('('));
+  var kode_barang = kode_barang.substr(0, kode_barang.indexOf('('));
   var jumlah_barang = $("#jumlah_barang").val();
   var id_produk = $("#id_jasa").val();
 
@@ -1486,7 +1544,6 @@ $(document).on('click','#submit_produk',function(e){
     var jumlah_barang = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#jumlah_barang").val()))));
     var harga = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#harga_produk").val()))));
     var potongan = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#potongan1").val()))));
-    var munculalert = parseInt(jumlah_barang) * parseInt(harga);
         if (potongan == '') {
       potongan = 0;
     }
@@ -1627,10 +1684,7 @@ if (jumlah_barang == ''){
       $("#kode_barang").trigger('chosen:open');
     }
 
-else if (munculalert == 0){
-  alert("Harga Rp. 0; Maaf, Anda tidak dapat menjual Barang ini. Silakan ganti level harga atau pilih barang yang lain.");
-  $("#level_harga").focus();
-  }
+
 
   else 
   {
@@ -2921,7 +2975,7 @@ if (data != '1970-01-01' )
     var jumlah_barang = $("#jumlah_barang").val();
     var penjamin = $("#penjamin").val();
     var kode_barang = $("#kode_barang").val();
-    //var kode_barang = kode_barang.substr(0, kode_barang.indexOf('('));
+    var kode_barang = kode_barang.substr(0, kode_barang.indexOf('('));
     $.post("cek_harga_lab_penjamin.php",{penjamin:penjamin,kode_barang:kode_barang,jumlah_barang:jumlah_barang},function(data){
         data = data.replace(/\s+/g, '');
           $("#harga_produk").val(data);

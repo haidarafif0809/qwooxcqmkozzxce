@@ -742,7 +742,6 @@ tr:nth-child(even){background-color: #f2f2f2}
    <?php endif ?>
         
 
-         <th style='background-color: #4CAF50; color: white'>Transaksi Penjualan</th>
 
   <?php if ($registrasi_ri['registrasi_ri_lihat']):?>      
           <th style='background-color: #4CAF50; color: white'>Pindah Kamar</th>

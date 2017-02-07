@@ -129,9 +129,9 @@ if ($lihat['penjualan_lihat'] > 0){
                 echo '<li><a class="collapsible-header waves-effect arrow-r"><i class="fa fa-shopping-cart"></i> Penjualan <i class="fa fa-angle-down rotate-icon"></i></a>
     <div class="collapsible-body">
        <ul>
-           <li><a href="pasien_sudah_masuk.php" class="waves-effect"> Rawat Jalan</a></li>
-           <li><a href="rawat_inap.php" class="waves-effect"> Rawat Inap </a></li>
-           <li><a href="registrasi_ugd.php" class="waves-effect">  UGD </a></li>
+           <li><a href="form_penjualan_kasir.php" class="waves-effect"> Rawat Jalan</a></li>
+           <li><a href="form_penjualan_kasir_ranap.php" class="waves-effect"> Rawat Inap </a></li>
+           <li><a href="form_penjualan_ugd.php" class="waves-effect">  UGD </a></li>
            <li><a href="form_penjualan_kasir_apotek.php" class="waves-effect"> Apotek </a></li>
            <li><a href="form_penjualan_lab.php"  class="waves-effect"> Laboratorium </a></li>
        </ul>
@@ -404,14 +404,6 @@ if ($lihat['retur_lihat'] > 0){
 
 if ($lihat['buku_besar_lihat'] > 0){
                             echo '<li><a href="laporan_buku_besar_per_tanggal.php" class="waves-effect">Buku Besar Per Tanggal</a></li>';
-}
-
- if ($lihat['cash_flow_tanggal_lihat'] > 0){
-                            echo '<li><a href="cashflow_tanggal.php" class="waves-effect"> Cashflow Per Tanggal</a></li>';
-}
-
- if ($lihat['cash_flow_periode_lihat'] > 0){
-                            echo '<li><a href="cashflow_periode.php" class="waves-effect"> Cashflow Per Periode</a></li>';
 }
 
  if ($lihat['laporan_neraca_lihat'] > 0){

@@ -125,18 +125,10 @@
             
             
             
-            $querystok = $db->query("SELECT berkaitan_dgn_stok FROM barang WHERE kode_barang = '$data1[kode_barang]'");
-            $kaitan = mysqli_fetch_array($querystok);
-            $jumlahnya = $kaitan['berkaitan_dgn_stok'];
-            if ($jumlahnya == 'Jasa') {
-              echo "<td>0</td>";
-            }
-            else{
-              echo "<td>". $stok_barang ."</td>";
-            }
             
             
-            echo "<td>". $data1['nama'] ."</td>
+            echo "<td>". $stok_barang ."</td>
+            <td>". $data1['nama'] ."</td>
             <td>". $data1['kategori'] ."</td>
             <td>". $data1['status'] ."</td>
             <td>". $data1['suplier'] ."</td>

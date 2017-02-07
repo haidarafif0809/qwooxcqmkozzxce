@@ -145,7 +145,6 @@ $ambil_otoritas = $db->query("SELECT * FROM hak_otoritas");
 					<select type="text" name="tipe" id="tipe" class="form-control" required="" >
 					<option value="">Silahkan Pilih</option>
 					<option value="4">Admin</option>
-					<option value="6">Analis</option>
 					<option value="1">Dokter</option>
 					<option value="2" >Paramedik</option>
 					<option value="3">Farmasi</option>
