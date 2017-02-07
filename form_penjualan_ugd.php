@@ -1810,7 +1810,7 @@ alert(" Kode Gudang Harus Diisi ");
 alert("Silakan Bayar Piutang");
 
  }
-                else if (total ==  0 || total == "") 
+    else if (total ==  0 &&(potongan_persen != 100) || total == "" &&(potongan_persen != 100)) 
         {
         
         alert("Anda Belum Melakukan Pemesanan");
