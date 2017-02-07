@@ -4,13 +4,13 @@ include 'db.php';
 
 
 $id = stringdoang($_POST['id']);
-$prosentase = angkadoang($_POST['jumlah_prosentase']);
+$prosentase = angkadecimal($_POST['jumlah_prosentase']);
 $nominal = angkadoang($_POST['jumlah_uang']);
 
 
 $query = $db->prepare("UPDATE fee_produk SET jumlah_prosentase = ?, jumlah_uang = ? WHERE id = ?");
 
-$query->bind_param("iis",
+$query->bind_param("sss",
 	$prosentase, $nominal, $id);
 
 $query->execute();
