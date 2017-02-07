@@ -9,11 +9,12 @@ $kode_barang = $_POST['kode_barang'];
 
  $piutang = $db->query ("SELECT no_faktur_pembelian, tanggal FROM detail_pembayaran_hutang WHERE no_faktur_pembelian = '$no_faktur'");
 
- $hpp_masuk_penjualan = $db->query("SELECT no_faktur, tanggal, kode_barang FROM hpp_masuk WHERE no_faktur = '$no_faktur' AND sisa != jumlah_kuantitas AND kode_barang = '$kode_barang'");
+      $detail_hutang = $db->query("SELECT * FROM detail_pembayaran_hutang WHERE no_faktur_pembelian = '$no_faktur'");
+      $ss = mysqli_num_rows($detail_hutang);
 
  ?>
 
-
+<h5></h5>
 <table id="tableuser" class="table table-hover">
     <thead>
 
@@ -57,7 +58,7 @@ $kode_barang = $_POST['kode_barang'];
           <td>". $data1['tanggal'] ."</td>
           <td> Transaksi Penjualan </td>
 
-          </tr>";
+<?php if ($ss > 0){?>
 
 
           }
@@ -90,7 +91,7 @@ mysqli_close($db);
     
     </tbody>
 </table>
-
+<?php } ?>
 
 
 <script>

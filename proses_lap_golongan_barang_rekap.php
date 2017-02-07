@@ -6,12 +6,8 @@ include 'sanitasi.php';
 
 $dari_tanggal = stringdoang($_POST['dari_tanggal']);
 $sampai_tanggal = stringdoang($_POST['sampai_tanggal']);
-$dari_jam = stringdoang($_POST['dari_jam']);
-$sampai_jam = stringdoang($_POST['sampai_jam']);
 $golongan = stringdoang($_POST['golongan']);
 
-$dari_waktu = $dari_tanggal." ".$dari_jam;
-$sampai_waktu = $sampai_tanggal." ".$sampai_jam;
 
 $jumlah_jual_awal = 0;
 $jumlah_beli_awal = 0;
@@ -32,7 +28,7 @@ $columns = array(
  
 // getting total number records without any search
 $sql =" SELECT dp.kode_barang, dp.nama_barang, SUM(dp.jumlah_barang) AS jumlah, SUM(dp.subtotal) AS total ";
-$sql.=" FROM detail_penjualan dp INNER JOIN barang p ON dp.kode_barang = p.kode_barang  WHERE p.golongan_barang = '$golongan' AND dp.waktu >= '$dari_waktu' AND dp.waktu <= '$sampai_waktu'";
+$sql.=" FROM detail_penjualan dp LEFT JOIN barang p ON dp.kode_barang = p.kode_barang  WHERE p.berkaitan_dgn_stok = '$golongan' AND dp.tanggal >= '$dari_tanggal' AND dp.tanggal <= '$sampai_tanggal' GROUP BY dp.kode_barang ORDER BY dp.id  ";
 
 $query=mysqli_query($conn, $sql) or die("eror 1");
 $totalData = mysqli_num_rows($query);
@@ -40,7 +36,7 @@ $totalFiltered = $totalData;  // when there is no search parameter then total nu
 
 
 $sql =" SELECT dp.nama_barang, SUM(dp.jumlah_barang) AS jumlah, SUM(dp.subtotal) AS total ";
-$sql.=" FROM detail_penjualan dp INNER JOIN barang p ON dp.kode_barang = p.kode_barang  WHERE 1=1 AND p.golongan_barang = '$golongan' AND dp.waktu >= '$dari_waktu' AND dp.waktu <= '$sampai_waktu' ";
+$sql.=" FROM detail_penjualan dp LEFT JOIN barang p ON dp.kode_barang = p.kode_barang  WHERE 1=1 AND p.berkaitan_dgn_stok = '$golongan' AND dp.waktu >= '$dari_tanggal' AND dp.tanggal <= '$sampai_tanggal' ";
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
 $sql.=" AND ( dp.nama_barang LIKE '".$requestData['search']['value']."%' )";
 }

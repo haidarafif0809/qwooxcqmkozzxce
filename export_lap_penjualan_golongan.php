@@ -10,12 +10,9 @@ include 'sanitasi.php';
 
 $dari_tanggal = stringdoang($_GET['dari_tanggal']);
 $sampai_tanggal = stringdoang($_GET['sampai_tanggal']);
-$dari_jam = stringdoang($_GET['dari_jam']);
-$sampai_jam = stringdoang($_GET['sampai_jam']);
 $golongan = stringdoang($_GET['golongan']);
 
-$dari_waktu = $dari_tanggal." ".$dari_jam;
-$sampai_waktu = $sampai_tanggal." ".$sampai_jam;
+
 
 $jumlah_jual_awal = 0;
 $jumlah_beli_awal = 0;
@@ -24,7 +21,7 @@ $jumlah_beli_awal = 0;
 
 //menampilkan seluruh data yang ada pada tabel penjualan
 $perintah = $db->query("SELECT dp.nama_barang, SUM(dp.jumlah_barang) AS jumlah, SUM(dp.subtotal) AS total
-FROM detail_penjualan dp INNER JOIN barang p ON dp.kode_barang = p.kode_barang  WHERE p.golongan_barang = '$golongan' AND dp.waktu >= '$dari_waktu' AND dp.waktu <= '$sampai_waktu' GROUP BY dp.kode_barang ORDER BY dp.id ASC ");
+FROM detail_penjualan dp INNER JOIN barang p ON dp.kode_barang = p.kode_barang  WHERE p.golongan_barang = '$golongan' AND dp.tanggal >= '$dari_tanggal' AND dp.tanggal <= '$sampai_tanggal' GROUP BY dp.kode_barang ORDER BY dp.id ASC ");
 
 ?>
 <style>
