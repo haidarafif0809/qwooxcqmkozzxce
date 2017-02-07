@@ -12,6 +12,7 @@ $golongan = stringdoang($_POST['golongan']);
 $jumlah_jual_awal = 0;
 $jumlah_beli_awal = 0;
 
+
 // storing  request (ie, get/post) global array to a variable  
 $requestData= $_REQUEST;
 
@@ -40,16 +41,13 @@ if( !empty($requestData['search']['value']) ) {   // if there is a search parame
 $sql.=" AND ( dp.nama_barang LIKE '".$requestData['search']['value']."%' )";
 }
 $query=mysqli_query($conn, $sql) or die("eror 2");
-
-$sql.=" GROUP BY dp.kode_barang ORDER BY dp.id  LIMIT ".$requestData['start']." ,".$requestData['length']." ";
+$totalFiltered = mysqli_num_rows($query); // when there is a search parameter then we have to modify total number filtered rows as per search result. 
+$sql.=" GROUP BY dp.kode_barang ORDER BY dp.id ".$requestData['order'][0]['dir']."  LIMIT ".$requestData['start']." ,".$requestData['length']." ";
 /* $requestData['order'][0]['column'] contains colmun index, $requestData['order'][0]['dir'] contains order such as asc/desc  */  
 $query=mysqli_query($conn, $sql) or die("eror 3");
-$totalFiltered = mysqli_num_rows($query); // when there is a search parameter then we have to modify total number filtered rows as per search result. 
-
 
 $data = array();
 while( $row=mysqli_fetch_array($query) ) {  // preparing an array
- 
   $nestedData=array(); 
 
 
@@ -65,6 +63,11 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
   $data[] = $nestedData;
 }
 
+$nestedData = array();
+$nestedData[] = "<b style='color:red' >Total Keseluruhan:</b>";
+$nestedData[] = "<b style='color:red'>". rp($jumlah_jual_awal) ."</b>";
+$nestedData[] = "<b style='color:red'>". rp($jumlah_beli_awal) ."</b>";
+$data[] = $nestedData;
   
 $json_data = array(
       "draw"            => intval( $requestData['draw'] ),   // for every request/draw by clientside , they send a number as a parameter, when they recieve a response/data they first check the draw number, so we are sending same number in draw. 

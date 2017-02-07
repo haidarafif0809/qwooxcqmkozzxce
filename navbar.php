@@ -129,9 +129,9 @@ if ($lihat['penjualan_lihat'] > 0){
                 echo '<li><a class="collapsible-header waves-effect arrow-r"><i class="fa fa-shopping-cart"></i> Penjualan <i class="fa fa-angle-down rotate-icon"></i></a>
     <div class="collapsible-body">
        <ul>
-           <li><a href="pasien_sudah_masuk.php" class="waves-effect"> Rawat Jalan</a></li>
-           <li><a href="rawat_inap.php" class="waves-effect"> Rawat Inap </a></li>
-           <li><a href="registrasi_ugd.php" class="waves-effect">  UGD </a></li>
+           <li><a href="form_penjualan_kasir.php" class="waves-effect"> Rawat Jalan</a></li>
+           <li><a href="form_penjualan_kasir_ranap.php" class="waves-effect"> Rawat Inap </a></li>
+           <li><a href="form_penjualan_ugd.php" class="waves-effect">  UGD </a></li>
            <li><a href="form_penjualan_kasir_apotek.php" class="waves-effect"> Apotek </a></li>
            <li><a href="form_penjualan_lab.php"  class="waves-effect"> Laboratorium </a></li>
        </ul>

@@ -2137,7 +2137,7 @@ if (jumlah_barang == ''){
   }
  
 
-  else if (ber_stok == 'Jasa'){
+  else if (ber_stok == 'Jasa' || ber_stok == 'BHP' ){
 
      $("#total2").val(tandaPemisahTitik(total_akhir1));
      $("#total1").val(tandaPemisahTitik(total_akhir));
@@ -2146,7 +2146,7 @@ if (jumlah_barang == ''){
      
   $("#kode_barang").trigger("chosen:open");
 
-  $.post("proses_tbs_bayar_ranap.php",{kode_barang:kode_barang,pajak_tbs_rupiah:pajak_tbs_rupiah,nama_barang:nama_barang,jumlah_barang:jumlah_barang,harga:harga,tax:tax,potongan:potongan,no_rm:no_rm,satuan:satuan,ber_stok:ber_stok,no_reg:no_reg,dokter:dokter,dokter_pj:dokter_pj,penjamin:penjamin,asal_poli:asal_poli,level_harga:level_harga,petugas_kasir:petugas_kasir,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,no_faktur:'<?php echo $no_faktur; ?>',ppn_input:ppn_input,status:'0'},function(data){
+  $.post("proses_tbs_bayar_ranap.php",{kode_barang:kode_barang,pajak_tbs_rupiah:pajak_tbs_rupiah,nama_barang:nama_barang,jumlah_barang:jumlah_barang,harga:harga,tax:tax,potongan:potongan,no_rm:no_rm,satuan:satuan,ber_stok:ber_stok,no_reg:no_reg,dokter:dokter,dokter_pj:dokter_pj,penjamin:penjamin,asal_poli:asal_poli,level_harga:level_harga,petugas_kasir:petugas_kasir,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,no_faktur:'<?php echo $no_faktur; ?>',ppn_input:ppn_input},function(data){
      
     
      $("#kode_barang").val('');
@@ -2194,7 +2194,7 @@ if (jumlah_barang == ''){
         }
 
 
-    $.post("proses_tbs_bayar_ranap.php",{kode_barang:kode_barang,pajak_tbs_rupiah:pajak_tbs_rupiah,nama_barang:nama_barang,jumlah_barang:jumlah_barang,harga:harga,tax:tax,potongan:potongan,no_rm:no_rm,satuan:satuan,ber_stok:ber_stok,no_reg:no_reg,dokter:dokter,dokter_pj:dokter_pj,penjamin:penjamin,asal_poli:asal_poli,level_harga:level_harga,petugas_kasir:petugas_kasir,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,no_faktur:'<?php echo $no_faktur; ?>',ppn_input:ppn_input,status:'0'},function(data){
+    $.post("proses_tbs_bayar_ranap.php",{kode_barang:kode_barang,pajak_tbs_rupiah:pajak_tbs_rupiah,nama_barang:nama_barang,jumlah_barang:jumlah_barang,harga:harga,tax:tax,potongan:potongan,no_rm:no_rm,satuan:satuan,ber_stok:ber_stok,no_reg:no_reg,dokter:dokter,dokter_pj:dokter_pj,penjamin:penjamin,asal_poli:asal_poli,level_harga:level_harga,petugas_kasir:petugas_kasir,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,no_faktur:'<?php echo $no_faktur; ?>',ppn_input:ppn_input},function(data){
      
 
      $("#kode_barang").val('');

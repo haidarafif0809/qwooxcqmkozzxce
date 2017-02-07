@@ -160,9 +160,13 @@ $out_perawat = mysqli_fetch_array($select_perawat);
 $select_apoteker = $db->query("SELECT p.apoteker,u.nama FROM penjualan p LEFT JOIN user u ON p.apoteker = u.id WHERE p.no_reg = '$no_reg' "); 
 $out_apoteker = mysqli_fetch_array($select_apoteker);
 ?>
-<?php if ($status_bayar == 'Lunas' OR $status_bayar == 'Piutang'):  ?>
 
-  <div class="col-sm-2">
+
+<!--
+<?php if ($status_bayar == 'Lunas' OR $status_bayar == 'Piutang'):  ?>
+  -->
+
+<div class="col-sm-2">
 <div class="form-group">
      <label for="Petugas Paramedik">Petugas Paramedik:</label><br>
      <input style="height: 15px;" type="text" class="form-control" id="perawat2" name="perawat2" value="<?php echo $out_perawat['nama']; ?>" readonly="" >
@@ -178,7 +182,7 @@ $out_apoteker = mysqli_fetch_array($select_apoteker);
 </div>
 
 
-
+<!--
 
 <?php else: ?>
 
@@ -222,8 +226,8 @@ $out_apoteker = mysqli_fetch_array($select_apoteker);
 
 <?php endif ;?>
 
-
-
+-->
+<!--
 <?php
 $select_to = $db->query("SELECT no_reg,status FROM penjualan WHERE no_reg = '$no_reg'"); 
 $out_of = mysqli_fetch_array($select_to);
@@ -231,22 +235,28 @@ $status_bayar = $out_of['status'];
 
 if ($status_bayar == 'Lunas' OR $status_bayar == 'Piutang' OR $status_bayar == 'Simpan Sementara'):?> 
 
+-->
 
 <!-- untuk confirmasi SELESAI -->
 <br><br>
 <div class="col-sm-12">
 <button data-no-reg=<?php echo $no_reg;?> style='background-color:#80deea;' class='btn btn-default selesai'><i class='fa fa-send'></i> Selesai </button>
-<br><br>
+
 </div>
 
 
-
+<!--
 
 <?php else: ?>
 
+-->
 
+<!--
 <div class="col-sm-12">
+-->
   <!-- OPEN FORM CARI PRODUK -->
+  <!--
+
 <button type="button" id="cari_produk" class="btn btn-danger" data-target="#myModal2" data-toggle="modal"><i class="fa fa-search"></i> Cari (F1)</button>
 <br>
 <br>
@@ -293,23 +303,30 @@ if ($status_bayar == 'Lunas' OR $status_bayar == 'Piutang' OR $status_bayar == '
 </div>
 </div>
 
+-->
+
 <!-- AKHIR YANG DI HIDDEN DI PRODUK -->
 
-
+<!--
 <button type="submit" accesskey="t" class="btn btn-primary" id="submit_produk"> <i class="fa fa-plus"></i>Tambah (F3) </button>
 
+-->
 
 
+<!--
+</form>  -->
 
-
-</form> <!-- AKHIR FORM PRODUK -->
-
+<!-- AKHIR FORM PRODUK -->
+<!--
 <br>
 
 </div>
 
 
 <?php endif;?>
+
+-->
+
 <!-- AKHIR confirmasi SELESAI -->
 
 <!-- YANG DI HIDDEN DI PRODUK -->
@@ -327,6 +344,7 @@ tr:nth-child(even){background-color: #f2f2f2}
 </style>
 
 <div class="col-sm-12">
+<br>
   <span id="result">
   <div class="table-responsive">
 <table id="table-pelamar" class="table table-sm">
@@ -341,14 +359,7 @@ tr:nth-child(even){background-color: #f2f2f2}
         <th style='background-color: #4CAF50; color: white'>Waktu</th>
 
 
-         <?php 
-         $sss = $db->query("SELECT dp.kode_barang FROM detail_penjualan dp  LEFT JOIN barang b ON dp.kode_barang = b.kode_barang  WHERE dp.no_reg ='$no_reg' AND b.tipe_barang = 'Obat Obatan' ORDER BY dp.id DESC");
-         $asa1 = mysqli_num_rows($sss);
-         if($asa1 > 0) {?>
 
-       <?php } else { ?>
-       <th style='background-color: #4CAF50; color: white'>Batal</th>
-       <?php } ?>
          
     </tr>
     </thead>
@@ -357,12 +368,11 @@ tr:nth-child(even){background-color: #f2f2f2}
    <?php 
 
 
-$ss = $db->query("SELECT dp.no_reg,dp.kode_barang,dp.nama_barang,dp.dosis,dp.id,dp.jumlah_barang FROM detail_penjualan dp  LEFT JOIN barang b ON dp.kode_barang = b.kode_barang  WHERE dp.no_reg ='$no_reg' AND b.tipe_barang = 'Obat Obatan' 
-          ORDER BY dp.id DESC");
+$ss = $db->query("SELECT dp.no_reg,dp.kode_barang,dp.nama_barang,dp.dosis,dp.id,dp.jumlah_barang, dp.waktu FROM detail_penjualan dp  LEFT JOIN barang b ON dp.kode_barang = b.kode_barang  WHERE dp.no_reg ='$no_reg' AND b.tipe_barang = 'Obat Obatan' ORDER BY dp.id DESC");
 $asa = mysqli_num_rows($ss);
-if ($asa > 0)
-      {
-        $delete2 = $db->query("DELETE FROM tbs_penjualan WHERE no_reg = '$no_reg' ");
+
+
+  $delete2 = $db->query("DELETE FROM tbs_penjualan WHERE no_reg = '$no_reg' ");
    while($data00 = mysqli_fetch_array($ss))
       
       {
@@ -373,23 +383,28 @@ if ($asa > 0)
       <td>". $data00['nama_barang']."</td>";
       if ($data00['dosis'] == '')
       {
- echo "<td style='background-color:#90caf9;cursor:pointer;'><span class='text-dosis' data-id='". $data00['id']."' id='text-dosis-". $data00['id']."'></span>
-      <input autofocus='' class='input-dosis' type='text' id='input-dosis-". $data00['id']."'  data-id='". $data00['id']."' value='".$data00['dosis']."'></td>";
+         echo "<td style='background-color:#90caf9;cursor:pointer;'><span class='text-dosis' data-id='". $data00['id']."' id='text-dosis-". $data00['id']."'></span>
+              <input autofocus='' class='input-dosis' type='text' id='input-dosis-". $data00['id']."'  data-id='". $data00['id']."' value='".$data00['dosis']."'></td>";
       }
       else
       {
         echo "<td style='background-color:#90caf9;cursor:pointer;'><span class='text-dosis' data-id='". $data00['id']."' id='text-dosis-". $data00['id']."'>". $data00['dosis']."</span>
-      <input autofocus='' class='input-dosis' type='hidden' id='input-dosis-". $data00['id']."' data-id='". $data00['id']."' value='".$data00['dosis']."'></td>";
+        <input autofocus='' class='input-dosis' type='hidden' id='input-dosis-". $data00['id']."' data-id='". $data00['id']."' value='".$data00['dosis']."'></td>";
       }
      
-      echo "<td  >". $data00['jumlah_barang']."</td>
+        echo "<td  >". $data00['jumlah_barang']."</td>
+        <td  >". $data00['waktu']."</td>
           
       </tr>";
-      }
-
 
       }
 
+/*
+
+
+
+if ($asa > 0)
+      {}
 
 else
       {
@@ -408,9 +423,8 @@ else
       <td>". $data01['nama_barang']."</td>
       <td>". $data01['dosis']."</td>
       <td>". $data01['jumlah_barang']."</td>
-             <td>". $data01['tanggal']." ".$data01['jam']."</td>
+      <td>". $data01['tanggal']." ".$data01['jam']."</td>
 
-      <td><button class='btn btn-danger btn-sm batal' data-id='".$data01['id']."' data-reg='". $data01['no_reg']."' data-kode-barang='". $data01['kode_barang']."'><i class='fa fa-remove'></i> Batal </button></td>
 
       </tr>";
       }
@@ -418,12 +432,15 @@ else
 
   
       }
+
+*/
+
     ?>
   </tbody>
  </table>
 </div> <!--  table responsvie -->
 
-<h6 style="text-align: left ;"><i><b> * Short Key (F2) untuk mencari Kode Obat Obatan atau Nama Obat Obatan.</b></i></h6>
+<h6 style="text-align: left; display: none"><i><b> * Short Key (F2) untuk mencari Kode Obat Obatan atau Nama Obat Obatan.</b></i></h6>
 
 
 </span>
@@ -537,7 +554,7 @@ $("#jumlah_produk").focus();
 
  <!--script chossen-->
 <script>
-$("select").chosen({no_results_text: "Oops, Tidak Ada !",search_contains:true});
+$("select").chosen({no_results_text: "Oops, Tidak Ada !"});
 </script>
 <!--script end chossen-->
 
@@ -746,16 +763,6 @@ $("#reg2").val(reg);
         // Do something
 
         $("#submit_produk").click();
-
-    });
-</script>
-
-
-<script> 
-    shortcut.add("f2", function() {
-        // Do something
-
-        $("#kode_produk").trigger("chosen:open");
 
     });
 </script>

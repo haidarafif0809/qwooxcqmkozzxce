@@ -43,14 +43,14 @@ $columns = array(
 
 
 $sql = "SELECT reg.no_urut, reg.poli, reg.dokter, reg.no_reg, reg.no_rm, reg.tanggal, reg.nama_pasien, reg.penjamin, reg.umur_pasien, reg.jenis_kelamin, reg.keterangan, reg.id, reg.status, reg.jam, rek.tanggal_periksa ";
-$sql.=" FROM registrasi reg LEFT JOIN rekam_medik rek ON reg.no_reg = rek.no_reg WHERE reg.jenis_pasien = 'Rawat Jalan' AND  (reg.status = 'Proses' OR reg.status = 'Rujuk Keluar Ditangani')";
+$sql.=" FROM registrasi reg INNER JOIN rekam_medik rek ON reg.no_reg = rek.no_reg WHERE reg.jenis_pasien = 'Rawat Jalan' AND  (reg.status = 'Proses' OR reg.status = 'Rujuk Keluar Ditangani')";
 $query=mysqli_query($conn, $sql) or die("datatable_pasien_masuk_rj_1.php: get employees");
 $totalData = mysqli_num_rows($query);
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
 
 $sql = "SELECT reg.no_urut, reg.poli, reg.dokter, reg.no_reg, reg.no_rm, reg.tanggal, reg.nama_pasien, reg.penjamin, reg.umur_pasien, reg.jenis_kelamin, reg.keterangan, reg.id, reg.status, reg.jam, rek.tanggal_periksa ";
-$sql.=" FROM registrasi reg LEFT JOIN rekam_medik rek ON reg.no_reg = rek.no_reg WHERE reg.jenis_pasien = 'Rawat Jalan' AND  (reg.status = 'Proses' OR reg.status = 'Rujuk Keluar Ditangani')";
+$sql.=" FROM registrasi reg INNER JOIN rekam_medik rek ON reg.no_reg = rek.no_reg WHERE reg.jenis_pasien = 'Rawat Jalan' AND  (reg.status = 'Proses' OR reg.status = 'Rujuk Keluar Ditangani')";
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
 	$sql.=" AND ( reg.no_urut LIKE '".$requestData['search']['value']."%' ";    
 	$sql.=" OR reg.no_rm LIKE '".$requestData['search']['value']."%' ";
@@ -74,7 +74,7 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 $penjual = $db->query("SELECT status FROM penjualan WHERE no_reg = '$row[no_reg]' ");
 $sttus = mysqli_num_rows($penjual);
 
-$query_z = $db->query("SELECT p.status,p.no_faktur,p.nama,p.kode_gudang,g.nama_gudang FROM penjualan p LEFT JOIN gudang g ON p.kode_gudang = g.kode_gudang WHERE p.no_reg = '$row[no_reg]' ");
+$query_z = $db->query("SELECT p.status,p.no_faktur,p.nama,p.kode_gudang,g.nama_gudang FROM penjualan p INNER JOIN gudang g ON p.kode_gudang = g.kode_gudang WHERE p.no_reg = '$row[no_reg]' ");
 $data_z = mysqli_fetch_array($query_z);
 
 
@@ -88,9 +88,7 @@ if ($penjualan['penjualan_tambah'] > 0) {
       }
       else
       {
-      $nestedData[] ="
-      			<a href='form_penjualan_kasir.php?no_reg=". $row['no_reg']."' class='btn btn-floating btn-small btn-info penjualan' ><i class='fa fa-shopping-cart'></i></a>
-      			";
+      $nestedData[] = "";
       }
 }
 else{

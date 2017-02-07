@@ -22,7 +22,7 @@
     $nama_petugas = stringdoang($_POST['nama_petugas']);
     $kode_produk = stringdoang($_POST['kode_produk']);
     $nama_produk = stringdoang($_POST['nama_produk']);
-    $jumlah_prosentase = angkadoang($_POST['jumlah_prosentase']);
+    $jumlah_prosentase = angkadecimal($_POST['jumlah_prosentase']);
     $jumlah_nominal = angkadoang($_POST['jumlah_uang']);
     $user = $_SESSION['user_name'];
 

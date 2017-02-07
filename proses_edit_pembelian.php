@@ -50,7 +50,7 @@ $perintah1 = $db->query("INSERT INTO tbs_pembelian (no_faktur, kode_barang, nama
 }
 
 
-  echo '<META HTTP-EQUIV="Refresh" Content="0; URL=form_edit_pembelian.php?no_faktur='.$no_faktur.'&suplier='.$suplier.'&nama_suplier='.$nama_suplier.'&kode_gudang='.$kode_gudang.'&nama_gudang='.$nama_gudang.'">';
+  echo '<META HTTP-EQUIV="Refresh" Content="0; URL=coba.php?no_faktur='.$no_faktur.'&suplier='.$suplier.'&nama_suplier='.$nama_suplier.'&kode_gudang='.$kode_gudang.'&nama_gudang='.$nama_gudang.'">';
 
 //Untuk Memutuskan Koneksi Ke Database
 mysqli_close($db);   

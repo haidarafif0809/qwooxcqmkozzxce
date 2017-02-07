@@ -3,6 +3,7 @@ include 'db.php';
 include 'sanitasi.php';
 
 $golongan = stringdoang($_GET['golongan']);
+
 $sampai_tanggal = stringdoang($_GET['sampai_tanggal']);
 $dari_tanggal = stringdoang($_GET['dari_tanggal']);
 

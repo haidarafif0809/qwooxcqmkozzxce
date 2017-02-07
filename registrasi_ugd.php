@@ -554,7 +554,6 @@ tr:nth-child(even){background-color: #f2f2f2}
 <?php if ($registrasi_ugd['registrasi_ugd_hapus'] > 0):?>  
       <th style='background-color: #4CAF50; color: white'>Batal</th>
     <?php endif; ?>
-      <th style='background-color: #4CAF50; color: white'>Transaksi Penjualan</th>
 <?php if ($registrasi_ugd['registrasi_ugd_lihat'] > 0):?>  
 
       <th style='background-color: #4CAF50; color: white'>Rujuk Tempat Lain</th>

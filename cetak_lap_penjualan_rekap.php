@@ -11,7 +11,7 @@ $sampai_tanggal = stringdoang($_GET['sampai_tanggal']);
     $data1 = mysqli_fetch_array($query1);
 
 
-$perintah = $db->query("SELECT tanggal,no_faktur,kode_pelanggan,total,jam,user,status,potongan,tax,sisa,kredit,nama FROM penjualan WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal'");
+
 
 //menampilkan seluruh data yang ada pada tabel penjualan
 $perintah0 = $db->query("SELECT * FROM detail_penjualan WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal'");
@@ -106,7 +106,8 @@ $t_barang = $cek011['total_barang'];
             <tbody>
             <?php
 
-                  while ($data11 = mysqli_fetch_array($perintah))
+                  $perintah009 = $db->query("SELECT pel.nama_pelanggan,dp.tanggal,dp.no_faktur,dp.kode_pelanggan,dp.total,dp.jam,dp.user,dp.status,dp.potongan,dp.tax,dp.sisa,dp.kredit FROM penjualan dp INNER JOIN pelanggan pel ON dp.kode_pelanggan = pel.kode_pelanggan WHERE dp.tanggal >= '$dari_tanggal' AND dp.tanggal <= '$sampai_tanggal'");
+                  while ($data11 = mysqli_fetch_array($perintah009))
 
                   {
                         //menampilkan data
@@ -124,7 +125,7 @@ $t_barang = $cek011['total_barang'];
                   echo "<tr>
                   <td>". $data11['no_faktur'] ."</td>
                   <td>". $data11['tanggal'] ."</td>
-                  <td>". $data11['kode_pelanggan'] ." ". $data11['nama'] ."</td>
+                  <td>". $data11['kode_pelanggan'] ." ". $data11['nama_pelanggan'] ."</td>
                   <td>". $total_barang ."</td>
                   <td>". rp($total_subtotal) ."</td>
                   <td>". rp($data11['potongan']) ."</td>
@@ -132,7 +133,6 @@ $t_barang = $cek011['total_barang'];
                   <td>". rp($data11['total']) ."</td>
                   <td>". rp($bayar_tunai) ."</td>
                   <td>". rp($data11['kredit']) ."</td>
-
                   </tr>";
 
 

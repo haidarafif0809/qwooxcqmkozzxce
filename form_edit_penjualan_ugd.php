@@ -328,11 +328,32 @@ if ($tax != 0) {
   
   <label> No. RM | Pasien </label><br>
 
-  <input style="height:20px" type="text" class="form-control"  id="no_rm" name="no_rm" value="<?php echo $data_reg['no_rm']; ?> | <?php echo $data_reg['nama_pasien']; ?>"readonly="" > 
+  <input style="height:20px" type="text" class="form-control"  id="no_rm_tampil" name="no_rm" value="<?php echo $data_reg['no_rm']; ?> | <?php echo $data_reg['nama_pasien']; ?>" > 
+  <input style="height:20px" type="hidden" class="form-control"  id="no_rm" name="no_rm" value="<?php echo $data_reg['no_rm']; ?>" > 
     <input style="height:20px" type="hidden" class="form-control"  id="nama_pasien" name="nama_pasien" value="<?php echo $data_reg['nama_pasien']; ?>" readonly="" > 
 
 </div>
     
+
+
+
+<div class="col-xs-2">
+    <label>No. REG :</label>
+    <input style="height:20px" type="text" class="form-control"  id="no_reg" name="no_reg" value="<?php echo $no_reg; ?>" readonly="">   
+
+    <input style="height:20px; display: none" type="text" class="form-control"  id="no_faktur" name="no_faktur" value="<?php echo $no_faktur; ?>" readonly="">   
+</div>
+
+
+
+<div class="col-xs-2">
+<label>Kasir</label>
+<input style="height:20px; font-size:15px; display: none" type="text" class="form-control"  id="petugas_kasir" name="petugas_kasir" value="<?php echo $data_penj['sales']; ?>" readonly="">   
+<input style="height:20px; font-size:15px; " type="text" class="form-control"  id="nama_kasir_tampil" name="nama_kasir_tampil" value="<?php echo $out_user['nama']; ?>" readonly="">   
+</div>
+
+<input style="height:20px;" type="hidden" class="form-control"  id="id_user" name="id_user" value="<?php echo $id_user; ?>" readonly="">  
+
 
 <div class="col-xs-2">
           <label> Gudang </label><br>
@@ -367,7 +388,6 @@ if ($tax != 0) {
 </div>
 
 
-
 <div class="col-xs-2">
           <label>PPN</label>
           <select style="font-size:15px; height:35px; " name="ppn" id="ppn" class="form-control">
@@ -377,28 +397,6 @@ if ($tax != 0) {
             <option value="Non">Non</option>          
           </select>
 </div>
-
-
-
-
-<div class="col-xs-2">
-<label>Kasir</label>
-<input style="height:20px; font-size:15px; display: none" type="text" class="form-control"  id="petugas_kasir" name="petugas_kasir" value="<?php echo $data_penj['sales']; ?>" readonly="">   
-<input style="height:20px; font-size:15px; " type="text" class="form-control"  id="nama_kasir_tampil" name="nama_kasir_tampil" value="<?php echo $out_user['nama']; ?>" readonly="">   
-</div>
-
-<input style="height:20px;" type="hidden" class="form-control"  id="id_user" name="id_user" value="<?php echo $id_user; ?>" readonly="">  
-
-
-
-
-<div class="col-xs-2">
-    <label>No. REG :</label>
-    <input style="height:20px" type="text" class="form-control"  id="no_reg" name="no_reg" value="<?php echo $no_reg; ?>" readonly="">   
-
-    <input style="height:20px; display: none" type="text" class="form-control"  id="no_faktur" name="no_faktur" value="<?php echo $no_faktur; ?>" readonly="">   
-</div>
-
 
 <input style="height:17px" type="hidden" class="form-control"  id="id_dokter" name="id_dokter" value="<?php echo $id_dokter; ?>"readonly=""> 
 
@@ -448,10 +446,8 @@ if ($tax != 0) {
             while($data01 = mysqli_fetch_array($query01))
             {
             
-                $petugas = $db->query("SELECT nama_dokter FROM penetapan_petugas WHERE nama_dokter = '$data01[nama]'");
-                $data_petugas = mysqli_fetch_array($petugas);
 
-            if ($data01['nama'] == $data_petugas['nama_dokter']) {
+            if ($data01['nama'] == $data_penj['nama_dokter']) {
              echo "<option selected value='".$data01['id'] ."'>".$data01['nama'] ."</option>";
             }
             else{
@@ -485,13 +481,29 @@ if ($tax != 0) {
 </div>
 
  <div class="col-xs-2">
-    <label> Penjamin :</label>
-    <input style="height:20px;" type="text" class="form-control"  id="penjamin" name="penjamin" placeholder="Penjamin " autocomplete="off" value="<?php echo $data_penj['penjamin']; ?>" readonly="" >   
-</div>
-
- <div class="col-xs-2">
     <label> Asal Poli :</label>
     <input style="height:20px;" type="text" class="form-control"  id="asal_poli" name="asal_poli" placeholder="Isi Poli" autocomplete="off" value="<?php echo $data_reg['poli']; ?>" readonly="" >   
+</div>
+
+
+ <div class="col-xs-2">
+    <label> Penjamin :</label>
+    <select class="form-control chosen" id="penjamin" name="penjamin" required="">
+          <?php    
+         
+          $query = $db->query("SELECT nama FROM penjamin");
+          while ( $icd = mysqli_fetch_array($query))
+          {
+            if ($data_penj['penjamin'] == $icd['nama']) {
+             echo "<option selected value='".$icd['nama']."'>".$icd['nama']."</option>";
+            }
+            else{
+              echo "<option value='".$icd['nama']."'>".$icd['nama']."</option>";
+            }
+          
+          }
+          ?>
+        </select>
 </div>
 
 
@@ -1469,14 +1481,13 @@ $(document).ready(function(){
     
     var nama_barang = $("#nama_barang").val();
     var limit_stok = $("#limit_stok").val();
-    var tanggal = $("#tanggal").val();
-    var jam = $("#jam").val();
+
 
     var jumlah_barang = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#jumlah_barang").val()))));
     var harga = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#harga_produk").val()))));
     var potongan = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#potongan1").val()))));
-    var biaya_admin = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#biaya_admin").val()))));
-     var tax = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#tax1").val()))));
+    var biaya_admin = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#biaya_adm").val()))));
+    var tax = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#tax1").val()))));
    
     var tax = $("#tax1").val();
     if (tax == '') {
@@ -1642,13 +1653,15 @@ $(document).ready(function(){
   $("#jumlah_barang").focus();
 
   }
-  else if (ber_stok == 'Jasa')
+  else if (ber_stok == 'Jasa' || ber_stok == 'BHP' )
   {
 
- $.post("proses_tbs_edit_ugd.php",{no_faktur:no_faktur, penjamin:penjamin,asal_poli:asal_poli,level_harga:level_harga,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,no_reg:no_reg,no_rm:no_rm,dokter:dokter,petugas_kasir:petugas_kasir,kode_barang:kode_barang,nama_barang:nama_barang,jumlah_barang:jumlah_barang,harga:harga,potongan:potongan,tax:tax,satuan:satuan, ber_stok:ber_stok,ppn:ppn,tanggal:tanggal,jam:jam},function(data){
+ $.post("proses_tbs_edit_ugd.php",{no_faktur:no_faktur, penjamin:penjamin,asal_poli:asal_poli,level_harga:level_harga,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,no_reg:no_reg,no_rm:no_rm,dokter:dokter,petugas_kasir:petugas_kasir,kode_barang:kode_barang,nama_barang:nama_barang,jumlah_barang:jumlah_barang,harga:harga,potongan:potongan,tax:tax,satuan:satuan, ber_stok:ber_stok,ppn:ppn},function(data){
      
   
 
+      $("#kode_barang").trigger('chosen:updated');
+      $("#kode_barang").trigger('chosen:open');
      $("#ppn").attr("disabled", true);
      $("#tbody").prepend(data);
      $("#kode_barang").val('');
@@ -1680,9 +1693,11 @@ $(document).ready(function(){
           alert("Persediaan Barang Ini Sudah Mencapai Batas Limit Stok, Segera Lakukan Pembelian !");
         }
 
-   $.post("proses_tbs_edit_ugd.php",{no_faktur:no_faktur,penjamin:penjamin,asal_poli:asal_poli,level_harga:level_harga,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,no_reg:no_reg,no_rm:no_rm,dokter:dokter,petugas_kasir:petugas_kasir,kode_barang:kode_barang,nama_barang:nama_barang,jumlah_barang:jumlah_barang,harga:harga,potongan:potongan,tax:tax,satuan:satuan,ber_stok:ber_stok,ppn:ppn,tanggal:tanggal,jam:jam},function(data){
+   $.post("proses_tbs_edit_ugd.php",{no_faktur:no_faktur,penjamin:penjamin,asal_poli:asal_poli,level_harga:level_harga,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,no_reg:no_reg,no_rm:no_rm,dokter:dokter,petugas_kasir:petugas_kasir,kode_barang:kode_barang,nama_barang:nama_barang,jumlah_barang:jumlah_barang,harga:harga,potongan:potongan,tax:tax,satuan:satuan,ber_stok:ber_stok,ppn:ppn},function(data){
      
 
+      $("#kode_barang").trigger('chosen:updated');
+      $("#kode_barang").trigger('chosen:open');
       $("#ppn").attr("disabled", true);
      $("#tbody").prepend(data);
      $("#kode_barang").val('');
@@ -2899,17 +2914,46 @@ $(document).ready(function(){
 
 -->
 
-<script type="text/javascript">
-      
-      $(document).ready(function(){
-
-
-      $("#tax").keyup(function(){
-
-
-      });
+<script>
+$(function() {
+    $( "#no_rm_tampil" ).autocomplete({
+        source: 'kode_pelanggan_autocomplete.php'
     });
-      
+});
+</script>
+
+<script type="text/javascript">
+  $("#no_rm_tampil").blur(function(){
+    var no_rm = $("#no_rm_tampil").val();
+
+    var no_rm = no_rm.substr(0, no_rm.indexOf(' |'));
+    $("#no_rm").val(no_rm);
+
+    $.getJSON('update_pelanggan_ugd.php',{no_rm:no_rm}, function(json){
+    
+      if (json == null)
+      {
+        
+        $('#nama_pasien').val('');
+        $('#penjamin').val('');
+        $('#level_harga').val('');
+
+      }
+
+      else 
+      {
+        $('#nama_pasien').val(json.nama_pelanggan);
+        $('#penjamin').val(json.penjamin);
+        $("#penjamin").trigger("chosen:updated");
+        $('#level_harga').val(json.level_harga);
+      }
+
+
+    });
+
+
+
+  });
 </script>
 
 
@@ -3814,92 +3858,6 @@ $(document).ready(function(){
 
 
 
-<!-- SCRIPT MENCARI DATA PASIEN -->
-<script type="text/javascript">
-            $(document).ready(function(){
-                $('#no_rm').change(function()
-                    {
-                          var no_rm = $("#no_rm").val();
-
-                          var no_rm = no_rm.substr(0, no_rm.indexOf(' |'));
-                          
-                    if (no_rm == '')
-                    {
-                          $('#no_reg').val('');
-                          $('#dokter').val('');
-                          $('#asal_poli').val('');
-                          $('#penjamin').val('');
-                          $('#no_faktur').val('');
-                          $('#total2').val('');
-                          $('#total1').val('');
-                          $('#level_harga').val('');
-
-                         $('#table-baru').html('');
-
-                    }
-                    else
-                    {
-                          $.getJSON('lihat_data_kasir.php',{no_rm:$(this).val()}, function(json){
-                        if (json == null)
-                          {
-                          $('#no_reg').val('');
-                          $('#dokter').val('');
-                          $('#asal_poli').val('');
-                          $('#penjamin').val('');
-                          $('#total2').val('');
-                          $('#total1').val('');
-                          $('#level_harga').val('');
-
-                          $('#table-baru').html('');
-                          }
-
-                        else 
-                          {
-
-                          $("#dokter").chosen("destroy");
-                          $('#no_rm').val(json.no_rm);
-
-                          $('#no_reg').val(json.no_reg);
-
-                          $('#dokter').val(json.dokter);
-                          $('#asal_poli').val(json.poli);
-                          $('#penjamin').val(json.penjamin);
-                          $('#no_reg').val(json.no_reg);
-                          $('#level_harga').val(json.provinsi);
-                          $(".chosen").chosen({no_results_text: "Maaf, Data Tidak Ada!"}); 
-
-                          $("#total").val(tandaPemisahTitik(json.petugas));              
-                          $("#subtotal").val(tandaPemisahTitik(json.keterangan));  
-
-
-                          var penjamin = $("#penjamin").val();
-
-                            $(".ss").trigger("chosen:updated");
-
-                            $.post("cek_tempo.php",{penjamin:penjamin},function(data){
-
-                               if (data != '1970-01-01' ){
-
-                                  $("#jatuh_tempo").val(data);
-                               }
-
-                               else{
-                                  $("#jatuh_tempo").val('');
-
-                                
-                               }
-
-                            });
-
-                          }
-                                              
-                        });
-                      }
-                });
-            });
-</script>
-<!--END SCRIPT CARI DATA PASIEN -->
-
 
 
 
@@ -3909,7 +3867,7 @@ $(document).ready(function(){
     var no_reg = $("#no_reg").val();
     var pot_fakt_per = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#potongan_persen").val()))));
     var pot_fakt_rp = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#potongan_penjualan").val()))));
-    var biaya_admin = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#biaya_admin").val()))));
+    var biaya_admin = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#biaya_adm").val()))));
     if (biaya_admin == "") {
       biaya_admin = 0;
     }

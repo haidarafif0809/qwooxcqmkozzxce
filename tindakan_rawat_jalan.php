@@ -170,7 +170,11 @@ $out_perawat = mysqli_fetch_array($select_perawat);
 $select_apoteker = $db->query("SELECT p.apoteker,u.nama FROM penjualan p LEFT JOIN user u ON p.apoteker = u.id WHERE p.no_reg = '$no_reg' "); 
 $out_apoteker = mysqli_fetch_array($select_apoteker);
 
-if ($status_bayar == 'Lunas' OR $status_bayar == 'Piutang'):?> 
+?> 
+
+<!--
+<?php if ($status_bayar == 'Lunas' OR $status_bayar == 'Piutang'):?> 
+  -->
 
 <div class="col-sm-2">
 <div class="form-group">
@@ -186,7 +190,7 @@ if ($status_bayar == 'Lunas' OR $status_bayar == 'Piutang'):?>
 </div>
 </div>
 
-
+<!--
 
 <?php else: ?>
 
@@ -229,6 +233,9 @@ if ($status_bayar == 'Lunas' OR $status_bayar == 'Piutang'):?>
 
 <?php endif;?>
 
+-->
+
+<!--
 
 <?php
 $select_to = $db->query("SELECT no_reg,status FROM penjualan WHERE no_reg = '$no_reg'"); 
@@ -237,16 +244,23 @@ $status_bayar = $out_of['status'];
 
 if ($status_bayar == 'Lunas' OR $status_bayar == 'Piutang'):?> 
 
+-->
+
 <div class="col-sm-12">
 <button data-no-reg='".$no_reg."' style='background-color:#80deea;' class='btn btn-default selesai'><i class='fa fa-send'></i> Selesai </button>
 </div>
 
-<br><br>
+<!--
 
 <?php else: ?>
 
 <div class="col-sm-12">
+
+-->
+
 <!-- OPEN FORM CARI PRODUK -->
+<!--
+
 <button type="button" accesskey="c" id="cari_produk" class="btn btn-danger" data-target="#myModal2" data-toggle="modal"><i class="fa fa-search"></i> Cari(F1)</button>
 <br>
 <br>
@@ -301,6 +315,9 @@ if ($status_bayar == 'Lunas' OR $status_bayar == 'Piutang'):?>
 
 
 <?php endif;?>
+
+-->
+
 <!-- AKHIR confirmasi SELESAI -->
 
 <!-- YANG DI HIDDEN DI PRODUK -->
@@ -318,6 +335,7 @@ tr:nth-child(even){background-color: #f2f2f2}
 </style>
 
 <div class="col-sm-12">
+<br>
 <span id="result">
   <div class="table-responsive">
 <table id="table-pelamar" class="table table-sm">
@@ -330,25 +348,23 @@ tr:nth-child(even){background-color: #f2f2f2}
          <th style='background-color: #4CAF50; color: white'>Jumlah</th>
          <th style='background-color: #4CAF50; color: white'>Waktu</th>
 
-          <?php 
-         $sss = $db->query("SELECT * FROM detail_penjualan WHERE no_reg ='$no_reg' AND tipe_produk = 'Jasa' ORDER BY id DESC");
-         $asa1 = mysqli_num_rows($sss);
-         if($asa1 > 0) {?>
-
-       <?php } else { ?>
-       <th style='background-color: #4CAF50; color: white'>Batal</th>
-       <?php } ?>
 
     </tr>
     </thead>
     <tbody id="tbody">
     
    <?php 
-$query5 = $db->query("SELECT * FROM tbs_penjualan WHERE no_reg = '$no_reg' AND tipe_barang = 'Jasa' ORDER BY id DESC");
  
 
 $ss = $db->query("SELECT * FROM detail_penjualan WHERE no_reg ='$no_reg' AND tipe_produk = 'Jasa' ORDER BY id DESC");
+
+
+/*
+
 $asa = mysqli_num_rows($ss);
+
+$query5 = $db->query("SELECT * FROM tbs_penjualan WHERE no_reg = '$no_reg' AND tipe_barang = 'Jasa' ORDER BY id DESC");
+
 if ($asa == 0)
 {
 
@@ -362,8 +378,7 @@ if ($asa == 0)
       <td>". $data['jumlah_barang']."</td>
             <td>". $data['tanggal']." ".$data['jam']."</td>
 
-      <td><button class='btn btn-danger btn-sm batal' data-id='".$data['id']."' data-reg='". $data['no_reg']."' data-kode-barang='". $data['kode_barang']."'>
-      <i class='fa fa-remove'></i> Batal </button></td>
+      <td><button class='btn btn-danger btn-sm batal' data-id='".$data['id']."' data-reg='". $data['no_reg']."' data-kode-barang='". $data['kode_barang']."'><i class='fa fa-remove'></i> Batal </button></td>
       </tr>";
        }
 
@@ -371,7 +386,8 @@ if ($asa == 0)
 }
 else
 {
-
+ }
+*/
 
    while($data = mysqli_fetch_array($ss))
       
@@ -382,9 +398,10 @@ else
       <td>". $data['kode_barang']."</td>
       <td>". $data['nama_barang']."</td>
       <td>". $data['jumlah_barang']."</td>
+      <td>". $data['waktu']."</td>
       </tr>";
       }
- }
+
       
 
     ?>
@@ -392,7 +409,7 @@ else
  </table>
     </div> <!-- table responsive -->
 
-            <h6 style="text-align: left ;"><i><b> * Short Key (F2) untuk mencari Kode Tindakan atau Nama Tindakan.</b></i></h6>
+            <h6 style="text-align: left; display: none"><i><b> * Short Key (F2) untuk mencari Kode Tindakan atau Nama Tindakan.</b></i></h6>
 
 
   </span>
@@ -467,7 +484,7 @@ $.post("cek_kode_barang_tbs_penjualan.php",{kode_barang:kode,no_reg:no_reg},func
 
 <!--script chossen-->
 <script>
-$("select").chosen({no_results_text: "Oops, Tidak Ada !",search_contains:true});
+$("select").chosen({no_results_text: "Oops, Tidak Ada !"});
 </script>
 <!--script end chossen-->
 
@@ -627,7 +644,7 @@ $("#reg2").val(reg);
 
       <script type="text/javascript">
       
-      $(".chosen").chosen({no_results_text: "Maaf, Data Tidak Ada!",search_contains:true});  
+      $(".chosen").chosen({no_results_text: "Maaf, Data Tidak Ada!"});  
       
       </script>
 

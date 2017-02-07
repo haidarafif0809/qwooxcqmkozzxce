@@ -56,14 +56,6 @@ tr:nth-child(even){background-color: #f2f2f2}
   </tbody>
  </table>
 </div> <!--  end table responsive  -->
-
-
-        <b><h4>Total Keseluruhan </h4>
-       <h4>Total Produk : <span id="total_produk"> </span></h4>        
-        <h4>Total Nilai : <span id="total_nilai"> </span></h4></b>
-    
-
-
 </div>
 </span>
 <span id="cetak" style="display: none;">
@@ -78,6 +70,8 @@ tr:nth-child(even){background-color: #f2f2f2}
   $(function() {
     $( ".tanggal_cari" ).pickadate({ selectYears: 100, format: 'yyyy-mm-dd'});
   });
+
+
 </script>
 
 

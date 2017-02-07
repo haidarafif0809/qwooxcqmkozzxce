@@ -32,6 +32,15 @@ $angka1 = filter_var($angka, FILTER_SANITIZE_NUMBER_INT);
  return $angka1;
 }
 
+function angkadecimal($angka){
+
+$angka1 = filter_var($angka,
+              FILTER_SANITIZE_NUMBER_FLOAT, 
+              FILTER_FLAG_ALLOW_FRACTION);
+ return $angka1;
+}
+
+
 function emaildoang($email){
 
 $angka1 = filter_var($email, FILTER_SANITIZE_EMAIL);
@@ -368,7 +377,7 @@ function url_get_contents ($url) {
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-        curl_setopt ($ch, CURLOPT_CAINFO, "cacert.pem");
+        curl_setopt ($ch, CURLOPT_CAINFO, "C:/xampp/htdocs/toko-full/cacert.pem");
 
 
         $output = curl_exec($ch);

@@ -13,7 +13,7 @@ $jam_sekarang = $jam;
 $tahun_terakhir = substr($tahun_sekarang, 2);
 
 $petugas_edit = $_SESSION['id'];
-$waktu = $tahun_sekarang." ".$jam_sekarang;
+$waktu = date('Y-m-d H:i:s');
 
 try {
     // First of all, let's begin a transaction
@@ -131,16 +131,27 @@ else{
 
           $query3 = $db->query("DELETE  FROM laporan_fee_produk WHERE no_faktur = '$no_faktur' ");
 
-        $query0 = $db->query("SELECT * FROM tbs_fee_produk WHERE no_faktur = '$no_faktur' ");
+        $query0 = $db->query("SELECT * FROM tbs_fee_produk WHERE nama_petugas = '$id_kasir' AND no_faktur = '$no_faktur' ");
          while  ($cek0 = mysqli_fetch_array($query0)){
 
 
 
-                $query10 = $db->query("INSERT INTO laporan_fee_produk (nama_petugas, no_faktur, kode_produk, nama_produk, jumlah_fee, tanggal, jam,waktu) VALUES ('$cek0[nama_petugas]', '$no_faktur', '$cek0[kode_produk]', '$cek0[nama_produk]', '$cek0[jumlah_fee]', '$tanggal_sekarang', '$jam_sekarang','$waktu')");
+                $query10 = $db->query("INSERT INTO laporan_fee_produk (nama_petugas, no_faktur, kode_produk, nama_produk, jumlah_fee, tanggal, jam) VALUES ('$cek0[nama_petugas]', '$no_faktur', '$cek0[kode_produk]', '$cek0[nama_produk]', '$cek0[jumlah_fee]', '$cek0[tanggal]', '$cek0[jam]')");
 
 
           }
-      
+                    
+          $query0 = $db->query("SELECT * FROM tbs_fee_produk WHERE nama_petugas = '$apoteker' AND no_faktur = '$no_faktur'");
+         while  ($cek0 = mysqli_fetch_array($query0)){
+
+
+
+                $query10 = $db->query("INSERT INTO laporan_fee_produk (nama_petugas, no_faktur, kode_produk, nama_produk, jumlah_fee, tanggal, jam) VALUES ('$cek0[nama_petugas]', '$no_faktur', '$cek0[kode_produk]', '$cek0[nama_produk]', '$cek0[jumlah_fee]', '$cek0[tanggal]', '$cek0[jam]')");
+
+
+          }
+
+
 
 
           $query12 = $db->query("DELETE  FROM detail_penjualan WHERE no_faktur = '$no_faktur' ");
@@ -164,7 +175,7 @@ else{
             }
               
           
-              $query2 = "INSERT INTO detail_penjualan (no_faktur,no_rm, tanggal, jam, kode_barang, nama_barang, jumlah_barang, asal_satuan,satuan, harga, subtotal, potongan, tax, sisa,tipe_produk,waktu) VALUES ('$no_faktur','$no_rm', '$tanggal_sekarang', '$jam_sekarang', '$data[kode_barang]','$data[nama_barang]','$jumlah_barang','$satuan','$data[satuan]','$harga','$data[subtotal]','$data[potongan]','$data[tax]', '$jumlah_barang','$data[tipe_barang]','$waktu')";
+              $query2 = "INSERT INTO detail_penjualan (no_faktur,no_rm, tanggal, jam, kode_barang, nama_barang, jumlah_barang, asal_satuan,satuan, harga, subtotal, potongan, tax, sisa,tipe_produk) VALUES ('$no_faktur','$no_rm', '$data[tanggal]', '$data[jam]', '$data[kode_barang]','$data[nama_barang]','$jumlah_barang','$satuan','$data[satuan]','$harga','$data[subtotal]','$data[potongan]','$data[tax]', '$jumlah_barang','$data[tipe_barang]')";
 
               if ($db->query($query2) === TRUE) {
               } 

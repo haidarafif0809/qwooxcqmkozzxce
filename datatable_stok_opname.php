@@ -38,7 +38,7 @@ if( !empty($requestData['search']['value']) ) {   // if there is a search parame
 }
 $query=mysqli_query($conn, $sql) or die("datatable_stok_opname.php: get employees");
 $totalFiltered = mysqli_num_rows($query); // when there is a search parameter then we have to modify total number filtered rows as per search result. 
-$sql.=" ORDER BY ". $columns[$requestData['order'][0]['column']]."   ".$requestData['order'][0]['dir']."  LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
+$sql.= " ORDER BY tanggal DESC LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
 /* $requestData['order'][0]['column'] contains colmun index, $requestData['order'][0]['dir'] contains order such as asc/desc  */	
 $query=mysqli_query($conn, $sql) or die("employee-grid-data.php: get employees");
 
@@ -49,9 +49,9 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 	$nestedData[] = $row["no_faktur"];
 	$nestedData[] = $row["tanggal"];
 	$nestedData[] = $row["jam"];
-  $nestedData[] = $row["status"];
-  $nestedData[] = $row["total_selisih"];
-  $nestedData[] = $row["user"];
+	$nestedData[] = $row["status"];
+	$nestedData[] = $row["total_selisih"];
+	$nestedData[] = $row["user"];
 
   $nestedData[] = "<button class='btn btn-info detail' no_faktur='". $row['no_faktur'] ."' ><span class='glyphicon glyphicon-th-list'></span> Detail </button>";
 

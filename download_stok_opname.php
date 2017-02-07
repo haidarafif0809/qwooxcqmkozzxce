@@ -36,6 +36,9 @@ $no_faktur = stringdoang($_GET['no_faktur']);
 <tbody>
 
 <?php 
+
+$total_selisih_harga = 0;
+
 $query_plus = $db->query ("SELECT * FROM detail_stok_opname WHERE no_faktur = '$no_faktur' AND selisih_fisik > '0' ");
 while ($out_plus = mysqli_fetch_array($query_plus))
 			{
@@ -51,8 +54,22 @@ while ($out_plus = mysqli_fetch_array($query_plus))
 			<td>". $out_plus['selisih_harga'] ."</td>
 
 			</tr>";
+
+			$total_selisih_harga = $total_selisih_harga + $out_plus['selisih_harga'];
+
 			}
 
+			echo "<tr>
+			<td style='color:red'> TOTAL </td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td style='color:red'>".$total_selisih_harga."</td>
+
+			</tr>";
 //Untuk Memutuskan Koneksi Ke Database
 ?>
         </tbody>
@@ -80,6 +97,8 @@ while ($out_plus = mysqli_fetch_array($query_plus))
 <tbody>
 
 <?php 
+$total_selisih_harga = 0;
+
 $query_minus = $db->query ("SELECT * FROM detail_stok_opname WHERE no_faktur = '$no_faktur' AND selisih_fisik < '0' ");
 while ($out_minus = mysqli_fetch_array($query_minus))
 			{
@@ -95,8 +114,22 @@ while ($out_minus = mysqli_fetch_array($query_minus))
 			<td>". $out_minus['selisih_harga'] ."</td>
 
 			</tr>";
+			
+			$total_selisih_harga = $total_selisih_harga + $out_minus['selisih_harga'];
+
 			}
 
+			echo "<tr>
+			<td style='color:red'> TOTAL </td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td style='color:red'>".$total_selisih_harga."</td>
+
+			</tr>";
 //Untuk Memutuskan Koneksi Ke Database
 mysqli_close($db); 
 ?>

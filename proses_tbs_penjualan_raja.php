@@ -24,6 +24,7 @@ include_once 'sanitasi.php';
  $id_user = stringdoang($_POST['id_user']);
  $tipe_produk = stringdoang($_POST['ber_stok']);
  $ppn = stringdoang($_POST['ppn']);
+ $dosis_obat = stringdoang($_POST['dosis_obat']);
 
 $select_produk = $db->query("SELECT nama_barang FROM barang WHERE kode_barang = '$kode' ");
 $data_produk = mysqli_fetch_array($select_produk);
@@ -346,7 +347,7 @@ $insert2_petugas = "INSERT INTO tbs_fee_produk (no_reg,session_id,no_rm,nama_pet
 
 // QUERY UNTUK INSERT KE TBS PENJUALAN SETELAH PERHITUNGAN SELESAI
  
- $query6 = "INSERT INTO tbs_penjualan (session_id, no_reg,kode_barang,nama_barang,jumlah_barang,satuan,harga,subtotal,tipe_barang,tanggal,jam,potongan,tax) VALUES ('$session_id','$no_reg','$kode','$nama','$jumlah','$satuan','$harga','$subtotaljadi','$tipe_produk','$tanggal_sekarang','$jam','$potongan_tampil','$tax_persen')";
+ $query6 = "INSERT INTO tbs_penjualan (session_id, no_reg,kode_barang,nama_barang,jumlah_barang,satuan,harga,subtotal,tipe_barang,tanggal,jam,potongan,tax, dosis) VALUES ('$session_id','$no_reg','$kode','$nama','$jumlah','$satuan','$harga','$subtotaljadi','$tipe_produk','$tanggal_sekarang','$jam','$potongan_tampil','$tax_persen', '$dosis_obat')";
 
       if ($db->query($query6) === TRUE) {
       

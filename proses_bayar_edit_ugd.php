@@ -92,7 +92,7 @@ $delete1 = $db->query("DELETE FROM jurnal_trans WHERE no_faktur = '$nomor_faktur
 
 
 
-          $query10 = $db->query("INSERT INTO laporan_fee_produk (nama_petugas, no_faktur, kode_produk, nama_produk, jumlah_fee, tanggal, jam,  no_rm, no_reg,waktu) VALUES ('$cek0[nama_petugas]', '$nomor_faktur', '$cek0[kode_produk]', '$cek0[nama_produk]', '$cek0[jumlah_fee]', '$tanggal_edit', '$jam_sekarang', '$cek0[no_rm]', '$cek0[no_reg]','$waktu')");
+          $query10 = $db->query("INSERT INTO laporan_fee_produk (nama_petugas, no_faktur, kode_produk, nama_produk, jumlah_fee, tanggal, jam,  no_rm, no_reg) VALUES ('$cek0[nama_petugas]', '$nomor_faktur', '$cek0[kode_produk]', '$cek0[nama_produk]', '$cek0[jumlah_fee]', '$tanggal_sekarang', '$jam_sekarang', '$cek0[no_rm]', '$cek0[no_reg]')");
 
 
             }
@@ -118,9 +118,8 @@ $delete1 = $db->query("DELETE FROM jurnal_trans WHERE no_faktur = '$nomor_faktur
                   $satuan = $data['satuan'];
                 }
                   
-
               
-                  $query2 = "INSERT INTO detail_penjualan (no_faktur,no_rm, no_reg, tanggal, jam, kode_barang, nama_barang, jumlah_barang, asal_satuan,satuan, harga, subtotal, potongan, tax, sisa,tipe_produk,waktu) VALUES ('$nomor_faktur','$no_rm', '$data[no_reg]', '$tanggal_edit', '$jam_sekarang', '$data[kode_barang]','$data[nama_barang]','$jumlah_barang','$satuan','$data[satuan]','$harga','$data[subtotal]','$data[potongan]','$data[tax]', '$jumlah_barang','$data[tipe_barang]','$waktu')";
+                  $query2 = "INSERT INTO detail_penjualan (no_faktur,no_rm, no_reg, tanggal, jam, kode_barang, nama_barang, jumlah_barang, asal_satuan,satuan, harga, subtotal, potongan, tax, sisa,tipe_produk) VALUES ('$nomor_faktur','$no_rm', '$data[no_reg]', '$tanggal_sekarang', '$jam_sekarang', '$data[kode_barang]','$data[nama_barang]','$jumlah_barang','$satuan','$data[satuan]','$harga','$data[subtotal]','$data[potongan]','$data[tax]', '$jumlah_barang','$data[tipe_barang]')";
 
 
                   if ($db->query($query2) === TRUE) {

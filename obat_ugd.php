@@ -178,7 +178,12 @@ $out_apoteker = mysqli_fetch_array($select_apoteker);
 
 
 ?>
+
+<!--
+
 <?php if ($status_bayar == 'Lunas' OR $status_bayar == 'Piutang'):  ?>
+
+  -->
 
   
   <div class="col-sm-2">
@@ -195,6 +200,8 @@ $out_apoteker = mysqli_fetch_array($select_apoteker);
 </div>
 </div>
 
+
+<!--
 
 <?php else: ?>
 
@@ -238,7 +245,9 @@ $out_apoteker = mysqli_fetch_array($select_apoteker);
 
 <?php endif ;?>
 
+-->
 
+<!--
 
 <?php
 $select_to = $db->query("SELECT no_reg,status FROM penjualan WHERE no_reg = '$no_reg'"); 
@@ -247,24 +256,32 @@ $status_bayar = $out_of['status'];
 
 if ($status_bayar == 'Lunas' OR $status_bayar == 'Piutang'):?> 
 
+-->
+
 
 <!-- untuk confirmasi SELESAI -->
-<br><br>
+
 
 <div class="col-sm-12">
 <button data-no-reg='".$no_reg."' style='background-color:#80deea;' class='btn btn-default selesai'><i class='fa fa-send'></i> Selesai </button>
-<br><br>
+
 </div>
 
 
 
-
+<!--
 
 <?php else: ?>
 
 
 <div class="col-sm-12">
+
+  -->
+
   <!-- OPEN FORM CARI PRODUK -->
+
+<!--
+
 <button type="button" id="cari_produk" accesskey="c" class="btn btn-danger" data-target="#myModal2" data-toggle="modal"><i class="fa fa-search"></i>Cari (F1)</button>
 <br>
 <br>
@@ -275,46 +292,46 @@ if ($status_bayar == 'Lunas' OR $status_bayar == 'Piutang'):?>
 
 <div class="col-sm-3">
   <div class="form-group">  
-    <select style="height: 15px;" type="text" class="form-control chosen" accesskey="q" id="kode_produk" autocomplete="off" style="width:400px" name="kode_produk">
-  <option value="">SILAKAN PILIH</option>
- <?php 
-
-        include 'cache.class.php';
-          $c = new Cache();
-          $c->setCache('produk_obat');
-          $data_c = $c->retrieveAll();
-
-          foreach ($data_c as $key) {
-            echo '<option id="opt-produk-'.$key['kode_barang'].'" value="'.$key['kode_barang'].'" data-kode="'.$key['kode_barang'].'" nama-barang="'.$key['nama_barang'].'" harga="'.$key['harga_jual'].'" harga_jual_2="'.$key['harga_jual2'].'" harga_jual_3="'.$key['harga_jual3'].'" harga_jual_4="'.$key['harga_jual4'].'" harga_jual_5="'.$key['harga_jual5'].'" harga_jual_6="'.$key['harga_jual6'].'" harga_jual_7="'.$key['harga_jual7'].'" satuan="'.$key['satuan'].'" kategori="'.$key['kategori'].'" status="'.$key['status'].'" suplier="'.$key['suplier'].'" limit_stok="'.$key['limit_stok'].'" ber-stok="'.$key['berkaitan_dgn_stok'].'" tipe_barang="'.$key['tipe_barang'].'" id-barang="'.$key['id'].'" > '. $key['kode_barang'].' ( '.$key['nama_barang'].' ) </option>';
-          }
-
-        ?>
+    <select style="height: 15px;" type="text" class="form-control chosen" accesskey="q" id="nama_produk" autocomplete="off" style="width:400px" name="nama_produk">
+    <option>Nama Produk</option>
+     <?php 
+     $produk = $db->query("SELECT kode_barang, nama_barang FROM barang WHERE tipe_barang = 'Obat Obatan' ");
+     while ( $data09 = mysqli_fetch_array($produk)) {
+     echo "<option value='".$data09['nama_barang']."'>".$data09['nama_barang']."</option>";
+     }
+     ?>
     </select>
+
 </div>
 </div>
 
 <input type="hidden" name="session_id" id="session_id" class="form-control" value="<?php echo session_id(); ?>" readonly="">
 
+<div class="col-sm-2">
 <div class="form-group">    
-    <input style="height: 15px;" type="hidden" class="form-control" id="nama_produk" name="nama_produk" style="width:150px"   >
+    <input style="height: 15px;" type="text" class="form-control" id="kode_produk" name="kode_produk" style="width:150px" placeholder="Kode Produk" readonly=""  >
 </div>
-
+</div>
     
-<div class="col-sm-3">
+
+<div class="col-sm-2">
 <div class="form-group"> 
     <input style="height: 15px;" type="text" class="form-control" id="jumlah_produk" name="jumlah_produk" style="width:100px" placeholder="Jumlah " autocomplete="off">
 </div>
 </div>
 
 
-<div class="col-sm-3">
+<div class="col-sm-2">
 <div class="form-group"> 
   <input style="height: 15px;" type="text" class="form-control" id="dosis" name="dosis" placeholder="Isi Dosis" style="width:100px" autocomplete="off">
 </div>
 </div>
 
+-->
+
 <!-- AKHIR YANG DI HIDDEN DI PRODUK -->
 
+<!--
 
 <div class="col-sm-3">
 <button type="submit" accesskey="t" class="btn btn-primary" id="submit_produk"> <i class="fa fa-plus"></i>Tambah (F3) </button>
@@ -323,8 +340,14 @@ if ($status_bayar == 'Lunas' OR $status_bayar == 'Piutang'):?>
 
 
 
+</form> 
 
-</form> <!-- AKHIR FORM PRODUK -->
+
+-->
+
+<!-- AKHIR FORM PRODUK -->
+
+<!--
 <div class="col-sm-12">
 </div>
 
@@ -332,6 +355,8 @@ if ($status_bayar == 'Lunas' OR $status_bayar == 'Piutang'):?>
 
 
 <?php endif;?>
+
+-->
 <!-- AKHIR confirmasi SELESAI -->
 
 <!-- YANG DI HIDDEN DI PRODUK -->
@@ -349,6 +374,7 @@ tr:nth-child(even){background-color: #f2f2f2}
 </style>
 
 <div class="col-sm-12">
+<br>
   <span id="result">
   <div class="table-responsive">
 <table id="table-pelamar" class="table table-sm">
@@ -362,15 +388,7 @@ tr:nth-child(even){background-color: #f2f2f2}
          <th style='background-color: #4CAF50; color: white'>Jumlah</th>
          <th style='background-color: #4CAF50; color: white'>Waktu</th>
 
-         <?php 
-         $sss = $db->query(" SELECT dp.no_reg,dp.kode_barang,dp.nama_barang,dp.dosis,dp.id,dp.jumlah_barang FROM detail_penjualan dp  LEFT JOIN barang b ON dp.kode_barang = b.kode_barang  WHERE dp.no_reg ='$no_reg' AND b.tipe_barang = 'Obat Obatan' 
-          ORDER BY dp.id DESC ");
-         $asa1 = mysqli_num_rows($sss);
-         if($asa1 > 0) {?>
-
-       <?php } else { ?>
-       <th style='background-color: #4CAF50; color: white'>Batal</th>
-       <?php } ?>
+ 
          
     </tr>
     </thead>
@@ -378,16 +396,10 @@ tr:nth-child(even){background-color: #f2f2f2}
     
    <?php 
 
-$ss = $db->query("SELECT dp.no_reg,dp.kode_barang,dp.nama_barang,dp.dosis,dp.id,dp.jumlah_barang FROM detail_penjualan dp  LEFT JOIN barang b ON dp.kode_barang = b.kode_barang  WHERE dp.no_reg ='$no_reg' AND b.tipe_barang = 'Obat Obatan' 
-          ORDER BY dp.id DESC ");
+$ss = $db->query("SELECT dp.no_reg,dp.kode_barang,dp.nama_barang,dp.dosis,dp.id,dp.jumlah_barang,dp.waktu FROM detail_penjualan dp  LEFT JOIN barang b ON dp.kode_barang = b.kode_barang  WHERE dp.no_reg ='$no_reg' AND b.tipe_barang = 'Obat Obatan' ORDER BY dp.id DESC ");
 
-$query5 = $db->query("SELECT dp.no_reg,dp.kode_barang,dp.nama_barang,dp.dosis,dp.id,dp.jumlah_barang FROM tbs_penjualan dp  LEFT JOIN barang b ON dp.kode_barang = b.kode_barang  WHERE dp.no_reg ='$no_reg' AND b.tipe_barang = 'Obat Obatan' 
-          ORDER BY dp.id DESC ");
 
-$asa = mysqli_num_rows($ss);
-if ($asa > 0)
-      {
-        $delete2 = $db->query("DELETE FROM tbs_penjualan WHERE no_reg = '$no_reg' ");
+  $delete2 = $db->query("DELETE FROM tbs_penjualan WHERE no_reg = '$no_reg' ");
    while($data00 = mysqli_fetch_array($ss))
       
       {
@@ -407,12 +419,22 @@ if ($asa > 0)
       <input autofocus='' class='input-dosis' type='hidden' id='input-dosis-". $data00['id']."' data-id='". $data00['id']."' value='".$data00['dosis']."'></td>";
       }
      
-      echo "<td  >". $data00['jumlah_barang']."</td>
+      echo "<td>". $data00['jumlah_barang']."</td>
+      <td>". $data00['waktu']."</td>
           
       </tr>";
       }
 
 
+/*
+
+
+$query5 = $db->query("SELECT dp.no_reg,dp.kode_barang,dp.nama_barang,dp.dosis,dp.id,dp.jumlah_barang FROM tbs_penjualan dp  LEFT JOIN barang b ON dp.kode_barang = b.kode_barang  WHERE dp.no_reg ='$no_reg' AND b.tipe_barang = 'Obat Obatan' 
+          ORDER BY dp.id DESC ");
+
+$asa = mysqli_num_rows($ss);
+if ($asa > 0)
+      {
       }
 
 
@@ -430,25 +452,20 @@ else
       <td>". $data01['nama_barang']."</td>
       <td>". $data01['dosis']."</td>
       <td>". $data01['jumlah_barang']."</td>
-     <td>". $data01['tanggal']." ".$data01['jam']."</td>
-
       <td><button class='btn btn-danger btn-sm batal' data-id='".$data01['id']."' data-reg='". $data01['no_reg']."' data-kode-barang='". $data01['kode_barang']."'><i class='fa fa-remove'></i> Batal </button></td>
 
       </tr>";
       }
 
-
-  
       }
+
+*/
+
     ?>
   </tbody>
  </table>
 </div> <!--  table responsvie -->
 </span>
-
-<h6 style="text-align: left ;"><i><b> * Short Key (F2) untuk mencari Kode Obat Obatan atau Nama Obat Obatan.</b></i></h6>
-
-
 </div>
 </div> <!-- container  -->
 
@@ -467,6 +484,16 @@ else
   });
 </script>
 
+<!-- Script langsung FOCUS jumlah produk  -->                          
+ <script type="text/javascript">
+      $("#kode_produk").focus(function()
+      {
+
+            $("#jumlah_produk").focus();
+        
+      }); 
+</script>
+<!-- Akhir Script FOCUS jumlah produk -->
 
 <!--   script untuk EDIT DOUBLE KLIK -->
 <script type="text/javascript">
@@ -512,36 +539,10 @@ $.post('proses_dosis.php',{id:id,dosis:dosis},function(data){ // INI PROSES POST
 
             $("select").chosen("destroy");
             document.getElementById("kode_produk").value = $(this).attr('data-kode-x');
-             $("#kode_produk").trigger("chosen:updated");
             document.getElementById("nama_produk").value = $(this).attr('nama-barang');
             document.getElementById("limit").value = $(this).attr('limit_stok');
             document.getElementById("tipe_produk").value = $(this).attr('ber-stok');
             document.getElementById("stok").value = $(this).attr('jumlah-barang');
-
-   var no_reg = $("#no_reg").val();
-      var kode = $("#kode_produk").val();
-
-
-$.post("cek_kode_barang_tbs_penjualan.php",{kode_barang:kode,no_reg:no_reg},function(data){
-
-               if(data == 1)
-               {
-                alert("Anda Tidak Bisa Menambahkan Jasa / Tindakan Yang Sudah Ada");
-              $("#kode_produk").val('');
-              $("#kode_produk").trigger('chosen:updated');
-              $("#kode_produk").trigger('chosen:open');
-               $("#nama_produk").val('');
-                
-                }                      
-            });
-
-  $.post('ambil_jumlah_produk.php',{kode_barang:kode}, function(info){
-      if (info == "") {
-        info = 0;
-      }
-      $("#stok").val(info);
-    });
-
 
 $("#jumlah_produk").focus();
    $("select").chosen();
@@ -549,13 +550,14 @@ $("#jumlah_produk").focus();
 });
      
 //            tabel lookup mahasiswa
+  
 </script>
 <!--END AMBIL DATA FORM PRODUK —>
 
 
 <!--script chossen-->
 <script>
-$("select").chosen({no_results_text: "Oops, Tidak Ada !",search_contains:true});
+$("select").chosen({no_results_text: "Oops, Tidak Ada !"});
 </script>
 <!--script end chossen-->
 
@@ -606,7 +608,19 @@ $("select").chosen({no_results_text: "Oops, Tidak Ada !",search_contains:true});
         $("#jumlah_produk").val('');
         $("#jumlah_produk").focus();
       }
-    
+       else if (kode == cek_barang){
+        window.alert("Obat yang anda masukan sudah ada, silahkan pilih obat lain");
+        $("#kode_produk").val('');
+        $("#nama_produk").val('');
+        $("#jumlah_produk").val('');
+        $("#stok").val('');
+        $("#tipe_produk").val('');
+        $("#limit").val('');
+        $("#dosis").val('');
+        $("select").chosen()
+        
+      }
+
       else {
 
           $.post("proses_tambah_obat_rawat_jalan.php",{no_rm:no_rm,dokter:dokter,dosis:dosis,no_reg:no_reg,tipe:tipe,
@@ -614,15 +628,16 @@ $("select").chosen({no_results_text: "Oops, Tidak Ada !",search_contains:true});
           ,petugas:petugas,apoteker:apoteker,perawat:perawat,session_id:session_id},function(data){ 
 
              $("#tbody").prepend(data);
-                $("#kode_produk").val('');
-             $("#kode_produk").trigger("chosen:updated");
-             $("#kode_produk").trigger("chosen:open");
+             $("#nama_produk").chosen("destroy");
+             $("#kode_produk").val('');
              $("#jumlah_produk").val('');
              $("#stok").val('');
-             $("#limit").val('');
-             $("#tipe_produk").val('');
+             $("#potongan").val('');
+             $("#pajak").val('');
              $("#nama_produk").val('');
              $("#dosis").val('');
+             $("#nama_produk").chosen()
+             $("#nama_produk").focus();
           
           });                    
 
@@ -663,66 +678,78 @@ $("select").chosen({no_results_text: "Oops, Tidak Ada !",search_contains:true});
 
    </script>
 
-
-
 <!-- Script Datalist Produk -->
  <script type="text/javascript">
-   $(document).ready(function(){
-
-          $("#kode_produk").change(function(){
-    var kode = $(this).val();
-    var nama = $('#opt-produk-'+kode).attr("nama-barang");
-    var harga_jual = $('#opt-produk-'+kode).attr("harga");
-    var harga_jual2 = $('#opt-produk-'+kode).attr('harga_jual_2');  
-    var harga_jual3 = $('#opt-produk-'+kode).attr('harga_jual_3');
-    var harga_jual4 = $('#opt-produk-'+kode).attr('harga_jual_4');
-    var harga_jual5 = $('#opt-produk-'+kode).attr('harga_jual_5');  
-    var harga_jual6 = $('#opt-produk-'+kode).attr('harga_jual_6');
-    var harga_jual7 = $('#opt-produk-'+kode).attr('harga_jual_7');
-    var jumlah_barang = $('#opt-produk-'+kode).attr("jumlah-barang");
-    var satuan = $('#opt-produk-'+kode).attr("satuan");
-    var kategori = $('#opt-produk-'+kode).attr("kategori");
-    var status = $('#opt-produk-'+kode).attr("status");
-    var suplier = $('#opt-produk-'+kode).attr("suplier");
-    var limit_stok = $('#opt-produk-'+kode).attr("limit_stok");
-    var ber_stok = $('#opt-produk-'+kode).attr("ber-stok");
-    var tipe_barang = $('#opt-produk-'+kode).attr("tipe_barang");
-    var id_barang = $('#opt-produk-'+kode).attr("id-barang");
-     var no_reg = $("#no_reg").val();
+          $("#nama_produk").change(function(){
+               var nama = $("#nama_produk").val();
+               var no_reg = $("#no_reg").val();
 
 
-  $.post('ambil_jumlah_produk.php',{kode_barang:kode}, function(info){
-      if (info == "") {
-        info = 0;
-      }
-      $("#stok").val(info);
-    });
-      
-                    
-                    $("#nama_produk").val(nama);
-                    $("#tipe_produk").val(tipe_barang);
-                   $("#limit").val(limit_stok);         
 
-    
+        if (nama == '')
+          {
 
-$.post("cek_kode_barang_tbs_penjualan.php",{kode_barang:kode,no_reg:no_reg},function(data){
+          $('#kode_produk').val('');
+          $('#stok').val('');
+          $('#tipe_produk').val('');
 
-               if(data == 1)
-               {
-                alert("Anda Tidak Bisa Menambahkan Jasa / Tindakan Yang Sudah Ada");
-              $("#kode_produk").val('');
-              $("#kode_produk").trigger('chosen:updated');
-              $("#kode_produk").trigger('chosen:open');
-               $("#nama_produk").val('');
-                
-                }                      
+          }
+        else
+        {
+            
+            $.post("cek_tbs_rekam_medik_obat.php",{nama:nama,no_reg:no_reg},function(data){
+                      
+                      if (data == 1) {
+                        alert("Barang Yang Anda Masukan Sudah Ada");
+                         $('#kode_produk').val(''); 
+                         $('#nama_produk').val(''); 
+                          $('#nama_produk').focus(); 
+                      }
+                      else
+                      {
+                          $.post('hitung_stok_update.php',{nama:nama},function(data)
+                          { 
+
+                           $('#stok').val(data); 
+
+                         }); 
+                      }
+
+
             });
 
 
-});
-                                                    
-});
+
+      $.getJSON('lihat_produk_stok_opname.php',{nama_produk:$(this).val()}, function(json){
+      
+      if (json == null)
+      {
+        $('#nama_produk').val('');
+        $('#kode_produk').val('');
+        $('#stok').val('');
+        $('#tipe_produk').val('');
+      }
+
+      else 
+      {
+        $('#kode_produk').val(json.kode_barang);
+        $('#tipe_produk').val(json.tipe_barang);
+       $('#limit').val(json.limit_stok);
+
+      }
+                                              
+        });
+  
+
+
+      }
+    });
+
 </script>
+<!-- Akhir Script Datalist Produk -->
+
+
+
 
 
 <!--   script modal confirmasi SELESAI -->
@@ -756,17 +783,7 @@ $("#reg2").val(reg);
         $("#submit_produk").click();
 
     });
-
-
-           shortcut.add("f2", function() {
-        // Do something
-
-        $("#kode_produk").trigger("chosen:open");
-
-    });
 </script>
-
-
 
 
   <?php 
