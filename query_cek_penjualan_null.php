@@ -1,6 +1,5 @@
 <table border="1">
 <tr>
-<td>Tanggal</td>
 <td>No Faktur</td>
 <td>Tax</td> 
 <td>Potongan</td> 
@@ -27,10 +26,7 @@ $total_asli = ($data['total'] + $data['potongan']) - $data['tax'];
 
 	$v_detail = $query_detail->fetch_array();
 $selisih = $total_asli - $v_detail['subtotal'];
-if($selisih != 0){
-	echo "<tr><td>".$data['tanggal']."</td><td>".$data['no_faktur']."</td><td>".$data['tax']."</td><td>".$data['potongan']."</td><td>".$data['total']."</td><td>".$total_asli."</td><td>".$v_detail['subtotal']."</td><td>".$selisih."</td></tr>";
-}
-
+echo "<tr><td>".$data['no_faktur']."</td><td>".$data['tax']."</td><td>".$data['potongan']."</td><td>".$data['total']."</td><td>".$total_asli."</td><td>".$v_detail['subtotal']."</td><td>".$selisih."</td></tr>";
 
 
 }
