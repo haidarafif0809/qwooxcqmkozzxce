@@ -16,20 +16,14 @@ include 'sanitasi.php';
 $dari_tanggal = stringdoang($_GET['dari_tanggal']);
 $sampai_tanggal = stringdoang($_GET['sampai_tanggal']);
 $tanggal = date('Y-m-d');
-$query = $db->query("SELECT no_faktur,total,tanggal,jam,potongan,tax FROM penjualan WHERE tanggal >= '$dari_tanggal'  AND tanggal <= '$sampai_tanggal'	");
+$query = $db->query("SELECT penjualan.no_faktur,penjualan.total,penjualan.tanggal,penjualan.jam,penjualan.potongan,penjualan.tax,SUM(detail_penjualan.subtotal) AS total_detail,(penjualan.total - penjualan.tax + penjualan.potongan) - SUM(detail_penjualan.subtotal) AS selisih,(penjualan.total - penjualan.tax + penjualan.potongan) AS total_asli FROM penjualan LEFT JOIN detail_penjualan ON detail_penjualan.no_faktur = penjualan.no_faktur  WHERE penjualan.tanggal >= '$dari_tanggal'  AND penjualan.tanggal <= '$sampai_tanggal' GROUP BY detail_penjualan.no_faktur HAVING selisih != 0  	");
 
 
 while ($data = $query->fetch_array()) {
 	# code...
-$total_asli = ($data['total'] + $data['potongan']) - $data['tax'];
 
-	$query_detail = $db->query("SELECT SUM(subtotal) AS subtotal FROM detail_penjualan WHERE  no_faktur = '$data[no_faktur]' GROUP BY no_faktur");
+	echo "<tr><td>".$data['tanggal']."</td><td>".$data['no_faktur']."</td><td>".$data['tax']."</td><td>".$data['potongan']."</td><td>".$data['total']."</td><td>".$data['selisih']."</td><td>".$data['total_detail']."</td><td>".$data['selisih']."</td></tr>";
 
-	$v_detail = $query_detail->fetch_array();
-$selisih = $total_asli - $v_detail['subtotal'];
-if($selisih != 0){
-	echo "<tr><td>".$data['tanggal']."</td><td>".$data['no_faktur']."</td><td>".$data['tax']."</td><td>".$data['potongan']."</td><td>".$data['total']."</td><td>".$total_asli."</td><td>".$v_detail['subtotal']."</td><td>".$selisih."</td></tr>";
-}
 
 
 
