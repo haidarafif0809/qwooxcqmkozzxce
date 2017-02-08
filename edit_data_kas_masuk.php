@@ -393,6 +393,7 @@ $(document).ready(function(){
     var jumlah = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#jumlah").val()))));
     var total = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#jumlahtotal").val()))));
    	var tanggal = $("#tanggal1").val();
+    var jam = $("#jam").val();
 
     if (total == '') 
         {
@@ -426,7 +427,7 @@ else {
   $("#jumlahtotal").val(tandaPemisahTitik(subtotal))
 
 
-	$.post("proses_edit_tbs_kas_masuk.php", {no_faktur:no_faktur, keterangan:keterangan,dari_akun:dari_akun,ke_akun:ke_akun,jumlah:jumlah,tanggal:tanggal}, function(info) {
+	$.post("proses_edit_tbs_kas_masuk.php", {no_faktur:no_faktur, keterangan:keterangan,dari_akun:dari_akun,ke_akun:ke_akun,jumlah:jumlah,tanggal:tanggal,jam:jam}, function(info) {
 
 
      $("#result").html(info);

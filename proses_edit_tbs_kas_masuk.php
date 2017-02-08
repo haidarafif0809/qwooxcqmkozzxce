@@ -6,10 +6,10 @@
 
     
    
-        $perintah = $db->prepare("INSERT INTO tbs_kas_masuk (no_faktur,keterangan,dari_akun,ke_akun, jumlah,tanggal,jam,user) VALUES (?,?,?,?,?,now(),now(),?)");
+        $perintah = $db->prepare("INSERT INTO tbs_kas_masuk (no_faktur,keterangan,dari_akun,ke_akun, jumlah,tanggal,jam,user) VALUES (?,?,?,?,?,?,?,?)");
 
-        $perintah->bind_param("ssssis",
-          $no_faktur, $keterangan, $dari_akun, $ke_akun, $jumlah, $user);
+        $perintah->bind_param("ssssisss",
+          $no_faktur, $keterangan, $dari_akun, $ke_akun, $jumlah,$tanggal,$jam, $user);
         
         $no_faktur = stringdoang($_POST['no_faktur']);
         $keterangan = stringdoang($_POST['keterangan']);
@@ -17,6 +17,8 @@
         $ke_akun = stringdoang($_POST['ke_akun']);
         $jumlah = angkadoang($_POST['jumlah']);
         $user = $_SESSION['user_name'];
+        $tanggal = stringdoang($_POST['tanggal']);
+         $jam = stringdoang($_POST['jam']);
 
         $perintah->execute();
         
