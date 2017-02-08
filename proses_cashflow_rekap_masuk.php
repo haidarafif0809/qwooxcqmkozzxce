@@ -59,9 +59,8 @@ while( $row=mysqli_fetch_array($query) ) {
 	$nestedData=array(); 
 
 	$select = $db->query("SELECT da.nama_daftar_akun FROM jurnal_trans js LEFT JOIN daftar_akun da ON js.kode_akun_jurnal = da.kode_daftar_akun WHERE DATE(js.waktu_jurnal) = '$tanggal' 
-		AND js.no_faktur = '$row[no_faktur]'");
+		AND js.no_faktur = '$row[no_faktur]' AND js.kredit != '0'");
 	$out = mysqli_fetch_array($select);
-
 
 	$nestedData[] = $tanggal;
 	$nestedData[] = $out["nama_daftar_akun"];
