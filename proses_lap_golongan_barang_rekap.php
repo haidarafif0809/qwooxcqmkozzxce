@@ -63,11 +63,6 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
   $data[] = $nestedData;
 }
 
-$nestedData = array();
-$nestedData[] = "<b style='color:red' >Total Keseluruhan:</b>";
-$nestedData[] = "<b style='color:red'>". rp($jumlah_jual_awal) ."</b>";
-$nestedData[] = "<b style='color:red'>". rp($jumlah_beli_awal) ."</b>";
-$data[] = $nestedData;
   
 $json_data = array(
       "draw"            => intval( $requestData['draw'] ),   // for every request/draw by clientside , they send a number as a parameter, when they recieve a response/data they first check the draw number, so we are sending same number in draw. 

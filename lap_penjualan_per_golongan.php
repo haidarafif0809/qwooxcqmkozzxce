@@ -56,7 +56,13 @@ tr:nth-child(even){background-color: #f2f2f2}
   </tbody>
  </table>
 </div> <!--  end table responsive  -->
+<h4>
+<td>Total Seluruh </td><br> 
+<td>Total Produk : <span id="total_produk"></span></td><br> 
+<td>Total Nilai &nbsp;&nbsp;&nbsp;  : <span id="total_nilai"></span></td><br> 
+</h4>
 </div>
+
 </span>
 <span id="cetak" style="display: none;">
   <a href='cetak_penjualan_rekap_golongan.php' target="blank" id="cetak_lap" class='btn btn-danger'><i class='fa fa-print'> </i> Cetak Penjualan / Golongan</a>
@@ -98,7 +104,7 @@ tr:nth-child(even){background-color: #f2f2f2}
 
               $.getJSON('ambil_total_seluruh_lab.php',{golongan:golongan,dari_tanggal:dari_tanggal,sampai_tanggal:sampai_tanggal},function(data){
 
-                if (data.total == null) {
+                if (data.total == null) { 
                   data.total = 0;
                 }
 

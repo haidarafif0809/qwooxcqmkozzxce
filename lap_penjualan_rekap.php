@@ -50,6 +50,8 @@ tr:nth-child(even){background-color: #f2f2f2}
 </form>
 
  <br>
+  <div class="card card-block">
+
  <div class="table-responsive"><!--membuat agar ada garis pada tabel disetiap kolom-->
 <span id="result">
 <table id="tableuser" class="table table-bordered">
@@ -75,14 +77,18 @@ tr:nth-child(even){background-color: #f2f2f2}
 	</table>
 </span>
 </div> <!--/ responsive-->
-</div> <!--/ container-->
 
-		<script>
-		
-		$(document).ready(function(){
-		$('#tableuser').DataTable();
-		});
-		</script>
+<h4>
+<td>Total Seluruh </td><br> 
+<td>Total Nilai &nbsp;&nbsp;&nbsp;  : <span id="total_nilai"></span></td><br> 
+</h4>
+
+
+<span id="cetak" style="display: none;">
+ <a href="cetak_lap_penjualan_rekap.php" id="cetak_lap"  class="btn btn-success"><i class="fa fa-print"> </i> Cetak Penjualan </a>
+</span>
+
+</div> <!--/ container-->
 
 		
 		<script type="text/javascript">
@@ -91,15 +97,48 @@ tr:nth-child(even){background-color: #f2f2f2}
 		var dari_tanggal = $("#dari_tanggal").val();
 		var sampai_tanggal = $("#sampai_tanggal").val();
 		
-		
-		$.post("proses_lap_penjualan_rekap.php", {dari_tanggal:dari_tanggal,sampai_tanggal:sampai_tanggal},function(info){
-		
-		$("#result").html(info);
+		  
+		  $('#tableuser').DataTable().destroy();
+
+		  var dataTable = $('#tableuser').DataTable( {
+                "processing": true,
+                "serverSide": true,
+                "info":     true,
+                "language": {
+              "emptyTable":   "My Custom Message On Empty Table"
+          },
+                "ajax":{
+                  url :"proses_lap_penjualan_rekap.php", // json datasource
+                   "data": function ( d ) {
+                      d.dari_tanggal = $("#dari_tanggal").val();
+                      d.sampai_tanggal = $("#sampai_tanggal").val();
+                      // d.custom = $('#myInput').val();
+                      // etc
+                  },
+                      type: "post",  // method  , by default get
+                  error: function(){  // error handling
+                    $(".tbody").html("");
+                    $("#tableuser").append('<tbody class="tbody"><tr><th colspan="3"></th></tr></tbody>');
+                    $("#tableuser_processing").css("display","none");
+                    
+                  }
+                }
+          
+              });
+    
+		  	$.post("cek_total_rekap.php",{dari_tanggal:dari_tanggal,sampai_tanggal:sampai_tanggal},function(data){
+
+		  		$("#total_nilai").html(data);
+
+		  	});
+
+          $("#cetak").show();
+        $("#cetak_lap").attr("href", "cetak_penjualan_rekap.php?dari_tanggal="+dari_tanggal+"&sampai_tanggal="+sampai_tanggal+"");
 		
 		});
 		
 		
-		});      
+	      
 		$("form").submit(function(){
 		
 		return false;
