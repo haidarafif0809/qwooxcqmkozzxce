@@ -705,7 +705,7 @@ $otoritas_tombol = mysqli_fetch_array($pilih_akses_tombol);
                 <thead>
                 <th> Kode Barang </th>
                 <th> Nama Barang </th>
-                <th> Nama Petugas </th>
+                <th> Nama Pelaksana </th>
                 <th> Jumlah Barang </th>
                 <th> Satuan </th>
                 <th align="right"> Harga </th>

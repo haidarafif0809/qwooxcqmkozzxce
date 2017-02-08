@@ -709,7 +709,7 @@ Level 7
                 <thead>
                 <th> Kode  </th>
                 <th> Nama </th>
-                <th> Nama Petugas </th>
+                <th> Nama Pelaksana </th>
                 <th> Jumlah </th>
                 <th> Satuan </th>
                 <th align="right"> Harga </th>

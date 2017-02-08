@@ -6,9 +6,6 @@ include 'db.php';
 $id = angkadoang($_POST['id']);
 $nama = stringdoang($_POST['nama']);
 
-
-
-
 $master_data_lihat = angkadoang(isset($_POST['master_data_lihat']));
 $set_akun_lihat = angkadoang(isset($_POST['set_akun_lihat']));
 $pembayaran_lihat = angkadoang(isset($_POST['pembayaran_lihat']));
@@ -26,7 +23,8 @@ $laporan_laba_rugi_lihat = angkadoang(isset($_POST['laporan_laba_rugi_lihat']));
 $laporan_neraca_lihat = angkadoang(isset($_POST['laporan_neraca_lihat']));
 $registrasi_lihat = angkadoang(isset($_POST['registrasi_lihat']));
 $rekam_medik_lihat = angkadoang(isset($_POST['rekam_medik_lihat']));
-
+$laboratorium_lihat = angkadoang(isset($_POST['laboratorium_lihat']));
+$laporan_laboratorium_lihat = angkadoang(isset($_POST['laporan_laboratorium_lihat']));
 
 // empat pilihan
 $biaya_admin_lihat = angkadoang(isset($_POST['biaya_admin_lihat']));
@@ -307,6 +305,14 @@ $tipe_bhp = angkadoang(isset($_POST['tipe_bhp']));
 $tipe_obat = angkadoang(isset($_POST['tipe_obat']));
 
 
+$update_otoritas_laboratorium = $db->prepare("UPDATE otoritas_laboratorium SET laboratorium_lihat = ? WHERE id_otoritas = ?");
+
+$update_otoritas_laboratorium->bind_param("ii",
+	$laboratorium_lihat, $id);
+
+$update_otoritas_laboratorium->execute();
+
+
 
 $update_otoritas_item_keluar = $db->prepare("UPDATE otoritas_item_keluar SET item_keluar_lihat = ?, item_keluar_tambah = ?, item_keluar_edit = ?, item_keluar_hapus = ? WHERE id_otoritas = ?");
 
@@ -357,10 +363,10 @@ $update_otoritas_kas_mutasi->bind_param("iiiii",
 $update_otoritas_kas_mutasi->execute();
 
 
-$update_otoritas_laporan = $db->prepare("UPDATE otoritas_laporan SET laporan_mutasi_stok_lihat = ?, akuntansi_lihat = ?, laporan_lihat = ?, buku_besar_lihat = ?, laporan_jurnal_lihat = ?, laporan_laba_kotor_lihat = ?, laporan_laba_rugi_lihat = ?, laporan_neraca_lihat = ?, transaksi_jurnal_manual_lihat = ?, transaksi_jurnal_manual_tambah = ?, transaksi_jurnal_manual_edit = ?, transaksi_jurnal_manual_hapus = ?, cash_flow_tanggal_lihat = ?, cash_flow_periode_lihat = ?, laporan_pemasukan_tanggal_lihat = ?, laporan_pemasukan_rekap_lihat = ?, laporan_pemasukan_periode_lihat = ?, laporan_pengeluaran_tanggal_lihat = ?, laporan_pengeluaran_rekap_lihat = ?, laporan_pengeluaran_periode_lihat = ?, laporan_komisi_produk_lihat = ?, laporan_komisi_faktur_lihat = ?, laporan_komisi_lihat = ?, laporan_pembelian_lihat = ?, laporan_hutang_beredar_lihat = ?, laporan_penjualan_lihat = ?, laporan_piutang_beredar_lihat = ?, laporan_retur_pembelian_lihat = ?, laporan_retur_penjualan_lihat = ?, laporan_pembayaran_hutang_lihat = ?, laporan_pembayaran_piutang_lihat = ?, laporan_kunjungan_rj = ?, laporan_kunjungan_ri = ?, laporan_kunjungan_ugd = ? WHERE id_otoritas = ?");
+$update_otoritas_laporan = $db->prepare("UPDATE otoritas_laporan SET laporan_mutasi_stok_lihat = ?, akuntansi_lihat = ?, laporan_lihat = ?, buku_besar_lihat = ?, laporan_jurnal_lihat = ?, laporan_laba_kotor_lihat = ?, laporan_laba_rugi_lihat = ?, laporan_neraca_lihat = ?, transaksi_jurnal_manual_lihat = ?, transaksi_jurnal_manual_tambah = ?, transaksi_jurnal_manual_edit = ?, transaksi_jurnal_manual_hapus = ?, cash_flow_tanggal_lihat = ?, cash_flow_periode_lihat = ?, laporan_pemasukan_tanggal_lihat = ?, laporan_pemasukan_rekap_lihat = ?, laporan_pemasukan_periode_lihat = ?, laporan_pengeluaran_tanggal_lihat = ?, laporan_pengeluaran_rekap_lihat = ?, laporan_pengeluaran_periode_lihat = ?, laporan_komisi_produk_lihat = ?, laporan_komisi_faktur_lihat = ?, laporan_komisi_lihat = ?, laporan_pembelian_lihat = ?, laporan_hutang_beredar_lihat = ?, laporan_penjualan_lihat = ?, laporan_piutang_beredar_lihat = ?, laporan_retur_pembelian_lihat = ?, laporan_retur_penjualan_lihat = ?, laporan_pembayaran_hutang_lihat = ?, laporan_pembayaran_piutang_lihat = ?, laporan_kunjungan_rj = ?, laporan_kunjungan_ri = ?, laporan_kunjungan_ugd = ?, laporan_laboratorium_lihat = ? WHERE id_otoritas = ?");
 
-$update_otoritas_laporan->bind_param("iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii",
-    $laporan_mutasi_stok_lihat, $akuntansi_lihat, $laporan_lihat, $buku_besar_lihat, $laporan_jurnal_lihat, $laporan_laba_kotor_lihat, $laporan_laba_rugi_lihat, $laporan_neraca_lihat, $transaksi_jurnal_manual_lihat, $transaksi_jurnal_manual_tambah, $transaksi_jurnal_manual_edit, $transaksi_jurnal_manual_hapus, $cash_flow_tanggal_lihat, $cash_flow_periode_lihat, $laporan_pemasukan_tanggal_lihat, $laporan_pemasukan_rekap_lihat, $laporan_pemasukan_periode_lihat, $laporan_pengeluaran_tanggal_lihat, $laporan_pengeluaran_rekap_lihat, $laporan_pengeluaran_periode_lihat, $laporan_komisi_produk_lihat, $laporan_komisi_faktur_lihat, $laporan_komisi_lihat, $laporan_pembelian_lihat, $laporan_hutang_beredar_lihat, $laporan_penjualan_lihat, $laporan_piutang_beredar_lihat, $laporan_retur_pembelian_lihat, $laporan_retur_penjualan_lihat, $laporan_pembayaran_hutang_lihat, $laporan_pembayaran_piutang_lihat, $laporan_kunjungan_rj, $laporan_kunjungan_ri, $laporan_kunjungan_ugd, $id);
+$update_otoritas_laporan->bind_param("iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii",
+    $laporan_mutasi_stok_lihat, $akuntansi_lihat, $laporan_lihat, $buku_besar_lihat, $laporan_jurnal_lihat, $laporan_laba_kotor_lihat, $laporan_laba_rugi_lihat, $laporan_neraca_lihat, $transaksi_jurnal_manual_lihat, $transaksi_jurnal_manual_tambah, $transaksi_jurnal_manual_edit, $transaksi_jurnal_manual_hapus, $cash_flow_tanggal_lihat, $cash_flow_periode_lihat, $laporan_pemasukan_tanggal_lihat, $laporan_pemasukan_rekap_lihat, $laporan_pemasukan_periode_lihat, $laporan_pengeluaran_tanggal_lihat, $laporan_pengeluaran_rekap_lihat, $laporan_pengeluaran_periode_lihat, $laporan_komisi_produk_lihat, $laporan_komisi_faktur_lihat, $laporan_komisi_lihat, $laporan_pembelian_lihat, $laporan_hutang_beredar_lihat, $laporan_penjualan_lihat, $laporan_piutang_beredar_lihat, $laporan_retur_pembelian_lihat, $laporan_retur_penjualan_lihat, $laporan_pembayaran_hutang_lihat, $laporan_pembayaran_piutang_lihat, $laporan_kunjungan_rj, $laporan_kunjungan_ri, $laporan_kunjungan_ugd, $laporan_laboratorium_lihat, $id);
 
 $update_otoritas_laporan->execute();
 

@@ -642,7 +642,7 @@ padding-right: 5%;
                               
                               <th> Kode  </th>
                               <th > Nama </th>
-                              <th >Fee Petugas</th>
+                              <th >Nama Pelaksana</th>
                               <th> Jumlah </th>
                               <th> Satuan </th>
                               <th> Dosis </th>
