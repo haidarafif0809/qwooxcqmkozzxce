@@ -1,151 +1,132 @@
-<?php session_start();
-
-
-include 'sanitasi.php';
+<?php include 'session_login.php';
+/* Database connection start */
 include 'db.php';
+include 'sanitasi.php';
 
 $dari_tanggal = stringdoang($_POST['dari_tanggal']);
 $sampai_tanggal = stringdoang($_POST['sampai_tanggal']);
 
-
-//menampilkan seluruh data yang ada pada tabel penjualan
-$perintah = $db->query("SELECT s.nama,dp.no_faktur,dp.kode_barang,dp.nama_barang,dp.jumlah_barang,dp.satuan,dp.harga,dp.subtotal,dp.potongan,dp.tax,dp.hpp,dp.sisa FROM detail_penjualan dp INNER JOIN satuan s ON dp.satuan = s.id WHERE dp.tanggal >= '$dari_tanggal' AND dp.tanggal <= '$sampai_tanggal'");
-
-
-$perintah0 = $db->query("SELECT * FROM detail_penjualan WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal'");
-$data0 = mysqli_fetch_array($perintah0);
-
-
-
-$query01 = $db->query("SELECT SUM(potongan) AS total_potongan FROM detail_penjualan WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal'");
-$cek01 = mysqli_fetch_array($query01);
-$total_potongan = $cek01['total_potongan'];
-
-$query20 = $db->query("SELECT SUM(tax) AS total_tax FROM detail_penjualan WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal'");
-$cek20 = mysqli_fetch_array($query20);
-$total_tax = $cek20['total_tax'];
-
-$query30 = $db->query("SELECT SUM(kredit) AS total_kredit FROM penjualan WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal'");
-$cek30 = mysqli_fetch_array($query30);
-$total_kredit = $cek30['total_kredit'];
-
-$query15 = $db->query("SELECT SUM(subtotal) AS total_subtotal FROM 
-detail_penjualan WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal'");
-$cek15 = mysqli_fetch_array($query15);
-$t_subtotal = $cek15['total_subtotal'];
-
-$query011 = $db->query("SELECT SUM(jumlah_barang) AS total_barang FROM
-detail_penjualan WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal'");
+$query011 = $db->query("SELECT SUM(potongan) AS total_potongan, SUM(tax) AS total_tax, SUM(jumlah_barang) AS total_barang, SUM(subtotal) AS total_subtotal FROM detail_penjualan WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal'");
 $cek011 = mysqli_fetch_array($query011);
-$t_barang = $cek011['total_barang'];
+$total_potongan = $cek011['total_potongan'];
+$total_tax = $cek011['total_tax'];
+$total_barang = $cek011['total_barang'];
+$total_subtotal = $cek011['total_subtotal'];
 
 
- ?>
+// storing  request (ie, get/post) global array to a variable  
+$requestData= $_REQUEST;
 
-<style>
+$columns = array( 
+// datatable column index  => database column name
+	0 =>'no_faktur', 
+	1 => 'kode_barang',
+	2 => 'nama_barang',
+	3 => 'jumlah_barang',
+	4 => 'satuan',
+	5 => 'harga',
+	6 => 'subtotal',
+	7 => 'potongan',
+	8 => 'tax',
+	9 => 'hpp',
+	10 => 'sisa'
+);
 
-tr:nth-child(even){background-color: #f2f2f2}
-
-</style>
-
-
-
-  <table>
-  <tbody>
-
-      <tr><td width="70%">Jumlah Item</td> <td> :&nbsp; </td> <td> <?php echo $t_barang; ?> </td></tr>
-      <tr><td  width="70%">Total Subtotal</td> <td> :&nbsp; Rp. </td> <td> <?php echo rp($t_subtotal); ?> </td>
-      </tr>
-      <tr><td  width="70%">Total Potongan</td> <td> :&nbsp; Rp. </td> <td> <?php echo rp($total_potongan); ?></td></tr>
-      <tr><td width="70%">Total Pajak</td> <td> :&nbsp; Rp. </td> <td> <?php echo persen($total_tax); ?> </td></tr>
-      <tr><td  width="70%">Total Akhir</td> <td> :&nbsp; Rp. </td> <td> <?php echo rp($t_subtotal); ?> </td>
-      </tr>
-      <tr><td  width="70%">Total Kredit</td> <td> :&nbsp; Rp. </td> <td> <?php echo rp($total_kredit); ?></td></tr>
-            
-  </tbody>
-  </table>
-  <br><br>
-
-<div class="card card-block">
-
-<div class="table-responsive">
- <table id="tableuser" class="table table-bordered">
-					<thead>
-					<th style="background-color: #4CAF50; color: white;"> Nomor Faktur </th>
-					<th style="background-color: #4CAF50; color: white;"> Kode Barang </th>
-					<th style="background-color: #4CAF50; color: white;"> Nama Barang </th>
-					<th style="background-color: #4CAF50; color: white;"> Jumlah Barang </th>
-					<th style="background-color: #4CAF50; color: white;"> Satuan </th>
-					<th style="background-color: #4CAF50; color: white;"> Harga </th>
-					<th style="background-color: #4CAF50; color: white;"> Subtotal </th>
-					<th style="background-color: #4CAF50; color: white;"> Potongan </th>
-					<th style="background-color: #4CAF50; color: white;"> Tax </th>
-      <?php 
-             if ($_SESSION['otoritas'] == 'Pimpinan')
-             {
-             
-             
-             echo "<th style='background-color: #4CAF50; color: white;'> Hpp </th>";
-             }
-      ?>
-
-					
-					<th style="background-color: #4CAF50; color: white;"> Sisa Barang </th>
-					
-					
-					</thead>
-					
-					<tbody>
-					<?php
-					
-					//menyimpan data sementara yang ada pada $perintah
-					while ($data1 = mysqli_fetch_array($perintah))
-					{
-					//menampilkan data
-					echo "<tr>
-					<td>". $data1['no_faktur'] ."</td>
-					<td>". $data1['kode_barang'] ."</td>
-					<td>". $data1['nama_barang'] ."</td>
-					<td>". $data1['jumlah_barang'] ."</td>
-					<td>". $data1['nama'] ."</td>
-					<td>". rp($data1['harga']) ."</td>
-					<td>". rp($data1['subtotal']) ."</td>
-					<td>". rp($data1['potongan']) ."</td>
-					<td>". rp($data1['tax']) ."</td>";
-
-        if ($_SESSION['otoritas'] == 'Pimpinan'){
-
-                echo "<td>". rp($data1['hpp']) ."</td>";
-        }
-
-					echo "<td>". $data1['sisa'] ."</td>
-					</tr>";
-					}
-
-					//Untuk Memutuskan Koneksi Ke Database
-					mysqli_close($db);   
-					?>
-					</tbody>
-					
-					</table>
-</div>
-
-<br>
-
-       <a href='cetak_lap_penjualan_detail.php?dari_tanggal=<?php echo $dari_tanggal; ?>&sampai_tanggal=<?php echo $sampai_tanggal; ?>' class='btn btn-success' target='blank' ><i class='fa fa-print'> </i> Cetak Penjualan </a>
-
-</div>
-
-<script>
-// untuk memunculkan data tabel 
-$(document).ready(function(){
-    $('.table').DataTable();
+// getting total number records without any search
+$sql =" SELECT s.nama,dp.no_faktur,dp.kode_barang,dp.nama_barang,dp.jumlah_barang,dp.satuan,dp.harga,dp.subtotal,dp.potongan,dp.tax,dp.hpp,dp.sisa ";
+$sql.=" FROM detail_penjualan dp LEFT JOIN satuan s ON dp.satuan = s.id ";
+$sql.=" WHERE dp.tanggal >= '$dari_tanggal' AND dp.tanggal <= '$sampai_tanggal' ";
+$query=mysqli_query($conn, $sql) or die("eror.php: get employees");
+$totalData = mysqli_num_rows($query);
+$totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
 
-});
-  
-</script>
+$sql =" SELECT s.nama,dp.no_faktur,dp.kode_barang,dp.nama_barang,dp.jumlah_barang,dp.satuan,dp.harga,dp.subtotal,dp.potongan,dp.tax,dp.hpp,dp.sisa ";
+$sql.=" FROM detail_penjualan dp LEFT JOIN satuan s ON dp.satuan = s.id ";
+$sql.=" WHERE dp.tanggal >= '$dari_tanggal' AND dp.tanggal <= '$sampai_tanggal' ";
+if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
 
-<?php 
-include 'footer.php';
- ?>
+
+	$sql.=" AND ( dp.no_faktur LIKE '".$requestData['search']['value']."%' "; 
+	$sql.=" OR dp.kode_barang LIKE '".$requestData['search']['value']."%' ";    
+	$sql.=" OR dp.nama_barang LIKE '".$requestData['search']['value']."%' ";     
+	$sql.=" OR s.nama LIKE '".$requestData['search']['value']."%' )";
+
+}
+$query=mysqli_query($conn, $sql) or die("eror.php2: get employees");
+$totalFiltered = mysqli_num_rows($query); // when there is a search parameter then we have to modify total number filtered rows as per search result. 
+
+
+$sql.= " ORDER BY dp.no_faktur DESC LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
+
+/* $requestData['order'][0]['column'] contains colmun index, $requestData['order'][0]['dir'] contains order such as asc/desc  */	
+$query=mysqli_query($conn, $sql) or die("employee-grid-data.php: get employees");
+
+$data = array();
+while( $row=mysqli_fetch_array($query) ) {  // preparing an array
+	$nestedData=array();      
+	$hpp_keluar = $db->query("SELECT SUM(sisa_barang) AS sisa_barang FROM hpp_keluar WHERE kode_barang = '$row[kode_barang]' AND no_faktur = '$row[no_faktur]'");
+    $cek_awal_keluar = mysqli_fetch_array($hpp_keluar);
+    $nilai_sisa = $cek_awal_keluar['sisa_barang'];
+
+      $nestedData[] = $row['no_faktur'];
+      $nestedData[] = $row['kode_barang'];
+      $nestedData[] = $row['nama_barang'];
+      $nestedData[] = $row['jumlah_barang'];
+
+  if ($row['nama'] != "") {
+      $nestedData[] = $row['nama'];
+   }
+   else{
+   	  $nestedData[] = "-";
+   }
+
+      $nestedData[] = rp($row['harga']);
+      $nestedData[] = rp($row['subtotal']);
+      $nestedData[] = rp($row['potongan']);
+      $nestedData[] = rp($row['tax']);
+
+  if ($_SESSION['otoritas'] == 'Pimpinan' || $_SESSION['otoritas'] == 'Admin'){
+      $nestedData[] = $row['hpp'];
+  }
+
+  if ($nilai_sisa != "") {
+  	$nestedData[] = $nilai_sisa;
+  }
+  else{
+      $nestedData[] = "-";
+  }
+	
+	$data[] = $nestedData;
+}
+
+
+	$nestedData=array();      
+
+
+
+
+      $nestedData[] = "<p style='color:red'> TOTAL </p>";
+      $nestedData[] = "<p style='color:red'> - </p>";
+      $nestedData[] = "<p style='color:red'> - </p>";
+      $nestedData[] = "<p style='color:red'> ".rp($total_barang)." </p>";
+      $nestedData[] = "<p style='color:red'> - </p>";
+      $nestedData[] = "<p style='color:red'> - </p>";
+      $nestedData[] = "<p style='color:red'> ".rp($total_subtotal)." </p>";
+      $nestedData[] = "<p style='color:red'> ".rp($total_potongan)." </p>";
+      $nestedData[] = "<p style='color:red'> ".rp($total_tax)." </p>";
+      $nestedData[] = "<p style='color:red'> - </p>";
+      $nestedData[] = "<p style='color:red'> - </p>";
+	
+	$data[] = $nestedData;
+
+$json_data = array(
+			"draw"            => intval( $requestData['draw'] ),   // for every request/draw by clientside , they send a number as a parameter, when they recieve a response/data they first check the draw number, so we are sending same number in draw. 
+			"recordsTotal"    => intval( $totalData ),  // total number of records
+			"recordsFiltered" => intval( $totalFiltered ), // total number of records after searching, if there is no searching then totalFiltered = totalData
+			"data"            => $data   // total data array
+			);
+
+echo json_encode($json_data);  // send data as json format
+
+?>

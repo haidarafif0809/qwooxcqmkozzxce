@@ -1,139 +1,118 @@
-<?php session_start();
-
-
-include 'sanitasi.php';
+<?php include 'session_login.php';
+/* Database connection start */
 include 'db.php';
+include 'sanitasi.php';
 
 $dari_tanggal = stringdoang($_POST['dari_tanggal']);
 $sampai_tanggal = stringdoang($_POST['sampai_tanggal']);
 
+$perintah11 = $db->query("SELECT * FROM penjualan WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal'");
+$total_row = mysqli_num_rows($perintah11);
 
-//menampilkan seluruh data yang ada pada tabel penjualan
-$perintah = $db->query("SELECT p.no_faktur,kk.nama AS kelas_kamar,c.nama AS nama_cito,u.nama AS petugas_input,o.nama_operasi,ho.no_reg,ho.harga_jual,ho.waktu,ho.id,ho.sub_operasi,ho.operasi FROM hasil_operasi ho INNER JOIN operasi o ON ho.operasi = o.id_operasi INNER JOIN user u ON ho.petugas_input = u.id INNER JOIN sub_operasi so ON ho.sub_operasi = so.id_sub_operasi INNER JOIN cito c ON so.id_cito = c.id INNER JOIN kelas_kamar kk ON so.id_kelas_kamar = kk.id INNER JOIN penjualan p ON ho.no_reg = p.no_reg WHERE DATE(ho.waktu) >= '$dari_tanggal' AND DATE(ho.waktu) <= '$sampai_tanggal' ");
+$perintah210 = $db->query("SELECT SUM(total) AS total_total, SUM(kredit) AS total_kredit FROM penjualan WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal'");
+$data210 = mysqli_fetch_array($perintah210);
 
+$total_total = $data210['total_total'];
+$total_kredit = $data210['total_kredit'];
 
- ?>
-
-<style>
-
-tr:nth-child(even){background-color: #f2f2f2}
-
-</style>
-
-<div id="modal_detail" class="modal fade" role="dialog">
-  <div class="modal-dialog modal-lg">
-
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Detail Operasi</h4>
-      </div>
-
-      <div class="modal-body">
-      <div class="table-responsive">
-      <span id="modal-detail"> </span>
-      </div>
-
-     </div>
-
-      <div class="modal-footer">
-        
-        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-
-  </div>
-</div>
-
-  <br><br>
-
-<div class="card card-block">
- <h3><center>Data Seluruh Operasi Dari Tanggal <?php echo tanggal_terbalik($dari_tanggal) ?> Sampai Tanggal <?php echo tanggal_terbalik($sampai_tanggal) ?></center></h3>
-<div class="table-responsive">
- <table id="tableuser" class="table table-bordered">
-					<thead>
-					<th style="background-color: #4CAF50; color: white;"> No. Faktur </th>
-					<th style="background-color: #4CAF50; color: white;"> No. Reg  </th>
-					<th style="background-color: #4CAF50; color: white;"> Operasi </th>
-					<th style="background-color: #4CAF50; color: white;"> Kelas Kamar </th>
-					<th style="background-color: #4CAF50; color: white;"> Cito </th>
-					<th style="background-color: #4CAF50; color: white;"> Harga Jual </th>
-					<th style="background-color: #4CAF50; color: white;"> Petugas Input </th>
-					<th style="background-color: #4CAF50; color: white;"> Waktu </th>
-					<th style="background-color: #4CAF50; color: white;"> Detail </th>
-					</thead>
-					
-					<tbody>
-					<?php
-					
-					//menyimpan data sementara yang ada pada $perintah
-					while ($data1 = mysqli_fetch_array($perintah))
-					{
-					//menampilkan data
-					echo "<tr>
-					<td>". $data1['no_faktur'] ."</td>
-					<td>". $data1['no_reg'] ."</td>
-					<td>". $data1['nama_operasi'] ."</td>
-					<td>". $data1['kelas_kamar'] ."</td>
-					<td>". $data1['nama_cito'] ."</td>
-					<td>". $data1['harga_jual'] ."</td>
-					<td>". $data1['petugas_input'] ."</td>
-					<td>". $data1['waktu'] ."</td>";
-					echo "<td><button class='btn btn-floating bnt-lg  btn-info detail-lap-ops' data-id='". $data1['id']."'
-					data-sub_operasi='". $data1['sub_operasi']."' data-operasi='". $data1['operasi']." data-no_faktur='". $data1['no_faktur']." data-no_reg='". $data1['no_reg']."'><i class='fa fa-list'></i></button></td>";
-
-					echo"</tr>";
-					}
-
-					//Untuk Memutuskan Koneksi Ke Database
-					mysqli_close($db);   
-					?>
-					</tbody>
-					
-					</table>
-</div>
-
-<br>
-
-       <a href='cetak_lap_operasi.php?dari_tanggal=<?php echo $dari_tanggal; ?>&sampai_tanggal=<?php echo $sampai_tanggal; ?>' class='btn btn-success' target='blank' ><i class='fa fa-print'> </i> Cetak Laporan Operasi </a>
-
-       <a href='export_lap_operasi.php?dari_tanggal=<?php echo $dari_tanggal; ?>&sampai_tanggal=<?php echo $sampai_tanggal; ?>' type='submit' class='btn btn-default'> <i class='fa fa-cloud-download'> </i> Download Excel</a>
-
-</div>
+$total_bayar = $total_total - $total_kredit;
 
 
-		<script type="text/javascript">
-		
-		$(".detail-lap-ops").click(function(){
-		var sub_operasi = $(this).attr('data-sub_operasi');
-		var operasi = $(this).attr('data-operasi');
-		var no_faktur = $(this).attr('data-no_faktur');
-		var no_reg = $(this).attr('data-no_reg');
-
-		
-		$("#modal_detail").modal('show');
-		
-		$.post('proses_lap_detail_operasi.php',{sub_operasi:sub_operasi,operasi:operasi,no_faktur:no_faktur,no_reg:no_reg},function(info) {
-		
-		$("#modal-detail").html(info);
-		
-		
-		});
-		
-		});
-		
-		</script>
+$hitung_harga = $db->query("SELECT SUM(harga_jual) AS total_jual FROM hasil_operasi WHERE DATE(waktu) >= '$dari_tanggal' AND DATE(waktu) <= '$sampai_tanggal' ");
+$jumlah_harga = mysqli_fetch_array($hitung_harga);
+$total_harga = $jumlah_harga['total_jual'];
 
 
-		<script>
-		
-		$(document).ready(function(){
-		$('#tableuser').DataTable();
-		});
-		</script>
+// storing  request (ie, get/post) global array to a variable  
+$requestData= $_REQUEST;
+
+$columns = array( 
+// datatable column index  => database column name
+  0 =>'no_reg', 
+  1 =>'harga_jual', 
+  2 =>'waktu', 
+  3 =>'sub_operasi', 
+  4 =>'operasi', 
+  5 =>'id'
+
+);
+
+// getting total number records without any search
+$sql =" SELECT p.no_faktur,kk.nama AS kelas_kamar,c.nama AS nama_cito,u.nama AS petugas_input,o.nama_operasi,ho.no_reg,ho.harga_jual,ho.waktu,ho.id,ho.sub_operasi,ho.operasi ";
+$sql.=" FROM hasil_operasi ho INNER JOIN operasi o ON ho.operasi = o.id_operasi INNER JOIN user u ON ho.petugas_input = u.id INNER JOIN sub_operasi so ON ho.sub_operasi = so.id_sub_operasi INNER JOIN cito c ON so.id_cito = c.id INNER JOIN kelas_kamar kk ON so.id_kelas_kamar = kk.id INNER JOIN penjualan p ON ho.no_reg = p.no_reg ";
+$sql.=" WHERE DATE(ho.waktu) >= '$dari_tanggal' AND DATE(ho.waktu) <= '$sampai_tanggal' ";
+$query=mysqli_query($conn, $sql) or die("eror.php: get employees");
+$totalData = mysqli_num_rows($query);
+$totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
 
-<?php 
-include 'footer.php';
- ?>
+$sql =" SELECT p.no_faktur,kk.nama AS kelas_kamar,c.nama AS nama_cito,u.nama AS petugas_input,o.nama_operasi,ho.no_reg,ho.harga_jual,ho.waktu,ho.id,ho.sub_operasi,ho.operasi ";
+$sql.=" FROM hasil_operasi ho INNER JOIN operasi o ON ho.operasi = o.id_operasi INNER JOIN user u ON ho.petugas_input = u.id INNER JOIN sub_operasi so ON ho.sub_operasi = so.id_sub_operasi INNER JOIN cito c ON so.id_cito = c.id INNER JOIN kelas_kamar kk ON so.id_kelas_kamar = kk.id INNER JOIN penjualan p ON ho.no_reg = p.no_reg ";
+$sql.=" WHERE DATE(ho.waktu) >= '$dari_tanggal' AND DATE(ho.waktu) <= '$sampai_tanggal' ";
+if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
+
+
+  $sql.=" AND ( p.no_faktur LIKE '".$requestData['search']['value']."%' ";  
+  $sql.=" OR o.nama_operasi LIKE '".$requestData['search']['value']."%' ";  
+  $sql.=" OR ho.no_reg LIKE '".$requestData['search']['value']."%' ";  
+  $sql.=" OR kk.nama LIKE '".$requestData['search']['value']."%' ";  
+  $sql.=" OR c.nama LIKE '".$requestData['search']['value']."%' ) ";  
+
+}
+;
+ // when there is a search parameter then we have to modify total number filtered rows as per search result. 
+
+
+$sql.= " ORDER BY p.no_faktur DESC LIMIT ".$requestData['start']." ,".$requestData['length']." ";
+/* $requestData['order'][0]['column'] contains colmun index, $requestData['order'][0]['dir'] contains order such as asc/desc  */	
+
+$query=mysqli_query($conn, $sql) or die("eror.php2: get employees");
+$totalFiltered = mysqli_num_rows($query);
+
+$data = array();
+while( $row=mysqli_fetch_array($query) ) {  // preparing an array
+	$nestedData=array();      
+
+      $nestedData[] = $row['no_faktur'];
+      $nestedData[] = $row['no_reg'];
+      $nestedData[] = $row['nama_operasi'];
+      $nestedData[] = $row['kelas_kamar'];
+      $nestedData[] = $row['nama_cito'];
+      $nestedData[] = $row['harga_jual'];
+      $nestedData[] = $row['petugas_input'];
+      $nestedData[] = $row['waktu'];
+
+      $nestedData[] = "<button class='btn btn-floating bnt-lg  btn-info detail-lap-ops' data-id='". $row['id']."'
+          data-sub_operasi='". $row['sub_operasi']."' data-operasi='". $row['operasi']." data-no_faktur='". $row['no_faktur']." data-no_reg='". $row['no_reg']."'><i class='fa fa-list'></i></button>";
+
+
+  $data[] = $nestedData;
+}
+
+  $nestedData=array();      
+
+      $nestedData[] = "<p style='color:red'> TOTAL </p>";
+      $nestedData[] = "<p> </p>";
+      $nestedData[] = "<p> </p>";
+      $nestedData[] = "<p> </p>";
+      $nestedData[] = "<p> </p>";
+      $nestedData[] = "<p style='color:red'> ".rp($total_harga)." </p>";
+      $nestedData[] = "<p> </p>";
+      $nestedData[] = "<p> </p>";
+      $nestedData[] = "<p> </p>";
+
+
+  $data[] = $nestedData;
+
+
+
+$json_data = array(
+			"draw"            => intval( $requestData['draw'] ),   // for every request/draw by clientside , they send a number as a parameter, when they recieve a response/data they first check the draw number, so we are sending same number in draw. 
+			"recordsTotal"    => intval( $totalData ),  // total number of records
+			"recordsFiltered" => intval( $totalFiltered ), // total number of records after searching, if there is no searching then totalFiltered = totalData
+			"data"            => $data   // total data array
+			);
+
+echo json_encode($json_data);  // send data as json format
+
+?>
