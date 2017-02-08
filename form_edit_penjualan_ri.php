@@ -679,7 +679,7 @@ Level 7
                 <thead>
                 <th> Kode  </th>
                 <th> Nama </th>
-                <th>Fee Petugas</th>
+                <th>Nama Pelaksana</th>
                 <th> Jumlah </th>
                 <th> Satuan </th>
                 <th> Harga </th>

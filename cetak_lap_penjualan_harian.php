@@ -67,7 +67,7 @@ $total_bayar = $total_total - $total_kredit;
     <br>
 
 
- <table id="tableuser" class="table table-hover">
+ <table id="tableuser" class="table table-bordered table-sm">
             <thead>
                   <th> Tanggal </th>                  
                   <th> Jumlah Transaksi </th>
@@ -108,6 +108,14 @@ $total_bayar = $total_total - $total_kredit;
           </tr>";
           }
 
+    echo "<tr style='color:red'>
+          <td>TOTAL</td>
+          <td>". rp($data11)."</td>
+          <td>". rp($total_total) ."</td>
+          <td>". rp($total_bayar) ."</td>
+          <td>". rp($total_kredit) ."</td>
+          </tr>";
+
                   //Untuk Memutuskan Koneksi Ke Database
                   
                   mysqli_close($db); 
@@ -118,22 +126,10 @@ $total_bayar = $total_total - $total_kredit;
             </tbody>
 
       </table>
-      <hr>
-</div>
-</div>
-<br>
 
-<div class="container">
- <table>
-  <tbody>
-
-      <tr>
-      <td><b><i>TOTAL : </b></i> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <?php echo $data11; ?> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo rp($total_total); ?> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <?php echo rp($total_bayar); ?> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <?php echo rp($total_kredit); ?> </td>
-      </tr>
-                 
-  </tbody>
-  </table>
 </div>
+</div>
+
 
  <script>
 $(document).ready(function(){

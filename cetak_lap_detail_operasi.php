@@ -54,7 +54,7 @@ $jumlah_item = mysqli_num_rows($hitung_item);
     <br>
 
 
- <table id="tableuser" class="table table-bordered">
+ <table id="tableuser" class="table table-bordered table-sm">
             <thead>
                   <th> No. Faktur </th>                  
                   <th> No. Reg </th>    
@@ -96,20 +96,19 @@ $jumlah_item = mysqli_num_rows($hitung_item);
       <hr>
 </div>
 </div>
-<br>
 
 <div class="row">
   <div class="col-sm-7">
 </div>
 
     <div class="col-sm-2">
-    <h4><b>Total Keseluruhan :</b></h4>
+    <h5>Total Kesluruhan :</h5>
     </div>
 
 
    <div class="col-sm-3">
 
-      <P><b>Jumlah Item : <?php echo $jumlah_item; ?></b></P>
+      <p>Jumlah Item : <?php echo $jumlah_item; ?></p>
 
   </div>
 </div>

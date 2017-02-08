@@ -24,7 +24,7 @@ tr:nth-child(even){background-color: #f2f2f2}
 </style>
  <h3><center>Data Seluruh Operasi Dari Tanggal <?php echo tanggal_terbalik($dari_tanggal) ?> Sampai Tanggal <?php echo tanggal_terbalik($sampai_tanggal) ?></center></h3>
 
- <table id="tableuser" class="table">
+ <table id="tableuser" class="table table-bordered table-sm">
 					<thead>
 					<th style='background-color: #4CAF50; color:white'> No. Faktur </th>
 					<th style='background-color: #4CAF50; color:white'> No. Reg  </th>

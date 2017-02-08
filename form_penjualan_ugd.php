@@ -594,7 +594,7 @@ $obat = $otoritas_produk['tipe_obat'];
                               
                               <th> Kode  </th>
                               <th> Nama </th>
-                              <th> Nama Petugas </th>
+                              <th> Nama Pelaksana </th>
                               <th> Jumlah </th>
                               <th> Satuan </th>
                               <th> Dosis </th>

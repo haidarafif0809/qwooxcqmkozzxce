@@ -17,7 +17,7 @@ tr:nth-child(even){background-color: #f2f2f2}
 </style>
 <div class="container">				
 <div class="table-responsive"> 
-<table id="table" class="table table-bordered">
+<table id="table" class="table table-bordered table-sm">
 	<thead>
 
 	<th style="background-color: #4CAF50; color: white;"> No. Faktur </th>

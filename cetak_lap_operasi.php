@@ -17,7 +17,6 @@ $perintah = $db->query("SELECT pl.nama_pelanggan AS nama_pasien, p.no_faktur,kk.
 $hitung_item = $db->query("SELECT * FROM hasil_operasi WHERE DATE(waktu) >= '$dari_tanggal' AND DATE(waktu) <= '$sampai_tanggal' ");
 $jumlah_item = mysqli_num_rows($hitung_item);
 
-
 $hitung_harga = $db->query("SELECT SUM(harga_jual) AS total_jual FROM hasil_operasi WHERE DATE(waktu) >= '$dari_tanggal' AND DATE(waktu) <= '$sampai_tanggal' ");
 $jumlah_harga = mysqli_fetch_array($hitung_harga);
  ?>
@@ -58,7 +57,7 @@ $jumlah_harga = mysqli_fetch_array($hitung_harga);
     <br>
 
 
- <table id="tableuser" class="table table-bordered">
+ <table id="tableuser" class="table table-bordered table-sm">
             <thead>
                   <th> No. Faktur </th>                  
                   <th> No. Reg </th>                  
@@ -106,31 +105,27 @@ $jumlah_harga = mysqli_fetch_array($hitung_harga);
       <hr>
 </div>
 </div>
-<br>
 
-<div class="col-sm-7">
+<div class="col-sm-6">
 </div>
-
 
 <div class="col-sm-2">
-<h4><b>Total Keseluruhan :</b></h4>
+<h5>Total Kesluruhan :</h5>
 </div>
 
 
-<div class="col-sm-3">
+<div class="col-sm-">
         
  <table>
   <tbody>
 
-      <tr><td width="70%">Jumlah Item</td> <td> :&nbsp; </td> <td> <?php echo $jumlah_item; ?> </td></tr>
-      <tr><td  width="70%">Total Harga Jual</td> <td> :&nbsp; </td> <td> <?php echo rp($jumlah_harga['total_jual']); ?> </td>
-      </tr>
+      <tr><td width="75%">Jumlah Item</td> <td> :&nbsp; </td> <td> <?php echo $jumlah_item; ?> </td></tr>
+      <tr><td  width="75%">Total Harga Jual</td> <td> :&nbsp; </td> <td> <?php echo rp($jumlah_harga['total_jual']); ?> </td></tr>
 
   </tbody>
-  </table>
+</table>
 
-
-     </div>
+  </div>
 
  <script>
 $(document).ready(function(){
