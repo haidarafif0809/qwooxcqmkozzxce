@@ -10,7 +10,7 @@
     $nama = $_GET['nama'];
     $id = $_GET['id'];
 
-    $otoritas_akses = $db->query("SELECT * FROM hak_otoritas ho LEFT JOIN otoritas_penjualan open ON ho.id = open.id_otoritas LEFT JOIN otoritas_pembelian opem ON ho.id = opem.id_otoritas LEFT JOIN otoritas_master_data omd ON ho.id = omd.id_otoritas LEFT JOIN otoritas_pembayaran opemb ON ho.id = opemb.id_otoritas LEFT JOIN otoritas_transaksi_kas otk ON ho.id = otk.id_otoritas LEFT JOIN otoritas_kas_keluar okk ON ho.id = okk.id_otoritas LEFT JOIN otoritas_kas_masuk okm ON ho.id = okm.id_otoritas LEFT JOIN otoritas_kas_mutasi okmut ON ho.id = okmut.id_otoritas LEFT JOIN otoritas_persediaan operse ON ho.id = operse.id_otoritas LEFT JOIN otoritas_stok_opname oso ON ho.id = oso.id_otoritas LEFT JOIN otoritas_stok_awal osa ON ho.id = osa.id_otoritas LEFT JOIN otoritas_item_masuk oim ON ho.id = oim.id_otoritas LEFT JOIN otoritas_item_keluar oik ON ho.id = oik.id_otoritas LEFT JOIN otoritas_kas ok ON ho.id = ok.id_otoritas LEFT JOIN otoritas_laporan ol ON ho.id = ol.id_otoritas LEFT JOIN otoritas_registrasi oreg ON ho.id = oreg.id_otoritas LEFT JOIN otoritas_rekam_medik orm ON ho.id = orm.id_otoritas LEFT JOIN otoritas_setting os ON ho.id = os.id_otoritas LEFT JOIN otoritas_tipe_produk otp ON ho.id = otp.id_otoritas  WHERE ho.id = '$id'");
+    $otoritas_akses = $db->query("SELECT * FROM hak_otoritas ho LEFT JOIN otoritas_penjualan open ON ho.id = open.id_otoritas LEFT JOIN otoritas_pembelian opem ON ho.id = opem.id_otoritas LEFT JOIN otoritas_master_data omd ON ho.id = omd.id_otoritas LEFT JOIN otoritas_pembayaran opemb ON ho.id = opemb.id_otoritas LEFT JOIN otoritas_transaksi_kas otk ON ho.id = otk.id_otoritas LEFT JOIN otoritas_kas_keluar okk ON ho.id = okk.id_otoritas LEFT JOIN otoritas_kas_masuk okm ON ho.id = okm.id_otoritas LEFT JOIN otoritas_kas_mutasi okmut ON ho.id = okmut.id_otoritas LEFT JOIN otoritas_persediaan operse ON ho.id = operse.id_otoritas LEFT JOIN otoritas_stok_opname oso ON ho.id = oso.id_otoritas LEFT JOIN otoritas_stok_awal osa ON ho.id = osa.id_otoritas LEFT JOIN otoritas_item_masuk oim ON ho.id = oim.id_otoritas LEFT JOIN otoritas_item_keluar oik ON ho.id = oik.id_otoritas LEFT JOIN otoritas_kas ok ON ho.id = ok.id_otoritas LEFT JOIN otoritas_laporan ol ON ho.id = ol.id_otoritas LEFT JOIN otoritas_registrasi oreg ON ho.id = oreg.id_otoritas LEFT JOIN otoritas_rekam_medik orm ON ho.id = orm.id_otoritas LEFT JOIN otoritas_setting os ON ho.id = os.id_otoritas LEFT JOIN otoritas_tipe_produk otp ON ho.id = otp.id_otoritas LEFT JOIN otoritas_laboratorium olab ON ho.id = olab.id_otoritas WHERE ho.id = '$id'");
     $data_otoritas = mysqli_fetch_array($otoritas_akses);
 
 
@@ -277,6 +277,25 @@ else{
 </div> <!-- / of otoritas menu setting -->
 
 
+<div class="form-group col-sm-2"> <!-- / of otoritas menu laboratorium -->
+<label>Menu Laboratorium</label><br>
+
+<?php 
+
+if ($data_otoritas['laboratorium_lihat'] == '1'){
+    echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="checkbox25999" name="laboratorium_lihat" checked=""> 
+    <label for="checkbox25999">Lihat</label> <br>';
+}
+
+else{
+    echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="checkbox25999" name="laboratorium_lihat">
+    <label for="checkbox25999">Lihat</label> <br>';  
+}
+
+ ?>
+
+</div> <!-- / of otoritas menu laboratorium -->
+
 <div class="form-group col-sm-2"> <!-- / of otoritas setting registrasi-->
 <label>Setting Registrasi</label><br>
 
@@ -486,6 +505,25 @@ else{
 
 </div> <!-- / of otoritas laporan_neraca -->
 
+<div class="form-group col-sm-2"> <!-- start otoritas laporan laboratorium -->
+<label>Laporan Laboratorium</label><br>
+
+<?php 
+
+if ($data_otoritas['laporan_laboratorium_lihat'] == '1'){
+    echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="checkbox15477" name="laporan_laboratorium_lihat" checked="">
+    <label for="checkbox15477">Lihat</label> <br>';
+}
+
+else{
+    echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="checkbox15477" name="laporan_laboratorium_lihat">
+    <label for="checkbox15477">Lihat</label> <br>';  
+}
+
+ ?>
+
+</div> <!-- / of otoritas laporan laboratorium -->
+
 <div class="form-group col-sm-2"> <!-- start otoritas aporan kunjungan rj -->
 <label>Laporan Kunjungan R. Jalan</label><br>
 
@@ -504,6 +542,10 @@ else{
  ?>
 
 </div> <!-- / of otoritas aporan kunjungan rj -->
+
+
+
+
 
 <div class="form-group col-sm-2"> <!-- start otoritas aporan kunjungan ri -->
 <label>Laporan Kunjungan R. Inap</label><br>
@@ -542,6 +584,8 @@ else{
  ?>
 
 </div> <!-- / of otoritas laporan kunjungan UGD -->
+
+
 
 
 <div class="form-group col-sm-12">

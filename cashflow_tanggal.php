@@ -331,9 +331,18 @@ include 'sanitasi.php';
 
 </span>
 
+<input style="height:15px" type="hidden" class="form-control" id="data_kas" name="data_kas" readonly=""> 
+<input style="height:15px" type="hidden" class="form-control" id="data_tanggal" name="data_tanggal" readonly=""> 
 
+<span id="show_cetak_rekap" style="display: none;">
+<a href='cetak_rekap_tanggal.php' id="cetak_rekap" class="btn btn-primary" target="blank"> <i class="fa fa-print"> </i></a>
+<a href='download_rekap_tanggal.php' id="download_rekap" class="btn btn-success" target="blank"> <i class="fa fa-download"> </i></a>
+</span>
 
-
+<span id="show_cetak_detail" style="display: none;">
+<a href='cetak_detail_tanggal.php' id="cetak_detail" class="btn btn-primary" target="blank"> <i class="fa fa-print"> </i></a>
+<a href='download_detail_tanggal.php' id="download_rekap" class="btn btn-success" target="blank"> <i class="fa fa-download"> </i></a>
+</span>
 
 </div><!--close container-->
 
@@ -528,6 +537,8 @@ $("#show_table_detail").show();
 var kas_rekap = $("#kas_rekap").val();
 var tanggal_rekap = $("#tanggal_rekap").val();
 
+$("#data_kas").val(kas_rekap);
+$("#data_tanggal").val(tanggal_rekap);
 
 $.getJSON('proses_cashflow_tanggal_rekap.php',{kas_rekap:kas_rekap,tanggal_rekap:tanggal_rekap},function(json){
 
@@ -540,7 +551,7 @@ $.getJSON('proses_cashflow_tanggal_rekap.php',{kas_rekap:kas_rekap,tanggal_rekap
     $("#hasil_mutasi").html(tandaPemisahTitik(json.kabupaten));
     $("#hasil_mutasi_masuk").html(tandaPemisahTitik(json.petugas_lain));
 
-                $("#show_total").show();
+    $("#show_total").show();
 
   });
 
