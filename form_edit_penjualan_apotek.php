@@ -574,7 +574,7 @@ $level_harga = $data_level['harga'];
                 <thead>
                 <th> Kode  </th>
                 <th> Nama </th>
-                <th> Nama Petugas</th>
+                <th> Nama Pelaksana</th>
                 <th> Jumlah </th>
                 <th> Satuan </th>
                 <th> Harga </th>

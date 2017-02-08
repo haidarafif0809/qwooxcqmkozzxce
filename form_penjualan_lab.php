@@ -517,7 +517,7 @@ Level 7
                 <thead>
                 <th> Kode  </th>
                 <th> Nama </th>
-                <th> Nama Petugas</th>
+                <th> Nama Pelaksana</th>
                 <th style="text-align: right" > Jumlah </th>
                 <th style="text-align: right" > Harga </th>
                 <th style="text-align: right" > Subtotal </th>
