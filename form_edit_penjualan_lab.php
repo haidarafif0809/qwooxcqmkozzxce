@@ -150,10 +150,8 @@ $data_rj_ri = mysqli_fetch_array($sum_rj_ri);
     <div class="form-group col-xs-2">
        <label for="penjamin">Petugas Analis</label><br>
          <select type="text" class="form-control chosen" id="apoteker" autocomplete="off">
-        
-
          <?php 
-         $query09 = $db->query("SELECT nama,id FROM user WHERE tipe = '2' ");
+         $query09 = $db->query("SELECT nama,id FROM user WHERE tipe = '6' ");
          while ( $data09 = mysqli_fetch_array($query09)) {
          
 

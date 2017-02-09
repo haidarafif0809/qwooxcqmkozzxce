@@ -30,6 +30,8 @@ tr:nth-child(even){background-color: #f2f2f2}
 			<th style='background-color: #4CAF50; color: white'>Nama Dokter</th>
 			<th style='background-color: #4CAF50; color: white'>Nama Petugas Paramedik</th>
 			<th style='background-color: #4CAF50; color: white'>Nama Petugas Farmasi</th>
+			<th style='background-color: #4CAF50; color: white'>Nama Petugas Analis</th>
+
 			
 		</thead>
 		
@@ -99,6 +101,26 @@ tr:nth-child(even){background-color: #f2f2f2}
 			
 			echo  '</select>
 			</td>';
+
+
+			echo "<td class='edit-analis' data-id='".$data['id']."'><span id='text-analis-".$data['id']."'>".$data['nama_analis']."</span><select style='display:none' id='select-analis-".$data['id']."' value='".$data['nama_analis']."' class='select-analis' data-id='".$data['id']."' autofocus=''>";
+
+			echo '<option>'. $data['nama_analis'] .'</option>';
+			echo '<option>-</option>';
+			
+			
+			$query2 = $db->query("SELECT nama FROM user WHERE tipe = '6'");
+
+			while($data2 = mysqli_fetch_array($query2))
+			{
+			
+			echo ' <option>'.$data2["nama"] .'</option>';
+			}
+			
+			
+			echo  '</select>
+			</td>';
+
 
 
 			echo "</tr>";
@@ -315,6 +337,36 @@ tr:nth-child(even){background-color: #f2f2f2}
 
  </script>
 
+
+
+ <script type="text/javascript">
+ 	$(".edit-analis").dblclick(function(){
+
+        var id = $(this).attr("data-id");
+
+        $("#text-analis-"+id+"").hide();
+        $("#select-analis-"+id+"").show();
+
+    });
+
+    $(".select-analis").blur(function(){
+
+        var id = $(this).attr("data-id");
+
+        var select_analis = $(this).val();
+
+
+        $.post("update_penetapan_petugas.php",{id:id, select_analis:select_analis,jenis_select:"nama_analis"},function(data){
+
+        $("#text-analis-"+id+"").show();
+        $("#text-analis-"+id+"").text(select_analis);
+
+        $("#select-analis-"+id+"").hide();           
+
+        });
+     });
+
+ </script>
   <?php 
   include 'footer.php';
    ?>

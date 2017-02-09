@@ -149,6 +149,7 @@ $ambil_otoritas = $db->query("SELECT * FROM hak_otoritas");
 					<option value="2" >Paramedik</option>
 					<option value="3">Farmasi</option>
 					<option value="5">Lain - Lain</option>
+						<option value="6">Analis</option>
 					</select>
 					</div>
 

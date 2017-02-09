@@ -134,7 +134,7 @@ $data_rj_ri = mysqli_fetch_array($sum_rj_ri);
     <label> No. RM / Pasien </label><br>
   <input  name="kode_pelanggan" type="hidden" style="height:15px;" id="kd_pelanggan" class="form-control" required="" autofocus="" value="<?php echo $pasien_rm; ?>" >
   <input  name="nama_pelanggan" type="text" style="height:15px;" id="nama_pelanggan" class="form-control" required="" autofocus="" value="<?php echo $nama; ?>" >
-  <input  name="kode_pelanggan1" type="text" style="height:15px;" id="kd_pelanggan1" class="form-control" required="" autofocus="" value="<?php echo $pasien; ?>" >
+  <input  name="kode_pelanggan1" type="hidden" style="height:15px;" id="kd_pelanggan1" class="form-control" required="" autofocus="" value="<?php echo $pasien; ?>" >
 </div>
 
 <input  name="" type="hidden" style="height:15px;" id="rujukan" class="form-control" required="" autofocus="" value="<?php echo $rujukan; ?>" >
@@ -172,7 +172,7 @@ $data_rj_ri = mysqli_fetch_array($sum_rj_ri);
          <select type="text" class="form-control chosen" id="apoteker" autocomplete="off">        
 
          <?php 
-         $query09 = $db->query("SELECT nama,id FROM user WHERE tipe = '2' ");
+         $query09 = $db->query("SELECT nama,id FROM user WHERE tipe = '6' ");
          while ( $data09 = mysqli_fetch_array($query09)) {
 
 

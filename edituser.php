@@ -112,6 +112,9 @@ mysqli_close($db);
 					<?php elseif ($data['tipe'] == '5'): ?>
 					<option value="<?php echo $data['tipe']; ?>">Lain - lain</option>
 						
+					<?php elseif ($data['tipe'] == '6'): ?>
+					<option value="<?php echo $data['tipe']; ?>">Analis</option>
+					
 					<?php endif ?>
 					
 					<option value="4">Admin</option>
@@ -119,6 +122,7 @@ mysqli_close($db);
 					<option value="2" >Paramedik</option>
 					<option value="3">Farmasi</option>
 					<option value="5">Lain - lain</option>
+					<option value="6">Analis</option>
 					</select>
 					</div>
 

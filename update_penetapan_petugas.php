@@ -7,6 +7,8 @@
     $nama_dokter = stringdoang($_POST['select_dokter']);
     $nama_paramedik = stringdoang($_POST['select_paramedik']);
     $nama_farmasi = stringdoang($_POST['select_farmasi']);
+    $nama_analis = stringdoang($_POST['select_analis']);
+
     $jenis_select = stringdoang($_POST['jenis_select']);
 
 // UPDATE NAMA DOKTER
@@ -63,6 +65,29 @@ if ($jenis_select == 'nama_farmasi') {
 
        $query->bind_param("si",
         $nama_farmasi, $id);
+
+
+        $query->execute();
+
+if (!$query) 
+{
+ die('Query Error : '.$db->errno.
+ ' - '.$db->error);
+}
+else 
+{
+
+}
+
+}
+
+// UPDATE NAMA FARMASI
+if ($jenis_select == 'nama_analis') {
+
+       $query =$db->prepare("UPDATE penetapan_petugas SET nama_analis = ?  WHERE id = ?");
+
+       $query->bind_param("si",
+        $nama_analis, $id);
 
 
         $query->execute();
