@@ -1708,7 +1708,7 @@ if (jumlah_barang == ''){
 
       alert("Harga barang ini Rp.0");
       $("#kode_barang").val('');
-      $("#kode_barang").trigger('chosen:updated').trigger('chosen:open');
+          
       $("#jumlah_barang").val('');
 
     }

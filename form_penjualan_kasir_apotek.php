@@ -1207,6 +1207,9 @@ $(document).ready(function(){
 
     var jumlah_barang = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#jumlah_barang").val()))));
     var harga = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#harga_produk").val()))));
+    if (harga == '') {
+      harga = 0;
+    }
     var potongan = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#potongan1").val()))));
 
     if (potongan == '') {
@@ -1232,6 +1235,9 @@ $(document).ready(function(){
     var stok = parseInt(jumlahbarang,10) - parseInt(jumlah_barang,10);
 
     var hargaa = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#harga_penjamin").val()))));
+    if (hargaa == '') {
+      hargaa = 0;
+    }
 
     var subtotal = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#total2").val()))));
 
@@ -1355,7 +1361,13 @@ alert("Barang yang anda masukan sudah ada, silahkan pilih barang lain");
 $("#kode_barang").val('');
       $("#kode_barang").trigger('chosen:open');
 }
+else if (harga == 0) {
+      alert("Harga barang ini Rp.0");
+      $("#kode_barang").val('');
+$("#kode_barang").trigger('chosen:updated').trigger('chosen:open');
+      $("#jumlah_barang").val('');
 
+    }
 
   else if (ber_stok == 'Jasa')
   {
@@ -3183,14 +3195,14 @@ var pot_fakt_rp = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#po
 <script type="text/javascript">
 $(document).ready(function(){
   //end cek level harga
-  $("#level_harga").change(function(){
+    $(document).on('change','#level_harga',function(){
   
   var level_harga = $("#level_harga").val();
   var kode_barang = $("#kode_barang").val();
   var kode_barang = kode_barang.substr(0, kode_barang.indexOf('('));
 
 
-$.post("cek_level_harga_apotek.php", {level_harga:level_harga,kode_barang:kode_barang},function(data){
+$.post("cek_level_harga_apotek.php",{level_harga:level_harga,kode_barang:kode_barang},function(data){
 
           $("#harga_produk").val(data);
           $("#harga_baru").val(data);
