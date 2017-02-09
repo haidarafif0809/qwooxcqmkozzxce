@@ -4610,66 +4610,73 @@ else{
       total_lab = 0;
     }
 
-    $.post("cek_total_seluruh_raja.php",{no_reg:no_reg},function(data1){
-  
-        if (data1 == 1) {
-                 $.post("cek_total_seluruh.php",{no_reg:no_reg},function(data){
-                data = data.replace(/\s+/g, '');
+if (no_reg == "") {
+
+    }
+    else{
+
+          $.post("cek_total_seluruh_raja.php",{no_reg:no_reg},function(data1){
+        
+              if (data1 == 1) {
+                       $.post("cek_total_seluruh.php",{no_reg:no_reg},function(data){
+                      data = data.replace(/\s+/g, '');
+                      if (data == "") {
+                          data = 0;
+                        }
+
+                      var sum = parseInt(data,10) + parseInt(total_lab,10);
+
+                        $("#total2").val(tandaPemisahTitik(sum))
+
+            if (pot_fakt_per == '0%') {
+               
+                var potongann = pot_fakt_rp;
+                var potongaaan = parseInt(potongann,10) / parseInt(data,10) * 100;
                 if (data == "") {
                     data = 0;
-                  }
-
-                var sum = parseInt(data,10) + parseInt(total_lab,10);
-
-                  $("#total2").val(tandaPemisahTitik(sum))
-
-      if (pot_fakt_per == '0%') {
-         
-          var potongann = pot_fakt_rp;
-          var potongaaan = parseInt(potongann,10) / parseInt(data,10) * 100;
-          if (data == "") {
-              data = 0;
-              $("#potongan_persen").val(Math.round('0'));
-          }
-          else{
-            $("#potongan_persen").val(Math.round(potongaaan));
-          }
-    
-              
-              
-
-
-      var total = parseInt(data,10) - parseInt(pot_fakt_rp,10) + parseInt(total_lab,10);
-                  $("#total1").val(tandaPemisahTitik(total))
-
-            }
-            else if(pot_fakt_rp == 0)
-            {
-               if (data == "") {
-                    data = 0;
+                    $("#potongan_persen").val(Math.round('0'));
                 }
-
-                  var potongaaan = pot_fakt_per;
-                  var pos = potongaaan.search("%");
-                  var potongan_persen = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah(potongaaan))));
-                  potongan_persen = potongan_persen.replace("%","");
-                  potongaaan = data * potongan_persen / 100;
-                  $("#potongan_penjualan").val(Math.round(potongaaan));
-                  $("#potongan1").val(potongaaan);
+                else{
+                  $("#potongan_persen").val(Math.round(potongaaan));
+                }
+          
+                    
+                    
 
 
-      var total = parseInt(data,10) - parseInt(potongaaan,10) + parseInt(total_lab,10);
-                  $("#total1").val(tandaPemisahTitik(total))
-            }
-      
+            var total = parseInt(data,10) - parseInt(pot_fakt_rp,10) + parseInt(total_lab,10);
+                        $("#total1").val(tandaPemisahTitik(total))
 
-                });
-        }
+                  }
+                  else if(pot_fakt_rp == 0)
+                  {
+                     if (data == "") {
+                          data = 0;
+                      }
+
+                        var potongaaan = pot_fakt_per;
+                        var pos = potongaaan.search("%");
+                        var potongan_persen = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah(potongaaan))));
+                        potongan_persen = potongan_persen.replace("%","");
+                        potongaaan = data * potongan_persen / 100;
+                        $("#potongan_penjualan").val(Math.round(potongaaan));
+                        $("#potongan1").val(potongaaan);
 
 
-      });
+            var total = parseInt(data,10) - parseInt(potongaaan,10) + parseInt(total_lab,10);
+                        $("#total1").val(tandaPemisahTitik(total))
+                  }
+            
 
-    // END CEK TOTAL END CEK TOTAL END CEK TOTAL END CEK TOTAL END CEK TOTAL END CEK TOTAL END CEK TOTAL END CEK TOTAL END CEK TOTAL END CEK TOTAL
+                      });
+              }
+
+
+            });
+
+          // END CEK TOTAL END CEK TOTAL END CEK TOTAL END CEK TOTAL END CEK TOTAL END CEK TOTAL END CEK TOTAL END CEK TOTAL END CEK TOTAL END CEK TOTAL
+
+}
 
 // CEK JATUH TEMPO
 var penjamin = $("#penjamin").val();
