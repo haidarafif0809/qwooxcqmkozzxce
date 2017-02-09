@@ -1217,6 +1217,8 @@ $(function() {
     });
 });
 </script>
+
+
 <!-- AUTOCOMPLETE --> 
 
 <script type="text/javascript">
@@ -1256,7 +1258,6 @@ $(function() {
 
   document.getElementById("kode_barang").value = $(this).attr('data-kode');
   $("#kode_barang").trigger('chosen:updated');
-
   document.getElementById("nama_barang").value = $(this).attr('nama-barang');
   document.getElementById("limit_stok").value = $(this).attr('limit_stok');
   document.getElementById("satuan_produk").value = $(this).attr('satuan');
@@ -1422,7 +1423,6 @@ $(document).ready(function(){
 <script>
 $(document).ready(function(){
     $("#satuan_konversi").change(function(){
-
       var prev = $("#satuan_produk").val();
       var harga_lama = $("#harga_lama").val();
       var satuan_konversi = $("#satuan_konversi").val();
@@ -1466,8 +1466,7 @@ $(document).ready(function(){
 
 
 
-          <script type="text/javascript">
-
+<script type="text/javascript">
     $("#kd_pelanggan").change(function(){
       var kode_pelanggan = $("#kd_pelanggan").val();
 
@@ -1475,9 +1474,8 @@ $(document).ready(function(){
 
     $("#level_harga").val(level_harga);
 
-      });
-          
-        </script>
+      });     
+</script>
 
 
 
