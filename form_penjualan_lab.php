@@ -53,6 +53,11 @@ $select_level = $db->query("SELECT harga FROM penjamin WHERE nama = '$data_penja
 $data_level = mysqli_fetch_array($select_level);
 $level_harga = $data_level['harga'];
 
+if ($level_harga == '') {
+  $level_harga = 'harga_1';
+}
+
+
 
 $select_penjualan = $db->query("SELECT status,p.no_faktur,p.nama,p.kode_gudang,g.nama_gudang FROM penjualan p INNER JOIN gudang g ON p.kode_gudang = g.kode_gudang WHERE p.no_reg = '$no_reg' ");
 $kel = mysqli_fetch_array($select_penjualan);
@@ -262,7 +267,7 @@ Level 5
 Level 6
 <?php }elseif ($level_harga == 'harga_7' ){?>
 Level 7
-<?php }?>
+<?php } ?>
   </option>
   <option value="harga_1">Level 1</option>
   <option value="harga_2">Level 2</option>
@@ -304,6 +309,8 @@ Level 7
   <a href="form_pendaftaran_pasien_lab.php" class="btn btn-default"> <i class="fa fa-plus"></i> Pasien Baru</a>  
 
 <?php endif ?>
+
+<button type="button" class="btn btn-default" id="btnRefreshsubtotal"> <i class='fa fa-refresh'></i> Refresh Subtotal</button>
 
 </div>
 
@@ -531,7 +538,7 @@ Level 7
                 <?php
                
                   //menampilkan semua data yang ada pada tabel tbs penjualan dalam DB
-                $perintah = $db->query("SELECT * FROM tbs_penjualan WHERE  session_id = '$session_id' AND no_reg = '$no_reg' AND lab = 'Laboratorium'");
+                $perintah = $db->query("SELECT * FROM tbs_penjualan WHERE session_id = '$session_id' AND no_reg = '$no_reg' AND lab = 'Laboratorium'");
                             
                 
                 //menyimpan data sementara yang ada pada $perintah  
@@ -1539,11 +1546,17 @@ $(document).on('click','#submit_produk',function(e){
     {
         var no_rm = $("#kd_pelanggan1").val();
     }
+    var level_harga = $("#level_harga").val();
     var kode_barang = $("#kode_barang").val();
     var nama_barang = $("#nama_barang").val();
     var no_reg = $("#no_reg").val();
     var jumlah_barang = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#jumlah_barang").val()))));
     var harga = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#harga_produk").val()))));
+
+    if (harga == '') {
+      harga = 0;
+    }
+
     var potongan = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#potongan1").val()))));
         if (potongan == '') {
       potongan = 0;
@@ -1684,8 +1697,21 @@ if (jumlah_barang == ''){
       alert("Masukkan Dahulu Kode Barang ")
       $("#kode_barang").trigger('chosen:open');
     }
+    else if (level_harga == '') {
+      alert("Level Harga Harus Diisi");
+      $("#level_harga").focus();
+      $("#kode_barang").val('');
+      $("#kode_barang").trigger('chosen:updated').trigger('chosen:open');
+      $("#jumlah_barang").val('');
+    }
+    else if (harga == 0) {
 
+      alert("Harga barang ini Rp.0");
+      $("#kode_barang").val('');
+      $("#kode_barang").trigger('chosen:updated').trigger('chosen:open');
+      $("#jumlah_barang").val('');
 
+    }
 
   else 
   {
@@ -1799,6 +1825,41 @@ if (jumlah_barang == ''){
    </script>
 -->
 
+
+<script type="text/javascript">
+  $(document).ready(function(){
+
+  $(document).on('click','#btnRefreshsubtotal',function(e){
+
+ 
+      $.post("proses_refresh_subtotal.php",{no_reg:'<?php echo$no_reg; ?>'},function(data){
+
+        if (data == '') {
+          data = 0;
+        }
+
+            var biaya_admin = $("#biaya_admin_select").val();
+            var hitung_biaya = parseInt(biaya_admin,10) * parseInt(data,10) / 100;
+
+            $("#biaya_adm").val(tandaPemisahTitik(Math.round(hitung_biaya)));
+
+            var diskon = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#potongan_penjualan").val()))));
+            if(diskon == '')
+            {
+              diskon = 0
+            }
+           var hasilnya = parseInt(data,10) + parseInt(Math.round(hitung_biaya),10) - parseInt(diskon,10);
+
+            $("#total1").val(tandaPemisahTitik(hasilnya));
+            $("#total2").val(tandaPemisahTitik(data));
+
+      });
+    
+
+  });
+
+});
+</script>
 
 
 <script>

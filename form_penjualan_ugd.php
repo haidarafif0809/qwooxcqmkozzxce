@@ -318,6 +318,8 @@ $obat = $otoritas_produk['tipe_obat'];
 
 <button type="button" class="btn btn-warning" id="cari_pasien" data-toggle="modal" data-target="#modal_reg"><i class="fa fa-user"></i> Cari Pasien (Alt + P)</button>
 
+<button type="button" class="btn btn-default" id="btnRefreshsubtotal"> <i class='fa fa-refresh'></i> Refresh Subtotal</button>
+
 
 <!--tampilan modal-->
 <div id="myModal" class="modal fade" role="dialog">
@@ -887,6 +889,50 @@ $(document).ready(function(){
 </script>
 
 <script type="text/javascript">
+  $(document).ready(function(){
+
+  $(document).on('click','#btnRefreshsubtotal',function(e){
+
+    var no_reg = $("#no_reg").val();
+
+
+    if (no_reg == '') {
+      alert("Anda belum memilih pasien!");
+    }
+    else
+    {
+      $.post("proses_refresh_subtotal_ugd.php",{no_reg:no_reg},function(data){
+      data = data.replace(/\s+/g, '');
+        if (data == '') {
+          data = 0;
+        }
+
+
+            var biaya_admin = $("#biaya_admin_select").val();
+            var hitung_biaya = parseInt(biaya_admin,10) * parseInt(data,10) / 100;
+
+            $("#biaya_adm").val(tandaPemisahTitik(Math.round(hitung_biaya)));
+
+            var diskon = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#potongan_penjualan").val()))));
+            if(diskon == '')
+            {
+              diskon = 0
+            }
+            var hasilnya = parseInt(data,10) + parseInt(Math.round(hitung_biaya),10) - parseInt(diskon,10);
+
+            $("#total1").val(tandaPemisahTitik(hasilnya));
+            $("#total2").val(tandaPemisahTitik(data));
+        
+
+      });
+    }
+
+  });
+
+});
+</script>
+
+<script type="text/javascript">
   $(document).on('click', '.tidak_punya_otoritas', function (e) {
     alert("Anda Tidak Punya Otoritas Untuk Edit Jumlah Produk !!");
   });
@@ -1170,7 +1216,7 @@ else if (level_harga == "harga_7") {
 
 // CEK TOTAL CEK TOTAL CEK TOTAL CEK TOTAL CEK TOTAL CEK TOTAL CEK TOTAL CEK TOTAL CEK TOTAL CEK TOTAL CEK TOTAL CEK TOTAL CEK TOTAL
 
- var no_reg = $("#no_reg").val();
+    var no_reg = $("#no_reg").val();
     var pot_fakt_per = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#potongan_persen").val()))));
     var pot_fakt_rp = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#potongan_penjualan").val()))));
 
@@ -3163,15 +3209,13 @@ var otoritas_tipe_obat = $("#otoritas_tipe_obat").val();
   }
   else{
 
-      if (stok < 0) {
-
-        if (ber_stok = 'Barang') {
+if (stok < 0 && ber_stok == 'Barang' ) {
         
         alert("Jumlah Melebihi Stok");
         $("#jumlah_barang").val('');
         $("#satuan_konversi").val(prev);
         
-        }
+
       }
 
   }
@@ -4195,47 +4239,54 @@ $(document).ready(function(){
     var pot_fakt_per = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#potongan_persen").val()))));
     var pot_fakt_rp = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#potongan_penjualan").val()))));
 
-    $.post("cek_total_seluruh_raja.php",{no_reg:no_reg},function(data1){
-  
-        if (data1 == 1) {
-                 $.post("cek_total_seluruh.php",{no_reg:no_reg},function(data){
-                data = data.replace(/\s+/g, '');
+    if (no_reg == "") {
 
-                  $("#total2").val(tandaPemisahTitik(data))
+    }
+    else{
 
-      if (pot_fakt_per == '0%') {
-              var potongaaan = pot_fakt_rp;
-              var potongaaan = parseInt(potongaaan,10) / parseInt(data,10) * 100;
-              
-              $("#potongan_persen").val(Math.round(potongaaan));
-              
+          $.post("cek_total_seluruh_raja.php",{no_reg:no_reg},function(data1){
+        
+              if (data1 == 1) {
+                       $.post("cek_total_seluruh.php",{no_reg:no_reg},function(data){
+                      data = data.replace(/\s+/g, '');
 
+                        $("#total2").val(tandaPemisahTitik(data))
 
-      var total = parseInt(data,10) - parseInt(pot_fakt_rp,10)
-                  $("#total1").val(tandaPemisahTitik(total))
-
-            }
-            else if(pot_fakt_rp == 0)
-            {
-                  var potongaaan = pot_fakt_per;
-                  var pos = potongaaan.search("%");
-                  var potongan_persen = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah(potongaaan))));
-                  potongan_persen = potongan_persen.replace("%","");
-                  potongaaan = data * potongan_persen / 100;
-                  $("#potongan_penjualan").val(Math.round(potongaaan));
-                  $("#potongan1").val(potongaaan);
+            if (pot_fakt_per == '0%') {
+                    var potongaaan = pot_fakt_rp;
+                    var potongaaan = parseInt(potongaaan,10) / parseInt(data,10) * 100;
+                    
+                    $("#potongan_persen").val(Math.round(potongaaan));
+                    
 
 
-      var total = parseInt(data,10) - parseInt(potongaaan,10)
-                  $("#total1").val(tandaPemisahTitik(total))
-            }
-      
+            var total = parseInt(data,10) - parseInt(pot_fakt_rp,10)
+                        $("#total1").val(tandaPemisahTitik(total))
 
-                });
-        }
+                  }
+                  else if(pot_fakt_rp == 0)
+                  {
+                        var potongaaan = pot_fakt_per;
+                        var pos = potongaaan.search("%");
+                        var potongan_persen = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah(potongaaan))));
+                        potongan_persen = potongan_persen.replace("%","");
+                        potongaaan = data * potongan_persen / 100;
+                        $("#potongan_penjualan").val(Math.round(potongaaan));
+                        $("#potongan1").val(potongaaan);
 
 
-      });
+            var total = parseInt(data,10) - parseInt(potongaaan,10)
+                        $("#total1").val(tandaPemisahTitik(total))
+                  }
+            
+
+                      });
+              }
+
+
+            });
+    }
+
 
   });
 
