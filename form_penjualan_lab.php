@@ -1552,6 +1552,11 @@ $(document).on('click','#submit_produk',function(e){
     var no_reg = $("#no_reg").val();
     var jumlah_barang = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#jumlah_barang").val()))));
     var harga = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#harga_produk").val()))));
+
+    if (harga == '') {
+      harga = 0;
+    }
+
     var potongan = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#potongan1").val()))));
         if (potongan == '') {
       potongan = 0;
@@ -1696,11 +1701,17 @@ if (jumlah_barang == ''){
       alert("Level Harga Harus Diisi");
       $("#level_harga").focus();
       $("#kode_barang").val('');
-      $("#kode_barang").trigger('chosen:open');
+      $("#kode_barang").trigger('chosen:updated').trigger('chosen:open');
       $("#jumlah_barang").val('');
     }
+    else if (harga == 0) {
 
+      alert("Harga barang ini Rp.0");
+      $("#kode_barang").val('');
+      $("#kode_barang").trigger('chosen:updated').trigger('chosen:open');
+      $("#jumlah_barang").val('');
 
+    }
 
   else 
   {
