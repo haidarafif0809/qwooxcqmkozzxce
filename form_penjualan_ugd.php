@@ -3163,15 +3163,13 @@ var otoritas_tipe_obat = $("#otoritas_tipe_obat").val();
   }
   else{
 
-      if (stok < 0) {
-
-        if (ber_stok = 'Barang') {
+if (stok < 0 && ber_stok == 'Barang' ) {
         
         alert("Jumlah Melebihi Stok");
         $("#jumlah_barang").val('');
         $("#satuan_konversi").val(prev);
         
-        }
+
       }
 
   }
@@ -4199,7 +4197,7 @@ $(document).ready(function(){
 
     }
     else{
-      
+
           $.post("cek_total_seluruh_raja.php",{no_reg:no_reg},function(data1){
         
               if (data1 == 1) {

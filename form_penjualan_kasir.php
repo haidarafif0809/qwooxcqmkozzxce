@@ -1545,8 +1545,7 @@ $(document).ready(function(){
 
       
 
-          if (data < 0) {
-          	if (ber_stok == 'Barang') {
+      if (stok < 0 && ber_stok == 'Barang' ) {
 				alert("Jumlah Melebihi Stok");
 				$("#jumlah_barang").val('');
 				$("#satuan_konversi").val(prev);
@@ -3179,15 +3178,13 @@ $("#cari_produk_penjualan").click(function(){
 	}
   else{
 
-      if (stok < 0) {
-
-        if (ber_stok == 'Barang') {
+      if (stok < 0 && ber_stok == 'Barang' ) {
         
         alert("Jumlah Melebihi Stok");
         $("#jumlah_barang").val('');
         $("#satuan_konversi").val(prev);
         
-        }
+        
       }
 
   }
