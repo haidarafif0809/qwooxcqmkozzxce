@@ -257,6 +257,8 @@ $user = $_SESSION['nama'];
 
 <button type="button" id="cari_produk_penjualan" class="btn btn-info " data-toggle="modal" data-target="#myModal"><i class='fa  fa-search'> </i>Cari (F1)  </button> 
 
+<button type="button" class="btn btn-default" id="btnRefreshsubtotal"> <i class='fa fa-refresh'></i> Refresh Subtotal</button>
+
 
 <!--tampilan modal-->
 <div id="myModal" class="modal fade" role="dialog">
@@ -494,7 +496,7 @@ $user = $_SESSION['nama'];
                 <?php
                 
                 //menampilkan semua data yang ada pada tabel tbs penjualan dalam DB
-                $perintah = $db->query("SELECT tp.no_reg,tp.id,tp.kode_barang,tp.satuan,tp.nama_barang,tp.jumlah_barang,tp.harga,tp.subtotal,tp.potongan,tp.tax,tp.jam,tp.tipe_barang,s.nama FROM tbs_penjualan tp INNER JOIN satuan s ON tp.satuan = s.id WHERE tp.session_id = '$session_id' AND tp.no_reg = '' ");
+                $perintah = $db->query("SELECT tp.no_reg,tp.id,tp.kode_barang,tp.satuan,tp.nama_barang,tp.jumlah_barang,tp.harga,tp.subtotal,tp.potongan,tp.tax,tp.jam,tp.tipe_barang,s.nama FROM tbs_penjualan tp INNER JOIN satuan s ON tp.satuan = s.id WHERE tp.session_id = '$session_id' AND tp.no_reg IS NULL AND tp.lab IS NULL ");
                 
                 //menyimpan data sementara yang ada pada $perintah
                 
@@ -834,6 +836,41 @@ $(document).ready(function(){
   $(document).on('click', '.tidak_punya_otoritas', function (e) {
     alert("Anda Tidak Punya Otoritas Untuk Edit Jumlah Produk !!");
   });
+</script>
+
+
+<script type="text/javascript">
+  $(document).ready(function(){
+
+  $(document).on('click','#btnRefreshsubtotal',function(e){
+   
+      $.get("proses_refresh_subtotal_apotek.php",function(data){
+
+        if (data == '') {
+          data = 0;
+        }
+
+            var biaya_admin = $("#biaya_admin_select").val();
+            var hitung_biaya = parseInt(biaya_admin,10) * parseInt(data,10) / 100;
+
+            $("#biaya_adm").val(tandaPemisahTitik(Math.round(hitung_biaya)));
+
+            var diskon = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#potongan_penjualan").val()))));
+            if(diskon == '')
+            {
+              diskon = 0
+            }
+           var hasilnya = parseInt(data,10) + parseInt(Math.round(hitung_biaya),10) - parseInt(diskon,10);
+
+            $("#total1").val(tandaPemisahTitik(hasilnya));
+            $("#total2").val(tandaPemisahTitik(data));
+
+      });
+    
+
+  });
+
+});
 </script>
 
 
