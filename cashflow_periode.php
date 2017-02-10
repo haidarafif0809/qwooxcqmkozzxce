@@ -26,7 +26,7 @@ include 'sanitasi.php';
 
 
 <div class="row">
-<span id="show_detail" style="display: none">
+<span id="show_detail" >
 	<div class="col-sm-6" >
 	<div class="card card-block">
 	<center><h4><b>DETAIL</b></h4></center>
@@ -80,7 +80,7 @@ include 'sanitasi.php';
 </span>
 
 
-<span id="show_rekap" style="display: none">
+<span id="show_rekap">
 	<div class="col-sm-6">
 	<div class="card card-block">
 
@@ -134,12 +134,11 @@ include 'sanitasi.php';
 </span>
 
 </div><!--closed row-->
-<hr>
-
 
 
 <span id="show_total" style="display: none">
 
+<div class="card card-block">
 <!--START DETAIL SHOW TABLE-->
 <span id="show_table_detail">
 <!--TABLE KAS MASUK-->
@@ -357,12 +356,26 @@ include 'sanitasi.php';
 <h3><b>Total Cashflow </b></h3>
 <h3>
   <h4><tr> <td> Saldo Awal</td>   <td >:</td>  <td>Rp.</td> <td id="saldo_awal" > </td> </tr>  </h4>
- <h4> <tr> <td> Perubahan Saldo</td>   <td>:</td> <td>Rp.</td> <td id="perubahan_saldo" > </td> </tr></h4>
+  <h4> <tr> <td> Perubahan Saldo</td>   <td>:</td> <td>Rp.</td> <td id="perubahan_saldo" > </td> </tr></h4>
   <h4><tr> <td> Saldo Akhir</td>  <td>:</td>  <td>Rp.</td> <td id="saldo_akhir" > </td> </tr></h4>
 
 </table>
 
+</div> <!--END card block-->
+
 </span>
+
+<span id="show_cetak_detail" style="display: none;">
+    <a href='cetak_detail_periode.php' target="blank" id="cetak_detail" class='btn btn-success'><i class='fa fa-print'> </i> Cetak Cashflow </a>
+    <a href='download_detail_periode.php' target="blank" id="download_detail" class='btn btn-default'> <i class='fa fa-download'> </i> Download Cashflow</a>
+</span>
+
+<span id="show_cetak_rekap" style="display: none;">
+    <a href='cetak_rekap_periode.php' target="blank" id="cetak_rekap" class='btn btn-success'><i class='fa fa-print'> </i> Cetak Cashflow </a>
+    <a href='download_rekap_periode.php' target="blank" id="download_rekap" class='btn btn-default'> <i class='fa fa-download'> </i> Download Cashflow</a>
+</span>
+
+
 
 </div><!--container closed-->
 
@@ -526,20 +539,28 @@ $.getJSON('proses_cashflow_periode_detail.php',{kas_detail:kas_detail,dari_tangg
           $("#result_detail_keluar").show();
           $("#result_detail_mutasi").show();
           $("#show_detail").show();
-$("#show_table_rekap").hide();
-$("#show_table_detail").show();
+          $("#show_table_rekap").hide();
+          $("#show_table_detail").show();
+// show untuk cetak & download
+          $("#show_cetak_rekap").hide();
+          $("#show_cetak_detail").show();
+          $("#cetak_detail").attr("href", "cetak_detail_periode.php?dari_tanggal="+dari_tanggal+"&sampai_tanggal="+sampai_tanggal+"&kas_detail="+kas_detail+"");
+          $("#download_detail").attr("href", "download_detail_periode.php?dari_tanggal="+dari_tanggal+"&sampai_tanggal="+sampai_tanggal+"&kas_detail="+kas_detail+"");
+// ending show cetak and download
+
+
 
    });  
 
-  $("#form_detail").submit(function(){
-      return false;
-  });
-  function clearInput(){
-      $("#form_detail :input").each(function(){
+          $("#form_detail").submit(function(){
+          return false;
+          });
+          function clearInput(){
+          $("#form_detail :input").each(function(){
           $(this).val('');
-      });
-    };
-  } );
+          });
+          };
+  });
  
  </script>
  <!--ENDING SCRIPT DETAIL-->
@@ -709,10 +730,17 @@ $.getJSON('proses_cashflow_periode_rekap.php',{kas_rekap:kas_rekap,dari_tanggal:
           $("#result_rekap_mutasi").show();
           $("#result_rekap_mutasi_masuk").show();
           $("#show_rekap").show();
+          
+          $("#show_table_rekap").show();
+          $("#show_table_detail").hide();
 
-$("#show_table_rekap").show();
-$("#show_table_detail").hide();
-   } );  
+// show untuk cetak & download
+          $("#show_cetak_rekap").show();
+          $("#show_cetak_detail").hide();
+          $("#cetak_rekap").attr("href", "cetak_rekap_periode.php?dari_tanggal="+dari_tanggal+"&sampai_tanggal="+sampai_tanggal+"&kas_rekap="+kas_rekap+"");
+          $("#download_rekap").attr("href", "download_rekap_periode.php?dari_tanggal="+dari_tanggal+"&sampai_tanggal="+sampai_tanggal+"&kas_rekap="+kas_rekap+"");
+// ending show cetak and download
+   });  
 
   $("#form_rekap").submit(function(){
       return false;
@@ -722,7 +750,7 @@ $("#show_table_detail").hide();
           $(this).val('');
       });
     };
-  } );
+  });
  
  </script>
  <!--ENDING SCRIPT REKAP-->

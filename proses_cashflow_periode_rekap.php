@@ -17,7 +17,7 @@ $sampai_tanggal = stringdoang($_GET['sampai_tanggal']);
         $saldo = $saldo1 - $saldo2;
 
 
-$select_masuk = $db->query("SELECT SUM(debit) AS masuk FROM jurnal_trans WHERE DATE(waktu_jurnal) >= '$dari_tanggal' AND  DATE(waktu_jurnal) <= '$sampai_tanggal' AND kode_akun_jurnal = '$daftar_akun' AND debit != '0' ");
+$select_masuk = $db->query("SELECT SUM(debit) AS masuk FROM jurnal_trans WHERE DATE(waktu_jurnal) >= '$dari_tanggal' AND  DATE(waktu_jurnal) <= '$sampai_tanggal' AND kode_akun_jurnal = '$daftar_akun' AND debit != '0' AND jenis_transaksi != 'Kas Mutasi' ");
  $outone = mysqli_fetch_array($select_masuk);
  $masuk = $outone['masuk'];
 

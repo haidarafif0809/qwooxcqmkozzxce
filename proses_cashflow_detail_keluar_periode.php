@@ -72,8 +72,8 @@ while( $row=mysqli_fetch_array($query) ) {
 	
 	$nestedData[] = $row["no_faktur"];
 	$nestedData[] = $row["keterangan_jurnal"];
-	$nestedData[] = $out["nama_daftar_akun"];
 	$nestedData[] = $row["nama_daftar_akun"];
+	$nestedData[] = $out["nama_daftar_akun"];
 	$nestedData[] = rp($row["keluar"]);
 	$nestedData[] = $row["user_buat"];
 	$nestedData[] = $row["user_edit"];

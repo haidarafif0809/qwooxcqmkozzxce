@@ -63,8 +63,18 @@ while( $row=mysqli_fetch_array($query) ) {
 	$select = $db->query("SELECT da.nama_daftar_akun,js.kode_akun_jurnal,js.waktu_jurnal,js.kode_akun_jurnal FROM jurnal_trans js LEFT JOIN daftar_akun da ON js.kode_akun_jurnal = da.kode_daftar_akun WHERE DATE(js.waktu_jurnal) = '$row[tanggal]' AND js.kredit != '0' AND js.kode_akun_jurnal != '$kas' GROUP BY js.kode_akun_jurnal ");
 	$out = mysqli_fetch_array($select);
 
+	$select_setting_akun = $db->query("SELECT sa.total_penjualan, da.nama_daftar_akun FROM setting_akun sa INNER JOIN daftar_akun da ON sa.total_penjualan = da.kode_daftar_akun");
+	$ambil_setting = mysqli_fetch_array($select_setting_akun);
+
 	$nestedData[] = $row["tanggal"];
-	$nestedData[] = $out["nama_daftar_akun"];
+
+	if ($row['jenis_transaksi'] == 'Penjualan') {
+			$nestedData[] = $ambil_setting["nama_daftar_akun"];
+	}
+	elseif ($row['jenis_transaksi'] == 'Kas Masuk') {
+		$nestedData[] = "Kas Masuk";
+	}
+
 	$nestedData[] = $row["nama_daftar_akun"];
 	$nestedData[] = rp($row["masuk"]);
 $data[] = $nestedData;
