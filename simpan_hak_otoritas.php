@@ -26,6 +26,14 @@ $rekam_medik_lihat = angkadoang(isset($_POST['rekam_medik_lihat']));
 $laboratorium_lihat = angkadoang(isset($_POST['laboratorium_lihat']));
 $laporan_laboratorium_lihat = angkadoang(isset($_POST['laporan_laboratorium_lihat']));
 
+
+//untuk penjualan
+$menu_rawat_jalan = angkadoang(isset($_POST['menu_rawat_jalan']));
+$menu_rawat_inap = angkadoang(isset($_POST['menu_rawat_inap']));
+$menu_ugd = angkadoang(isset($_POST['menu_ugd']));
+$menu_apotek = angkadoang(isset($_POST['menu_apotek']));
+$menu_laboratorium = angkadoang(isset($_POST['menu_laboratorium']));
+
 // empat pilihan
 $biaya_admin_lihat = angkadoang(isset($_POST['biaya_admin_lihat']));
 $biaya_admin_tambah = angkadoang(isset($_POST['biaya_admin_tambah']));
@@ -394,10 +402,12 @@ $update_otoritas_pembelian->bind_param("iiiiiiiii",
 $update_otoritas_pembelian->execute();
 
 
-$update_otoritas_penjualan = $db->prepare("UPDATE otoritas_penjualan SET penjualan_lihat = ?, penjualan_tambah = ?, penjualan_edit = ?, penjualan_hapus = ?, retur_lihat = ?, retur_penjualan_lihat = ?, retur_penjualan_tambah = ?, retur_penjualan_edit = ?, retur_penjualan_hapus = ? WHERE id_otoritas = ? ");
+$update_otoritas_penjualan = $db->prepare("UPDATE otoritas_penjualan SET penjualan_lihat = ?, penjualan_tambah = ?, penjualan_edit = ?, penjualan_hapus = ?, retur_lihat = ?, retur_penjualan_lihat = ?, retur_penjualan_tambah = ?, retur_penjualan_edit = ?, retur_penjualan_hapus = ?, menu_rawat_jalan = ?, 
+	menu_rawat_inap = ?, menu_ugd = ?, menu_apotek = ?, menu_laboratorium = ? WHERE id_otoritas = ? ");
 
-$update_otoritas_penjualan->bind_param("iiiiiiiiii",
-    $penjualan_lihat, $penjualan_tambah, $penjualan_edit, $penjualan_hapus, $retur_lihat, $retur_penjualan_lihat, $retur_penjualan_tambah, $retur_penjualan_edit, $retur_penjualan_hapus, $id);
+$update_otoritas_penjualan->bind_param("iiiiiiiiiiiiiii",
+    $penjualan_lihat, $penjualan_tambah, $penjualan_edit, $penjualan_hapus, $retur_lihat, $retur_penjualan_lihat, $retur_penjualan_tambah, $retur_penjualan_edit, $retur_penjualan_hapus, $menu_rawat_jalan, 
+    $menu_rawat_inap, $menu_ugd, $menu_apotek, $menu_laboratorium, $id);
 
 $update_otoritas_penjualan->execute();
 
