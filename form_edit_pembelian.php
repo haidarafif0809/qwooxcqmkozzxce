@@ -756,7 +756,7 @@ $(".btn-alert-hapus").click(function(){
 
    var t_tax = parseInt(total_akhir,10) * Math.round((tax)) / 100;
 
-    var t_total = total_akhirr - potongan_pembelian + t_tax;
+    var t_total = total_akhir - potongan_pembelian + t_tax;
 
 
   if (jumlah_barang == ''){

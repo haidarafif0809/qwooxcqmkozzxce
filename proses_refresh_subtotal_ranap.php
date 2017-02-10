@@ -18,8 +18,12 @@ include 'sanitasi.php';
  $datalab = mysqli_fetch_array($querylab);
  $totallab = $datalab['total_penjualan'];
 
+ $sql = $db->query("SELECT SUM(td.harga_jual) AS total_ops FROM tbs_operasi td LEFT JOIN user u ON td.petugas_input = u.id LEFT JOIN operasi op ON td.operasi = op.id_operasi WHERE td.no_reg = '$no_reg'");
+ $ops = mysqli_fetch_array($querylab);
+ $t_ops = $ops['total_ops'];
 
-echo$tt = $total + $totallab;
+
+echo$tt = $total + $totallab + $t_ops;
 
 
 

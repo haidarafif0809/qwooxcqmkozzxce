@@ -947,7 +947,7 @@ $(document).ready(function(){
 
 
     if (no_reg == '') {
-      alert("No. Reg tidak boleh kosong");
+      alert("Anda belum memilih pasien!");
     }
     else
     {
@@ -962,13 +962,12 @@ $(document).ready(function(){
 
             $("#biaya_adm").val(tandaPemisahTitik(Math.round(hitung_biaya)));
 
-            var biaya_adm = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#biaya_adm").val()))));
             var diskon = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#potongan_penjualan").val()))));
             if(diskon == '')
             {
               diskon = 0
             }
-            var hasilnya = parseInt(data,10) + parseInt(biaya_adm,10) - parseInt(diskon,10);
+           var hasilnya = parseInt(data,10) + parseInt(Math.round(hitung_biaya),10) - parseInt(diskon,10);
 
             $("#total1").val(tandaPemisahTitik(hasilnya));
             $("#total2").val(tandaPemisahTitik(data));

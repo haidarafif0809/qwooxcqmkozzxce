@@ -62,7 +62,7 @@ include 'sanitasi.php';
 </span>
 
 
-<span id="show_rekap" style="display: none">
+<span id="show_rekap">
 	<div class="col-sm-6">
 	<div class="card card-block">
 
@@ -335,13 +335,13 @@ include 'sanitasi.php';
 <input style="height:15px" type="hidden" class="form-control" id="data_tanggal" name="data_tanggal" readonly=""> 
 
 <span id="show_cetak_rekap" style="display: none;">
-<a href='cetak_rekap_tanggal.php' id="cetak_rekap" class="btn btn-primary" target="blank"> <i class="fa fa-print"> </i></a>
-<a href='download_rekap_tanggal.php' id="download_rekap" class="btn btn-success" target="blank"> <i class="fa fa-download"> </i></a>
+<a href='' id="cetak_rekap" class="btn btn-primary" target="blank"> <i class="fa fa-print"> </i></a>
+<a href='' id="download_rekap" class="btn btn-success" target="blank"> <i class="fa fa-download"> </i></a>
 </span>
 
 <span id="show_cetak_detail" style="display: none;">
-<a href='cetak_detail_tanggal.php' id="cetak_detail" class="btn btn-primary" target="blank"> <i class="fa fa-print"> </i></a>
-<a href='download_detail_tanggal.php' id="download_rekap" class="btn btn-success" target="blank"> <i class="fa fa-download"> </i></a>
+<a href='' id="cetak_detail" class="btn btn-primary" target="blank"> <i class="fa fa-print"> </i></a>
+<a href='' id="download_detail" class="btn btn-success" target="blank"> <i class="fa fa-download"> </i></a>
 </span>
 
 </div><!--close container-->
@@ -356,7 +356,12 @@ include 'sanitasi.php';
 var kas_detail = $("#kas_detail").val();
 var tanggal_detail = $("#tanggal_detail").val();
 
-
+// show untuk cetak & download
+$("#show_cetak_detail").show();
+$("#show_cetak_rekap").hide();
+$("#cetak_detail").attr('href','cetak_detail_tanggal.php?kasnya='+kas_detail+'&tanggalnya='+tanggal_detail);
+$("#download_detail").attr('href','download_detail_tanggal.php?kasnya='+kas_detail+'&tanggalnya='+tanggal_detail);
+// ending show cetak and download
 
 $.getJSON('proses_cashflow_tanggal_detail.php',{kas_detail:kas_detail,tanggal_detail:tanggal_detail},function(json){
 
@@ -369,13 +374,11 @@ $.getJSON('proses_cashflow_tanggal_detail.php',{kas_detail:kas_detail,tanggal_de
     $("#hasil_mutasi_detail").html(tandaPemisahTitik(json.kabupaten));
 
     $("#hasil_mutasi_masuk_detail").html(tandaPemisahTitik(json.petugas_lain));
-                $("#show_total").show();
+    $("#show_total").show();
 
   });
 
 // end proses for hasil
-
-
 
 
 //untuk tampilkan table kas masuk
@@ -539,6 +542,13 @@ var tanggal_rekap = $("#tanggal_rekap").val();
 
 $("#data_kas").val(kas_rekap);
 $("#data_tanggal").val(tanggal_rekap);
+
+// show untuk cetak & download
+$("#show_cetak_rekap").show();
+$("#show_cetak_detail").hide();
+$("#cetak_rekap").attr('href','cetak_rekap_tanggal.php?kasnya='+kas_rekap+'&tanggalnya='+tanggal_rekap);
+$("#download_rekap").attr('href','download_cashflow_rekap_pertanggal.php?kasnya='+kas_rekap+'&tanggalnya='+tanggal_rekap);
+// ending show cetak and download
 
 $.getJSON('proses_cashflow_tanggal_rekap.php',{kas_rekap:kas_rekap,tanggal_rekap:tanggal_rekap},function(json){
 
@@ -724,6 +734,8 @@ $(document).ready(function(){
     $("#show_detail").show();
     $("#show_rekap").hide();
     $("#show_total").hide();
+$("#show_cetak_detail").hide();
+$("#show_cetak_rekap").hide();
 
 
     });
@@ -732,6 +744,9 @@ $(document).ready(function(){
     $("#show_rekap").show();  
     $("#show_detail").hide();
     $("#show_total").hide();
+
+$("#show_cetak_detail").hide();
+$("#show_cetak_rekap").hide();
 
     });
 

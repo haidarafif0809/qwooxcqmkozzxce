@@ -318,6 +318,8 @@ $obat = $otoritas_produk['tipe_obat'];
 
 <button type="button" class="btn btn-warning" id="cari_pasien" data-toggle="modal" data-target="#modal_reg"><i class="fa fa-user"></i> Cari Pasien (Alt + P)</button>
 
+<button type="button" class="btn btn-default" id="btnRefreshsubtotal"> <i class='fa fa-refresh'></i> Refresh Subtotal</button>
+
 
 <!--tampilan modal-->
 <div id="myModal" class="modal fade" role="dialog">
@@ -884,6 +886,50 @@ $(document).ready(function(){
 
 });
 
+</script>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+
+  $(document).on('click','#btnRefreshsubtotal',function(e){
+
+    var no_reg = $("#no_reg").val();
+
+
+    if (no_reg == '') {
+      alert("Anda belum memilih pasien!");
+    }
+    else
+    {
+      $.post("proses_refresh_subtotal_ugd.php",{no_reg:no_reg},function(data){
+      data = data.replace(/\s+/g, '');
+        if (data == '') {
+          data = 0;
+        }
+
+
+            var biaya_admin = $("#biaya_admin_select").val();
+            var hitung_biaya = parseInt(biaya_admin,10) * parseInt(data,10) / 100;
+
+            $("#biaya_adm").val(tandaPemisahTitik(Math.round(hitung_biaya)));
+
+            var diskon = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#potongan_penjualan").val()))));
+            if(diskon == '')
+            {
+              diskon = 0
+            }
+            var hasilnya = parseInt(data,10) + parseInt(Math.round(hitung_biaya),10) - parseInt(diskon,10);
+
+            $("#total1").val(tandaPemisahTitik(hasilnya));
+            $("#total2").val(tandaPemisahTitik(data));
+        
+
+      });
+    }
+
+  });
+
+});
 </script>
 
 <script type="text/javascript">

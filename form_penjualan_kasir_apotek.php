@@ -257,6 +257,8 @@ $user = $_SESSION['nama'];
 
 <button type="button" id="cari_produk_penjualan" class="btn btn-info " data-toggle="modal" data-target="#myModal"><i class='fa  fa-search'> </i>Cari (F1)  </button> 
 
+<button type="button" class="btn btn-default" id="btnRefreshsubtotal"> <i class='fa fa-refresh'></i> Refresh Subtotal</button>
+
 
 <!--tampilan modal-->
 <div id="myModal" class="modal fade" role="dialog">
@@ -494,7 +496,7 @@ $user = $_SESSION['nama'];
                 <?php
                 
                 //menampilkan semua data yang ada pada tabel tbs penjualan dalam DB
-                $perintah = $db->query("SELECT tp.no_reg,tp.id,tp.kode_barang,tp.satuan,tp.nama_barang,tp.jumlah_barang,tp.harga,tp.subtotal,tp.potongan,tp.tax,tp.jam,tp.tipe_barang,s.nama FROM tbs_penjualan tp INNER JOIN satuan s ON tp.satuan = s.id WHERE tp.session_id = '$session_id' AND tp.no_reg = '' ");
+                $perintah = $db->query("SELECT tp.no_reg,tp.id,tp.kode_barang,tp.satuan,tp.nama_barang,tp.jumlah_barang,tp.harga,tp.subtotal,tp.potongan,tp.tax,tp.jam,tp.tipe_barang,s.nama FROM tbs_penjualan tp INNER JOIN satuan s ON tp.satuan = s.id WHERE tp.session_id = '$session_id' AND tp.no_reg IS NULL AND tp.lab IS NULL ");
                 
                 //menyimpan data sementara yang ada pada $perintah
                 
@@ -838,6 +840,41 @@ $(document).ready(function(){
 
 
 <script type="text/javascript">
+  $(document).ready(function(){
+
+  $(document).on('click','#btnRefreshsubtotal',function(e){
+   
+      $.get("proses_refresh_subtotal_apotek.php",function(data){
+
+        if (data == '') {
+          data = 0;
+        }
+
+            var biaya_admin = $("#biaya_admin_select").val();
+            var hitung_biaya = parseInt(biaya_admin,10) * parseInt(data,10) / 100;
+
+            $("#biaya_adm").val(tandaPemisahTitik(Math.round(hitung_biaya)));
+
+            var diskon = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#potongan_penjualan").val()))));
+            if(diskon == '')
+            {
+              diskon = 0
+            }
+           var hasilnya = parseInt(data,10) + parseInt(Math.round(hitung_biaya),10) - parseInt(diskon,10);
+
+            $("#total1").val(tandaPemisahTitik(hasilnya));
+            $("#total2").val(tandaPemisahTitik(data));
+
+      });
+    
+
+  });
+
+});
+</script>
+
+
+<script type="text/javascript">
 $(document).ready(function(){
   //Hitung Biaya Admin
 
@@ -1170,6 +1207,9 @@ $(document).ready(function(){
 
     var jumlah_barang = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#jumlah_barang").val()))));
     var harga = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#harga_produk").val()))));
+    if (harga == '') {
+      harga = 0;
+    }
     var potongan = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#potongan1").val()))));
 
     if (potongan == '') {
@@ -1195,6 +1235,9 @@ $(document).ready(function(){
     var stok = parseInt(jumlahbarang,10) - parseInt(jumlah_barang,10);
 
     var hargaa = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#harga_penjamin").val()))));
+    if (hargaa == '') {
+      hargaa = 0;
+    }
 
     var subtotal = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#total2").val()))));
 
@@ -1318,7 +1361,13 @@ alert("Barang yang anda masukan sudah ada, silahkan pilih barang lain");
 $("#kode_barang").val('');
       $("#kode_barang").trigger('chosen:open');
 }
+else if (harga == 0) {
+      alert("Harga barang ini Rp.0");
+      $("#kode_barang").val('');
+$("#kode_barang").trigger('chosen:updated').trigger('chosen:open');
+      $("#jumlah_barang").val('');
 
+    }
 
   else if (ber_stok == 'Jasa')
   {
@@ -3146,14 +3195,14 @@ var pot_fakt_rp = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#po
 <script type="text/javascript">
 $(document).ready(function(){
   //end cek level harga
-  $("#level_harga").change(function(){
+    $(document).on('change','#level_harga',function(){
   
   var level_harga = $("#level_harga").val();
   var kode_barang = $("#kode_barang").val();
   var kode_barang = kode_barang.substr(0, kode_barang.indexOf('('));
 
 
-$.post("cek_level_harga_apotek.php", {level_harga:level_harga,kode_barang:kode_barang},function(data){
+$.post("cek_level_harga_apotek.php",{level_harga:level_harga,kode_barang:kode_barang},function(data){
 
           $("#harga_produk").val(data);
           $("#harga_baru").val(data);

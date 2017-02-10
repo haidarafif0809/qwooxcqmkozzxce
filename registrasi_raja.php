@@ -796,7 +796,6 @@ else{
      $("#jenis_kelamin").val('');
      $("#hp").val('');
      $("#kondisi").val('');
-     $("#petugas_dokter").val('');
      $("#rujukan").val('');
 
      $("#umur").val('');
