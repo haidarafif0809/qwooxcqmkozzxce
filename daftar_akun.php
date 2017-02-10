@@ -402,7 +402,7 @@ mysqli_close($db);
 <script type="text/javascript">
     $(document).ready(function(){
 	//fungsi hapus data 
-		$(".btn-hapus").click(function(){
+		$(document).on('click','.btn-hapus',function(){
 		var nama_group = $(this).attr("data-akun");
 		var id = $(this).attr("data-id");
 		$("#nama_group").val(nama_group);
@@ -413,7 +413,7 @@ mysqli_close($db);
 		});
 
 
-		$("#btn_jadi_hapus").click(function(){
+    $(document).on('click','.btn_jadi_hapus',function(){
 		
 		var id = $("#id_hapus").val();
 		$.post("hapus_daftar_akun.php",{id:id},function(data){
