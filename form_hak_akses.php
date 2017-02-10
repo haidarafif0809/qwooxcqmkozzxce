@@ -356,6 +356,27 @@ else{
 </div> <!-- / of otoritas setting printer -->
 
 
+<div class="form-group col-sm-2"> <!-- / of otoritas setting printer -->
+<label>Setting Proses Kamar</label><br>
+
+<?php 
+
+if ($data_otoritas['kamar_lihat'] == '1'){
+    echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="checkbox201248" name="kamar_lihat" checked=""> 
+    <label for="checkbox201248">Lihat</label> <br>';
+}
+
+else{
+    echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="checkbox201248" name="kamar_lihat">
+    <label for="checkbox201248">Lihat</label> <br>';  
+}
+
+ ?>
+
+</div> <!-- / of otoritas setting printer -->
+
+
+
 <div class="form-group col-sm-2"> <!-- / of otoritas master_data -->
 <label>Kartu Stok</label><br>
 

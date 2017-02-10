@@ -66,7 +66,7 @@ $surat_jaminan = stringdoang($_POST['surat_jaminan']);
 $dokter_penanggung_jawab = stringdoang($_POST['dokter_penanggung_jawab']);
 
 
-$ambil_satuan = $db->query("SELECT id FROM satuan WHERE nama = 'BED'");
+$ambil_satuan = $db->query("SELECT id FROM satuan WHERE nama = 'HARI'");
 $b = mysqli_fetch_array($ambil_satuan);
 $satuan_bed = $b['id'];
 
@@ -218,12 +218,12 @@ $harga_kamar7 = $kamar_luar['tarif_7'];
 
 //end bahan untuk kamar
 
+$query_set_kamar = $db->query(" SELECT proses_kamar FROM setting_kamar ");
+$data_sett_kamar  = mysqli_fetch_array($query_set_kamar);
 
 
-// DI NON AKTIFKAN KARENA PENAMBAHAN KAMAR NANTNYA AKAN INPUT DI TRANSAKSI PENJUALAN LANGSUNG -- DARI SINI --
-// DI NON AKTIFKAN KARENA PENAMBAHAN KAMAR NANTNYA AKAN INPUT DI TRANSAKSI PENJUALAN LANGSUNG -- DARI SINI --
-
-/*
+if ($data_sett_kamar['proses_kamar'] == 1)
+{
 
 
 // harga_1 (pertama)
@@ -391,11 +391,7 @@ $query65 = "INSERT INTO tbs_penjualan(session_id,no_reg,kode_barang,nama_barang,
 }
 // harga_7 (pertama)
 
-
- */
-
-// DI NON AKTIFKAN KARENA PENAMBAHAN KAMAR NANTNYA AKAN INPUT DI TRANSAKSI PENJUALAN LANGSUNG -- SAMPAI SINI --
-// DI NON AKTIFKAN KARENA PENAMBAHAN KAMAR NANTNYA AKAN INPUT DI TRANSAKSI PENJUALAN LANGSUNG -- SAMPAI SINI --
+}
 
 
 } // biar gak double pasiennya

@@ -61,7 +61,7 @@ $no_urut = 1;
 $bulan_php = date("m");
 $tahun_php = date("Y");
 
-$ambil_satuan = $db->query("SELECT id FROM satuan WHERE nama = 'BED'");
+$ambil_satuan = $db->query("SELECT id FROM satuan WHERE nama = 'HARI'");
 $b = mysqli_fetch_array($ambil_satuan);
 $satuan_bed = $b['id'];
 
@@ -157,7 +157,12 @@ $harga_kamar6 = $kamar_luar['tarif_6'];
 $harga_kamar7 = $kamar_luar['tarif_7'];
 //end bahan untuk kamar
 
+$query_set_kamar = $db->query(" SELECT proses_kamar FROM setting_kamar ");
+$data_sett_kamar  = mysqli_fetch_array($query_set_kamar);
 
+
+if ($data_sett_kamar['proses_kamar'] == 1)
+{
 
 
 // harga_1 (pertama)
@@ -307,6 +312,9 @@ $query65 = "INSERT INTO tbs_penjualan (session_id,no_reg,kode_barang,nama_barang
 
 }
 // harga_7 (pertama)
+
+}
+
 
 // biar gk double 
 } // token

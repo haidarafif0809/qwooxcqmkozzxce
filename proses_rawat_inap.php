@@ -100,7 +100,7 @@ $session_id = session_id();
 
 
 
-$ambil_satuan = $db->query("SELECT id FROM satuan WHERE nama = 'BED'");
+$ambil_satuan = $db->query("SELECT id FROM satuan WHERE nama = 'HARI' ");
 $b = mysqli_fetch_array($ambil_satuan);
 $satuan_bed = $b['id'];
 
@@ -218,10 +218,12 @@ $harga_kamar7 = $kamar_luar['tarif_7'];
 //end bahan untuk kamar
 
 
-// DI NON AKTIFKAN KARENA PENAMBAHAN KAMAR NANTNYA AKAN INPUT DI TRANSAKSI PENJUALAN LANGSUNG -- DARI SINI --
-// DI NON AKTIFKAN KARENA PENAMBAHAN KAMAR NANTNYA AKAN INPUT DI TRANSAKSI PENJUALAN LANGSUNG -- DARI SINI --
+$query_set_kamar = $db->query(" SELECT proses_kamar FROM setting_kamar ");
+$data_sett_kamar  = mysqli_fetch_array($query_set_kamar);
 
-/*
+
+if ($data_sett_kamar['proses_kamar'] == 1)
+{
 
 // harga_1 (pertama)
 if ($level_harga == 'harga_1')
@@ -338,7 +340,7 @@ $subtotal = $menginap * $harga_kamar6;
 $query65 = "INSERT INTO tbs_penjualan (session_id,no_reg,kode_barang,nama_barang,jumlah_barang,harga,subtotal,tipe_barang,potongan,tax,satuan,jam,tanggal) VALUES ('$session_id','$no_reg','$bed','$group_bed','$menginap','$harga_kamar6','$subtotal','Bed','0','0','$satuan_bed','$jam','$tanggal_sekarang')";
       if ($db->query($query65) === TRUE) 
       {
-  
+          
       } 
         else 
       {
@@ -360,7 +362,7 @@ $subtotal = $menginap * $harga_kamar7;
 $query65 = "INSERT INTO tbs_penjualan (session_id,no_reg,kode_barang,nama_barang,jumlah_barang,harga,subtotal,tipe_barang,potongan,tax,satuan,jam,tanggal) VALUES ('$session_id','$no_reg','$bed','$group_bed','$menginap','$harga_kamar7','$subtotal','Bed','0','0','$satuan_bed','$jam','$tanggal_sekarang')";
       if ($db->query($query65) === TRUE) 
       {
-  
+        
       } 
         else 
       {
@@ -370,10 +372,7 @@ $query65 = "INSERT INTO tbs_penjualan (session_id,no_reg,kode_barang,nama_barang
 }
 // harga_7 (pertama)
 
-*/
-
-// DI NON AKTIFKAN KARENA PENAMBAHAN KAMAR NANTNYA AKAN INPUT DI TRANSAKSI PENJUALAN LANGSUNG -- SAMPAI SINI --
-// DI NON AKTIFKAN KARENA PENAMBAHAN KAMAR NANTNYA AKAN INPUT DI TRANSAKSI PENJUALAN LANGSUNG -- SAMPAI SINI --
+}
 
 
 

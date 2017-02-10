@@ -223,7 +223,9 @@ $operasi_hapus = angkadoang(isset($_POST['operasi_hapus']));
 $setting_lihat = angkadoang(isset($_POST['setting_lihat']));
 $setting_registrasi_lihat = angkadoang(isset($_POST['setting_registrasi_lihat']));
 $penetapan_petugas_lihat = angkadoang(isset($_POST['penetapan_petugas_lihat']));
-$printer_lihat = angkadoang(isset($_POST['printer_lihat']));
+echo $printer_lihat = angkadoang(isset($_POST['printer_lihat']));
+$kamar_lihat = angkadoang(isset($_POST['kamar_lihat']));
+
 $sub_operasi_lihat = angkadoang(isset($_POST['sub_operasi_lihat']));
 $sub_operasi_tambah = angkadoang(isset($_POST['sub_operasi_tambah']));
 $sub_operasi_edit = angkadoang(isset($_POST['sub_operasi_edit']));
@@ -461,10 +463,10 @@ $update_otoritas_rekam_medik->bind_param("iiiiiiiiiiiiii",
 $update_otoritas_rekam_medik->execute();
 
 
-$update_otoritas_setting = $db->prepare("UPDATE otoritas_setting SET setting_lihat = ?, setting_registrasi_lihat = ?, penetapan_petugas_lihat = ?, printer_lihat = ? WHERE id_otoritas = ?");
+$update_otoritas_setting = $db->prepare("UPDATE otoritas_setting SET setting_lihat = ?, setting_registrasi_lihat = ?, penetapan_petugas_lihat = ?, printer_lihat = ? , kamar_lihat = ? WHERE id_otoritas = ?");
 
-$update_otoritas_setting->bind_param("iiiii",
-    $setting_lihat, $setting_registrasi_lihat, $penetapan_petugas_lihat, $printer_lihat, $id);
+$update_otoritas_setting->bind_param("iiiiii",
+    $setting_lihat, $setting_registrasi_lihat, $penetapan_petugas_lihat, $printer_lihat, $kamar_lihat, $id);
 
 $update_otoritas_setting->execute();
 
@@ -516,8 +518,8 @@ $update_otoritas_tipe_produk->bind_param("iiiiii",
 
 $update_otoritas_tipe_produk->execute();
 
-
                 echo '<META HTTP-EQUIV="Refresh" Content="0; URL=hak_otoritas.php">';
+
 //Untuk Memutuskan Koneksi Ke Database
 mysqli_close($db);   
 ?>
