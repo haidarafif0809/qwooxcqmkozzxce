@@ -589,7 +589,7 @@ else{
 
 
 <div class="form-group col-sm-2"> <!-- start otoritas MENU RAWAT JALAN -->
-<label>Menu Rawat Jalan</label><br>
+<label>Penjualan Rawat Jalan</label><br>
 
 <?php 
 
@@ -608,7 +608,7 @@ else{
 </div> <!-- / of otoritas MENU RAWAT JALAN -->
 
 <div class="form-group col-sm-2"> <!-- start otoritas MENU RAWAT INAP -->
-<label>Menu Rawat Inap</label><br>
+<label>Penjualan Rawat Inap</label><br>
 
 <?php 
 
@@ -629,7 +629,7 @@ else{
 
 
 <div class="form-group col-sm-2"> <!-- start otoritas MENU UGD -->
-<label>Menu UGD</label><br>
+<label>Penjualan UGD</label><br>
 
 <?php 
 
@@ -650,7 +650,7 @@ else{
 
 
 <div class="form-group col-sm-2"> <!-- start otoritas MENU Apotek -->
-<label>Menu Apotek</label><br>
+<label>Penjualan Apotek</label><br>
 
 <?php 
 
@@ -670,7 +670,7 @@ else{
 
 
 <div class="form-group col-sm-2"> <!-- start otoritas MENU Apotek -->
-<label>Menu Laboratorium</label><br>
+<label>Penjualan Laboratorium</label><br>
 
 <?php 
 
