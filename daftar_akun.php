@@ -277,7 +277,7 @@ $satuan_hapus = mysqli_num_rows($pilih_akses_satuan_hapus);
 				$data1 = mysqli_fetch_array($query2);
 
 			echo "<tr class='tr-id-". $data['id'] ."'>
-			<td>". $data['kode_daftar_akun'] ."</td>
+			<td><span id='text-kode-".$data['id']."'>". $data['kode_daftar_akun'] ."</span></td>
 
 			<td class='edit-nama' data-id='".$data['id']."'><span id='text-nama-". $data['id'] ."'>". $data['nama_daftar_akun'] ."</span>
 			<input type='hidden' id='input-nama-".$data['id']."' value='".$data['nama_daftar_akun']."' class='input_nama' data-id='".$data['id']."' autofocus=''></td>
@@ -370,7 +370,7 @@ $satuan_hapus = mysqli_num_rows($pilih_akses_satuan_hapus);
 
 
     if ($satuan_hapus > 0){
-			echo "<td> <button class='btn btn-danger btn-hapus' data-id='". $data['id'] ."' data-akun='". $data['nama_daftar_akun'] ."'> <span class='glyphicon glyphicon-trash'> </span> Hapus </button> </td>
+			echo "<td> <button class='btn btn-danger btn-hapus' data-id='". $data['id'] ."' data-akun='". $data['nama_daftar_akun'] ."' kode-akun='". $data['kode_daftar_akun'] ."'> <span class='glyphicon glyphicon-trash'> </span> Hapus </button> </td>
 
 			</tr>";
 		}
@@ -403,26 +403,38 @@ mysqli_close($db);
     $(document).ready(function(){
 	//fungsi hapus data 
 		$(document).on('click','.btn-hapus',function(){
-		var nama_group = $(this).attr("data-akun");
-		var id = $(this).attr("data-id");
-		$("#nama_group").val(nama_group);
-		$("#id_hapus").val(id);
-		$("#modal_hapus").modal('show');
-		
+
+
+      var kode_akun = $(this).attr("kode-akun");
+      var nama_group = $(this).attr("data-akun");
+  		var id = $(this).attr("data-id");
+  		$("#nama_group").val(nama_group);
+  		$("#id_hapus").val(id);
+
+      $.post("lihat_kode_akun.php",{kode_akun:kode_akun},function(data){
+
+        if (data > 0) {
+          alert('Anda Tidak Bisa Menghapus Akun '+nama_group+' Karena Sudah Terpakai !');
+        }
+        else{
+          $("#modal_hapus").modal('show');
+        }
+
+      });
 		
 		});
 
 
-    $(document).on('click','.btn_jadi_hapus',function(){
+    $(document).on('click','#btn_jadi_hapus',function(){
 		
 		var id = $("#id_hapus").val();
+    $(".tr-id-"+id+"").remove();
 		$.post("hapus_daftar_akun.php",{id:id},function(data){
-		if (data != "") {
 		
-		$(".tr-id-"+id+"").remove();
+		
 		$("#modal_hapus").modal('hide');
 		
-		}
+
 
 		
 		});
