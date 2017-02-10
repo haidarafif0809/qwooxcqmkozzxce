@@ -588,6 +588,107 @@ else{
 
 
 
+<div class="form-group col-sm-2"> <!-- start otoritas MENU RAWAT JALAN -->
+<label>Penjualan Rawat Jalan</label><br>
+
+<?php 
+
+if ($data_otoritas['menu_rawat_jalan'] == '1'){
+    echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="checkbox251" name="menu_rawat_jalan" checked="">
+    <label for="checkbox251">Lihat</label> <br>';
+}
+
+else{
+    echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="checkbox251" name="menu_rawat_jalan">
+    <label for="checkbox251">Lihat</label> <br>';  
+}
+
+ ?>
+
+</div> <!-- / of otoritas MENU RAWAT JALAN -->
+
+<div class="form-group col-sm-2"> <!-- start otoritas MENU RAWAT INAP -->
+<label>Penjualan Rawat Inap</label><br>
+
+<?php 
+
+if ($data_otoritas['menu_rawat_inap'] == '1'){
+    echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="checkbox2512" name="menu_rawat_inap" checked="">
+    <label for="checkbox2512">Lihat</label> <br>';
+}
+
+else{
+    echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="checkbox2512" name="menu_rawat_inap">
+    <label for="checkbox2512">Lihat</label> <br>';  
+}
+
+ ?>
+
+</div> <!-- / of otoritas MENU RAWAT INAP -->
+
+
+
+<div class="form-group col-sm-2"> <!-- start otoritas MENU UGD -->
+<label>Penjualan UGD</label><br>
+
+<?php 
+
+if ($data_otoritas['menu_ugd'] == '1'){
+    echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="checkbox25123" name="menu_ugd" checked="">
+    <label for="checkbox25123">Lihat</label> <br>';
+}
+
+else{
+    echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="checkbox25123" name="menu_ugd">
+    <label for="checkbox25123">Lihat</label> <br>';  
+}
+
+ ?>
+
+</div> <!-- / of otoritas MENU UGD -->
+
+
+
+<div class="form-group col-sm-2"> <!-- start otoritas MENU Apotek -->
+<label>Penjualan Apotek</label><br>
+
+<?php 
+
+if ($data_otoritas['menu_apotek'] == '1'){
+    echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="checkbox251234" name="menu_apotek" checked="">
+    <label for="checkbox251234">Lihat</label> <br>';
+}
+
+else{
+    echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="checkbox251234" name="menu_apotek">
+    <label for="checkbox251234">Lihat</label> <br>';  
+}
+
+ ?>
+
+</div> <!-- / of otoritas MENU Apotek -->
+
+
+<div class="form-group col-sm-2"> <!-- start otoritas MENU Apotek -->
+<label>Penjualan Laboratorium</label><br>
+
+<?php 
+
+if ($data_otoritas['menu_laboratorium'] == '1'){
+    echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="checkbox2512345" name="menu_laboratorium" checked="">
+    <label for="checkbox2512345">Lihat</label> <br>';
+}
+
+else{
+    echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="checkbox2512345" name="menu_laboratorium">
+    <label for="checkbox2512345">Lihat</label> <br>';  
+}
+
+ ?>
+
+</div> <!-- / of otoritas MENU Apotek -->
+
+
 <div class="form-group col-sm-12">
     
 </div>
