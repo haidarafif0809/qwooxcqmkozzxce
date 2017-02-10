@@ -142,6 +142,7 @@ $satuan_hapus = mysqli_num_rows($pilih_akses_satuan_hapus);
 		
 			while ($data = mysqli_fetch_array($perintah))
 			{
+				$default = '-';
 			echo "<tr class='tr-id-". $data['id'] ."'>
 			<td>". $data['kode_grup_akun'] ."</td>
 
@@ -152,7 +153,7 @@ $satuan_hapus = mysqli_num_rows($pilih_akses_satuan_hapus);
 			<select style='display:none' id='select-parent-".$data['id']."' value='".$data['parent']."' class='select-parent' data-id='".$data['id']."' autofocus=''>";
 
 			echo '<option value="'. $data['kode_grup_akun'] .'"> '. $data['kode_grup_akun'] .'</option>';
-			
+			echo '<option value="'. $default .'"> '. $default .'</option>';
 			$query2 = $db->query("SELECT kode_grup_akun FROM grup_akun");
 			
 			while($data2 = mysqli_fetch_array($query2))
