@@ -323,19 +323,13 @@ AND no_reg = '$no_reg'");
           if ($tunai_i >= 0) 
 
             {
-
-              $delete_penjualan = $db->query("DELETE FROM penjualan WHERE no_reg = '$no_reg' ");
-
-              $ket_jurnal = "Penjualan Rawat Inap Lunas ".$ambil_kode_pelanggan['nama_pelanggan']." ";
-
-              $stmt = $db->prepare("INSERT INTO penjualan (no_faktur, no_reg, penjamin, apoteker, perawat, petugas_lain, dokter, kode_gudang, kode_pelanggan, total, tanggal, jam, user, sales, status, potongan, tax, sisa, cara_bayar, tunai, status_jual_awal, keterangan, ppn,jenis_penjualan,nama,biaya_admin, no_faktur_jurnal, keterangan_jurnal) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,'Lunas',?,?,?,?,?,'Tunai',?,?,'Rawat Inap',?,?,?,?)");
+                $ket_jurnal = "Penjualan Rawat Inap Lunas ".$ambil_kode_pelanggan['nama_pelanggan']." ";
+            
+             $stmt = $db->prepare("UPDATE penjualan SET apoteker = ?, perawat = ?, petugas_lain = ?, biaya_admin = ?, kode_gudang = ?,kode_pelanggan = ? , total = ?, jam = ?, status = 'Lunas', potongan = ?,  sisa = ?, cara_bayar = ?, tunai = ?, ppn = ?, status_jual_awal = 'Tunai', keterangan = ?, user = ? , tanggal = ?, no_faktur_jurnal = ?, keterangan_jurnal = ? WHERE no_faktur = ? AND no_reg = ?") ;
               
     // hubungkan "data" dengan prepared statements
-              $stmt->bind_param("sssssssssissssiiisisssiss",
-              $no_faktur,$no_reg,$penjamin,$petugas_farmasi, $petugas_paramedik, $petugas_lain, $dokter, $kode_gudang, $no_rm, $total, $tanggal, $jam_sekarang, $nama_petugas, $petugas_kasir, $potongan, $tax, $sisa, $cara_bayar, $pembayaran, $keterangan, $ppn_input,$nama_pasien,$biaya_admin, $no_jurnal, $ket_jurnal);
- 
-
-              $_SESSION['no_faktur']=$no_faktur;
+              $stmt->bind_param("sssisisiississssssss",
+                $petugas_farmasi, $petugas_paramedik, $petugas_lain, $biaya_admin, $kode_gudang,$no_rm,$total, $jam_sekarang, $potongan, $sisa_pembayaran, $cara_bayar, $pembayaran, $ppn_input, $keterangan, $nama_petugas, $tanggal,$no_jurnal,$ket_jurnal, $no_faktur,  $no_reg );
               
     // jalankan query
               $stmt->execute();
@@ -440,21 +434,16 @@ if ($potongan != "" || $potongan != 0 ) {
               else if ($tunai_i != 0)
               
             {
-              $nilai_piutang = $total - $pembayaran;
 
-               $delete_penjualan = $db->query("DELETE FROM penjualan WHERE no_reg = '$no_reg' ");
+          $nilai_piutang = $total - $pembayaran;
+          $ket_jurnal = "Penjualan Rawat Inap Piutang ".$ambil_kode_pelanggan['nama_pelanggan']." ";
+            
+             $stmt = $db->prepare("UPDATE penjualan SET apoteker = ?, perawat = ?, petugas_lain = ?, biaya_admin = ?, kode_gudang = ?,kode_pelanggan = ?, total = ?, jam = ?, status = 'Piutang', potongan = ?, kredit = ?, cara_bayar = ?, tunai = ?, ppn = ?, status_jual_awal = 'Kredit', keterangan = ?, user = ?, nilai_kredit = ?,tanggal = ?, no_faktur_jurnal = ?, keterangan_jurnal = ? WHERE no_faktur = ? AND no_reg = ?") ;
               
-              $ket_jurnal = "Penjualan Rawat Inap Piutang ".$ambil_kode_pelanggan['nama_pelanggan']." ";
-
-             $stmt = $db->prepare("INSERT INTO penjualan (no_faktur, no_reg, penjamin, apoteker, perawat, petugas_lain, dokter, kode_gudang, kode_pelanggan, total, tanggal, jam, user, sales, status, potongan, tax, kredit, nilai_kredit, cara_bayar, tunai, status_jual_awal, keterangan, ppn,jenis_penjualan,nama,tanggal_jt,biaya_admin, no_faktur_jurnal, keterangan_jurnal) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,'Piutang',?,?,?,?,?,?,'Kredit',?,?,'Rawat Inap',?,?,?,?,?)");
-              
-    // hubungkan "data" dengan prepared statements
-              $stmt->bind_param("sssssssssissssiiiisissssiss",
-              $no_faktur,$no_reg,$penjamin,$petugas_farmasi, $petugas_paramedik, $petugas_lain, $dokter, $kode_gudang, $no_rm, $total, $tanggal, $jam_sekarang, $nama_petugas, $petugas_kasir, $potongan, $tax, $nilai_piutang, $nilai_piutang, $cara_bayar, $pembayaran, $keterangan, $ppn_input,$nama_pasien,$tanggal_jt,$biaya_admin, $no_jurnal, $ket_jurnal);
-
- 
-
-              $_SESSION['no_faktur']=$no_faktur;
+      
+  // hubungkan "data" dengan prepared statements
+              $stmt->bind_param("sssisisiississsisssss",
+                $petugas_farmasi, $petugas_paramedik, $petugas_lain, $biaya_admin, $kode_gudang,$kode_pelanggan, $total, $jam_sekarang, $potongan, $nilai_piutang, $cara_bayar, $pembayaran, $ppn_input, $keterangan, $nama_petugas, $nilai_piutang,$tanggal,$no_jurnal,$ket_jurnal, $no_faktur,$no_reg );
               
     // jalankan query
               $stmt->execute();
@@ -625,7 +614,8 @@ $query = $db->query("UPDATE bed SET sisa_bed = sisa_bed + 1 WHERE nama_kamar = '
 // END UPDATE KAMAR
 
 
-    $query3 = $db->query("DELETE  FROM tbs_penjualan WHERE no_reg = '$no_reg' ");
+    $query3 = $db->query("DELETE FROM tbs_penjualan WHERE no_reg = '$no_reg'  ");
+
     $query30 = $db->query("DELETE  FROM tbs_fee_produk WHERE no_reg = '$no_reg' ");
     $hapus_tbs_operasi = $db->query("DELETE  FROM tbs_operasi WHERE no_reg = '$no_reg'");
     $hapus_tbs_detail_operasi = $db->query("DELETE  FROM tbs_detail_operasi WHERE no_reg = '$no_reg'");
