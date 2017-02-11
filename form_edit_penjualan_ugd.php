@@ -3875,8 +3875,8 @@ $(document).ready(function(){
     $.post("cek_total_seluruh_raja.php",{no_reg:no_reg},function(data1){
   
         if (data1 == 1) {
-                 $.post("cek_total_seluruh.php",{no_reg:no_reg},function(data){
-                data = data.replace(/\s+/g, '');
+                 $.post("cek_total_bayar_pesanan_barang.php",{no_faktur: no_faktur,no_reg:no_reg},function(data){
+                    data = data.replace(/\s+/g, '');
 
                   $("#total2").val(tandaPemisahTitik(data))
 
