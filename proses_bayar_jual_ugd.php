@@ -606,9 +606,18 @@ else
 
     $update_registrasi = $db->query("UPDATE registrasi SET status = 'Sudah Pulang' WHERE no_reg ='$no_reg'");
 
+// coding untuk memasukan history_tbs dan menghapus tbs
+
+    $tbs_penjualan_masuk = $db->query("INSERT INTO history_tbs_penjualan (no_reg,kode_barang,nama_barang,jumlah_barang,harga,subtotal,tipe_barang,tanggal,jam,potongan,tax,session_id,satuan,dosis) SELECT no_reg,kode_barang,nama_barang,jumlah_barang,harga,subtotal,tipe_barang,tanggal,jam,potongan,tax,session_id,satuan,dosis FROM tbs_penjualan  WHERE no_reg = '$no_reg' ");
+
+    $tbs_fee_masuk = $db->query(" INSERT INTO history_tbs_fee_produk 
+      (no_reg,no_rm,nama_petugas,kode_produk,nama_produk,jumlah_fee,tanggal,jam,waktu,session_id) SELECT no_reg,no_rm,nama_petugas,kode_produk,nama_produk,jumlah_fee,tanggal,jam,waktu,session_id FROM tbs_fee_produk WHERE no_reg = '$no_reg'");
+
 
     $query3 = $db->query("DELETE  FROM tbs_penjualan WHERE  no_reg = '$no_reg' ");
     $query30 = $db->query("DELETE  FROM tbs_fee_produk WHERE  no_reg = '$no_reg' ");
+// end coding untuk memasukan history_tbs dan menghapus tbs
+
 
 }//braket cek subtotal (di proses)
 

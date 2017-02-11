@@ -664,11 +664,26 @@ else
 $query = $db->query("UPDATE bed SET sisa_bed = sisa_bed + 1 WHERE nama_kamar = '$bed' AND group_bed = '$group_bed'");
 // END UPDATE KAMAR
 
+// coding untuk memasukan history_tbs dan menghapus tbs
 
-    $query3 = $db->query("DELETE  FROM tbs_penjualan WHERE no_reg = '$no_reg' ");
-    $query30 = $db->query("DELETE  FROM tbs_fee_produk WHERE no_reg = '$no_reg' ");
-    $hapus_tbs_operasi = $db->query("DELETE  FROM tbs_operasi WHERE no_reg = '$no_reg'");
-    $hapus_tbs_detail_operasi = $db->query("DELETE  FROM tbs_detail_operasi WHERE no_reg = '$no_reg'");
+    $tbs_penjualan_masuk = $db->query("INSERT INTO history_tbs_penjualan (no_reg,kode_barang,nama_barang,jumlah_barang,harga,subtotal,tipe_barang,tanggal,jam,potongan,tax,session_id,satuan,dosis) SELECT no_reg,kode_barang,nama_barang,jumlah_barang,harga,subtotal,tipe_barang,tanggal,jam,potongan,tax,session_id,satuan,dosis FROM tbs_penjualan  WHERE no_reg = '$no_reg' ");
+
+    $tbs_fee_masuk = $db->query(" INSERT INTO history_tbs_fee_produk 
+      (no_reg,no_rm,nama_petugas,kode_produk,nama_produk,jumlah_fee,tanggal,jam,waktu,session_id) SELECT no_reg,no_rm,nama_petugas,kode_produk,nama_produk,jumlah_fee,tanggal,jam,waktu,session_id FROM tbs_fee_produk WHERE no_reg = '$no_reg'");
+
+    $tbs_detail_operasi_masuk = $db->query(" INSERT INTO history_tbs_detail_operasi (id_detail_operasi,id_user, id_sub_operasi, id_operasi, petugas_input, no_reg, waktu, id_tbs_operasi) SELECT id_detail_operasi,id_user, id_sub_operasi, id_operasi, petugas_input, no_reg, waktu, id_tbs_operasi FROM tbs_detail_operasi WHERE no_reg = '$no_reg'");
+
+    $tbs_operasi_masuk = $db->query(" INSERT INTO history_tbs_operasi (sub_operasi,petugas_input, no_reg, harga_jual, operasi, waktu) SELECT sub_operasi,petugas_input, no_reg, harga_jual, operasi, waktu FROM tbs_operasi WHERE no_reg = '$no_reg' ");
+
+
+    $tbs_penjualan_hapus = $db->query("DELETE  FROM tbs_penjualan WHERE no_reg = '$no_reg' ");
+    $tbs_fee_hapus = $db->query("DELETE  FROM tbs_fee_produk WHERE no_reg = '$no_reg' ");
+
+    $tbs_detail_operasi_hapuss = $db->query("DELETE  FROM tbs_operasi WHERE no_reg = '$no_reg'");
+    $tbs_operasi_hapuss = $db->query("DELETE  FROM tbs_detail_operasi WHERE no_reg = '$no_reg'");
+
+// end coding untuk memasukan history_tbs dan menghapus tbs
+
 
 }// braket cek subtotal (di proses)
 
