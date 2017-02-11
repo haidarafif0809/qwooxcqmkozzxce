@@ -31,7 +31,7 @@ if ($cek_jumlah_bulan == 1) {
  }
 //ambil bulan dari tanggal penjualan terakhir
 
- $bulan_terakhir = $db->query("SELECT MONTH(tanggal) as bulan FROM penjualan ORDER BY id DESC LIMIT 1");
+ $bulan_terakhir = $db->query("SELECT MONTH(waktu_input) as bulan FROM penjualan ORDER BY id DESC LIMIT 1");
  $v_bulan_terakhir = mysqli_fetch_array($bulan_terakhir);
 
 //ambil nomor  dari penjualan terakhir
@@ -489,8 +489,19 @@ else
 }
 */
 
-    $query3 = $db->query("DELETE FROM tbs_penjualan WHERE session_id = '$session_id' AND no_reg = '' ");
-    $query3 = $db->query("DELETE FROM tbs_fee_produk WHERE session_id = '$session_id' AND no_reg = '' AND no_rm = '$no_rm'");
+
+// coding untuk memasukan history_tbs dan menghapus tbs
+
+    $tbs_penjualan_masuk = $db->query("INSERT INTO history_tbs_penjualan (no_reg,kode_barang,nama_barang,jumlah_barang,harga,subtotal,tipe_barang,tanggal,jam,potongan,tax,session_id,satuan,dosis) SELECT no_reg,kode_barang,nama_barang,jumlah_barang,harga,subtotal,tipe_barang,tanggal,jam,potongan,tax,session_id,satuan,dosis FROM tbs_penjualan  WHERE session_id = '$session_id' AND (no_reg = '' OR no_reg IS NULL) AND lab = 'Laboratorium' ");
+
+    $tbs_fee_masuk = $db->query(" INSERT INTO history_tbs_fee_produk 
+      (no_reg,no_rm,nama_petugas,kode_produk,nama_produk,jumlah_fee,tanggal,jam,waktu,session_id) SELECT no_reg,no_rm,nama_petugas,kode_produk,nama_produk,jumlah_fee,tanggal,jam,waktu,session_id FROM tbs_fee_produk WHERE session_id = '$session_id' AND (no_reg = '' OR no_reg IS NULL)  ");
+
+
+    $query3 = $db->query("DELETE FROM tbs_penjualan WHERE session_id = '$session_id' AND (no_reg = '' OR no_reg IS NULL) AND lab = 'Laboratorium' ");
+    $query3 = $db->query("DELETE FROM tbs_fee_produk WHERE session_id = '$session_id' AND (no_reg = '' OR no_reg IS NULL) ");
+// end coding untuk memasukan history_tbs dan menghapus tbs
+
 
 
     // If we arrive here, it means that no exception was thrown
