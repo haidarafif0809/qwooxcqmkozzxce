@@ -272,7 +272,7 @@ $no_jurnal = no_jurnal();
 
 
 
-    $query = $db->query("SELECT * FROM tbs_penjualan WHERE session_id = '$session_id' AND no_reg = '$no_reg'");
+    $query = $db->query("SELECT * FROM tbs_penjualan WHERE no_reg = '$no_reg'");
     while ($data = mysqli_fetch_array($query))
       {
 
