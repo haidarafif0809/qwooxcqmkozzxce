@@ -568,6 +568,9 @@ else
       }
 
 
+
+
+
 // IBSERT HASIL OPERASI
 
           $tbs_opsss = $db->query("DELETE FROM hasil_operasi WHERE no_reg = '$no_reg'");
@@ -607,6 +610,71 @@ else
       }
 
 
+
+
+   // history tbs penjulan 
+         $delete_history_tbs_penjualan = $db->query("DELETE FROM history_edit_tbs_penjualan WHERE no_reg = '$no_reg' ");
+
+
+         $history_edit_tbs_penjualan = "INSERT INTO history_edit_tbs_penjualan (session_id,no_faktur,no_reg,kode_barang,nama_barang,jumlah_barang,satuan,harga,subtotal,potongan,tax,hpp,tipe_barang,dosis,tanggal,jam,lab) SELECT session_id,no_faktur,no_reg,kode_barang,nama_barang,jumlah_barang,satuan,harga,subtotal,potongan,tax,hpp,tipe_barang,dosis,tanggal,jam,lab FROM tbs_penjualan WHERE no_reg = '$no_reg' ";
+
+        if ($db->query($history_edit_tbs_penjualan) === TRUE) {
+        } 
+
+        else {
+        echo "Error: " . $history_edit_tbs_penjualan . "<br>" . $db->error;
+        }
+        // end
+
+           // history tbs fee produk 
+
+
+        $delete_history_tbs_fee_produk = $db->query("DELETE FROM history_edit_tbs_fee_produk WHERE no_reg = '$no_reg' ");
+
+
+         $history_edit_tbs_fee_produk = "INSERT INTO history_edit_tbs_fee_produk (session_id,nama_petugas,no_faktur,kode_produk,nama_produk,jumlah_fee,tanggal,waktu,jam,no_reg,no_rm) SELECT session_id,nama_petugas,no_faktur,kode_produk,nama_produk,jumlah_fee,tanggal,waktu,jam,no_reg,no_rm FROM tbs_fee_produk WHERE no_reg = '$no_reg' ";
+
+        if ($db->query($history_edit_tbs_fee_produk) === TRUE) {
+        } 
+
+        else {
+        echo "Error: " . $history_edit_tbs_fee_produk . "<br>" . $db->error;
+        }
+
+        // end
+
+
+      // history tbs_fee_masuk 
+
+ $delete_history_tbs_detail_operasi = $db->query("DELETE FROM history_edit_tbs_detail_operasi WHERE no_reg = '$no_reg' ");
+
+    $history_edit_tbs_detail_operasi = "INSERT INTO history_edit_tbs_detail_operasi (id_detail_operasi,id_user, id_sub_operasi, id_operasi, petugas_input, no_reg, waktu, id_tbs_operasi) SELECT id_detail_operasi,id_user, id_sub_operasi, id_operasi, petugas_input, no_reg, waktu, id_tbs_operasi FROM tbs_detail_operasi WHERE no_reg = '$no_reg'";
+
+        if ($db->query($history_edit_tbs_detail_operasi) === TRUE) {
+        } 
+
+        else {
+        echo "Error: " . $history_edit_tbs_detail_operasi . "<br>" . $db->error;
+        }
+ // end
+
+
+  // history tbs_fee_masuk 
+ $delete_history_tbs_operasi = $db->query("DELETE FROM history_edit_tbs_operasi WHERE no_reg = '$no_reg' ");
+
+    $history_edit_tbs_operasi = "INSERT INTO history_edit_tbs_operasi (sub_operasi,petugas_input, no_reg, harga_jual, operasi, waktu) SELECT sub_operasi,petugas_input, no_reg, harga_jual, operasi, waktu FROM tbs_operasi WHERE no_reg = '$no_reg' ";
+
+        if ($db->query($history_edit_tbs_operasi) === TRUE) {
+        } 
+
+        else {
+        echo "Error: " . $history_edit_tbs_operasi . "<br>" . $db->error;
+        }
+
+// end
+
+
+        
     $update_registrasi = $db->query("UPDATE registrasi SET status = 'Sudah Pulang' WHERE no_reg ='$no_reg'");
 
 // UPDATE KAMAR

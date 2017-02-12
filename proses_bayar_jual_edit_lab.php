@@ -142,7 +142,7 @@ $delete_agi1 = $db->query("DELETE FROM laporan_fee_produk WHERE no_faktur = '$no
 
 
 
-    $select_kode_pelanggan = $db->query("SELECT nama_pelanggan FROM pelanggan WHERE kode_pelanggan = '$no_rm'");
+    $select_kode_pelanggan = $db_pasien->query("SELECT nama_pelanggan FROM pelanggan WHERE kode_pelanggan = '$no_rm'");
     $ambil_kode_pelanggan = mysqli_fetch_array($select_kode_pelanggan);
 
 
@@ -199,7 +199,7 @@ $jumlah_tax = mysqli_fetch_array($sum_tax_tbs);
 $total_tax = $jumlah_tax['total_tax'];
 
     $ppn_input = stringdoang($_POST['ppn_input']);
-    $select_kode_pelanggan = $db->query("SELECT nama_pelanggan FROM pelanggan WHERE kode_pelanggan = '$no_rm'");
+    $select_kode_pelanggan = $db_pasien->query("SELECT nama_pelanggan FROM pelanggan WHERE kode_pelanggan = '$no_rm'");
     $ambil_kode_pelanggan = mysqli_fetch_array($select_kode_pelanggan);
 
 
@@ -303,11 +303,11 @@ $jumlah_tax = mysqli_fetch_array($sum_tax_tbs);
 $total_tax = $jumlah_tax['total_tax'];
 
     $ppn_input = stringdoang($_POST['ppn_input']);
-    $select_kode_pelanggan = $db->query("SELECT nama_pelanggan FROM pelanggan WHERE kode_pelanggan = '$no_rm'");
+    $select_kode_pelanggan = $db_pasien->query("SELECT nama_pelanggan FROM pelanggan WHERE kode_pelanggan = '$no_rm'");
     $ambil_kode_pelanggan = mysqli_fetch_array($select_kode_pelanggan);
 
     
-
+/*
 
 //PERSEDIAAN   
         $insert_jurnal = $db->query("INSERT INTO jurnal_trans (nomor_jurnal,waktu_jurnal,keterangan_jurnal,kode_akun_jurnal,debit,kredit,jenis_transaksi,no_faktur,approved,user_buat) VALUES ('".no_jurnal()."', '$tanggal_sekarang $jam_sekarang', 'Penjualan Laboratorium Piutang - $ambil_kode_pelanggan[nama_pelanggan]', '$ambil_setting[persediaan]', '0', '$total_hpp', 'Penjualan', '$no_faktur','1', '$user')");
@@ -378,7 +378,7 @@ if ($potongan != "" || $potongan != 0 ) {
    
 }
 
-
+*/
     // cek query
 if (!$stmt) 
       {
@@ -426,10 +426,45 @@ else
       }
 
 
-     
+     */
+
      
 }
-*/
+
+   // history tbs penjulan 
+
+
+        $deletehistory_tbs_penjualan = $db->query("DELETE FROM history_edit_tbs_penjualan WHERE no_faktur = '$no_faktur' AND lab = 'Laboratorium' ");
+
+
+         $history_tbs_penjualan = "INSERT INTO history_edit_tbs_penjualan (session_id,no_faktur,no_reg,kode_barang,nama_barang,jumlah_barang,satuan,harga,subtotal,potongan,tax,hpp,tipe_barang,dosis,tanggal,jam,lab) SELECT session_id,no_faktur,no_reg,kode_barang,nama_barang,jumlah_barang,satuan,harga,subtotal,potongan,tax,hpp,tipe_barang,dosis,tanggal,jam,lab FROM tbs_penjualan WHERE no_faktur = '$no_faktur' AND lab = 'Laboratorium' ";
+
+        if ($db->query($history_tbs_penjualan) === TRUE) {
+        } 
+
+        else {
+        echo "Error: " . $history_tbs_penjualan . "<br>" . $db->error;
+        }
+
+        // end
+
+           // history tbs fee produk 
+
+
+        $delete_history_tbs_fee_produk = $db->query("DELETE FROM history_edit_tbs_fee_produk WHERE no_faktur = '$no_faktur'  ");
+
+
+         $history_tbs_fee_produk = "INSERT INTO history_edit_tbs_fee_produk (session_id,nama_petugas,no_faktur,kode_produk,nama_produk,jumlah_fee,tanggal,waktu,jam,no_reg,no_rm) SELECT session_id,nama_petugas,no_faktur,kode_produk,nama_produk,jumlah_fee,tanggal,waktu,jam,no_reg,no_rm FROM tbs_fee_produk WHERE no_faktur = '$no_faktur'";
+
+        if ($db->query($history_tbs_fee_produk) === TRUE) {
+        } 
+
+        else {
+        echo "Error: " . $history_tbs_fee_produk . "<br>" . $db->error;
+        }
+
+        // end
+
 
     $query3 = $db->query("DELETE  FROM tbs_penjualan WHERE no_faktur = '$no_faktur' AND lab = 'Laboratorium' ");
 

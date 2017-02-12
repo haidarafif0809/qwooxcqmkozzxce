@@ -202,9 +202,10 @@ $no_jurnal = no_jurnal();
 
 
     }
-    
-      
-            $delete = $db->query("DELETE FROM detail_penjualan WHERE no_reg = '$no_reg'");
+          
+
+  
+  $delete = $db->query("DELETE FROM detail_penjualan WHERE no_reg = '$no_reg'");
             
             
    $query = $db->query("SELECT * FROM tbs_penjualan WHERE no_faktur = '$nomor_faktur' AND no_reg = '$no_reg'");
@@ -466,7 +467,41 @@ if ($potongan != "" || $potongan != 0 ) {
    
 }
 
+   // history tbs penjulan 
 
+
+        $deletehistory_tbs_penjualan = $db->query("DELETE FROM history_edit_tbs_penjualan WHERE no_reg = '$no_reg' ");
+
+
+         $history_tbs_penjualan = "INSERT INTO history_edit_tbs_penjualan (session_id,no_faktur,no_reg,kode_barang,nama_barang,jumlah_barang,satuan,harga,subtotal,potongan,tax,hpp,tipe_barang,dosis,tanggal,jam,lab) SELECT session_id,no_faktur,no_reg,kode_barang,nama_barang,jumlah_barang,satuan,harga,subtotal,potongan,tax,hpp,tipe_barang,dosis,tanggal,jam,lab FROM tbs_penjualan WHERE no_reg = '$no_reg' ";
+
+        if ($db->query($history_tbs_penjualan) === TRUE) {
+        } 
+
+        else {
+        echo "Error: " . $history_tbs_penjualan . "<br>" . $db->error;
+        }
+
+        // end
+
+           // history tbs fee produk 
+
+
+        $delete_history_tbs_fee_produk = $db->query("DELETE FROM history_edit_tbs_fee_produk WHERE no_reg = '$no_reg' ");
+
+
+         $history_tbs_fee_produk = "INSERT INTO history_edit_tbs_fee_produk (session_id,nama_petugas,no_faktur,kode_produk,nama_produk,jumlah_fee,tanggal,waktu,jam,no_reg,no_rm) SELECT session_id,nama_petugas,no_faktur,kode_produk,nama_produk,jumlah_fee,tanggal,waktu,jam,no_reg,no_rm FROM tbs_fee_produk WHERE no_reg = '$no_reg' ";
+
+        if ($db->query($history_tbs_fee_produk) === TRUE) {
+        } 
+
+        else {
+        echo "Error: " . $history_tbs_fee_produk . "<br>" . $db->error;
+        }
+
+        // end
+
+        
             
     $update_registrasi = $db->query("UPDATE registrasi SET status = 'Sudah Pulang' , nama_pasien = '$nama_pasien', no_rm = '$no_rm', alamat_pasien = '$data_pasien[alamat_sekarang]', hp_pasien = '$data_pasien[no_telp]' , umur_pasien = '$data_pasien[umur]' , jenis_kelamin = '$data_pasien[jenis_kelamin]' WHERE no_reg ='$no_reg'");
 
