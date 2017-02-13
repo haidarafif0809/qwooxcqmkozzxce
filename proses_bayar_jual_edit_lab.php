@@ -175,12 +175,13 @@ $delete_agi1 = $db->query("DELETE FROM laporan_fee_produk WHERE no_faktur = '$no
           if ($tunai_i >= 0) 
 
             {
-                        
-             $stmt = $db->prepare("UPDATE penjualan SET nama = ?, penjamin = ?, analis = ?, kode_pelanggan = ?, total = ?, tanggal = ?, jam = ?, petugas_edit = ?, sales = ?, status = 'Lunas', potongan = ?, tax = ?, sisa = ?, cara_bayar = ?, tunai = ?, status_jual_awal = 'Tunai', keterangan = ?, ppn = ?, biaya_admin = ?, waktu_edit = ? WHERE no_faktur = ?");
+             $piutang_1 = $total - $pembayaran;
+            
+             $stmt = $db->prepare("UPDATE penjualan SET nama = ?, penjamin = ?, analis = ?, kode_pelanggan = ?, total = ?, tanggal = ?, jam = ?, petugas_edit = ?, status = 'Lunas', potongan = ?, tax = ?, sisa = ?, cara_bayar = ?, tunai = ?, status_jual_awal = 'Tunai', keterangan = ?, ppn = ?, biaya_admin = ?, waktu_edit = ?, tanggal_jt = '' , kredit = '0' , nilai_kredit = '0' WHERE no_faktur = ?");
               
     // hubungkan "data" dengan prepared statements
-              $stmt->bind_param("ssssissssiiisississ",
-              $nama_pelanggan, $penjamin, $apoteker, $no_rm, $total, $tanggal_sekarang, $jam_sekarang, $user, $id_kasir, $potongan, $tax, $sisa, $cara_bayar, $pembayaran, $keterangan, $ppn_input,$biaya_admin, $waktu, $no_faktur);
+              $stmt->bind_param("ssssisssiiisississ",
+              $nama_pelanggan, $penjamin, $apoteker, $no_rm, $total, $tanggal_sekarang, $jam_sekarang, $user, $potongan, $tax, $sisa, $cara_bayar, $pembayaran, $keterangan, $ppn_input,$biaya_admin, $waktu ,$no_faktur);
                          
     // jalankan query
               $stmt->execute();
@@ -204,7 +205,7 @@ $total_tax = $jumlah_tax['total_tax'];
 
 
 
-//PERSEDIAAN    
+/*/PERSEDIAAN    
         $insert_jurnal = $db->query("INSERT INTO jurnal_trans (nomor_jurnal,waktu_jurnal,keterangan_jurnal,kode_akun_jurnal,debit,kredit,jenis_transaksi,no_faktur,approved,user_buat) VALUES ('".no_jurnal()."', '$tanggal_sekarang $jam_sekarang', 'Penjualan Laboratorium Tunai - $ambil_kode_pelanggan[nama_pelanggan]', '$ambil_setting[persediaan]', '0', '$total_hpp', 'Penjualan', '$no_faktur','1', '$user')");
         
 
@@ -266,10 +267,10 @@ if ($potongan != "" || $potongan != 0 ) {
         $insert_juranl = $db->query("INSERT INTO jurnal_trans (nomor_jurnal,waktu_jurnal,keterangan_jurnal,kode_akun_jurnal,debit,kredit,jenis_transaksi,no_faktur,approved,user_buat) VALUES ('".no_jurnal()."', '$tanggal_sekarang $jam_sekarang', 'Penjualan Laboratorium Tunai - $ambil_kode_pelanggan[nama_pelanggan]', '$ambil_setting[potongan_jual]', '$potongan', '0', 'Penjualan', '$no_faktur','1', '$user')");
 }
 
-            
+       */         
               
  }
-              
+          
 
 
             else if ($tunai_i < 0)
@@ -277,14 +278,15 @@ if ($potongan != "" || $potongan != 0 ) {
             {
               
              $pembayaran = stringdoang($_POST['pembayaran']);
-    $total = stringdoang($_POST['total']);
-    $piutang_1 = $total - $pembayaran;
+            $total = stringdoang($_POST['total']);
+            $piutang_1 = $total - $pembayaran;
 
-             $stmt = $db->prepare("UPDATE penjualan SET nama = ?, penjamin = ?, analis = ?, kode_pelanggan = ?, total = ?, tanggal = ?, jam = ?, petugas_edit = ?, sales = ?, status = 'Piutang', potongan = ?, tax = ?, kredit = ?, nilai_kredit = ?, cara_bayar = ?, tunai = ?, status_jual_awal = 'Kredit', keterangan = ?, ppn = ?, biaya_admin = ?, waktu_edit = ? WHERE no_faktur = ?");
+
+             $stmt = $db->prepare("UPDATE penjualan SET nama = ?, penjamin = ?, analis = ?, kode_pelanggan = ?, total = ?, tanggal = ?, jam = ?, petugas_edit = ?, status = 'Piutang', potongan = ?, tax = ?, kredit = ?, nilai_kredit = ?, cara_bayar = ?, tunai = ?, status_jual_awal = 'Kredit', keterangan = ?, ppn = ?, biaya_admin = ?, waktu_edit = ? , tanggal_jt = ? WHERE no_faktur = ?");
               
     // hubungkan "data" dengan prepared statements
-              $stmt->bind_param("ssssissssiiiisississ",
-              $nama_pelanggan, $penjamin, $apoteker, $no_rm, $total, $tanggal_sekarang, $jam_sekarang, $user, $id_kasir, $potongan, $tax, $piutang_1, $piutang_1, $cara_bayar, $pembayaran, $keterangan, $ppn_input,$biaya_admin, $waktu, $no_faktur);
+              $stmt->bind_param("ssssisssiiiisississs",
+              $nama_pelanggan, $penjamin, $apoteker, $no_rm, $total, $tanggal_sekarang, $jam_sekarang, $user, $potongan, $tax, $piutang_1, $piutang_1, $cara_bayar, $pembayaran, $keterangan, $ppn_input,$biaya_admin, $waktu,$tanggal_jt, $no_faktur);
                           
               // jalankan query
               $stmt->execute();

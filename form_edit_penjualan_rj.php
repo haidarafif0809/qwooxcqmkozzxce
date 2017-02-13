@@ -2160,7 +2160,7 @@ $("#cari_produk_penjualan").click(function(){
         /* var tax = $("#tax_rp").val();*/
         var cara_bayar = $("#carabayar1").val();
         var pembayaran = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah( $("#pembayaran_penjualan").val() ))));
-        var biaya_adm = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah( $("#biaya_adm").val() ))));
+        var biaya_adm = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah( $("#biaya_admin").val() ))));
         if (biaya_adm == '') {
           biaya_adm = 0;
         }
@@ -2312,7 +2312,7 @@ if (info == 1)
         /* var tax = $("#tax_rp").val();*/
         var cara_bayar = $("#carabayar1").val();
         var pembayaran = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah( $("#pembayaran_penjualan").val() ))));
-        var biaya_adm = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah( $("#biaya_adm").val() ))));
+        var biaya_adm = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah( $("#biaya_admin").val() ))));
         if (biaya_adm == '') {
           biaya_adm = 0;
         }
@@ -2735,7 +2735,7 @@ $(document).ready(function(){
         var keterangan = $("#keterangan").val();   
         var ber_stok = $("#ber_stok").val();   
         var ppn_input = $("#ppn_input").val();
-        var biaya_adm = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah( $("#biaya_adm").val() ))));
+        var biaya_adm = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah( $("#biaya_admin").val() ))));
         if (biaya_adm == '') {
           biaya_adm = 0;
         }

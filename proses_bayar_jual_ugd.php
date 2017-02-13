@@ -465,14 +465,15 @@ if ($potongan != "" || $potongan != 0 ) {
               else if ($tunai_i < 0)
               
             {
-
+                $kredit_s = $total - $pembayaran;
+                
               $ket_jurnal = "Penjualan ".$jenis_penjualan." Piutang ".$ambil_kode_pelanggan['nama_pelanggan']." ";
               
              $stmt = $db->prepare("INSERT INTO penjualan (no_faktur, no_reg, penjamin, apoteker, perawat, petugas_lain, dokter, kode_gudang, kode_pelanggan, total, tanggal, jam, user, sales, status, potongan, /*tax, */ kredit, cara_bayar, tunai, status_jual_awal, keterangan, ppn,jenis_penjualan,nama,tanggal_jt,biaya_admin,no_faktur_jurnal,keterangan_jurnal) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,'Piutang',?,/*?,*/?,?,?,'Kredit',?,?,?,?,?,?,?,?)");
               
     // hubungkan "data" dengan prepared statements
               $stmt->bind_param("sssssssssissssiisissssssss",
-              $no_faktur,$no_reg,$penjamin,$petugas_farmasi, $petugas_paramedik, $petugas_lain, $dokter, $kode_gudang, $no_rm, $total, $tanggal_sekarang, $jam_sekarang, $nama_petugas, $id_user, $potongan, /*$tax,*/ $sisa_kredit, $cara_bayar, $pembayaran, $keterangan, $ppn_input,$jenis_penjualan,$nama_pasien,$tanggal_jt,$biaya_admin,$no_jurnal,$ket_jurnal);
+              $no_faktur,$no_reg,$penjamin,$petugas_farmasi, $petugas_paramedik, $petugas_lain, $dokter, $kode_gudang, $no_rm, $total, $tanggal_sekarang, $jam_sekarang, $nama_petugas, $id_user, $potongan, /*$tax,*/ $kredit_s, $cara_bayar, $pembayaran, $keterangan, $ppn_input,$jenis_penjualan,$nama_pasien,$tanggal_jt,$biaya_admin,$no_jurnal,$ket_jurnal);
  
 
               $_SESSION['no_faktur']=$no_faktur;
