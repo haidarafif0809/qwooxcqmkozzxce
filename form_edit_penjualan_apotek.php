@@ -1867,7 +1867,7 @@ else if (tanggal_jt == "")
 else
        {
 
-   $.post("cek_simpan_subtotal_penjualan.php",{total:total,no_reg:no_reg,no_faktur:no_faktur,potongan:potongan,biaya_adm:biaya_admin},function(data) {
+   $.post("cek_simpan_subtotal_jual_editapotek.php",{total:total,no_faktur:no_faktur,potongan:potongan,biaya_adm:biaya_admin},function(data) {
 
   if (data == 1) {
 

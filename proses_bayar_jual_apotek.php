@@ -315,7 +315,7 @@ if ($potongan != "" || $potongan != 0 ) {
             else if ($tunai_i < 0)
               
             {
-              
+              $kredit_s = $total - $pembayaran;
               $ket_jurnal = "Penjualan Apotek Piutang ".$ambil_kode_pelanggan['nama_pelanggan']." ";
               
               
@@ -323,7 +323,7 @@ if ($potongan != "" || $potongan != 0 ) {
               
 
               $stmt->bind_param("sssssssisssssiiisississs",
-              $no_faktur,$penjamin,$no_resep,$resep_dokter, $apoteker, $kode_gudang, $no_rm, $total , $tanggal_sekarang, $tanggal_jt, $jam_sekarang, $user, $id_kasir, $potongan, /*$tax,*/ $sisa_kredit, $sisa_kredit, $cara_bayar, $pembayaran, $keterangan, $ppn_input,$biaya_admin,$no_jurnal,$ket_jurnal,$analis);
+              $no_faktur,$penjamin,$no_resep,$resep_dokter, $apoteker, $kode_gudang, $no_rm, $total , $tanggal_sekarang, $tanggal_jt, $jam_sekarang, $user, $id_kasir, $potongan, /*$tax,*/ $kredit_s, $kredit_s, $cara_bayar, $pembayaran, $keterangan, $ppn_input,$biaya_admin,$no_jurnal,$ket_jurnal,$analis);
 
               
 

@@ -595,16 +595,6 @@ if ($potongan != "" || $potongan != 0 ) {
 
 
     // cek query
-if (!$stmt) 
-      {
-        die('Query Error : '.$db->errno.
-          ' - '.$db->error);
-      }
-
-else 
-      {
-    
-      }
 
 
     $update_registrasi = $db->query("UPDATE registrasi SET status = 'Sudah Pulang' WHERE no_reg ='$no_reg'");

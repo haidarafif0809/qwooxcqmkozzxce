@@ -1870,7 +1870,14 @@ if (jumlah_barang == ''){
         var penjamin = $("#penjamin").val()
         var sisa_pembayaran = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#sisa_pembayaran_penjualan").val()))));
         var kredit = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#kredit").val())))); 
+            var kode_pelanggan = $("#kd_pelanggan1").val();
+    if (kode_pelanggan != 'Umum') {
+      var kode_pelanggan = kode_pelanggan.substr(0, kode_pelanggan.indexOf('('));
+    }
+    else
+    {
         var kode_pelanggan = $("#kd_pelanggan1").val();
+    }  
         var tanggal_jt = $("#tanggal_jt").val();
         var total = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#total1").val())))); 
         var total2 = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah( $("#total2").val() )))); 
@@ -2081,7 +2088,7 @@ alert("Silakan Bayar Piutang");
 
  $.post("cek_subtotal_lab.php",{total:total,potongan:potongan,tax:tax,biaya_admin:biaya_admin},function(data) {
 
-  if (data == "Oke") {
+  if (data == 1) {
 
    $.post("proses_bayar_tunai_cetak_langsung_lab.php",{biaya_admin:biaya_admin,total2:total2,sisa_pembayaran:sisa_pembayaran,kredit:kredit,kode_pelanggan:kode_pelanggan,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,cara_bayar:cara_bayar,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,total_hpp:total_hpp,harga:harga,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,apoteker:apoteker,penjamin:penjamin, nama_pelanggan:nama_pelanggan},function(info) {
 
@@ -2109,7 +2116,7 @@ alert("Silakan Bayar Piutang");
   }
   else{
     alert("Maaf Subtotal Penjualan Tidak Sesuai, Silakan Tunggu Sebentar!");       
-        window.location.href="formpenjualan.php";
+        window.location.href="form_penjualan_lab.php";
   }
 
  });
@@ -2175,7 +2182,14 @@ alert("Silakan Bayar Piutang");
        var sisa =  pembayaran - total; 
 
        var sisa_kredit = total - pembayaran;
-      
+        var kode_pelanggan = $("#kd_pelanggan1").val();
+    if (kode_pelanggan != 'Umum') {
+      var kode_pelanggan = kode_pelanggan.substr(0, kode_pelanggan.indexOf('('));
+    }
+    else
+    {
+        var kode_pelanggan = $("#kd_pelanggan1").val();
+    }  
        
 
        if (tanggal_jt == "")
@@ -2205,7 +2219,7 @@ alert("Silakan Bayar Piutang");
  $.post("cek_subtotal_lab.php",{total:total,potongan:potongan,tax:tax,biaya_admin:biaya_admin},function(data) {
 
 
-  if (data == "1") 
+  if (data == 1) 
   {
 
 
@@ -2675,7 +2689,7 @@ $(document).ready(function(){
         
         if (sisa < 0 )
         {
-        $("#kredit").val( tandaPemisahTitik(sisa_kredit));
+        $("#kredit").val( tandaPemisahTitik(sisa_kredit));  
         $("#sisa_pembayaran_penjualan").val('0');
         $("#tanggal_jt").attr("disabled", false);
         
