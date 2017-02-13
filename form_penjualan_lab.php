@@ -864,7 +864,7 @@ Level 7
       <?php else: ?>
 
       <div class="row">
-          <div class="col-xs-6">          
+          <div class="col-xs-12">          
             <label style="font-size:15px"> <b> Subtotal </b></label><br>
             <input style="height:25px;font-size:15px" type="text" name="total" id="total2" class="form-control" placeholder="Total" readonly="" >
           </div>
@@ -875,7 +875,7 @@ Level 7
 
                   ?>
 
-          <div class="col-xs-6">
+          <div class="col-xs-6" style="display: none">
             <label>Biaya Admin </label><br>
               <select class="form-control chosen" id="biaya_admin_select" name="biaya_admin_select" >
               <option value="0"> Silahkan Pilih </option>
@@ -893,12 +893,12 @@ Level 7
       
       <div class="row">
 
-          <div class="col-xs-6">          
+          <div class="col-xs-6" style="display: none">          
             <label>Biaya Admin (Rp)</label>
             <input type="text" name="biaya_admin_rupiah" style="height:15px;font-size:15px" id="biaya_admin" class="form-control" placeholder="Biaya Admin Rp" autocomplete="off" onkeydown="return numbersonly(this, event);" onkeyup="javascript:tandaPemisahTitik(this);">
            </div>
 
-          <div class="col-xs-6">
+          <div class="col-xs-6" style="display: none">
             <label>Biaya Admin (%)</label>
             <input type="text" name="biaya_admin_persen" style="height:15px;font-size:15px" id="biaya_admin_persen" class="form-control" placeholder="Biaya Admin %" autocomplete="off" >
           </div>
