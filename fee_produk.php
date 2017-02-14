@@ -27,11 +27,16 @@ tr:nth-child(even){background-color: #f2f2f2}
 <?php
 include 'db.php';
 
-$pilih_akses_fee_produk = $db->query("SELECT komisi_produk_tambah FROM otoritas_master_data WHERE id_otoritas = '$_SESSION[otoritas_id]' AND komisi_produk_tambah = '1'");
-$fee_produk = mysqli_num_rows($pilih_akses_fee_produk);
+$pilih_akses_fee_produk = $db->query("SELECT komisi_produk_tambah, komisi_produk_edit FROM otoritas_master_data WHERE id_otoritas = '$_SESSION[otoritas_id]' ");
+$fee_produk = mysqli_fetch_array($pilih_akses_fee_produk);
 
-    if ($fee_produk > 0) {
-echo '<a href="form_fee_produk_petugas.php"  class="btn btn-info" > <i class="fa fa-plus"> </i> KOMISI PETUGAS</a> <a href="form_fee_produk_jabatan.php" class="btn btn-success" > <i class="fa fa-plus"> </i> KOMISI JABATAN</a>';
+if ($fee_produk['komisi_produk_tambah'] > 0) {
+  echo '<a href="form_fee_produk_petugas.php"  class="btn btn-info" > <i class="fa fa-plus"> </i> KOMISI PETUGAS</a> <a href="form_fee_produk_jabatan.php" class="btn btn-success" > <i class="fa fa-plus"> </i> KOMISI JABATAN</a>';
+}
+
+
+if ($fee_produk['komisi_produk_edit'] > 0) {
+  echo '<a href="form_edit_fee_produk_petugas.php"  class="btn btn-primary" > <i class="fa fa-edit"> </i> EDIT KOMISI JABATAN</a>';
 }
 
 ?>
