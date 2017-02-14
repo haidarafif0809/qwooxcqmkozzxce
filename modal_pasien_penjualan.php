@@ -39,9 +39,11 @@ $sql = "SELECT r.no_reg, r.no_rm, r.nama_pasien, r.jenis_pasien, r.tanggal, r.pe
 $sql.=" FROM registrasi r INNER JOIN user u ON r.dokter = u.nama INNER JOIN penjamin p ON r.penjamin = p.nama LEFT JOIN penjualan penj ON r.no_reg = penj.no_reg ";
 $sql.=" WHERE r.jenis_pasien = 'Rawat Jalan' AND  (r.status = 'Proses' OR r.status = 'Rujuk Keluar Ditangani') AND penj.no_faktur IS NULL ";
 
-    $sql.=" AND (r.no_reg = '".$requestData['search']['value']."'";  
-    $sql.=" OR r.no_rm = '".$requestData['search']['value']."' ";
-    $sql.=" OR r.nama_pasien LIKE '%".$requestData['search']['value']."%')";
+    $sql.=" AND (r.no_reg LIKE '".$requestData['search']['value']."%'";  
+    $sql.=" OR r.no_rm LIKE '".$requestData['search']['value']."%' ";
+    $sql.=" OR r.nama_pasien LIKE '".$requestData['search']['value']."%'";   
+    $sql.=" OR r.jenis_pasien LIKE '".$requestData['search']['value']."%' ";
+    $sql.=" OR r.tanggal LIKE '".$requestData['search']['value']."%' )";
 
 }
 
