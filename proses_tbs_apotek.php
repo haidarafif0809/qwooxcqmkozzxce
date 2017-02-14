@@ -372,7 +372,7 @@ $subtotal = $harga * $jumlah - $potongan_jadi;
 ?>
 <?php
   //menampilkan semua data yang ada pada tabel tbs penjualan dalam DB
-                $perintah = $db->query("SELECT tp.id,tp.kode_barang,tp.satuan,tp.nama_barang,tp.jumlah_barang,tp.harga,tp.subtotal,tp.potongan,tp.tax,tp.jam,tp.tipe_barang,s.nama FROM tbs_penjualan tp INNER JOIN satuan s ON tp.satuan = s.id WHERE tp.session_id = '$session_id' AND tp.no_reg IS NULL AND tp.lab IS NULL ORDER BY tp.id DESC LIMIT 1 ");
+                $perintah = $db->query("SELECT tp.id,tp.kode_barang,tp.satuan,tp.nama_barang,tp.jumlah_barang,tp.harga,tp.subtotal,tp.potongan,tp.tax,tp.jam,tp.tipe_barang,s.nama FROM tbs_penjualan tp INNER JOIN satuan s ON tp.satuan = s.id WHERE tp.session_id = '$session_id' AND (tp.no_reg IS NULL OR  tp.no_reg = '' ) AND tp.lab IS NULL ORDER BY tp.id DESC LIMIT 1 ");
                 
                 //menyimpan data sementara yang ada pada $perintah
                 
