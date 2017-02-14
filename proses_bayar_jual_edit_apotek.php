@@ -28,7 +28,7 @@ $no_faktur = stringdoang($_POST['no_faktur']);
 
 
 // menampilakn hasil penjumlah subtotal ALIAS total penjualan dari tabel tbs_penjualan berdasarkan data no faktur
- $query = $db->query("SELECT SUM(subtotal) AS total_penjualan FROM tbs_penjualan WHERE no_faktur = '$no_faktur' AND no_reg IS NULL AND lab IS NULL AND session_id IS NULL ");
+ $query = $db->query("SELECT SUM(subtotal) AS total_penjualan FROM tbs_penjualan WHERE no_faktur = '$no_faktur' AND (no_reg IS NULL OR no_reg = '') AND lab IS NULL AND session_id IS NULL ");
  $data = mysqli_fetch_array($query);
 
  $total_ss = $data['total_penjualan'];
@@ -43,7 +43,7 @@ if ($total != $total_tbs) {
 else{
 
 
-      echo $no_faktur = stringdoang($_POST['no_faktur']);
+      $no_faktur = stringdoang($_POST['no_faktur']);
       $no_rm = stringdoang($_POST['kode_pelanggan']);
       $apoteker = stringdoang($_POST['apoteker']);
       $nama_petugas = stringdoang($_SESSION['nama']);
@@ -197,15 +197,15 @@ else{
                     if ($tunai_i >= 0 ) 
 
                   {
-                    
+                     $kredit_s = $total - $pembayaran;
                    $ket_jurnal = "Penjualan ".$jenis_penjualan." Lunas ".$ambil_kode_pelanggan['nama_pelanggan']." ";
                   // buat prepared statements
-                  $stmt = $db->prepare("UPDATE penjualan SET penjamin = ?, apoteker = ?, kode_gudang = ?, total = ?, tanggal = ?, jam = ?, user = ?, sales = ?, status = 'Lunas', potongan = ?,  sisa = ?, cara_bayar = ?, tunai = ?, status_jual_awal = 'Tunai', keterangan = ?, ppn = ?,jenis_penjualan = ?,biaya_admin = ?, petugas_edit = ?, waktu_edit = ?, no_resep = ?, resep_dokter = ?, no_faktur_jurnal = ?, keterangan_jurnal = ? WHERE no_faktur = ?");
+                  $stmt = $db->prepare("UPDATE penjualan SET penjamin = ?, apoteker = ?, kode_gudang = ?, total = ?, tanggal = ?, jam = ?, status = 'Lunas', potongan = ?,  sisa = ?, cara_bayar = ?, tunai = ?, status_jual_awal = 'Tunai', keterangan = ?, ppn = ?,jenis_penjualan = ?,biaya_admin = ?, petugas_edit = ?, waktu_edit = ?, no_resep = ?, resep_dokter = ?, no_faktur_jurnal = ?, keterangan_jurnal = ?, kredit = '0', nilai_kredit = '0', tanggal_jt = '' WHERE no_faktur = ?");
                   
                   
                   // hubungkan "data" dengan prepared statements
-                  $stmt->bind_param("sssissssiisisssisssssss", 
-                  $penjamin,$apoteker, $kode_gudang, $total, $tanggal_sekarang, $jam_sekarang, $id_kasir, $petugas_kasir, $potongan, $sisa, $cara_bayar, $pembayaran, $keterangan, $ppn_input,$jenis_penjualan,$biaya_admin,$petugas_edit,$waktu,$no_resep,$resep_dokter,$no_jurnal,$ket_jurnal,$no_faktur);
+                  $stmt->bind_param("sssissiisisssisssssss", 
+                  $penjamin,$apoteker, $kode_gudang, $total, $tanggal_sekarang, $jam_sekarang, $potongan, $sisa, $cara_bayar, $pembayaran, $keterangan, $ppn_input,$jenis_penjualan,$biaya_admin,$petugas_edit,$waktu,$no_resep,$resep_dokter,$no_jurnal,$ket_jurnal,$no_faktur);
 
                   
                     $pj_total = $total - $potongan;
@@ -322,16 +322,16 @@ else{
                     else if ($tunai_i != 0)
                     
                   {
-
+                    $kredit_s = $total - $pembayaran;
                 $ket_jurnal = "Penjualan ".$jenis_penjualan." Piutang ".$ambil_kode_pelanggan['nama_pelanggan']." ";
 
-                    $stmt2 = $db->prepare("UPDATE penjualan SET penjamin = ?, apoteker = ?, kode_gudang = ?,total = ?, tanggal = ?, jam = ?,  user = ?, sales = ?, status = 'Piutang', potongan = ?, kredit = ?, cara_bayar = ?, tunai = ?, status_jual_awal = 'Kredit', keterangan = ?, ppn = ?,jenis_penjualan = ?,tanggal_jt = ?,biaya_admin = ?, petugas_edit = ?, waktu_edit = ?, no_resep = ?, resep_dokter = ?, no_faktur_jurnal = ?, keterangan_jurnal = ?  WHERE no_faktur = ?");
+                    $stmt2 = $db->prepare("UPDATE penjualan SET penjamin = ?, apoteker = ?, kode_gudang = ?,total = ?, tanggal = ?, jam = ?,status = 'Piutang', potongan = ?, kredit = ?, cara_bayar = ?, tunai = ?, status_jual_awal = 'Kredit', keterangan = ?, ppn = ?,jenis_penjualan = ?,tanggal_jt = ?,biaya_admin = ?, petugas_edit = ?, waktu_edit = ?, no_resep = ?, resep_dokter = ?, no_faktur_jurnal = ?, keterangan_jurnal = ?, nilai_kredit = ?  WHERE no_faktur = ?");
 
                   
                   
                   // hubungkan "data" dengan prepared statements
-                  $stmt2->bind_param("sssissssiisissssisssssss", 
-                  $penjamin,$apoteker, $kode_gudang, $total, $tanggal_sekarang, $jam_sekarang, $id_kasir, $petugas_kasir, $potongan, $sisa_kredit, $cara_bayar, $pembayaran, $keterangan, $ppn_input,$jenis_penjualan,$tanggal_jt,$biaya_admin,$petugas_edit,$waktu,$no_resep,$resep_dokter,$no_jurnal,$ket_jurnal,$no_faktur);
+                  $stmt2->bind_param("sssissiisissssissssssis", 
+                  $penjamin,$apoteker, $kode_gudang, $total, $tanggal_sekarang, $jam_sekarang, $potongan, $kredit_s, $cara_bayar, $pembayaran, $keterangan, $ppn_input,$jenis_penjualan,$tanggal_jt,$biaya_admin,$petugas_edit,$waktu,$no_resep,$resep_dokter,$no_jurnal,$ket_jurnal,$kredit_s,$no_faktur);
 
                   
 

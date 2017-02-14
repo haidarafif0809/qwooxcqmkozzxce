@@ -576,7 +576,7 @@ $obat = $otoritas_produk['tipe_obat'];
 </div>
 
 </div>
-
+<?php endif ?>
     <input type="hidden" class="form-control" name="limit_stok" autocomplete="off" id="limit_stok" placeholder="Limit Stok" >
     <input type="hidden" class="form-control" name="ber_stok" id="ber_stok" placeholder="Ber Stok" >
     <input type="hidden" class="form-control" name="harga_lama" id="harga_lama" placeholder="harga lama">
@@ -599,7 +599,7 @@ $obat = $otoritas_produk['tipe_obat'];
 </form> <!-- tag penutup form -->
 
 
-<?php endif ?>
+
 
 
 

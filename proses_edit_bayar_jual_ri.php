@@ -8,6 +8,7 @@ $bulan_sekarang = date('m');
 $tanggal_sekarang = date('Y-m-d');
 $jam_sekarang = date('H:i:s');
 $tahun_terakhir = substr($tahun_sekarang, 2);
+$waktu = date('Y-m-d H:i:s');
 
 try {
     // First of all, let's begin a transaction
@@ -325,11 +326,11 @@ AND no_reg = '$no_reg'");
             {
                 $ket_jurnal = "Penjualan Rawat Inap Lunas ".$ambil_kode_pelanggan['nama_pelanggan']." ";
             
-             $stmt = $db->prepare("UPDATE penjualan SET apoteker = ?, perawat = ?, petugas_lain = ?, biaya_admin = ?, kode_gudang = ?,kode_pelanggan = ? , total = ?, jam = ?, status = 'Lunas', potongan = ?,  sisa = ?, cara_bayar = ?, tunai = ?, ppn = ?, status_jual_awal = 'Tunai', keterangan = ?, user = ? , tanggal = ?, no_faktur_jurnal = ?, keterangan_jurnal = ? WHERE no_faktur = ? AND no_reg = ?") ;
+             $stmt = $db->prepare("UPDATE penjualan SET apoteker = ?, perawat = ?, petugas_lain = ?, biaya_admin = ?, kode_gudang = ?,kode_pelanggan = ? , total = ?, jam = ?, status = 'Lunas', potongan = ?,  sisa = ?, cara_bayar = ?, tunai = ?, ppn = ?, status_jual_awal = 'Tunai', keterangan = ?, tanggal = ?, no_faktur_jurnal = ?, keterangan_jurnal = ?, petugas_edit = ?, waktu_edit = ?, tanggal_jt = '', kredit = '0', nilai_kredit = '0' WHERE no_faktur = ? AND no_reg = ?") ;
               
     // hubungkan "data" dengan prepared statements
-              $stmt->bind_param("sssisisiississssssss",
-                $petugas_farmasi, $petugas_paramedik, $petugas_lain, $biaya_admin, $kode_gudang,$no_rm,$total, $jam_sekarang, $potongan, $sisa_pembayaran, $cara_bayar, $pembayaran, $ppn_input, $keterangan, $nama_petugas, $tanggal,$no_jurnal,$ket_jurnal, $no_faktur,  $no_reg );
+              $stmt->bind_param("sssisisiississsssssss",
+                $petugas_farmasi, $petugas_paramedik, $petugas_lain, $biaya_admin, $kode_gudang,$no_rm,$total, $jam_sekarang, $potongan, $sisa_pembayaran, $cara_bayar, $pembayaran, $ppn_input, $keterangan, $tanggal,$no_jurnal,$ket_jurnal, $nama_petugas,$waktu,$no_faktur, $no_reg);
               
     // jalankan query
               $stmt->execute();
@@ -438,12 +439,12 @@ if ($potongan != "" || $potongan != 0 ) {
           $nilai_piutang = $total - $pembayaran;
           $ket_jurnal = "Penjualan Rawat Inap Piutang ".$ambil_kode_pelanggan['nama_pelanggan']." ";
             
-             $stmt = $db->prepare("UPDATE penjualan SET apoteker = ?, perawat = ?, petugas_lain = ?, biaya_admin = ?, kode_gudang = ?,kode_pelanggan = ?, total = ?, jam = ?, status = 'Piutang', potongan = ?, kredit = ?, cara_bayar = ?, tunai = ?, ppn = ?, status_jual_awal = 'Kredit', keterangan = ?, user = ?, nilai_kredit = ?,tanggal = ?, no_faktur_jurnal = ?, keterangan_jurnal = ? WHERE no_faktur = ? AND no_reg = ?") ;
+             $stmt = $db->prepare("UPDATE penjualan SET apoteker = ?, perawat = ?, petugas_lain = ?, biaya_admin = ?, kode_gudang = ?,kode_pelanggan = ?, total = ?, jam = ?, status = 'Piutang', potongan = ?, kredit = ?, cara_bayar = ?, tunai = ?, ppn = ?, status_jual_awal = 'Kredit', keterangan = ?, nilai_kredit = ?,tanggal = ?, no_faktur_jurnal = ?, keterangan_jurnal = ?, tanggal_jt = ? WHERE no_faktur = ? AND no_reg = ?") ;
               
       
   // hubungkan "data" dengan prepared statements
-              $stmt->bind_param("sssisisiississsisssss",
-                $petugas_farmasi, $petugas_paramedik, $petugas_lain, $biaya_admin, $kode_gudang,$kode_pelanggan, $total, $jam_sekarang, $potongan, $nilai_piutang, $cara_bayar, $pembayaran, $ppn_input, $keterangan, $nama_petugas, $nilai_piutang,$tanggal,$no_jurnal,$ket_jurnal, $no_faktur,$no_reg );
+              $stmt->bind_param("sssisisiissississssss",
+                $petugas_farmasi, $petugas_paramedik, $petugas_lain, $biaya_admin, $kode_gudang,$kode_pelanggan, $total, $jam_sekarang, $potongan, $nilai_piutang, $cara_bayar, $pembayaran, $ppn_input, $keterangan, $nilai_piutang,$tanggal,$no_jurnal,$ket_jurnal,$tanggal_jt, $no_faktur,$no_reg );
               
     // jalankan query
               $stmt->execute();
