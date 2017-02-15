@@ -3361,6 +3361,12 @@ $.post("cek_level_harga_apotek.php",{level_harga:level_harga,kode_barang:kode_ba
  
  </script>
 
+
+<script type="text/javascript">
+  $(window).bind('beforeunload', function(){
+  return 'Apakah Yakin Ingin Meninggalkan Halaman Ini ? Karena Akan Membutuhkan Beberapa Waktu Untuk Membuka Kembali Halaman Ini!';
+});
+</script>
  
 <!-- memasukan file footer.php -->
 <?php include 'footer.php'; ?>
