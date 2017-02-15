@@ -15,30 +15,6 @@
     $harga = angkadoang($_POST['harga']);
     $subtotal = $harga * $jumlah;
 
-
-
-    //menampilkan data yang ada pada tbs penjualan berdasarkan kode barang
-    $cek = $db->query("SELECT * FROM tbs_item_keluar WHERE kode_barang = '$kode_barang' AND session_id = '$session_id'");
-    //menyimpan data sementara berupa baris dari variabel cek
-    $jumlah1 = mysqli_num_rows($cek);
-    
-    if ($jumlah1 > 0)
-    {
-        # code...
-        $query1 = $db->prepare("UPDATE tbs_item_keluar SET jumlah = jumlah + ?,
-             subtotal = subtotal + ? WHERE kode_barang = ? 
-             AND session_id = ?");
-
-    $query1->bind_param("iiss",
-    $jumlah, $subtotal, $kode_barang, $session_id);
-    
-
-    $query1->execute();
-
-
-    }
-    else
-    {
         $perintah = $db->prepare("INSERT INTO tbs_item_keluar (session_id, kode_barang, nama_barang, jumlah, satuan, harga, subtotal) VALUES (?,?,?,?,?,?,?)");
 
 
@@ -59,14 +35,14 @@
         }
 
 
-    }
+
 
     ?>
 
 
     <?php
 
-     $perintah = $db->query("SELECT tik.id,tik.no_faktur,tik.kode_barang,tik.nama_barang,tik.jumlah,tik.harga,tik.subtotal,s.nama FROM tbs_item_keluar tik INNER JOIN satuan s ON tik.satuan = s.id WHERE session_id = '$session_id' ORDER BY tik.id DESC LIMIT 1");
+     $perintah = $db->query("SELECT tik.id,tik.no_faktur,tik.kode_barang,tik.nama_barang,tik.jumlah,tik.harga,tik.subtotal,s.nama FROM tbs_item_keluar tik LEFT JOIN satuan s ON tik.satuan = s.id WHERE tik.session_id = '$session_id' AND tik.kode_barang = '$kode_barang' ORDER BY tik.id DESC LIMIT 1");
 
       //menyimpan data sementara yang ada pada $perintah
 
