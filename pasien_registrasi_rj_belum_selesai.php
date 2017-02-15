@@ -389,6 +389,7 @@ tr:nth-child(even){background-color: #f2f2f2}
 <table id="table_reg" class="table table-bordered table-sm">
     <thead>
       <tr>
+
              <th style='background-color: #4CAF50; color: white'>Aksi</th>
              <th style='background-color: #4CAF50; color: white'>Batal </th>
 
@@ -400,8 +401,10 @@ tr:nth-child(even){background-color: #f2f2f2}
              <th style='background-color: #4CAF50; color: white'>Umur</th>
              <th style='background-color: #4CAF50; color: white'>Jenis Kelamin</th>
              <th style='background-color: #4CAF50; color: white'>Dokter</th>
-             <th style='background-color: #4CAF50; color: white'>Poli</th>               
+             <th style='background-color: #4CAF50; color: white'>Poli</th>  
              <th style='background-color: #4CAF50; color: white'>No Urut</th> 
+             <th style='background-color: #4CAF50; color: white'>Status</th>               
+
     </tr>
     </thead>
     

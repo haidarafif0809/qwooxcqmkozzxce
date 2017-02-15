@@ -15,25 +15,25 @@ $requestData= $_REQUEST;
 
 $columns = array( 
 // datatable column index  => database column name
-	0 =>'id', 
-	1 =>'no_reg', 
-	2 =>'no_rm', 
-	3 =>'tanggal', 
-	4 =>'nama_pasien', 
-	5 =>'penjamin', 
-	6 =>'umur_pasien', 
-	7 =>'jenis_kelamin', 
-	8 =>'keterangan', 
-	9 =>'dokter', 
-	10 =>'poli', 
-	11 =>'no_urut', 
-	12 =>'status' 
+	0 =>'no_reg', 
+	1 =>'no_rm', 
+	2 =>'tanggal', 
+	3 =>'nama_pasien', 
+	4 =>'penjamin', 
+	5 =>'umur_pasien', 
+	6 =>'jenis_kelamin', 
+	7 =>'keterangan', 
+	8 =>'dokter', 
+	9 =>'poli', 
+	10 =>'no_urut', 
+	11 =>'status', 
+	12 =>'id' 
 );
 
 // getting total number records without any search
 $sql = "SELECT * ";
 $sql.=" FROM registrasi WHERE jenis_pasien = 'Rawat Jalan' AND  status != 'Proses' AND status != 'Sudah Pulang' AND status != 'Batal Rawat' AND status != 'Rujuk Keluar Ditangani' AND status != 'Rujuk Rawat Jalan' AND status != 'Rujuk Keluar Tidak Ditangani' AND tanggal <= '$tanggal' ";
-$query=mysqli_query($conn, $sql) or die("datatable_registrasi_rj_blm_selesai.php: get employees");
+$query=mysqli_query($conn, $sql) or die("datatable_registrasi_rj_blm_selesai.php3: get employees");
 $totalData = mysqli_num_rows($query);
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
@@ -42,16 +42,18 @@ $sql = "SELECT * ";
 $sql.=" FROM registrasi WHERE jenis_pasien = 'Rawat Jalan' AND  status != 'Proses' AND status != 'Sudah Pulang' AND status != 'Batal Rawat' AND status != 'Rujuk Keluar Ditangani' AND status != 'Rujuk Rawat Jalan' AND status != 'Rujuk Keluar Tidak Ditangani' AND tanggal <= '$tanggal' AND 1=1";
 
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
-	$sql.=" AND ( employee_name LIKE '".$requestData['search']['value']."%' ";    
-	$sql.=" OR employee_salary LIKE '".$requestData['search']['value']."%' ";
-
-	$sql.=" OR employee_age LIKE '".$requestData['search']['value']."%' )";
+	$sql.=" AND ( no_reg LIKE '".$requestData['search']['value']."%' ";    
+	$sql.=" OR nama_pasien LIKE '".$requestData['search']['value']."%' ";
+	$sql.=" OR poli LIKE '".$requestData['search']['value']."%' ";
+	$sql.=" OR dokter LIKE '".$requestData['search']['value']."%' ";
+	$sql.=" OR penjamin LIKE '".$requestData['search']['value']."%' )";
 }
-$query=mysqli_query($conn, $sql) or die("datatable_registrasi_rj_blm_selesai.php: get employees");
+
+$query=mysqli_query($conn, $sql) or die("datatable_registrasi_rj_blm_selesai.php2: get employees");
 $totalFiltered = mysqli_num_rows($query); // when there is a search parameter then we have to modify total number filtered rows as per search result. 
 $sql.=" ORDER BY ". $columns[$requestData['order'][0]['column']]."   ".$requestData['order'][0]['dir']."  LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
 /* $requestData['order'][0]['column'] contains colmun index, $requestData['order'][0]['dir'] contains order such as asc/desc  */	
-$query=mysqli_query($conn, $sql) or die("datatable_registrasi_rj_blm_selesai.php: get employees");
+$query=mysqli_query($conn, $sql) or die("datatable_registrasi_rj_blm_selesai.php1: get employees");
 
 $data = array();
 while( $row=mysqli_fetch_array($query) ) {  // preparing an array
