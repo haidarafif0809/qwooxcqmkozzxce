@@ -302,7 +302,7 @@
                   <?php
                   
                   
-      $perintah = $db->query("SELECT tio.no_faktur,tio.kode_barang,tio.nama_barang,s.nama,tio.id,tio.stok_sekarang,tio.fisik,tio.selisih_fisik,tio.harga,tio.selisih_harga,tio.hpp FROM tbs_stok_opname tio INNER JOIN satuan s ON tio.satuan = s.id ORDER BY tio.id DESC");
+      $perintah = $db->query("SELECT tio.no_faktur,tio.kode_barang,tio.nama_barang,s.nama,tio.id,tio.stok_sekarang,tio.fisik,tio.selisih_fisik,tio.harga,tio.selisih_harga,tio.hpp FROM tbs_stok_opname tio LEFT JOIN satuan s ON tio.satuan = s.id ORDER BY tio.id DESC");
                   
                   //menyimpan data sementara yang ada pada $perintah
                   while ($data1 = mysqli_fetch_array($perintah))
