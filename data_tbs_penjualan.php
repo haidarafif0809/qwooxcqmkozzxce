@@ -7,7 +7,7 @@ include 'db.php';
 
 $no_reg = stringdoang($_POST['no_reg']);
 
-$pilih_akses_tombol = $db->query("SELECT * FROM otoritas_penjualan_rj WHERE id_otoritas = '$_SESSION[otoritas_id]' ");
+$pilih_akses_tombol = $db->query("SELECT edit_produk,hapus_produk FROM otoritas_penjualan_rj WHERE id_otoritas = '$_SESSION[otoritas_id]' ");
 $otoritas_tombol = mysqli_fetch_array($pilih_akses_tombol);
 
 // storing  request (ie, get/post) global array to a variable  
@@ -50,11 +50,15 @@ $sql.=" WHERE tp.no_reg = '$no_reg'  AND tp.lab IS NULL AND tp.no_faktur IS NULL
     $sql.=" OR tp.nama_barang LIKE '".$requestData['search']['value']."%' ";
     $sql.=" OR s.nama LIKE '".$requestData['search']['value']."%' )";
 
+
+    $query=mysqli_query($conn, $sql) or die("eror 2");
+
+    $totalFiltered = mysqli_num_rows($query);
+
 }
 
 
-$query=mysqli_query($conn, $sql) or die("eror 2");
-$totalFiltered = mysqli_num_rows($query); // when there is a search parameter then we have to modify total number filtered rows as per search result. 
+ // when there is a search parameter then we have to modify total number filtered rows as per search result. 
         
 $sql.=" ORDER BY id DESC LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
 
@@ -63,34 +67,29 @@ $query=mysqli_query($conn, $sql) or die("eror 3");
 
 
 $data = array();
-while( $row=mysqli_fetch_array($query) ) {  // preparing an array
-  $nestedData=array(); 
+
+while( $row = mysqli_fetch_array($query) ) {  // preparing an array
+  $nestedData = array(); 
 
 
       $nestedData[] = $row["kode_barang"];
       $nestedData[] = $row["nama_barang"];
-
-      $kd = $db->query("SELECT f.nama_petugas, u.nama FROM tbs_fee_produk f LEFT JOIN user u ON f.nama_petugas = u.id WHERE f.kode_produk = '$row[kode_barang]' AND f.jam = '$row[jam]' ");
-
+      
       $kdD = $db->query("SELECT f.nama_petugas, u.nama FROM tbs_fee_produk f LEFT JOIN user u ON f.nama_petugas = u.id WHERE f.kode_produk = '$row[kode_barang]' AND f.jam = '$row[jam]' ");
 
-      $nu = mysqli_fetch_array($kd);
-
-        if ($nu['nama'] != '')
-        {
-          $nama_fee = "";
+   
+          $nama_fee = "<p style='font-size:15px;'> ";
           while($nur = mysqli_fetch_array($kdD))
           {
-          $nama_fee .= "<p style='font-size:15px;'> ".$nur["nama"].", </p>";
+          $nama_fee .= "".$nur["nama"].", ";
           }
+
+          $nama_fee .= "</p>";
           
           $nestedData[] = $nama_fee;
-        }
-
-        else
-        {
-           $nestedData[] = "";
-        }
+        
+        
+       
 
       if ($otoritas_tombol['edit_produk'] > 0){
 
