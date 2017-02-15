@@ -74,11 +74,15 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
           				<button  class='btn btn-success pilih00' data-id='".$row['id']."' id='proses-".$row['id']."' data-status='Proses'  data-urut='". $row['no_urut']."'> Masuk </button>
           				";
             }
-}
-else{
-  echo $nestedData[] = "";
+            
+            else{
+ $nestedData[] = "";
 }
 
+}
+            else{
+ $nestedData[] = "";
+}
 	if ($registrasi_rj['registrasi_rj_hapus'] > 0) {
             $nestedData[] = "<button class='btn btn-danger btn-floating pilih2' data-id='". $row['id']."' data-reg='". $row['no_reg']."'> <b> X </b> </button>";
         }
