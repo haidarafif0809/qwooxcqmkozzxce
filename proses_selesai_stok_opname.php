@@ -115,7 +115,13 @@ else {
 
 
 
-
+$queryhtso = "INSERT INTO history_tbs_stok_opname(session_id, no_faktur, kode_barang, nama_barang, satuan, awal, masuk, keluar, stok_sekarang, fisik, selisih_fisik, selisih_harga, harga, hpp) SELECT session_id, no_faktur, kode_barang, nama_barang, satuan, awal, masuk, keluar, stok_sekarang, fisik, selisih_fisik, selisih_harga, harga, hpp FROM tbs_stok_opname WHERE no_faktur = '$no_faktur'";
+            
+            if ($db->query($queryhtso) === TRUE) {
+                
+            } else {
+            echo "Error: " . $queryhtso . "<br>" . $db->error;
+            }
 //</>END JURNAL TRANSAKSI
 
 
