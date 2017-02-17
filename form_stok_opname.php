@@ -34,7 +34,7 @@
                   }
                   //ambil bulan dari tanggal stok_opname terakhir
                   
-                  $bulan_terakhir = $db->query("SELECT MONTH(tanggal) as bulan FROM stok_opname ORDER BY id DESC LIMIT 1");
+                  $bulan_terakhir = $db->query("SELECT MONTH(waktu_input) as bulan FROM stok_opname ORDER BY id DESC LIMIT 1");
                   $v_bulan_terakhir = mysqli_fetch_array($bulan_terakhir);
                   
                   //ambil nomor  dari stok_opname terakhir
