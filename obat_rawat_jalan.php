@@ -372,7 +372,6 @@ $ss = $db->query("SELECT dp.no_reg,dp.kode_barang,dp.nama_barang,dp.dosis,dp.id,
 $asa = mysqli_num_rows($ss);
 
 
-  $delete2 = $db->query("DELETE FROM tbs_penjualan WHERE no_reg = '$no_reg' ");
    while($data00 = mysqli_fetch_array($ss))
       
       {
