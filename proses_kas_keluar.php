@@ -97,12 +97,7 @@ else {
 
 //jurnal
 
-
-
-
-
-
-    $ambil_tbs = $db->query("SELECT * FROM tbs_kas_keluar WHERE session_id = '$session_id'");
+    $ambil_tbs = $db->query("SELECT * FROM detail_kas_keluar WHERE no_faktur = '$no_faktur'");
     while ($ambil = mysqli_fetch_array($ambil_tbs))
 
 {

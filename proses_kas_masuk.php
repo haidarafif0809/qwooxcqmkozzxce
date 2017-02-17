@@ -72,25 +72,6 @@ $no_faktur = $nomor."/KM/".$data_bulan_terakhir."/".$tahun_terakhir;
 
 
 
-    $query = $db->prepare("UPDATE kas SET jumlah = jumlah + ? WHERE nama = ?");
-    
-    $query->bind_param("is", 
-    $jumlah, $ke_akun);
-
-    $jumlah = angkadoang($_POST['jumlah']);
-    $ke_akun = stringdoang($_POST['ke_akun']);
-    
-    $query->execute();
-
-if (!$perintah) {
-   die('Query Error : '.$db->errno.
-   ' - '.$db->error);
-}
-else {
-
-
-}
-
     $query1 = $db->query("SELECT * FROM tbs_kas_masuk WHERE session_id = '$session_id'");
 
     while ($data=mysqli_fetch_array($query1)) {
@@ -99,12 +80,12 @@ else {
     
     }
 
-//jurnal
 
+//jurnal
 
     $ke_akun = stringdoang($_POST['ke_akun']);
 
-    $ambil_tbs = $db->query("SELECT * FROM tbs_kas_masuk WHERE session_id = '$session_id'");
+    $ambil_tbs = $db->query("SELECT * FROM detail_kas_masuk WHERE no_faktur = '$no_faktur'");
     while ($ambil = mysqli_fetch_array($ambil_tbs))
     {
 
@@ -121,9 +102,6 @@ else {
         $insert_jurnal2 = $db->query("INSERT INTO jurnal_trans (nomor_jurnal,waktu_jurnal,keterangan_jurnal,kode_akun_jurnal,debit,kredit,jenis_transaksi,no_faktur,approved,user_buat) VALUES ('".no_jurnal()."', '$waktu', 'Transaksi Kas Masuk  - $ambil[keterangan]','$ambil[dari_akun]', '0', '$ambil[jumlah]', 'Kas Masuk', '$no_faktur','1', '$user')");
        
     }
-
-
-
 
     $query3 = $db->query("DELETE FROM tbs_kas_masuk WHERE session_id = '$session_id'");
  

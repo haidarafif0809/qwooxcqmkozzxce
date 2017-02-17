@@ -48,7 +48,7 @@ $query5 = $db->query("DELETE FROM detail_kas_masuk WHERE no_faktur = '$no_faktur
 
     $ke_akun = stringdoang($_POST['ke_akun']);
 
-    $ambil_tbs = $db->query("SELECT * FROM tbs_kas_masuk WHERE no_faktur = '$no_faktur'");
+    $ambil_tbs = $db->query("SELECT * FROM detail_kas_masuk WHERE no_faktur = '$no_faktur'");
     while ($ambil = mysqli_fetch_array($ambil_tbs))
     {
 
@@ -59,10 +59,10 @@ $query5 = $db->query("DELETE FROM detail_kas_masuk WHERE no_faktur = '$no_faktur
             $dari_akun_select = mysqli_fetch_array($pilih);
 
 
-        $insert_jurnal = $db->query("INSERT INTO jurnal_trans (nomor_jurnal,waktu_jurnal,keterangan_jurnal,kode_akun_jurnal,debit,kredit,jenis_transaksi,no_faktur,approved,user_buat,user_edit) VALUES ('".no_jurnal()."', '$ambil[tanggal] $ambil[jam]', 'Transaksi Kas Masuk ke $ke_akun_select[nama_daftar_akun]','$ambil[ke_akun]', '$ambil[jumlah]', '0', 'Kas Masuk', '$no_faktur','1', '$user', '$user')");
+        $insert_jurnal = $db->query("INSERT INTO jurnal_trans (nomor_jurnal,waktu_jurnal,keterangan_jurnal,kode_akun_jurnal,debit,kredit,jenis_transaksi,no_faktur,approved,user_buat,user_edit) VALUES ('".no_jurnal()."', '$tanggal $jam', 'Transaksi Kas Masuk ke $ke_akun_select[nama_daftar_akun]','$ambil[ke_akun]', '$ambil[jumlah]', '0', 'Kas Masuk', '$no_faktur','1', '$user', '$user')");
 
 
-      $insert_jurnal2 = $db->query("INSERT INTO jurnal_trans (nomor_jurnal,waktu_jurnal,keterangan_jurnal,kode_akun_jurnal,debit,kredit,jenis_transaksi,no_faktur,approved,user_buat,user_edit) VALUES ('".no_jurnal()."', '$ambil[tanggal] $ambil[jam]', 'Transaksi Kas Masuk dari $dari_akun_select[nama_daftar_akun]','$ambil[dari_akun]', '0', '$ambil[jumlah]', 'Kas Masuk', '$no_faktur','1', '$user', '$user')");
+      $insert_jurnal2 = $db->query("INSERT INTO jurnal_trans (nomor_jurnal,waktu_jurnal,keterangan_jurnal,kode_akun_jurnal,debit,kredit,jenis_transaksi,no_faktur,approved,user_buat,user_edit) VALUES ('".no_jurnal()."', '$tanggal $jam', 'Transaksi Kas Masuk dari $dari_akun_select[nama_daftar_akun]','$ambil[dari_akun]', '0', '$ambil[jumlah]', 'Kas Masuk', '$no_faktur','1', '$user', '$user')");
        
     }
 

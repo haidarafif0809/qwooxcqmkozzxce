@@ -9,8 +9,6 @@ $tanggal_sekarang = date('Y-m-d');
 $jam_sekarang = date('H:i:sa');
 $waktu = date('Y-m-d H:i:sa');
 
-$query = $db->query("SELECT * FROM kas_mutasi");
- 
 
  //ambil 2 angka terakhir dari tahun sekarang 
 $tahun = $db->query("SELECT YEAR(NOW()) as tahun");
@@ -83,31 +81,6 @@ $no_faktur = $nomor."/KMT/".$data_bulan_terakhir."/".$tahun_terakhir;
 
     $perintah->execute();
 
-
-
-    $perintah1 = $db->prepare("UPDATE kas SET jumlah = jumlah - ? WHERE nama = ?");
-
-    $perintah1->bind_param("is",
-        $jumlah, $dari_akun);
-        
-    $jumlah = angkadoang($_POST['jumlah']);
-    $dari_akun = stringdoang($_POST['dari_akun']);
-
-    $perintah1->execute();
-
-
-
-    $perintah2 = $db->prepare("UPDATE kas SET jumlah = jumlah + ? WHERE nama = ?");
-
-    $perintah2->bind_param("is",
-        $jumlah, $ke_akun);
-
-    $jumlah = angkadoang($_POST['jumlah']);
-    $ke_akun = stringdoang($_POST['ke_akun']);
-
-
-
-    $perintah2->execute();
 
 
 if (!$perintah) {
