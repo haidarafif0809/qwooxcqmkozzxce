@@ -339,12 +339,12 @@ if ($cek_jumlah_bulan == 1) {
 
 
 
- $jurnal_bulan_terakhir = $db->query("SELECT MONTH(tanggal) as bulan FROM nomor_faktur_stok_awal ORDER BY id DESC LIMIT 1");
+ $jurnal_bulan_terakhir = $db->query("SELECT MONTH(waktu_input) as bulan FROM stok_awal ORDER BY id DESC LIMIT 1");
  $v_jurnal_bulan_terakhir = mysqli_fetch_array($jurnal_bulan_terakhir);
 
-$no_jurnal_terakhir = $db->query("SELECT no_stok_awal FROM nomor_faktur_stok_awal ORDER BY id DESC LIMIT 1");
+$no_jurnal_terakhir = $db->query("SELECT no_faktur FROM stok_awal ORDER BY id DESC LIMIT 1");
  $v_no_jurnal_terakhir = mysqli_fetch_array($no_jurnal_terakhir);
-$ambil_nomor_jurnal = substr($v_no_jurnal_terakhir['no_stok_awal'],0,-8);
+$ambil_nomor_jurnal = substr($v_no_jurnal_terakhir['no_faktur'],0,-8);
 
  if ($v_jurnal_bulan_terakhir['bulan'] != $bulan_sekarang) {
   # code...

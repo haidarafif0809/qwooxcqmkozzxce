@@ -28,7 +28,7 @@ if ($cek_jumlah_bulan == 1) {
  }
 //ambil bulan dari tanggal penjualan terakhir
 
- $bulan_terakhir = $db->query("SELECT MONTH(tanggal) as bulan FROM kas_keluar ORDER BY id DESC LIMIT 1");
+ $bulan_terakhir = $db->query("SELECT MONTH(waktu_input) as bulan FROM kas_keluar ORDER BY id DESC LIMIT 1");
  $v_bulan_terakhir = mysqli_fetch_array($bulan_terakhir);
 
 //ambil nomor  dari penjualan terakhir
@@ -97,12 +97,7 @@ else {
 
 //jurnal
 
-
-
-
-
-
-    $ambil_tbs = $db->query("SELECT * FROM tbs_kas_keluar WHERE session_id = '$session_id'");
+    $ambil_tbs = $db->query("SELECT * FROM detail_kas_keluar WHERE no_faktur = '$no_faktur'");
     while ($ambil = mysqli_fetch_array($ambil_tbs))
 
 {

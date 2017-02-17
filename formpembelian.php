@@ -102,9 +102,9 @@ $no_faktur = $nomor."/JL/".$data_bulan_terakhir."/".$tahun_terakhir;
  
           <!-- membuat agar teks tidak bisa di ubah, dan hanya bisa dibaca -->
           <input type="hidden" name="session_id" id="session_id" class="form-control" readonly="" value="<?php echo $session_id; ?>" required="" >
-    <div class="col-sm-3">
-          <label>No. Faktur Suplier </label><br>
-          <input  name="suplier" id="no_faktur_suplier" >
+      <div class="col-sm-3">
+          <label>No. Faktur Suplier </label>
+          <input  type="text" name="suplier" id="no_faktur_suplier" class="form-control">
     </div> 
           
     <div class="col-sm-3">
