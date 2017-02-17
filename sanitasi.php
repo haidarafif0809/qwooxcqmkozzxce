@@ -390,4 +390,15 @@ function url_get_contents ($url) {
         return $output;
 }
 
+
+function validateDate($date)
+{
+    $d = DateTime::createFromFormat('d-m-Y', $date);
+
+    return $d && $d->format('d-m-Y') == $date;
+}
+
+
+
+
  ?>
