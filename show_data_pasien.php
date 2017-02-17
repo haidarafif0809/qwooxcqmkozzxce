@@ -78,9 +78,25 @@ $sql.=" AND kode_pelanggan != '' ";
 }
 
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
+
+
+$cek_tanggal =   validateDate($requestData['search']['value']);
+
+if ($cek_tanggal == true) {
+  # code...
+
+   $tanggal_cari = tanggal_mysql($requestData['search']['value']);
+
+
+}
+else {
+   $tanggal_cari = $requestData['search']['value'];
+}
+
+
   $sql.=" AND ( kode_pelanggan LIKE '".$requestData['search']['value']."%' ";    
   $sql.=" OR nama_pelanggan LIKE '".$requestData['search']['value']."%' ";   
-  $sql.=" OR tgl_lahir LIKE '".$requestData['search']['value']."%' ";   
+  $sql.=" OR tgl_lahir = '". $tanggal_cari ."' ";   
   $sql.=" OR alamat_sekarang LIKE '".$requestData['search']['value']."%' ";
   $sql.=" OR tanggal LIKE '".$requestData['search']['value']."%' ";
   $sql.=" OR penjamin LIKE '".$requestData['search']['value']."%' )";
@@ -89,7 +105,7 @@ if( !empty($requestData['search']['value']) ) {   // if there is a search parame
 $query=mysqli_query($conn_pasien, $sql) or die("Eror 2");
 $totalFiltered = mysqli_num_rows($query); // when there is a search parameter then we have to modify total number filtered rows as per search result. 
 
-$sql.=" ORDER BY ". $columns[$requestData['order'][0]['column']]."   ".$requestData['order'][0]['dir']."  LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
+ $sql.=" ORDER BY ". $columns[$requestData['order'][0]['column']]."   ".$requestData['order'][0]['dir']."  LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
 
 
 /* $requestData['order'][0]['column'] contains colmun index, $requestData['order'][0]['dir'] contains order such as asc/desc  */  
