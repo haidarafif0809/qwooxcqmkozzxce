@@ -14,8 +14,7 @@ $tanggal = stringdoang($_GET['tanggalnya']);
 $select_nama_kas = $db->query("SELECT nama_daftar_akun FROM daftar_akun WHERE kode_daftar_akun = '$kas'");
 $out_kas = mysqli_fetch_array($select_nama_kas);
 
-//QUERY KAS MASUK
-$select_masuk = $db->query("SELECT SUM(js.debit) AS masuk,js.jenis_transaksi,js.id,da.nama_daftar_akun,js.keterangan_jurnal,js.no_faktur FROM jurnal_trans js LEFT JOIN daftar_akun da ON js.kode_akun_jurnal = da.kode_daftar_akun WHERE DATE(js.waktu_jurnal) = '$tanggal' AND js.kode_akun_jurnal = '$kas' AND js.debit != '0' AND js.jenis_transaksi != 'Kas Mutasi' GROUP BY js.jenis_transaksi");
+
 
 $select_masuk_jumlah = $db->query("SELECT SUM(debit) AS masuk_jumlah FROM jurnal_trans WHERE DATE(waktu_jurnal) = '$tanggal' AND kode_akun_jurnal = '$kas' AND debit != '0' AND jenis_transaksi != 'Kas Mutasi'");
 $out_masuk_jumlah = mysqli_fetch_array($select_masuk_jumlah);
@@ -23,26 +22,16 @@ $masuk = $out_masuk_jumlah['masuk_jumlah'];
 //END QUERY MASUK
 
 
-//START QUERY KELUAR
-$select_keluar = $db->query("SELECT SUM(js.kredit) AS keluar,js.jenis_transaksi,js.id,da.nama_daftar_akun,js.keterangan_jurnal,js.no_faktur FROM jurnal_trans js LEFT JOIN daftar_akun da ON js.kode_akun_jurnal = da.kode_daftar_akun WHERE DATE(js.waktu_jurnal) = '$tanggal' AND js.kode_akun_jurnal = '$kas' AND js.kredit != '0' AND jenis_transaksi != 'Kas Mutasi' GROUP BY js.jenis_transaksi");
-
 $select_keluar_jumlah = $db->query("SELECT SUM(kredit) AS keluar_jumlah FROM jurnal_trans WHERE DATE(waktu_jurnal) = '$tanggal' AND kode_akun_jurnal = '$kas' AND kredit != '0' AND jenis_transaksi != 'Kas Mutasi'");
 $out_keluar_jumlah = mysqli_fetch_array($select_keluar_jumlah);
 $keluar = $out_keluar_jumlah['keluar_jumlah'];
 // END QUERY KELUAR
-
-
-//START QUERY MUTASI MASUK
-$select_mutasi_masuk = $db->query("SELECT SUM(js.debit) AS mutasi_masuk,js.jenis_transaksi,js.id,da.nama_daftar_akun,js.keterangan_jurnal,js.no_faktur FROM jurnal_trans js LEFT JOIN daftar_akun da ON js.kode_akun_jurnal = da.kode_daftar_akun WHERE DATE(js.waktu_jurnal) = '$tanggal' AND js.kode_akun_jurnal = '$kas' AND js.debit != '0' AND jenis_transaksi = 'Kas Mutasi' GROUP BY js.jenis_transaksi");
 
 $g_mutasi_masuk = $db->query("SELECT SUM(debit) AS jumlah_mutasi_masuk FROM jurnal_trans WHERE DATE(waktu_jurnal) = '$tanggal' AND kode_akun_jurnal = '$kas' AND debit != '0' AND jenis_transaksi = 'Kas Mutasi'");
 $jumlah_mutasi_masuk = mysqli_fetch_array($g_mutasi_masuk);
 $mutasi_masuk = $jumlah_mutasi_masuk['jumlah_mutasi_masuk'];
 // END QUERY MUTASI MASUK
 
-
-//START QUERY MUTASI KELUAR
-$select_mutasi_keluar = $db->query("SELECT SUM(js.kredit) AS mutasi_keluar,js.jenis_transaksi,js.id,da.nama_daftar_akun,js.keterangan_jurnal,js.no_faktur FROM jurnal_trans js LEFT JOIN daftar_akun da ON js.kode_akun_jurnal = da.kode_daftar_akun WHERE DATE(js.waktu_jurnal) = '$tanggal' AND js.kode_akun_jurnal = '$kas' AND js.kredit != '0' AND jenis_transaksi = 'Kas Mutasi' GROUP BY js.jenis_transaksi");
 
 $take_mutasi_keluar = $db->query("SELECT SUM(kredit) AS jumlah_mutasi_keluar FROM jurnal_trans WHERE DATE(waktu_jurnal) = '$tanggal' AND kode_akun_jurnal = '$kas' AND kredit != '0' AND jenis_transaksi = 'Kas Mutasi'");
 $jumlah_mutasi_keluar = mysqli_fetch_array($take_mutasi_keluar);
@@ -117,19 +106,21 @@ if($mutasi_masuk == 0 OR $mutasi_masuk == '')
 		</thead>
 		<tbody class="tbody_masuk">
 			 <?php
+
+             //QUERY KAS MASUK
+            $select_masuk = $db->query("SELECT daf.nama_daftar_akun AS nama_dari_akun,dk.kode_akun_jurnal AS dari_akun_jurnal ,js.jenis_transaksi,da.nama_daftar_akun,js.keterangan_jurnal FROM jurnal_trans js LEFT JOIN daftar_akun da ON js.kode_akun_jurnal = da.kode_daftar_akun LEFT JOIN jurnal_trans dk ON js.no_faktur = dk.no_faktur LEFT JOIN daftar_akun daf ON daf.kode_daftar_akun = dk.kode_akun_jurnal WHERE DATE(js.waktu_jurnal) = '$tanggal' AND js.kode_akun_jurnal = '$kas' AND dk.kode_akun_jurnal != js.kode_akun_jurnal AND js.debit != '0' AND dk.kredit != '0' AND js.jenis_transaksi != 'Kas Mutasi' GROUP BY dk.kode_akun_jurnal");
+
             //menyimpan data sementara yang ada pada $perintah
             while ($out_masuk = mysqli_fetch_array($select_masuk))
             {
-
-            $select_one = $db->query("SELECT da.nama_daftar_akun FROM jurnal_trans js LEFT JOIN daftar_akun da ON js.kode_akun_jurnal = da.kode_daftar_akun WHERE DATE(js.waktu_jurnal) = '$tanggal' 
-				AND js.no_faktur = '$out_masuk[no_faktur]' AND js.kredit != '0'");
-			$out_one = mysqli_fetch_array($select_one);
+                $select = $db->query("SELECT SUM(kredit) AS masuk FROM jurnal_trans WHERE DATE(waktu_jurnal) = '$tanggal' AND kode_akun_jurnal = '$out_masuk[dari_akun_jurnal]' AND kredit != 0 ");
+                $datadariakun = mysqli_fetch_array($select);
 
             echo "<tr>
                 <td>". $tanggal ."</td>
-                <td>". $out_one['nama_daftar_akun'] ."</td>
+                <td>". $out_masuk['nama_dari_akun'] ."</td>
                 <td>". $out_masuk['nama_daftar_akun'] ."</td>
-                <td>". $out_masuk['masuk'] ."</td>
+                <td>". rp($datadariakun['masuk']) ."</td>
             <tr>";
 
             }
@@ -153,19 +144,22 @@ if($mutasi_masuk == 0 OR $mutasi_masuk == '')
 		</thead>
 		<tbody class="tbody_keluar">
 			 <?php
+             //START QUERY KELUAR
+
+            $select_keluar = $db->query("SELECT daf.nama_daftar_akun AS kode_ke_akun ,dk.kode_akun_jurnal AS ke_akun,js.jenis_transaksi,da.nama_daftar_akun,js.keterangan_jurnal , js.kode_akun_jurnal FROM jurnal_trans js LEFT JOIN daftar_akun da ON js.kode_akun_jurnal = da.kode_daftar_akun LEFT JOIN jurnal_trans dk ON js.no_faktur = dk.no_faktur LEFT JOIN daftar_akun daf ON daf.kode_daftar_akun = dk.kode_akun_jurnal WHERE DATE(js.waktu_jurnal) = '$tanggal' AND js.kode_akun_jurnal = '$kas' AND dk.kode_akun_jurnal != '$kas' AND js.kredit != '0' AND dk.debit != '0' AND js.jenis_transaksi != 'Kas Mutasi' GROUP BY dk.kode_akun_jurnal");
             //menyimpan data sementara yang ada pada $perintah
             while ($out_keluar = mysqli_fetch_array($select_keluar))
             {
 
-			$select_two = $db->query("SELECT da.nama_daftar_akun FROM jurnal_trans js LEFT JOIN daftar_akun da ON js.kode_akun_jurnal = da.kode_daftar_akun WHERE DATE(js.waktu_jurnal) = '$tanggal' 
-			AND js.no_faktur = '$out_keluar[no_faktur]' AND js.debit != '0'");
-			$out_two = mysqli_fetch_array($select_two);
+                $select = $db->query("SELECT SUM(debit) AS keluar FROM jurnal_trans WHERE DATE(waktu_jurnal) = '$tanggal' AND kode_akun_jurnal = '$out_keluar[ke_akun]' AND debit != 0 ");
+                $datakeakun = mysqli_fetch_array($select);
+
 
             echo "<tr>
                 <td>". $tanggal ."</td>
-                <td>". $out_two['nama_daftar_akun'] ."</td>
                 <td>". $out_keluar['nama_daftar_akun'] ."</td>
-                <td>". $out_keluar['keluar'] ."</td>
+                <td>". $out_keluar['kode_ke_akun'] ."</td>
+                <td>". rp($datakeakun['keluar']) ."</td>
             <tr>";
 
             }
@@ -188,21 +182,24 @@ if($mutasi_masuk == 0 OR $mutasi_masuk == '')
       <th style="background-color: #4CAF50; color: white;"> Total </th>
             
     </thead>
-    <tbody class="tbody_mutasi_masuk">
+   <tbody class="tbody_mutasi_masuk">
 		<?php
+        //START QUERY MUTASI MASUK
+
+            $select_mutasi_masuk = $db->query("SELECT daf.nama_daftar_akun AS nama_dari_akun ,dk.kode_akun_jurnal AS dari_akun_jurnal , js.jenis_transaksi,da.nama_daftar_akun,js.keterangan_jurnal FROM jurnal_trans js LEFT JOIN daftar_akun da ON js.kode_akun_jurnal = da.kode_daftar_akun LEFT JOIN jurnal_trans dk ON js.no_faktur = dk.no_faktur LEFT JOIN daftar_akun daf ON daf.kode_daftar_akun = dk.kode_akun_jurnal WHERE DATE(js.waktu_jurnal) = '$tanggal' AND js.kode_akun_jurnal = '$kas' AND dk.kode_akun_jurnal != js.kode_akun_jurnal AND js.debit != '0' AND js.jenis_transaksi = 'Kas Mutasi' GROUP BY dk.kode_akun_jurnal");
+
             //menyimpan data sementara yang ada pada $perintah
             while ($out_mutasi_masuk = mysqli_fetch_array($select_mutasi_masuk))
             {
 
-				$select_three = $db->query("SELECT da.nama_daftar_akun FROM jurnal_trans js LEFT JOIN daftar_akun da ON js.kode_akun_jurnal = da.kode_daftar_akun WHERE DATE(js.waktu_jurnal) = '$tanggal' 
-					AND js.no_faktur = '$out_mutasi_masuk[no_faktur]' AND js.kredit != '0'");
-				$out_three = mysqli_fetch_array($select_three);
+            $select = $db->query("SELECT SUM(js.kredit) AS mutasi_masuk FROM jurnal_trans js LEFT JOIN jurnal_trans jkt ON js.no_faktur = jkt.no_faktur WHERE DATE(js.waktu_jurnal) = '$tanggal' AND js.kode_akun_jurnal = '$out_mutasi_masuk[dari_akun_jurnal]' AND js.kredit != 0 AND js.jenis_transaksi = 'Kas Mutasi' AND jkt.kode_akun_jurnal = '$kas' ");
+            $datadariakun = mysqli_fetch_array($select);
 
             echo "<tr>
                 <td>". $tanggal ."</td>
-                <td>". $out_three['nama_daftar_akun'] ."</td>
+                <td>". $out_mutasi_masuk['nama_dari_akun'] ."</td>
                 <td>". $out_mutasi_masuk['nama_daftar_akun'] ."</td>
-                <td>". $out_mutasi_masuk['mutasi_masuk'] ."</td>
+                <td>". rp($datadariakun['mutasi_masuk']) ."</td>
             <tr>";
 
             }
@@ -228,26 +225,27 @@ if($mutasi_masuk == 0 OR $mutasi_masuk == '')
 		<tbody class="tbody_mutasi">
 
 			<?php
+            //START QUERY MUTASI KELUAR
+            $select_mutasi_keluar = $db->query("SELECT daf.nama_daftar_akun AS nama_dari_akun ,dk.kode_akun_jurnal AS dari_akun_jurnal , js.jenis_transaksi,da.nama_daftar_akun,js.keterangan_jurnal FROM jurnal_trans js LEFT JOIN daftar_akun da ON js.kode_akun_jurnal = da.kode_daftar_akun LEFT JOIN jurnal_trans dk ON js.no_faktur = dk.no_faktur LEFT JOIN daftar_akun daf ON daf.kode_daftar_akun = dk.kode_akun_jurnal WHERE DATE(js.waktu_jurnal) = '$tanggal' AND js.kode_akun_jurnal = '$kas' AND dk.kode_akun_jurnal != js.kode_akun_jurnal AND js.kredit != '0' AND js.jenis_transaksi = 'Kas Mutasi' GROUP BY dk.kode_akun_jurnal");
+
             //menyimpan data sementara yang ada pada $perintah
             while ($out_mutasi_keluar = mysqli_fetch_array($select_mutasi_keluar))
             {
 
-				$select_four = $db->query("SELECT da.nama_daftar_akun FROM jurnal_trans js LEFT JOIN daftar_akun da ON js.kode_akun_jurnal = da.kode_daftar_akun WHERE DATE(js.waktu_jurnal) = '$tanggal' 
-					AND js.no_faktur = '$out_mutasi_keluar[no_faktur]' AND js.debit != '0'");
-				$out_four = mysqli_fetch_array($select_four);
+                $select = $db->query("SELECT SUM(js.debit) AS mutasi_keluar FROM jurnal_trans js LEFT JOIN jurnal_trans jkt ON js.no_faktur = jkt.no_faktur WHERE DATE(js.waktu_jurnal) = '$tanggal' AND js.kode_akun_jurnal = '$out_mutasi_keluar[dari_akun_jurnal]' AND js.debit != 0 AND js.jenis_transaksi = 'Kas Mutasi' AND jkt.kode_akun_jurnal = '$kas' ");
+                $datadariakun = mysqli_fetch_array($select);
 
             echo "<tr>
                 <td>". $tanggal ."</td>
                 <td>". $out_mutasi_keluar['nama_daftar_akun'] ."</td>
-                <td>". $out_four['nama_daftar_akun'] ."</td>
-                <td>". $out_mutasi_keluar['mutasi_keluar'] ."</td>
+                <td>". $out_mutasi_keluar['nama_dari_akun'] ."</td>
+                <td>". rp($datadariakun['mutasi_keluar']) ."</td>
             <tr>";
 
             }
             mysqli_close($db); 
 		?>
 		</tbody>
-
 	</table>
 </div> <!--/ responsive-->
 <hr>
