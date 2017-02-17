@@ -77,11 +77,7 @@ echo '<button type="button" id="tambah" class="btn btn-info" data-toggle="modal"
 						<input type="text" name="tanggal" autocomplete="off" id="tanggal1" placeholder="Tanggal" value="<?php echo date("d-m-Y"); ?>" class="form-control tgl" >
 						</div>
 						
-						<div class="form-group">
-						<label> Nomor Faktur </label><br>
-						<input type="text" name="no_faktur" autocomplete="off" id="tambah_faktur" placeholder="Nomor Faktur" class="form-control" readonly="">
-						
-						</div>
+
 						
 						<div class="form-group">
 						<label> Keterangan </label><br>
@@ -416,20 +412,6 @@ if ($kas_mutasi['kas_mutasi_edit'] > 0) {
 
 			<!-- Dari Form Kas Mutasi -->
 
-			<script>
-						
-						$("#tambah").click(function() {
-						
-						$.get('no_faktur_KMT.php', function(data) {
-							data = data.replace(/\s+/g, '');
-						
-						$("#tambah_faktur").val(data);
-						});
-						
-						});
-
-			</script>
-
 
 
 
@@ -439,7 +421,6 @@ $(document).ready(function(){
 //fungsi untuk menambahkan data
 		$("#submit_tambah").click(function(){
 		var tanggal = $("#tanggal1").val();
-		var no_faktur = $("#tambah_faktur").val();
 		var keterangan = $("#keterangan").val();
 		var dari_akun = $("#dari_akun1").val();
 		var ke_akun = $("#ke_akun1").val();
@@ -481,7 +462,7 @@ else{
 		}
 		else{
 
-		$.post('proses_kas_mutasi.php',{tanggal:tanggal,no_faktur:no_faktur,keterangan:keterangan,dari_akun:dari_akun,ke_akun:ke_akun,jumlah:jumlah},function(data){
+		$.post('proses_kas_mutasi.php',{tanggal:tanggal,keterangan:keterangan,dari_akun:dari_akun,ke_akun:ke_akun,jumlah:jumlah},function(data){
 		
 		$('#table_mutasi').DataTable().destroy();
 		      var dataTable = $('#table_mutasi').DataTable( {
