@@ -6,12 +6,6 @@ include_once 'sanitasi.php';
 
 $tanggal = date("Y-m-d");
 
-
-$query7 = $db->query("SELECT * FROM registrasi WHERE (jenis_pasien = 'Rawat Jalan' AND  status = 'Batal Rawat') OR status = 'Rujuk Rawat Jalan' OR status = 'Rujuk Keluar Ditangani' OR status = 'Rujuk Keluar Tidak Ditangani' ORDER BY id ASC");
-
-
-
-
 ?>
 
 
