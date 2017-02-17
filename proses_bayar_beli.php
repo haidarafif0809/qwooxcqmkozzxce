@@ -28,7 +28,7 @@ if ($cek_jumlah_bulan == 1) {
  }
 //ambil bulan dari tanggal penjualan terakhir
 
- $bulan_terakhir = $db->query("SELECT MONTH(tanggal) as bulan FROM pembelian ORDER BY id DESC LIMIT 1");
+  $bulan_terakhir = $db->query("SELECT MONTH(waktu_input) as bulan FROM pembelian ORDER BY id DESC LIMIT 1");
  $v_bulan_terakhir = mysqli_fetch_array($bulan_terakhir);
 
 //ambil nomor  dari penjualan terakhir
@@ -39,7 +39,6 @@ $ambil_nomor = substr($v_no_terakhir['no_faktur'],0,-8);
 /*jika bulan terakhir dari penjualan tidak sama dengan bulan sekarang, 
 maka nomor nya kembali mulai dari 1 ,
 jika tidak maka nomor terakhir ditambah dengan 1
- 
  */
  if ($v_bulan_terakhir['bulan'] != $bulan_sekarang) {
   # code...
@@ -54,7 +53,8 @@ $nomor = 1 + $ambil_nomor ;
 
 echo $no_faktur = $nomor."/BL/".$data_bulan_terakhir."/".$tahun_terakhir;
 
-}
+
+ }
 
 
 

@@ -399,7 +399,7 @@ tr:nth-child(even){background-color: #f2f2f2}
 $ss = $db->query("SELECT dp.no_reg,dp.kode_barang,dp.nama_barang,dp.dosis,dp.id,dp.jumlah_barang,dp.waktu FROM detail_penjualan dp  LEFT JOIN barang b ON dp.kode_barang = b.kode_barang  WHERE dp.no_reg ='$no_reg' AND b.tipe_barang = 'Obat Obatan' ORDER BY dp.id DESC ");
 
 
-  $delete2 = $db->query("DELETE FROM tbs_penjualan WHERE no_reg = '$no_reg' ");
+
    while($data00 = mysqli_fetch_array($ss))
       
       {
