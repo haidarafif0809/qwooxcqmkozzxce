@@ -20,9 +20,13 @@ $columns = array(
     4=>'tanggal',
     5=>'penjamin',
     6=>'poli',
-    7=>'dokter',
-    8=>'id'    
-
+    7=>'id_dokter',
+    8=>'id_dokter_pengirim',
+    9=>'bed',
+    10=>'group_bed',
+    11=>'level_harga',
+    12=>'id'
+ 
 );
 
 // getting total number records without any search

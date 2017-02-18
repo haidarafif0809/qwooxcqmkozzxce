@@ -373,7 +373,8 @@ padding-right: 5%;
 
 
 <a href="form_penjualan_lab.php" id="btnRujukLab" class="btn btn-default" style="display: none"> <i class="fa fa-flask"></i> Rujuk Lab</a>  
-<button type="button" class="btn btn-default" id="btnRefreshsubtotal"> <i class='fa fa-refresh'></i> Refresh Subtotal</button>
+<button type="button" class="btn btn-danger" id="btnRefreshsubtotal"> <i class='fa fa-refresh'></i> Refresh Subtotal</button>
+<button type="button" class="btn btn-success" id="btn-kamar" data-toggle="modal" ><i class="fa fa-search"></i> Cari Kamar (Alt + O)</button>
 
 <!--tampilan modal-->
 <div id="myModal" class="modal fade" role="dialog">
@@ -534,6 +535,79 @@ padding-right: 5%;
 
   </div>
 </div><!-- end of modal edit data  -->
+
+<!-- Modal Untuk Confirm KAMAR-->
+<div id="modal_kamar" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <!-- Modal content-->
+    <div class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <center><h2>Daftar Kamar</h2></center>       
+    </div>
+    <div class="modal-body">
+
+
+      <span id="tampil_kamar">
+
+           <div class="table-responsive">
+
+            <table id="siswaki" class="table table-bordered table-hover table-striped">
+            <thead>
+              <tr>
+              <th>Kelas</th>
+              <th>Kode Kamar</th>
+              <th>Nama Kamar</th>
+              <th>Fasilitas</th>
+              <th>Jumlah Bed</th>
+              <th>Sisa Bed</th>    
+              </tr>
+          </thead>
+           </table>  
+         </div>
+
+      </span>
+      <form role="form" method="POST">
+<div class="row">
+
+  <div class="col-sm-6">
+
+     <div class="form-group" >
+        <label for="bed">Nama Kamar Lama</label>
+        <input style="height: 20px" type="text" class="form-control" id="kamar_lama" name="kamar_lama" readonly="">
+      </div>
+
+      <div class="form-group" >
+        <label for="bed">Lama Menginap Kamar Lama:</label>
+        <input style="height: 20px" type="text" class="form-control" placeholder="Isi lama menginap" id="lama_inap" name="lama_inap" autocomplete="off">
+      </div>
+
+  </div>
+
+  <div class="col-sm-6">
+     <div class="form-group" >
+        <label for="bed">Kode Kamar Baru:</label>
+        <input style="height: 20px" type="text" class="form-control" id="bed2" name="bed2"  readonly="" >
+      </div>
+
+      <div class="form-group" >
+        <label for="bed">Nama Kamar Baru:</label>
+        <input style="height: 20px" type="text" class="form-control" id="group_bed2" name="group_bed2"  readonly="">
+      </div>
+  </div>
+</div>
+     
+
+       <button style="width:100px;"" type="button" class="btn btn-warning  waves-effect waves-light" data-level="" data-regs="" data-beds="" data-group_beds="" id="pindah_kamar"> <i class="fa fa-check"></i>Submit</button>
+       </div>
+       <div class="modal-footer">
+        
+        <button type="button" class="btn btn-danger" data-dismiss="modal" ><i class="fa fa-remove"></i> Closed</button>
+    </div>
+    </div>
+  </div>
+</div>
+<!--modal end Layanan KAMAR-->
 
 <!-- membuat form prosestbspenjual -->
 
@@ -1097,6 +1171,236 @@ $(document).ready(function(){
 </script>
 
 
+<!--   script untuk detail layanan PINDAH KAMAR-->
+<script type="text/javascript">
+    $(document).on('click', '#btn-kamar', function (e) {
+
+      var reg = $("#no_reg").val();
+      var penjamin = $("#penjamin").val();
+
+
+      if (reg == '') {
+        alert("Silakan Pilih Pasien Terlebih dulu!");
+
+      }
+      else{
+
+            var group_bed = $("#kamar").val();
+            var bed = $("#bed").val();
+            $("#pindah_kamar").attr("data-level",penjamin);
+            $("#pindah_kamar").attr("data-regs",reg);
+            $("#pindah_kamar").attr("data-beds",bed);
+
+
+                        $("#modal_kamar").modal('show');
+                        $("#kamar_lama").val(group_bed);
+
+
+                        $('#siswaki').DataTable().destroy();
+
+                                var dataTable = $('#siswaki').DataTable( {
+                                    "processing": true,
+                                    "serverSide": true,
+                                    "ajax":{
+                                      url :"pindah_kamar.php", // json datasource
+                                      type: "post",  // method  , by default get
+                                      error: function(){  // error handling
+                                        $(".tbody").html("");
+                                        $("#siswaki").append('<tbody class="tbody"><tr ><td colspan="3">No data found in the server</td></tr></tbody>');
+                                        $("#siswaki_processing").css("display","none");
+                                        
+                                      }
+                                    },
+
+                                     "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+                                          $(nRow).attr('class', "pilih3");
+                                         $(nRow).attr('data-group-bed',aData[2]);
+                                        $(nRow).attr('data-nama',aData[1]);
+
+                          },
+                   });
+      }
+
+
+            
+
+ });
+//            tabel lookup mahasiswa         
+
+
+  $(document).on('click', '#pindah_kamar', function (e) {
+
+
+    var bed_before = $(this).attr("data-beds");
+    var group_bed_before = $(this).attr("data-group_beds");
+    var group_bed2 = $("#group_bed2").val();
+    var bed2 = $("#bed2").val();
+    var lama_inap = $("#lama_inap").val();
+    var penjamin = $(this).attr("data-level");
+    var no_reg = $(this).attr("data-regs");
+
+
+    if (lama_inap == '') {
+      alert("Isi Lama Menginap!");
+      $("#lama_inap").focus();
+    }
+    else if (group_bed2 ==  '') {
+      alert("Nama Kamar Baru Masih Kosong!");
+      $("#group_bed2").focus();
+    }
+    else if (bed2 ==  '')
+    {
+       alert("Kode Kamar Baru Masih Kosong!");
+       $("#bed2").focus();
+
+    }
+    else{
+
+                                $.post("update_kamar_inap.php",{lama_inap:lama_inap,bed_before:bed_before,group_bed_before:group_bed_before,group_bed2:group_bed2,bed2:bed2,lama_inap:lama_inap,penjamin:penjamin,no_reg:no_reg},function(data){
+                                  
+                                  $("#modal_kamar").modal('hide');
+
+                                  $("#kamar").val(group_bed2);
+                                  $("#bed").val(bed2);
+
+
+                $('#tabel_tbs_penjualan').DataTable().destroy();
+                      var dataTable = $('#tabel_tbs_penjualan').DataTable( {
+                      "processing": true,
+                      "serverSide": true,
+                      "info":     false,
+                      "language": { "emptyTable":     "My Custom Message On Empty Table" },
+                      "ajax":{
+                        url :"data_tbs_penjualan_inap.php", // json datasource
+                         "data": function ( d ) {
+                            d.no_reg = $("#no_reg").val();
+                            // d.custom = $('#myInput').val();
+                            // etc
+                        },
+                            type: "post",  // method  , by default get
+                        error: function(){  // error handling
+                          $(".tbody").html("");
+                          $("#tabel_tbs_penjualan").append('<tbody class="tbody"><tr><th colspan="3"></th></tr></tbody>');
+                          $("#tableuser_processing").css("display","none");
+                          
+                        }
+                      }   
+
+                });
+      });
+
+
+
+// CEK TOTAL CEK TOTAL CEK TOTAL CEK TOTAL CEK TOTAL CEK TOTAL CEK TOTAL CEK TOTAL CEK TOTAL CEK TOTAL CEK TOTAL CEK TOTAL CEK TOTAL
+
+    var no_reg = $("#no_reg").val();
+    var pot_fakt_per = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#potongan_persen").val()))));
+    var pot_fakt_rp = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#potongan_penjualan").val()))));
+    var total_operasi = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#total_operasi").val()))));
+    if (total_operasi == '') {
+      total_operasi = 0;
+    }
+    var total_lab = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#total_lab").val()))));
+    if (total_lab == "") {
+      total_lab = 0;
+    }
+    var biaya_admin = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#biaya_admin").val()))));
+    if (biaya_admin == '') {
+      biaya_admin = 0;
+    }
+
+
+                   $.post("cek_total_seluruh_inap.php",{no_reg:no_reg},function(data){
+                    data = data.replace(/\s+/g, '');
+                    $("#total2").val(tandaPemisahTitik(data))
+                    
+                    
+
+                      if (pot_fakt_per == '0%') 
+                      {
+
+                               var potongann = pot_fakt_rp;
+                               var potongaaan = parseInt(potongann,10) / parseInt(data,10) * 100;
+
+                              if (data == 0) {
+                                  
+                                  $("#potongan_persen").val(Math.round('0'));
+                                 
+                              }
+                              else
+                              {
+                            $("#potongan_persen").val(Math.round(potongaaan)); 
+                              }
+                                
+                              var total = parseInt(data,10) - parseInt(pot_fakt_rp,10) + parseInt(total_operasi,10) + parseInt(total_lab,10);
+
+                               $("#total1").val(tandaPemisahTitik(total))
+
+                     }
+                      else if(pot_fakt_rp == 0)
+                     {
+
+                                  var potongaaan = pot_fakt_per;
+                                  var pos = potongaaan.search("%");
+                                  var potongan_persen = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah(potongaaan))));
+                                  potongan_persen = potongan_persen.replace("%","");
+                                  potongaaan = data * potongan_persen / 100;
+                                  $("#potongan_penjualan").val(Math.round(potongaaan));
+                                  $("#potongan1").val(potongaaan);
+
+
+                                  var total = parseInt(data,10) - parseInt(potongaaan,10) + parseInt(total_operasi,10) + parseInt(total_lab,10);
+
+                                  $("#total1").val(tandaPemisahTitik(total))
+
+                     }
+
+                     else{
+                              var akhir = (parseInt(data,10) - parseInt(pot_fakt_rp,10)) + parseInt(biaya_admin,10);
+                                  $("#total1").val(tandaPemisahTitik(akhir))
+                      }
+                      
+
+                  });
+
+
+// END CEK TOTAL END CEK TOTAL END CEK TOTAL END CEK TOTAL END CEK TOTAL END CEK TOTAL END CEK TOTAL END CEK TOTAL END CEK TOTAL END CEK TOTAL
+
+
+    }
+ 
+
+
+  });
+</script>
+
+<script type="text/javascript">
+
+            // jika dipilih, nim akan masuk ke input dan modal di tutup
+            $(document).on('click', '.pilih3', function (e) {
+              var no_reg = $("#no_reg").val();
+              var bed2 = $(this).attr('data-nama');
+              var group_bed2 = $(this).attr('data-group-bed');
+
+
+        $.post("cek_kamar_ranap.php",{bed2:bed2,no_reg:no_reg},function(data){
+
+                          if (data == 1) {
+                    alert("Kamar yang anda masukan sudah ada,Silahkan pilih kamar lain!");
+                      $("#group_bed2").val('')
+                      $("#bed2").val('')
+                          }
+                          else{
+
+                      $("#group_bed2").val(group_bed2)
+                      $("#bed2").val(bed2)
+
+                          }
+             });    
+  });
+           
+          
+</script>
 
  <script type="text/javascript">
    $(document).on('click', '.pilih-reg', function (e) {                
@@ -4050,8 +4354,10 @@ else
               $(nRow).attr('penjamin', aData[5]);
               $(nRow).attr('poli', aData[6]);
               $(nRow).attr('dokter', aData[7]);
-              $(nRow).attr('level_harga', aData[8]);
-
+              $(nRow).attr('dokter_pj', aData[8]);
+              $(nRow).attr('bed', aData[9]);
+              $(nRow).attr('kamar', aData[10]);
+              $(nRow).attr('level_harga', aData[11]);
 
           }
 
@@ -4580,6 +4886,13 @@ $(document).ready(function(){
         // Do something
 
         $("#cari_pasien").click();
+
+    }); 
+
+        shortcut.add("alt+o", function() {
+        // Do something
+
+        $("#btn-kamar").click();
 
     }); 
 
@@ -5218,8 +5531,10 @@ var penjamin = $("#penjamin").val();
               $(nRow).attr('penjamin', aData[5]);
               $(nRow).attr('poli', aData[6]);
               $(nRow).attr('dokter', aData[7]);
-              $(nRow).attr('level_harga', aData[8]);
-
+              $(nRow).attr('dokter_pj', aData[8]);
+              $(nRow).attr('bed', aData[9]);
+              $(nRow).attr('kamar', aData[10]);
+              $(nRow).attr('level_harga', aData[11]);
 
           }
 

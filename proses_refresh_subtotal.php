@@ -22,8 +22,11 @@ include 'sanitasi.php';
  $datalab = mysqli_fetch_array($querylab);
  $totallab = $datalab['total_penjualan'];
 
+ $sql_ops = $db->query("SELECT SUM(harga_jual) AS total_ops FROM tbs_operasi WHERE no_reg = '$no_reg'");
+$data_ops = mysqli_fetch_array($sql_ops);
 
-echo$tt = $total + $totallab;
+
+echo$tt = $total + $totallab + $data_ops['total_ops'];
 
  }
  else
