@@ -4,8 +4,8 @@ include 'sanitasi.php';
 include 'db.php';
 
 
-$no_faktur = $_GET['no_faktur'];
-$tanggal = $_GET['tanggal'];
+$no_faktur = stringdoang($_GET['no_faktur']);
+$tanggal = stringdoang($_GET['tanggal']);
 
 $perintah3 = $db->query("SELECT * FROM tbs_stok_opname WHERE no_faktur = '$no_faktur'");
 $data1 = mysqli_num_rows($perintah3);
@@ -13,6 +13,7 @@ $data1 = mysqli_num_rows($perintah3);
 if ($data1 > 0){
 
 $perintah2 = $db->query("DELETE FROM tbs_stok_opname WHERE no_faktur = '$no_faktur'");
+
 }
 
 

@@ -192,6 +192,7 @@ echo '<a href="form_stok_opname.php"  class="btn btn-info" > <i class="fa fa-plu
 			<th style='background-color: #4CAF50; color:white'> Status </th>
 			<th style='background-color: #4CAF50; color:white'> Total Selisih</th>
 			<th style='background-color: #4CAF50; color:white'> User </th>
+      <th style='background-color: #4CAF50; color:white'> Keterangan </th>
 			<th style='background-color: #4CAF50; color:white'> Detail </th>
 			<?php 
 
@@ -241,7 +242,7 @@ echo '<a href="form_stok_opname.php"  class="btn btn-info" > <i class="fa fa-plu
         },
             
             "fnCreatedRow": function( nRow, aData, iDataIndex ) {
-                $(nRow).attr('class','tr-id-'+aData[9]+'');
+                $(nRow).attr('class','tr-id-'+aData[10]+'');
             },
         });
 

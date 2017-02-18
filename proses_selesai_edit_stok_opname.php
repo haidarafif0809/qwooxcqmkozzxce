@@ -10,17 +10,19 @@ $jam_sekarang = date('H:i:s');
 $tahun_terakhir = substr($tahun_sekarang, 2);
 $no_faktur = stringdoang($_POST['no_faktur']); 
 
-$hapus_detail = $db->query("DELETE FROM detail_stok_opname WHERE no_faktur = '$no_faktur'");
+            
+            $hapus_detail = $db->query("DELETE FROM detail_stok_opname WHERE no_faktur = '$no_faktur'");
 
 
-                $query2 = $db->prepare("UPDATE stok_opname SET no_faktur = ?, tanggal = ?, jam = ?, status = 'ya', total_selisih = ?, user = ? WHERE no_faktur = ?");
+                $query2 = $db->prepare("UPDATE stok_opname SET no_faktur = ?, tanggal = ?, jam = ?, status = 'ya', total_selisih = ?, user = ? , keterangan = ?  WHERE no_faktur = ?");
                 
-                $query2->bind_param("sssiss",
-                $no_faktur, $tanggal, $jam_sekarang, $selisih_harga, $user, $no_faktur);
+                $query2->bind_param("sssisss",
+                $no_faktur, $tanggal, $jam_sekarang, $selisih_harga, $user, $keterangan,$no_faktur);
                 
                 $no_faktur = stringdoang($_POST['no_faktur']); 
                 $tanggal = stringdoang($_POST['tanggal']);
                 $total_selisih_harga = angkadoang($_POST['total_selisih_harga']);
+                $keterangan = stringdoang($_POST['keterangan']);
                 $selisih_harga = $total_selisih_harga;
                 $user = $_SESSION['user_name'];
                 
@@ -28,7 +30,7 @@ $hapus_detail = $db->query("DELETE FROM detail_stok_opname WHERE no_faktur = '$n
 
 
 
-        $query1 = $db->query("SELECT * FROM tbs_stok_opname ");
+        $query1 = $db->query("SELECT * FROM tbs_stok_opname WHERE no_faktur = '$no_faktur' ");
         while ($data = mysqli_fetch_array($query1))
         {
 
@@ -36,7 +38,7 @@ $hapus_detail = $db->query("DELETE FROM detail_stok_opname WHERE no_faktur = '$n
             $query = $db->query("UPDATE barang SET stok_opname = '' WHERE kode_barang = '$data[kode_barang]'");
 
             $query4 = "INSERT INTO detail_stok_opname (no_faktur, tanggal, jam, kode_barang, nama_barang, awal, masuk, keluar, stok_sekarang, fisik, selisih_fisik, selisih_harga, harga, hpp) 
-            VALUES ('$data[no_faktur]', '$tanggal_sekarang', '$jam_sekarang', '$data[kode_barang]', '$data[nama_barang]', '$data[awal]', '$data[masuk]', '$data[keluar]', '$data[stok_sekarang]', '$data[fisik]', '$data[selisih_fisik]', '$data[selisih_harga]', '$data[harga]', '$data[hpp]')";
+            VALUES ('$data[no_faktur]', '$tanggal', '$jam_sekarang', '$data[kode_barang]', '$data[nama_barang]', '$data[awal]', '$data[masuk]', '$data[keluar]', '$data[stok_sekarang]', '$data[fisik]', '$data[selisih_fisik]', '$data[selisih_harga]', '$data[harga]', '$data[hpp]')";
             
             if ($db->query($query4) === TRUE) {
                 
@@ -50,7 +52,7 @@ $hapus_detail = $db->query("DELETE FROM detail_stok_opname WHERE no_faktur = '$n
 
 
 //JURNAL TRANSAKSI
-$ambil_tbs = $db->query("SELECT SUM(selisih_harga) AS total FROM tbs_stok_opname WHERE no_faktur = '$no_faktur'");
+$ambil_tbs = $db->query("SELECT SUM(selisih_harga) AS total FROM detail_stok_opname WHERE no_faktur = '$no_faktur'");
 $data_tbs = mysqli_fetch_array($ambil_tbs);
 $total_tbs = $data_tbs['total'];
 
@@ -64,18 +66,18 @@ if ($total_tbs < 0) {
     $total0 = 0 - $total_tbs;
 
       //PERSEDIAAN    
-        $insert_jurnal = $db->query("INSERT INTO jurnal_trans (nomor_jurnal,waktu_jurnal,keterangan_jurnal,kode_akun_jurnal,debit,kredit,jenis_transaksi,no_faktur,approved,user_buat) VALUES ('".no_jurnal()."', '$tanggal_sekarang $jam_sekarang', 'Stok Opname -', '$ambil_setting[persediaan]', '0', '$total0', 'Stok Opname', '$no_faktur','1', '$user')");
+        $insert_jurnal = $db->query("INSERT INTO jurnal_trans (nomor_jurnal,waktu_jurnal,keterangan_jurnal,kode_akun_jurnal,debit,kredit,jenis_transaksi,no_faktur,approved,user_buat) VALUES ('".no_jurnal()."', '$tanggal $jam_sekarang', 'Stok Opname -', '$ambil_setting[persediaan]', '0', '$total0', 'Stok Opname', '$no_faktur','1', '$user')");
 
   //STOK OPNAME    
-        $insert_jurnal = $db->query("INSERT INTO jurnal_trans (nomor_jurnal,waktu_jurnal,keterangan_jurnal,kode_akun_jurnal,debit,kredit,jenis_transaksi,no_faktur,approved,user_buat) VALUES ('".no_jurnal()."', '$tanggal_sekarang $jam_sekarang', 'Stok Opname -', '$ambil_setting[pengaturan_stok]', '$total0', '0', 'Stok Opname', '$no_faktur','1', '$user')");
+        $insert_jurnal = $db->query("INSERT INTO jurnal_trans (nomor_jurnal,waktu_jurnal,keterangan_jurnal,kode_akun_jurnal,debit,kredit,jenis_transaksi,no_faktur,approved,user_buat) VALUES ('".no_jurnal()."', '$tanggal $jam_sekarang', 'Stok Opname -', '$ambil_setting[pengaturan_stok]', '$total0', '0', 'Stok Opname', '$no_faktur','1', '$user')");
 } 
 
 else {
       //PERSEDIAAN    
-        $insert_jurnal = $db->query("INSERT INTO jurnal_trans (nomor_jurnal,waktu_jurnal,keterangan_jurnal,kode_akun_jurnal,debit,kredit,jenis_transaksi,no_faktur,approved,user_buat) VALUES ('".no_jurnal()."', '$tanggal_sekarang $jam_sekarang', 'Stok Opname -', '$ambil_setting[persediaan]', '$total_tbs', '0', 'Stok Opname', '$no_faktur','1', '$user')");
+        $insert_jurnal = $db->query("INSERT INTO jurnal_trans (nomor_jurnal,waktu_jurnal,keterangan_jurnal,kode_akun_jurnal,debit,kredit,jenis_transaksi,no_faktur,approved,user_buat) VALUES ('".no_jurnal()."', '$tanggal $jam_sekarang', 'Stok Opname -', '$ambil_setting[persediaan]', '$total_tbs', '0', 'Stok Opname', '$no_faktur','1', '$user')");
 
   //STOK OPNAME    
-        $insert_jurnal = $db->query("INSERT INTO jurnal_trans (nomor_jurnal,waktu_jurnal,keterangan_jurnal,kode_akun_jurnal,debit,kredit,jenis_transaksi,no_faktur,approved,user_buat) VALUES ('".no_jurnal()."', '$tanggal_sekarang $jam_sekarang', 'Stok Opname -', '$ambil_setting[pengaturan_stok]', '0', '$total_tbs', 'Stok Opname', '$no_faktur','1', '$user')");
+        $insert_jurnal = $db->query("INSERT INTO jurnal_trans (nomor_jurnal,waktu_jurnal,keterangan_jurnal,kode_akun_jurnal,debit,kredit,jenis_transaksi,no_faktur,approved,user_buat) VALUES ('".no_jurnal()."', '$tanggal $jam_sekarang', 'Stok Opname -', '$ambil_setting[pengaturan_stok]', '0', '$total_tbs', 'Stok Opname', '$no_faktur','1', '$user')");
 }
 
 
@@ -85,7 +87,7 @@ else {
 
 
 
-        $hapus = $db->query("DELETE FROM tbs_stok_opname");
+        $hapus = $db->query("DELETE FROM tbs_stok_opname WHERE no_faktur = '$no_faktur' ");
         
         
         echo "Success";

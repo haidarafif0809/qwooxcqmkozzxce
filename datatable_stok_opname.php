@@ -19,6 +19,7 @@ $columns = array(
 	3 => 'status',
 	4 => 'total_selisih',
   	5 => 'user',
+  	5 => 'keterangan',
 	6 => 'id'
 );
 
@@ -52,6 +53,7 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 	$nestedData[] = $row["status"];
 	$nestedData[] = $row["total_selisih"];
 	$nestedData[] = $row["user"];
+	$nestedData[] = $row["keterangan"];
 
   $nestedData[] = "<button class='btn btn-info detail' no_faktur='". $row['no_faktur'] ."' ><span class='glyphicon glyphicon-th-list'></span> Detail </button>";
 
