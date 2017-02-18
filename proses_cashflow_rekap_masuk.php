@@ -1,4 +1,4 @@
-<?php include 'session_login.php';
+ <?php include 'session_login.php';
 /* Database connection start */
 include 'sanitasi.php';
 include 'db.php';
@@ -19,10 +19,12 @@ $columns = array(
 
 );
 // getting total number records without any search
-$sql = "SELECT SUM(js.debit) AS masuk,js.jenis_transaksi,js.id,da.nama_daftar_akun,js.keterangan_jurnal,js.no_faktur";
-$sql.=" FROM jurnal_trans js LEFT JOIN daftar_akun da ON js.kode_akun_jurnal = da.kode_daftar_akun";
-$sql.=" WHERE DATE(js.waktu_jurnal) = '$tanggal' AND js.kode_akun_jurnal = '$kas' AND js.debit != '0' AND js.jenis_transaksi != 'Kas Mutasi' GROUP BY js.jenis_transaksi";
-$sql.=" ";
+
+
+$sql = "SELECT daf.nama_daftar_akun AS nama_dari_akun,dk.kode_akun_jurnal AS dari_akun_jurnal ,js.jenis_transaksi,da.nama_daftar_akun,js.keterangan_jurnal";
+$sql.=" FROM jurnal_trans js LEFT JOIN daftar_akun da ON js.kode_akun_jurnal = da.kode_daftar_akun LEFT JOIN jurnal_trans dk ON js.no_faktur = dk.no_faktur LEFT JOIN daftar_akun daf ON daf.kode_daftar_akun = dk.kode_akun_jurnal ";
+$sql.=" WHERE DATE(js.waktu_jurnal) = '$tanggal' AND js.kode_akun_jurnal = '$kas' AND dk.kode_akun_jurnal != js.kode_akun_jurnal AND js.debit != '0' AND dk.kredit != '0' AND js.jenis_transaksi != 'Kas Mutasi' GROUP BY dk.kode_akun_jurnal ";
+
 
 
 $query = mysqli_query($conn, $sql) or die("eror 1");
@@ -31,12 +33,15 @@ $totalFiltered = $totalData;  // when there is no search parameter then total nu
 
 
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
-$sql = "SELECT SUM(js.debit) AS masuk,js.jenis_transaksi,js.id,da.nama_daftar_akun,js.keterangan_jurnal,js.no_faktur";
-$sql.=" FROM jurnal_trans js LEFT JOIN daftar_akun da ON js.kode_akun_jurnal = da.kode_daftar_akun";
-$sql.=" WHERE DATE(js.waktu_jurnal) = '$tanggal' AND js.kode_akun_jurnal = '$kas' AND js.debit != '0' AND js.jenis_transaksi != 'Kas Mutasi'";
+
+$sql = "SELECT daf.nama_daftar_akun AS nama_dari_akun,dk.kode_akun_jurnal AS dari_akun_jurnal ,js.jenis_transaksi,da.nama_daftar_akun,js.keterangan_jurnal";
+$sql.=" FROM jurnal_trans js LEFT JOIN daftar_akun da ON js.kode_akun_jurnal = da.kode_daftar_akun LEFT JOIN jurnal_trans dk ON js.no_faktur = dk.no_faktur LEFT JOIN daftar_akun daf ON daf.kode_daftar_akun = dk.kode_akun_jurnal ";
+
+$sql.=" WHERE DATE(js.waktu_jurnal) = '$tanggal' AND js.kode_akun_jurnal = '$kas' AND dk.kode_akun_jurnal != js.kode_akun_jurnal AND js.debit != '0' AND dk.kredit != '0' AND js.jenis_transaksi != 'Kas Mutasi' ";
 
 	$sql.=" AND ( js.jenis_transaksi LIKE '".$requestData['search']['value']."%'";
-	$sql.=" OR da.nama_daftar_akun LIKE '".$requestData['search']['value']."%' ) GROUP BY js.jenis_transaksi";
+	$sql.=" OR daf.nama_daftar_akun LIKE '".$requestData['search']['value']."%'";
+	$sql.=" OR da.nama_daftar_akun LIKE '".$requestData['search']['value']."%' ) GROUP BY dk.kode_akun_jurnal ";
 
 
 }
@@ -58,14 +63,14 @@ while( $row=mysqli_fetch_array($query) ) {
 
 	$nestedData=array(); 
 
-	$select = $db->query("SELECT da.nama_daftar_akun FROM jurnal_trans js LEFT JOIN daftar_akun da ON js.kode_akun_jurnal = da.kode_daftar_akun WHERE DATE(js.waktu_jurnal) = '$tanggal' 
-		AND js.no_faktur = '$row[no_faktur]' AND js.kredit != '0'");
-	$out = mysqli_fetch_array($select);
+    $select = $db->query("SELECT SUM(kredit) AS masuk FROM jurnal_trans WHERE DATE(waktu_jurnal) = '$tanggal' AND kode_akun_jurnal = '$row[dari_akun_jurnal]' AND kredit != 0 ");
+    $datadariakun = mysqli_fetch_array($select);
+    
 
 	$nestedData[] = $tanggal;
-	$nestedData[] = $out["nama_daftar_akun"];
+	$nestedData[] = $row["nama_dari_akun"];
 	$nestedData[] = $row["nama_daftar_akun"];
-	$nestedData[] = rp($row["masuk"]);
+	$nestedData[] = rp($datadariakun["masuk"]);
 $data[] = $nestedData;
 }
 $json_data = array(
