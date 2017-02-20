@@ -32,6 +32,7 @@ $sql = "SELECT id,kode_pelanggan,nama_pelanggan,jenis_kelamin,alamat_sekarang,tg
 $sql.=" FROM pelanggan ";
 $sql.=" WHERE (kode_pelanggan LIKE '%$cari%' ";
 $sql.=" OR nama_pelanggan LIKE '%$cari%'  ";
+$sql.=" OR tgl_lahir LIKE '%$cari%'  ";
 $sql.=" OR alamat_sekarang LIKE '%$cari%') "; 
 $sql.=" AND kode_pelanggan != '' ";
 
@@ -44,6 +45,7 @@ $sql = "SELECT id,kode_pelanggan,nama_pelanggan,jenis_kelamin,alamat_sekarang,tg
 $sql.=" FROM pelanggan WHERE 1=1";
 $sql.=" AND (kode_pelanggan LIKE '%$cari%' ";
 $sql.=" OR nama_pelanggan LIKE '%$cari%' ";
+$sql.=" OR tgl_lahir LIKE '%$cari%'  ";
 $sql.=" OR alamat_sekarang LIKE '%$cari%') "; 
 $sql.=" AND kode_pelanggan != '' ";
 

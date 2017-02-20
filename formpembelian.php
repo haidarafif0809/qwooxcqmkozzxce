@@ -866,7 +866,8 @@ $(document).ready(function(){
         $("#tax1").val('');  
         $("#harga_produk").val('');
         $("#harga_baru").val(''); 
-
+  $("#jumlahbarang").val('');
+ $("#over_stok").val('');
     });
 }
     
@@ -1229,16 +1230,19 @@ else
 
   $("#jumlah_barang").keyup(function(){
 
+//jumlah barang yang di ambil (input)
     var jumlah_barang = $("#jumlah_barang").val();
     if (jumlah_barang == "") {
       jumlah_barang = 0;
     }
-    var jumlahbarang =$("#jumlahbarang").val();
+  //jumlah barang sebenarnya
+    var jumlahbarang = $("#jumlahbarang").val();
+    // over stoknya
      var over_stok = $("#over_stok").val();
-    var stok = parseInt(jumlah_barang) + parseInt(jumlahbarang);
+     //perhitungan stok jumlah input + over stok
+    var stok = parseInt(jumlah_barang,10) + parseInt(jumlahbarang,10);
 
-
-if( over_stok < stok ){
+if(over_stok < stok ){
 
       alert ("Persediaan Barang Ini Sudah Melebihi Batas Stok!");
       
@@ -1968,13 +1972,14 @@ $.post('cek_jumlah_kas1.php', {cara_bayar : cara_bayar}, function(data) {
               $(nRow).attr('class', "pilih");
               $(nRow).attr('data-kode', aData[0]);
               $(nRow).attr('nama-barang', aData[1]);
-              $(nRow).attr('over_stok', aData[7]);
+              $(nRow).attr('over_stok', aData[8]);
               $(nRow).attr('satuan', aData[7]);
               $(nRow).attr('harga', aData[2]);
-              $(nRow).attr('id-barang', aData[8]);
+              $(nRow).attr('id-barang', aData[9]);
               $(nRow).attr('jumlah-barang', aData[3]);
               $(nRow).attr('kategori', aData[5]);
               $(nRow).attr('suplier', aData[6]);
+
 
             }
 

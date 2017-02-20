@@ -361,7 +361,7 @@ else
  ?>
   <?php
 //menampilkan semua data yang ada pada tabel tbs penjualan dalam DB
-                $perintah = $db->query("SELECT tp.id,tp.kode_barang,tp.satuan,tp.nama_barang,tp.jumlah_barang,tp.harga,tp.subtotal,tp.potongan,tp.tax,s.nama,tp.tanggal,tp.jam,tp.no_reg,tp.tipe_barang FROM tbs_penjualan tp INNER JOIN satuan s ON tp.satuan = s.id WHERE tp.no_reg = '$no_reg' ORDER BY tp.id DESC LIMIT 1");
+                $perintah = $db->query("SELECT tp.id,tp.kode_barang,tp.satuan,tp.nama_barang,tp.jumlah_barang,tp.harga,tp.subtotal,tp.potongan,tp.tax,s.nama,tp.tanggal,tp.jam,tp.no_reg,tp.tipe_barang FROM tbs_penjualan tp INNER JOIN satuan s ON tp.satuan = s.id WHERE tp.no_reg = '$no_reg' AND tp.kode_barang = '$kode' ORDER BY tp.id DESC LIMIT 1");
                 
 $data1 = mysqli_fetch_array($perintah);
 
@@ -404,12 +404,4 @@ $data1 = mysqli_fetch_array($perintah);
                 </tr>";
 
                 ?>
-
-<!--datatable-->
-<script type="text/javascript">
-  $(function () {
-  $("#tbs_penjualan").dataTable({ordering : false});
-  });  
-</script>
-<!--end datatable-->
 

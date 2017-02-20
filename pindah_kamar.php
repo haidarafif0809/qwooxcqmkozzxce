@@ -1,56 +1,90 @@
-<?php 
-include 'db.php';
+<?php include 'session_login.php';
+/* Database connection start */
 include 'sanitasi.php';
+include 'db.php';
+
+/* Database connection end */
+
+// storing  request (ie, get/post) global array to a variable  
+$requestData= $_REQUEST;
 
 
+
+$columns = array( 
+// datatable column index  => database column name
+
+    0=>'kelas', 
+    1=>'nama_kamar',
+    2=>'group_bed',
+    3=>'fasilitas',
+    4=>'jumlah_bed',
+    5=>'sisa_bed'
+
+ 
+);
 $cek = $db->query("SELECT * FROM bed WHERE sisa_bed != 0 ");
+// getting total number records without any search
+$sql ="SELECT * ";
+$sql.=" FROM bed ";
+$sql.=" WHERE sisa_bed != 0 ";
 
- ?>
+$query = mysqli_query($conn, $sql) or die("eror 1");
+$totalData = mysqli_num_rows($query);
+$totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
-  <div class="table-responsive">
+if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
+$sql ="SELECT * ";
+$sql.=" FROM bed ";
+$sql.=" WHERE sisa_bed != 0 ";
 
-        <table id="siswaki" class="table table-bordered table-hover table-striped">
-        <thead>
-          <tr>
-          <th>Kelas</th>
-          <th>Kode Kamar</th>
-          <th>Nama Kamar</th>
-          <th>Fasilitas</th>
-          <th>Jumlah Bed</th>
-          <th>Sisa Bed</th>    
-          </tr>
-      </thead>
-          <tbody>
-          <?php
-           while ($data =$cek->fetch_assoc()) {
-             $select_kelas = $db->query("SELECT id,nama FROM kelas_kamar");
+    $sql.=" AND (nama_kamar LIKE '".$requestData['search']['value']."%'";  
+    $sql.=" OR group_bed LIKE '".$requestData['search']['value']."%' ";
+    $sql.=" OR fasilitas LIKE '".$requestData['search']['value']."%' )";
+
+}
+
+
+$query=mysqli_query($conn, $sql) or die("eror 2");
+$totalFiltered = mysqli_num_rows($query); // when there is a search parameter then we have to modify total number filtered rows as per search result. 
+        
+$sql.=" ORDER BY id ".$requestData['order'][0]['dir']."  LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
+
+/* $requestData['order'][0]['column'] contains colmun index, $requestData['order'][0]['dir'] contains order such as asc/desc  */    
+$query=mysqli_query($conn, $sql) or die("eror 3");
+
+
+$data = array();
+while( $row=mysqli_fetch_array($query) ) {  // preparing an array
+  $nestedData=array(); 
+
+               $select_kelas = $db->query("SELECT id,nama FROM kelas_kamar");
         while($out_kelas = mysqli_fetch_array($select_kelas))
         {
-          if($data['kelas'] == $out_kelas['id'])
+          if($row['kelas'] == $out_kelas['id'])
           {
             $kelas = $out_kelas['nama'];
           }
         }
-          ?>
-         <tr class="pilih3" 
-         data-nama="<?php echo $data['nama_kamar']; ?>"
-         data-group-bed="<?php echo $data['group_bed']; ?>" >
 
-          <td><?php echo $kelas; ?></td>
-          <td><?php echo $data['nama_kamar']; ?></td>
-          <td><?php echo $data['group_bed']; ?></td>
-          <td><?php echo $data['fasilitas']; ?></td>
-         <td><?php echo $data['jumlah_bed']; ?></td>
-        <td><?php echo $data['sisa_bed']; ?></td>
-                             
-     </tr>
-        <?php
-        }
-        ?>
-          </tbody>
-   		 </table>  
-         </div>
+      $nestedData[] = $kelas;
+      $nestedData[] = $row["nama_kamar"];
+      $nestedData[] = $row["group_bed"];
+      $nestedData[] = $row["fasilitas"];
+      $nestedData[] = $row["jumlah_bed"];
+      $nestedData[] = $row["sisa_bed"];
+
+  $data[] = $nestedData;
+}
 
 
 
-<!-- end ambil data RI  -->
+$json_data = array(
+            "draw"            => intval( $requestData['draw'] ),   // for every request/draw by clientside , they send a number as a parameter, when they recieve a response/data they first check the draw number, so we are sending same number in draw. 
+            "recordsTotal"    => intval( $totalData ),  // total number of records
+            "recordsFiltered" => intval( $totalFiltered ), // total number of records after searching, if there is no searching then totalFiltered = totalData
+            "data"            => $data   // total data array
+            );
+
+echo json_encode($json_data);  // send data as json format
+
+ ?>

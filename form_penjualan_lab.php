@@ -71,6 +71,12 @@ $user = $_SESSION['nama'];
 
 $sum_rj_ri = $db->query("SELECT SUM(subtotal) AS total_rj_ri FROM tbs_penjualan WHERE no_reg = '$no_reg' AND no_reg != '' AND lab IS NULL ");
 $data_rj_ri = mysqli_fetch_array($sum_rj_ri);
+
+$sql_ops = $db->query("SELECT SUM(harga_jual) AS total_ops FROM tbs_operasi WHERE no_reg = '$no_reg'");
+$data_ops = mysqli_fetch_array($sql_ops);
+
+
+
  ?>
 
 <!-- js untuk tombol shortcut -->
@@ -165,6 +171,9 @@ $data_rj_ri = mysqli_fetch_array($sum_rj_ri);
 
   <input  name="no_reg" type="hidden" style="height:15px;" id="no_reg" class="form-control" required="" autofocus="" value="<?php echo $no_reg; ?>" >
   <input  name="total_rj_ri" type="hidden" style="height:15px;" id="total_rj_ri" class="form-control" required="" autofocus="" value="<?php echo $data_rj_ri['total_rj_ri']; ?>" >
+
+    <input  name="total_ops" type="hidden" style="height:15px;" id="total_ops" class="form-control" required="" autofocus="" value="<?php echo $data_ops['total_ops']; ?>" >
+
 
 
 <div class="col-xs-2 form-group">
@@ -538,7 +547,7 @@ Level 7
                 <?php
                
                   //menampilkan semua data yang ada pada tabel tbs penjualan dalam DB
-                $perintah = $db->query("SELECT * FROM tbs_penjualan WHERE session_id = '$session_id' AND no_reg = '$no_reg' AND lab = 'Laboratorium'");
+                $perintah = $db->query("SELECT * FROM tbs_penjualan WHERE   no_reg = '$no_reg' AND lab = 'Laboratorium'");
                             
                 
                 //menyimpan data sementara yang ada pada $perintah  
@@ -596,86 +605,59 @@ Level 7
 <?php if ($no_reg == ""): ?>
 
 <?php else: ?>
-  <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample"><i class='fa fa-wheelchair-alt'> </i> Rawat Jalan / Inap</button>
+  <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample" id="rawat"><i class='fa fa-wheelchair-alt'> </i> Rawat Jalan / Inap</button>
+
+       <?php if ($jenis_penjualan == 'Rawat Inap'): ?>
+
+        <button class="btn btn-primary" type="button" id="btnOperasi" data-toggle="collapse" data-target="#collapseExampleops" aria-expanded="false" aria-controls="collapseExample"><i class='fa fa-plus-circle'> </i>
+      Operasi  </button>
+      <?php endif ?>
+
 <?php endif ?>
 
 
  <div class="collapse" id="collapseExample">
- <span id="table-baru">  
-                <table id="tableuser" class="table table-sm">
+          <span id="table-baru">  
+                <table id="table-rawat" class="table table-sm">
                 <thead>
                 <th> Kode  </th>
                 <th> Nama </th>
                 <th> Nama Petugas </th>
                 <th> Jumlah </th>
                 <th> Satuan </th>
+                <th> Dosis </th>
                 <th align="right"> Harga </th>
                 <th align="right"> Subtotal </th>
                 <th align="right"> Potongan </th>
                 <th align="right"> Pajak </th>
                 
                 </thead>
-                
-                <tbody id="tbody">
-                <?php
-                
-                //menampilkan semua data yang ada pada tabel tbs penjualan dalam DB
-                $perintah = $db->query("SELECT tp.jam,tp.id,tp.tipe_barang,tp.kode_barang,tp.satuan,tp.nama_barang,tp.jumlah_barang,tp.harga,tp.subtotal,tp.potongan,tp.tax,s.nama FROM tbs_penjualan tp INNER JOIN satuan s ON tp.satuan = s.id WHERE tp.no_reg = '$no_reg' ");
-                
-                //menyimpan data sementara yang ada pada $perintah
-                
-                while ($data1 = mysqli_fetch_array($perintah))
-                {
-
-                  
-
-                //menampilkan data
-                echo "<tr class='tr-kode-". $data1['kode_barang'] ." tr-id-". $data1['id'] ."' data-kode-barang='".$data1['kode_barang']."'>
-                <td style='font-size:15px'>". $data1['kode_barang'] ."</td>
-                <td style='font-size:15px;'>". $data1['nama_barang'] ."</td>";
-
-                $kd = $db->query("SELECT f.nama_petugas, u.nama FROM tbs_fee_produk f INNER JOIN user u ON f.nama_petugas = u.id WHERE f.kode_produk = '$data1[kode_barang]' AND f.jam = '$data1[jam]' ");
-                
-                $kdD = $db->query("SELECT f.nama_petugas, u.nama FROM tbs_fee_produk f INNER JOIN user u ON f.nama_petugas = u.id WHERE f.kode_produk = '$data1[kode_barang]' AND f.jam = '$data1[jam]' ");
-                    
-                $nu = mysqli_fetch_array($kd);
-
-                  if ($nu['nama'] != '')
-                  {
-
-                  echo "<td style='font-size:15px;'>";
-                   while($nur = mysqli_fetch_array($kdD))
-                  {
-                    echo $nur['nama']." ,";
-                  }
-                   echo "</td>";
-
-                  }
-                  else
-                  {
-                    echo "<td></td>";
-                  }
-
-
-                echo "<td style='font-size:15px' align='right' class='edit-jumlah' data-id='".$data1['id']."'><span id='text-jumlah-".$data1['id']."'>". $data1['jumlah_barang'] ."</span> <input type='hidden' id='input-jumlah-".$data1['id']."' value='".$data1['jumlah_barang']."' class='input_jumlah' data-id='".$data1['id']."' autofocus='' data-kode='".$data1['kode_barang']."' data-harga='".$data1['harga']."' data-tipe='".$data1['tipe_barang']."' data-satuan='".$data1['satuan']."' > </td>
-                <td style='font-size:15px'>". $data1['nama'] ."</td>
-
-                <td style='font-size:15px' align='right'>". rp($data1['harga']) ."</td>
-                <td style='font-size:15px' align='right'><span id='text-subtotal-".$data1['id']."'>". rp($data1['subtotal']) ."</span></td>
-                <td style='font-size:15px' align='right'><span id='text-potongan-".$data1['id']."'>". rp($data1['potongan']) ."</span></td>
-                <td style='font-size:15px' align='right'><span id='text-tax-".$data1['id']."'>". rp($data1['tax']) ."</span></td>
-
-                </tr>";
-
-
-                }
-
-                ?>
-                </tbody>
+              
                 
                 </table>
                 </span>
  </div>
+
+
+             <div class="collapse" id="collapseExampleops">
+              <span id="span_operasi">
+                  <div class="table-responsive">
+                    <table id="tabel_tbs_operasi" class="table table-bordered table-sm">
+                          <thead> <!-- untuk memberikan nama pada kolom tabel -->
+                              
+                              <th >No REG</th>
+                              <th >Operasi</th>
+                              <th >Harga Jual</th>
+                              <th >Petugas Input</th> 
+                              <th >Waktu</th>    
+                              <th >Detail</th>
+                              <th >Hapus</th>
+                          
+                          </thead> <!-- tag penutup tabel -->
+                    </table>
+                  </div>
+              </span>
+            </div>
 
 
                 <h6 style="text-align: left ; color: red"><i> * Klik 2x pada kolom jumlah barang jika ingin mengedit.</i></h6>
@@ -864,9 +846,14 @@ Level 7
       <?php else: ?>
 
       <div class="row">
-          <div class="col-xs-12">          
-            <label style="font-size:15px"> <b> Subtotal </b></label><br>
-            <input style="height:25px;font-size:15px" type="text" name="total" id="total2" class="form-control" placeholder="Total" readonly="" >
+          <div class="col-xs-6">          
+            <label style="font-size:15px"> <b> Subtotal Keseluruhan</b></label><br>
+            <input style="height:25px;font-size:15px" type="text" name="total" id="total2" class="form-control" placeholder="Subtotal Keseluruhan" readonly="" >
+          </div>
+
+          <div class="col-xs-6">          
+            <label style="font-size:15px"> <b> Subtotal Lab.</b></label><br>
+            <input style="height:25px;font-size:15px" type="text" name="total" id="sub_lab" class="form-control" placeholder="Subtotal Lab." readonly="" >
           </div>
 
                   <?php
@@ -1260,6 +1247,84 @@ $(document).ready(function() {
          
 </script>
 
+
+
+<script type="text/javascript" language="javascript" >
+
+  $(document).ready(function() {
+    $(document).on('click', '#rawat', function (e) {
+      $('#table-rawat').DataTable().destroy();
+            var dataTable = $('#table-rawat').DataTable( {
+            "processing": true,
+            "serverSide": true,
+            "info":     false,
+            "language": { "emptyTable":     "My Custom Message On Empty Table" },
+            "ajax":{
+              url :"table_rawat_rujuk_lab.php", // json datasource
+               "data": function ( d ) {
+                  d.no_reg = $("#no_reg").val();
+                  // d.custom = $('#myInput').val();
+                  // etc
+              },
+                  type: "post",  // method  , by default get
+              error: function(){  // error handling
+                $(".tbody").html("");
+                $("#table-rawat").append('<tbody class="tbody"><tr><th colspan="3"></th></tr></tbody>');
+                $("#table-rawat_processing").css("display","none");
+                
+              }
+            }   
+
+      });
+
+  $("#span_operasi").show()
+
+    });
+
+
+  });
+
+</script>
+
+
+<script type="text/javascript">
+  
+  $(document).ready(function(){
+            $(document).on('click', '#btnOperasi', function (e) {
+      $('#tabel_tbs_operasi').DataTable().destroy();
+            var dataTable = $('#tabel_tbs_operasi').DataTable( {
+            "processing": true,
+            "serverSide": true,
+            "info":     false,
+            "language": { "emptyTable":     "My Custom Message On Empty Table" },
+            "ajax":{
+              url :"data_tbs_operasi.php", // json datasource
+               "data": function ( d ) {
+                  d.no_reg = $("#no_reg").val();
+                  // d.custom = $('#myInput').val();
+                  // etc
+              },
+                  type: "post",  // method  , by default get
+              error: function(){  // error handling
+                $(".tbody").html("");
+                $("#tabel_tbs_operasi").append('<tbody class="tbody"><tr><th colspan="3"></th></tr></tbody>');
+                $("#tableuser_processing").css("display","none");
+                
+              }
+            }   
+
+      });
+        
+
+    });
+
+ $("#span_operasi").show()
+  })
+
+
+</script>
+
+
 <!--untuk memasukkan perintah java script-->
 <script type="text/javascript">
 
@@ -1603,6 +1668,8 @@ $(document).on('click','#submit_produk',function(e){
     var jumlah_barang = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#jumlah_barang").val()))));
     var harga = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#harga_produk").val()))));
 
+
+
     if (harga == '') {
       harga = 0;
     }
@@ -1739,6 +1806,17 @@ if (ppn == 'Exclude') {
 
     }
 
+    if (no_reg != '') {
+
+          var sub_lab = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#sub_lab").val()))));
+          if (sub_lab == '') {
+            sub_lab = 0;
+          }
+
+          var total1 = parseInt(jumlah_barang,10) * parseInt(hargaa,10) - parseInt(potongan,10);
+          var hitung_lab = parseInt(total1,10) + parseInt(sub_lab,10);
+
+    }
 
 
 
@@ -1774,6 +1852,9 @@ if (jumlah_barang == ''){
       $("#total1").val(tandaPemisahTitik(total_akhir));
       $("#potongan_penjualan").val(Math.round(potongaaan));
       $("#total2").val(tandaPemisahTitik(total_akhir1));
+      if (no_reg != '') {
+      $("#sub_lab").val(tandaPemisahTitik(hitung_lab));
+      }
       $("#biaya_admin").val(Math.round(biaya_admin));
 
           $.post("proses_tbs_laboratorium.php",{nama_barang:nama_barang,jumlah_barang:jumlah_barang,harga:harga,potongan:potongan,tax:tax,tipe_barang:ber_stok,no_rm:no_rm,apoteker:apoteker,penjamin:penjamin,hargaa:hargaa,ppn:ppn, kode_barang:kode_barang,no_reg:no_reg,dokter:dokter},function(data){ 
@@ -3067,7 +3148,22 @@ $(document).on('click','.btn-hapus-tbs',function(e){
     
     }
 
+
+
+
   $(".tr-id-"+id+"").remove();
+        if (no_reg != '') {
+
+        var sub_lab = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#sub_lab").val()))));
+            if (sub_lab == '') {
+               sub_lab = 0;
+                }
+
+        var hitung_lab = parseInt(sub_lab,10) - parseInt(subtotal,10);
+         $("#sub_lab").val(tandaPemisahTitik(hitung_lab)); 
+        } 
+
+
 
          $("#total2").val(tandaPemisahTitik(total_akhir1));  
          $("#total1").val(tandaPemisahTitik(total_akhir));      
@@ -3374,7 +3470,7 @@ $(document).ready(function(){
 
                                   $(document).on('blur','.input_jumlah',function(e){
 
-
+                                    var no_reg = $("#no_reg").val();
                                     var id = $(this).attr("data-id");
                                     var jumlah_baru = $(this).val();
                                     if (jumlah_baru == '') {
@@ -3436,6 +3532,20 @@ $(document).ready(function(){
                                     var tot_akhr = parseInt(sub_akhir,10) + parseInt(biaya_admin,10) + parseInt(Math.round(t_tax,10));
                                     //perhitungan total pembayaran terakhir
 
+                                        if (no_reg != '') {
+
+                                            var sub_lab = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#sub_lab").val()))));
+                                            if (sub_lab == '') {
+                                              sub_lab = 0;
+                                            }
+
+                                            var total_baru = parseInt(jumlah_baru,10) * parseInt(harga,10) - parseInt(potongan,10);
+
+                                            var hitung_lab = parseInt(sub_lab,10)  - parseInt(subtotal_lama,10) + parseInt(total_baru,10); 
+
+                                      }
+
+
 
 
                                     var tax_tbs = tax / subtotal_lama * 100;
@@ -3458,6 +3568,10 @@ $(document).ready(function(){
 
                                                       $("#text-jumlah-"+id+"").show();
                                                         $("#text-jumlah-"+id+"").text(jumlah_baru);
+
+                                                        if (no_reg != '') {
+                                                          $("#sub_lab").val(tandaPemisahTitik(hitung_lab));
+                                                        }
 
                                                         $("#text-subtotal-"+id+"").text(tandaPemisahTitik(subtotal));
                                                         $("#btn-hapus-id-"+id+"").attr("data-subtotal",subtotal);
@@ -3492,6 +3606,10 @@ $(document).ready(function(){
                                                       }
 
                                                     else{
+
+                                                        if (no_reg != '') {
+                                                          $("#sub_lab").val(tandaPemisahTitik(hitung_lab));
+                                                        }
 
                                                       $("#text-jumlah-"+id+"").show();
                                                         $("#text-jumlah-"+id+"").text(jumlah_baru);
@@ -3673,6 +3791,11 @@ $(document).ready(function(){
 var pot_fakt_per = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#potongan_persen").val()))));
 var pot_fakt_rp = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#potongan_penjualan").val()))));
 var total_rj_ri = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#total_rj_ri").val()))));
+var total_ops = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#total_ops").val()))));
+if (total_ops == '') {
+  total_ops = 0;
+}
+
 if (total_rj_ri == "") {
   total_rj_ri = 0;
 }
@@ -3691,44 +3814,44 @@ if (no_reg == '')
                   if (data == "") {
                     data = 0;
                   }
-                var sum = parseInt(data,10) + parseInt(total_rj_ri,10);
+                var sum = parseInt(data,10) + parseInt(total_rj_ri,10) + parseInt(total_ops,10);
                 
 
                   $("#total2").val(tandaPemisahTitik(sum));
 
 
-              if (pot_fakt_per == '0%') {
-              var potongaaan = pot_fakt_rp;
-              var potongaaan = parseInt(potongaaan,10) / parseInt(data,10) * 100;
-              $("#potongan_persen").val(Math.round(potongaaan));
+                  if (pot_fakt_per == '0%') {
+                  var potongaaan = pot_fakt_rp;
+                  var potongaaan = parseInt(potongaaan,10) / parseInt(data,10) * 100;
+                  $("#potongan_persen").val(Math.round(potongaaan));
 
-             var total = parseInt(data,10) - parseInt(pot_fakt_rp,10) + parseInt(total_rj_ri,10);
+                 var total = parseInt(data,10) - parseInt(pot_fakt_rp,10) + parseInt(total_rj_ri,10) + parseInt(total_ops,10);
 
-              $("#total1").val(tandaPemisahTitik(total));
+                  $("#total1").val(tandaPemisahTitik(total));
 
-            }
-            else if(pot_fakt_rp == 0)
-            {
-                  var potongaaan = pot_fakt_per;
-                  var pos = potongaaan.search("%");
-                  var potongan_persen = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah(potongaaan))));
-                  potongan_persen = potongan_persen.replace("%","");
-                  potongaaan = data * potongan_persen / 100;
-                  $("#potongan_penjualan").val(potongaaan);
+                }
+                    else if(pot_fakt_rp == 0)
+                    {
+                          var potongaaan = pot_fakt_per;
+                          var pos = potongaaan.search("%");
+                          var potongan_persen = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah(potongaaan))));
+                          potongan_persen = potongan_persen.replace("%","");
+                          potongaaan = data * potongan_persen / 100;
+                          $("#potongan_penjualan").val(potongaaan);
 
-                  var total = parseInt(data,10) - parseInt(potongaaan,10) + parseInt(total_rj_ri,10);
+                          var total = parseInt(data,10) - parseInt(potongaaan,10) + parseInt(total_rj_ri,10) + parseInt(total_ops,10);
 
-                  $("#total1").val(tandaPemisahTitik(total))
+                          $("#total1").val(tandaPemisahTitik(total))
 
-            }
+                    }
 
                 });
         }
 
-        else
-        {
+            else
+            {
 
-        }
+            }
 });
 
 }
@@ -3741,9 +3864,10 @@ $.get("cek_total_tbs_form_lab.php",{no_reg:no_reg},function(data){
                     data = 0;
                   }
 
-                var sum = parseInt(data,10) + parseInt(total_rj_ri,10);
+                var sum = parseInt(data,10) + parseInt(total_rj_ri,10) + parseInt(total_ops,10);
 
                   $("#total2").val(tandaPemisahTitik(sum));
+                  $("#sub_lab").val(tandaPemisahTitik(data));
 
 
               if (pot_fakt_per == '0%') {
@@ -3751,7 +3875,7 @@ $.get("cek_total_tbs_form_lab.php",{no_reg:no_reg},function(data){
               var potongaaan = parseInt(potongaaan,10) / parseInt(data,10) * 100;
               $("#potongan_persen").val(Math.round(potongaaan));
 
-             var total = parseInt(data,10) - parseInt(pot_fakt_rp,10) + parseInt(total_rj_ri,10);
+             var total = parseInt(data,10) - parseInt(pot_fakt_rp,10) + parseInt(total_rj_ri,10) + parseInt(total_ops,10);
 
               $("#total1").val(tandaPemisahTitik(total));
 
@@ -3765,7 +3889,7 @@ $.get("cek_total_tbs_form_lab.php",{no_reg:no_reg},function(data){
                   potongaaan = data * potongan_persen / 100;
                   $("#potongan_penjualan").val(potongaaan);
 
-                  var total = parseInt(data,10) - parseInt(potongaaan,10) + parseInt(total_rj_ri,10);
+                  var total = parseInt(data,10) - parseInt(potongaaan,10) + parseInt(total_rj_ri,10) + parseInt(total_ops,10);
 
                   $("#total1").val(tandaPemisahTitik(total))
 
