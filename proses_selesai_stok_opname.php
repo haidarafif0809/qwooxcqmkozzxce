@@ -81,7 +81,7 @@ $session_id = session_id();
 
 
 
-        $query1 = $db->query("SELECT * FROM tbs_stok_opname WHERE session_id = '$session_id' ");
+        $query1 = $db->query("SELECT * FROM tbs_stok_opname WHERE no_faktur = '' OR no_faktur IS NULL ");
         while ($data = mysqli_fetch_array($query1))
         {
 
@@ -171,7 +171,7 @@ else {
 
 
 
-$queryhtso = "INSERT INTO history_tbs_stok_opname(session_id, no_faktur, kode_barang, nama_barang, satuan, awal, masuk, keluar, stok_sekarang, fisik, selisih_fisik, selisih_harga, harga, hpp) SELECT session_id, no_faktur, kode_barang, nama_barang, satuan, awal, masuk, keluar, stok_sekarang, fisik, selisih_fisik, selisih_harga, harga, hpp FROM tbs_stok_opname WHERE session_id = '$session_id'";
+$queryhtso = "INSERT INTO history_tbs_stok_opname(session_id, no_faktur, kode_barang, nama_barang, satuan, awal, masuk, keluar, stok_sekarang, fisik, selisih_fisik, selisih_harga, harga, hpp) SELECT session_id, no_faktur, kode_barang, nama_barang, satuan, awal, masuk, keluar, stok_sekarang, fisik, selisih_fisik, selisih_harga, harga, hpp FROM tbs_stok_opname WHERE no_faktur = '' OR no_faktur IS NULL '";
             
             if ($db->query($queryhtso) === TRUE) {
                 
@@ -181,7 +181,7 @@ $queryhtso = "INSERT INTO history_tbs_stok_opname(session_id, no_faktur, kode_ba
 //</>END JURNAL TRANSAKSI
 
 
-        $query5 = $db->query("DELETE FROM tbs_stok_opname WHERE session_id = '$session_id'  ");
+        $query5 = $db->query("DELETE FROM tbs_stok_opname WHERE no_faktur = '' OR no_faktur IS NULL  ");
         
         
 

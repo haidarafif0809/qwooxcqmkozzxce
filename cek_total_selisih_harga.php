@@ -9,7 +9,7 @@ $session_id = session_id();
  
  // menampilakn hasil penjumlahan subtotal dengan ALIAS total pembelian, pada tabel tbs pembelian
  // berdasarkan no faktur
- $query = $db->query("SELECT SUM(selisih_harga) AS total_selisih_harga FROM tbs_stok_opname WHERE session_id = '$session_id' ");
+ $query = $db->query("SELECT SUM(selisih_harga) AS total_selisih_harga FROM tbs_stok_opname WHERE no_faktur = '' OR no_faktur IS NULL ");
 
  // menyimpan data sementara pada $query
  $data = mysqli_fetch_array($query);

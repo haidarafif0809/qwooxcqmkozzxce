@@ -139,7 +139,7 @@ include 'sanitasi.php';
                   <input type="hidden" id="satuan" name="satuan" class="form-control" value="" required="">
 
                   <div class="form-group">
-                  <input type="hidden" name="no_faktur" id="nomorfaktur1" class="form-control" value="<?php echo $no_faktur; ?>" required="" >
+                  <input type="hidden" name="no_faktur" id="nomorfaktur1" class="form-control" value="" required="" >
                   </div>
 
                   
