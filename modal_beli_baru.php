@@ -17,13 +17,13 @@ $columns = array(
     0=>'kode_barang',
     1=>'nama_barang',
     2=>'harga_beli',
-    3=>'nama', 
-    4=>'kategori',
-    5=>'suplier',
-    6=>'satuan',
-    7=>'over_stok',
-    8=>'id',
-
+    3=>'stok',
+    4=>'nama', 
+    5=>'kategori',
+    6=>'suplier',
+    7=>'satuan',
+    8=>'over_stok',
+    9=>'id',
 
 );
 
@@ -126,6 +126,7 @@ while( $row=mysqli_fetch_array($query) ) {
     $nestedData[] = $row["over_stok"];
     $nestedData[] = $row["id"];
     
+
     $data[] = $nestedData;
         
 }
