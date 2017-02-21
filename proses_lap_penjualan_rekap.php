@@ -26,14 +26,15 @@ $columns = array(
   6 => 'Status',
   7 => 'Potongan',
   8 => 'tax',
-  9 => 'kembalian',
-  10 => 'kredit'
+  9 => 'biaya_admin',
+  10 => 'kembalian',
+  11 => 'kredit'
 
 );
 
 
 // getting total number records without any search
-$sql =" SELECT dp.id,pel.nama_pelanggan,dp.tanggal,dp.no_faktur,dp.kode_pelanggan,dp.total,dp.jam,dp.user,dp.status,dp.potongan,dp.tax,dp.sisa,dp.kredit  ";
+$sql =" SELECT dp.id,pel.nama_pelanggan,dp.tanggal,dp.no_faktur,dp.kode_pelanggan,dp.total,dp.jam,dp.user,dp.status,dp.potongan,dp.tax,dp.biaya_admin,dp.sisa,dp.kredit  ";
 $sql.=" FROM penjualan dp LEFT JOIN pelanggan pel ON dp.kode_pelanggan = pel.kode_pelanggan WHERE dp.tanggal >= '$dari_tanggal' AND dp.tanggal <= '$sampai_tanggal' ";
 
 $query=mysqli_query($conn, $sql) or die("eror 1");
@@ -41,7 +42,7 @@ $totalData = mysqli_num_rows($query);
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
 
-$sql =" SELECT dp.id,pel.nama_pelanggan,dp.tanggal,dp.no_faktur,dp.kode_pelanggan,dp.total,dp.jam,dp.user,dp.status,dp.potongan,dp.tax,dp.sisa,dp.kredit ";
+$sql =" SELECT dp.id,pel.nama_pelanggan,dp.tanggal,dp.no_faktur,dp.kode_pelanggan,dp.total,dp.jam,dp.user,dp.status,dp.potongan,dp.tax,dp.biaya_admin,dp.sisa,dp.kredit ";
 $sql.=" FROM penjualan dp LEFT JOIN pelanggan pel ON dp.kode_pelanggan = pel.kode_pelanggan WHERE dp.tanggal >= '$dari_tanggal' AND dp.tanggal <= '$sampai_tanggal' ";
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
 $sql.=" AND ( dp.no_faktur LIKE '".$requestData['search']['value']."%' ";
@@ -70,6 +71,7 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
       $nestedData[] = $row['status'];
       $nestedData[] = rp($row['potongan']);
       $nestedData[] = rp($row['tax']);
+      $nestedData[] = rp($row['biaya_admin']);
       $nestedData[] = $row['sisa'];
       $nestedData[] = $row['kredit'];
 
