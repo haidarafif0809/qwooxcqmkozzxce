@@ -136,6 +136,7 @@ include 'db.php';
         <thead>
             <th class="table1" style="width: 3%"> <center> No. </center> </th>
             <th class="table1" style="width: 50%"> <center> Nama Produk </center> </th>
+            <th class="table1" style="width: 25%"> <center> Petugas </center> </th>
             <th class="table1" style="width: 5%"> <center> Qty </center> </th>
             <th class="table1" style="width: 5%"> <center> Satuan </center> </th>
             <th class="table1" style="width: 15%"> <center> Harga </center> </th>
@@ -162,15 +163,37 @@ include 'db.php';
               $satuan = $satuan_b['nama'];
 
 
-
-
            echo "<tr>";
 
            echo "
 
            <td class='table1' align='center'>".$no_urut."</td>
-            <td class='table1'>". $data5['nama_barang'] ."</td>
-            <td class='table1' align='center'>". rp($data5['jumlah_barang']) ."</td>";
+           <td class='table1'>". $data5['nama_barang'] ."</td>";
+
+  
+             $kd = $db->query("SELECT f.nama_petugas, u.nama FROM laporan_fee_produk f INNER JOIN user u ON f.nama_petugas = u.id  WHERE f.kode_produk = '$data5[kode_barang]' AND f.no_faktur = '$data5[no_faktur]' ");
+
+             $kdD = $db->query("SELECT f.nama_petugas, u.nama FROM laporan_fee_produk f INNER JOIN user u ON f.nama_petugas = u.id  WHERE f.kode_produk = '$data5[kode_barang]' AND f.no_faktur = '$data5[no_faktur]' ");
+             
+             $nu = mysqli_fetch_array($kd);
+             
+             if ($nu['nama_petugas'] != '')
+             {
+             
+             echo "<td>";
+             while($nur = mysqli_fetch_array($kdD))
+             {
+             echo $nur['nama']." ,";
+             }
+             echo "</td>";
+             
+             }
+             else
+             {
+             echo "<td></td>";
+             }
+             
+            echo "<td class='table1' align='center'>". rp($data5['jumlah_barang']) ."</td>";
 
             if ($data5['lab'] == 'Laboratorium') {
               echo "<td class='table1'>Lab</td>";

@@ -138,8 +138,9 @@ include 'db.php';
 
 <table id="tableuser" class="table table-bordered table-sm">
         <thead>
-            <th class="table1" style="width: 15%"> <center> Tanggal  </center> </th>
+            <th class="table1" style="width: 25%"> <center> Waktu  </center> </th>
             <th class="table1" style="width: 50%"> <center> Nama Produk </center> </th>
+            <th class="table1" style="width: 25%"> <center> Petugas </center> </th>
             <th class="table1" style="width: 5%"> <center> Qty </center> </th>
             <th class="table1" style="width: 5%"> <center> Satuan </center> </th>
             <th class="table1" style="width: 15%"> <center> Harga </center> </th>
@@ -169,8 +170,31 @@ include 'db.php';
            echo "
 
            <td class='table1' style='font-size:15px' >". $data5['tanggal'] ." ". $data5['jam'] ."</td>
-            <td class='table1' style='font-size:15px' >". $data5['nama_barang'] ."</td>
-            <td class='table1' style='font-size:15px' align='center'>". rp($data5['jumlah_barang']) ."</td>";
+            <td class='table1' style='font-size:15px' >". $data5['nama_barang'] ."</td>";
+
+$kd = $db->query("SELECT f.nama_petugas, u.nama FROM laporan_fee_produk f INNER JOIN user u ON f.nama_petugas = u.id  WHERE f.kode_produk = '$data5[kode_barang]' AND f.no_faktur = '$no_faktur' ");
+
+             $kdD = $db->query("SELECT f.nama_petugas, u.nama FROM laporan_fee_produk f INNER JOIN user u ON f.nama_petugas = u.id  WHERE f.kode_produk = '$data5[kode_barang]' AND f.no_faktur = '$no_faktur' ");
+             
+             $nu = mysqli_fetch_array($kd);
+             
+             if ($nu['nama_petugas'] != '')
+             {
+             
+             echo "<td>";
+             while($nur = mysqli_fetch_array($kdD))
+             {
+             echo $nur['nama']." ,";
+             }
+             echo "</td>";
+             
+             }
+             else
+             {
+             echo "<td></td>";
+             }
+
+            echo "<td class='table1' style='font-size:15px' align='center'>". rp($data5['jumlah_barang']) ."</td>";
 
 
               echo "<td class='table1' style='font-size:15px' >". $satuan ."</td>";              
@@ -200,8 +224,9 @@ include 'db.php';
 
 <table id="tableuser" class="table table-bordered table-sm">
         <thead>
-            <th class="table1" style="width: 15%"> <center> Tanggal  </center> </th>
+            <th class="table1" style="width: 25%"> <center> Waktu  </center> </th>
             <th class="table1" style="width: 50%"> <center> Nama Produk </center> </th>
+            <th class="table1" style="width: 25%"> <center> Petugas </center> </th>
             <th class="table1" style="width: 5%"> <center> Qty </center> </th>
             <th class="table1" style="width: 5%"> <center> Satuan </center> </th>
             <th class="table1" style="width: 15%"> <center> Harga </center> </th>
@@ -231,8 +256,31 @@ include 'db.php';
            echo "
 
            <td class='table1' style='font-size:15px' >". $data5['tanggal'] ." ". $data5['jam'] ."</td>
-            <td class='table1' style='font-size:15px' >". $data5['nama_barang'] ."</td>
-            <td class='table1' style='font-size:15px' align='center'>". rp($data5['jumlah_barang']) ."</td>";
+            <td class='table1' style='font-size:15px' >". $data5['nama_barang'] ."</td>";
+
+$kd = $db->query("SELECT f.nama_petugas, u.nama FROM laporan_fee_produk f INNER JOIN user u ON f.nama_petugas = u.id  WHERE f.kode_produk = '$data5[kode_barang]' AND f.no_faktur = '$no_faktur' ");
+
+             $kdD = $db->query("SELECT f.nama_petugas, u.nama FROM laporan_fee_produk f INNER JOIN user u ON f.nama_petugas = u.id  WHERE f.kode_produk = '$data5[kode_barang]' AND f.no_faktur = '$no_faktur' ");
+             
+             $nu = mysqli_fetch_array($kd);
+             
+             if ($nu['nama_petugas'] != '')
+             {
+             
+             echo "<td>";
+             while($nur = mysqli_fetch_array($kdD))
+             {
+             echo $nur['nama']." ,";
+             }
+             echo "</td>";
+             
+             }
+             else
+             {
+             echo "<td></td>";
+             }
+
+            echo "<td class='table1' style='font-size:15px' align='center'>". rp($data5['jumlah_barang']) ."</td>";
 
       
               echo "<td class='table1' style='font-size:15px' >". $satuan ."</td>";              
@@ -263,8 +311,9 @@ include 'db.php';
 
 <table id="tableuser" class="table table-bordered table-sm">
         <thead>
-            <th class="table1" style="width: 15%"> <center> Tanggal  </center> </th>
+            <th class="table1" style="width: 25%"> <center> Waktu  </center> </th>
             <th class="table1" style="width: 50%"> <center> Nama Produk </center> </th>
+            <th class="table1" style="width: 25%"> <center> Petugas </center> </th>
             <th class="table1" style="width: 5%"> <center> Qty </center> </th>
             <th class="table1" style="width: 5%"> <center> Satuan </center> </th>
             <th class="table1" style="width: 15%"> <center> Harga </center> </th>
@@ -294,8 +343,31 @@ include 'db.php';
            echo "
 
            <td class='table1' style='font-size:15px' >". $data5['tanggal'] ." ". $data5['jam'] ."</td>
-            <td class='table1' style='font-size:15px' >". $data5['nama_barang'] ."</td>
-            <td class='table1' style='font-size:15px' align='center'>". rp($data5['jumlah_barang']) ."</td>";
+            <td class='table1' style='font-size:15px' >". $data5['nama_barang'] ."</td>";
+
+            $kd = $db->query("SELECT f.nama_petugas, u.nama FROM laporan_fee_produk f INNER JOIN user u ON f.nama_petugas = u.id  WHERE f.kode_produk = '$data5[kode_barang]' AND f.no_faktur = '$no_faktur' ");
+
+             $kdD = $db->query("SELECT f.nama_petugas, u.nama FROM laporan_fee_produk f INNER JOIN user u ON f.nama_petugas = u.id  WHERE f.kode_produk = '$data5[kode_barang]' AND f.no_faktur = '$no_faktur' ");
+             
+             $nu = mysqli_fetch_array($kd);
+             
+             if ($nu['nama_petugas'] != '')
+             {
+             
+             echo "<td>";
+             while($nur = mysqli_fetch_array($kdD))
+             {
+             echo $nur['nama']." ,";
+             }
+             echo "</td>";
+             
+             }
+             else
+             {
+             echo "<td></td>";
+             }
+
+            echo "<td class='table1' style='font-size:15px' align='center'>". rp($data5['jumlah_barang']) ."</td>";
 
               echo "<td class='table1' style='font-size:15px' >". $satuan ."</td>";              
           
@@ -324,8 +396,9 @@ include 'db.php';
 
 <table id="tableuser" class="table table-bordered table-sm">
         <thead>
-            <th class="table1" style="width: 15%"> <center> Tanggal  </center> </th>
+            <th class="table1" style="width: 25%"> <center> Waktu  </center> </th>
             <th class="table1" style="width: 50%"> <center> Nama Produk </center> </th>
+            <th class="table1" style="width: 25%"> <center> Petugas </center> </th>
             <th class="table1" style="width: 5%"> <center> Qty </center> </th>
             <th class="table1" style="width: 5%"> <center> Satuan </center> </th>
             <th class="table1" style="width: 15%"> <center> Harga </center> </th>
@@ -348,8 +421,31 @@ include 'db.php';
            echo "
 
            <td class='table1' style='font-size:15px' >". $data5['tanggal'] ." ". $data5['jam'] ."</td>
-            <td class='table1' style='font-size:15px' >". $data5['nama_barang'] ."</td>
-            <td class='table1' style='font-size:15px' align='center'>". rp($data5['jumlah_barang']) ."</td>";
+            <td class='table1' style='font-size:15px' >". $data5['nama_barang'] ."</td>";
+
+            $kd = $db->query("SELECT f.nama_petugas, u.nama FROM laporan_fee_produk f INNER JOIN user u ON f.nama_petugas = u.id  WHERE f.kode_produk = '$data5[kode_barang]' AND f.no_faktur = '$no_faktur' ");
+
+             $kdD = $db->query("SELECT f.nama_petugas, u.nama FROM laporan_fee_produk f INNER JOIN user u ON f.nama_petugas = u.id  WHERE f.kode_produk = '$data5[kode_barang]' AND f.no_faktur = '$no_faktur' ");
+             
+             $nu = mysqli_fetch_array($kd);
+             
+             if ($nu['nama_petugas'] != '')
+             {
+             
+             echo "<td>";
+             while($nur = mysqli_fetch_array($kdD))
+             {
+             echo $nur['nama']." ,";
+             }
+             echo "</td>";
+             
+             }
+             else
+             {
+             echo "<td></td>";
+             }
+
+            echo "<td class='table1' style='font-size:15px' align='center'>". rp($data5['jumlah_barang']) ."</td>";
 
 
               echo "<td class='table1' style='font-size:15px' >Lab</td>";              
@@ -380,8 +476,9 @@ include 'db.php';
 
 <table id="tableuser" class="table table-bordered table-sm">
         <thead>
-            <th class="table1" style="width: 15%"> <center> Tanggal  </center> </th>
+            <th class="table1" style="width: 25%"> <center> Waktu  </center> </th>
             <th class="table1" style="width: 50%"> <center> Nama Produk </center> </th>
+            <th class="table1" style="width: 25%"> <center> Petugas </center> </th>
             <th class="table1" style="width: 5%"> <center> Qty </center> </th>
             <th class="table1" style="width: 5%"> <center> Satuan </center> </th>
             <th class="table1" style="width: 15%"> <center> Harga </center> </th>
@@ -395,12 +492,15 @@ include 'db.php';
 <?php        
 // OPERASI TABLE
  $take_data_or = $db->query("SELECT * FROM hasil_operasi WHERE no_reg = '$data_inner[no_reg]'");
-
+        $no_urut = 0;
     while($out_operasi = mysqli_fetch_array($take_data_or))
       {
                    
         $select_or = $db->query("SELECT id_operasi,nama_operasi FROM operasi WHERE id_operasi = '$out_operasi[operasi]'");
         $outin = mysqli_fetch_array($select_or);
+                   
+        $select_det_or = $db->query("SELECT dop.id_user, u.nama FROM hasil_detail_operasi dop INNER JOIN user u ON dop.id_user = u.id WHERE dop.no_reg = '$out_operasi[no_reg]'");
+        $data_detail_operasi = mysqli_fetch_array($select_det_or);
         
         $nomor = $no_urut +1;
 
@@ -418,6 +518,7 @@ include 'db.php';
             
 
             echo " 
+            <td class='table1' align='center'>".$data_detail_operasi['nama']."</td>
             <td class='table1' align='center'>-</td>
             <td class='table1' align='center'>-</td>
             <td class='table1' align='right'>". rp($out_operasi['harga_jual']) ."</td>
