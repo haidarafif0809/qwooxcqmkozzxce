@@ -1533,17 +1533,6 @@ else{
     
     });
 
-//menampilkan no urut faktur setelah tombol click di pilih
-      $("#cari_produk_penjualan").click(function() {
-
-      
- 
-      //menyembunyikan notif berhasil
-      $("#alert_berhasil").hide();
-      $("#cetak_tunai").hide('');
-      $("#cetak_tunai_besar").hide('');
-      $("#cetak_piutang").hide('');
-      });
 
    </script>
 
@@ -1670,6 +1659,9 @@ else if(total == 0 && potongan_persen == '100'){
   $("#batal_penjualan").hide();
   $("#piutang").hide();
   $("#transaksi_baru").show();
+  $("#alert_berhasil").show();
+     $("#cetak_tunai").show();
+     $("#cetak_tunai_besar").show('');
 
 
 
@@ -1695,9 +1687,7 @@ else{
      var kode_pelanggan = kode_pelanggan.substr(0, kode_pelanggan.indexOf('('));
      $("#cetak_tunai").attr('href', 'cetak_penjualan_tunai.php?no_faktur='+no_faktur+'');
      $("#cetak_tunai_besar").attr('href', 'cetak_besar_apotek.php?no_faktur='+no_faktur+'');
-     $("#alert_berhasil").show();
-     $("#cetak_tunai").show();
-     $("#cetak_tunai_besar").show('');
+     
          $('#tbody').html('');
 
     }
@@ -2720,6 +2710,50 @@ $.post('cek_tbs_penjualan_apotek.php',{kode_barang:kode_barang, session_id:sessi
 
   $(document).ready(function(){
     $(document).on('click','#transaksi_baru',function(e){
+      
+      $('#tabel_cari').DataTable().destroy();
+        var dataTable = $('#tabel_cari').DataTable( {
+          "processing": true,
+          "serverSide": true,
+          "ajax":{
+            url :"modal_jual_baru.php", // json datasource
+            type: "post",  // method  , by default get
+            error: function(){  // error handling
+              $(".employee-grid-error").html("");
+              $("#tabel_cari").append('<tbody class="employee-grid-error"><tr><th colspan="3">Data Tidak Ditemukan.. !!</th></tr></tbody>');
+              $("#employee-grid_processing").css("display","none");
+              
+            }
+          },
+
+          "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+
+            $(nRow).attr('class', "pilih");
+              $(nRow).attr('data-kode', aData[0]);
+              $(nRow).attr('nama-barang', aData[1]);
+              $(nRow).attr('harga', aData[2]);
+              $(nRow).attr('harga_level_2', aData[3]);
+              $(nRow).attr('harga_level_3', aData[4]);
+              $(nRow).attr('harga_level_4', aData[5]);
+              $(nRow).attr('harga_level_5', aData[6]);
+              $(nRow).attr('harga_level_6', aData[7]);
+              $(nRow).attr('harga_level_7', aData[8]);
+              $(nRow).attr('jumlah-barang', aData[9]);
+              $(nRow).attr('satuan', aData[17]);
+              $(nRow).attr('kategori', aData[11]);
+              $(nRow).attr('status', aData[16]);
+              $(nRow).attr('suplier', aData[12]);
+              $(nRow).attr('limit_stok', aData[13]);
+              $(nRow).attr('ber-stok', aData[14]);
+              $(nRow).attr('tipe_barang', aData[15]);
+              $(nRow).attr('id-barang', aData[18]);
+
+
+
+
+          }
+
+        });   
 
             $("#pembayaran_penjualan").val('');
             $("#sisa_pembayaran_penjualan").val('');

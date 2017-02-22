@@ -46,7 +46,11 @@ $no_faktur = $_GET['no_faktur'];
   <tbody>
     <tr>
 <td>No RM </td><td>&nbsp;:&nbsp;</td><td> <?php echo $data0['kode_pelanggan'];?></td></tr><tr>
-<td>Nama Pasien </td><td>&nbsp;:&nbsp;</td><td> <?php echo $data0['nama'];?></td>
+<?php if ($data0['nama'] == ""): ?> 
+  <td>Nama Pasien </td><td>&nbsp;:&nbsp;</td><td> <?php echo $data0['kode_pelanggan'];?></td>
+<?php else: ?>  
+  <td>Nama Pasien </td><td>&nbsp;:&nbsp;</td><td> <?php echo $data0['nama'];?></td>
+<?php endif ?>
     </tr>
   </tbody>
 </table>

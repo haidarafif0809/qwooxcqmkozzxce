@@ -1578,11 +1578,15 @@ $(document).ready(function(){
 $(document).ready(function(){
 
   $(document).on('click', '.btn-hapus-tbs', function (e) {
+
     var nama_barang = $(this).attr("data-barang");
     var kode_barang = $(this).attr("data-kode-barang");
     var id = $(this).attr("data-id");
     var subtotal_tbs = $(this).attr("data-subtotal");
     var no_faktur = $("#nomorfaktur").val();
+
+var pesan_alert = confirm("Apakah Anda Yakin Ingin Menghapus "+nama_barang+""+ "?");
+if (pesan_alert == true) { 
 
     var total = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#total_pembelian1").val()))));
 
@@ -1602,7 +1606,11 @@ $(document).ready(function(){
       $("#kode_barang").trigger('chosen:open');   
 
     });
-
+}
+else
+{
+  
+}
 
 //end fungsi hapus data
 
