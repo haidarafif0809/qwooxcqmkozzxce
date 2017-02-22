@@ -422,7 +422,6 @@ else{
        $("#nama_akun").val('');
        $("#debit").val('');
        $("#kredit").val('');
-       $("#keterangan").val('');
 
 
 
