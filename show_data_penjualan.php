@@ -166,8 +166,39 @@ if ($penjualan['penjualan_hapus'] > 0) {
 // Tampilan Detail
 $nestedData[] = "<td><button class='btn btn-floating  btn-info detail-penjualan' data-faktur='".$row['no_faktur']."' data-id='".$row['id']."' data-reg='".$row['no_reg']."'><i class='fa fa-list'></i></button></td>";
 
-
+if ($row['jenis_penjualan'] == 'Rawat Inap'){
 // Cetak Tunai
+if ($row['status'] == 'Lunas') {
+$nestedData[] ='<td>
+<div class="dropdown">
+
+    <button class="btn btn-success btn-floating dropdown-toggle" type="button" id="dropdownMenu4" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <i class="fa fa-print"> </i>
+    </button>
+
+    <div class="dropdown-menu dropdown-primary" aria-labelledby="dropdownMenu4" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
+
+        <a class="dropdown-item" href="cetak_ulang_penjualan_detail.php?no_faktur='.$row["no_faktur"].'&id='.$row["id"].'">Print Detail</a>
+
+        <a class="dropdown-item" href="cetak_ulang_penjualan_kategori.php?no_faktur='.$row["no_faktur"].'">Print Kategori</a>
+
+        <a class="dropdown-item" href="cetak_penjualan_tunai.php?no_faktur='.$row["no_faktur"].'">Print Penjualan Post</a>
+
+        <a class="dropdown-item" href="cetak_penjualan_tunai_besar_ranap.php?no_faktur='.$row["no_faktur"].'">Print Penjualan Besar</a>
+
+    </div>
+</div>
+ </td>';
+}
+else
+{
+  $nestedData[] ="<td></td>";
+}
+// End Cetak Tunai
+}
+else
+{
+  // Cetak Tunai
 if ($row['status'] == 'Lunas') {
 $nestedData[] ='<td>
 <div class="dropdown">
@@ -195,7 +226,7 @@ else
   $nestedData[] ="<td></td>";
 }
 // End Cetak Tunai
-
+}
 // Start Cetak Piutang
 if ($row['status'] == 'Piutang') {
   $nestedData[] ="<td> <a href='cetak_lap_penjualan_piutang.php?no_faktur=".$row['no_faktur']."' id='cetak_piutang' class='btn btn-warning btn-floating' target='blank'><i class='fa fa-print'> </i></a> </td>";

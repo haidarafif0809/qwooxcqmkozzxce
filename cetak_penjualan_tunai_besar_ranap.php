@@ -218,9 +218,9 @@ $kd = $db->query("SELECT f.nama_petugas, u.nama FROM laporan_fee_produk f INNER 
         </tbody>
     </table>
 
-<h6 align="right"><b>Subtotal Bed : <?php echo rp($subtotal_bed); ?></b></h6>
+<h6 align="right"><b>Subtotal Kamar : <?php echo rp($subtotal_bed); ?></b></h6>
 
-<h6><b>Jasa</b></h6>
+<h6><b>Jasa & Tindakan </b></h6>
 
 <table id="tableuser" class="table table-bordered table-sm">
         <thead>
@@ -305,9 +305,9 @@ $kd = $db->query("SELECT f.nama_petugas, u.nama FROM laporan_fee_produk f INNER 
    </tbody>
 </table>
 
-<h6 align="right"><b>Subtotal Jasa : <?php echo rp($subtotal_jasa); ?></b></h6>
+<h6 align="right"><b>Subtotal Jasa & Tindakan : <?php echo rp($subtotal_jasa); ?></b></h6>
 
-<h6><b>Barang / Obat Obatan </b></h6>
+<h6><b> Obat Obatan / Alkes </b></h6>
 
 <table id="tableuser" class="table table-bordered table-sm">
         <thead>
@@ -390,7 +390,7 @@ $kd = $db->query("SELECT f.nama_petugas, u.nama FROM laporan_fee_produk f INNER 
    </tbody>
 </table>
 
-<h6 align="right"><b>Subtotal Barang / Obat Obatan : <?php echo rp($subtotal_barang); ?></b></h6>
+<h6 align="right"><b>Subtotal Obat Obatan / Alkes : <?php echo rp($subtotal_barang); ?></b></h6>
 
 <h6><b>Laboratorium</b></h6>
 
