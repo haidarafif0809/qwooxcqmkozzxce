@@ -87,7 +87,7 @@ $dd = mysqli_fetch_array($select_pelanggan);
   if ($data04['kode_pelanggan'] == 'Umum')
   {
 ?>
-        <tr><td width="25%"><font class="satu">No Faktur</font></td> <td> :&nbsp;</td> <td><font class="satu"><?php echo $data_inner['no_faktur']; ?></font> </tr>
+      <tr><td width="25%"><font class="satu">No Faktur</font></td> <td> :&nbsp;</td> <td><font class="satu"><?php echo $data_inner['no_faktur']; ?></font> </tr>
       <tr><td  width="25%"><font class="satu">Pasien</font></td> <td> :&nbsp;</td> <td> <font class="satu">Umum</font> </td></tr>
       <tr><td  width="25%"><font class="satu">Alamat</font></td> <td> :&nbsp;</td> <td><font class="satu">  </font> - </td></tr>
       <tr><td  width="25%"><font class="satu">Petugas</font></td> <td> :&nbsp;</td> <td><font class="satu"> <?php echo $data_inner['sales']; ?></font></td></tr>
@@ -99,7 +99,12 @@ $dd = mysqli_fetch_array($select_pelanggan);
 ?>
 
       <tr><td width="25%"><font class="satu">No Faktur</font></td> <td> :&nbsp;</td> <td><font class="satu"><?php echo $data_inner['no_faktur']; ?></font> </tr>
+    <?php if ($dd['nama_pelanggan'] == ""): ?> 
+      <tr><td  width="25%"><font class="satu">Pasien</font></td> <td> :&nbsp;</td> <td> <font class="satu"><?php echo $data_inner['kode_pelanggan']; ?></font> </td></tr>
+    <?php else: ?>  
       <tr><td  width="25%"><font class="satu">Pasien</font></td> <td> :&nbsp;</td> <td> <font class="satu"><?php echo $dd['nama_pelanggan']; ?></font> </td></tr>
+    <?php endif ?>
+      
       <tr><td  width="25%"><font class="satu">Alamat</font></td> <td> :&nbsp;</td> <td><font class="satu"> <?php echo $dd['alamat_sekarang']; ?> </font></td></tr>
       <tr><td  width="25%"><font class="satu">Petugas</font></td> <td> :&nbsp;</td> <td><font class="satu"> <?php echo $data_inner['sales']; ?></font></td></tr>
       <tr><td  width="25%"><font class="satu">Ket.</font></td> <td> :&nbsp;</td> <td><font class="satu"> <?php echo $data_inner['keterangan']; ?> </font></td></tr>
