@@ -25,7 +25,9 @@ include 'db.php';
     
 </form>
 <br>
-<span id="result"></span>
+<span id="result">
+  
+</span>
 </div> <!-- END DIV container -->
 
 <!-- Script Untuk Tampilan-->

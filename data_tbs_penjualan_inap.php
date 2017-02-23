@@ -56,7 +56,7 @@ $sql.=" WHERE tp.no_reg = '$no_reg'  AND (tp.lab IS NULL OR tp.lab = '') AND (tp
 $query=mysqli_query($conn, $sql) or die("eror 2");
 $totalFiltered = mysqli_num_rows($query); // when there is a search parameter then we have to modify total number filtered rows as per search result. 
         
-$sql.=" ORDER BY kode_barang ".$requestData['order'][0]['dir']."  LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
+$sql.=" ORDER BY tp.tanggal,tp.jam DESC   LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
 
 /* $requestData['order'][0]['column'] contains colmun index, $requestData['order'][0]['dir'] contains order such as asc/desc  */    
 $query=mysqli_query($conn, $sql) or die("eror 3");

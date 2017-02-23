@@ -1,13 +1,16 @@
 <?php 
-
+include 'header.php';
 include 'sanitasi.php';
 include 'db.php';
 
-$dari_tanggal = stringdoang($_POST['dari_tanggal']);
-$sampai_tanggal = stringdoang($_POST['sampai_tanggal']);
+$dari_tanggal = stringdoang($_GET['dari_tanggal']);
+$sampai_tanggal = stringdoang($_GET['sampai_tanggal']);
 
+    $query1 = $db->query("SELECT * FROM perusahaan ");
+    $data1 = mysqli_fetch_array($query1);
 
-?>
+ ?>
+
 
 <style type="text/css">
 	
@@ -22,9 +25,32 @@ $sampai_tanggal = stringdoang($_POST['sampai_tanggal']);
  float: right;
 }
 
-</style>	
+</style>
 
-<div class="container">
+ <div class="container">
+
+    <div class="row"><!--row1-->
+        <div class="col-sm-">
+        </div>
+        <div class="col-sm-2">
+                <img src='save_picture/<?php echo $data1['foto']; ?>' class='img-rounded' alt='Cinque Terre' width='130' height='110`'> 
+        </div><!--penutup colsm2-->
+
+        <div class="col-sm-8">
+                 <center> <h2> <b> <?php echo $data1['nama_perusahaan']; ?> </b> </h2> 
+                 <p> <?php echo $data1['alamat_perusahaan']; ?> </p> 
+                 <p> No.Telp:<?php echo $data1['no_telp']; ?> </p> 
+
+<hr>
+                 <h3>LAPORAN LABA RUGI</h3>
+                 </center>
+                 
+        </div><!--penutup colsm5-->
+        
+    </div><!--penutup row1-->
+
+
+<hr>
 
 <h3><center><b>PERIODE TANGGAL <?php echo tanggal($dari_tanggal); ?> s/d <?php echo tanggal($sampai_tanggal); ?></b></center></h3>
 <hr>
@@ -398,7 +424,3 @@ else {
 ?>
 
 </div> <!-- / DIV CARD_BLOCK-->
-
- <a href='cetak_lap_laba_rugi_penjualan.php?dari_tanggal=<?php echo $dari_tanggal;?>&sampai_tanggal=<?php echo $sampai_tanggal; ?>' target="blank" id="cetak_lap" class='btn btn-info'><i class='fa fa-print'> </i> Cetak Laba rugi </a>
-
-</div> <!-- / container -->
