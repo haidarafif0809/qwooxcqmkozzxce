@@ -1,14 +1,19 @@
 <?php 
-
+include 'header.php';
 include 'sanitasi.php';
 include 'db.php';
 
-$sampai_tanggal = stringdoang($_POST['sampai_tanggal']);
+
+$sampai_tanggal = stringdoang($_GET['tanggal']);
 
 
-?>
+    $query1 = $db->query("SELECT * FROM perusahaan ");
+    $data1 = mysqli_fetch_array($query1);
 
-<style type="text/css">
+ ?>
+
+
+ <style type="text/css">
   
   .span {
     text-align: right;
@@ -29,8 +34,31 @@ border-collapse: collapse;
 
 </style>  
 
-<div class="container"></div>
+<div class="container">
+    
+    <div class="row"><!--row1-->
+        <div class="col-sm-">
+        </div>
+        <div class="col-sm-2">
+                <img src='save_picture/<?php echo $data1['foto']; ?>' class='img-rounded' alt='Cinque Terre' width='130' height='110`'> 
+        </div><!--penutup colsm2-->
 
+        <div class="col-sm-8">
+                 <center> <h2> <b> <?php echo $data1['nama_perusahaan']; ?> </b> </h2> 
+                 <p> <?php echo $data1['alamat_perusahaan']; ?> </p> 
+                 <p> No.Telp:<?php echo $data1['no_telp']; ?> </p> 
+
+<hr>
+
+                 <h3>Cetak Neraca : Tanggal <?php echo $sampai_tanggal; ?></h3>
+                 </center>
+                 
+        </div><!--penutup colsm5-->
+        
+    </div><!--penutup row1-->
+
+
+<hr>
 
 <div class="card card-block">
 
@@ -582,5 +610,4 @@ else{
 </div>
 </div>
 
- <a href='cetak_lap_neraca.php?tanggal=<?php echo $sampai_tanggal;?>' target="blank" id="cetak_lap" class='btn btn-info'><i class='fa fa-print'> </i> Cetak Neraca</a>
-
+</div> <!-- end of container-->
