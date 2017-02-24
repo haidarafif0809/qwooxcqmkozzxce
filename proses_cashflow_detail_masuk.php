@@ -25,7 +25,7 @@ $columns = array(
 // getting total number records without any search
 $sql = "SELECT SUM(js.debit) AS masuk,js.jenis_transaksi,js.id,da.nama_daftar_akun,js.keterangan_jurnal,js.no_faktur,js.user_buat,js.user_edit,js.waktu_jurnal";
 $sql.=" FROM jurnal_trans js LEFT JOIN daftar_akun da ON js.kode_akun_jurnal = da.kode_daftar_akun";
-$sql.=" WHERE DATE(js.waktu_jurnal) = '$tanggal' AND js.kode_akun_jurnal = '$kas' AND js.debit != '0' GROUP BY js.no_faktur";
+$sql.=" WHERE DATE(js.waktu_jurnal) = '$tanggal' AND js.kode_akun_jurnal = '$kas' AND js.debit != '0' AND js.jenis_transaksi != 'Kas Mutasi' GROUP BY js.no_faktur";
 $sql.=" ";
 
 
@@ -36,8 +36,8 @@ $totalFiltered = $totalData;  // when there is no search parameter then total nu
 
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
 $sql = "SELECT SUM(js.debit) AS masuk,js.jenis_transaksi,js.id,da.nama_daftar_akun,js.keterangan_jurnal,js.no_faktur,js.user_buat,js.user_edit,js.waktu_jurnal";
-$sql.=" FROM jurnal_trans js LEFT JOIN daftar_akun da ON js.kode_akun_jurnal = da.kode_daftar_akun";
-$sql.=" WHERE DATE(js.waktu_jurnal) = '$tanggal' AND js.kode_akun_jurnal = '$kas' AND js.debit != '0' ";
+$sql.=" FROM jurnal_trans js LEFT JOIN daftar_akun da ON js.kode_akun_jurnal = da.kode_daftar_akun AND js.jenis_transaksi != 'Kas Mutasi'";
+$sql.=" WHERE DATE(js.waktu_jurnal) = '$tanggal' AND js.kode_akun_jurnal = '$kas' AND js.debit != '0' AND js.jenis_transaksi != 'Kas Mutasi' ";
 
 
 	$sql.=" AND ( js.no_faktur LIKE '".$requestData['search']['value']."%'";
@@ -67,14 +67,10 @@ while( $row=mysqli_fetch_array($query) ) {
 
 	$nestedData=array(); 
 
-	$select = $db->query("SELECT da.nama_daftar_akun FROM jurnal_trans js LEFT JOIN daftar_akun da ON js.kode_akun_jurnal = da.kode_daftar_akun WHERE DATE(js.waktu_jurnal) = '$tanggal' 
-		AND js.no_faktur = '$row[no_faktur]' AND js.kredit != '0'");
-	$out = mysqli_fetch_array($select);
-
 
 	$nestedData[] = $row["no_faktur"];
 	$nestedData[] = $row["keterangan_jurnal"];
-	$nestedData[] = $out["nama_daftar_akun"];
+	$nestedData[] = $row["jenis_transaksi"];
 	$nestedData[] = $row["nama_daftar_akun"];
 	$nestedData[] = rp($row["masuk"]);
 	$nestedData[] = $row["user_buat"];

@@ -155,16 +155,15 @@ if($mutasi_masuk == 0 OR $mutasi_masuk == '')
             while ($out_masuk = mysqli_fetch_array($query_masuk))
             {
 
-            $select_one = $db->query("SELECT da.nama_daftar_akun FROM jurnal_trans js LEFT JOIN daftar_akun da ON js.kode_akun_jurnal = da.kode_daftar_akun WHERE DATE(js.waktu_jurnal) = '$tanggal' 
-				AND js.no_faktur = '$out_masuk[no_faktur]' AND js.kredit != '0'");
-			$out_one = mysqli_fetch_array($select_one);
+            //$select_one = $db->query("SELECT da.nama_daftar_akun FROM jurnal_trans js LEFT JOIN daftar_akun da ON js.kode_akun_jurnal = da.kode_daftar_akun WHERE DATE(js.waktu_jurnal) = '$tanggal' AND js.no_faktur = '$out_masuk[no_faktur]' AND js.kredit != '0'");
+			//$out_one = mysqli_fetch_array($select_one);
 
             echo "<tr>
                 <td>". $out_masuk['no_faktur'] ."</td>
                 <td>". $out_masuk['keterangan_jurnal'] ."</td>
-                <td>". $out_one['nama_daftar_akun'] ."</td>
+                <td>". $out_masuk['jenis_transaksi'] ."</td>
                 <td>". $out_masuk['nama_daftar_akun'] ."</td>
-                <td>". rp($out_masuk['masuk']) ."</td>
+                <td>". $out_masuk['masuk'] ."</td>
                 <td>". $out_masuk['user_buat'] ."</td>
                 <td>". $out_masuk['user_edit'] ."</td>
                 <td>". $tanggal ."</td>
@@ -210,9 +209,9 @@ if($mutasi_masuk == 0 OR $mutasi_masuk == '')
       echo "<tr>
                 <td>". $out_keluar['no_faktur'] ."</td>
                 <td>". $out_keluar['keterangan_jurnal'] ."</td>
-                <td>". $out_two['nama_daftar_akun'] ."</td>
                 <td>". $out_keluar['nama_daftar_akun'] ."</td>
-                <td>". rp($out_keluar['keluar']) ."</td>
+                <td>". $out_keluar['jenis_transaksi'] ."</td>
+                <td>". $out_keluar['keluar'] ."</td>
                 <td>". $out_keluar['user_buat'] ."</td>
                 <td>". $out_keluar['user_edit'] ."</td>
                 <td>". $tanggal ."</td>
@@ -256,9 +255,9 @@ if($mutasi_masuk == 0 OR $mutasi_masuk == '')
       echo "<tr>
                 <td>". $out_mutasi['no_faktur'] ."</td>
                 <td>". $out_mutasi['keterangan_jurnal'] ."</td>
-                <td>". $out_two['nama_daftar_akun'] ."</td>
+                <td>". $out_three['nama_daftar_akun'] ."</td>
                 <td>". $out_mutasi['nama_daftar_akun'] ."</td>
-                <td>". rp($out_three['mutasi_masuk']) ."</td>
+                <td>". $out_mutasi['mutasi_masuk'] ."</td>
                 <td>". $out_mutasi['user_buat'] ."</td>
                 <td>". $out_mutasi['user_edit'] ."</td>
                 <td>". $tanggal ."</td>
