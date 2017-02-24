@@ -2,18 +2,20 @@
 include 'db.php';
 include 'sanitasi.php';
 
-$golongan = stringdoang($_GET['golongan']);
-
 $sampai_tanggal = stringdoang($_GET['sampai_tanggal']);
 $dari_tanggal = stringdoang($_GET['dari_tanggal']);
 
 
-$select = $db->query("SELECT SUM(dp.jumlah_barang) AS jumlah, SUM(dp.subtotal) AS total 
-FROM detail_penjualan dp LEFT JOIN barang p ON dp.kode_barang = p.kode_barang  WHERE p.berkaitan_dgn_stok IS NULL AND dp.tanggal >= '$dari_tanggal' AND dp.tanggal <= '$sampai_tanggal' ");
-$row = mysqli_fetch_array($select);
+$query = $db->query("SELECT no_faktur FROM penjualan WHERE tanggal >= '$dari_tanggal'  AND tanggal <= '$sampai_tanggal'	");
+$total_row = 0;
+while ($data = $query->fetch_array()) {
 
- echo json_encode($row);
-    exit;
+	$select = $db->query("SELECT SUM(dp.jumlah_barang) AS jumlah, SUM(dp.subtotal) AS total FROM detail_penjualan dp INNER JOIN jasa_lab p ON dp.kode_barang = p.kode_lab WHERE  no_faktur = '$data[no_faktur]' ");
+	$row = mysqli_fetch_array($select);
+	$total_row = $total_row + $row['total'];
 
-
- ?>
+}
+$row['total'] = $total_row ;
+echo json_encode($row); 
+exit;
+?>
