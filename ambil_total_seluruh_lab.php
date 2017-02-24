@@ -10,9 +10,14 @@ $query = $db->query("SELECT no_faktur, potongan, biaya_admin FROM penjualan WHER
 $total_row = 0;
 while ($data = $query->fetch_array()) {
 
-	$select = $db->query("SELECT SUM(dp.jumlah_barang) AS jumlah, SUM(dp.subtotal) AS total FROM detail_penjualan dp INNER JOIN jasa_lab p ON dp.kode_barang = p.kode_lab WHERE  no_faktur = '$data[no_faktur]' ");
+	$select = $db->query("SELECT SUM(dp.jumlah_barang) AS jumlah, SUM(dp.subtotal) AS total FROM detail_penjualan dp INNER JOIN jasa_lab p ON dp.kode_barang = p.kode_lab WHERE  dp.no_faktur = '$data[no_faktur]' ");
 	$row = mysqli_fetch_array($select);
-	$sub_bener = $row['total'] + $data['biaya_admin'] - $data['potongan'];
+
+	$select_kamar = $db->query("SELECT SUM(dp.subtotal) AS total_kamar FROM detail_penjualan dp INNER JOIN bed b ON dp.kode_barang = b.nama_kamar WHERE dp.no_faktur = '$data[no_faktur]' ");
+	$data_kamar = mysqli_fetch_array($select);
+	$sub_kamar = $data_kamar['total_kamar'];
+
+	$sub_bener = ($row['total'] + $data['biaya_admin'] - $data['potongan']) + $sub_kamar;
 	$total_row = $total_row + $sub_bener;
 
 }
