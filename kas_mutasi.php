@@ -462,6 +462,14 @@ else{
 		}
 		else{
 
+		$("#tanggal1").val('');
+		$("#tambah_faktur").val('');
+		$("#keterangan").val(dari_akun1);
+		$("#dari_akun1").val('');
+		$("#ke_akun1").val('');
+		$("#jumlah2").val('');
+		
+
 		$.post('proses_kas_mutasi.php',{tanggal:tanggal,keterangan:keterangan,dari_akun:dari_akun,ke_akun:ke_akun,jumlah:jumlah},function(data){
 		
 		$('#table_mutasi').DataTable().destroy();
@@ -483,12 +491,7 @@ else{
 		            },
 		        })
 
-		$("#tanggal1").val('');
-		$("#tambah_faktur").val('');
-		$("#keterangan").val(dari_akun1);
-		$("#dari_akun1").val('');
-		$("#ke_akun1").val('');
-		$("#jumlah2").val('');
+
 		$(".alert").show('fast');
 
 		setTimeout(tutupalert, 100);
@@ -499,13 +502,13 @@ else{
 		}
 	function tutupmodal() {
 		}
-		}
-		});
+	}
+});
 
 		});
 
-		$('form').submit(function(){
 		
+	$('form').submit(function(){
 		return false;
 		});
 
@@ -604,6 +607,13 @@ $(document).ready(function(){
 
 		else{
 
+		$("#tanggal1").val('');
+		$("#tambah_faktur").val('');
+		$("#keterangan").val(dari_akun1);
+		$("#dari_akun1").val('');
+		$("#ke_akun1").val('');
+		$("#jumlah2").val('');
+
 			$.post("update_kas_mutasi.php",{no_faktur:no_faktur,tanggal:tanggal,jumlah_baru:jumlah_baru,jumlah:jumlah,ke_akun:ke_akun,dari_akun:dari_akun,keterangan:keterangan,id:id},function(data){
 
 		
@@ -626,12 +636,7 @@ $(document).ready(function(){
 		            },
 		        })
 
-		$("#tanggal1").val('');
-		$("#tambah_faktur").val('');
-		$("#keterangan").val(dari_akun1);
-		$("#dari_akun1").val('');
-		$("#ke_akun1").val('');
-		$("#jumlah2").val('');
+
 		$(".alert").show('fast');
 
 		setTimeout(tutupalert, 100);
