@@ -590,7 +590,7 @@ $level_harga = $data_level['harga'];
                 <?php
                 
                 //menampilkan semua data yang ada pada tabel tbs penjualan dalam DB
-                $perintah = $db->query("SELECT tp.no_faktur,tp.id,tp.kode_barang,tp.satuan,tp.nama_barang,tp.jumlah_barang,tp.harga,tp.subtotal,tp.potongan,tp.tax,tp.jam,tp.tipe_barang,s.nama FROM tbs_penjualan tp INNER JOIN satuan s ON tp.satuan = s.id WHERE tp.no_faktur = '$no_faktur' ORDER BY tp.id DESC ");
+                $perintah = $db->query("SELECT tp.no_faktur,tp.id,tp.kode_barang,tp.satuan,tp.nama_barang,tp.jumlah_barang,tp.harga,tp.subtotal,tp.potongan,tp.tax,tp.jam,tp.tipe_barang,s.nama FROM tbs_penjualan tp LEFT JOIN satuan s ON tp.satuan = s.id WHERE tp.no_faktur = '$no_faktur' ORDER BY tp.id DESC ");
                 
                 //menyimpan data sementara yang ada pada $perintah
                 
