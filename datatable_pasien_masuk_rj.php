@@ -43,14 +43,14 @@ $columns = array(
 
 
 $sql = "SELECT reg.no_urut, reg.poli, reg.dokter, reg.no_reg, reg.no_rm, reg.tanggal, reg.nama_pasien, reg.penjamin, reg.umur_pasien, reg.jenis_kelamin, reg.keterangan, reg.id, reg.status, reg.jam, rek.tanggal_periksa ";
-$sql.=" FROM registrasi reg INNER JOIN rekam_medik rek ON reg.no_reg = rek.no_reg WHERE reg.jenis_pasien = 'Rawat Jalan' AND  (reg.status = 'Proses' OR reg.status = 'Rujuk Keluar Ditangani')";
+$sql.=" FROM registrasi reg LEFT JOIN rekam_medik rek ON reg.no_reg = rek.no_reg WHERE reg.jenis_pasien = 'Rawat Jalan' AND  (reg.status = 'Proses' OR reg.status = 'Rujuk Keluar Ditangani')";
 $query=mysqli_query($conn, $sql) or die("datatable_pasien_masuk_rj_1.php: get employees");
 $totalData = mysqli_num_rows($query);
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
 
 $sql = "SELECT reg.no_urut, reg.poli, reg.dokter, reg.no_reg, reg.no_rm, reg.tanggal, reg.nama_pasien, reg.penjamin, reg.umur_pasien, reg.jenis_kelamin, reg.keterangan, reg.id, reg.status, reg.jam, rek.tanggal_periksa ";
-$sql.=" FROM registrasi reg INNER JOIN rekam_medik rek ON reg.no_reg = rek.no_reg WHERE reg.jenis_pasien = 'Rawat Jalan' AND  (reg.status = 'Proses' OR reg.status = 'Rujuk Keluar Ditangani')";
+$sql.=" FROM registrasi reg LEFT JOIN rekam_medik rek ON reg.no_reg = rek.no_reg WHERE reg.jenis_pasien = 'Rawat Jalan' AND  (reg.status = 'Proses' OR reg.status = 'Rujuk Keluar Ditangani')";
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
 	$sql.=" AND ( reg.no_urut LIKE '".$requestData['search']['value']."%' ";    
 	$sql.=" OR reg.no_rm LIKE '".$requestData['search']['value']."%' ";
