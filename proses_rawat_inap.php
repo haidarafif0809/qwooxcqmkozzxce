@@ -165,7 +165,7 @@ $nomor = 1 + $ambil_nomor ;
 
 $query2 = $db->prepare("INSERT INTO registrasi (alergi,rujukan,nama_pasien,jam,penjamin,status,no_reg,no_rm,tanggal_masuk,kondisi,petugas,alamat_pasien,umur_pasien,hp_pasien,bed,group_bed,menginap,dokter,dokter_pengirim,penanggung_jawab,alamat_penanggung_jawab,hp_penanggung_jawab,pekerjaan_penanggung_jawab,hubungan_dengan_pasien,jenis_kelamin,poli,jenis_pasien,tanggal) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
-$query2->bind_param("ssssssssssssssssssssssssssss",$alergi,$perujuk,$nama_lengkap,$jam,$penjamin,$menginap_status,$no_reg,$no_rm,$tanggal_sekarang,$kondisi,$username,$alamat,$umur,$hp_pasien,$bed,$group_bed,$perkiraan_menginap,$dokter_penanggung_jawab,$dokter_pengirim,$penanggung_jawab,$alamat_penanggung,$no_hp_penanggung,$pekerjaan,$hubungan_dengan_pasien,$jenis_kelamin,$poli,$rw_inap,$tanggal_sekarang);
+$query2->bind_param("ssssssssssssssssssssssssssss",$alergi,$perujuk,$nama_lengkap,$jam,$penjamin,$menginap_status,$no_reg,$no_rm,$tanggal_sekarang,$kondisi,$username,$alamat,$umur,$hp_pasien,$bed,$group_bed,$menginap,$dokter_penanggung_jawab,$dokter_pengirim,$penanggung_jawab,$alamat_penanggung,$no_hp_penanggung,$pekerjaan,$hubungan_dengan_pasien,$jenis_kelamin,$poli,$rw_inap,$tanggal_sekarang);
 
 
 $menginap_status = "menginap";

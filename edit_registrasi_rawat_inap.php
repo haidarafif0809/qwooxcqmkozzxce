@@ -185,6 +185,7 @@ $dq = mysqli_fetch_array($q);
   	
  <form role="form" id="formku" action="proses_edit_rawat_inap.php" method="POST" >
 
+
 <div class="form-group">
     <input style="height: 20px;" type="hidden" value="<?php echo $regis['no_rm'];?>"  class="form-control" id="no_rm_lama" name="no_rm_lama" readonly="">
 </div>
@@ -241,7 +242,7 @@ $dq = mysqli_fetch_array($q);
   <select class="form-control ss" id="penjamin" name="penjamin" required="" autocomplete="off">
    <option value="<?php echo $regis['penjamin'];?>"><?php echo $regis['penjamin'];?></option>
  <?php 
-  $query = $db->query("SELECT nama FROM penjamin ORDER BY id ASC");
+  $query = $db->query("SELECT nama FROM penjamin WHERE status = 'Aktif' ORDER BY id ASC");
   while ( $data = mysqli_fetch_array($query)) 
   {
   echo "<option value='".$data['nama']."'>".$data['nama']."</option>";
@@ -272,7 +273,7 @@ $dq = mysqli_fetch_array($q);
 
 <div class="form-group">
     <label for="tempat_lahir">Tempat Lahir:</label>
-    <input style="height: 20px;" type="text" class="form-control" id="tempat_lahir" value="<?php echo $regis['nama_pasien'];?>" name="tempat_lahir" required="" autocomplete="off">
+    <input style="height: 20px;" type="text" class="form-control" id="tempat_lahir" value="<?php echo $pelanggan['tempat_lahir'];?>" name="tempat_lahir" required="" autocomplete="off">
   </div>
 
 <div class="form-group">
@@ -301,7 +302,7 @@ $dq = mysqli_fetch_array($q);
 
 <div class="form-group">
     <label for="alamat_sekarang">Alamat Sekarang:</label>
-    <textarea class="form-control" id="alamat_sekarang" name="alamat_sekarang" value="<?php echo $regis['alamat_pasien'];?>" required="" autocomplete="off"></textarea>
+    <textarea class="form-control" id="alamat_sekarang" name="alamat_sekarang"  required="" autocomplete="off"><?php echo $regis['alamat_pasien'];?></textarea>
 </div>
 
 </div>
