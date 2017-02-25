@@ -80,7 +80,7 @@ $query65 = "INSERT INTO tbs_penjualan (no_faktur,no_reg,kode_barang,nama_barang,
 else if ($level_harga == 'harga_2')
 {
 
-$subtotal = $menginap * $harga_kamar2;
+$subtotal = $lama_inap * $harga_kamar2;
 
 
 $query65 = "INSERT INTO tbs_penjualan (no_faktur,no_reg,kode_barang,nama_barang,jumlah_barang,harga,subtotal,tipe_barang,potongan,tax,satuan,jam,tanggal) VALUES ('$no_faktur','$no_reg','$bed2','$group_bed2','$lama_inap','$harga_kamar2','$subtotal','Bed','0','0','$satuan_bed','$jam','$tanggal_sekarang')";
@@ -102,7 +102,7 @@ $query65 = "INSERT INTO tbs_penjualan (no_faktur,no_reg,kode_barang,nama_barang,
 else if ($level_harga == 'harga_3')
 {
 
-$subtotal = $menginap * $harga_kamar3;
+$subtotal = $lama_inap * $harga_kamar3;
 
 
 $query65 = "INSERT INTO tbs_penjualan (no_faktur,no_reg,kode_barang,nama_barang,jumlah_barang,harga,subtotal,tipe_barang,potongan,tax,satuan,jam,tanggal) VALUES ('$no_faktur','$no_reg','$bed2','$group_bed2','$lama_inap','$harga_kamar3','$subtotal','Bed','0','0','$satuan_bed','$jam','$tanggal_sekarang')";
@@ -122,7 +122,7 @@ $query65 = "INSERT INTO tbs_penjualan (no_faktur,no_reg,kode_barang,nama_barang,
 else if ($level_harga == 'harga_4')
 {
 
-$subtotal = $menginap * $harga_kamar4;
+$subtotal = $lama_inap * $harga_kamar4;
 
 
 $query65 = "INSERT INTO tbs_penjualan (no_faktur,no_reg,kode_barang,nama_barang,jumlah_barang,harga,subtotal,tipe_barang,potongan,tax,satuan,jam,tanggal) VALUES ('$no_faktur','$no_reg','$bed2','$group_bed2','$lama_inap','$harga_kamar4','$subtotal','Bed','0','0','$satuan_bed','$jam','$tanggal_sekarang')";
@@ -142,7 +142,7 @@ $query65 = "INSERT INTO tbs_penjualan (no_faktur,no_reg,kode_barang,nama_barang,
 else if ($level_harga == 'harga_5')
 {
 
-$subtotal = $menginap * $harga_kamar5;
+$subtotal = $lama_inap * $harga_kamar5;
 
 
 $query65 = "INSERT INTO tbs_penjualan (no_faktur,no_reg,kode_barang,nama_barang,jumlah_barang,harga,subtotal,tipe_barang,potongan,tax,satuan,jam,tanggal) VALUES ('$no_faktur','$no_reg','$bed2','$group_bed2','$lama_inap','$harga_kamar5','$subtotal','Bed','0','0','$satuan_bed','$jam','$tanggal_sekarang')";
@@ -164,7 +164,7 @@ $query65 = "INSERT INTO tbs_penjualan (no_faktur,no_reg,kode_barang,nama_barang,
 else if ($level_harga == 'harga_6')
 {
 
-$subtotal = $menginap * $harga_kamar6;
+$subtotal = $lama_inap * $harga_kamar6;
 
 
 $query65 = "INSERT INTO tbs_penjualan (no_faktur,no_reg,kode_barang,nama_barang,jumlah_barang,harga,subtotal,tipe_barang,potongan,tax,satuan,jam,tanggal) VALUES ('$no_faktur','$no_reg','$bed2','$group_bed2','$lama_inap','$harga_kamar6','$subtotal','Bed','0','0','$satuan_bed','$jam','$tanggal_sekarang')";
@@ -187,7 +187,7 @@ $query65 = "INSERT INTO tbs_penjualan (no_faktur,no_reg,kode_barang,nama_barang,
 else if ($level_harga == 'harga_7')
 {
 
-$subtotal = $menginap * $harga_kamar7;
+$subtotal = $lama_inap * $harga_kamar7;
 
 $query65 = "INSERT INTO tbs_penjualan (no_faktur,no_reg,kode_barang,nama_barang,jumlah_barang,harga,subtotal,tipe_barang,potongan,tax,satuan,jam,tanggal) VALUES ('$no_faktur','$no_reg','$bed2','$group_bed2','$lama_inap','$harga_kamar7','$subtotal','Bed','0','0','$satuan_bed','$jam','$tanggal_sekarang')";
       if ($db->query($query65) === TRUE) 
@@ -205,7 +205,7 @@ $query65 = "INSERT INTO tbs_penjualan (no_faktur,no_reg,kode_barang,nama_barang,
 
 
 //menampilkan semua data yang ada pada tabel tbs penjualan dalam DB
-                $perintah = $db->query("SELECT tp.id,tp.kode_barang,tp.satuan,tp.nama_barang,tp.jumlah_barang,tp.harga,tp.subtotal,tp.potongan,tp.tax,s.nama,tp.tanggal,tp.jam,tp.no_reg,tp.tipe_barang FROM tbs_penjualan tp INNER JOIN satuan s ON tp.satuan = s.id WHERE tp.no_reg = '$no_reg' AND tp.kode_barang = '$bed2' ORDER BY tp.id DESC LIMIT 1");
+                $perintah = $db->query("SELECT tp.id,tp.kode_barang,tp.satuan,tp.nama_barang,tp.jumlah_barang,tp.harga,tp.subtotal,tp.potongan,tp.tax,s.nama,tp.tanggal,tp.jam,tp.no_reg,tp.tipe_barang FROM tbs_penjualan tp INNER JOIN satuan s ON tp.satuan = s.id WHERE tp.no_reg = '$no_reg' AND tp.kode_barang = '$bed2' ORDER BY tp.tanggal,tp.jam DESC LIMIT 1");
                 
 $data1 = mysqli_fetch_array($perintah);
 

@@ -6,6 +6,9 @@ include 'db.php';
 /* Database connection end */
 
 $no_reg = stringdoang($_POST['no_reg']);
+$no_faktur = stringdoang($_POST['no_faktur']);
+
+
 
 $pilih_akses_tombol = $db->query("SELECT * FROM otoritas_penjualan_inap WHERE id_otoritas = '$_SESSION[otoritas_id]' ");
 $otoritas_tombol = mysqli_fetch_array($pilih_akses_tombol);
@@ -35,7 +38,7 @@ $columns = array(
 // getting total number records without any search
 $sql =" SELECT tp.id,tp.kode_barang,tp.satuan,tp.nama_barang,tp.jumlah_barang,tp.harga,tp.subtotal,tp.potongan,tp.tax,tp.tanggal,tp.jam,tp.no_reg,tp.tipe_barang,tp.dosis,s.nama";
 $sql.=" FROM tbs_penjualan tp LEFT JOIN satuan s ON tp.satuan = s.id";
-$sql.=" WHERE tp.no_reg = '$no_reg'  AND (tp.lab IS NULL OR tp.lab = '') AND (tp.no_faktur IS NULL OR tp.no_faktur = '') ";
+$sql.=" WHERE tp.no_reg = '$no_reg'  AND (tp.lab IS NULL OR tp.lab = '') AND tp.no_faktur = '$no_faktur' ";
 
 $query = mysqli_query($conn, $sql) or die("eror 1");
 $totalData = mysqli_num_rows($query);
@@ -44,7 +47,7 @@ $totalFiltered = $totalData;  // when there is no search parameter then total nu
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
 $sql =" SELECT tp.id,tp.kode_barang,tp.satuan,tp.nama_barang,tp.jumlah_barang,tp.harga,tp.subtotal,tp.potongan,tp.tax,tp.tanggal,tp.jam,tp.no_reg,tp.tipe_barang,tp.dosis,s.nama";
 $sql.=" FROM tbs_penjualan tp LEFT JOIN satuan s ON tp.satuan = s.id";
-$sql.=" WHERE tp.no_reg = '$no_reg'  AND (tp.lab IS NULL OR tp.lab = '') AND (tp.no_faktur IS NULL OR tp.no_faktur = '') ";
+$sql.=" WHERE tp.no_reg = '$no_reg'  AND (tp.lab IS NULL OR tp.lab = '') AND tp.no_faktur = '$no_faktur' ";
 
     $sql.=" AND (tp.kode_barang LIKE '".$requestData['search']['value']."%'";  
     $sql.=" OR tp.nama_barang LIKE '".$requestData['search']['value']."%' ";
@@ -56,7 +59,9 @@ $sql.=" WHERE tp.no_reg = '$no_reg'  AND (tp.lab IS NULL OR tp.lab = '') AND (tp
 $query=mysqli_query($conn, $sql) or die("eror 2");
 $totalFiltered = mysqli_num_rows($query); // when there is a search parameter then we have to modify total number filtered rows as per search result. 
         
-$sql.=" ORDER BY tp.tanggal,tp.jam DESC   LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
+$sql.=" ORDER BY tp.tanggal,tp.jam DESC LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
+
+
 
 /* $requestData['order'][0]['column'] contains colmun index, $requestData['order'][0]['dir'] contains order such as asc/desc  */    
 $query=mysqli_query($conn, $sql) or die("eror 3");
@@ -70,6 +75,7 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
       $nestedData[] = $row["kode_barang"];
       $nestedData[] = $row["nama_barang"];
 
+
       $kdD = $db->query("SELECT f.nama_petugas, u.nama FROM tbs_fee_produk f LEFT JOIN user u ON f.nama_petugas = u.id WHERE f.kode_produk = '$row[kode_barang]' AND f.jam = '$row[jam]' ");
 
           $nama_fee = "<p style='font-size:15px;'>";
@@ -82,7 +88,6 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
           $nestedData[] = $nama_fee;
      
 
-     
       if ($otoritas_tombol['edit_produk_inap'] > 0){
 
       $nestedData[] = "<p style='font-size:15px' align='right' class='edit-jumlah' data-id='".$row['id']."' data-kode='".$row['kode_barang']."'><span id='text-jumlah-".$row['id']."'>". $row['jumlah_barang'] ."</span> <input type='hidden' id='input-jumlah-".$row['id']."' value='".$row['jumlah_barang']."' class='input_jumlah' data-id='".$row['id']."' autofocus='' data-kode='".$row['kode_barang']."' data-harga='".$row['harga']."' data-tipe='".$row['tipe_barang']."' data-satuan='".$row['satuan']."' data-nama-barang='".$row['nama_barang']."' onkeydown='return numbersonly(this, event);'> </p>";
@@ -95,20 +100,17 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 
 
       $nestedData[] = $row["nama"];
-
-
-      $nestedData[] = "<p style='font-size:15px' class='edit-dosis' data-id='".$row['id']."'> <span id='text-dosis-".$row['id']."'>".$row["dosis"]."</span> <input type='hidden' id='input-dosis-".$row['id']."' value='".$row['dosis']."' class='input_dosis' data-id='".$row['id']."' autofocus='' data-kode='".$row['kode_barang']."' data-tipe='".$row['tipe_barang']."' data-nama-barang='".$row['nama_barang']."'> </p>";
-
-
       $nestedData[] = "<p  align='right'>".rp($row["harga"])."</p>";
       $nestedData[] = "<p style='font-size:15px' align='right'><span id='text-subtotal-".$row['id']."'> ".rp($row["subtotal"])." </span> </p>";
       $nestedData[] = "<p style='font-size:15px' align='right'><span id='text-potongan-".$row['id']."'> ".rp($row["potongan"])." </span> </p>";
       $nestedData[] = "<p style='font-size:15px' align='right'><span id='text-tax-".$row['id']."'> ".rp($row["tax"])." </span> </p>";
 
+
 if ($otoritas_tombol['edit_tanggal_inap'] > 0){
 
       $nestedData[] = "<p style='font-size:15px' align='right' class='edit-tanggal' data-id='".$row['id']."' data-kode='".$row['kode_barang']."'> <span id='text-tanggal-".$row['id']."'> ".$row['tanggal']." ".$row['jam']." </span> <input type='hidden' id='input-tanggal-".$row['id']."' value='".$row['tanggal']."' class='input_tanggal' data-id='".$row['id']."' autofocus='' data-kode='".$row['kode_barang']."' data-jam='".$row['jam']."' > </p>";
-     }
+
+       }
     else
     {
         $nestedData[] = "<p style='font-size:15px' align='right' class='gk_bisa_edit_tanggal'> ".$row['tanggal']." ".$row['jam']." </p>";

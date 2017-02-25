@@ -267,7 +267,7 @@ $laporan_penjualan_lihat = angkadoang(isset($_POST['laporan_penjualan_lihat']));
 $laporan_hutang_beredar_lihat = angkadoang(isset($_POST['laporan_hutang_beredar_lihat']));
 $laporan_piutang_beredar_lihat = angkadoang(isset($_POST['laporan_piutang_beredar_lihat']));
 
-
+// form penjualan rawat jalan
 $tombol_submit_produk = angkadoang(isset($_POST['tombol_submit_produk']));
 $tombol_bayar = angkadoang(isset($_POST['tombol_bayar']));
 $tombol_simpan = angkadoang(isset($_POST['tombol_simpan']));
@@ -275,7 +275,9 @@ $tombol_piutang = angkadoang(isset($_POST['tombol_piutang']));
 $tombol_batal = angkadoang(isset($_POST['tombol_batal']));
 $hapus_produk = angkadoang(isset($_POST['hapus_produk']));
 $edit_produk = angkadoang(isset($_POST['edit_produk']));
+// form penjualan rawat jalan
 
+// form penjualan rawat inap
 $tombol_submit_produk_inap = angkadoang(isset($_POST['tombol_submit_produk_inap']));
 $tombol_bayar_inap = angkadoang(isset($_POST['tombol_bayar_inap']));
 $tombol_simpan_inap = angkadoang(isset($_POST['tombol_simpan_inap']));
@@ -283,7 +285,11 @@ $tombol_piutang_inap = angkadoang(isset($_POST['tombol_piutang_inap']));
 $tombol_batal_inap = angkadoang(isset($_POST['tombol_batal_inap']));
 $hapus_produk_inap = angkadoang(isset($_POST['hapus_produk_inap']));
 $edit_produk_inap = angkadoang(isset($_POST['edit_produk_inap']));
+$edit_tanggal_inap = angkadoang(isset($_POST['edit_tanggal_inap']));
+// form penjualan rawat inap
 
+
+// form penjualan ugd
 $tombol_submit_produk_ugd = angkadoang(isset($_POST['tombol_submit_produk_ugd']));
 $tombol_bayar_ugd = angkadoang(isset($_POST['tombol_bayar_ugd']));
 $tombol_simpan_ugd = angkadoang(isset($_POST['tombol_simpan_ugd']));
@@ -291,20 +297,25 @@ $tombol_piutang_ugd = angkadoang(isset($_POST['tombol_piutang_ugd']));
 $tombol_batal_ugd = angkadoang(isset($_POST['tombol_batal_ugd']));
 $hapus_produk_ugd = angkadoang(isset($_POST['hapus_produk_ugd']));
 $edit_produk_ugd = angkadoang(isset($_POST['edit_produk_ugd']));
+// form penjualan ugd
 
+// form penjualan apotek
 $tombol_submit_produk_apotek = angkadoang(isset($_POST['tombol_submit_produk_apotek']));
 $tombol_bayar_apotek = angkadoang(isset($_POST['tombol_bayar_apotek']));
 $tombol_piutang_apotek = angkadoang(isset($_POST['tombol_piutang_apotek']));
 $tombol_batal_apotek = angkadoang(isset($_POST['tombol_batal_apotek']));
 $hapus_produk_apotek = angkadoang(isset($_POST['hapus_produk_apotek']));
 $edit_produk_apotek = angkadoang(isset($_POST['edit_produk_apotek']));
+// form penjualan apotek
 
+// form penjualan lab
 $tombol_submit_produk_lab = angkadoang(isset($_POST['tombol_submit_produk_lab']));
 $tombol_bayar_lab = angkadoang(isset($_POST['tombol_bayar_lab']));
 $tombol_piutang_lab = angkadoang(isset($_POST['tombol_piutang_lab']));
 $tombol_batal_lab = angkadoang(isset($_POST['tombol_batal_lab']));
 $hapus_produk_lab = angkadoang(isset($_POST['hapus_produk_lab']));
 $edit_produk_lab = angkadoang(isset($_POST['edit_produk_lab']));
+// form penjualan lab
 
 
 
@@ -479,10 +490,10 @@ $update_otoritas_penjualan_rj->bind_param("iiiiiiii",
 $update_otoritas_penjualan_rj->execute();
 
 
-$update_otoritas_penjualan_inap = $db->prepare("UPDATE otoritas_penjualan_inap SET tombol_submit_inap = ?, tombol_bayar_inap = ?, tombol_simpan_inap = ?, tombol_piutang_inap = ?, tombol_batal_inap = ?, hapus_produk_inap = ?, edit_produk_inap = ? WHERE id_otoritas = ?");
+$update_otoritas_penjualan_inap = $db->prepare("UPDATE otoritas_penjualan_inap SET tombol_submit_inap = ?, tombol_bayar_inap = ?, tombol_simpan_inap = ?, tombol_piutang_inap = ?, tombol_batal_inap = ?, hapus_produk_inap = ?, edit_produk_inap = ? , edit_tanggal_inap = ? WHERE id_otoritas = ?");
 
-$update_otoritas_penjualan_inap->bind_param("iiiiiiii",
-    $tombol_submit_produk_inap, $tombol_bayar_inap, $tombol_simpan_inap, $tombol_piutang_inap, $tombol_batal_inap, $hapus_produk_inap, $edit_produk_inap, $id);
+$update_otoritas_penjualan_inap->bind_param("iiiiiiiii",
+    $tombol_submit_produk_inap, $tombol_bayar_inap, $tombol_simpan_inap, $tombol_piutang_inap, $tombol_batal_inap, $hapus_produk_inap, $edit_produk_inap,$edit_tanggal_inap, $id);
 
 $update_otoritas_penjualan_inap->execute();
 

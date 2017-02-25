@@ -947,7 +947,19 @@ else{
 
      ?>
 
+    <?php 
 
+    if ($data_otoritas1['edit_tanggal_inap'] == '1'){
+        echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="edit_tanggal_inap" name="edit_tanggal_inap" checked="">
+        <label for="edit_tanggal_inap">Edit Tanggal</label> <br>';
+    }
+
+    else{
+        echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="edit_tanggal_inap" name="edit_tanggal_inap">
+        <label for="edit_tanggal_inap">Edit Tanggal</label> <br>';  
+    }
+
+     ?>
     
 </div>
 

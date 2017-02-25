@@ -4470,6 +4470,13 @@ $(document).ready(function(){
 
                                 });
 
+
+                                $(document).on('dblclick','.gk_bisa_edit_tanggal',function(e){
+
+                                  alert("Anda Tidak Punya Otoritas Untuk Edit Tanggal Produk !!");
+
+                                });
+
                                  
                                    $(document).on('dblclick','.edit-jumlah',function(e){
 

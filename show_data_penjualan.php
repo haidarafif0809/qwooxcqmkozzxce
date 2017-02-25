@@ -41,7 +41,7 @@ $totalFiltered = $totalData;  // when there is no search parameter then total nu
 
 $sql = "SELECT no_faktur, kode_pelanggan, no_reg, dokter, penjamin, tanggal, user, total, jenis_penjualan, status, jam, id";
 $sql.=" FROM penjualan ";
-$sql.="WHERE 1=1 ";
+$sql.=" WHERE 1=1 ";
 
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
 
@@ -63,7 +63,7 @@ if( !empty($requestData['search']['value']) ) {   // if there is a search parame
 
 $query=mysqli_query($conn, $sql) or die("show_data_penjualan.php: get employees");
 $totalFiltered = mysqli_num_rows($query); // when there is a search parameter then we have to modify total number filtered rows as per search result. 
-$sql.=" ORDER BY id DESC LIMIT ".$requestData['start']." ,".$requestData['length']." ";
+$sql.=" ORDER BY tanggal,jam DESC LIMIT ".$requestData['start']." ,".$requestData['length']." ";
 /* $requestData['order'][0]['column'] contains colmun index, $requestData['order'][0]['dir'] contains order such as asc/desc  */	
 $query=mysqli_query($conn, $sql) or die("show_data_penjualan.php: get employees");
 
