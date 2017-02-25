@@ -24,7 +24,7 @@ if ($requestData['start'] > 0)
 {	
 
 		// getting total number records without any search
-		$sql = $db->query("SELECT no_faktur,jumlah_kuantitas,jenis_transaksi,tanggal,jenis_hpp,waktu, id FROM hpp_masuk WHERE kode_barang = '$kode_barang' AND tanggal >= '$dari_tanggal' UNION SELECT no_faktur, jumlah_kuantitas,jenis_transaksi, tanggal, jenis_hpp,waktu, id FROM hpp_keluar WHERE kode_barang = '$kode_barang' AND tanggal >= '$dari_tanggal' ORDER BY tanggal  LIMIT ".$requestData['start']."  ");
+		$sql = $db->query("SELECT no_faktur,jumlah_kuantitas,jenis_transaksi,tanggal,jenis_hpp,waktu, id FROM hpp_masuk WHERE kode_barang = '$kode_barang' AND tanggal <= '$dari_tanggal' UNION SELECT no_faktur, jumlah_kuantitas,jenis_transaksi, tanggal, jenis_hpp,waktu, id FROM hpp_keluar WHERE kode_barang = '$kode_barang' AND tanggal >= '$dari_tanggal' ORDER BY tanggal  LIMIT ".$requestData['start']."  ");
 		while($row = mysqli_fetch_array($sql))
 		{
 					if ($row['jenis_hpp'] == '1')
