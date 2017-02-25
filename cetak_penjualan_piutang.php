@@ -270,13 +270,17 @@ div.mix {border-style: dotted dashed solid double;}
         </div>
 
 
-    <div class="col-sm-9">
+    <div class="col-sm-5">
     
     <font class="satu"><b>Nama <?php echo $data200['kata_ubah']; ?> <br><br><br> <font class="satu"><?php echo $data0['nama_pelanggan']; ?></font> </b></font>
     
     </div> <!--/ col-sm-6-->
     
-    <div class="col-sm-3">
+    <div class="col-sm-5">
+    <font class="satu"><b>Manager <br><br><br> <font class="satu">................</font> </b></font>
+    </div>
+
+    <div class="col-sm-2">
     
     <font class="satu"><b>Petugas <br><br><br> <font class="satu"><?php echo $_SESSION['nama']; ?></font></b></font>
 
