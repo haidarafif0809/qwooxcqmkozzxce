@@ -58,7 +58,7 @@ include 'db.php';
 </style>
 
 
-<div class="container">
+<div style="padding-left: 5%; padding-right: 5%">
     
     <div class="row"><!--row1-->
         <div class="col-sm-2">
@@ -76,7 +76,6 @@ include 'db.php';
 
 
 
-    <center> <h4> <b> Faktur Penjualan </b> </h4> </center>
 
 
   <div class="row">
@@ -86,6 +85,9 @@ include 'db.php';
  <table>
   <tbody>
       <tr><td width="25%"><font class="satu">No Faktur</font></td> <td> :&nbsp;</td> <td><font class="satu"><?php echo $data_inner['no_faktur']; ?></font> </tr>
+
+ <tr><td width="25%"><font class="satu">No RM</font></td> <td> :&nbsp;</td> <td><font class="satu"><?php echo $data_inner['kode_pelanggan']; ?></font> </tr>
+
       <tr><td  width="25%"><font class="satu"><?php echo $data200['kata_ubah']; ?></font></td> <td> :&nbsp;</td> <td> <font class="satu"><?php echo $data_pasien['nama_pelanggan']; ?></font> </td></tr>
       <tr><td  width="25%"><font class="satu">Alamat</font></td> <td> :&nbsp;</td> <td><font class="satu"> <?php echo $data_pasien['alamat_sekarang']; ?> </font></td></tr>
       <tr><td  width="25%"><font class="satu">Ket.</font></td> <td> :&nbsp;</td> <td><font class="satu"> <?php echo $data_inner['keterangan']; ?> </font></td></tr>
@@ -138,9 +140,9 @@ include 'db.php';
 
 <table id="tableuser" class="table table-bordered table-sm">
         <thead>
-            <th class="table1" style="width: 25%"> <center> Waktu  </center> </th>
-            <th class="table1" style="width: 50%"> <center> Nama Produk </center> </th>
-            <th class="table1" style="width: 25%"> <center> Petugas </center> </th>
+            <th class="table1" style="width: 15%"> <center> Tanggal  </center> </th>
+            <th class="table1" style="width: 40%"> <center> Nama Produk </center> </th>
+            <th class="table1" style="width: 45%"> <center> Petugas </center> </th>
             <th class="table1" style="width: 5%"> <center> Qty </center> </th>
             <th class="table1" style="width: 5%"> <center> Satuan </center> </th>
             <th class="table1" style="width: 15%"> <center> Harga </center> </th>
@@ -169,12 +171,12 @@ include 'db.php';
 
            echo "
 
-           <td class='table1' style='font-size:15px' >". $data5['tanggal'] ." ". $data5['jam'] ."</td>
+           <td class='table1' style='font-size:15px' >". $data5['tanggal'] ."</td>
             <td class='table1' style='font-size:15px' >". $data5['nama_barang'] ."</td>";
 
 $kd = $db->query("SELECT f.nama_petugas, u.nama FROM laporan_fee_produk f INNER JOIN user u ON f.nama_petugas = u.id  WHERE f.kode_produk = '$data5[kode_barang]' AND f.no_faktur = '$no_faktur' ");
 
-             $kdD = $db->query("SELECT f.nama_petugas, u.nama FROM laporan_fee_produk f INNER JOIN user u ON f.nama_petugas = u.id  WHERE f.kode_produk = '$data5[kode_barang]' AND f.no_faktur = '$no_faktur' ");
+             $kdD = $db->query("SELECT f.nama_petugas, u.nama FROM laporan_fee_produk f INNER JOIN user u ON f.nama_petugas = u.id  WHERE f.kode_produk = '$data5[kode_barang]' AND f.no_faktur = '$no_faktur' GROUP BY f.nama_petugas");
              
              $nu = mysqli_fetch_array($kd);
              
@@ -224,9 +226,9 @@ $kd = $db->query("SELECT f.nama_petugas, u.nama FROM laporan_fee_produk f INNER 
 
 <table id="tableuser" class="table table-bordered table-sm">
         <thead>
-            <th class="table1" style="width: 25%"> <center> Waktu  </center> </th>
-            <th class="table1" style="width: 50%"> <center> Nama Produk </center> </th>
-            <th class="table1" style="width: 25%"> <center> Petugas </center> </th>
+            <th class="table1" style="width: 15%"> <center> Tanggal  </center> </th>
+            <th class="table1" style="width: 40%"> <center> Nama Produk </center> </th>
+            <th class="table1" style="width: 45%"> <center> Petugas </center> </th>
             <th class="table1" style="width: 5%"> <center> Qty </center> </th>
             <th class="table1" style="width: 5%"> <center> Satuan </center> </th>
             <th class="table1" style="width: 15%"> <center> Harga </center> </th>
@@ -255,12 +257,12 @@ $kd = $db->query("SELECT f.nama_petugas, u.nama FROM laporan_fee_produk f INNER 
 
            echo "
 
-           <td class='table1' style='font-size:15px' >". $data5['tanggal'] ." ". $data5['jam'] ."</td>
+           <td class='table1' style='font-size:15px' >". $data5['tanggal'] ." </td>
             <td class='table1' style='font-size:15px' >". $data5['nama_barang'] ."</td>";
 
 $kd = $db->query("SELECT f.nama_petugas, u.nama FROM laporan_fee_produk f INNER JOIN user u ON f.nama_petugas = u.id  WHERE f.kode_produk = '$data5[kode_barang]' AND f.no_faktur = '$no_faktur' ");
 
-             $kdD = $db->query("SELECT f.nama_petugas, u.nama FROM laporan_fee_produk f INNER JOIN user u ON f.nama_petugas = u.id  WHERE f.kode_produk = '$data5[kode_barang]' AND f.no_faktur = '$no_faktur' ");
+             $kdD = $db->query("SELECT f.nama_petugas, u.nama FROM laporan_fee_produk f INNER JOIN user u ON f.nama_petugas = u.id  WHERE f.kode_produk = '$data5[kode_barang]' AND f.no_faktur = '$no_faktur' GROUP BY f.nama_petugas");
              
              $nu = mysqli_fetch_array($kd);
              
@@ -311,9 +313,9 @@ $kd = $db->query("SELECT f.nama_petugas, u.nama FROM laporan_fee_produk f INNER 
 
 <table id="tableuser" class="table table-bordered table-sm">
         <thead>
-            <th class="table1" style="width: 25%"> <center> Waktu  </center> </th>
-            <th class="table1" style="width: 50%"> <center> Nama Produk </center> </th>
-            <th class="table1" style="width: 25%"> <center> Petugas </center> </th>
+            <th class="table1" style="width: 15%"> <center> Tanggal  </center> </th>
+            <th class="table1" style="width: 40%"> <center> Nama Produk </center> </th>
+            <th class="table1" style="width: 45%"> <center> Petugas </center> </th>
             <th class="table1" style="width: 5%"> <center> Qty </center> </th>
             <th class="table1" style="width: 5%"> <center> Satuan </center> </th>
             <th class="table1" style="width: 15%"> <center> Harga </center> </th>
@@ -342,12 +344,12 @@ $kd = $db->query("SELECT f.nama_petugas, u.nama FROM laporan_fee_produk f INNER 
 
            echo "
 
-           <td class='table1' style='font-size:15px' >". $data5['tanggal'] ." ". $data5['jam'] ."</td>
+           <td class='table1' style='font-size:15px' >". $data5['tanggal'] ." </td>
             <td class='table1' style='font-size:15px' >". $data5['nama_barang'] ."</td>";
 
             $kd = $db->query("SELECT f.nama_petugas, u.nama FROM laporan_fee_produk f INNER JOIN user u ON f.nama_petugas = u.id  WHERE f.kode_produk = '$data5[kode_barang]' AND f.no_faktur = '$no_faktur' ");
 
-             $kdD = $db->query("SELECT f.nama_petugas, u.nama FROM laporan_fee_produk f INNER JOIN user u ON f.nama_petugas = u.id  WHERE f.kode_produk = '$data5[kode_barang]' AND f.no_faktur = '$no_faktur' ");
+             $kdD = $db->query("SELECT f.nama_petugas, u.nama FROM laporan_fee_produk f INNER JOIN user u ON f.nama_petugas = u.id  WHERE f.kode_produk = '$data5[kode_barang]' AND f.no_faktur = '$no_faktur' GROUP BY f.nama_petugas");
              
              $nu = mysqli_fetch_array($kd);
              
@@ -396,9 +398,9 @@ $kd = $db->query("SELECT f.nama_petugas, u.nama FROM laporan_fee_produk f INNER 
 
 <table id="tableuser" class="table table-bordered table-sm">
         <thead>
-            <th class="table1" style="width: 25%"> <center> Waktu  </center> </th>
-            <th class="table1" style="width: 50%"> <center> Nama Produk </center> </th>
-            <th class="table1" style="width: 25%"> <center> Petugas </center> </th>
+            <th class="table1" style="width: 15%"> <center> Tanggal  </center> </th>
+            <th class="table1" style="width: 40%"> <center> Nama Produk </center> </th>
+            <th class="table1" style="width: 45%"> <center> Petugas </center> </th>
             <th class="table1" style="width: 5%"> <center> Qty </center> </th>
             <th class="table1" style="width: 5%"> <center> Satuan </center> </th>
             <th class="table1" style="width: 15%"> <center> Harga </center> </th>
@@ -420,12 +422,12 @@ $kd = $db->query("SELECT f.nama_petugas, u.nama FROM laporan_fee_produk f INNER 
 
            echo "
 
-           <td class='table1' style='font-size:15px' >". $data5['tanggal'] ." ". $data5['jam'] ."</td>
+           <td class='table1' style='font-size:15px' >". $data5['tanggal'] ." </td>
             <td class='table1' style='font-size:15px' >". $data5['nama_barang'] ."</td>";
 
             $kd = $db->query("SELECT f.nama_petugas, u.nama FROM laporan_fee_produk f INNER JOIN user u ON f.nama_petugas = u.id  WHERE f.kode_produk = '$data5[kode_barang]' AND f.no_faktur = '$no_faktur' ");
 
-             $kdD = $db->query("SELECT f.nama_petugas, u.nama FROM laporan_fee_produk f INNER JOIN user u ON f.nama_petugas = u.id  WHERE f.kode_produk = '$data5[kode_barang]' AND f.no_faktur = '$no_faktur' ");
+             $kdD = $db->query("SELECT f.nama_petugas, u.nama FROM laporan_fee_produk f INNER JOIN user u ON f.nama_petugas = u.id  WHERE f.kode_produk = '$data5[kode_barang]' AND f.no_faktur = '$no_faktur' GROUP BY f.nama_petugas");
              
              $nu = mysqli_fetch_array($kd);
              
@@ -476,9 +478,9 @@ $kd = $db->query("SELECT f.nama_petugas, u.nama FROM laporan_fee_produk f INNER 
 
 <table id="tableuser" class="table table-bordered table-sm">
         <thead>
-            <th class="table1" style="width: 25%"> <center> Waktu  </center> </th>
-            <th class="table1" style="width: 50%"> <center> Nama Produk </center> </th>
-            <th class="table1" style="width: 25%"> <center> Petugas </center> </th>
+            <th class="table1" style="width: 20%"> <center> Tanggal  </center> </th>
+            <th class="table1" style="width: 40%"> <center> Nama Produk </center> </th>
+            <th class="table1" style="width: 40%"> <center> Petugas </center> </th>
             <th class="table1" style="width: 5%"> <center> Qty </center> </th>
             <th class="table1" style="width: 5%"> <center> Satuan </center> </th>
             <th class="table1" style="width: 15%"> <center> Harga </center> </th>
@@ -506,7 +508,7 @@ $kd = $db->query("SELECT f.nama_petugas, u.nama FROM laporan_fee_produk f INNER 
 
         echo"<tr>
                     
-            <td class='table1' style='font-size:15px' align='center'>".$out_operasi['waktu'] ."</td>";
+            <td class='table1' style='font-size:15px' align='center'>".$out_operasi['waktu']."</td>";
 
             if($out_operasi['operasi'] == $outin['id_operasi'])
             {

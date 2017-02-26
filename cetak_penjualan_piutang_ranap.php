@@ -8,7 +8,7 @@ include 'db.php';
 
   $no_faktur = $_GET['no_faktur'];
 
-    $query0 = $db->query("SELECT rs.tanggal_masuk,p.no_reg,p.biaya_admin,p.id,p.no_faktur,p.total,p.kode_pelanggan,p.keterangan,p.cara_bayar,p.tanggal,p.tanggal_jt,p.jam,p.user,p.sales,p.kode_meja,p.status,p.potongan,p.tax,p.sisa,p.kredit,p.kode_gudang,p.tunai,pl.nama_pelanggan,pl.wilayah,dp.jumlah_barang,dp.subtotal,dp.nama_barang,dp.harga, da.nama_daftar_akun, pl.alamat_sekarang FROM penjualan p LEFT JOIN detail_penjualan dp ON p.no_faktur = dp.no_faktur LEFT JOIN pelanggan pl ON p.kode_pelanggan = pl.kode_pelanggan LEFT JOIN daftar_akun da ON p.cara_bayar = da.kode_daftar_akun LEFT JOIN registrasi rs ON rs.no_reg = dp.no_reg WHERE p.no_faktur = '$no_faktur' ORDER BY p.id DESC");
+    $query0 = $db->query("SELECT p.penjamin, rs.tanggal_masuk,p.no_reg,p.biaya_admin,p.id,p.no_faktur,p.total,p.kode_pelanggan,p.keterangan,p.cara_bayar,p.tanggal,p.tanggal_jt,p.jam,p.user,p.sales,p.kode_meja,p.status,p.potongan,p.tax,p.sisa,p.kredit,p.kode_gudang,p.tunai,pl.nama_pelanggan,pl.wilayah,dp.jumlah_barang,dp.subtotal,dp.nama_barang,dp.harga, da.nama_daftar_akun, pl.alamat_sekarang FROM penjualan p LEFT JOIN detail_penjualan dp ON p.no_faktur = dp.no_faktur LEFT JOIN pelanggan pl ON p.kode_pelanggan = pl.kode_pelanggan LEFT JOIN daftar_akun da ON p.cara_bayar = da.kode_daftar_akun LEFT JOIN registrasi rs ON rs.no_reg = dp.no_reg WHERE p.no_faktur = '$no_faktur' ORDER BY p.id DESC");
      $data0 = mysqli_fetch_array($query0);
 
 
@@ -101,6 +101,7 @@ include 'db.php';
        <tr><td width="50%"><font class="satu"> Tanggal JT</td> <td> :&nbsp;&nbsp;</td> <td><?php echo tanggal($data0['tanggal_jt']); ?></font> </td></tr> 
        <tr><td width="50%"><font class="satu"> Kasir</td> <td> :&nbsp;&nbsp;</td> <td><?php echo $_SESSION['nama']; ?></font></td></tr> 
        <tr><td width="50%"><font class="satu"> Status </td> <td> :&nbsp;&nbsp;</td> <td><?php echo $data0['status']; ?></font></td></tr> 
+       <tr><td width="50%"><font class="satu"> Penjamin </td> <td> :&nbsp;&nbsp;</td> <td><?php echo $data0['penjamin']; ?></font></td></tr> 
 
       </tbody>
 </table>
@@ -387,7 +388,7 @@ include 'db.php';
         <tbody>
 <?php        
 // OPERASI TABLE
- $take_data_or = $db->query("SELECT * FROM hasil_operasi WHERE no_reg = '$data_inner[no_reg]'");
+ $take_data_or = $db->query("SELECT * FROM hasil_operasi WHERE no_reg = '$data0[no_reg]'");
 
     while($out_operasi = mysqli_fetch_array($take_data_or))
       {
@@ -424,7 +425,7 @@ include 'db.php';
     }
 //Untuk Memutuskan Koneksi Ke Database
 
-           $query_ambil_operasi = $db->query("SELECT SUM(harga_jual) AS sub FROM hasil_operasi WHERE no_reg = '$data_inner[no_reg]' ");
+           $query_ambil_operasi = $db->query("SELECT SUM(harga_jual) AS sub FROM hasil_operasi WHERE no_reg = '$data0[no_reg]' ");
             //menyimpan data sementara yang ada pada $perintah
             $data_ambil_operasi = mysqli_fetch_array($query_ambil_operasi);
             $subtotal_operasi = $data_ambil_operasi['sub'];

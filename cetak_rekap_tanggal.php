@@ -139,19 +139,19 @@ if($mutasi_masuk == 0 OR $mutasi_masuk == '')
 			 <?php
 
              //QUERY KAS MASUK
-            $select_masuk = $db->query("SELECT daf.nama_daftar_akun AS nama_dari_akun,dk.kode_akun_jurnal AS dari_akun_jurnal ,js.jenis_transaksi,da.nama_daftar_akun,js.keterangan_jurnal FROM jurnal_trans js LEFT JOIN daftar_akun da ON js.kode_akun_jurnal = da.kode_daftar_akun LEFT JOIN jurnal_trans dk ON js.no_faktur = dk.no_faktur LEFT JOIN daftar_akun daf ON daf.kode_daftar_akun = dk.kode_akun_jurnal WHERE DATE(js.waktu_jurnal) = '$tanggal' AND js.kode_akun_jurnal = '$kas' AND dk.kode_akun_jurnal != js.kode_akun_jurnal AND js.debit != '0' AND dk.kredit != '0' AND js.jenis_transaksi != 'Kas Mutasi' GROUP BY dk.kode_akun_jurnal");
-
+            //$select_masuk = $db->query("SELECT daf.nama_daftar_akun AS nama_dari_akun,dk.kode_akun_jurnal AS dari_akun_jurnal ,js.jenis_transaksi,da.nama_daftar_akun,js.keterangan_jurnal FROM jurnal_trans js LEFT JOIN daftar_akun da ON js.kode_akun_jurnal = da.kode_daftar_akun LEFT JOIN jurnal_trans dk ON js.no_faktur = dk.no_faktur LEFT JOIN daftar_akun daf ON daf.kode_daftar_akun = dk.kode_akun_jurnal WHERE DATE(js.waktu_jurnal) = '$tanggal' AND js.kode_akun_jurnal = '$kas' AND dk.kode_akun_jurnal != js.kode_akun_jurnal AND js.debit != '0' AND dk.kredit != '0' AND js.jenis_transaksi != 'Kas Mutasi' GROUP BY dk.kode_akun_jurnal");
+             $select_masuk = $db->query("SELECT js.no_faktur,sum(js.debit) as masuk,da.nama_daftar_akun AS nama_dari_akun,dk.kode_akun_jurnal AS dari_akun_jurnal ,js.jenis_transaksi,da.nama_daftar_akun,js.keterangan_jurnal FROM jurnal_trans js LEFT JOIN daftar_akun da ON js.kode_akun_jurnal = da.kode_daftar_akun LEFT JOIN jurnal_trans dk ON js.no_faktur = dk.no_faktur LEFT JOIN daftar_akun daf ON daf.kode_daftar_akun = dk.kode_akun_jurnal WHERE DATE(js.waktu_jurnal) = '$tanggal' AND js.kode_akun_jurnal = '$kas' AND dk.kode_akun_jurnal != js.kode_akun_jurnal AND js.debit != '0' AND dk.kredit != '0'  AND js.jenis_transaksi != 'Kas Mutasi' AND js.debit = dk.kredit GROUP BY dari_akun_jurnal");
             //menyimpan data sementara yang ada pada $perintah
             while ($out_masuk = mysqli_fetch_array($select_masuk))
             {
-                $select = $db->query("SELECT SUM(kredit) AS masuk FROM jurnal_trans WHERE DATE(waktu_jurnal) = '$tanggal' AND kode_akun_jurnal = '$out_masuk[dari_akun_jurnal]' AND kredit != 0 ");
-                $datadariakun = mysqli_fetch_array($select);
+                //$select = $db->query("SELECT SUM(kredit) AS masuk FROM jurnal_trans WHERE DATE(waktu_jurnal) = '$tanggal' AND kode_akun_jurnal = '$out_masuk[dari_akun_jurnal]' AND kredit != 0 ");
+                //$datadariakun = mysqli_fetch_array($select);
 
             echo "<tr>
                 <td>". $tanggal ."</td>
-                <td>". $out_masuk['nama_dari_akun'] ."</td>
+                <td>". $out_masuk['jenis_transaksi'] ."</td>
                 <td>". $out_masuk['nama_daftar_akun'] ."</td>
-                <td>". rp($datadariakun['masuk']) ."</td>
+                <td>". rp($out_masuk['masuk']) ."</td>
             <tr>";
 
             }
@@ -177,20 +177,22 @@ if($mutasi_masuk == 0 OR $mutasi_masuk == '')
 			 <?php
              //START QUERY KELUAR
 
-            $select_keluar = $db->query("SELECT daf.nama_daftar_akun AS kode_ke_akun ,dk.kode_akun_jurnal AS ke_akun,js.jenis_transaksi,da.nama_daftar_akun,js.keterangan_jurnal , js.kode_akun_jurnal FROM jurnal_trans js LEFT JOIN daftar_akun da ON js.kode_akun_jurnal = da.kode_daftar_akun LEFT JOIN jurnal_trans dk ON js.no_faktur = dk.no_faktur LEFT JOIN daftar_akun daf ON daf.kode_daftar_akun = dk.kode_akun_jurnal WHERE DATE(js.waktu_jurnal) = '$tanggal' AND js.kode_akun_jurnal = '$kas' AND dk.kode_akun_jurnal != '$kas' AND js.kredit != '0' AND dk.debit != '0' AND js.jenis_transaksi != 'Kas Mutasi' GROUP BY dk.kode_akun_jurnal");
+            //$select_keluar = $db->query("SELECT daf.nama_daftar_akun AS kode_ke_akun ,dk.kode_akun_jurnal AS ke_akun,js.jenis_transaksi,da.nama_daftar_akun,js.keterangan_jurnal , js.kode_akun_jurnal FROM jurnal_trans js LEFT JOIN daftar_akun da ON js.kode_akun_jurnal = da.kode_daftar_akun LEFT JOIN jurnal_trans dk ON js.no_faktur = dk.no_faktur LEFT JOIN daftar_akun daf ON daf.kode_daftar_akun = dk.kode_akun_jurnal WHERE DATE(js.waktu_jurnal) = '$tanggal' AND js.kode_akun_jurnal = '$kas' AND dk.kode_akun_jurnal != '$kas' AND js.kredit != '0' AND dk.debit != '0' AND js.jenis_transaksi != 'Kas Mutasi' GROUP BY dk.kode_akun_jurnal");
+
+             $select_keluar = $db->query("SELECT js.no_faktur,sum(js.kredit) as keluar,da.nama_daftar_akun AS nama_dari_akun,dk.kode_akun_jurnal AS dari_akun_jurnal ,js.jenis_transaksi,da.nama_daftar_akun,js.keterangan_jurnal FROM jurnal_trans js LEFT JOIN daftar_akun da ON js.kode_akun_jurnal = da.kode_daftar_akun LEFT JOIN jurnal_trans dk ON js.no_faktur = dk.no_faktur LEFT JOIN daftar_akun daf ON daf.kode_daftar_akun = dk.kode_akun_jurnal WHERE DATE(js.waktu_jurnal) = '$tanggal' AND js.kode_akun_jurnal = '$kas' AND dk.kode_akun_jurnal != js.kode_akun_jurnal AND js.kredit != '0' AND dk.debit != '0'  AND js.jenis_transaksi != 'Kas Mutasi' AND js.kredit = dk.debit GROUP BY dk.kode_akun_jurnal ");
             //menyimpan data sementara yang ada pada $perintah
             while ($out_keluar = mysqli_fetch_array($select_keluar))
             {
 
-                $select = $db->query("SELECT SUM(debit) AS keluar FROM jurnal_trans WHERE DATE(waktu_jurnal) = '$tanggal' AND kode_akun_jurnal = '$out_keluar[ke_akun]' AND debit != 0 ");
-                $datakeakun = mysqli_fetch_array($select);
+                //$select = $db->query("SELECT SUM(debit) AS keluar FROM jurnal_trans WHERE DATE(waktu_jurnal) = '$tanggal' AND kode_akun_jurnal = '$out_keluar[ke_akun]' AND debit != 0 ");
+                //$datakeakun = mysqli_fetch_array($select);
 
 
             echo "<tr>
                 <td>". $tanggal ."</td>
                 <td>". $out_keluar['nama_daftar_akun'] ."</td>
-                <td>". $out_keluar['kode_ke_akun'] ."</td>
-                <td>". rp($datakeakun['keluar']) ."</td>
+                <td>". $out_keluar['jenis_transaksi'] ."</td>
+                <td>". rp($out_keluar['keluar']) ."</td>
             <tr>";
 
             }

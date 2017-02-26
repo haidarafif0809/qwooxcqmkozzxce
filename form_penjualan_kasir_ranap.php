@@ -70,6 +70,12 @@ padding-right: 5%;
   });
   </script>
 
+<script>
+  $(function() {
+    $( ".input_Tanggal" ).datepicker({dateFormat: "yy-mm-dd"});
+  });
+  </script>
+
 <!--untuk membuat agar tampilan form terlihat rapih dalam satu tempat -->
 
 <div class="padding" >
@@ -5288,6 +5294,41 @@ $(document).ready(function(){
 </script>
 
 <!-- END EDIT DOSIS OBAT -->
+
+
+<!-- EDIT TANGGAL -->
+
+<script type="text/javascript">
+                                 
+      $(document).on('dblclick','.edit-tanggal',function(){
+
+        var id = $(this).attr("data-id");
+
+          $("#text-tanggal-"+id+"").hide();
+          $("#input-tanggal-"+id+"").attr("type", "text"); 
+        
+      });
+
+      $(document).on('blur','.input_tanggal',function(){
+
+        var id = $(this).attr("data-id");
+        var jam = $(this).attr("data-jam");
+        var input_tanggal = $(this).val();
+        var tanggal = input_tanggal+" "+jam;
+
+        $.post("update_tanggal_produk.php",{id:id, input_tanggal:input_tanggal},function(data){
+
+        $("#text-tanggal-"+id+"").show();
+        $("#text-tanggal-"+id+"").text(tanggal);
+        $("#input-tanggal-"+id+"").attr("type", "hidden");           
+
+        });
+      });
+
+
+</script>
+
+<!-- END EDIT TANGGAL -->
 
 
 <!-- AMBIL DATAT -->

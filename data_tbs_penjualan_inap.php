@@ -113,7 +113,7 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
       $nestedData[] = "<p style='font-size:15px' align='right'><span id='text-potongan-".$row['id']."'> ".rp($row["potongan"])." </span> </p>";
       $nestedData[] = "<p style='font-size:15px' align='right'><span id='text-tax-".$row['id']."'> ".rp($row["tax"])." </span> </p>";
 
-      $nestedData[] = "".$row['tanggal']." ".$row['jam']."";
+      $nestedData[] = "<p style='font-size:15px' align='right' class='edit-tanggal' data-id='".$row['id']."' data-kode='".$row['kode_barang']."'> <span id='text-tanggal-".$row['id']."'> ".$row['tanggal']." ".$row['jam']." </span> <input type='hidden' id='input-tanggal-".$row['id']."' value='".$row['tanggal']."' class='input_tanggal' data-id='".$row['id']."' autofocus='' data-kode='".$row['kode_barang']."' data-jam='".$row['jam']."' > </p>";
       
       if ($otoritas_tombol['hapus_produk_inap'] > 0) {
 

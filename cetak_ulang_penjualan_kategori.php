@@ -24,7 +24,7 @@ $no_faktur = $_GET['no_faktur'];
     $query_l = $db->query("SELECT SUM(subtotal) AS subtotal_laundry FROM detail_penjualan WHERE no_faktur = '$no_faktur' AND tipe_produk = 'Laundry' ");
     $data_l = mysqli_fetch_array($query_l);
 
-    $query_lab = $db->query("SELECT SUM(subtotal) AS subtotal_lab FROM detail_penjualan WHERE no_faktur = '$no_faktur' AND tipe_produk = 'Laboratorium' ");
+    $query_lab = $db->query("SELECT SUM(subtotal) AS subtotal_lab FROM detail_penjualan WHERE no_faktur = '$no_faktur' AND tipe_produk = 'Jasa' AND lab = 'Laboratorium' ");
     $data_lab = mysqli_fetch_array($query_lab);
 
       $query_bed = $db->query("SELECT SUM(subtotal) AS subtotal_bed FROM detail_penjualan WHERE no_faktur = '$no_faktur' AND tipe_produk = 'Bed' ");

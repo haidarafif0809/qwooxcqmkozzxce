@@ -159,13 +159,13 @@ $out_mutasi_keluar_jumlah = mysqli_fetch_array($select_mutasi_keluar_jumlah);
             while ($out_masuk = mysqli_fetch_array($select_masuk))
             {
 
-                $select = $db->query("SELECT da.nama_daftar_akun FROM jurnal_trans js LEFT JOIN daftar_akun da ON js.kode_akun_jurnal = da.kode_daftar_akun WHERE DATE(js.waktu_jurnal) >= '$dari_tanggal' AND DATE(js.waktu_jurnal) <= '$sampai_tanggal' AND js.no_faktur = '$out_masuk[no_faktur]' AND js.kredit != '0'");
-                $out = mysqli_fetch_array($select);
+                //$select = $db->query("SELECT da.nama_daftar_akun FROM jurnal_trans js LEFT JOIN daftar_akun da ON js.kode_akun_jurnal = da.kode_daftar_akun WHERE DATE(js.waktu_jurnal) >= '$dari_tanggal' AND DATE(js.waktu_jurnal) <= '$sampai_tanggal' AND js.no_faktur = '$out_masuk[no_faktur]' AND js.kredit != '0'");
+                //$out = mysqli_fetch_array($select);
 
             echo "<tr>
                 <td>". $out_masuk['no_faktur'] ."</td>
                 <td>". $out_masuk['keterangan_jurnal'] ."</td>
-                <td>". $out['nama_daftar_akun'] ."</td>
+                <td>". $out_masuk['jenis_transaksi'] ."</td>
                 <td>". $out_masuk['nama_daftar_akun'] ."</td>
                 <td>". $out_masuk['masuk'] ."</td>
                 <td>". $out_masuk['user_buat'] ."</td>
@@ -203,14 +203,14 @@ $out_mutasi_keluar_jumlah = mysqli_fetch_array($select_mutasi_keluar_jumlah);
             while ($out_keluar = mysqli_fetch_array($select_keluar))
             {
 
-                $select = $db->query("SELECT da.nama_daftar_akun FROM jurnal_trans js LEFT JOIN daftar_akun da ON js.kode_akun_jurnal = da.kode_daftar_akun WHERE DATE(js.waktu_jurnal) >= '$dari_tanggal' AND DATE(js.waktu_jurnal) <= '$sampai_tanggal' AND js.no_faktur = '$out_keluar[no_faktur]' AND js.debit != '0'");
-                $out = mysqli_fetch_array($select);
+                //$select = $db->query("SELECT da.nama_daftar_akun FROM jurnal_trans js LEFT JOIN daftar_akun da ON js.kode_akun_jurnal = da.kode_daftar_akun WHERE DATE(js.waktu_jurnal) >= '$dari_tanggal' AND DATE(js.waktu_jurnal) <= '$sampai_tanggal' AND js.no_faktur = '$out_keluar[no_faktur]' AND js.debit != '0'");
+               // $out = mysqli_fetch_array($select);
 
             echo "<tr>
                 <td>". $out_keluar['no_faktur'] ."</td>
                 <td>". $out_keluar['keterangan_jurnal'] ."</td>
                 <td>". $out_keluar['nama_daftar_akun'] ."</td>
-                <td>". $out['nama_daftar_akun'] ."</td>
+                <td>". $out_keluar['jenis_transaksi'] ."</td>
                 <td>". $out_keluar['keluar'] ."</td>
                 <td>". $out_keluar['user_buat'] ."</td>
                 <td>". $out_keluar['user_edit'] ."</td>

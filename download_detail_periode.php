@@ -126,7 +126,7 @@ $out_mutasi_keluar_jumlah = mysqli_fetch_array($select_mutasi_keluar_jumlah);
             echo "<tr>
                 <td>". $out_masuk['no_faktur'] ."</td>
                 <td>". $out_masuk['keterangan_jurnal'] ."</td>
-                <td>". $out['nama_daftar_akun'] ."</td>
+                <td>". $out_masuk['jenis_transaksi'] ."</td>
                 <td>". $out_masuk['nama_daftar_akun'] ."</td>
                 <td>". $out_masuk['masuk'] ."</td>
                 <td>". $out_masuk['user_buat'] ."</td>
@@ -166,7 +166,7 @@ $out_mutasi_keluar_jumlah = mysqli_fetch_array($select_mutasi_keluar_jumlah);
                 <td>". $out_keluar['no_faktur'] ."</td>
                 <td>". $out_keluar['keterangan_jurnal'] ."</td>
                 <td>". $out_keluar['nama_daftar_akun'] ."</td>
-                <td>". $out['nama_daftar_akun'] ."</td>
+                <td>". $out_keluar['jenis_transaksi'] ."</td>
                 <td>". $out_keluar['keluar'] ."</td>
                 <td>". $out_keluar['user_buat'] ."</td>
                 <td>". $out_keluar['user_edit'] ."</td>
