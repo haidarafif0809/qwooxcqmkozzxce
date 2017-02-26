@@ -250,7 +250,7 @@ $otoritas_tombol = mysqli_fetch_array($pilih_akses_tombol);
   <div class="col-xs-2">
         <label>Petugas Paramedik</label>
         <select style="font-size:15px; height:35px" name="petugas_paramedik" id="petugas_paramedik" class="form-control chosen">
-                 <option value="<?php echo $paramedik;?>"><?php echo $kel3['nama'];?></option>
+                 <option value="<?php echo $perawat;?>"><?php echo $kel3['nama'];?></option>
 
          <?php 
             
@@ -262,7 +262,7 @@ $otoritas_tombol = mysqli_fetch_array($pilih_akses_tombol);
             {
 
 
-            if ($paramedik == '') {
+            if ($perawat == '') {
              echo "<option selected value='".$data01['id'] ."'>".$data01['nama'] ."</option>";
             }
             else{
@@ -308,7 +308,7 @@ $otoritas_tombol = mysqli_fetch_array($pilih_akses_tombol);
     <div class="form-group col-xs-2">
     <label for="email">Penjamin:</label>
     <select class="form-control" id="penjamin" name="penjamin" required="">
-    <option value='<?php  echo$penjamin; ?>'><?php  echo $penjamin;  ?></option>
+    <option value='<?php  echo $penjamin; ?>'><?php  echo $penjamin;  ?></option>
       <?php    
      
       $query = $db->query("SELECT nama FROM penjamin");
@@ -701,7 +701,7 @@ $otoritas_tombol = mysqli_fetch_array($pilih_akses_tombol);
                 
                 <div class="table-responsive"> <!--tag untuk membuat garis pada tabel-->  
                 <span id="table-baru">  
-                <table id="tableuser"  class="table table-sm">
+                <table id="table_tbs_penjualan"  class="table table-sm">
                 <thead>
                 <th> Kode Barang </th>
                 <th> Nama Barang </th>
@@ -716,10 +716,10 @@ $otoritas_tombol = mysqli_fetch_array($pilih_akses_tombol);
                 
                 </thead>
                 
-                <tbody id="tbody">
-                <?php
-                
-                //menampilkan semua data yang ada pada tabel tbs penjualan dalam DB
+        <!-- 
+            
+  //DITUTUP MENGGUNAKAN DATATABLE AJAX 
+
                 $perintah = $db->query("SELECT tp.id,tp.no_faktur,tp.kode_barang,tp.satuan,tp.nama_barang,tp.jumlah_barang,tp.harga,tp.subtotal,tp.potongan,tp.tax,tp.jam,tp.tipe_barang,s.nama FROM tbs_penjualan tp LEFT JOIN satuan s ON tp.satuan = s.id WHERE tp.no_faktur = '$no_faktur' AND no_reg = '$no_reg' ");
                 
                 //menyimpan data sementara yang ada pada $perintah
@@ -817,7 +817,9 @@ else
                 }
 
                 ?>
-                </tbody>
+   //DITUTUP MENGGUNAKAN DATATABLE AJAX 
+               
+                </tbody>-->
                 
                 </table>
 
@@ -1529,7 +1531,7 @@ $(document).ready(function(){
 
    <script>
    //untuk menampilkan data yang diambil pada form tbs penjualan berdasarkan id=formtambahproduk
-  $("#submit_produk").click(function(){
+$(document).on('click','#submit_produk',function(){
 
     var no_faktur = $(this).attr("data-faktur");
     var no_reg = $("#no_reg").val();
@@ -1689,7 +1691,7 @@ $(document).ready(function(){
     $("#total2").val(tandaPemisahTitik(total_akhir1));
 
      $("#ppn").attr("disabled", true);
-     $("#tbody").prepend(data);
+     
      $("#kode_barang").val('');
      $("#kode_barang").trigger('chosen:updated');
      $("#kode_barang").trigger('chosen:open');
@@ -1726,7 +1728,7 @@ $(document).ready(function(){
     $("#total2").val(tandaPemisahTitik(total_akhir1));
 
       $("#ppn").attr("disabled", true);
-     $("#tbody").prepend(data);
+     
      $("#kode_barang").val('');
      $("#kode_barang").trigger('chosen:updated');
      $("#kode_barang").trigger('chosen:open');
@@ -1741,7 +1743,33 @@ $(document).ready(function(){
 }
     
 
-        
+    $('#table_tbs_penjualan').DataTable().destroy();
+
+                        var dataTable = $('#table_tbs_penjualan').DataTable( {
+                          "processing": true,
+                          "serverSide": true,
+                          "ajax":{
+                            url :"data_tbs_edit_penjualan.php", // json datasource
+                             "data": function ( d ) {
+                                d.no_reg = $("#no_reg").val();
+                                d.no_faktur = "<?php echo $no_faktur; ?>";
+                                // d.custom = $('#myInput').val();
+                                // etc
+                            },
+                             
+                              type: "post",  // method  , by default get
+                            error: function(){  // error handling
+                              $(".employee-grid-error").html("");
+                              $("#table_tbs_penjualan").append('<tbody class="employee-grid-error"><tr><th colspan="3">No data found in the server</th></tr></tbody>');
+                              $("#employee-grid_processing").css("display","none");
+                              }
+                          },
+                             "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+
+                              $(nRow).attr('class','tr-id-'+aData[10]+'');         
+
+                          }
+                        });     
       
       
   });
@@ -2094,6 +2122,38 @@ $("#cari_produk_penjualan").click(function(){
 
 
     });
+
+
+
+     $('#table_tbs_penjualan').DataTable().destroy();
+
+                        var dataTable = $('#table_tbs_penjualan').DataTable( {
+                          "processing": true,
+                          "serverSide": true,
+                          "ajax":{
+                            url :"data_tbs_edit_penjualan.php", // json datasource
+                             "data": function ( d ) {
+                                d.no_reg = $("#no_reg").val();
+                                d.no_faktur = "<?php echo $no_faktur; ?>"
+                                // d.custom = $('#myInput').val();
+                                // etc
+                            },
+                             
+                              type: "post",  // method  , by default get
+                            error: function(){  // error handling
+                              $(".employee-grid-error").html("");
+                              $("#table_tbs_penjualan").append('<tbody class="employee-grid-error"><tr><th colspan="3">No data found in the server</th></tr></tbody>');
+                              $("#employee-grid_processing").css("display","none");
+                              }
+                          },
+                             "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+
+                              $(nRow).attr('class','tr-id-'+aData[10]+'');         
+
+                          }
+                        });
+
+
 
     });
     
@@ -2477,6 +2537,37 @@ else {
 </script>-->
 
 
+<script type="text/javascript">
+$(document).ready(function(){
+          $('#table_tbs_penjualan').DataTable().destroy();
+
+                        var dataTable = $('#table_tbs_penjualan').DataTable( {
+                          "processing": true,
+                          "serverSide": true,
+                          "ajax":{
+                            url :"data_tbs_edit_penjualan.php", // json datasource
+                             "data": function ( d ) {
+                                d.no_reg = $("#no_reg").val();
+                                d.no_faktur = "<?php echo $no_faktur; ?>"
+                                // d.custom = $('#myInput').val();
+                                // etc
+                            },
+                             
+                              type: "post",  // method  , by default get
+                            error: function(){  // error handling
+                              $(".employee-grid-error").html("");
+                              $("#table_tbs_penjualan").append('<tbody class="employee-grid-error"><tr><th colspan="3">No data found in the server</th></tr></tbody>');
+                              $("#employee-grid_processing").css("display","none");
+                              }
+                          },
+                             "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+
+                              $(nRow).attr('class','tr-id-'+aData[10]+'');         
+
+                          }
+                        });
+            });
+</script>
 
 <script type="text/javascript">
 $(document).ready(function(){
@@ -2512,6 +2603,8 @@ $(document).ready(function(){
 
 
         });
+
+
 
 
 });
@@ -3105,7 +3198,7 @@ $(document).ready(function(){
 
       <script type="text/javascript">
         
-      $(".chosen").chosen({no_results_text: "Maaf, Data Tidak Ada!"});  
+      $(".chosen").chosen({no_results_text: "Maaf, Data Tidak Ada!",search_contains:true});  
       
       </script>
 
