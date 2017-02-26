@@ -87,7 +87,7 @@ $no_jurnal = $nomor."/JR/".$data_bulan_terakhir."/".$tahun_terakhir;
 
 <div class="container">
 
-<h3> <u>FORM TRANSAKSI JURNAL MANUAL </u> </h3>
+<h3> <u>TRANSAKSI JURNAL</u> </h3>
 <br>
 
 

@@ -448,11 +448,11 @@ if ($lihat['buku_besar_lihat'] > 0){
 }
 
  if ($lihat['laporan_jurnal_lihat'] > 0){
-                            echo '<li><a href="laporan_jurnal_transaksi.php" class="waves-effect"> Jurnal</a></li>';
+                            echo '<li><a href="laporan_jurnal_transaksi.php" class="waves-effect"> Jurnal Umum</a></li>';
 }
 
  if ($lihat['transaksi_jurnal_manual_lihat'] > 0){
-                            echo '<li><a href="transaksi_jurnal_manual.php" class="waves-effect">Transaksi Jurnal Manual</a></li>';
+                            echo '<li><a href="transaksi_jurnal_manual.php" class="waves-effect">Jurnal</a></li>';
 }
 
 if ($lihat['akuntansi_lihat'] > 0){       

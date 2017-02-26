@@ -14,7 +14,7 @@ $session_id = session_id();
 
 <div class="container"><!--tag yang digunakan untuk membuat tampilan form menjadi rapih dalam satu tempat-->
 
-<h3><b> DATA TRANSAKSI JURNAL MANUAL </b></h3> <hr>
+<h3><b> DATA TRANSAKSI JURNAL </b></h3> <hr>
 
 <?php
 include 'db.php';

@@ -11,7 +11,7 @@ include 'db.php';
  ?>
 
 <div class="container">
-<h1> LAPORAN JURNAL TRANSAKSI </h1><hr>
+<h1>JURNAL UMUM </h1><hr>
 <form id="perhari" class="form-inline" action="proses_laporan_jurnal.php" method="POST" role="form">
          
 <div class="form-group">
