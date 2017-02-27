@@ -29,7 +29,7 @@ $no_faktur = $_GET['no_faktur'];
 
     $select_operasi = $db->query("SELECT * FROM hasil_operasi WHERE no_reg = '$data0[no_reg]'");
 
-    $query4 = $db->query("SELECT status_print FROM setting_printer WHERE nama_print = 'Printer Struk'");
+    $query4 = $db->query("SELECT status_print FROM setting_printer WHERE nama_print = 'Printer Struk' OR nama_print = 'Printer Besar'");
     $datas = mysqli_fetch_array($query4);
     $status_print = $datas['status_print'];
 

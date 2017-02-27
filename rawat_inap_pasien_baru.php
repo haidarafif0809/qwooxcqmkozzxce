@@ -210,7 +210,7 @@ $dq = mysqli_fetch_array($q);
   <select class="form-control ss" id="penjamin" name="penjamin" required="" autocomplete="off">
 
  <?php 
-  $query = $db->query("SELECT nama FROM penjamin ORDER BY id ASC");
+  $query = $db->query("SELECT nama FROM penjamin WHERE status = 'Aktif' ORDER BY id ASC");
   while ( $data = mysqli_fetch_array($query)) 
   {
   echo "<option value='".$data['nama']."'>".$data['nama']."</option>";

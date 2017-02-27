@@ -102,22 +102,37 @@ $insert_2->bind_param("ssssssssssssssssssss", $group_bed,$alergi,$no_rm,$nama_le
 $insert_2->execute();
 
 
+// UPDATE PASIEN NYA
+$update_pasien = "UPDATE pelanggan SET umur = '$umur',no_telp = '$no_telepon', alamat_sekarang = '$alamat_sekarang', penjamin = '$penjamin' , nama_pelanggan = '$nama_lengkap' , tempat_lahir = '$tempat_lahir' WHERE kode_pelanggan = '$no_rm'";
+if ($db_pasien->query($update_pasien) === TRUE) 
+  {
+} 
+else 
+    {
+    echo "Error: " . $update_pasien . "<br>" . $db_pasien->error;
+    } 
+// UPDATE PASIEN 
+
+
 // UPDATE KAMAR
 $query = $db->query("UPDATE bed SET sisa_bed = sisa_bed + 1 WHERE nama_kamar = '$bed_lama' AND group_bed = '$group_bed_lama'");
 // END UPDATE KAMAR
 
 
 // UPDATE KAMAR
-$query = $db->query("UPDATE bed SET sisa_bed = sisa_bed - 1 WHERE nama_kamar = '$bed' AND group_bed = '$group_bed'");
+$query43 = $db->query("UPDATE bed SET sisa_bed = sisa_bed - 1 WHERE nama_kamar = '$bed' AND group_bed = '$group_bed'");
 // END UPDATE KAMAR
 
 
-/*
-// DI NON AKTIFKAN KARENA PENAMBAHAN KAMAR NANTNYA AKAN INPUT DI TRANSAKSI PENJUALAN LANGSUNG -- DARI SINI --
-// DI NON AKTIFKAN KARENA PENAMBAHAN KAMAR NANTNYA AKAN INPUT DI TRANSAKSI PENJUALAN LANGSUNG -- DARI SINI --
+
 
 // ambil bahan untuk kamar 
-$query20 = $db->query(" SELECT * FROM penjamin WHERE nama = '$penjamin'");
+$ambil_satuan = $db->query("SELECT id FROM satuan WHERE nama = 'HARI' ");
+$b = mysqli_fetch_array($ambil_satuan);
+$satuan_bed = $b['id'];
+
+
+$query20 = $db->query(" SELECT harga FROM penjamin WHERE nama = '$penjamin'");
 $data20  = mysqli_fetch_array($query20);
 $level_harga = $data20['harga'];
 
@@ -134,9 +149,12 @@ $harga_kamar7 = $kamar_luar['tarif_7'];
 //end bahan untuk kamar
 
 
+$query_set_kamar = $db->query(" SELECT proses_kamar FROM setting_kamar ");
+$data_sett_kamar  = mysqli_fetch_array($query_set_kamar);
 
 
-
+if ($data_sett_kamar['proses_kamar'] == 1)
+{
 
 
 // harga_1 (pertama)
@@ -305,16 +323,13 @@ $query65 = "INSERT INTO tbs_penjualan(session_id,no_reg,kode_barang,nama_barang,
 // harga_7 (pertama)
 
 
- */
-
-// DI NON AKTIFKAN KARENA PENAMBAHAN KAMAR NANTNYA AKAN INPUT DI TRANSAKSI PENJUALAN LANGSUNG -- SAMPAI SINI --
-// DI NON AKTIFKAN KARENA PENAMBAHAN KAMAR NANTNYA AKAN INPUT DI TRANSAKSI PENJUALAN LANGSUNG -- SAMPAI SINI --
+}
 
 
 } // biar gak double pasiennya
 } // token
 
-echo '<META HTTP-EQUIV="Refresh" Content="0; URL=rawat_inap.php">';
+  echo '<META HTTP-EQUIV="Refresh" Content="0; URL=rawat_inap.php">';
 
 
 // Countinue data 

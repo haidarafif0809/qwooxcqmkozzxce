@@ -138,7 +138,7 @@ Cari  </button>
   <select class="form-control ss" id="penjamin" name="penjamin" required="" autocomplete="off">
 
  <?php 
-  $query = $db->query("SELECT nama FROM penjamin ");
+  $query = $db->query("SELECT nama FROM penjamin WHERE status = 'Aktif' ORDER BY id ASC ");
   while ( $data = mysqli_fetch_array($query)) 
   {
     if ($data_reg['penjamin'] == $data['nama']) {

@@ -80,7 +80,7 @@ $query65 = "INSERT INTO tbs_penjualan (session_id,no_reg,kode_barang,nama_barang
 else if ($level_harga == 'harga_2')
 {
 
-$subtotal = $menginap * $harga_kamar2;
+$subtotal = $lama_inap * $harga_kamar2;
 
 
 $query65 = "INSERT INTO tbs_penjualan (session_id,no_reg,kode_barang,nama_barang,jumlah_barang,harga,subtotal,tipe_barang,potongan,tax,satuan,jam,tanggal) VALUES ('$session_id','$no_reg','$bed2','$group_bed2','$lama_inap','$harga_kamar2','$subtotal','Bed','0','0','$satuan_bed','$jam','$tanggal_sekarang')";
@@ -102,7 +102,7 @@ $query65 = "INSERT INTO tbs_penjualan (session_id,no_reg,kode_barang,nama_barang
 else if ($level_harga == 'harga_3')
 {
 
-$subtotal = $menginap * $harga_kamar3;
+$subtotal = $lama_inap * $harga_kamar3;
 
 
 $query65 = "INSERT INTO tbs_penjualan (session_id,no_reg,kode_barang,nama_barang,jumlah_barang,harga,subtotal,tipe_barang,potongan,tax,satuan,jam,tanggal) VALUES ('$session_id','$no_reg','$bed2','$group_bed2','$lama_inap','$harga_kamar3','$subtotal','Bed','0','0','$satuan_bed','$jam','$tanggal_sekarang')";
@@ -122,7 +122,7 @@ $query65 = "INSERT INTO tbs_penjualan (session_id,no_reg,kode_barang,nama_barang
 else if ($level_harga == 'harga_4')
 {
 
-$subtotal = $menginap * $harga_kamar4;
+$subtotal = $lama_inap * $harga_kamar4;
 
 
 $query65 = "INSERT INTO tbs_penjualan (session_id,no_reg,kode_barang,nama_barang,jumlah_barang,harga,subtotal,tipe_barang,potongan,tax,satuan,jam,tanggal) VALUES ('$session_id','$no_reg','$bed2','$group_bed2','$lama_inap','$harga_kamar4','$subtotal','Bed','0','0','$satuan_bed','$jam','$tanggal_sekarang')";
@@ -142,7 +142,7 @@ $query65 = "INSERT INTO tbs_penjualan (session_id,no_reg,kode_barang,nama_barang
 else if ($level_harga == 'harga_5')
 {
 
-$subtotal = $menginap * $harga_kamar5;
+$subtotal = $lama_inap * $harga_kamar5;
 
 
 $query65 = "INSERT INTO tbs_penjualan (session_id,no_reg,kode_barang,nama_barang,jumlah_barang,harga,subtotal,tipe_barang,potongan,tax,satuan,jam,tanggal) VALUES ('$session_id','$no_reg','$bed2','$group_bed2','$lama_inap','$harga_kamar5','$subtotal','Bed','0','0','$satuan_bed','$jam','$tanggal_sekarang')";
@@ -164,7 +164,7 @@ $query65 = "INSERT INTO tbs_penjualan (session_id,no_reg,kode_barang,nama_barang
 else if ($level_harga == 'harga_6')
 {
 
-$subtotal = $menginap * $harga_kamar6;
+$subtotal = $lama_inap * $harga_kamar6;
 
 
 $query65 = "INSERT INTO tbs_penjualan (session_id,no_reg,kode_barang,nama_barang,jumlah_barang,harga,subtotal,tipe_barang,potongan,tax,satuan,jam,tanggal) VALUES ('$session_id','$no_reg','$bed2','$group_bed2','$lama_inap','$harga_kamar6','$subtotal','Bed','0','0','$satuan_bed','$jam','$tanggal_sekarang')";
@@ -187,7 +187,7 @@ $query65 = "INSERT INTO tbs_penjualan (session_id,no_reg,kode_barang,nama_barang
 else if ($level_harga == 'harga_7')
 {
 
-$subtotal = $menginap * $harga_kamar7;
+$subtotal = $lama_inap * $harga_kamar7;
 
 $query65 = "INSERT INTO tbs_penjualan (session_id,no_reg,kode_barang,nama_barang,jumlah_barang,harga,subtotal,tipe_barang,potongan,tax,satuan,jam,tanggal) VALUES ('$session_id','$no_reg','$bed2','$group_bed2','$lama_inap','$harga_kamar7','$subtotal','Bed','0','0','$satuan_bed','$jam','$tanggal_sekarang')";
       if ($db->query($query65) === TRUE) 

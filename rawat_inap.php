@@ -456,7 +456,7 @@ else
  <select class="form-control" id="penjamin" name="penjamin"  autocomplete="off">
  <option value=""> --SILAKAN PILIH--</option>
  <?php 
-  $query = $db->query("SELECT nama FROM penjamin ");
+  $query = $db->query("SELECT nama FROM penjamin WHERE status = 'Aktif' ORDER BY id ASC");
   while ( $data = mysqli_fetch_array($query)) {
   echo "<option value='".$data['nama']."'>".$data['nama']."</option>";
   }

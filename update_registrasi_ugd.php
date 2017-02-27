@@ -107,7 +107,20 @@ $query11->bind_param("ssssssssssssssss", $tanggal_sekarang,$jam,$no_reg,$no_rm_l
 
 $query11->execute();
 
-                                      // ENDING UNTUK AMBIL NO FAKTUR (PENJUALAN)
+
+
+// UPDATE PASIEN NYA
+$update_pasien = "UPDATE pelanggan SET umur = '$umur',no_telp = '$no_telepon', alamat_sekarang = '$alamat_sekarang', penjamin = '$penjamin' , nama_pelanggan = '$nama_lengkap' , tempat_lahir = '$tempat_lahir' WHERE kode_pelanggan = '$no_rm'";
+if ($db_pasien->query($update_pasien) === TRUE) 
+  {
+} 
+else 
+    {
+    echo "Error: " . $update_pasien . "<br>" . $db_pasien->error;
+    } 
+// UPDATE PASIEN 
+
+
 
 
 echo '<META HTTP-EQUIV="Refresh" Content="0; URL=registrasi_ugd.php">';

@@ -112,7 +112,7 @@ $ss = mysqli_fetch_array($qertu);
        <option value="<?php echo $out['penjamin']; ?>"><?php echo $out['penjamin']; ?></option>
 
           <?php 
-          $query = $db->query("SELECT nama FROM penjamin ORDER BY id asc ");
+          $query = $db->query("SELECT nama FROM penjamin WHERE status = 'Aktif' ORDER BY id ASC ");
           while ( $data = mysqli_fetch_array($query))
           {
           echo "<option value='".$data['nama']."'>".$data['nama']."</option>";

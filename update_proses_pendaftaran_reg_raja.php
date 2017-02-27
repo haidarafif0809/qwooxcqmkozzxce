@@ -86,6 +86,8 @@ $stmt = $db->query("UPDATE registrasi SET alergi = '$alergi', no_kk = '$no_kk', 
 
 // masukin ke rekam medik 
 
+
+// insert rekam medik 
 $hapus_rekam_medik = $db->query("DELETE FROM rekam_medik WHERE no_reg = '$no_reg'");
 
 $sql0 = $db->prepare("INSERT INTO rekam_medik(alergi,no_kk,nama_kk,no_reg,no_rm,nama,alamat,umur,jenis_kelamin,sistole_distole,suhu,berat_badan,tinggi_badan,
@@ -94,12 +96,19 @@ $sql0 = $db->prepare("INSERT INTO rekam_medik(alergi,no_kk,nama_kk,no_reg,no_rm,
 $sql0->bind_param("sssssssssssssssssssss",$alergi,$no_kk,$nama_kk,$no_reg,$no_rm,$nama_lengkap,$alamat_sekarang,$umur,$jenis_kelamin,$sistole_distole,$suhu,$berat_badan,$tinggi_badan,$nadi,$respiratory_rate,$poli,$tanggal_sekarang,$jam,$dokter,$kondisi,$rujukan);
 
 $sql0->execute();
+//insert rekam medik
 
- 
 
-// Countinue data 
-   // If we arrive here, it means that no exception was thrown
-    // i.e. no query has failed, and we can commit the transaction
+// UPDATE PASIEN NYA
+$update_pasien = "UPDATE pelanggan SET umur = '$umur',no_telp = '$no_telepon', alamat_sekarang = '$alamat_sekarang', penjamin = '$penjamin' , nama_pelanggan = '$nama_lengkap' , tempat_lahir = '$tempat_lahir' WHERE kode_pelanggan = '$no_rm'";
+if ($db_pasien->query($update_pasien) === TRUE) 
+  {
+} 
+else 
+    {
+    echo "Error: " . $update_pasien . "<br>" . $db_pasien->error;
+    } 
+// UPDATE PASIEN 
 
 
 
