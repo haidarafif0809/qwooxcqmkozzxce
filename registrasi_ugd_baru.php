@@ -97,7 +97,7 @@ $ss = mysqli_fetch_array($qertu);
     <label for="sel1">Penjamin</label>
     <select class="form-control" id="penjamin" name="penjamin" required="" autocomplete="off">
           <?php 
-          $query = $db->query("SELECT nama FROM penjamin ORDER BY id asc ");
+          $query = $db->query("SELECT nama FROM penjamin WHERE status = 'Aktif' ORDER BY id ASC ");
           while ( $data = mysqli_fetch_array($query))
           {
           echo "<option value='".$data['nama']."'>".$data['nama']."</option>";

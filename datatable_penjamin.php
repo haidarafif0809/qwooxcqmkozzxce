@@ -15,7 +15,8 @@ $columns = array(
 	2 => 'no_telp',
 	3 => 'harga',
 	4 => 'jatuh_tempo',
-	5  => 'id'
+	5 => 'status',
+	6 => 'id'
 );
 
 // getting total number records without any search
@@ -75,7 +76,8 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
       {
           $nestedData[] = $row["jatuh_tempo"];
       }
-	
+	$nestedData[] = $row["status"];
+
 	$nestedData[] = "<button class='btn btn-success detaili' data-id='".$row['id']."'><span class='glyphicon glyphicon-list'></span> Lihat Layanan </button>";
 
 

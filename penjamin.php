@@ -89,6 +89,7 @@ $penjamin_tambah = mysqli_num_rows($pilih_akses_penjamin_tambah);
         <th style='background-color: #4CAF50; color: white; '>No Telp</th>
         <th style='background-color: #4CAF50; color: white; '>Level Harga</th>
         <th style='background-color: #4CAF50; color: white; '>Jatuh Tempo (Hari)</th>
+        <th style='background-color: #4CAF50; color: white; '>Status</th>
         <th style='background-color: #4CAF50; color: white; '>Lihat Cakupan Layanan</th>
         <th style='background-color: #4CAF50; color: white; '>Edit</th>
         <th style='background-color: #4CAF50; color: white; '>Hapus</th>
@@ -150,6 +151,16 @@ $penjamin_tambah = mysqli_num_rows($pilih_akses_penjamin_tambah);
 <div class="form-group">
     <label for="penjamin">Jatuh Tempo:</label>
     <input type="text" class="form-control" id="jatuh_tempo" name="jatuh_tempo" placeholder="Isi Jika ada Perjanjian, Berapa Hari Jatuh Temponya" autocomplete="off"  onkeydown="return numbersonly(this, event);" onkeyup="javascript:tandaPemisahTitik(this);">
+</div>
+
+<div class="form-group">
+  <label for="sel1">Status</label>
+  <select class="form-control" id="status" required="" name="status" autocomplete="off">
+        <option value="">Silakan Pilih</option> 
+        <option value="Aktif">Aktif</option> 
+        <option value="Tidak Aktif">Tidak Aktif</option>
+
+</select>
 </div>
 
 <div class="form-group">
@@ -274,7 +285,7 @@ $.post('delete_penjamin.php',{id:id},function(data){
         },
             
             "fnCreatedRow": function( nRow, aData, iDataIndex ) {
-                $(nRow).attr('class','tr-id-'+aData[8]+'');
+                $(nRow).attr('class','tr-id-'+aData[9]+'');
             },
         });
 

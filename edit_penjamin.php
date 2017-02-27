@@ -59,6 +59,15 @@ $rows = $data->fetch_object();
 </div>
 
 <div class="form-group">
+  <label for="sel1">Status</label>
+  <select  class="form-control" id="status" required="" name="status" autocomplete="off">
+    <option value="<?php echo $rows->status ; ?>"><?php echo $rows->status; ?></option> 
+    <option value="Aktif">Aktif</option> 
+    <option value="Tidak Aktif">Tidak Aktif</option>
+</select>
+</div>
+
+<div class="form-group">
   <label for="sel1">Cakupan Layanan</label>
   <textarea class="form-control" id="layanan" autocomplete="off" name="layanan" style="height:500px" value="<?php echo $rows->cakupan_layanan; ?>"><?php echo $rows->cakupan_layanan; ?></textarea>
 </div>

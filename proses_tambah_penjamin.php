@@ -3,9 +3,10 @@
     include_once 'sanitasi.php';
 
 
-    $perintah = $db->prepare("INSERT INTO penjamin (nama,alamat,no_telp,harga,cakupan_layanan,jatuh_tempo) VALUES (?,?,?,?,?,?) ");
+    $perintah = $db->prepare("INSERT INTO penjamin (nama,alamat,no_telp,harga,cakupan_layanan,jatuh_tempo,status) VALUES (?,?,?,?,?,?,?) ");
 
-    $perintah->bind_param("ssisss",$nama, $alamat, $no_telp, $harga, $cakupan_layanan, $jatuh_tempo);
+    $perintah->bind_param("ssissss",$nama, $alamat, $no_telp, $harga, $cakupan_layanan, $jatuh_tempo,
+        $status);
         
 
         $nama = stringdoang($_POST['nama']);
@@ -14,7 +15,8 @@
         $harga = stringdoang($_POST['level_harga']);
         $cakupan_layanan = $_POST['layanan'];
         $jatuh_tempo = stringdoang($_POST['jatuh_tempo']);
-  
+        $status = stringdoang($_POST['status']);
+        
     $perintah->execute();
 
     if (!$perintah) 
