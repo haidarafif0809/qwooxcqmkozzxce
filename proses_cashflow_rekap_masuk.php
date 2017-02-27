@@ -21,10 +21,9 @@ $columns = array(
 // getting total number records without any search
 
 
-$sql = "SELECT js.no_faktur,sum(js.debit) as masuk,da.nama_daftar_akun AS nama_dari_akun,dk.kode_akun_jurnal AS dari_akun_jurnal ,js.jenis_transaksi,da.nama_daftar_akun,js.keterangan_jurnal";
-$sql.=" FROM jurnal_trans js LEFT JOIN daftar_akun da ON js.kode_akun_jurnal = da.kode_daftar_akun LEFT JOIN jurnal_trans dk ON js.no_faktur = dk.no_faktur LEFT JOIN daftar_akun daf ON daf.kode_daftar_akun = dk.kode_akun_jurnal ";
-$sql.=" WHERE DATE(js.waktu_jurnal) = '$tanggal' AND js.kode_akun_jurnal = '$kas' AND dk.kode_akun_jurnal != js.kode_akun_jurnal AND js.debit != '0' AND dk.kredit != '0'  AND js.jenis_transaksi != 'Kas Mutasi' AND js.debit = dk.kredit";
-
+$sql =" SELECT SUM(js.debit) AS masuk,js.jenis_transaksi,js.id,da.nama_daftar_akun,DATE(js.waktu_jurnal) AS tanggal,js.no_faktur";
+$sql.=" FROM jurnal_trans js LEFT JOIN daftar_akun da ON js.kode_akun_jurnal = da.kode_daftar_akun ";
+$sql.=" WHERE DATE(js.waktu_jurnal) = '$tanggal' AND js.kode_akun_jurnal = '$kas' AND js.debit != '0' AND js.jenis_transaksi != 'Kas Mutasi' GROUP BY DATE(js.waktu_jurnal)";
 
 
 $query = mysqli_query($conn, $sql) or die("eror 1");
@@ -34,14 +33,12 @@ $totalFiltered = $totalData;  // when there is no search parameter then total nu
 
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
 
-$sql = "SELECT js.no_faktur,sum(js.debit) as masuk,da.nama_daftar_akun AS nama_dari_akun,dk.kode_akun_jurnal AS dari_akun_jurnal ,js.jenis_transaksi,da.nama_daftar_akun,js.keterangan_jurnal";
-$sql.=" FROM jurnal_trans js LEFT JOIN daftar_akun da ON js.kode_akun_jurnal = da.kode_daftar_akun LEFT JOIN jurnal_trans dk ON js.no_faktur = dk.no_faktur LEFT JOIN daftar_akun daf ON daf.kode_daftar_akun = dk.kode_akun_jurnal ";
-
-$sql.=" WHERE DATE(js.waktu_jurnal) = '$tanggal' AND js.kode_akun_jurnal = '$kas' AND dk.kode_akun_jurnal != js.kode_akun_jurnal AND js.debit != '0' AND dk.kredit != '0' AND js.jenis_transaksi != 'Kas Mutasi' AND js.debit = dk.kredit";
+$sql =" SELECT SUM(js.debit) AS masuk,js.jenis_transaksi,js.id,da.nama_daftar_akun,DATE(js.waktu_jurnal) AS tanggal,js.no_faktur";
+$sql.=" FROM jurnal_trans js LEFT JOIN daftar_akun da ON js.kode_akun_jurnal = da.kode_daftar_akun ";
+$sql.=" WHERE DATE(js.waktu_jurnal) = '2017-02-08' AND js.kode_akun_jurnal = '1-1119' AND js.debit != '0' AND js.jenis_transaksi != 'Kas Mutasi' GROUP BY DATE(js.waktu_jurnal)";
 
   $sql.=" AND ( js.jenis_transaksi LIKE '".$requestData['search']['value']."%'";
-  $sql.=" OR daf.nama_daftar_akun LIKE '".$requestData['search']['value']."%'";
-  $sql.=" OR da.nama_daftar_akun LIKE '".$requestData['search']['value']."%' ) ";
+  $sql.=" OR da.nama_daftar_akun LIKE '".$requestData['search']['value']."%' ) GROUP BY DATE(js.waktu_jurnal)";
 
 
 }
@@ -50,7 +47,7 @@ $sql.=" WHERE DATE(js.waktu_jurnal) = '$tanggal' AND js.kode_akun_jurnal = '$kas
 $query=mysqli_query($conn, $sql) or die("eror 2");
 $totalFiltered = mysqli_num_rows($query); // when there is a search parameter then we have to modify total number filtered rows as per search result. 
 
-$sql.="  GROUP BY dari_akun_jurnal ".$requestData['order'][0]['dir']."  LIMIT ".$requestData['start']." ,".$requestData['length']."";
+$sql.=" ORDER BY js.id ".$requestData['order'][0]['dir']."  LIMIT ".$requestData['start']." ,".$requestData['length']."";
 
 /* $requestData['order'][0]['column'] contains colmun index, $requestData['order'][0]['dir'] contains order such as asc/desc  */  
 $query=mysqli_query($conn, $sql) or die("eror 3");
@@ -65,7 +62,7 @@ while( $row=mysqli_fetch_array($query) ) {
 
 $nestedData[] = $tanggal;
   $nestedData[] = $row["jenis_transaksi"] /*.' ('. $row["no_faktur"] .')'*/;
-  $nestedData[] = $row["nama_dari_akun"];
+  $nestedData[] = $row["nama_daftar_akun"];
   $nestedData[] = rp($row["masuk"]);
 $data[] = $nestedData;
 }
