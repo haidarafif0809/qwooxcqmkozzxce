@@ -4,10 +4,11 @@ include 'sanitasi.php';
 
 /* Database connection end */
 
+$dari_tanggal = stringdoang($_POST['dari_tanggal']);
+$sampai_tanggal = stringdoang($_POST['sampai_tanggal']);
 
 // storing  request (ie, get/post) global array to a variable  
 $requestData= $_REQUEST;
-
 
 
 $columns = array( 
@@ -27,51 +28,43 @@ $columns = array(
 );
 
 // getting total number records without any search
-$sql = "SELECT * ";
-$sql.="FROM pembelian ";
+$sql = "SELECT s.nama,dp.id,dp.no_faktur,dp.kode_barang,dp.nama_barang,dp.jumlah_barang,dp.satuan,dp.harga,dp.subtotal,dp.potongan,dp.tax,dp.sisa ";
+$sql.="FROM detail_pembelian dp INNER JOIN satuan s ON dp.satuan = s.id WHERE dp.tanggal >= '$dari_tanggal' AND dp.tanggal <= '$sampai_tanggal' ";
 
 $query=mysqli_query($conn, $sql) or die("show_data_pembelian.php: get employees");
 $totalData = mysqli_num_rows($query);
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
-$sql = "SELECT *";
-$sql.="FROM pembelian  ";
-$sql.="WHERE 1=1 ";
+$sql = "SELECT s.nama,dp.id,dp.no_faktur,dp.kode_barang,dp.nama_barang,dp.jumlah_barang,dp.satuan,dp.harga,dp.subtotal,dp.potongan,dp.tax,dp.sisa ";
+$sql.="FROM detail_pembelian dp INNER JOIN satuan s ON dp.satuan = s.id WHERE dp.tanggal >= '$dari_tanggal' AND dp.tanggal <= '$sampai_tanggal' AND 1=1 ";
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
-	$sql.=" AND ( no_faktur LIKE '".$requestData['search']['value']."%' ";    
-	$sql.=" OR suplier LIKE '".$requestData['search']['value']."%' ";  
-	$sql.=" OR total LIKE '".$requestData['search']['value']."%' "; 
-	$sql.=" OR tanggal LIKE '".$requestData['search']['value']."%' "; 
-	$sql.=" OR jam LIKE '".$requestData['search']['value']."%' ";  
-	$sql.=" OR user LIKE '".$requestData['search']['value']."%' ";  
-	$sql.=" OR status LIKE '".$requestData['search']['value']."%' ";
-	$sql.=" OR kredit LIKE '".$requestData['search']['value']."%' )";
+	$sql.=" AND ( dp.no_faktur LIKE '".$requestData['search']['value']."%' ";    
+	$sql.=" OR dp.kode_barang LIKE '".$requestData['search']['value']."%' ";  
+	$sql.=" OR dp.nama_barang LIKE '".$requestData['search']['value']."%' ";
+	$sql.=" OR s.nama LIKE '".$requestData['search']['value']."%' )";
 }
 $query=mysqli_query($conn, $sql) or die("show_data_pembelian.php: get employees");
 $totalFiltered = mysqli_num_rows($query); // when there is a search parameter then we have to modify total number filtered rows as per search result. 
 
-$sql.=" ORDER BY CONCAT(tanggal,' ',jam) DESC  LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
+$sql.=" ORDER BY CONCAT(dp.tanggal,' ',dp.jam) DESC  LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
 /* $requestData['order'][0]['column'] contains colmun index, $requestData['order'][0]['dir'] contains order such as asc/desc  */	
 $query=mysqli_query($conn, $sql) or die("show_data_pembelian.php: get employees");
 
 $data = array();
 while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 	$nestedData=array(); 
-$select = $db->query("SELECT nama FROM suplier WHERE id = '$row[suplier]'");
-$out = mysqli_fetch_array($select);
 
-	$nestedData[] = $row["no_faktur"];
-	$nestedData[] = $out["nama"];
-	$nestedData[] = $row["total"];
-	$nestedData[] = $row["tanggal"];
-	$nestedData[] = $row["jam"];
-	$nestedData[] = $row["user"];
-	$nestedData[] = $row["status"];
-	$nestedData[] = $row["potongan"];
-	$nestedData[] = $row["tax"];
-	$nestedData[] = $row["sisa"];
-	$nestedData[] = $row["kredit"];
-	$data[] = $nestedData;
+			$nestedData[] = $row['no_faktur'];
+					$nestedData[] = $row['kode_barang'];
+					$nestedData[] = $row['nama_barang'];
+					$nestedData[] = $row['jumlah_barang'];
+					$nestedData[] = $row['nama'];
+					$nestedData[] = rp($row['harga']);
+					$nestedData[] = rp($row['subtotal']);
+					$nestedData[] = rp($row['potongan']);
+					$nestedData[] = rp($row['tax']);
+					$nestedData[] = rp($row['sisa']);
+			$data[] = $nestedData;
 }
 
 

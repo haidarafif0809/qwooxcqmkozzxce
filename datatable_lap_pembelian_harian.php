@@ -4,10 +4,11 @@ include 'sanitasi.php';
 
 /* Database connection end */
 
+$dari_tanggal = stringdoang($_POST['dari_tanggal']);
+$sampai_tanggal = stringdoang($_POST['sampai_tanggal']);
 
 // storing  request (ie, get/post) global array to a variable  
 $requestData= $_REQUEST;
-
 
 
 $columns = array( 
@@ -27,51 +28,49 @@ $columns = array(
 );
 
 // getting total number records without any search
-$sql = "SELECT * ";
-$sql.="FROM pembelian ";
+$sql = "SELECT tanggal ";
+$sql.="FROM pembelian WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' ";
 
 $query=mysqli_query($conn, $sql) or die("show_data_pembelian.php: get employees");
 $totalData = mysqli_num_rows($query);
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
-$sql = "SELECT *";
-$sql.="FROM pembelian  ";
-$sql.="WHERE 1=1 ";
+$sql = "SELECT tanggal ";
+$sql.="FROM pembelian WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' AND 1=1 ";
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
-	$sql.=" AND ( no_faktur LIKE '".$requestData['search']['value']."%' ";    
-	$sql.=" OR suplier LIKE '".$requestData['search']['value']."%' ";  
-	$sql.=" OR total LIKE '".$requestData['search']['value']."%' "; 
-	$sql.=" OR tanggal LIKE '".$requestData['search']['value']."%' "; 
-	$sql.=" OR jam LIKE '".$requestData['search']['value']."%' ";  
-	$sql.=" OR user LIKE '".$requestData['search']['value']."%' ";  
-	$sql.=" OR status LIKE '".$requestData['search']['value']."%' ";
-	$sql.=" OR kredit LIKE '".$requestData['search']['value']."%' )";
+	$sql.=" AND ( tanggal LIKE '".$requestData['search']['value']."%' )";
 }
 $query=mysqli_query($conn, $sql) or die("show_data_pembelian.php: get employees");
 $totalFiltered = mysqli_num_rows($query); // when there is a search parameter then we have to modify total number filtered rows as per search result. 
 
-$sql.=" ORDER BY CONCAT(tanggal,' ',jam) DESC  LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
+$sql.=" GROUP BY tanggal ORDER BY id DESC  LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
 /* $requestData['order'][0]['column'] contains colmun index, $requestData['order'][0]['dir'] contains order such as asc/desc  */	
 $query=mysqli_query($conn, $sql) or die("show_data_pembelian.php: get employees");
 
 $data = array();
 while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 	$nestedData=array(); 
-$select = $db->query("SELECT nama FROM suplier WHERE id = '$row[suplier]'");
-$out = mysqli_fetch_array($select);
 
-	$nestedData[] = $row["no_faktur"];
-	$nestedData[] = $out["nama"];
-	$nestedData[] = $row["total"];
-	$nestedData[] = $row["tanggal"];
-	$nestedData[] = $row["jam"];
-	$nestedData[] = $row["user"];
-	$nestedData[] = $row["status"];
-	$nestedData[] = $row["potongan"];
-	$nestedData[] = $row["tax"];
-	$nestedData[] = $row["sisa"];
-	$nestedData[] = $row["kredit"];
-	$data[] = $nestedData;
+			//menampilkan data
+						$perintah1 = $db->query("SELECT * FROM pembelian WHERE tanggal = '$row[tanggal]'");
+						$data1 = mysqli_num_rows($perintah1);
+
+						$perintah2 = $db->query("SELECT SUM(total) AS t_total FROM pembelian WHERE tanggal = '$row[tanggal]'");
+						$data2 = mysqli_fetch_array($perintah2);
+						$t_total = $data2['t_total'];
+
+						$perintah21 = $db->query("SELECT SUM(nilai_kredit) AS t_kredit FROM pembelian WHERE tanggal = '$row[tanggal]'");
+						$data21 = mysqli_fetch_array($perintah21);
+						$t_kredit = $data21['t_kredit'];
+
+						$t_bayar = $t_total - $t_kredit;
+
+					$nestedData[] = $row['tanggal'];
+					$nestedData[] = $data1;
+					$nestedData[] = rp($t_total);
+					$nestedData[] = rp($t_bayar);
+					$nestedData[] = rp($t_kredit);
+			$data[] = $nestedData;
 }
 
 

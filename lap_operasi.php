@@ -121,8 +121,16 @@ $(document).on('click','#submit',function(e){
 
      var sampai_tanggal = $("#sampai_tanggal").val();
      var dari_tanggal = $("#dari_tanggal").val();  
-
-	//untuk tampilkan table kas MUTASI MASUK detail
+     if (dari_tanggal == '') {
+      alert("silakan isi kolom dari tanggal terlebih dahulu.");
+      $("#dari_tanggal").focus();
+     }
+     else if (sampai_tanggal == '') {
+      alert("silakan isi kolom sampai tanggal terlebih dahulu.");
+      $("#sampai_tanggal").focus();
+     }
+	else {
+    //untuk tampilkan table kas MUTASI MASUK detail
      $('#tabel_lap').DataTable().destroy();
           var dataTable = $('#tabel_lap').DataTable( {
           "processing": true,
@@ -150,9 +158,10 @@ $(document).on('click','#submit',function(e){
     
     });
 
-	$("#cetak").show();
-	$("#cetak_lap").attr("href", "cetak_lap_operasi.php?dari_tanggal="+dari_tanggal+"&sampai_tanggal="+sampai_tanggal+"");
-	$("#export_lap").attr("href", "export_lap_operasi.php?dari_tanggal="+dari_tanggal+"&sampai_tanggal="+sampai_tanggal+"");
+  $("#cetak").show();
+  $("#cetak_lap").attr("href", "cetak_lap_operasi.php?dari_tanggal="+dari_tanggal+"&sampai_tanggal="+sampai_tanggal+"");
+  $("#export_lap").attr("href", "export_lap_operasi.php?dari_tanggal="+dari_tanggal+"&sampai_tanggal="+sampai_tanggal+"");
+  }
 });
 
 	  $("#perhari").submit(function(){
