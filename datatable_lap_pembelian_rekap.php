@@ -4,10 +4,11 @@ include 'sanitasi.php';
 
 /* Database connection end */
 
+$dari_tanggal = stringdoang($_POST['dari_tanggal']);
+$sampai_tanggal = stringdoang($_POST['sampai_tanggal']);
 
 // storing  request (ie, get/post) global array to a variable  
 $requestData= $_REQUEST;
-
 
 
 $columns = array( 
@@ -27,51 +28,48 @@ $columns = array(
 );
 
 // getting total number records without any search
-$sql = "SELECT * ";
-$sql.="FROM pembelian ";
+$sql = "SELECT p.id,p.no_faktur,p.total,p.suplier,p.tanggal,p.tanggal_jt,p.jam,p.user,p.status,p.potongan,p.tax,p.sisa,p.kredit,s.nama,g.nama_gudang ";
+$sql.="FROM pembelian p LEFT JOIN suplier s ON p.suplier = s.id LEFT JOIN gudang g ON p.kode_gudang = g.kode_gudang WHERE p.tanggal >= '$dari_tanggal' AND p.tanggal <= '$sampai_tanggal' ";
 
 $query=mysqli_query($conn, $sql) or die("show_data_pembelian.php: get employees");
 $totalData = mysqli_num_rows($query);
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
-$sql = "SELECT *";
-$sql.="FROM pembelian  ";
-$sql.="WHERE 1=1 ";
+$sql = "SELECT p.id,p.no_faktur,p.total,p.suplier,p.tanggal,p.tanggal_jt,p.jam,p.user,p.status,p.potongan,p.tax,p.sisa,p.kredit,s.nama,g.nama_gudang ";
+$sql.="FROM pembelian p LEFT JOIN suplier s ON p.suplier = s.id LEFT JOIN gudang g ON p.kode_gudang = g.kode_gudang WHERE p.tanggal >= '$dari_tanggal' AND p.tanggal <= '$sampai_tanggal' AND 1=1 ";
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
-	$sql.=" AND ( no_faktur LIKE '".$requestData['search']['value']."%' ";    
-	$sql.=" OR suplier LIKE '".$requestData['search']['value']."%' ";  
-	$sql.=" OR total LIKE '".$requestData['search']['value']."%' "; 
-	$sql.=" OR tanggal LIKE '".$requestData['search']['value']."%' "; 
-	$sql.=" OR jam LIKE '".$requestData['search']['value']."%' ";  
-	$sql.=" OR user LIKE '".$requestData['search']['value']."%' ";  
-	$sql.=" OR status LIKE '".$requestData['search']['value']."%' ";
-	$sql.=" OR kredit LIKE '".$requestData['search']['value']."%' )";
+	$sql.=" AND ( p.no_faktur LIKE '".$requestData['search']['value']."%' ";    
+	$sql.=" OR p.suplier LIKE '".$requestData['search']['value']."%' ";  
+	$sql.=" OR p.tanggal LIKE '".$requestData['search']['value']."%' "; 
+	$sql.=" OR p.tanggal_jt LIKE '".$requestData['search']['value']."%' "; 
+	$sql.=" OR p.jam LIKE '".$requestData['search']['value']."%' ";  
+	$sql.=" OR p.status LIKE '".$requestData['search']['value']."%' ";  
+	$sql.=" OR s.nama LIKE '".$requestData['search']['value']."%' ";
+	$sql.=" OR g.nama_gudang LIKE '".$requestData['search']['value']."%' )";
 }
 $query=mysqli_query($conn, $sql) or die("show_data_pembelian.php: get employees");
 $totalFiltered = mysqli_num_rows($query); // when there is a search parameter then we have to modify total number filtered rows as per search result. 
 
-$sql.=" ORDER BY CONCAT(tanggal,' ',jam) DESC  LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
+$sql.=" ORDER BY CONCAT(p.tanggal,' ',p.jam) DESC  LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
 /* $requestData['order'][0]['column'] contains colmun index, $requestData['order'][0]['dir'] contains order such as asc/desc  */	
 $query=mysqli_query($conn, $sql) or die("show_data_pembelian.php: get employees");
 
 $data = array();
 while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 	$nestedData=array(); 
-$select = $db->query("SELECT nama FROM suplier WHERE id = '$row[suplier]'");
-$out = mysqli_fetch_array($select);
 
-	$nestedData[] = $row["no_faktur"];
-	$nestedData[] = $out["nama"];
-	$nestedData[] = $row["total"];
-	$nestedData[] = $row["tanggal"];
-	$nestedData[] = $row["jam"];
-	$nestedData[] = $row["user"];
-	$nestedData[] = $row["status"];
-	$nestedData[] = $row["potongan"];
-	$nestedData[] = $row["tax"];
-	$nestedData[] = $row["sisa"];
-	$nestedData[] = $row["kredit"];
-	$data[] = $nestedData;
+			$nestedData[] = $row['no_faktur'];
+			$nestedData[] = $row['nama'];
+			$nestedData[] = rp($row['total']);
+			$nestedData[] = $row['tanggal'];
+			$nestedData[] = $row['jam'];
+			$nestedData[] = $row['user'];
+			$nestedData[] = $row['status'];
+			$nestedData[] = rp($row['potongan']);
+			$nestedData[] = rp($row['tax']);
+			$nestedData[] = rp($row['sisa']);
+			$nestedData[] = rp($row["kredit"]);
+			$data[] = $nestedData;
 }
 
 

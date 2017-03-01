@@ -67,25 +67,90 @@ tr:nth-child(even){background-color: #f2f2f2}
 			<th style="background-color: #4CAF50; color: white;"> Kredit </th>
 						
 		</thead>
-		<tbody>
-			
-
-		</tbody>
-
 	</table>
 </span>
 </div> <!--/ responsive-->
+<table>
+  <tbody>
+
+
+      <tr><td style="font-size: 30px" width="50%">Jumlah Total </td> <td style="font-size: 30px"> :&nbsp; </td> <td style="font-size: 30px"><span id="total_nilai"></span> </td></tr>
+            
+  </tbody>
+  </table>
+
+  <span id="cetak" style="display: none;">
+ <a href="cetak_lap_pembelian_rekap.php" id="cetak_lap"  class="btn btn-success"><i class="fa fa-print"> </i> Cetak Penjualan </a>
+</span>
 </div> <!--/ container-->
 
-		<script>
+		<script type="text/javascript">
+		$("#submit").click(function(){
 		
-		$(document).ready(function(){
-		$('#tableuser').DataTable();
+		var dari_tanggal = $("#dari_tanggal").val();
+		var sampai_tanggal = $("#sampai_tanggal").val();
+		
+		if (dari_tanggal == '') {
+			alert("silakan isi kolom dari tanggal terlebih dahulu.");
+			$("#dari_tanggal").focus();
+		}
+		else if (sampai_tanggal == '') {
+			alert("silakan isi kolom sampai tanggal terlebih dahulu.");
+			$("#sampai_tanggal").focus();
+		}
+		  
+		else{
+			$('#tableuser').DataTable().destroy();
+
+		  var dataTable = $('#tableuser').DataTable( {
+                "processing": true,
+                "serverSide": true,
+                "info":     true,
+                "language": {
+              "emptyTable":   "My Custom Message On Empty Table"
+          },
+                "ajax":{
+                  url :"datatable_lap_pembelian_rekap.php", // json datasource
+                   "data": function ( d ) {
+                      d.dari_tanggal = $("#dari_tanggal").val();
+                      d.sampai_tanggal = $("#sampai_tanggal").val();
+                      // d.custom = $('#myInput').val();
+                      // etc
+                  },
+                      type: "post",  // method  , by default get
+                  error: function(){  // error handling
+                    $(".tbody").html("");
+                    $("#tableuser").append('<tbody class="tbody"><tr><th colspan="3"></th></tr></tbody>');
+                    $("#tableuser_processing").css("display","none");
+                    
+                  }
+                }
+          
+              });
+    		$.post("cek_total_pembelian_rekap.php",{dari_tanggal:dari_tanggal,sampai_tanggal:sampai_tanggal},function(data){
+
+		  		$("#total_nilai").html(data);
+
+		  	});
+
+          $("#cetak").show();
+        $("#cetak_lap").attr("href", "cetak_lap_pembelian_rekap.php?dari_tanggal="+dari_tanggal+"&sampai_tanggal="+sampai_tanggal+"");
+		}
+		
 		});
+		
+		
+	      
+		$("form").submit(function(){
+		
+		return false;
+		
+		});
+		
 		</script>
 
 		
-		<script type="text/javascript">
+	<!--script type="text/javascript">
 		$("#submit").click(function(){
 		
 		var dari_tanggal = $("#dari_tanggal").val();
@@ -106,7 +171,7 @@ tr:nth-child(even){background-color: #f2f2f2}
 		
 		});
 		
-		</script>
+		</script-->
 
 
 

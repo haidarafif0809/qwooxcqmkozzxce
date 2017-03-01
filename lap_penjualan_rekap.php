@@ -80,13 +80,12 @@ tr:nth-child(even){background-color: #f2f2f2}
 </div> <!--/ responsive-->
 
 <h4>
-<td>Total Seluruh </td><br> 
-<td>Total Nilai &nbsp;&nbsp;&nbsp;  : <span id="total_nilai"></span></td><br> 
+<td>Total Seluruh  &nbsp;&nbsp;&nbsp;  : <span id="total_nilai"></span></td><br> 
 </h4>
 
 
 <span id="cetak" style="display: none;">
- <a href="cetak_lap_penjualan_rekap.php" id="cetak_lap"  class="btn btn-success"><i class="fa fa-print"> </i> Cetak Penjualan </a>
+ <a href="cetak_lap_penjualan_rekap.php" target="blank" id="cetak_lap"  class="btn btn-success"><i class="fa fa-print"> </i> Cetak Penjualan </a>
 </span>
 
 </div> <!--/ container-->
@@ -97,9 +96,16 @@ tr:nth-child(even){background-color: #f2f2f2}
 		
 		var dari_tanggal = $("#dari_tanggal").val();
 		var sampai_tanggal = $("#sampai_tanggal").val();
-		
-		  
-		  $('#tableuser').DataTable().destroy();
+		if (dari_tanggal == '') {
+			alert("Silakan isi kolom dari tanggal terlebih dahulu.");
+			$("#dari_tanggal").focus();
+		}
+		else if (sampai_tanggal == '') {
+			alert("silakan isi kolom sampai tanggal trlebih dahulu.");
+			$("#sampai_tanggal").focus();
+		}
+		else {
+			$('#tableuser').DataTable().destroy();
 
 		  var dataTable = $('#tableuser').DataTable( {
                 "processing": true,
@@ -135,6 +141,7 @@ tr:nth-child(even){background-color: #f2f2f2}
 
           $("#cetak").show();
         $("#cetak_lap").attr("href", "cetak_penjualan_rekap.php?dari_tanggal="+dari_tanggal+"&sampai_tanggal="+sampai_tanggal+"");
+		}
 		
 		});
 		
