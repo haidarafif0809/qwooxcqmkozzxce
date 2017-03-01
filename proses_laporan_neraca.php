@@ -366,6 +366,77 @@ $total_aktiva = $total_aktiva_lancar;
 
 else{
 
+
+
+ // SUB DARI AKTIVA LANCAR
+$total_aktiva_lancar = 0;
+
+$select_grup_akun_sub = $db->query("SELECT kode_grup_akun, nama_grup_akun FROM grup_akun WHERE kategori_akun = 'Kewajiban' AND tipe_akun = 'Akun Header' AND parent= '$datagrup_akun[kode_grup_akun]' ");
+while ($datagrup_akun_sub = mysqli_fetch_array($select_grup_akun_sub))
+{
+echo "<h4 style='padding-left:50px'><b>" .$datagrup_akun_sub['kode_grup_akun']." ".$datagrup_akun_sub['nama_grup_akun'] ."</b></h4>";
+
+ // ISI / SUB DARI AKTIVA >> 
+$kas_bank = 0;
+$select_daftar_akun_inner = $db->query("SELECT da.kode_daftar_akun, da.nama_daftar_akun, SUM(j.kredit) - SUM(j.debit)  AS total FROM daftar_akun da INNER JOIN jurnal_trans j  ON da.kode_daftar_akun = j.kode_akun_jurnal WHERE da.kategori_akun = 'Kewajiban' AND da.grup_akun= '$datagrup_akun_sub[kode_grup_akun]' AND date(j.waktu_jurnal) <= '$sampai_tanggal'  GROUP BY j.kode_akun_jurnal");
+
+
+while ($datadaftar_akun_inner = mysqli_fetch_array($select_daftar_akun_inner))
+{
+
+  $total_akhir_kewajiban = $total_akhir_kewajiban + $datadaftar_akun_inner['total'];
+
+if ($datadaftar_akun_inner['total'] < 0) {
+echo "
+ <table>
+  <tbody>
+    <tr><td width='100%'><h4 style='padding-left:75px'>" .$datadaftar_akun_inner['kode_daftar_akun']." ".$datadaftar_akun_inner['nama_daftar_akun'] ."</h4></td> <td> <h4>(". rp($datadaftar_akun_inner['total']). ") </h4>  </td></tr>
+  </tbody>
+</table>
+";
+}
+else{
+  echo "
+ <table>
+  <tbody>
+    <tr><td width='100%'><h4 style='padding-left:75px'>" .$datadaftar_akun_inner['kode_daftar_akun']." ".$datadaftar_akun_inner['nama_daftar_akun'] ."</h4></td> <td> <h4>". rp($datadaftar_akun_inner['total']). " </h4>  </td></tr>
+  </tbody>
+</table>
+";
+}
+
+$kas_bank = $kas_bank + $datadaftar_akun_inner['total'];
+
+}
+
+if ($kas_bank < 0) {
+//TOTAL KAS & BANK
+echo "
+ <table>
+  <tbody>
+    <tr><td width='100%'><h4 style='padding-left:50px'><b> TOTAL ".$datagrup_akun_sub['nama_grup_akun'] ." </b></h4></td> <td> <h4><b> (".rp($kas_bank).") </b> </h4>  </td></tr>
+  </tbody>
+</table>
+";
+}
+else{
+
+  echo "
+ <table>
+  <tbody>
+    <tr><td width='100%'><h4 style='padding-left:50px'><b> TOTAL ".$datagrup_akun_sub['nama_grup_akun'] ." </b></h4></td> <td> <h4><b> ".rp($kas_bank)." </b> </h4>  </td></tr>
+  </tbody>
+</table>
+";
+
+}
+
+$total_aktiva_lancar = $total_aktiva_lancar + $kas_bank;
+
+} // END OF SUB AKTIVA LANCAR >> KAS & BANK
+
+
+$total_aktiva = $total_aktiva_lancar;
 $total_persediaan_aktiva_tetap = 0;
 
 $select_daftar_akun_inner = $db->query("SELECT da.kode_daftar_akun, da.nama_daftar_akun, da.grup_akun, SUM(j.kredit) - SUM(j.debit)  AS total FROM daftar_akun da INNER JOIN jurnal_trans j  ON da.kode_daftar_akun = j.kode_akun_jurnal WHERE da.kategori_akun = 'Kewajiban' AND da.grup_akun= '$datagrup_akun[kode_grup_akun]' AND date(j.waktu_jurnal) <= '$sampai_tanggal'  GROUP BY j.kode_akun_jurnal");
@@ -396,7 +467,7 @@ else{
 ";
 }
 
-$total_persediaan_aktiva_tetap = $total_persediaan_aktiva_tetap + $datadaftar_akun_inner['total'];
+$total_persediaan_aktiva_tetap = $total_persediaan_aktiva_tetap + $datadaftar_akun_inner['total'] + $total_aktiva;
 
 
 }
@@ -407,7 +478,7 @@ if ($total_persediaan_aktiva_tetap < 0) {
     echo "
  <table>
   <tbody>
-    <tr><td width='100%'><h4 style='padding-left:25px'><b> TOTAL ".$datagrup_akun['nama_grup_akun'] ." </b></h4></td> <td> <h4><b> (".rp($total_persediaan_aktiva_tetap).") </b> </h4>  </td></tr>
+    <tr><td width='100%'><h4 style='padding-left:15px'><b> TOTAL ".$datagrup_akun['nama_grup_akun'] ." </b></h4></td> <td> <h4><b> (".rp($total_persediaan_aktiva_tetap).") </b> </h4>  </td></tr>
   </tbody>
 </table>
 ";
@@ -416,7 +487,7 @@ else{
     echo "
  <table>
   <tbody>
-    <tr><td width='100%'><h4 style='padding-left:25px'><b> TOTAL ".$datagrup_akun['nama_grup_akun'] ." </b></h4></td> <td> <h4><b> ".rp($total_persediaan_aktiva_tetap)." </b> </h4>  </td></tr>
+    <tr><td width='100%'><h4 style='padding-left:15px'><b> TOTAL ".$datagrup_akun['nama_grup_akun'] ." </b></h4></td> <td> <h4><b> ".rp($total_persediaan_aktiva_tetap)." </b> </h4>  </td></tr>
   </tbody>
 </table>
 ";
