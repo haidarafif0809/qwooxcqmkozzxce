@@ -590,7 +590,6 @@ else
           <label for="alamat">Dokter Penanggung Jawab:</label>
           <select class="form-control" id="dokter_pengirim" name="dokter_pengirim"  autocomplete="off">
            <option value="<?php echo $ss['nama_dokter'];?>"><?php echo $ss['nama_dokter'];?></option>
-                   <option value="Tidak Ada">Tidak Ada</option>
                   <?php 
                   $query = $db->query("SELECT nama FROM user WHERE tipe = '1' ");
                   while ( $data = mysqli_fetch_array($query)) {
@@ -618,7 +617,6 @@ else
     <label for="alamat">Dokter Pelaksana:</label>
     <select class="form-control" id="dokter_penanggung_jawab" name="dokter_penanggung_jawab"  autocomplete="off">
           <option value="<?php echo $ss['nama_dokter'];?>"><?php echo $ss['nama_dokter'];?></option>
-                  <option value="Tidak Ada">Tidak Ada</option>
     <?php 
     $query = $db->query("SELECT nama FROM user WHERE tipe = '1' ");
     while ( $data = mysqli_fetch_array($query)) {

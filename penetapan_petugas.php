@@ -50,7 +50,6 @@ tr:nth-child(even){background-color: #f2f2f2}
 			<select style='display:none' id='select-dokter-".$data['id']."' value='".$data['nama_dokter']."' class='select-dokter' data-id='".$data['id']."' autofocus=''>";
 
 			echo '<option>'. $data['nama_dokter'] .'</option>';
-			echo '<option>-</option>';
 			
 			
 			$query2 = $db->query("SELECT nama FROM user WHERE tipe = '1' ");
@@ -68,7 +67,6 @@ tr:nth-child(even){background-color: #f2f2f2}
 			echo "<td class='edit-paramedik' data-id='".$data['id']."'><span id='text-paramedik-".$data['id']."'>".$data['nama_paramedik']."</span><select style='display:none' id='select-paramedik-".$data['id']."' value='".$data['nama_paramedik']."' class='select-paramedik' data-id='".$data['id']."' autofocus=''>";
 
 			echo '<option>'. $data['nama_paramedik'] .'</option>';
-			echo '<option>-</option>';
 			
 			
 			$query2 = $db->query("SELECT nama FROM user WHERE tipe = '2'");
@@ -87,7 +85,6 @@ tr:nth-child(even){background-color: #f2f2f2}
 			echo "<td class='edit-farmasi' data-id='".$data['id']."'><span id='text-farmasi-".$data['id']."'>".$data['nama_farmasi']."</span><select style='display:none' id='select-farmasi-".$data['id']."' value='".$data['nama_farmasi']."' class='select-farmasi' data-id='".$data['id']."' autofocus=''>";
 
 			echo '<option>'. $data['nama_farmasi'] .'</option>';
-			echo '<option>-</option>';
 			
 			
 			$query2 = $db->query("SELECT nama FROM user WHERE tipe = '3'");
@@ -106,7 +103,6 @@ tr:nth-child(even){background-color: #f2f2f2}
 			echo "<td class='edit-analis' data-id='".$data['id']."'><span id='text-analis-".$data['id']."'>".$data['nama_analis']."</span><select style='display:none' id='select-analis-".$data['id']."' value='".$data['nama_analis']."' class='select-analis' data-id='".$data['id']."' autofocus=''>";
 
 			echo '<option>'. $data['nama_analis'] .'</option>';
-			echo '<option>-</option>';
 			
 			
 			$query2 = $db->query("SELECT nama FROM user WHERE tipe = '6'");
