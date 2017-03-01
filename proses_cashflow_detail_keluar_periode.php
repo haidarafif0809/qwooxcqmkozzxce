@@ -67,13 +67,13 @@ while( $row=mysqli_fetch_array($query) ) {
 
 	$nestedData=array(); 
 
-//	$select = $db->query("SELECT da.nama_daftar_akun FROM jurnal_trans js LEFT JOIN daftar_akun da ON js.kode_akun_jurnal = da.kode_daftar_akun WHERE DATE(js.waktu_jurnal) >= '$dari_tanggal' AND DATE(js.waktu_jurnal) <= '$sampai_tanggal' AND js.no_faktur = '$row[no_faktur]' AND js.debit != '0'");
-//	$out = mysqli_fetch_array($select);
+	$select = $db->query("SELECT da.nama_daftar_akun FROM jurnal_trans js LEFT JOIN daftar_akun da ON js.kode_akun_jurnal = da.kode_daftar_akun WHERE DATE(js.waktu_jurnal) >= '$dari_tanggal' AND DATE(js.waktu_jurnal) <= '$sampai_tanggal' AND js.no_faktur = '$row[no_faktur]' AND js.debit != '0'");
+	$out = mysqli_fetch_array($select);
 	
 	$nestedData[] = $row["no_faktur"];
 	$nestedData[] = $row["keterangan_jurnal"];
 	$nestedData[] = $row["nama_daftar_akun"];
-	$nestedData[] = $row["jenis_transaksi"];
+	$nestedData[] = $out["nama_daftar_akun"];
 	$nestedData[] = rp($row["keluar"]);
 	$nestedData[] = $row["user_buat"];
 	$nestedData[] = $row["user_edit"];
