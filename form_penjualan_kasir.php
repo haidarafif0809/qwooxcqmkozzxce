@@ -2155,7 +2155,7 @@ alert("Kode barang harus terisi");
  }
 
 
-else if (pembayaran == "") 
+else if ((total2 != "" && pembayaran == "" && potongan_persen != '100') || (total2 != 0 && pembayaran == "" && potongan_persen != '100')) 
  {
 
 alert("Pembayaran Harus Di Isi");
@@ -2178,7 +2178,7 @@ $("#kode_gudang").focus()
 alert("Silakan Bayar Piutang");
 
  }
-    else if (total ==  0 &&(potongan_persen != 100) || total == "" &&(potongan_persen != 100)) 
+    else if ((total2 ==  0 && total ==  0 && potongan_persen != 100 && pembayaran == 0) || (total2 ==  "" && total == "" &&potongan_persen != 100 && pembayaran == "")) 
         {
         
         alert("Anda Belum Melakukan Pemesanan");
@@ -2555,7 +2555,7 @@ $('#tabel_tbs_lab').DataTable().clear();
  }
 
 
-else if (pembayaran == "") 
+else if ((total2 != "" && pembayaran == "" && potongan_persen != '100') || (total2 != 0 && pembayaran == "" && potongan_persen != '100'))
  {
 
 alert("Pembayaran Harus Di Isi");
@@ -2578,7 +2578,7 @@ $("#kode_gudang").focus()
 alert("Silakan Bayar Piutang");
 
  }
-                else if (total ==  0 || total == "") 
+  else if ((total2 ==  0 && total ==  0 && potongan_persen != 100 && pembayaran == 0) || (total2 ==  "" && total == "" &&potongan_persen != 100 && pembayaran == "")) 
         {
         
         alert("Anda Belum Melakukan Pemesanan");
