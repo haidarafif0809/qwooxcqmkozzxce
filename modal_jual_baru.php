@@ -85,9 +85,6 @@ while( $row=mysqli_fetch_array($query) ) {
              $stok_barang = $ambil_masuk['jumlah_hpp_masuk'] - $ambil_keluar['jumlah_hpp_keluar'];
    
 
-
-            $stok_barang =  $ambil_sisa['jumlah_barang'];   ;
-
             $harga1 = $row['harga_jual'];
             if ($harga1 == '') {
                 $harga1 =0;
