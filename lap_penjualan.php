@@ -304,6 +304,7 @@ tr:nth-child(even){background-color: #f2f2f2}
       <th style="background-color: #4CAF50; color: white;"> Jam </th>
 			<th style="background-color: #4CAF50; color: white;"> Petugas </th>
 			<th style="background-color: #4CAF50; color: white;"> Total Penjualan </th>
+      <th style="background-color: #4CAF50; color: white;"> Total Disc.(Rp) </th>
       <th style="background-color: #4CAF50; color: white;"> Jenis Penjualan </th>
       <th style="background-color: #4CAF50; color: white;"> Status </th>
 
