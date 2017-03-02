@@ -32,14 +32,14 @@ $columns = array(
 );
 
 // getting total number records without any search
-$sql = "SELECT no_faktur, kode_pelanggan, no_reg, dokter, penjamin, tanggal, user, total, jenis_penjualan, status, jam, id";
+$sql = "SELECT no_faktur, kode_pelanggan, no_reg, dokter, penjamin, tanggal, user, total, jenis_penjualan, status, jam, potongan, id";
 $sql.=" FROM penjualan";
 $query = mysqli_query($conn, $sql) or die("show_data_penjualan.php: get employees");
 $totalData = mysqli_num_rows($query);
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
 
-$sql = "SELECT no_faktur, kode_pelanggan, no_reg, dokter, penjamin, tanggal, user, total, jenis_penjualan, status, jam, id";
+$sql = "SELECT no_faktur, kode_pelanggan, no_reg, dokter, penjamin, tanggal, user, total, jenis_penjualan, status, jam, potongan, id";
 $sql.=" FROM penjualan ";
 $sql.=" WHERE 1=1 ";
 
@@ -248,6 +248,7 @@ else
   $nestedData[] = $row["jam"];
 	$nestedData[] = $row["user"];
 	$nestedData[] = rp($row["total"]);
+  $nestedData[] = rp($row["potongan"]);
 	$nestedData[] = $row["jenis_penjualan"];
 	$nestedData[] = $row["status"];
   $nestedData[] = $row["id"];
