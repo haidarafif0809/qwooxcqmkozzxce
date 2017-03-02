@@ -3598,6 +3598,10 @@ $.post('cek_kode_barang_edit_tbs_penjualan.php',{kode_barang:kode_barang,no_fakt
     var penjamin = $(this).attr("data-level");
     var no_reg = $(this).attr("data-regs");
 
+                 $("#group_bed2").val('');
+                 $("#bed2").val('');
+                 $("#lama_inap").val('');
+
 
     if (lama_inap == '') {
       alert("Isi Lama Menginap!");
@@ -3614,13 +3618,10 @@ $.post('cek_kode_barang_edit_tbs_penjualan.php',{kode_barang:kode_barang,no_fakt
 
     }
     else{
-                 $("#group_bed2").val('');
-                 $("#bed2").val('');
-                 $("#lama_inap").val('');
 
                 $.post("update_kamar_edit_inap.php",{lama_inap:lama_inap,bed_before:bed_before,group_bed_before:group_bed_before,group_bed2:group_bed2,bed2:bed2,lama_inap:lama_inap,penjamin:penjamin,no_reg:no_reg,no_faktur:no_faktur},function(data){
                 
-                
+
                 $("#modal_kamar").modal('hide');
 
 
