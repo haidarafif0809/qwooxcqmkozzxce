@@ -3620,6 +3620,11 @@ $.post('cek_kode_barang_edit_tbs_penjualan.php',{kode_barang:kode_barang,no_fakt
                 
                 $("#modal_kamar").modal('hide');
 
+                 $("#group_bed2").val('');
+                 $("#bed2").val('');
+                 $("#lama_inap").val('');
+
+
                 $("#kamar").val(group_bed2);
                 $("#bed").val(bed2);
 

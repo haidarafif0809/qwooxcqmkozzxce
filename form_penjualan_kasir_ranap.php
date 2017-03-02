@@ -1266,6 +1266,10 @@ $(document).ready(function(){
                                   
                                   $("#modal_kamar").modal('hide');
 
+                                  $("#group_bed2").val('');
+                                  $("#bed2").val('');
+                                  $("#lama_inap").val('');
+
                                   $("#kamar").val(group_bed2);
                                   $("#bed").val(bed2);
 
