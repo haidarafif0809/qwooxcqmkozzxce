@@ -1262,13 +1262,15 @@ $(document).ready(function(){
     }
     else{
 
+                $("#group_bed2").val('');
+                 $("#bed2").val('');
+                 $("#lama_inap").val('');
+
+
+
                                 $.post("update_kamar_inap.php",{lama_inap:lama_inap,bed_before:bed_before,group_bed_before:group_bed_before,group_bed2:group_bed2,bed2:bed2,lama_inap:lama_inap,penjamin:penjamin,no_reg:no_reg},function(data){
                                   
                                   $("#modal_kamar").modal('hide');
-
-                                  $("#group_bed2").val('');
-                                  $("#bed2").val('');
-                                  $("#lama_inap").val('');
 
                                   $("#kamar").val(group_bed2);
                                   $("#bed").val(bed2);
