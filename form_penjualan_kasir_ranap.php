@@ -1244,7 +1244,11 @@ $(document).ready(function(){
     var lama_inap = $("#lama_inap").val();
     var penjamin = $(this).attr("data-level");
     var no_reg = $(this).attr("data-regs");
+               
 
+                $("#group_bed2").val('');
+                 $("#bed2").val('');
+                 $("#lama_inap").val('');
 
     if (lama_inap == '') {
       alert("Isi Lama Menginap!");
@@ -1261,7 +1265,6 @@ $(document).ready(function(){
 
     }
     else{
-
                                 $.post("update_kamar_inap.php",{lama_inap:lama_inap,bed_before:bed_before,group_bed_before:group_bed_before,group_bed2:group_bed2,bed2:bed2,lama_inap:lama_inap,penjamin:penjamin,no_reg:no_reg},function(data){
                                   
                                   $("#modal_kamar").modal('hide');
