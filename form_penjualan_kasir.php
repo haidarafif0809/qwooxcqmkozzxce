@@ -2595,6 +2595,9 @@ alert("Silakan Bayar Piutang");
   $("#batal_penjualan").hide(); 
   $("#piutang").hide();
   $("#transaksi_baru").show();
+  $("#cetak_tunai").show();
+  $("#cetak_tunai_kategori").show();
+  $("#cetak_tunai_besar").show();
 
  $.post("cek_subtotal_penjualan.php",{total:total,no_reg:no_reg,potongan:potongan  /*,tax:tax*/,biaya_adm:biaya_adm},function(data) {
 
@@ -2618,9 +2621,6 @@ else
      $("#pembayaran_penjualan").val('');
      $("#sisa_pembayaran_penjualan").val('');
      $("#kredit").val('');
-     $("#cetak_tunai").show();
-     $("#cetak_tunai_kategori").show();
-     $("#cetak_tunai_besar").show('');
      $("#span_tbs").hide('');
      $('#span_lab').hide();
      $("#dosis_obat").val('');
@@ -2751,7 +2751,8 @@ else
   $("#batal_penjualan").hide(); 
   $("#piutang").hide();
   $("#transaksi_baru").show();
-
+  $("#cetak_piutang").show();
+  
  $.post("cek_subtotal_penjualan.php",{total:total,no_reg:no_reg,potongan:potongan,/*tax:tax,*/biaya_adm:biaya_adm},function(data) {
 
   if (data == 1) {
@@ -2778,7 +2779,7 @@ else
             $("#potongan_penjualan").val('');
             $("#potongan_persen").val('');
             $("#tanggal_jt").val('');
-            $("#cetak_piutang").show();
+            
             $("#span_tbs").hide('');
             $('#span_lab').hide();
             /*
