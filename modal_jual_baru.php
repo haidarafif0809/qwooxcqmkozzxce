@@ -76,12 +76,14 @@ $data = array();
 while( $row=mysqli_fetch_array($query) ) {
 
     // mencari jumlah Barang
-    $select = $db->query("SELECT SUM(sisa) AS jumlah_barang FROM hpp_masuk WHERE kode_barang = '$row[kode_barang]'");
-    $ambil_sisa = mysqli_fetch_array($select);
+             $select = $db->query("SELECT SUM(jumlah_kuantitas) AS jumlah_hpp_masuk FROM hpp_masuk WHERE kode_barang = '$row[kode_barang]'");
+             $ambil_masuk = mysqli_fetch_array($select);
+             
+             $select_2 = $db->query("SELECT SUM(jumlah_kuantitas) AS jumlah_hpp_keluar FROM hpp_keluar WHERE kode_barang = '$row[kode_barang]'");
+             $ambil_keluar = mysqli_fetch_array($select_2);
+             
+             $stok_barang = $ambil_masuk['jumlah_hpp_masuk'] - $ambil_keluar['jumlah_hpp_keluar'];
    
-
-
-            $stok_barang =  $ambil_sisa['jumlah_barang'];   ;
 
             $harga1 = $row['harga_jual'];
             if ($harga1 == '') {
