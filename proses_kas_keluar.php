@@ -11,7 +11,7 @@ $bulan_sekarang = date('m');
 $tanggal_sekarang = date('Y-m-d');
 $jam_sekarang = date('H:i:sa');
 $tahun_terakhir = substr($tahun_sekarang, 2);
-$waktu = date('Y-m-d H:i:sa');
+
 
 //mengecek jumlah karakter dari bulan sekarang
 $cek_jumlah_bulan = strlen($bulan_sekarang);
@@ -71,7 +71,7 @@ $no_faktur = $nomor."/KK/".$data_bulan_terakhir."/".$tahun_terakhir;
         $tanggal = stringdoang($_POST['tanggal']);
         $jumlah = angkadoang($_POST['jumlah']);
         $user = $_SESSION['user_name'];
-
+        $waktu = $tanggal." ".$jam_sekarang;
 // jalankan query
         $stmt->execute();
 
