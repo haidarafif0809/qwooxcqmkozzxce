@@ -2175,7 +2175,7 @@ $("#kode_gudang").focus()
  else if ( sisa < 0) 
  {
 
-alert("Silakan Bayar Piutang");
+alert("Silakan Isi Kolom Pembayaran  atau lakukan Bayar Piutang");
 
  }
     else if ((total2 ==  0 && total ==  0 && potongan_persen != 100 && pembayaran == 0) || (total2 ==  "" && total == "" &&potongan_persen != 100 && pembayaran == "")) 
@@ -2718,19 +2718,28 @@ else
 
 
        
-       if (tanggal_jt == "")
+       if (tanggal_jt == "" && (total2 != "" || total2 != 0) && potongan_persen != '100')
        {
 
         alert ("Tanggal Jatuh Tempo Harus Di Isi");
         $("#tanggal_jt").focus();
          
        }
-         else if ( total == "") 
+       else if (potongan_persen == '100' && (total2 != "" || total2 != 0) && (total == "" || total == 0)) {
+        alert("Silakan klik tombol *Bayar* atau klik tombol *Bayar/Cetak*");
+       }
+         else if (total == "" && (total2 == "" || total2 == 0)) 
          {
          
          alert("Anda Belum Melakukan Pesanan");
          
          }
+      else if (tanggal_jt != "" && (total2 != "" || total2 != 0) && potongan_persen != '100' && pembayaran >= total)
+       {
+
+        alert ("Silakan klik tombol *Bayar* atau klik tombol *Bayar/Cetak*.");
+         
+       }
 
  else
 
