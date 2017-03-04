@@ -2175,7 +2175,7 @@ $("#kode_gudang").focus()
  else if ( sisa < 0) 
  {
 
-alert("Silakan Bayar Piutang");
+alert("Silakan Isi Kolom Pembayaran  atau lakukan Bayar Piutang");
 
  }
     else if ((total2 ==  0 && total ==  0 && potongan_persen != 100 && pembayaran == 0) || (total2 ==  "" && total == "" &&potongan_persen != 100 && pembayaran == "")) 
@@ -2596,6 +2596,7 @@ alert("Silakan Bayar Piutang");
   $("#piutang").hide();
   $("#transaksi_baru").show();
 
+
  $.post("cek_subtotal_penjualan.php",{total:total,no_reg:no_reg,potongan:potongan  /*,tax:tax*/,biaya_adm:biaya_adm},function(data) {
 
   if (data == 1) {
@@ -2615,12 +2616,12 @@ else
      $("#cetak_tunai_besar").attr('href', 'cetak_penjualan_tunai_besar.php?no_faktur='+no_faktur+'');
      $("#cetak_tunai_kategori").attr('href','cetak_penjualan_tunai_kategori.php?no_faktur='+no_faktur+'');
      $("#alert_berhasil").show();
+     $("#cetak_tunai").show();
+     $("#cetak_tunai_kategori").show();
+     $("#cetak_tunai_besar").show();
      $("#pembayaran_penjualan").val('');
      $("#sisa_pembayaran_penjualan").val('');
      $("#kredit").val('');
-     $("#cetak_tunai").show();
-     $("#cetak_tunai_kategori").show();
-     $("#cetak_tunai_besar").show('');
      $("#span_tbs").hide('');
      $('#span_lab').hide();
      $("#dosis_obat").val('');
@@ -2718,19 +2719,28 @@ else
 
 
        
-       if (tanggal_jt == "")
+       if (tanggal_jt == "" && (total2 != "" || total2 != 0) && potongan_persen != '100')
        {
 
         alert ("Tanggal Jatuh Tempo Harus Di Isi");
         $("#tanggal_jt").focus();
          
        }
-         else if ( total == "") 
+       else if (potongan_persen == '100' && (total2 != "" || total2 != 0) && (total == "" || total == 0)) {
+        alert("Silakan klik tombol *Bayar* atau klik tombol *Bayar/Cetak*");
+       }
+         else if (total == "" && (total2 == "" || total2 == 0)) 
          {
          
          alert("Anda Belum Melakukan Pesanan");
          
          }
+      else if (tanggal_jt != "" && (total2 != "" || total2 != 0) && potongan_persen != '100' && pembayaran >= total)
+       {
+
+        alert ("Silakan klik tombol *Bayar* atau klik tombol *Bayar/Cetak*.");
+         
+       }
 
  else
 
@@ -2742,7 +2752,8 @@ else
   $("#batal_penjualan").hide(); 
   $("#piutang").hide();
   $("#transaksi_baru").show();
-
+  $("#cetak_piutang").show();
+  
  $.post("cek_subtotal_penjualan.php",{total:total,no_reg:no_reg,potongan:potongan,/*tax:tax,*/biaya_adm:biaya_adm},function(data) {
 
   if (data == 1) {
@@ -2769,7 +2780,7 @@ else
             $("#potongan_penjualan").val('');
             $("#potongan_persen").val('');
             $("#tanggal_jt").val('');
-            $("#cetak_piutang").show();
+            
             $("#span_tbs").hide('');
             $('#span_lab').hide();
             /*

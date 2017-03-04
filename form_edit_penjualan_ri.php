@@ -31,8 +31,8 @@ $nama_gudang = $da['nama_gudang'];
  //TOTAL TBS OPERASI
 
 
-    $lab = $db->query("SELECT SUM(subtotal) AS total_lab FROM tbs_penjualan WHERE lab = 'Laboratorium' AND no_reg = '$no_reg' AND no_faktur = '$no_faktur' ");
-    $laboo = mysqli_fetch_array($lab);
+$lab = $db->query("SELECT SUM(subtotal) AS total_lab FROM tbs_penjualan WHERE lab = 'Laboratorium' AND no_reg = '$no_reg' AND no_faktur = '$no_faktur' ");
+$laboo = mysqli_fetch_array($lab);
 
 
 $ambil_data = $db->query("SELECT * FROM registrasi WHERE no_reg = '$no_reg'");

@@ -9,7 +9,7 @@ include 'db.php';
 
 $no_faktur = $_GET['no_faktur'];
 
-    $query0 = $db->query("SELECT * FROM penjualan WHERE no_faktur = '$no_faktur' ");
+    $query0 = $db->query("SELECT p.id, p.potongan,p.kode_pelanggan,p.nama,p.no_faktur,p.potongan,p.biaya_admin,p.total,p.tunai,p.sisa,p.tanggal,p.no_reg,dp.id as iddp, sum(dp.subtotal) as total_subtotal FROM penjualan p inner join detail_penjualan dp on p.no_faktur = dp.no_faktur WHERE p.no_faktur = '$no_faktur' ");
     $data0 = mysqli_fetch_array($query0);
 
     $query1 = $db->query("SELECT * FROM perusahaan ");
@@ -116,10 +116,11 @@ mysqli_close($db);
     ===================<br>
  <table>
   <tbody>
+      <tr><td  width="50%">Total Item</td> <td> :</td> <td> <?php echo $total_item; ?> </td></tr>
+      <tr><td width="50%">Subtotal</td> <td> :</td> <td><?php echo rp($data0['total_subtotal']);?> </tr>
       <tr><td width="50%">Diskon</td> <td> :</td> <td><?php echo rp($data0['potongan']);?> </tr>
       <tr><td  width="50%">Pajak</td> <td> :</td> <td> <?php echo rp($pajakee);?> </td></tr>
       <tr><td  width="50%">Biaya Admin</td> <td> :</td> <td> <?php echo rp($data0['biaya_admin']);?> </td></tr>
-      <tr><td  width="50%">Total Item</td> <td> :</td> <td> <?php echo $total_item; ?> </td></tr>
       <tr><td width="50%">Total Penjualan</td> <td> :</td> <td><?php echo rp($data0['total']); ?> </tr>
       <tr><td  width="50%">Tunai</td> <td> :</td> <td> <?php echo rp($data0['tunai']); ?> </td></tr>
       <tr><td  width="50%">Kembalian</td> <td> :</td> <td> <?php echo rp($data0['sisa']); ?>  </td></tr>

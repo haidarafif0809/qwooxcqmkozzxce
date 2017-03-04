@@ -9,7 +9,6 @@ include 'sanitasi.php';
 
  
 // menampilkan seluruh data yang ada pada tabel penjualan yang terdapt pada DB
-$perintah = $db->query("SELECT * FROM penjualan");
 
 $pilih_akses_tombol = $db->query("SELECT * FROM otoritas_penjualan_apotek WHERE id_otoritas = '$_SESSION[otoritas_id]' ");
 $otoritas_tombol = mysqli_fetch_array($pilih_akses_tombol);
@@ -262,19 +261,19 @@ $user = $_SESSION['nama'];
 
 <!--tampilan modal-->
 <div id="myModal" class="modal fade" role="dialog">
-  <div class="modal-dialog modal-lg">
+  <div class="modal-dialog">
 
     <!-- isi modal-->
     <div class="modal-content">
 
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Data Barang</h4>
+        <h4 class="modal-title"><center><b>Data Barang</b></center></h4>
       </div>
       <div class="modal-body">
 
-<div class="table-resposive">
-<span class="modal_baru">
+<div class="table-responsive">
+
   <table id="tabel_cari" class="table table-bordered table-sm">
         <thead> <!-- untuk memberikan nama pada kolom tabel -->
         
@@ -289,16 +288,14 @@ $user = $_SESSION['nama'];
             <th> Harga Jual Level 7</th>
             <th> Jumlah Barang </th>
             <th> Satuan </th>
-            <th> Kategori </th>
-            <th> Suplier </th>
         
         </thead> <!-- tag penutup tabel -->
   </table>
-</span>
-  </div>
+
+</div>
 </div> <!-- tag penutup modal-body-->
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+       <center> <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button></center>
       </div>
     </div>
 
@@ -473,97 +470,31 @@ $user = $_SESSION['nama'];
 
 
                 <!--untuk mendefinisikan sebuah bagian dalam dokumen-->  
-                <span id='tes'></span>            
+                <!--untuk mendefinisikan sebuah bagian dalam dokumen-->  
+                <span id="span_tbs">            
                 
-                <div class="table-responsive"> <!--tag untuk membuat garis pada tabel-->  
-                <span id="table-baru">  
-                <table id="tableuser" class="table table-sm">
-                <thead>
-                <th> Kode  </th>
-                <th> Nama </th>
-                <th> Nama Pelaksana</th>
-                <th> Jumlah </th>
-                <th> Satuan </th>
-                <th> Harga </th>
-                <th> Subtotal </th>
-                <th> Potongan </th>
-                <th> Pajak </th>
-                <th> Hapus </th>
+                  <div class="table-responsive">
+                    <table id="tabel_tbs_penjualan_apotek" class="table table-bordered table-sm">
+                          <thead> <!-- untuk memberikan nama pada kolom tabel -->
+                              
+                              <th> Kode  </th>
+                              <th> Nama </th>
+                              <th> Nama Pelaksana</th>
+                              <th> Jumlah </th>
+                              <th> Satuan </th>
+                              <th> Harga </th>
+                              <th> Subtotal </th>
+                              <th> Potongan </th>
+                              <th> Pajak </th>
+                              <th> Hapus </th>
+                          
+                          </thead> <!-- tag penutup tabel -->
+                    </table>
+                  </div>
+
+                </span>          
                 
-                </thead>
-                
-                <tbody id="tbody">
-                <?php
-                
-                //menampilkan semua data yang ada pada tabel tbs penjualan dalam DB
-                $perintah = $db->query("SELECT tp.no_reg,tp.id,tp.kode_barang,tp.satuan,tp.nama_barang,tp.jumlah_barang,tp.harga,tp.subtotal,tp.potongan,tp.tax,tp.jam,tp.tipe_barang,s.nama FROM tbs_penjualan tp INNER JOIN satuan s ON tp.satuan = s.id WHERE tp.session_id = '$session_id' AND (tp.no_reg IS NULL OR tp.no_reg = '') AND tp.lab IS NULL ");
-                
-                //menyimpan data sementara yang ada pada $perintah
-                
-                while ($data1 = mysqli_fetch_array($perintah))
-                {
-                //menampilkan data
-                echo "<tr class='tr-kode-". $data1['kode_barang'] ." tr-id-". $data1['id'] ."' data-kode-barang='".$data1['kode_barang']."'>
-                <td style='font-size:15px'>". $data1['kode_barang'] ."</td>
-                <td style='font-size:15px;'>". $data1['nama_barang'] ."</td>";
-
-                 $kd = $db->query("SELECT f.nama_petugas, u.nama FROM tbs_fee_produk f INNER JOIN user u ON f.nama_petugas = u.id WHERE f.kode_produk = '$data1[kode_barang]' AND f.no_reg is NULL ");
-                
-                $kdD = $db->query("SELECT f.nama_petugas, u.nama FROM tbs_fee_produk f INNER JOIN user u ON f.nama_petugas = u.id WHERE f.kode_produk = '$data1[kode_barang]' AND f.no_reg is NULL ");
-                    
-                $nu = mysqli_fetch_array($kd);
-
-                  if ($nu['nama'] != '')
-                  {
-
-                  echo "<td style='font-size:15px;'>";
-                   while($nur = mysqli_fetch_array($kdD))
-                  {
-                    echo $nur['nama']." ,";
-                  }
-                   echo "</td>";
-
-                  }
-                  else
-                  {
-                    echo "<td></td>";
-                  }
-
-              if ($otoritas_tombol['edit_produk_apotek'] > 0) {
-
-                echo"<td style='font-size:15px' align='right' class='edit-jumlah' data-id='".$data1['id']."'><span id='text-jumlah-".$data1['id']."'>". $data1['jumlah_barang'] ."</span> <input type='hidden' id='input-jumlah-".$data1['id']."' value='".$data1['jumlah_barang']."' class='input_jumlah' data-id='".$data1['id']."' autofocus='' data-kode='".$data1['kode_barang']."' data-tipe='".$data1['tipe_barang']."' data-harga='".$data1['harga']."' data-satuan='".$data1['satuan']."' data-tipe='".$data1['tipe_barang']."' > </td>";
-              }
-              else{
-                echo"<td style='font-size:15px' align='right' class='tidak_punya_otoritas' data-id='".$data1['id']."'><span id='text-jumlah-".$data1['id']."'>". $data1['jumlah_barang'] ."</span> <input type='hidden' id='input-jumlah-".$data1['id']."' value='".$data1['jumlah_barang']."' class='input_jumlah' data-id='".$data1['id']."' autofocus='' data-kode='".$data1['kode_barang']."' data-tipe='".$data1['tipe_barang']."' data-harga='".$data1['harga']."' data-satuan='".$data1['satuan']."' data-tipe='".$data1['tipe_barang']."' > </td>";
-              }
-
-
-                echo "<td style='font-size:15px'>". $data1['nama'] ."</td>
-                <td style='font-size:15px' align='right'>". rp($data1['harga']) ."</td>
-                <td style='font-size:15px' align='right'><span id='text-subtotal-".$data1['id']."'>". rp($data1['subtotal']) ."</span></td>
-                <td style='font-size:15px' align='right'><span id='text-potongan-".$data1['id']."'>". rp($data1['potongan']) ."</span></td>
-                <td style='font-size:15px' align='right'><span id='text-tax-".$data1['id']."'>". rp($data1['tax']) ."</span></td>";
-
-              if ($otoritas_tombol['hapus_produk_apotek'] > 0) {
-
-                echo "<td style='font-size:15px'> <button class='btn btn-danger btn-sm btn-hapus-tbs' id='btn-hapus-id-".$data1['id']."' data-id='". $data1['id'] ."' data-kode-barang='". $data1['kode_barang'] ."' data-barang='". $data1['nama_barang'] ."' data-subtotal='". $data1['subtotal'] ."'>Hapus</button> </td>";
-              }
-              else{
-                echo "<td style='font-size:15px; color:red'> Tidak Ada Otoritas </td>";
-              }
                
-
-                echo "</tr>";
-
-
-                }
-
-                ?>
-                </tbody>
-                
-                </table>
-                </span>
-                </div>
                 <h6 style="text-align: left ; color: red"><i> * Klik 2x pada kolom jumlah barang jika ingin mengedit.</i></h6>
                 <h6 style="text-align: left ;"><i><b> * Short Key (F2) untuk mencari Kode Produk atau Nama Produk.</b></i></h6>
 
@@ -805,7 +736,7 @@ $user = $_SESSION['nama'];
 
          <?php if ($otoritas_tombol['tombol_batal_apotek'] > 0) :?> 
 
-          <button type="submit" id="batal_penjualan" class="btn btn-danger" style="font-size:15px">  Batal (Ctrl + B)</button>
+         <button type="submit" id="batal_penjualan" class="btn btn-danger" style="font-size:15px">  Batal (Ctrl + B)</button>
 
         <?php endif ?>
 
@@ -841,6 +772,41 @@ $(document).ready(function(){
 });
 
 </script>
+
+
+<script>
+  $(document).ready(function(){
+      var dataTable = $('#tabel_tbs_penjualan_apotek').DataTable( {
+            "processing": true,
+            "serverSide": true,
+            "info":     true,
+            "language": { "emptyTable":     "Tidak Ada Data Di Tabel Ini" },
+            "ajax":{
+              url :"data_tbs_penjualan_apotek.php", // json datasource
+               "data": function ( d ) {
+                  d.session_id = $("#session_id").val();
+                  // d.custom = $('#myInput').val();
+                  // etc
+              },
+                  type: "post",  // method  , by default get
+              error: function(){  // error handling
+                $(".tbody").html("");
+                $("#tabel_tbs_penjualan_apotek").append('<tbody class="tbody"><tr><th colspan="3"></th></tr></tbody>');
+                $("#tableuser_processing").css("display","none");
+                
+              }
+            }   
+
+      });
+
+      $("#span_tbs").show();
+
+      
+  });
+</script>
+
+
+
 
 <script type="text/javascript">
   $(document).on('click', '.tidak_punya_otoritas', function (e) {
@@ -1524,7 +1490,32 @@ else{
   }
 }
     
+              $('#tabel_tbs_penjualan_apotek').DataTable().destroy();
 
+                          var dataTable = $('#tabel_tbs_penjualan_apotek').DataTable( {
+                            "processing": true,
+                            "serverSide": true,
+                            "info":     true,
+                            "language": { "emptyTable":     "Tidak Ada Data Di Tabel Ini" },
+                            "ajax":{
+                              url :"data_tbs_penjualan_apotek.php", // json datasource
+                               "data": function ( d ) {
+                                  d.session_id = $("#session_id").val();
+                                  // d.custom = $('#myInput').val();
+                                  // etc
+                              },
+                               
+                                type: "post",  // method  , by default get
+                              error: function(){  // error handling
+                                $(".employee-grid-error").html("");
+                                $("#tabel_tbs_penjualan_apotek").append('<tbody class="employee-grid-error"><tr><th colspan="3">No data found in the server</th></tr></tbody>');
+                                $("#employee-grid_processing").css("display","none");
+                                }
+                            }
+                          });
+
+              
+              $("#span_tbs").show();
       
  });
 
@@ -1765,6 +1756,40 @@ else{
 
  }
 
+    
+    $('#tabel_tbs_penjualan_apotek').DataTable().clear();
+    $('#tabel_tbs_penjualan_apotek').DataTable().destroy();
+
+                          var dataTable = $('#tabel_tbs_penjualan_apotek').DataTable( {
+                            "processing": true,
+                            "serverSide": true,
+                            "info":     true,
+                            "language": { "emptyTable":     "Tidak Ada Data Di Tabel Ini" },
+                            "ajax":{
+                              url :"data_tbs_penjualan_apotek.php", // json datasource
+                               "data": function ( d ) {
+                                  d.session_id = $("#session_id").val();
+                                  // d.custom = $('#myInput').val();
+                                  // etc
+                              },
+                               
+                                type: "post",  // method  , by default get
+                              error: function(){  // error handling
+                                $(".employee-grid-error").html("");
+                                $("#tabel_tbs_penjualan_apotek").append('<tbody class="employee-grid-error"><tr><th colspan="3">No data found in the server</th></tr></tbody>');
+                                $("#employee-grid_processing").css("display","none");
+                                }
+                            },
+                               "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+
+                                $(nRow).attr('class','tr-id-'+aData[11]+'');         
+
+                            }
+                          });
+                  $("#span_tbs").hide();
+    
+
+
  $("form").submit(function(){
     return false;
  
@@ -1865,6 +1890,38 @@ info = info.replace(/\s/g, '');
        
        
        });
+
+    $('#tabel_tbs_penjualan_apotek').DataTable().clear();
+    $('#tabel_tbs_penjualan_apotek').DataTable().destroy();
+
+                          var dataTable = $('#tabel_tbs_penjualan_apotek').DataTable( {
+                            "processing": true,
+                            "serverSide": true,
+                            "info":     true,
+                            "language": { "emptyTable":     "Tidak Ada Data Di Tabel Ini" },
+                            "ajax":{
+                              url :"data_tbs_penjualan_apotek.php", // json datasource
+                               "data": function ( d ) {
+                                  d.session_id = $("#session_id").val();
+                                  // d.custom = $('#myInput').val();
+                                  // etc
+                              },
+                               
+                                type: "post",  // method  , by default get
+                              error: function(){  // error handling
+                                $(".employee-grid-error").html("");
+                                $("#tabel_tbs_penjualan_apotek").append('<tbody class="employee-grid-error"><tr><th colspan="3">No data found in the server</th></tr></tbody>');
+                                $("#employee-grid_processing").css("display","none");
+                                }
+                            },
+                               "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+
+                                $(nRow).attr('class','tr-id-'+aData[11]+'');         
+
+                            }
+                          });
+                  $("#span_tbs").hide();
+    
 
   }
   else{
@@ -2384,7 +2441,11 @@ $(document).on('click','.btn-hapus-tbs',function(e){
     $("#pembayaran_penjualan").val('');
     $("#kredit").val('');
     $("#sisa_pembayaran_penjualan").val('');
-    $.post("hapustbs_penjualan_apotek.php",{id:id,kode_barang:kode_barang,no_reg:no_reg},function(data){
+
+    var pesan_alert = confirm("Apakah Anda Yakin Ingin Memngapus '"+nama_barang+"' ?");
+    if (pesan_alert == true) {
+
+          $.post("hapustbs_penjualan_apotek.php",{id:id,kode_barang:kode_barang,no_reg:no_reg},function(data){
 
 
 
@@ -2407,6 +2468,43 @@ $(document).on('click','.btn-hapus-tbs',function(e){
 
 
     });
+
+                      $('#tabel_tbs_penjualan_apotek').DataTable().destroy();
+
+                          var dataTable = $('#tabel_tbs_penjualan_apotek').DataTable( {
+                            "processing": true,
+                            "serverSide": true,
+                            "info":     true,
+                            "language": { "emptyTable":     "Tidak Ada Data Di Tabel Ini" },
+                            "ajax":{
+                              url :"data_tbs_penjualan_apotek.php", // json datasource
+                               "data": function ( d ) {
+                                  d.session_id = $("#session_id").val();
+                                  // d.custom = $('#myInput').val();
+                                  // etc
+                              },
+                               
+                                type: "post",  // method  , by default get
+                              error: function(){  // error handling
+                                $(".employee-grid-error").html("");
+                                $("#tabel_tbs_penjualan_apotek").append('<tbody class="employee-grid-error"><tr><th colspan="3">No data found in the server</th></tr></tbody>');
+                                $("#employee-grid_processing").css("display","none");
+                                }
+                            },
+                               "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+
+                                $(nRow).attr('class','tr-id-'+aData[11]+'');         
+
+                            }
+                          });
+
+                          $("#span_tbs").show();
+
+    }
+    else{
+
+    }
+
 
 });
                   $('form').submit(function(){
@@ -2763,6 +2861,9 @@ $.post('cek_tbs_penjualan_apotek.php',{kode_barang:kode_barang, session_id:sessi
             $("#tanggal_jt").val('');
             $("#total2").val('');
             $("#total1").val('');
+            $("#no_resep_dokter").val('');
+            $("#resep_dokter").val('');
+            $("#kd_pelanggan").val('Umum');
             $("#biaya_admin_select").val('0');
             $("#biaya_admin_select").trigger("chosen:updated");
             $("#biaya_admin_persen").val('');
@@ -2778,8 +2879,12 @@ $.post('cek_tbs_penjualan_apotek.php',{kode_barang:kode_barang, session_id:sessi
             $("#cetak_tunai_besar").hide();
             $("#cetak_piutang").hide();
             $("#table-baru").hide();
-
+            
             $("#kode_barang").trigger('chosen:open');
+            $('#tabel_tbs_penjualan_apotek').DataTable().clear();
+            $('#span_tbs').hide();
+
+            
 
 
             function getPathFromUrl(url) {
@@ -3246,9 +3351,52 @@ function myFunction(event) {
 <script type="text/javascript">
 $(document).ready(function(){
   $("#batal_penjualan").click(function(){
-        window.location.href="batal_penjualan_apotek.php";
+    var session_id = $("#session_id").val();
 
-  })
+    var pesan_alert = confirm("Apakah Anda Yakin Ingin Membatalkan Transaksi Pasien Ini?");
+    if (pesan_alert == true) {
+        
+        $.get("batal_penjualan_apotek.php",{session_id:session_id},function(data){
+              $('#tabel_tbs_penjualan_apotek').DataTable().destroy();
+
+                          var dataTable = $('#tabel_tbs_penjualan_apotek').DataTable( {
+                            "processing": true,
+                            "serverSide": true,
+                            "info":     true,
+                            "language": { "emptyTable":     "Tidak Ada Data Di Tabel Ini" },
+                            "ajax":{
+                              url :"data_tbs_penjualan_apotek.php", // json datasource
+                               "data": function ( d ) {
+                                  d.session_id = $("#session_id").val();
+                                  // d.custom = $('#myInput').val();
+                                  // etc
+                              },
+                               
+                                type: "post",  // method  , by default get
+                              error: function(){  // error handling
+                                $(".employee-grid-error").html("");
+                                $("#tabel_tbs_penjualan_apotek").append('<tbody class="employee-grid-error"><tr><th colspan="3">No data found in the server</th></tr></tbody>');
+                                $("#employee-grid_processing").css("display","none");
+                                }
+                            },
+                               "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+
+                                $(nRow).attr('class','tr-id-'+aData[11]+'');         
+
+                            }
+                          });
+
+              $("#span_tbs").show();
+              
+
+        });
+    } 
+
+    else {
+    
+    }
+
+  });
   });
 </script>
 
@@ -3314,9 +3462,7 @@ $(document).ready(function(){
     shortcut.add("ctrl+b", function() {
         // Do something
 
-
-        window.location.href="batal_penjualan_apotek.php";
-
+        $("#batal_penjualan").click();
 
     }); 
 
