@@ -896,13 +896,11 @@ Laboratorium  </button>
 
            <a href='cetak_penjualan_tunai_kategori.php' id="cetak_tunai_kategori" style="display: none;" class="btn btn-warning" target="blank"> Cetak Tunai/Kategori  </a>
 
-           <?php if ($otoritas_tombol['tombol_batal'] > 0):?>              
+           <?php if ($otoritas_tombol['tombol_batal'] > 0):?>
+              <button type="submit" id="batal_penjualan" class="btn btn-danger" style="font-size:15px">  Batal (Ctrl + B)</button>
+           <?php endif;?>
 
-          
-
-         <?php endif;?>
-
-         <button type="submit" id="batal_penjualan" class="btn btn-danger" style="font-size:15px">  Batal (Ctrl + B)</button>
+         
 
           <a href='cetak_penjualan_tunai_besar.php' id="cetak_tunai_besar" style="display: none;" class="btn btn-warning" target="blank"> Cetak Tunai  Besar </a>
           
