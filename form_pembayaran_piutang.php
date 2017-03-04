@@ -315,7 +315,7 @@ $no_faktur_penjualan = $data50['no_faktur_penjualan'];
         <div class="col-sm-6">
           <div class="form-group">
             <label> <b> Total Bayar </b> </label><br>
-           <b> <input type="text" name="total_bayar" style="font-size:30px" id="totalbayar" placeholder="Total Bayar" class="form-control" readonly="" required=""></b>
+           <b> <input type="text" name="total_bayar" style="font-size:25px" id="totalbayar" placeholder="Total Bayar" class="form-control" readonly="" required=""></b>
           </div>
         </div>
       </div><!--div class="row 2"-->
@@ -424,18 +424,18 @@ $no_faktur_penjualan = $data50['no_faktur_penjualan'];
         };
         var subtotal = parseInt(total,10) + parseInt(jumlah_bayar,10);
       
-      $("#totalbayar").val(jumlah_bayar);
-      $("#total").val(total_kredit);
-      $("#potongan1").val(potongan);
-      $("#faktur").val(no_faktur_penjualan); 
-      $("#kredit").val('');
-      $("#jumlah_bayar").val('');
-      $("#potongan_penjualan").val('');
       
       if (hasil > 0 )
       {
 
       alert("Jumlah Bayar Anda Melebihi Sisa");
+      $("#totalbayar").val('');
+      $("#total").val('');
+      $("#potongan1").val('');
+      $("#faktur").val(''); 
+      $("#kredit").val('');
+      $("#jumlah_bayar").val('');
+      $("#potongan_penjualan").val('');
       
       }
       
