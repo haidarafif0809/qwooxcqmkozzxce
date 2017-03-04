@@ -1250,6 +1250,11 @@ $(document).ready(function(){
 
                 });
         }
+        else
+        {
+          $("#total1").val('0')
+          $("#total2").val('0')
+        }
 
 
       });
