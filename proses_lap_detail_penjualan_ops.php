@@ -44,7 +44,7 @@ if( !empty($requestData['search']['value']) ) {   // if there is a search parame
  // when there is a search parameter then we have to modify total number filtered rows as per search result. 
 
 
-$sql.= " ORDER BY p.no_faktur DESC LIMIT ".$requestData['start']." ,".$requestData['length']." ";
+$sql.= " ORDER BY CONCAT(tanggal,' ',jam) DESC LIMIT ".$requestData['start']." ,".$requestData['length']." ";
 /* $requestData['order'][0]['column'] contains colmun index, $requestData['order'][0]['dir'] contains order such as asc/desc  */	
 
 $query=mysqli_query($conn, $sql) or die("eror.php2: get employees");

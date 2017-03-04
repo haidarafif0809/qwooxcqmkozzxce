@@ -209,30 +209,85 @@ echo '<button type="button" id="tambah" class="btn btn-info" data-toggle="modal"
   <form role="form">
    <div class="form-group">
 
-   					
+   				<div class="form-group">
 				<label> Nomor Faktur </label><br>
 				<input type="text" name="no_faktur" id="faktur_edit" placeholder="Nomor Faktur" class="form-control" readonly="" >
+				</div>
 						
-					
+					<div class="form-group">
 					<label> Tanggal </label><br>
 					<input type="text" name="tanggal_edit" id="tanggal_edit" placeholder="Tanggal" value="<?php echo date("d-m-Y"); ?>" autocomplete="off" class="form-control tgl" >
+					</div>
 
+						<div class="form-group">
+						<label> Keterangan </label><br>
+						<input type="text" name="keterangan" autocomplete="off" placeholder="Keterangan" id="edit_keterangan" class="form-control">
+						</div>
 						
+						<div class="form-group">
+						<label> Dari Kas </label><br>
+						<select type="text" name="dari_akun" id="edit_dari_akun" class="form-control" disabled="">
+						<option value="">Silahkan Pilih</option>					
+						
+						
+						<?php 						
+						
+						$query = $db->query("SELECT * FROM daftar_akun WHERE tipe_akun = 'Kas & Bank'");
+						while($data = mysqli_fetch_array($query))
+						{
+
+						if ($data['dari_akun'] == $data['kode_daftar_akun']) {
+							echo "<option selected value='".$data['kode_daftar_akun'] ."'>".$data['nama_daftar_akun'] ."</option>";
+						}
+						else{
+							echo "<option value='".$data['kode_daftar_akun'] ."'>".$data['nama_daftar_akun'] ."</option>";
+						}
+						
+						}
+						
+						
+						?>
+						</select>
+						</div>
+						
+						<!-- diganti ke hidden -->
+						<div class="form-group">
+						<label> Total Kas </label><br>
+						<input type="text" name="sisa_kas" id="sisa_kas" class="form-control" readonly="">
+						</div>
+						
+						<div class="form-group">
+						<label> Ke Kas </label><br>
+						<select type="text" name="ke_akun" id="edit_ke_akun" class="form-control" >
+						<option value="">Silahkan Pilih</option>
+						
+						<?php 						
+						
+						$query = $db->query("SELECT * FROM daftar_akun WHERE tipe_akun = 'Kas & Bank'");
+						while($data = mysqli_fetch_array($query))
+						{
+						if ($data['ke_akun'] == $data['kode_daftar_akun']) {
+							echo "<option selected value='".$data['kode_daftar_akun'] ."'>".$data['nama_daftar_akun'] ."</option>";
+						}
+						else{
+							echo "<option value='".$data['kode_daftar_akun'] ."'>".$data['nama_daftar_akun'] ."</option>";
+						}
+						}
+						
+						
+						?>
+						</select>
+						</div>
+
+
+
+					<div class="form-group">
 					<label> Jumlah Baru </label><br>
 					<input type="text" name="jumlah_baru" id="edit_jumlah" onkeydown="return numbersonly(this, event);" autocomplete="off" onkeyup="javascript:tandaPemisahTitik(this);" class="form-control">
-
-
-					<input type="hidden" name="jumlah" id="edit_jumlah_lama" value="<?php echo $data['jumlah']; ?>" class="form-control" readonly="">	
-					
-					<input type="hidden" name="ke_akun" id="edit_ke_akun" value="<?php echo $data['ke_akun']; ?>" class="form-control" readonly="">
-
-					<input type="hidden" name="dari_akun" id="edit_dari_akun" value="<?php echo $data['dari_akun']; ?>" class="form-control" readonly="">
-
-					<input type="hidden" name="sisa_kas" id="sisa_kas" class="form-control" readonly="">
-					
-					<label> Keterangan </label><br>
-					<textarea type="text" name="keterangan" id="edit_keterangan" class="form-control"> </textarea>
+					</div>
+					<input type="hidden" name="jumlah" id="edit_jumlah_lama" value="<?php echo $data['jumlah']; ?>" class="form-control" readonly="">
 					<input type="hidden" class="form-control" id="id_edit">
+
 					
    </div>
    
@@ -348,6 +403,40 @@ if ($kas_mutasi['kas_mutasi_edit'] > 0) {
 			});
 			});
 			</script>
+
+						<script>
+			
+			//untuk mengambil data jumlah dari tabel kas bertdasarkan id dari akun1
+			$(document).ready(function(){
+
+			var dari_akun = $("#edit_dari_akun").val();
+			
+			$.post('cek_jumlah_kas.php', {dari_akun: dari_akun}, function(data) {
+
+				data = data.replace(/\s+/g, '');
+			
+			$("#sisa_kas").val(data);
+			});
+
+			$("#edit_dari_akun").change(function(){
+			var dari_akun = $("#edit_dari_akun").val();
+			
+			//metode POST untuk mengirim dari file cek_jumlah_kas.php ke dalam variabel "dari akun"
+			$.post('cek_jumlah_kas.php', {dari_akun: dari_akun}, function(data) {
+			/*optional stuff to do after success */			
+			data = data.replace(/\s+/g, '');
+			
+			if (data == "") {
+			$("#sisa_kas").val('0');				
+			}
+			else{
+			$("#sisa_kas").val(tandaPemisahTitik(data));
+		}
+			});
+			
+			});
+			});
+			</script>
 		<!--	
 			<script>
 			
@@ -412,8 +501,40 @@ if ($kas_mutasi['kas_mutasi_edit'] > 0) {
 
 			<!-- Dari Form Kas Mutasi -->
 
+			<script>
+			$(document).ready(function(){
+			$("#edit_ke_akun").change(function(){
+			var dari_akun = $("#edit_dari_akun").val();
+			var ke_akun = $("#edit_ke_akun").val();
+			
+			if (ke_akun == dari_akun)
+			{
+			
+			alert("Nama Akun Tidak Boleh Sama");
+			$("#edit_ke_akun").val('');
+			
+			}
+			
+			});
 
 
+			$("#edit_dari_akun").change(function(){
+			var dari_akun = $("#edit_dari_akun").val();
+			var ke_akun = $("#edit_ke_akun").val();
+			
+			if (ke_akun == dari_akun)
+			{
+			
+			alert("Nama Akun Tidak Boleh Sama");
+			$("#edit_dari_akun").val('');
+			$("#jumlah_kas1").val('');
+			
+			}
+			
+			});
+
+			});
+			</script>
 
 <script type="text/javascript">
 $(document).ready(function(){
@@ -569,6 +690,7 @@ $(document).ready(function(){
 		$("#nama_edit").val(nama);
 		$("#tanggal_edit").val(tanggal);
 		$("#edit_jumlah_lama").val(jumlah);
+		$("#edit_jumlah").val(tandaPemisahTitik(jumlah));
 		$("#edit_keterangan").val(keterangan);
 		$("#edit_ke_akun").val(ke_akun);
 		$("#edit_dari_akun").val(dari_akun);
@@ -578,7 +700,7 @@ $(document).ready(function(){
 				var dari_akun = $("#edit_dari_akun").val();			
 					$.post('cek_jumlah_kas.php', {dari_akun: dari_akun}, function(data) {
 					data = data.replace(/\s+/g, '');			
-					$("#sisa_kas").val(data);	
+					$("#sisa_kas").val(tandaPemisahTitik(data));	
 				});
 		
 		});
@@ -593,7 +715,7 @@ $(document).ready(function(){
 		var keterangan = $("#edit_keterangan").val();
 		var id = $("#id_edit").val();
 		var no_faktur = $("#faktur_edit").val();
-		var sisa_kas = $("#sisa_kas").val();
+		var sisa_kas = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#sisa_kas").val()))));
 		var jumlah_t = parseInt(jumlah_baru,10);
 		    sisa_kas = parseInt(sisa_kas,10) + parseInt(jumlah,10);
 

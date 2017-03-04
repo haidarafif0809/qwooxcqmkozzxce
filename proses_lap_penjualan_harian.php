@@ -41,13 +41,13 @@ $sql.=" WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal'";
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
 
 
-	$sql.=" AND tanggal LIKE '".$requestData['search']['value']."%' ";  
+	$sql.=" AND (tanggal LIKE '".$requestData['search']['value']."%' )";  
 
 }
  // when there is a search parameter then we have to modify total number filtered rows as per search result. 
 
 
-$sql.= " GROUP BY tanggal ORDER BY tanggal DESC LIMIT ".$requestData['start']." ,".$requestData['length']." ";
+$sql.= " GROUP BY tanggal ORDER BY id DESC LIMIT ".$requestData['start']." ,".$requestData['length']." ";
 /* $requestData['order'][0]['column'] contains colmun index, $requestData['order'][0]['dir'] contains order such as asc/desc  */	
 
 $query=mysqli_query($conn, $sql) or die("eror.php2: get employees");

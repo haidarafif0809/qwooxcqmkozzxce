@@ -70,17 +70,73 @@ tr:nth-child(even){background-color: #f2f2f2}
 					</table>
 </span>
 </div> <!--/ responsive-->
+<span id="cetak" style="display: none;">
+	<a href='cetak_lap_pembelian_harian.php' id="cetak_lap" target="blank" class='btn btn-success'><i class='fa fa-print'> </i> Cetak Pembelian </a>
+</span>
 </div> <!--/ container-->
 
-		<script>
 		
-		$(document).ready(function(){
-		$('#tableuser').DataTable();
-		});
-		</script>
+<script type="text/javascript">
+		$("#submit").click(function(){
+		
+		var dari_tanggal = $("#dari_tanggal").val();
+		var sampai_tanggal = $("#sampai_tanggal").val();
+		
+		  if (dari_tanggal == '') {
+		  	alert("Silakan Isi dari tanggal terlebih dahulu.");
+		  	$("#dari_tanggal").focus();
+		  }
+		  else if (sampai_tanggal == '') {
+		  	alert("Silakan isikan sampai tanggal terlebih dahulu.");
+		  	$("#sampai_tanggal").focus();
+		  }
+		 else{
+		 	$('#cetak').show();
+		 	 $('#tableuser').DataTable().destroy();
 
+		  var dataTable = $('#tableuser').DataTable( {
+                "processing": true,
+                "serverSide": true,
+                "info":     true,
+                "language": {
+              "emptyTable":   "My Custom Message On Empty Table"
+          },
+                "ajax":{
+                  url :"datatable_lap_pembelian_harian.php", // json datasource
+                   "data": function ( d ) {
+                      d.dari_tanggal = $("#dari_tanggal").val();
+                      d.sampai_tanggal = $("#sampai_tanggal").val();
+                      // d.custom = $('#myInput').val();
+                      // etc
+                  },
+                      type: "post",  // method  , by default get
+                  error: function(){  // error handling
+                    $(".tbody").html("");
+                    $("#tableuser").append('<tbody class="tbody"><tr><th colspan="3"></th></tr></tbody>');
+                    $("#tableuser_processing").css("display","none");
+                    
+                  }
+                }
+          
+              });
+
+          $("#cetak").show();
+        $("#cetak_lap").attr("href", "cetak_lap_pembelian_harian.php?dari_tanggal="+dari_tanggal+"&sampai_tanggal="+sampai_tanggal+"");
+		 }
 		
-		<script type="text/javascript">
+		});
+		
+		
+	      
+		$("form").submit(function(){
+		
+		return false;
+		
+		});
+		
+		</script>
+		
+		<!--script type="text/javascript">
 		$("#submit").click(function(){
 		
 		var dari_tanggal = $("#dari_tanggal").val();
@@ -101,7 +157,7 @@ tr:nth-child(even){background-color: #f2f2f2}
 		
 		});
 		
-		</script>
+		</script-->
 
 
 

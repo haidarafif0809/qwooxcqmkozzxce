@@ -17,11 +17,10 @@ $waktu = date('Y-m-d H:i:s');
 $hapus_jurnal = $db->query("DELETE FROM jurnal_trans WHERE no_faktur = '$no_faktur'");
 
 
+$query = $db->prepare("UPDATE kas_mutasi SET dari_akun= ?, ke_akun = ?, keterangan = ?, jumlah = ?, tanggal = ?, jam = ? , waktu_edit = ?, user_edit = ? WHERE id = ?");
 
-$query = $db->prepare("UPDATE kas_mutasi SET keterangan = ?, jumlah = ?, tanggal = ?, jam = ? , waktu_edit = ?, user_edit = ? WHERE id = ?");
-
-$query->bind_param("sissssi",
-	$keterangan, $jumlah_baru, $tanggal, $jam_sekarang, $waktu , $user, $id);
+$query->bind_param("sssissssi",
+	$dari_akun, $ke_akun, $keterangan, $jumlah_baru, $tanggal, $jam_sekarang, $waktu , $user, $id);
 
 $id = stringdoang($_POST['id']);
 $keterangan = stringdoang($_POST['keterangan']);

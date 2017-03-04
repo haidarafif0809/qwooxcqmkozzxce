@@ -335,13 +335,13 @@ include 'sanitasi.php';
 <input style="height:15px" type="hidden" class="form-control" id="data_tanggal" name="data_tanggal" readonly=""> 
 
 <span id="show_cetak_rekap" style="display: none;">
-<a href='' id="cetak_rekap" class="btn btn-primary" target="blank"> <i class="fa fa-print"> </i></a>
-<a href='' id="download_rekap" class="btn btn-success" target="blank"> <i class="fa fa-download"> </i></a>
+<a href='' id="cetak_rekap" class="btn btn-primary" target="blank"> <i class="fa fa-print">  </i> Cetak</a>
+<a href='' id="download_rekap" class="btn btn-success" target="blank"> <i class="fa fa-download">  </i> Download</a>
 </span>
 
 <span id="show_cetak_detail" style="display: none;">
-<a href='' id="cetak_detail" class="btn btn-primary" target="blank"> <i class="fa fa-print"> </i></a>
-<a href='' id="download_detail" class="btn btn-success" target="blank"> <i class="fa fa-download"> </i></a>
+<a href='' id="cetak_detail" class="btn btn-primary" target="blank"> <i class="fa fa-print"> </i> Cetak</a>
+<a href='' id="download_detail" class="btn btn-success" target="blank"> <i class="fa fa-download"> </i> Download</a>
 </span>
 
 </div><!--close container-->

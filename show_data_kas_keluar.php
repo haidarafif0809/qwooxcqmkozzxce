@@ -21,13 +21,13 @@ $columns = array(
 
 // getting total number records without any search
 $sql = "SELECT km.user_edit,km.id, km.no_faktur,km.waktu_edit, km.keterangan, km.dari_akun, km.jumlah, km.tanggal, km.jam, km.user, da.nama_daftar_akun";
-$sql.=" FROM kas_keluar km INNER JOIN daftar_akun da ON km.dari_akun = da.kode_daftar_akun";
+$sql.=" FROM kas_keluar km LEFT JOIN daftar_akun da ON km.dari_akun = da.kode_daftar_akun";
 $query=mysqli_query($conn, $sql) or die("show_data_kkas_keluar.php: get employees");
 $totalData = mysqli_num_rows($query);
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
 $sql = "SELECT km.user_edit,km.id, km.no_faktur, km.waktu_edit, km.keterangan, km.dari_akun, km.jumlah, km.tanggal, km.jam, km.user, da.nama_daftar_akun";
-$sql.=" FROM kas_keluar km INNER JOIN daftar_akun da ON km.dari_akun = da.kode_daftar_akun WHERE 1=1";
+$sql.=" FROM kas_keluar km LEFT JOIN daftar_akun da ON km.dari_akun = da.kode_daftar_akun WHERE 1=1";
 
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
 	$sql.=" AND ( no_faktur LIKE '".$requestData['search']['value']."%' ";    

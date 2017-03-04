@@ -38,7 +38,6 @@ $perintah_detail = $db->query("SELECT SUM(subtotal) AS total_detail FROM detail_
 
     $dp = $ambil_tanggal['tunai'];
     $nilai_kredit = $ambil_tanggal['nilai_kredit'];
-    
     $tax = $ambil_tanggal['tax']; 
     $potongan_p = $ambil_tanggal['potongan']; 
     $dokter = $ambil_tanggal['dokter']; 
@@ -2262,20 +2261,20 @@ alert("No RM Harus Di Isi");
 $("#no_rm").focus()
 
  }
-else if (pembayaran == "") 
+else if ((pembayaran == "" || pembayaran == 0) && (total2 != 0 || total2 != '') && potongan_persen != '100') 
  {
 
 alert("Pembayaran Harus Di Isi");
 $("#pembayaran_penjualan").focus()
 
  }
- else if ( sisa < 0) 
+ else if (sisa < 0 && total2 != 0) 
  {
 
 alert("Silakan Bayar Piutang");
 
  }
-                else if (total ==  0 || total == "") 
+       else if (total2 ==  0 || total2 ==  "") && potongan_persen != 100 && (pembayaran == 0 || pembayaran == "") && (total == "" || total == 0)
         {
         
         alert("Anda Belum Melakukan Pemesanan");
@@ -2414,20 +2413,20 @@ alert("No RM Harus Di Isi");
 $("#no_rm").focus()
 
  }
-else if (pembayaran == "") 
+else if ((pembayaran == "" || pembayaran == 0) && (total2 != 0 || total2 != '') && potongan_persen != '100')  
  {
 
 alert("Pembayaran Harus Di Isi");
 $("#pembayaran_penjualan").focus()
 
  }
- else if ( sisa < 0) 
+ else if (sisa < 0 && (total2 != 0 || total2 != "")) 
  {
 
 alert("Silakan Bayar Piutang");
 
  }
-                else if (total ==  0 || total == "") 
+        else if ((total2 ==  0 || total2 ==  "") && potongan_persen != 100 && (pembayaran == 0 || pembayaran == "") && (total == "" || total == 0)) 
         {
         
         alert("Anda Belum Melakukan Pemesanan");
@@ -2856,19 +2855,28 @@ $(document).ready(function(){
 
 
        
-       if (tanggal_jt == "")
+       if (tanggal_jt == "" && (total2 != "" || total2 != 0) && potongan_persen != '100')
        {
 
         alert ("Tanggal Jatuh Tempo Harus Di Isi");
         $("#tanggal_jt").focus();
          
        }
-         else if ( total == "") 
+       else if (potongan_persen == '100' && (total2 != "" || total2 != 0) && (total == "" || total == 0)) {
+        alert("Silakan klik tombol *Bayar* atau klik tombol *Bayar/Cetak*");
+       }
+         else if ((total2 ==  0 || total2 ==  "") && potongan_persen != 100 && (pembayaran == 0 || pembayaran == "") && (total == "" || total == 0)) 
          {
          
-         alert("Anda Belum Melakukan Pesanan");
+         alert("Anda Belum Melakukan Pemesanan");
          
          }
+      else if (tanggal_jt != "" && (total2 != "" || total2 != 0) && potongan_persen != '100' && pembayaran >= total)
+       {
+
+        alert ("Silakan klik tombol *Bayar* atau klik tombol *Bayar/Cetak*.");
+         
+       }
 
  else
 
