@@ -55,10 +55,10 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 	$nestedData[] = $row["user"];
 	$nestedData[] = $row["keterangan"];
 
-  $nestedData[] = "<button class='btn btn-info detail' no_faktur='". $row['no_faktur'] ."' ><span class='glyphicon glyphicon-th-list'></span> Detail </button>";
+  $nestedData[] = "<button class='btn btn-info detail' no_faktur='". $row['no_faktur'] ."' ><i class='fa fa-list'></i>  </button>";
 
   if ($stok_opname['stok_opname_edit'] > 0) {
-      $nestedData[] = "<a href='proses_edit_stok_opname.php?no_faktur=". $row['no_faktur']."&tanggal=". $row['tanggal']."' class='btn btn-success'> <span class='glyphicon glyphicon-edit'></span> Edit </a>";
+      $nestedData[] = "<a href='proses_edit_stok_opname.php?no_faktur=". $row['no_faktur']."&tanggal=". $row['tanggal']."' class='btn btn-success'> <i class='fa fa-edit'></i>  </a>";
   }
 
   if ($stok_opname['stok_opname_hapus'] > 0) {
@@ -68,10 +68,10 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 
         
         if ($row_alert > 0) {
-        $nestedData[] = "<button class='btn btn-danger btn-alert' data-id='". $row['id'] ."' data-faktur='". $row['no_faktur'] ."'> <span class='glyphicon glyphicon-trash'> </span> Hapus </button>";
+        $nestedData[] = "<button class='btn btn-danger btn-alert' data-id='". $row['id'] ."' data-faktur='". $row['no_faktur'] ."'> <i class='fa fa-trash'></i> </button>";
         } 
         else {
-          $nestedData[] = "<button class='btn btn-danger btn-hapus' data-id='". $row['id'] ."'  data-faktur='". $row['no_faktur'] ."'> <span class='glyphicon glyphicon-trash'> </span> Hapus </button>";
+          $nestedData[] = "<button class='btn btn-danger btn-hapus' data-id='". $row['id'] ."'  data-faktur='". $row['no_faktur'] ."'><i class='fa fa-trash'></i></button>";
         }
   }
 
