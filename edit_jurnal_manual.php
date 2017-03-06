@@ -377,10 +377,9 @@ else{
       $("#kode_akun").trigger('chosen:updated');
      $("#kode_akun").trigger('chosen:open');
      $("#nama_akun").val('');
-     
+
        $("#debit").val('');
        $("#kredit").val('');
-       $("#keterangan").val('');
 
 
 
