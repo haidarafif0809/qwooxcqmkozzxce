@@ -5221,6 +5221,35 @@ $(document).ready(function(){
 
 </script>
 
+<!-- START EDIT WAKTU TBS OPERASI -->
+<script type="text/javascript">                         
+$(document).on('dblclick','.edit-waktu-or',function(){
+
+        var id = $(this).attr("data-id");
+
+          $("#text-waktu-"+id+"").hide();
+          $("#input-waktu-"+id+"").attr("type", "text"); 
+        
+});
+
+      $(document).on('blur','.input_waktu_or',function(){
+
+        var id = $(this).attr("data-id");
+        var waktu = $(this).attr("data-waktu");
+        var input_waktu = $(this).val();
+
+  $.post("update_waktu_operasi_tbs_ranap.php",{id:id,input_waktu:input_waktu},function(data){
+
+        $("#text-waktu-"+id+"").show();
+        $("#text-waktu-"+id+"").text(input_waktu);
+        $("#input-waktu-"+id+"").attr("type", "hidden");   
+
+        });
+      });
+
+
+</script>
+<!-- END EDIT WAKTU TBS OPERASI -->
 
  <script type="text/javascript" language="javascript" >
 

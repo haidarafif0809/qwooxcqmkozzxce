@@ -123,6 +123,7 @@ padding-right: 5%;
   $(function() {
     $( "#tanggal" ).datepicker({dateFormat: "yy-mm-dd"});
     $( "#tanggal_jt" ).datepicker({dateFormat: "yy-mm-dd"});
+    $( ".input_waktu_or" ).datepicker({dateFormat: "yy-mm-dd"});
   });
   </script>
 
@@ -934,7 +935,10 @@ Laboratorium  </button>
         <td>". $nama_operasinya."</td>
         <td>Rp. ". rp($next['harga_jual'])."</td>
         <td>". $next['nama']."</td>
-        <td>". $next['waktu']."</td>
+
+       
+
+        <td> <a style='font-size:15px' align='right' class='edit-waktu-or' data-id='".$next['id']."' > <span id='text-waktu-".$next['id']."'> ".$next['waktu']." </span> <input type='hidden' id='input-waktu-".$next['id']."' value='".$next['waktu']."' class='input_waktu_or' data-id='".$next['id']."' autofocus='' data-id='".$next['id']."' > </a> </td>
 
     <td><a href='proses_registrasi_operasi.php?id=".$next["id"]."&no_reg=".$next["no_reg"]."&sub_operasi=".$next["sub_operasi"]."&operasi=".$next["operasi"]."' class='btn btn-sm btn-success' target='blank'>Input Detail </a></td>
 
@@ -4393,6 +4397,36 @@ $(document).ready(function(){
   });
  
  </script>
+
+<!-- START EDIT WAKTU TBS OPERASI -->
+<script type="text/javascript">                         
+$(document).on('dblclick','.edit-waktu-or',function(){
+
+        var id = $(this).attr("data-id");
+
+          $("#text-waktu-"+id+"").hide();
+          $("#input-waktu-"+id+"").attr("type", "text"); 
+        
+});
+
+      $(document).on('blur','.input_waktu_or',function(){
+
+        var id = $(this).attr("data-id");
+        var waktu = $(this).attr("data-waktu");
+        var input_waktu = $(this).val();
+
+  $.post("update_waktu_operasi_tbs_ranap.php",{id:id,input_waktu:input_waktu},function(data){
+
+        $("#text-waktu-"+id+"").show();
+        $("#text-waktu-"+id+"").text(input_waktu);
+        $("#input-waktu-"+id+"").attr("type", "hidden");   
+
+        });
+      });
+
+
+</script>
+<!-- END EDIT WAKTU TBS OPERASI -->
 
 <!-- memasukan file footer.php -->
 <?php include 'footer.php'; ?>
