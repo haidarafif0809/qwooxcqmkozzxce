@@ -169,7 +169,7 @@ include 'db.php';
 
            echo "
 
-           <td class='table1' style='font-size:15px' >". $data5['tanggal'] ."</td>
+           <td class='table1' style='font-size:15px' align='center'>". $data5['tanggal'] ."</td>
             <td class='table1' style='font-size:15px' >". $data5['nama_barang'] ."</td>";
 
 $kd = $db->query("SELECT f.nama_petugas, u.nama FROM laporan_fee_produk f INNER JOIN user u ON f.nama_petugas = u.id  WHERE f.kode_produk = '$data5[kode_barang]' AND f.no_faktur = '$no_faktur' ");
@@ -255,7 +255,7 @@ $kd = $db->query("SELECT f.nama_petugas, u.nama FROM laporan_fee_produk f INNER 
 
            echo "
 
-           <td class='table1' style='font-size:15px' >". $data5['tanggal'] ." </td>
+           <td class='table1' style='font-size:15px' align='center'>". $data5['tanggal'] ." </td>
             <td class='table1' style='font-size:15px' >". $data5['nama_barang'] ."</td>";
 
 $kd = $db->query("SELECT f.nama_petugas, u.nama FROM laporan_fee_produk f INNER JOIN user u ON f.nama_petugas = u.id  WHERE f.kode_produk = '$data5[kode_barang]' AND f.no_faktur = '$no_faktur' ");
@@ -342,7 +342,7 @@ $kd = $db->query("SELECT f.nama_petugas, u.nama FROM laporan_fee_produk f INNER 
 
            echo "
 
-           <td class='table1' style='font-size:15px' >". $data5['tanggal'] ." </td>
+           <td class='table1' style='font-size:15px' align='center'>". $data5['tanggal'] ." </td>
             <td class='table1' style='font-size:15px' >". $data5['nama_barang'] ."</td>";
 
             $kd = $db->query("SELECT f.nama_petugas, u.nama FROM laporan_fee_produk f INNER JOIN user u ON f.nama_petugas = u.id  WHERE f.kode_produk = '$data5[kode_barang]' AND f.no_faktur = '$no_faktur' ");
@@ -420,7 +420,7 @@ $kd = $db->query("SELECT f.nama_petugas, u.nama FROM laporan_fee_produk f INNER 
 
            echo "
 
-           <td class='table1' style='font-size:15px' >". $data5['tanggal'] ." </td>
+           <td class='table1' style='font-size:15px' align='center' >". $data5['tanggal'] ." </td>
             <td class='table1' style='font-size:15px' >". $data5['nama_barang'] ."</td>";
 
             $kd = $db->query("SELECT f.nama_petugas, u.nama FROM laporan_fee_produk f INNER JOIN user u ON f.nama_petugas = u.id  WHERE f.kode_produk = '$data5[kode_barang]' AND f.no_faktur = '$no_faktur' ");
@@ -491,7 +491,7 @@ $kd = $db->query("SELECT f.nama_petugas, u.nama FROM laporan_fee_produk f INNER 
         <tbody>
 <?php        
 // OPERASI TABLE
- $take_data_or = $db->query("SELECT * FROM hasil_operasi WHERE no_reg = '$data_inner[no_reg]'");
+ $take_data_or = $db->query("SELECT DATE(waktu) AS tanggal,id,operasi,no_reg,harga_jual FROM hasil_operasi WHERE no_reg = '$data_inner[no_reg]'");
         $no_urut = 0;
     while($out_operasi = mysqli_fetch_array($take_data_or))
       {
@@ -506,7 +506,8 @@ $kd = $db->query("SELECT f.nama_petugas, u.nama FROM laporan_fee_produk f INNER 
 
         echo"<tr>
                     
-            <td class='table1' style='font-size:15px' align='center'>".$out_operasi['waktu']."</td>";
+
+  <td class='table1' style='font-size:15px' align='center'>".$out_operasi['tanggal']."</td>";
 
             if($out_operasi['operasi'] == $outin['id_operasi'])
             {

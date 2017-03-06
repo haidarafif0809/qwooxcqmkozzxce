@@ -1423,7 +1423,32 @@ else if (harga == 0) {
                  $("#kode_barang").trigger("chosen:updated");  
                  $("#kode_barang").trigger('chosen:open');               
                  $("#ppn").attr("disabled", true);
-                 $("#tbody").prepend(data);
+                        $('#tabel_tbs_penjualan_apotek').DataTable().destroy();
+
+                          var dataTable = $('#tabel_tbs_penjualan_apotek').DataTable( {
+                            "processing": true,
+                            "serverSide": true,
+                            "info":     true,
+                            "language": { "emptyTable":     "Tidak Ada Data Di Tabel Ini" },
+                            "ajax":{
+                              url :"data_tbs_penjualan_apotek.php", // json datasource
+                               "data": function ( d ) {
+                                  d.session_id = $("#session_id").val();
+                                  // d.custom = $('#myInput').val();
+                                  // etc
+                              },
+                               
+                                type: "post",  // method  , by default get
+                              error: function(){  // error handling
+                                $(".employee-grid-error").html("");
+                                $("#tabel_tbs_penjualan_apotek").append('<tbody class="employee-grid-error"><tr><th colspan="3">No data found in the server</th></tr></tbody>');
+                                $("#employee-grid_processing").css("display","none");
+                                }
+                            }
+                          });
+
+              
+              $("#span_tbs").show();
                  $("#nama_barang").val('');
                  $("#jumlah_barang").val('');
                  $("#potongan1").val('');
@@ -1475,22 +1500,7 @@ else{
      
                  
                  $("#ppn").attr("disabled", true);
-                 $("#tbody").prepend(data);
-                 $("#nama_barang").val('');
-                 $("#jumlah_barang").val('');
-                 $("#potongan1").val('');
-                 $("#tax1").val('');
-                 $("#tipe_barang").val('');$("#kode_barang").val('');
-                 $("#kode_barang").trigger("chosen:updated");  
-                 $("#kode_barang").trigger('chosen:open'); 
-                 $("#harga_penjamin").val('');
-
-     
-     });
-  }
-}
-    
-              $('#tabel_tbs_penjualan_apotek').DataTable().destroy();
+                          $('#tabel_tbs_penjualan_apotek').DataTable().destroy();
 
                           var dataTable = $('#tabel_tbs_penjualan_apotek').DataTable( {
                             "processing": true,
@@ -1516,6 +1526,21 @@ else{
 
               
               $("#span_tbs").show();
+                 $("#nama_barang").val('');
+                 $("#jumlah_barang").val('');
+                 $("#potongan1").val('');
+                 $("#tax1").val('');
+                 $("#tipe_barang").val('');$("#kode_barang").val('');
+                 $("#kode_barang").trigger("chosen:updated");  
+                 $("#kode_barang").trigger('chosen:open'); 
+                 $("#harga_penjamin").val('');
+
+     
+     });
+  }
+}
+    
+
       
  });
 
@@ -1589,6 +1614,11 @@ else{
        /* var tax = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#tax_rp").val()))));*/
         var cara_bayar = $("#carabayar1").val();
         var pembayaran = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#pembayaran_penjualan").val()))));
+
+        if (pembayaran == '') {
+          pembayaran = 0;
+            }
+
         var total_hpp = $("#total_hpp").val();
         var harga = $("#harga_produk").val();
         var kode_gudang = $("#kode_gudang").val();
@@ -1622,20 +1652,24 @@ else{
 alert(" Kode Gudang Harus Diisi ");
 
  }
-  else if (pembayaran == "") 
- {
 
-alert("Pembayaran Harus Di Isi");
-
- }
-
-
- else if ( sisa < 0) 
+ else if (sisa < 0) 
  {
 
 alert("Silakan Bayar Piutang");
+$("#tanggal_jt").focus();
 
  }
+
+   else if (pembayaran == "") 
+ {
+
+  alert("Pembayaran Harus Di Isi");
+  $("#pembayaran_penjualan").focus()
+
+
+ }
+
     else if (total ==  0 &&(potongan_persen != 100) || total == "" &&(potongan_persen != 100)) 
         {
         
@@ -1656,44 +1690,77 @@ else if(total == 0 && potongan_persen == '100'){
 
 
 
- $.post("cek_subtotal_apotek.php",{total:total,biaya_admin:biaya_admin,potongan:potongan/*,tax:tax*/},function(data) {
+           $.post("cek_subtotal_apotek.php",{total:total,biaya_admin:biaya_admin,potongan:potongan/*,tax:tax*/},function(data) {
 
-  if (data == 1) {
+        if (data == 1) {
 
 
- $.post("proses_bayar_jual_apotek.php",{biaya_admin:biaya_admin,total2:total2,sisa_pembayaran:sisa_pembayaran,kredit:kredit,kode_pelanggan:kode_pelanggan,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,cara_bayar:cara_bayar,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,total_hpp:total_hpp,harga:harga,kode_gudang:kode_gudang,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,apoteker:apoteker,no_resep_dokter:no_resep_dokter,resep_dokter:resep_dokter,penjamin:penjamin,analis:analis},function(info) {
+                     $.post("proses_bayar_jual_apotek.php",{biaya_admin:biaya_admin,total2:total2,sisa_pembayaran:sisa_pembayaran,kredit:kredit,kode_pelanggan:kode_pelanggan,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,cara_bayar:cara_bayar,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,total_hpp:total_hpp,harga:harga,kode_gudang:kode_gudang,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,apoteker:apoteker,no_resep_dokter:no_resep_dokter,resep_dokter:resep_dokter,penjamin:penjamin,analis:analis},function(info) {
 
-if (info == 1)
-{
+                                            if (info == 1)
+                                            {
 
-   alert("Maaf Subtotal Penjualan Tidak Sesuai, Silakan Tunggu Sebentar! (2) ");       
-        window.location.href="form_penjualan_kasir_apotek.php";
+                                               alert("Maaf Subtotal Penjualan Tidak Sesuai, Silakan Tunggu Sebentar! (2) ");       
+                                                    window.location.href="form_penjualan_kasir_apotek.php";
 
-}
+                                            }
 
-else{
-  info = info.replace(/\s/g, '');
-     var no_faktur = info;
-     var kode_pelanggan = $('#kd_pelanggan').val();
-     var kode_pelanggan = kode_pelanggan.substr(0, kode_pelanggan.indexOf('('));
-     $("#cetak_tunai").attr('href', 'cetak_penjualan_tunai.php?no_faktur='+no_faktur+'');
-     $("#cetak_tunai_besar").attr('href', 'cetak_besar_apotek.php?no_faktur='+no_faktur+'');
-     
-         $('#tbody').html('');
+                                            else{
+                                              info = info.replace(/\s/g, '');
+                                                 var no_faktur = info;
+                                                 var kode_pelanggan = $('#kd_pelanggan').val();
+                                                 var kode_pelanggan = kode_pelanggan.substr(0, kode_pelanggan.indexOf('('));
+                                                 $("#cetak_tunai").attr('href', 'cetak_penjualan_tunai.php?no_faktur='+no_faktur+'');
+                                                 $("#cetak_tunai_besar").attr('href', 'cetak_besar_apotek.php?no_faktur='+no_faktur+'');
+                                                 
+                                                     $('#tbody').html('');
 
-    }
+                                                }
        
-   });
-}
-  else{
+                                          });
+                }
+              else{
 
 
 
-    alert("Maaf Subtotal Penjualan Tidak Sesuai, Silakan Tunggu Sebentar! (1) ");       
-        window.location.href="form_penjualan_kasir_apotek.php";
-  }
+                    alert("Maaf Subtotal Penjualan Tidak Sesuai, Silakan Tunggu Sebentar! (1) ");       
+                        window.location.href="form_penjualan_kasir_apotek.php";
+                  }
 
- });
+                });
+
+
+               $('#tabel_tbs_penjualan_apotek').DataTable().clear();
+    $('#tabel_tbs_penjualan_apotek').DataTable().destroy();
+
+                          var dataTable = $('#tabel_tbs_penjualan_apotek').DataTable( {
+                            "processing": true,
+                            "serverSide": true,
+                            "info":     true,
+                            "language": { "emptyTable":     "Tidak Ada Data Di Tabel Ini" },
+                            "ajax":{
+                              url :"data_tbs_penjualan_apotek.php", // json datasource
+                               "data": function ( d ) {
+                                  d.session_id = $("#session_id").val();
+                                  // d.custom = $('#myInput').val();
+                                  // etc
+                              },
+                               
+                                type: "post",  // method  , by default get
+                              error: function(){  // error handling
+                                $(".employee-grid-error").html("");
+                                $("#tabel_tbs_penjualan_apotek").append('<tbody class="employee-grid-error"><tr><th colspan="3">No data found in the server</th></tr></tbody>');
+                                $("#employee-grid_processing").css("display","none");
+                                }
+                            },
+                               "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+
+                                $(nRow).attr('class','tr-id-'+aData[11]+'');         
+
+                            }
+                          });
+                  $("#span_tbs").hide();
+    
 
 
 
@@ -1715,48 +1782,45 @@ else{
   if (data == 1) {
 
 
- $.post("proses_bayar_jual_apotek.php",{biaya_admin:biaya_admin,total2:total2,sisa_pembayaran:sisa_pembayaran,kredit:kredit,kode_pelanggan:kode_pelanggan,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,cara_bayar:cara_bayar,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,total_hpp:total_hpp,harga:harga,kode_gudang:kode_gudang,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,apoteker:apoteker,no_resep_dokter:no_resep_dokter,resep_dokter:resep_dokter,penjamin:penjamin,analis:analis},function(info) {
+                           $.post("proses_bayar_jual_apotek.php",{biaya_admin:biaya_admin,total2:total2,sisa_pembayaran:sisa_pembayaran,kredit:kredit,kode_pelanggan:kode_pelanggan,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,cara_bayar:cara_bayar,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,total_hpp:total_hpp,harga:harga,kode_gudang:kode_gudang,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,apoteker:apoteker,no_resep_dokter:no_resep_dokter,resep_dokter:resep_dokter,penjamin:penjamin,analis:analis},function(info) {
 
-if (info == 1)
-{
+                                        if (info == 1)
+                                        {
 
-   alert("Maaf Subtotal Penjualan Tidak Sesuai, Silakan Tunggu Sebentar! (2) ");       
-        window.location.href="form_penjualan_kasir_apotek.php";
+                                           alert("Maaf Subtotal Penjualan Tidak Sesuai, Silakan Tunggu Sebentar! (2) ");       
+                                                window.location.href="form_penjualan_kasir_apotek.php";
 
-}
+                                        }
 
-else{
-  info = info.replace(/\s/g, '');
-     
-     var no_faktur = info;
-     var kode_pelanggan = $('#kd_pelanggan').val();
-     var kode_pelanggan = kode_pelanggan.substr(0, kode_pelanggan.indexOf('('));
-     $("#cetak_tunai").attr('href', 'cetak_penjualan_tunai.php?no_faktur='+no_faktur+'');
-     $("#cetak_tunai_besar").attr('href', 'cetak_besar_apotek.php?no_faktur='+no_faktur+'');
-     $("#alert_berhasil").show();
-     $("#cetak_tunai").show();
-     $("#cetak_tunai_besar").show('');
-    $('#tbody').html('');
+                                        else{
+                                          info = info.replace(/\s/g, '');
+                                             
+                                             var no_faktur = info;
+                                             var kode_pelanggan = $('#kd_pelanggan').val();
+                                             var kode_pelanggan = kode_pelanggan.substr(0, kode_pelanggan.indexOf('('));
+                                             $("#cetak_tunai").attr('href', 'cetak_penjualan_tunai.php?no_faktur='+no_faktur+'');
+                                             $("#cetak_tunai_besar").attr('href', 'cetak_besar_apotek.php?no_faktur='+no_faktur+'');
+                                             $("#alert_berhasil").show();
+                                             $("#cetak_tunai").show();
+                                             $("#cetak_tunai_besar").show('');
+                                            $('#tbody').html('');
 
-    }
+                                            }
        
-   });
-}
-  else{
+                                      });
+              }
+              else{
+
+
+                  alert("Maaf Subtotal Penjualan Tidak Sesuai, Silakan Tunggu Sebentar! (1) ");       
+                      window.location.href="form_penjualan_kasir_apotek.php";
+                }
+
+              });
 
 
 
-    alert("Maaf Subtotal Penjualan Tidak Sesuai, Silakan Tunggu Sebentar! (1) ");       
-        window.location.href="form_penjualan_kasir_apotek.php";
-  }
 
- });
-
-
-
- }
-
-    
     $('#tabel_tbs_penjualan_apotek').DataTable().clear();
     $('#tabel_tbs_penjualan_apotek').DataTable().destroy();
 
@@ -1787,6 +1851,9 @@ else{
                             }
                           });
                   $("#span_tbs").hide();
+    
+ }
+
     
 
 
@@ -2868,7 +2935,7 @@ $.post('cek_tbs_penjualan_apotek.php',{kode_barang:kode_barang, session_id:sessi
             $("#biaya_admin_select").trigger("chosen:updated");
             $("#biaya_admin_persen").val('');
             $("#biaya_admin").val('');
-            $("#penjamin").val('');
+            $("#penjamin").val('PERSONAL');
             $("#keterangan").val('');
             $("#penjualan").show();
             $("#piutang").show();

@@ -98,7 +98,7 @@ $perintah = $db->query("SELECT * FROM stok_opname");
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Detail Stok Opname </h4>
+        <center><h4 class="modal-title"><b>Detail Stok Opname</b></h4></center>
       </div>
 
       <div class="modal-body">
@@ -106,11 +106,26 @@ $perintah = $db->query("SELECT * FROM stok_opname");
       <span id="modal-detail"> </span>
       </div>
 
+  <table id="table_modal_detail" class="table table-bordered table-sm">
+  <thead> <!-- untuk memberikan nama pada kolom tabel -->
+
+          <th> No Faktur </th>
+          <th> Kode Barang </th>
+          <th> Nama Barang </th>
+          <th> Stok Komputer </th>
+          <th> Fisik </th>
+          <th> Selisih Fisik </th>
+          <th> HPP </th>
+          <th> Selisih Harga </th>
+
+  </thead> <!-- tag penutup tabel -->
+  </table>
+
      </div>
 
       <div class="modal-footer">
         
-        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+    <center><button type="button" class="btn btn-danger" data-dismiss="modal"><i class='fa fa-close'></i></button></center> 
       </div>
     </div>
 
@@ -137,7 +152,7 @@ echo '<a href="form_stok_opname.php"  class="btn btn-info" > <i class="fa fa-plu
 <button type="submit" name="submit" id="filter_1" class="btn btn-primary" > Filter Faktur </button>
 <button type="submit" name="submit" id="filter_2" class="btn btn-primary" > Filter Detail </button>
 
-
+  <input type="hidden" name="no_faktur_detail" class="form-control " id="no_faktur_detail" placeholder="no_faktur  "/>
 <!--START FILTER FAKTUR-->
 <span id="fil_faktur">
 <form class="form-inline" action="show_filter_stok_opname.php" method="post" role="form">
@@ -255,7 +270,47 @@ echo '<a href="form_stok_opname.php"  class="btn btn-info" > <i class="fa fa-plu
     </script>
 <!--/DATA TABLE MENGGUNAKAN AJAX-->
 
-<script type="text/javascript">
+
+<!--Start Ajax Modal DETAIL-->
+<script type="text/javascript" language="javascript" >
+   $(document).ready(function() {
+    $(document).on('click', '.detail', function (e) {
+    $("#modal_detail").modal('show');
+
+    var no_faktur = $(this).attr("no_faktur");
+    $("#no_faktur_detail").val(no_faktur);
+      var no_faktur_detail = $("#no_faktur_detail").val();
+            $('#table_modal_detail').DataTable().destroy();
+
+        var dataTable = $('#table_modal_detail').DataTable( {
+          "processing": true,
+          "serverSide": true,
+          "ajax":{
+            url :"show_detail_stok_opname.php", // json datasource
+             "data": function ( d ) {
+                  d.no_faktur = $("#no_faktur_detail").val();
+                  // d.custom = $('#myInput').val();
+                  // etc
+              },
+            type: "post",  // method  , by default get
+            error: function(){  // error handling
+              $(".employee-grid-error").html("");
+              $("#table_modal_detail").append('<tbody class="employee-grid-error"><tr><th colspan="3">Data Tidak Ditemukan.. !!</th></tr></tbody>');
+              $("#employee-grid_processing").css("display","none");
+              
+            }
+          },
+
+         
+
+        });  
+  
+     }); 
+  });
+ </script>
+<!--Ending Ajax Modal Detail-->
+
+<!--<script type="text/javascript">
 
 		$(document).on('click','.detail',function(e){
 		var no_faktur = $(this).attr('no_faktur');
@@ -272,7 +327,7 @@ echo '<a href="form_stok_opname.php"  class="btn btn-info" > <i class="fa fa-plu
 		
 		});
 		
-		</script>
+		</script>-->
 
 
 <script type="text/javascript">

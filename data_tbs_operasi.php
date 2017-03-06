@@ -7,6 +7,8 @@ include 'db.php';
 
 $no_reg = stringdoang($_POST['no_reg']);
 
+$pilih_akses_tombol = $db->query("SELECT * FROM otoritas_penjualan_inap WHERE id_otoritas = '$_SESSION[otoritas_id]' ");
+$otoritas_tombol = mysqli_fetch_array($pilih_akses_tombol);
 // storing  request (ie, get/post) global array to a variable  
 $requestData= $_REQUEST;
 
@@ -64,7 +66,21 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
       $nestedData[] = $row["nama_operasi"];
       $nestedData[] = rp($row["harga_jual"]);
       $nestedData[] = $row["nama"];
-      $nestedData[] = $row["waktu"];
+
+      //START untuk EDIT WAKTU PADA OPERASI 
+     
+      if ($otoritas_tombol['edit_tanggal_inap'] > 0){
+
+     
+
+         $nestedData[] = "<p style='font-size:15px' align='right' class='edit-waktu-or' data-id='".$row['id']."' > <span id='text-waktu-".$row['id']."'> ".$row['waktu']." </span> <input type='hidden' id='input-waktu-".$row['id']."' value='".$row['waktu']."' class='input_waktu_or' data-id='".$row['id']."' autofocus='' data-id='".$row['id']."'> </p>";
+     }
+    else
+    {
+        $nestedData[] = "<p style='font-size:15px' align='right' class='gk_bisa_edit_tanggal'> ".$row['waktu']." </p>";
+    }
+    //ENDING untuk EDIT WAKTU PADA OPERASI 
+
 
       $nestedData[] = "<a href='proses_registrasi_operasi.php?id=".$row["id"]."&no_reg=".$row["no_reg"]."&sub_operasi=".$row["sub_operasi"]."&operasi=".$row["operasi"]."' class='btn btn-sm btn-success' target='blank'>Input Detail </a>";
 
