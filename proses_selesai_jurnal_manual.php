@@ -65,7 +65,7 @@ if ($data0['session_id'] == $session_jurnal_manual) {
 
 
   
-   $insert_no_faktur_jurnal = $db->query("INSERT INTO jurnal_trans (nomor_jurnal,waktu_jurnal,keterangan_jurnal,kode_akun_jurnal,debit,kredit,jenis_transaksi,no_faktur,approved,user_buat) VALUES ('".no_jurnal()."','$tanggal $jam_sekarang','Jurnal Manual - $data0[keterangan]','$data0[kode_akun_jurnal]','$data0[debit]','$data0[kredit]','$jenis','$ambil_no_jurnal[no_faktur_jurnal]','1','$user')");
+   $insert_no_faktur_jurnal = $db->query("INSERT INTO jurnal_trans (nomor_jurnal,waktu_jurnal,keterangan_jurnal,kode_akun_jurnal,debit,kredit,jenis_transaksi,no_faktur,approved,user_buat) VALUES ('".no_jurnal()."','$tanggal $jam_sekarang','Jurnal Manual - ".$keterangan."','$data0[kode_akun_jurnal]','$data0[debit]','$data0[kredit]','$jenis','$ambil_no_jurnal[no_faktur_jurnal]','1','$user')");
 
 }
 
