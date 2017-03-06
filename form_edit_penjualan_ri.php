@@ -123,7 +123,6 @@ padding-right: 5%;
   $(function() {
     $( "#tanggal" ).datepicker({dateFormat: "yy-mm-dd"});
     $( "#tanggal_jt" ).datepicker({dateFormat: "yy-mm-dd"});
-    $( ".input_waktu_or" ).datepicker({dateFormat: "yy-mm-dd"});
   });
   </script>
 
@@ -4419,6 +4418,7 @@ $(document).on('dblclick','.edit-waktu-or',function(){
 
         $("#text-waktu-"+id+"").show();
         $("#text-waktu-"+id+"").text(input_waktu);
+         $("#input-waktu-"+id+"").val(input_waktu);
         $("#input-waktu-"+id+"").attr("type", "hidden");   
 
         });
