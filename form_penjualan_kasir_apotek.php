@@ -2910,7 +2910,7 @@ $.post('cek_tbs_penjualan_apotek.php',{kode_barang:kode_barang, session_id:sessi
             $("#biaya_admin_select").trigger("chosen:updated");
             $("#biaya_admin_persen").val('');
             $("#biaya_admin").val('');
-            $("#penjamin").val('');
+            $("#penjamin").val('PERSONAL');
             $("#keterangan").val('');
             $("#penjualan").show();
             $("#piutang").show();
