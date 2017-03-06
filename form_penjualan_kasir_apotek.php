@@ -1423,7 +1423,32 @@ else if (harga == 0) {
                  $("#kode_barang").trigger("chosen:updated");  
                  $("#kode_barang").trigger('chosen:open');               
                  $("#ppn").attr("disabled", true);
-                 $("#tbody").prepend(data);
+                        $('#tabel_tbs_penjualan_apotek').DataTable().destroy();
+
+                          var dataTable = $('#tabel_tbs_penjualan_apotek').DataTable( {
+                            "processing": true,
+                            "serverSide": true,
+                            "info":     true,
+                            "language": { "emptyTable":     "Tidak Ada Data Di Tabel Ini" },
+                            "ajax":{
+                              url :"data_tbs_penjualan_apotek.php", // json datasource
+                               "data": function ( d ) {
+                                  d.session_id = $("#session_id").val();
+                                  // d.custom = $('#myInput').val();
+                                  // etc
+                              },
+                               
+                                type: "post",  // method  , by default get
+                              error: function(){  // error handling
+                                $(".employee-grid-error").html("");
+                                $("#tabel_tbs_penjualan_apotek").append('<tbody class="employee-grid-error"><tr><th colspan="3">No data found in the server</th></tr></tbody>');
+                                $("#employee-grid_processing").css("display","none");
+                                }
+                            }
+                          });
+
+              
+              $("#span_tbs").show();
                  $("#nama_barang").val('');
                  $("#jumlah_barang").val('');
                  $("#potongan1").val('');
@@ -1475,22 +1500,7 @@ else{
      
                  
                  $("#ppn").attr("disabled", true);
-                 $("#tbody").prepend(data);
-                 $("#nama_barang").val('');
-                 $("#jumlah_barang").val('');
-                 $("#potongan1").val('');
-                 $("#tax1").val('');
-                 $("#tipe_barang").val('');$("#kode_barang").val('');
-                 $("#kode_barang").trigger("chosen:updated");  
-                 $("#kode_barang").trigger('chosen:open'); 
-                 $("#harga_penjamin").val('');
-
-     
-     });
-  }
-}
-    
-              $('#tabel_tbs_penjualan_apotek').DataTable().destroy();
+                          $('#tabel_tbs_penjualan_apotek').DataTable().destroy();
 
                           var dataTable = $('#tabel_tbs_penjualan_apotek').DataTable( {
                             "processing": true,
@@ -1516,6 +1526,21 @@ else{
 
               
               $("#span_tbs").show();
+                 $("#nama_barang").val('');
+                 $("#jumlah_barang").val('');
+                 $("#potongan1").val('');
+                 $("#tax1").val('');
+                 $("#tipe_barang").val('');$("#kode_barang").val('');
+                 $("#kode_barang").trigger("chosen:updated");  
+                 $("#kode_barang").trigger('chosen:open'); 
+                 $("#harga_penjamin").val('');
+
+     
+     });
+  }
+}
+    
+
       
  });
 
