@@ -390,6 +390,8 @@ else{
         });  
 
        $("#kode_akun").val('');
+      $("#kode_akun").trigger('chosen:updated');
+     $("#kode_akun").trigger('chosen:open');
        $("#nama_akun").val('');
        $("#debit").val('');
        $("#kredit").val('');
@@ -491,6 +493,7 @@ if(t_debit != t_kredit){
 
 alert('Kolom Total Debit dan Total Kredit Tidak Sama');
 
+
 }
 else{
 
@@ -523,8 +526,9 @@ else{
           }
 
         });  
-
-       $("#nama_akun").val('');
+       $("#kode_akun").val('');
+      $("#kode_akun").trigger('chosen:updated');
+     $("#kode_akun").trigger('chosen:open');
        $("#debit").val('');
        $("#kredit").val('');
        $("#t_debit").val('');
@@ -600,6 +604,10 @@ else{
     
     
     $(".tr-id-"+id+"").remove();
+       $("#kode_akun").val('');
+      $("#kode_akun").trigger('chosen:updated');
+     $("#kode_akun").trigger('chosen:open');
+     $("#nama_akun").val('');
     
     }
     }); 
@@ -649,7 +657,6 @@ else{
 </script>
 
       <script>
-      
 
       $(document).ready(function(){
       $("#debit").keyup(function(){
@@ -657,13 +664,11 @@ else{
       var kredit = $("#kredit").val();
              
 
-             if (debit != ""){
+             if (debit != "" || debit != 0){
              $("#kredit").attr("readonly", true);
-             $("#kredit").val('0');
              }
              else{
               $("#kredit").attr("readonly", false);
-              $("#kredit").val('');
              }
 
 
@@ -676,18 +681,15 @@ else{
       var kredit = $("#kredit").val();
              
 
-             if (kredit != ""){
+             if (kredit != "" || kredit != 0){
              $("#debit").attr("readonly", true);
-             $("#debit").val('0');
              }
              else{
               $("#debit").attr("readonly", false);
-              $("#debit").val('');
              }
 
       });
       });
-
 
       $(document).ready(function(){
       $("#kode_akun").change(function(){

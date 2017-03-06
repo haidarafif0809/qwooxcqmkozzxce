@@ -374,7 +374,10 @@ else{
  
 
        $("#kode_akun").val('');
-       $("#nama_akun").val('');
+      $("#kode_akun").trigger('chosen:updated');
+     $("#kode_akun").trigger('chosen:open');
+     $("#nama_akun").val('');
+     
        $("#debit").val('');
        $("#kredit").val('');
        $("#keterangan").val('');
@@ -512,8 +515,12 @@ else{
 
         });    
 
-       $("#nama_akun").val('');
-       $("#debit").val('');
+      $("#kode_akun").val('');
+      $("#kode_akun").trigger('chosen:updated');
+      $("#kode_akun").trigger('chosen:open');
+      $("#nama_akun").val('');
+
+      $("#debit").val('');
        $("#kredit").val('');
        $("#t_debit").val('');
        $("#t_kredit").val('');
@@ -547,7 +554,11 @@ else{
     
     
     $(".tr-id-"+id+"").remove();
-    
+       $("#kode_akun").val('');
+      $("#kode_akun").trigger('chosen:updated');
+     $("#kode_akun").trigger('chosen:open');
+     $("#nama_akun").val('');
+
     }
     });
  
@@ -598,7 +609,7 @@ else{
       var kredit = $("#kredit").val();
              
 
-             if (debit != ""){
+             if (debit != "" || debit != 0){
              $("#kredit").attr("readonly", true);
              $("#kredit").val('0');
              }
@@ -617,7 +628,7 @@ else{
       var kredit = $("#kredit").val();
              
 
-             if (kredit != ""){
+             if (kredit != "" || kredit != 0){
              $("#debit").attr("readonly", true);
              $("#debit").val('0');
              }
@@ -678,9 +689,8 @@ else{
                                     $("#input-debit-"+id+"").attr("type", "text");
 
                                  });
-                                 $(document).on('blur', '.input-debit', function (e){
 
-                                 $(".input-debit").blur(function(){
+                                 $(document).on('blur', '.input-debit', function (e){
 
                                     var id = $(this).attr("data-id");
 
