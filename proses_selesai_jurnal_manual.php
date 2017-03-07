@@ -72,6 +72,16 @@ if ($data0['session_id'] == $session_jurnal_manual) {
 }
 
 
+$tbs_jurnal = $db->query("SELECT * FROM tbs_jurnal");
+while($data_tbs_jurnal = mysqli_fetch_array($tbs_jurnal))
+{
+$select_no_jurnal = $db->query("SELECT * FROM nomor_faktur_jurnal ORDER BY id DESC LIMIT 1");
+$ambil_no_jurnal = mysqli_fetch_array($select_no_jurnal);
+
+     $insert_no_faktur_jurnal = $db->query("INSERT INTO history_input_tbs_jurnal (no_faktur, session_id, kode_akun_jurnal, nama_akun_jurnal, debit, kredit, keterangan, user_input) VALUES ('$ambil_no_jurnal[no_faktur_jurnal]', '$data_tbs_jurnal[session_id]', '$data_tbs_jurnal[kode_akun_jurnal]', '$data_tbs_jurnal[nama_akun_jurnal]', '$data_tbs_jurnal[debit]', '$data_tbs_jurnal[kredit]', '$data_tbs_jurnal[keterangan]', '$user')");
+
+}
+
 
      $query3 = $db->query("DELETE FROM tbs_jurnal WHERE session_id = '$session_jurnal_manual'");
 
