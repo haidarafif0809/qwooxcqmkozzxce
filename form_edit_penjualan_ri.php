@@ -970,7 +970,7 @@ Laboratorium  </button>
                 <th style="text-align: right" > Subtotal </th>
                 <th style="text-align: right" > Potongan </th>
                 <th style="text-align: right" > Pajak </th>
-
+                <th style="text-align: center" > Tanggal </th>
   </tr>
   </thead>
   <tbody id="tbody">
@@ -989,7 +989,10 @@ Laboratorium  </button>
                 <td style='font-size:15px' align='right'>". rp($data1['harga']) ."</td>
                 <td style='font-size:15px' align='right'><span id='text-subtotal-".$data1['id']."'>". rp($data1['subtotal']) ."</span></td>
                 <td style='font-size:15px' align='right'><span id='text-potongan-".$data1['id']."'>". rp($data1['potongan']) ."</span></td>
+
                 <td style='font-size:15px' align='right'><span id='text-tax-".$data1['id']."'>". rp($data1['tax']) ."</span></td>
+
+              <td><a style='font-size:15px' align='right' class='edit-tanggal-lab' data-id='".$data1['id']."' data-kode='".$data1['kode_barang']."'> <span id='text-tanggal-".$data1['id']."'> ".$data1['tanggal']." ".$data1['jam']." </span> <input type='hidden' id='input-tanggal-".$data1['id']."' value='".$data1['tanggal']."' class='input_tanggal_lab' data-id='".$data1['id']."' autofocus='' data-kode='".$data1['kode_barang']."' data-jam='".$data1['jam']."' > </a></td>
 
                 </tr>";
     }
@@ -4427,6 +4430,40 @@ $(document).on('dblclick','.edit-waktu-or',function(){
 
 </script>
 <!-- END EDIT WAKTU TBS OPERASI -->
+
+<!-- EDIT TANGGAL TBS LABORATORIUM-->
+
+<script type="text/javascript">
+                                 
+      $(document).on('dblclick','.edit-tanggal-lab',function(){
+
+        var id = $(this).attr("data-id");
+
+          $("#text-tanggal-"+id+"").hide();
+          $("#input-tanggal-"+id+"").attr("type", "text"); 
+        
+      });
+
+      $(document).on('blur','.input_tanggal_lab',function(){
+
+        var id = $(this).attr("data-id");
+        var jam = $(this).attr("data-jam");
+        var input_tanggal = $(this).val();
+        var tanggal = input_tanggal+" "+jam;
+
+        $.post("update_tanggal_lab_kasir_ranap.php",{id:id, input_tanggal:input_tanggal},function(data){
+
+        $("#text-tanggal-"+id+"").show();
+        $("#text-tanggal-"+id+"").text(tanggal);
+        $("#input-tanggal-"+id+"").attr("type", "hidden");           
+
+        });
+      });
+
+
+</script>
+
+<!-- END EDIT TANGGAL TBS LABORATORIUM -->
 
 <!-- memasukan file footer.php -->
 <?php include 'footer.php'; ?>
