@@ -937,7 +937,7 @@ Laboratorium  </button>
 
        
 
-        <td> <a style='background-color: #33b5e5;' align='right' class='edit-waktu-or' data-id='".$next['id']."' > <span id='text-waktu-".$next['id']."'> ".$next['waktu']." </span> <input type='hidden' id='input-waktu-".$next['id']."' value='".$next['waktu']."' class='input_waktu_or' data-id='".$next['id']."' autofocus='' data-id='".$next['id']."' > </a> </td>
+        <td> <a style='font-size:15px' align='right' class='edit-waktu-or' data-id='".$next['id']."' > <span id='text-waktu-".$next['id']."'> ".$next['waktu']." </span> <input type='hidden' id='input-waktu-".$next['id']."' value='".$next['waktu']."' class='input_waktu_or' data-id='".$next['id']."' autofocus='' data-id='".$next['id']."' > </a> </td>
 
     <td><a href='proses_registrasi_operasi.php?id=".$next["id"]."&no_reg=".$next["no_reg"]."&sub_operasi=".$next["sub_operasi"]."&operasi=".$next["operasi"]."' class='btn btn-sm btn-success' target='blank'>Input Detail </a></td>
 
@@ -992,7 +992,7 @@ Laboratorium  </button>
 
                 <td style='font-size:15px' align='right'><span id='text-tax-".$data1['id']."'>". rp($data1['tax']) ."</span></td>
 
-              <td><a style='background-color: #33b5e5;'  align='right' class='edit-tanggal-lab' data-id='".$data1['id']."' data-kode='".$data1['kode_barang']."'> <span id='text-tanggal-".$data1['id']."'> ".$data1['tanggal']." ".$data1['jam']." </span> <input type='hidden' id='input-tanggal-".$data1['id']."' value='".$data1['tanggal']."' class='input_tanggal_lab' data-id='".$data1['id']."' autofocus='' data-kode='".$data1['kode_barang']."' data-jam='".$data1['jam']."' > </a></td>
+              <td><a style='font-size:15px' align='right' class='edit-tanggal-lab' data-id='".$data1['id']."' data-kode='".$data1['kode_barang']."'> <span id='text-tanggal-".$data1['id']."'> ".$data1['tanggal']." ".$data1['jam']." </span> <input type='hidden' id='input-tanggal-".$data1['id']."' value='".$data1['tanggal']."' class='input_tanggal_lab' data-id='".$data1['id']."' autofocus='' data-kode='".$data1['kode_barang']."' data-jam='".$data1['jam']."' > </a></td>
 
                 </tr>";
     }
