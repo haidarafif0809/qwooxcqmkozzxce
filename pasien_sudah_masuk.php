@@ -7,15 +7,10 @@ include_once 'sanitasi.php';
 $tanggal = date("Y-m-d");
 
 
-$sett_registrasi= $db->query("SELECT * FROM setting_registrasi ");
-$data_sett = mysqli_fetch_array($sett_registrasi);
 
-$pilih_akses_registrasi_rj = $db->query("SELECT registrasi_rj_lihat, registrasi_rj_tambah, registrasi_rj_edit, registrasi_rj_hapus FROM otoritas_registrasi WHERE id_otoritas = '$_SESSION[otoritas_id]'");
+
+$pilih_akses_registrasi_rj = $db->query("SELECT registrasi_rj_lihat, registrasi_rj_edit, registrasi_rj_hapus FROM otoritas_registrasi WHERE id_otoritas = '$_SESSION[otoritas_id]'");
 $registrasi_rj = mysqli_fetch_array($pilih_akses_registrasi_rj);
-
-$pilih_akses_penjualan = $db->query("SELECT penjualan_tambah FROM otoritas_penjualan WHERE id_otoritas = '$_SESSION[otoritas_id]'");
-$penjualan = mysqli_fetch_array($pilih_akses_penjualan);
-
 
 $pilih_akses_rekam_medik = $db->query("SELECT rekam_medik_rj_lihat FROM otoritas_rekam_medik WHERE id_otoritas = '$_SESSION[otoritas_id]'");
 $rekam_medik = mysqli_fetch_array($pilih_akses_rekam_medik);
