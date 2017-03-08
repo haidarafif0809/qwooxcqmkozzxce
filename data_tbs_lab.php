@@ -7,6 +7,8 @@ include 'db.php';
 
 $no_reg = stringdoang($_POST['no_reg']);
 
+$pilih_akses_tombol = $db->query("SELECT * FROM otoritas_penjualan_inap WHERE id_otoritas = '$_SESSION[otoritas_id]' ");
+$otoritas_tombol = mysqli_fetch_array($pilih_akses_tombol);
 // storing  request (ie, get/post) global array to a variable  
 $requestData= $_REQUEST;
 
@@ -22,13 +24,13 @@ $columns = array(
     4=>'subtotal',
     5=>'potongan',
     6=>'tax',
-    7=>'jam',
+    7=>'tanggal',
     8=>'id'    
 
 );
 
 // getting total number records without any search
-$sql =" SELECT kode_barang, nama_barang, jumlah_barang, harga, subtotal, potongan, tax, jam, id";
+$sql =" SELECT kode_barang, nama_barang, jumlah_barang, harga, subtotal, potongan, tax, tanggal, jam, id";
 $sql.=" FROM tbs_penjualan ";
 $sql.=" WHERE no_reg = '$no_reg' AND lab = 'Laboratorium' AND no_faktur IS NULL";
 
@@ -37,7 +39,7 @@ $totalData = mysqli_num_rows($query);
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
-$sql =" SELECT kode_barang, nama_barang, jumlah_barang, harga, subtotal, potongan, tax, jam, id";
+$sql =" SELECT kode_barang, nama_barang, jumlah_barang, harga, subtotal, potongan, tax, tanggal, jam, id";
 $sql.=" FROM tbs_penjualan ";
 $sql.=" WHERE no_reg = '$no_reg' AND lab = 'Laboratorium' AND no_faktur IS NULL";
 
@@ -89,6 +91,19 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
       $nestedData[] = $row["subtotal"];
       $nestedData[] = $row["potongan"];
       $nestedData[] = $row["tax"];
+
+
+      //
+      if ($otoritas_tombol['edit_tanggal_inap'] > 0)
+      {
+
+      $nestedData[] = "<p style='font-size:15px' align='right' class='edit-tanggal-lab' data-id='".$row['id']."' data-kode='".$row['kode_barang']."'> <span id='text-tanggal-".$row['id']."'> ".$row['tanggal']." ".$row['jam']." </span> <input type='hidden' id='input-tanggal-".$row['id']."' value='".$row['tanggal']."' class='input_tanggal_lab' data-id='".$row['id']."' autofocus='' data-kode='".$row['kode_barang']."' data-jam='".$row['jam']."' > </p>";
+      }
+        else
+      {
+        $nestedData[] = "<p style='font-size:15px' align='right' class='gk_bisa_edit_tanggal'> ".$row['tanggal']." ".$row['jam']." </p>";
+      }
+      //
 
       $nestedData[] = $row["id"];
 

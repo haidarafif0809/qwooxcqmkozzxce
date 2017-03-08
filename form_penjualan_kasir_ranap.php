@@ -786,7 +786,7 @@ Laboratorium  </button>
                               <th> Subtotal </th>
                               <th> Potongan </th>
                               <th> Pajak </th>
-                          
+                              <th> Tanggal </th>
                           </thead> <!-- tag penutup tabel -->
                     </table>
                   </div>
@@ -5339,7 +5339,7 @@ $(document).on('dblclick','.edit-waktu-or',function(){
 <!-- END EDIT DOSIS OBAT -->
 
 
-<!-- EDIT TANGGAL -->
+<!-- EDIT TANGGAL TBS JUAL-->
 
 <script type="text/javascript">
                                  
@@ -5371,8 +5371,42 @@ $(document).on('dblclick','.edit-waktu-or',function(){
 
 </script>
 
-<!-- END EDIT TANGGAL -->
+<!-- END EDIT TANGGAL TBS JUAL -->
 
+
+<!-- EDIT TANGGAL TBS LABORATORIUM-->
+
+<script type="text/javascript">
+                                 
+      $(document).on('dblclick','.edit-tanggal-lab',function(){
+
+        var id = $(this).attr("data-id");
+
+          $("#text-tanggal-"+id+"").hide();
+          $("#input-tanggal-"+id+"").attr("type", "text"); 
+        
+      });
+
+      $(document).on('blur','.input_tanggal_lab',function(){
+
+        var id = $(this).attr("data-id");
+        var jam = $(this).attr("data-jam");
+        var input_tanggal = $(this).val();
+        var tanggal = input_tanggal+" "+jam;
+
+        $.post("update_tanggal_lab_kasir_ranap.php",{id:id, input_tanggal:input_tanggal},function(data){
+
+        $("#text-tanggal-"+id+"").show();
+        $("#text-tanggal-"+id+"").text(tanggal);
+        $("#input-tanggal-"+id+"").attr("type", "hidden");           
+
+        });
+      });
+
+
+</script>
+
+<!-- END EDIT TANGGAL TBS LABORATORIUM -->
 
 <!-- AMBIL DATAT -->
 <script type="text/javascript">
