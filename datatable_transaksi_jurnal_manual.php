@@ -4,7 +4,8 @@ include 'db.php';
 /* Database connection end */
 include 'sanitasi.php';
 
-$pilih_akses_akuntansi = $db->query("SELECT * FROM otoritas_laporan WHERE id_otoritas = '$_SESSION[otoritas_id]'");
+$pilih_akses_akuntansi = $db->query("SELECT transaksi_jurnal_manual_hapus,
+transaksi_jurnal_manual_edit FROM otoritas_laporan WHERE id_otoritas = '$_SESSION[otoritas_id]'");
 $akuntansi = mysqli_fetch_array($pilih_akses_akuntansi);
 
 
@@ -29,7 +30,7 @@ $columns = array(
 
 // getting total number records without any search
 $sql = " SELECT *  ";
-$sql.= " FROM jurnal_trans WHERE jenis_transaksi = 'Jurnal Manual' ";
+$sql.= " FROM jurnal_trans WHERE jenis_transaksi = 'Jurnal Manual' GROUP BY no_faktur ";
 $query=mysqli_query($conn, $sql) or die("datatable_stok_awal.php: get employees");
 $totalData = mysqli_num_rows($query);
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
@@ -42,9 +43,11 @@ if( !empty($requestData['search']['value']) ) {   // if there is a search parame
 	$sql.=" OR jenis_transaksi LIKE '".$requestData['search']['value']."%' ";
   $sql.=" OR user_buat LIKE '".$requestData['search']['value']."%' )";
 }
+
+$sql.="GROUP BY no_faktur";
 $query=mysqli_query($conn, $sql) or die("datatable_stok_awal.php2: get employees");
 $totalFiltered = mysqli_num_rows($query); // when there is a search parameter then we have to modify total number filtered rows as per search result. 
-$sql.="GROUP BY no_faktur ORDER BY id  ".$requestData['order'][0]['dir']."  LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
+$sql.=" ORDER BY id  ".$requestData['order'][0]['dir']."  LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
 /* $requestData['order'][0]['column'] contains colmun index, $requestData['order'][0]['dir'] contains order such as asc/desc  */	
 $query=mysqli_query($conn, $sql) or die("employee-grid-data.php: get employees");
 

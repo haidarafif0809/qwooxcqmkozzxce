@@ -12,7 +12,7 @@ $penjualan = mysqli_fetch_array($pilih_akses_penjualan);
 $pilih_akses_rekam_medik = $db->query("SELECT rekam_medik_rj_lihat FROM otoritas_rekam_medik WHERE id_otoritas = '$_SESSION[otoritas_id]'");
 $rekam_medik = mysqli_fetch_array($pilih_akses_rekam_medik);
 
-$pilih_akses_registrasi_rj = $db->query("SELECT registrasi_rj_lihat, registrasi_rj_tambah, registrasi_rj_edit, registrasi_rj_hapus FROM otoritas_registrasi WHERE id_otoritas = '$_SESSION[otoritas_id]'");
+$pilih_akses_registrasi_rj = $db->query("SELECT registrasi_rj_lihat, registrasi_rj_edit, registrasi_rj_hapus FROM otoritas_registrasi WHERE id_otoritas = '$_SESSION[otoritas_id]'");
 $registrasi_rj = mysqli_fetch_array($pilih_akses_registrasi_rj);
 
 // storing  request (ie, get/post) global array to a variable  
@@ -141,9 +141,10 @@ else
 }
 
 // untuk input hasil lab
-$show = $db->query("SELECT * FROM tbs_penjualan WHERE no_reg = '$row[no_reg]' AND lab = 'Laboratorium' ");
-$take = mysqli_num_rows($show);
-	if ($take > 0)
+$show = $db->query("SELECT COUNT(*) AS jumlah FROM tbs_penjualan WHERE no_reg = '$row[no_reg]' AND lab = 'Laboratorium' ");
+$take = mysqli_fetch_array($show);
+
+	if ($take['jumlah'] > 0)
 	{
 		$nestedData[] = "<a href='cek_input_hasil_lab.php?no_rm=".$row['no_rm']."&nama=".$row['nama_pasien']."&no_reg=".$row['no_reg']."&jenis_penjualan=Rawat Jalan' class='btn btn-floating btn-small btn-info'><i class='fa fa-pencil'></i></a>";
 	}
