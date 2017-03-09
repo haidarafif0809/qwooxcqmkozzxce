@@ -472,6 +472,8 @@ $(document).ready(function(){
     
       if (hasil > 0){
         alert("Jumlah Bayar Anda Melebihi Sisa");
+
+        $("#total").val('');
         $("#jumlah_bayar").val('');
         $("#potongan10").val('');
       }
@@ -793,7 +795,7 @@ $(document).ready(function(){
     <script type="text/javascript">
     
     //fungsi hapus data 
-    $(document).on('click','.btn-hapus',function(){
+    $(".btn-hapus").click(function(){
     var no_faktur_pembelian = $(this).attr("data-no-faktur-pembelian");
     var kredit = $(this).attr("data-hutang");
     var jumlah_bayar = $(this).attr("data-jumlah-bayar");
@@ -804,15 +806,16 @@ $(document).ready(function(){
    if (total == '') 
       
       {
+        $("#nama_suplier").attr("disabled", false);
         total = 0;
       }
     
-    else if(jumlah_bayar   == '')
+    else if(jumlah_bayar  == '')
       {
         jumlah_bayar   = 0;
       };
        
-       var subtotal = parseInt(total,10) - parseInt(jumlah_bayar  ,10);
+       var subtotal = parseInt(total,10) - parseInt(jumlah_bayar,10);
                                   
                                   
     if (subtotal == 0) 
