@@ -29,11 +29,10 @@ $columns = array(
 );
 
 // getting total number records without any search
-$sql = " SELECT COUNT(*) jumlah_data  ";
+$sql = " SELECT *  ";
 $sql.= " FROM jurnal_trans WHERE jenis_transaksi = 'Jurnal Manual' GROUP BY no_faktur ";
 $query=mysqli_query($conn, $sql) or die("datatable_stok_awal.php: get employees");
-$data_fetch = mysqli_fetch_array($query);
-$totalData = $data_fetch['jumlah_data'];
+$totalData = mysqli_num_rows($query);
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
 
