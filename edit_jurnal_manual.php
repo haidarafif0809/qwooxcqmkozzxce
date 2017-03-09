@@ -24,51 +24,6 @@ $tahun_terakhir = substr($tahun_sekarang, 2);
 
 
 
-//mengecek jumlah karakter dari bulan sekarang
-$cek_jumlah_bulan = strlen($bulan_sekarang);
-
-//jika jumlah karakter dari bulannya sama dengan 1 maka di tambah 0 di depannya
-if ($cek_jumlah_bulan == 1) {
-  # code...
-  $data_bulan_terakhir = "0".$bulan_sekarang;
- }
- else
- {
-  $data_bulan_terakhir = $bulan_sekarang;
-
- }
-//ambil bulan dari tanggal penjualan terakhir
-
- $bulan_terakhir = $db->query("SELECT MONTH(waktu_jurnal) as bulan FROM jurnal_trans ORDER BY id DESC LIMIT 1");
- $v_bulan_terakhir = mysqli_fetch_array($bulan_terakhir);
-
-//ambil nomor  dari penjualan terakhir
-$no_terakhir = $db->query("SELECT nomor_jurnal FROM jurnal_trans ORDER BY id DESC LIMIT 1");
- $v_no_terakhir = mysqli_fetch_array($no_terakhir);
-$ambil_nomor = substr($v_no_terakhir['nomor_jurnal'],0,-8);
-
-/*jika bulan terakhir dari penjualan tidak sama dengan bulan sekarang, 
-maka nomor nya kembali mulai dari 1 ,
-jika tidak maka nomor terakhir ditambah dengan 1
- 
- */
- if ($v_bulan_terakhir['bulan'] != $bulan_sekarang) {
-  # code...
-$no_jurnal = "1/JR/".$data_bulan_terakhir."/".$tahun_terakhir;
-
- }
-
- else
- {
-
-$nomor = 1 + $ambil_nomor ;
-
-$no_jurnal = $nomor."/JR/".$data_bulan_terakhir."/".$tahun_terakhir;
-
-
- }
-
-
  ?>
 
   		<script>
@@ -110,18 +65,7 @@ $no_jurnal = $nomor."/JR/".$data_bulan_terakhir."/".$tahun_terakhir;
 
 </div> <!-- tag penutup div row -->
 
-<div class="row">
 
-              <div class="form-group col-sm-3">
-          <label style="display: none;"> No. Transaksi </label><br>
-          <input type="hidden" name="no_transaksi" id="no_transaksi" value="<?php echo $no_jurnal; ?>" class="form-control" readonly="" >
-          </div>
-
-          <div class="form-group col-sm-3">
-          <label style="display: none;"> No. Ref </label><br>
-          <input type="hidden" name="no_ref" id="no_ref" value="<?php echo $no_jurnal; ?>" class="form-control" readonly="" >
-          </div>
-</div> 
 
 
 <div class="row">
@@ -321,7 +265,7 @@ $(document).ready(function(){
     var jenis = $("#jenis").val();
     var debit = $("#debit").val();
     var kredit = $("#kredit").val();
-    var no_transaksi = $("#no_transaksi").val();
+  
     var no_ref = $("#no_ref").val();
     var tanggal = $("#tanggal").val();
 
@@ -465,7 +409,6 @@ else{
     var jenis = $("#jenis").val();
     var debit = $("#debit").val();
     var kredit = $("#kredit").val();
-    var no_transaksi = $("#no_transaksi").val();
     var no_ref = $("#no_ref").val();
     var tanggal = $("#tanggal").val();
     var t_debit = $("#t_debit").val();
@@ -482,7 +425,7 @@ else{
   $("#submit_jurnal_manual").hide();
   $("#transaksi_baru").show();
 
-  $.post("proses_selesai_edit_jurnal_manual.php", {no_faktur:no_faktur,keterangan:keterangan,kode_akun:kode_akun,jenis:jenis,nama_akun:nama_akun,debit:debit,kredit:kredit,no_transaksi:no_transaksi,no_ref:no_ref,t_debit:t_debit,t_kredit:t_kredit,tanggal:tanggal}, function(info) {
+  $.post("proses_selesai_edit_jurnal_manual.php", {no_faktur:no_faktur,keterangan:keterangan,kode_akun:kode_akun,jenis:jenis,nama_akun:nama_akun,debit:debit,kredit:kredit,no_ref:no_ref,t_debit:t_debit,t_kredit:t_kredit,tanggal:tanggal}, function(info) {
 
 
           $('#table_jurnal_tbs').DataTable().destroy();
