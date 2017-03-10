@@ -1493,11 +1493,21 @@ $(document).ready(function(){
       data_admin = 0;
     }
 
-
-
-    if (potongan == '') {
+//potongan   
+  if (potongan == '') {
       potongan = 0;
-    };
+    }
+     else
+          {
+            var pos = potongan.search("%");
+           if (pos > 0) 
+            {
+               var potongan_persen = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#potongan1").val()))));
+               potongan_persen = potongan_persen.replace("%","");
+               potongan = jumlah_barang * harga * potongan_persen / 100 ;
+            };
+          }
+//potongan
 
     if (tax == '') {
       tax = 0;

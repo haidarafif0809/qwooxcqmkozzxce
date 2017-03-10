@@ -1275,7 +1275,7 @@ Laboratorium  </button>
 
           <div class="row">
 
-          <div class="col-sm-3">
+          <div class="col-sm-4">
 
           <select type="text" name="penyesuaian_tanggal" id="penyesuaian_tanggal" class="form-control" required="" data-toggle="tooltip" data-placement="top" title="Jika Ingin Tanggal Data Barang/Produk Sesuai dengan Tanggal Di Atas, Pilih Ya !!">
           <option value="Tidak">Tidak</option>
@@ -2559,6 +2559,7 @@ if (info == 1)
         {
           biaya_admin = 0;
         };
+ //potongan       
      if (potongan == '') {
           potongan = 0;
         }
@@ -2573,6 +2574,7 @@ if (info == 1)
             };
 
       }
+//potongan
 
     var total_tanpa_pajak = parseInt(jumlah_barang,10) * parseInt(harga,10) - parseInt(Math.round(potongan,10));
     var pajak_tbs_rupiah = parseInt(total_tanpa_pajak,10) * parseInt(tax,10) / 100;
