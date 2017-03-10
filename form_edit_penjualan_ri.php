@@ -1275,7 +1275,7 @@ Laboratorium  </button>
 
           <div class="row">
 
-          <div class="col-sm-3">
+          <div class="col-sm-4">
 
           <select type="text" name="penyesuaian_tanggal" id="penyesuaian_tanggal" class="form-control" required="" data-toggle="tooltip" data-placement="top" title="Jika Ingin Tanggal Data Barang/Produk Sesuai dengan Tanggal Di Atas, Pilih Ya !!">
           <option value="Tidak">Tidak</option>
