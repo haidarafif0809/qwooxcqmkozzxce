@@ -50,6 +50,9 @@ $no_rm = stringdoang($_POST['no_rm']);
 $ber_stok = stringdoang($_POST['ber_stok']);
 $tanggal_jt = tanggal_mysql($_POST['tanggal_jt']);
 $tanggal = tanggal_mysql($_POST['tanggal']);
+
+$penyesuaian_tanggal = stringdoang($_POST['penyesuaian_tanggal']);
+
 $nama_petugas = stringdoang($_SESSION['nama']);
 $kode_gudang = stringdoang($_POST['kode_gudang']);
 $ppn_input = stringdoang($_POST['ppn_input']);
@@ -300,8 +303,19 @@ AND no_reg = '$no_reg'");
         $satuan = $data['satuan'];
       }
         
-    
-        $query2 = "INSERT INTO detail_penjualan (no_faktur,no_rm, no_reg, tanggal, jam, kode_barang, nama_barang, jumlah_barang, asal_satuan,satuan, harga, subtotal, potongan, tax, sisa,tipe_produk,lab) VALUES ('$no_faktur','$no_rm', '$no_reg', '$data[tanggal]', '$data[jam]', '$data[kode_barang]','$data[nama_barang]','$jumlah_barang','$satuan','$data[satuan]','$harga','$data[subtotal]','$data[potongan]','$data[tax]', '$jumlah_barang','$data[tipe_barang]','$data[lab]')";
+    if($penyesuaian_tanggal == 'Ya')
+    {
+      $tanggal_produk = $tanggal;
+    }
+    else
+    {
+      $tanggal_produk = $data['tanggal'];
+    }
+        $query2 = "INSERT INTO detail_penjualan (no_faktur,no_rm, no_reg, tanggal, jam, kode_barang, nama_barang, jumlah_barang, asal_satuan,satuan, harga, subtotal, potongan, tax, sisa,tipe_produk,lab) VALUES ('$no_faktur','$no_rm', '$no_reg',
+          '$tanggal_produk', '$data[jam]', '$data[kode_barang]',
+          '$data[nama_barang]','$jumlah_barang','$satuan','$data[satuan]',
+          '$harga','$data[subtotal]','$data[potongan]','$data[tax]',
+          '$jumlah_barang','$data[tipe_barang]','$data[lab]')";
 
         if ($db->query($query2) === TRUE) {
         } 
