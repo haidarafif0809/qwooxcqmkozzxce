@@ -346,7 +346,7 @@ tr:nth-child(even){background-color: #f2f2f2}
             }
           },
               "fnCreatedRow": function( nRow, aData, iDataIndex ) {
-              $(nRow).attr('class','tr-id-'+aData[17]+'');
+              $(nRow).attr('class','tr-id-'+aData[19]+'');
             },
 
         } );
@@ -559,13 +559,33 @@ else
     var no_faktur = $("#faktur_hapus").val();
     var kode_meja = $("#kode_meja").val();
     $.post("hapus_data_penjualan.php",{id:id,no_faktur:no_faktur,kode_meja:kode_meja},function(data){
-    if (data != '') {
 
     
     $("#modal_hapus").modal('hide');
-    $(".tr-id-"+id).remove();
+    $('#tableuser').DataTable().destroy();
+            var dataTable = $('#tableuser').DataTable( {
+          "processing": true,
+          "serverSide": true,
+          "ordering": false,
+          "ajax":{
+            url :"show_data_penjualan.php", // json datasource
+            type: "post",  // method  , by default get
+            error: function(){  // error handling
+              $(".tbody").html("");
+
+             $("#tableuser").append('<tbody class="tbody"><tr><th colspan="3">Tidak Ada Data Yang Ditemukan</th></tr></tbody>');
+
+              $("#tableuser_processing").css("display","none");
+              
+            }
+          },
+              "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+              $(nRow).attr('class','tr-id-'+aData[19]+'');
+            },
+
+        } );
     
-    }
+
     
     });
     

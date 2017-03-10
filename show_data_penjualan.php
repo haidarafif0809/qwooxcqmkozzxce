@@ -13,21 +13,26 @@ $penjualan = mysqli_fetch_array($pilih_akses_penjualan);
 
 $columns = array( 
 // datatable column index  => database column name
-
-
-  
-	0 =>'no_faktur', 
-	1 =>'kode_pelanggan',
-	2 =>'no_reg',
-	3 =>'dokter',
-	4 =>'penjamin',
-	5 =>'tanggal',
-	6 =>'user',
-	7 =>'total',
-	8 =>'jenis_penjualan',
-	9 =>'status',
-  10 =>'jam',
-  11 => 'id'
+  0 =>'edit', 
+  1 =>'hapus',
+  2 =>'detail',
+  3 =>'cetaktunai',
+  4 =>'cetakpiutang',
+  5 =>'no_faktur', 
+  6 =>'kode_pelanggan',
+  7 =>'no_reg',
+  8 =>'pelanggan',
+  9 =>'dokter',
+  10 =>'penjamin',
+  11 =>'tanggal',
+  12 =>'jam',
+  13 =>'user',
+  14 =>'total',
+  15 =>'potongan',
+  16 => 'kredit',
+  17 =>'jenis_penjualan',
+  18 =>'status',
+  19 => 'id'
 
 );
 

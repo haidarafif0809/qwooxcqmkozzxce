@@ -70,6 +70,10 @@ $insert_penjualan = "INSERT INTO history_penjualan (no_faktur, kode_gudang, kode
 			}
 
 
+			// coding untuk memasukan history_tbs dan menghapus tbs
+    $tbs_penjualan_masuk = $db->query("INSERT INTO history_penjualan (no_faktur, kode_gudang, kode_pelanggan, kode_meja, total, tanggal, tanggal_jt, jam, user, sales, status, potongan, tax, sisa, kredit, nilai_kredit, total_hpp, cara_bayar, tunai, ppn, no_pesanan, status_jual_awal, keterangan, biaya_admin,no_reg, nama, dokter, penjamin, no_resep, resep_dokter, apoteker, perawat, petugas_lain, jenis_penjualan,user_hapus)  SELECT nno_faktur, kode_gudang, kode_pelanggan, kode_meja, total, tanggal, tanggal_jt, jam, user, sales, status, potongan, tax, sisa, kredit, nilai_kredit, total_hpp, cara_bayar, tunai, ppn, no_pesanan, status_jual_awal, keterangan, biaya_admin,no_reg, nama, dokter, penjamin, no_resep, resep_dokter, apoteker, perawat, petugas_lain, jenis_penjualan,user_hapus FROM penjualan WHERE no_faktur = '$no_faktur' ");
+
+
 // INSERT HISTORY DETAIL PENJUALAN
 $detail_penjualan = $db->query("SELECT * FROM detail_penjualan WHERE no_faktur = '$no_faktur'");
 while($data_detail_penjualan = mysqli_fetch_array($detail_penjualan)){
