@@ -121,9 +121,9 @@ tr:nth-child(even){background-color: #f2f2f2}
     <div class="form-group">
     <label>Kode Pelanggan :</label>
      <input type="text" id="kode_pelanggan" class="form-control" readonly=""> 
-     <input type="text" id="id_hapus" class="form-control" readonly=""> 
+     <input type="hidden" id="id_hapus" class="form-control" readonly=""> 
      <input type="hidden" id="kode_meja" class="form-control" readonly=""> 
-     <input type="text" id="faktur_hapus" class="form-control" readonly=""> 
+     <input type="hidden" id="faktur_hapus" class="form-control" readonly=""> 
     </div>
    
    </form>
@@ -562,7 +562,28 @@ else
 
     
     $("#modal_hapus").modal('hide');
-    $(".tr-id-"+id).remove();
+    $('#tableuser').DataTable().destroy();
+            var dataTable = $('#tableuser').DataTable( {
+          "processing": true,
+          "serverSide": true,
+          "ordering": false,
+          "ajax":{
+            url :"show_data_penjualan.php", // json datasource
+            type: "post",  // method  , by default get
+            error: function(){  // error handling
+              $(".tbody").html("");
+
+             $("#tableuser").append('<tbody class="tbody"><tr><th colspan="3">Tidak Ada Data Yang Ditemukan</th></tr></tbody>');
+
+              $("#tableuser_processing").css("display","none");
+              
+            }
+          },
+              "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+              $(nRow).attr('class','tr-id-'+aData[19]+'');
+            },
+
+        } );
     
 
     
