@@ -1220,9 +1220,22 @@ $(document).ready(function(){
     }
     var potongan = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#potongan1").val()))));
 
-    if (potongan == '') {
-      potongan = 0;
-    };
+//potongan
+        if (potongan == '') 
+          {
+             potongan = 0;
+          }
+        else
+          {
+            var pos = potongan.search("%");
+           if (pos > 0) 
+            {
+               var potongan_persen = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#potongan1").val()))));
+               potongan_persen = potongan_persen.replace("%","");
+               potongan = jumlah_barang * harga * potongan_persen / 100 ;
+            };
+          }
+//potongan
 
     var tax = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#tax1").val()))));
         if (tax == '') {

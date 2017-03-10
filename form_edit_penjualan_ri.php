@@ -2559,6 +2559,7 @@ if (info == 1)
         {
           biaya_admin = 0;
         };
+ //potongan       
      if (potongan == '') {
           potongan = 0;
         }
@@ -2573,6 +2574,7 @@ if (info == 1)
             };
 
       }
+//potongan
 
     var total_tanpa_pajak = parseInt(jumlah_barang,10) * parseInt(harga,10) - parseInt(Math.round(potongan,10));
     var pajak_tbs_rupiah = parseInt(total_tanpa_pajak,10) * parseInt(tax,10) / 100;
