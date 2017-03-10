@@ -23,7 +23,7 @@ while($data_detail_pembelian = mysqli_fetch_array($detail_pembelian)){
 
 }
 
-
+$delete_jurnal = $db->query("DELETE FROM jurnal_trans WHERE no_faktur = '$no_faktur' ");
 
 
 if ($insert_pembelian == TRUE)
