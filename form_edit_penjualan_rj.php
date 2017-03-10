@@ -1701,6 +1701,36 @@ $(document).on('click','#submit_produk',function(){
      $("#tax1").val('');
      $("#pembayaran_penjualan").val('');
      
+
+     // ajax tbs
+ $('#table_tbs_penjualan').DataTable().destroy();
+
+                        var dataTable = $('#table_tbs_penjualan').DataTable( {
+                          "processing": true,
+                          "serverSide": true,
+                          "ajax":{
+                            url :"data_tbs_edit_penjualan.php", // json datasource
+                             "data": function ( d ) {
+                                d.no_reg = $("#no_reg").val();
+                                d.no_faktur = "<?php echo $no_faktur; ?>";
+                                // d.custom = $('#myInput').val();
+                                // etc
+                            },
+                             
+                              type: "post",  // method  , by default get
+                            error: function(){  // error handling
+                              $(".employee-grid-error").html("");
+                              $("#table_tbs_penjualan").append('<tbody class="employee-grid-error"><tr><th colspan="3">No data found in the server</th></tr></tbody>');
+                              $("#employee-grid_processing").css("display","none");
+                              }
+                          },
+                             "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+
+                              $(nRow).attr('class','tr-id-'+aData[10]+'');         
+
+                          }
+                        });  
+     // end ajax tbs
      });
 
 
@@ -1737,12 +1767,8 @@ $(document).on('click','#submit_produk',function(){
      $("#potongan1").val('');
      $("#tax1").val('');
      $("#pembayaran_penjualan").val('');
-     
-     });
-}
-    
-
-    $('#table_tbs_penjualan').DataTable().destroy();
+     // ajax tbs
+ $('#table_tbs_penjualan').DataTable().destroy();
 
                         var dataTable = $('#table_tbs_penjualan').DataTable( {
                           "processing": true,
@@ -1768,7 +1794,13 @@ $(document).on('click','#submit_produk',function(){
                               $(nRow).attr('class','tr-id-'+aData[10]+'');         
 
                           }
-                        });     
+                        });  
+     // end ajax tbs
+     });
+}
+    
+
+      
       
       
   });
