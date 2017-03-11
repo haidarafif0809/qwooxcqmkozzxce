@@ -2827,7 +2827,6 @@ else
   $("#batal_penjualan").hide(); 
   $("#piutang").hide();
   $("#transaksi_baru").show();
-  $("#cetak_piutang").show();
   
  $.post("cek_subtotal_penjualan.php",{total:total,no_reg:no_reg,potongan:potongan,/*tax:tax,*/biaya_adm:biaya_adm},function(data) {
 
@@ -2844,9 +2843,10 @@ else
 {
 
 
-     $("#table-baru").html(info);
+            $("#table-baru").html(info);
             var no_faktur = info;
             $("#cetak_piutang").attr('href', 'cetak_penjualan_piutang.php?no_faktur='+no_faktur+'');
+              $("#cetak_piutang").show();
             $("#table-baru").html(info);
             $("#alert_berhasil").show();
             $("#pembayaran_penjualan").val('');
