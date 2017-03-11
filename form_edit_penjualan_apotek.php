@@ -1414,9 +1414,23 @@ $(document).ready(function(){
     var satuan = $("#satuan_konversi").val();
 
     var potongan = $("#potongan1").val();
+    
+//potongan    
     if (potongan == '') {
       potongan = 0;
-    };
+    }
+    else
+    {
+        var pos = potongan.search("%");
+           if (pos > 0) 
+            {
+               var potongan_persen = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#potongan1").val()))));
+               potongan_persen = potongan_persen.replace("%","");
+               potongan = jumlah_barang * harga * potongan_persen / 100 ;
+            };
+     }
+//potongan
+
     var tax = $("#tax1").val();
 
         if (tax == '') {

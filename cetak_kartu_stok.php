@@ -13,12 +13,12 @@ $nama_barang = stringdoang($_GET['nama_barang']);
 
 
 // awal Select untuk hitung Saldo Awal
-$hpp_masuk = $db->query("SELECT SUM(jumlah_kuantitas) AS jumlah FROM hpp_masuk WHERE kode_barang = '$kode_barang' AND waktu <= '$daritgl' ");
+$hpp_masuk = $db->query("SELECT SUM(jumlah_kuantitas) AS jumlah FROM hpp_masuk WHERE kode_barang = '$kode_barang' AND tanggal < '$daritgl' ");
 $out_masuk = mysqli_fetch_array($hpp_masuk);
 $jumlah_masuk = $out_masuk['jumlah'];
 
 
-$hpp_keluar = $db->query("SELECT SUM(jumlah_kuantitas) AS jumlah FROM hpp_keluar WHERE kode_barang = '$kode_barang' AND waktu <= '$daritgl' ");
+$hpp_keluar = $db->query("SELECT SUM(jumlah_kuantitas) AS jumlah FROM hpp_keluar WHERE kode_barang = '$kode_barang' AND tanggal <  '$daritgl' ");
 $out_keluar = mysqli_fetch_array($hpp_keluar);
 $jumlah_keluar = $out_keluar['jumlah'];
 
@@ -138,7 +138,10 @@ $total_saldo = $jumlah_masuk - $jumlah_keluar;
 
 <?php 
 
-$select = $db->query("SELECT no_faktur,jumlah_kuantitas,jenis_transaksi,tanggal,jenis_hpp,waktu FROM hpp_masuk WHERE kode_barang = '$kode_barang' AND tanggal >= '$daritgl' AND tanggal <= '$sampaitgl' UNION SELECT no_faktur, jumlah_kuantitas,jenis_transaksi, tanggal, jenis_hpp,waktu FROM hpp_keluar WHERE kode_barang = '$kode_barang' AND tanggal >= '$daritgl' AND tanggal <= '$sampaitgl' ORDER BY waktu ASC ");
+$select = $db->query("SELECT no_faktur,jumlah_kuantitas,jenis_transaksi,tanggal,jenis_hpp,waktu,tanggal, jam  FROM hpp_masuk 
+  WHERE kode_barang = '$kode_barang' AND tanggal >= '$daritgl' AND tanggal <= '$sampaitgl' 
+  UNION SELECT no_faktur, jumlah_kuantitas,jenis_transaksi, tanggal, jenis_hpp,waktu ,tanggal, jam FROM hpp_keluar 
+  WHERE kode_barang = '$kode_barang' AND tanggal >= '$daritgl' AND tanggal <= '$sampaitgl' ORDER BY CONCAT(tanggal,' ',jam)");
 
 
 while($data = mysqli_fetch_array($select))

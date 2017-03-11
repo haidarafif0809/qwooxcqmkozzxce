@@ -119,11 +119,12 @@ else
 
 }
 
-      $nestedData[] = $row["nama"];
-      $nestedData[] = "<p  align='right'>".$row["harga"]."</p>";
-      $nestedData[] = "<p style='font-size:15px' align='right'><span id='text-subtotal-".$row['id']."'> ".$row["subtotal"]." </span> </p>";
-      $nestedData[] = "<p style='font-size:15px' align='right'><span id='text-potongan-".$row['id']."'> ".$row["potongan"]." </span> </p>";
-      $nestedData[] = "<p style='font-size:15px' align='right'><span id='text-tax-".$row['id']."'> ".$row["tax"]." </span> </p>";
+    $nestedData[] = $row["nama"];
+    $nestedData[] = "<p  align='right'>".$row["harga"]."</p>";
+    
+    $nestedData[] = "<p style='font-size:15px' align='right'><span id='text-potongan-".$row['id']."'> ".$row["potongan"]." </span> </p>";
+    $nestedData[] = "<p style='font-size:15px' align='right'><span id='text-tax-".$row['id']."'> ".$row["tax"]." </span> </p>";
+    $nestedData[] = "<p style='font-size:15px' align='right'><span id='text-subtotal-".$row['id']."'> ".$row["subtotal"]." </span> </p>";
 
 if ($row_retur > 0 || $row_piutang > 0) {
 

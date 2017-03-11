@@ -208,9 +208,9 @@ $query = $db->query("SELECT * FROM pembayaran_hutang ORDER BY id DESC");
     <input type="text" name="potongan" id="potongan_penjualan" class="form-control" placeholder="Diskon" autocomplete="off" onkeydown="return numbersonly(this, event);" onkeyup="javascript:tandaPemisahTitik(this);">
 </div>
 
-<div class="form-group col-sm-1">
+<!--div class="form-group col-sm-1">
     <input type="text" name="sisa_hutang" id="sisa_hutang" class="form-control" placeholder="Hutang" autocomplete="off" readonly="">
-</div>
+</div-->
 
   <div class="form-group col-sm-2">
     <input type="text" class="form-control" name="jumlah_bayar"  onkeydown="return numbersonly(this, event);" id="jumlah_bayar" placeholder="Jumlah Bayar" autocomplete="off">
@@ -378,7 +378,7 @@ mysqli_close($db);
  ?>
 <a href='batal_hutang.php' id='batal' class='btn btn-danger'><i class="fa fa-close"></i></span> Batal </a>
 
-<a href='cetak_pembayaran_hutang.php' id="cetak_hutang" style="display: none;" class="btn btn-success" target="blank"><span class="glyphicon glyphicon-print"> </span> Cetak Pembayaran Hutang </a>
+<a href='cetak_pembayaran_hutang.php' target="blank" id="cetak_hutang" style="display: none;" class="btn btn-success" target="blank"><span class="glyphicon glyphicon-print"> </span> Cetak Pembayaran Hutang </a>
 
           
 <br>
@@ -439,7 +439,7 @@ $(document).ready(function(){
   
    $("#submit_tambah").click(function(){
       
-      var sisa_hutang = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#sisa_hutang").val()))));
+      //var sisa_hutang = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#sisa_hutang").val()))));
       var suplier = $("#nama_suplier").val();
       var tanggal_jt = $("#tanggal_jt").val();
       var session_id = $("#session_id").val();
@@ -454,13 +454,10 @@ $(document).ready(function(){
       var total = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#totalbayar").val()))));
       var jumlah_bayar = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#jumlah_bayar").val()))));
 
-      var a = cara_bayar - jumlah_bayar;
-      var hasil = jumlah_bayar - sisa_hutang;      
+      var a = cara_bayar - jumlah_bayar;     
       var total_kredit = kredit - potongan;
+      var hasil = jumlah_bayar - total_kredit; 
 
-       if (hasil > 0){
-      var jumlah_bayar = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#sisa_hutang").val()))));
-      }
         
         if (total == '') 
         {
@@ -472,14 +469,15 @@ $(document).ready(function(){
         };
         var subtotal = parseInt(total,10) + parseInt(jumlah_bayar,10);
 
-      $("#potongan1").val(potongan);
-      $("#faktur").val(no_faktur_pembelian); 
-      $("#total").val(total_kredit);  
-      $("#totalbayar").val('');
-      $("#jumlah_bayar").val('');
-     
-     
-      if (jumlah_bayar == ""){
+    
+      if (hasil > 0){
+        alert("Jumlah Bayar Anda Melebihi Sisa");
+
+        $("#total").val('');
+        $("#jumlah_bayar").val('');
+        $("#potongan10").val('');
+      }
+      else if (jumlah_bayar == ""){
       alert("Jumlah Bayar Harus Diisi");
       }
       else if (suplier == ""){
@@ -797,7 +795,7 @@ $(document).ready(function(){
     <script type="text/javascript">
     
     //fungsi hapus data 
-    $(document).on('click','.btn-hapus',function(){
+    $(".btn-hapus").click(function(){
     var no_faktur_pembelian = $(this).attr("data-no-faktur-pembelian");
     var kredit = $(this).attr("data-hutang");
     var jumlah_bayar = $(this).attr("data-jumlah-bayar");
@@ -808,15 +806,16 @@ $(document).ready(function(){
    if (total == '') 
       
       {
+        $("#nama_suplier").attr("disabled", false);
         total = 0;
       }
     
-    else if(jumlah_bayar   == '')
+    else if(jumlah_bayar  == '')
       {
         jumlah_bayar   = 0;
       };
        
-       var subtotal = parseInt(total,10) - parseInt(jumlah_bayar  ,10);
+       var subtotal = parseInt(total,10) - parseInt(jumlah_bayar,10);
                                   
                                   
     if (subtotal == 0) 

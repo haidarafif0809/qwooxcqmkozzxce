@@ -351,12 +351,12 @@ $insert2_petugas = "INSERT INTO tbs_fee_produk (no_reg,no_faktur,no_rm,nama_petu
 
 
 
-
+mysqli_close($db);
  ?>
  
-  <?php
+<!--<?php
                 
-           //menampilkan semua data yang ada pada tabel tbs penjualan dalam DB
+           /*menampilkan semua data yang ada pada tabel tbs penjualan dalam DB
                 $perintah = $db->query("SELECT tp.id,tp.no_faktur,tp.kode_barang,tp.satuan,tp.nama_barang,tp.jumlah_barang,tp.harga,tp.subtotal,tp.potongan,tp.tax,tp.jam,tp.tipe_barang,s.nama FROM tbs_penjualan tp INNER JOIN satuan s ON tp.satuan = s.id WHERE tp.no_faktur = '$no_faktur' AND no_reg = '$no_reg' AND kode_barang = '$kode'");
                 
                 //menyimpan data sementara yang ada pada $perintah
@@ -451,9 +451,6 @@ else
                 echo"</tr>";
 
                  //Untuk Memutuskan Koneksi Ke Database
-          mysqli_close($db); 
+          mysqli_close($db); */
 
-                ?>
-
-  
- 
+                ?>-->

@@ -282,9 +282,32 @@ $pembelian_hapus = mysqli_num_rows($pilih_akses_pembelian_hapus);
 
 						$.post("hapus_data_pembelian.php", {id:id, no_faktur:no_faktur}, function(data){
 						
+//pembaruan datatable  setelah dihapus 
+      				$('#table-beli').DataTable().destroy();
+
+						var dataTable = $('#table-beli').DataTable( {
+          			"processing": true,
+          			"serverSide": true,
+         			 "ajax":{
+           			 url :"proses_table_beli.php", // json datasource
+              		  type: "post",  // method  , by default get
+            		error: function(){  // error handling
+              			$(".tbody").html("");
+              			$("#table-beli").append('<tbody class="tbody"><tr><th colspan="3">No data found in the server</th></tr></tbody>');
+              			$("#table-beli_processing").css("display","none");
+            		}
+          		},
+              "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+              $(nRow).attr('class','tr-id-'+aData[18]+'');
+   				 },
+ 				});
+  //pembaruan datatable  setelah dihapus 
+    
 
 						});
 						
+
+
 						
 						});
 						
