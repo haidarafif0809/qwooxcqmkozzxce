@@ -52,8 +52,8 @@ $ambil_suplier = mysqli_fetch_array($select_suplier);
             $select_hpp_keluar = $db->query("SELECT SUM(jumlah_kuantitas) as jum FROM hpp_keluar WHERE no_faktur_hpp_masuk = '$nomor_faktur' AND kode_barang = '$data[kode_barang]'");
             $data_hpp_keluar = mysqli_fetch_array($select_hpp_keluar);
             $jumlah_keluar = $data_hpp_keluar['jum'];
-            
-            $select_hpp_masuk = $db->query("SELECT SUM(jumlah_kuantitas) as sum_hpp FROM hpp_keluar WHERE no_faktur_hpp_masuk = '$nomor_faktur' AND kode_barang = '$data[kode_barang]' ");
+
+            $select_hpp_masuk = $db->query("SELECT IFNULL(SUM(jumlah_kuantitas),0) as sum_hpp FROM hpp_keluar WHERE no_faktur_hpp_masuk = '$nomor_faktur' AND kode_barang = '$data[kode_barang]' ");
             $kel_hpp_kel = mysqli_fetch_array($select_hpp_masuk);
 
 
