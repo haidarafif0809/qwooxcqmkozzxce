@@ -743,7 +743,16 @@ $(".btn-alert-hapus").click(function(){
     {
     potongan = 0;
     } 
-
+     else
+          {
+            var pos = potongan.search("%");
+           if (pos > 0) 
+            {
+               var potongan_persen = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#potongan1").val()))));
+               potongan_persen = potongan_persen.replace("%","");
+               potongan = jumlah_barang * harga * potongan_persen / 100 ;
+            };
+          }
 
     
     var subtotal = parseInt(jumlah_barang, 10) *  parseInt(harga, 10) - parseInt(potongan, 10);
