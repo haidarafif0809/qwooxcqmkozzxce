@@ -29,13 +29,13 @@ $columns = array(
 );
 
 // getting total number records without any search
-$sql = "SELECT rekam_medik.no_reg, rekam_medik.no_rm, rekam_medik.nama, rekam_medik.alamat,
-  rekam_medik.umur, rekam_medik.jenis_kelamin, rekam_medik.poli, rekam_medik.dokter, rekam_medik.jam, rekam_medik.tanggal_periksa,rekam_medik.id ";
+$sql = "SELECT COUNT(*) AS jumlah_data ";
 $sql.=" FROM rekam_medik INNER JOIN registrasi ON rekam_medik.no_reg = registrasi.no_reg";
 $sql.=" WHERE registrasi.status != 'Batal Rawat' AND registrasi.status != 'Rujuk Keluar Klinik Tidak Ditangani' AND rekam_medik.status IS NULL  ";
 $sql.=" ORDER BY rekam_medik.tanggal_periksa DESC ";
 $query = mysqli_query($conn, $sql) or die("proses_table_rekam_medik_raja.php: get employees");
-$totalData = mysqli_num_rows($query);
+$query_data = mysqli_fetch_array($query);
+$totalData = $query_data['jumlah_data'];
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
 
@@ -53,10 +53,13 @@ if( !empty($requestData['search']['value']) ) {   // if there is a search parame
 	$sql.=" OR rekam_medik.dokter LIKE '".$requestData['search']['value']."%' ";
 	$sql.=" OR rekam_medik.jam LIKE '".$requestData['search']['value']."%' ";
 	$sql.=" OR rekam_medik.tanggal_periksa LIKE '".$requestData['search']['value']."%' )";
+
+	$query=mysqli_query($conn, $sql) or die("proses_table_rekam_medik_raja.php: get employees");
+
+$totalFiltered = mysqli_num_rows($query); // when there is a search parameter then we have to modify total number filtered rows as per search result. 
 }
 
-$query=mysqli_query($conn, $sql) or die("proses_table_rekam_medik_raja.php: get employees");
-$totalFiltered = mysqli_num_rows($query); // when there is a search parameter then we have to modify total number filtered rows as per search result. 
+
 $sql.=" ORDER BY rekam_medik.id DESC  LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
 /* $requestData['order'][0]['column'] contains colmun index, $requestData['order'][0]['dir'] contains order such as asc/desc  */	
 $query=mysqli_query($conn, $sql) or die("proses_table_rekam_medik_raja.php: get employees");
