@@ -942,12 +942,7 @@ $("#submit_produk").show('');
        var sisa = pembayaran - total;
        var sisa_kredit = total - pembayaran;
 
-     $("#pembayaran_pembelian").val('');
-     $("#sisa_pembayaran_pembelian").val('');
-     $("#kredit").val('');
-     $("#potongan_pembelian").val('');
-     $("#potongan_persen").val('');
-     $("#nama_suplier").val('');
+
      
  if (sisa_pembayaran < 0)
  {
@@ -983,7 +978,9 @@ alert("Pembayaran Harus Di Isi");
 alert("Silakan Bayar Hutang ");
 
  }
-  else if (total == "" || total == 0)
+
+
+  else if ((total_1 ==  0 && total ==  0 && potongan_persen != 100 && pembayaran == 0) || (total_1 ==  "" && total == "" &&potongan_persen != 100 && pembayaran == ""))
  {
 
 alert(" Anda Belum Melakukan Pembelian ");
@@ -1006,6 +1003,14 @@ alert(" Kode Gudang Harus Diisi ");
   $("#batal").hide();
   $("#transaksi_baru").show();  
     $("#cetak_tunai").show();
+
+     $("#pembayaran_pembelian").val('');
+     $("#sisa_pembayaran_pembelian").val('');
+     $("#kredit").val('');
+     $("#potongan_pembelian").val('');
+     $("#potongan_persen").val('');
+     $("#nama_suplier").val('');
+
 
  $.post("proses_bayar_beli.php",{no_faktur_suplier:no_faktur_suplier,total_1:total_1,kode_gudang:kode_gudang,session_id:session_id,no_faktur:no_faktur,sisa_pembayaran:sisa_pembayaran,kredit:kredit,suplier:suplier1,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,tax1:tax1,cara_bayar:cara_bayar,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,ppn:ppn,ppn_input:ppn_input,tax_rp:tax_rp},function(info) {
     
@@ -1097,23 +1102,14 @@ alert(" Kode Gudang Harus Diisi ");
 
         
         }
-      else if (sisa_kredit == "" )
-      {
 
-        alert ("Jumlah Pembayaran Tidak Mencukupi");
-      }
-
-      
-       
-        else if (total == "" || total == 0) 
+   else if ((total_1 ==  0 && total ==  0 && potongan_persen != 100 && pembayaran == 0) || (total_1 ==  "" && total == "" &&potongan_persen != 100 && pembayaran == ""))
         {
         
         alert("Total Kosong, Anda Belum Melakukan Pembelian");
         
         }
-
-        
-        
+     
        else
        {
          $("#kredit").val(sisa_kredit);
@@ -1201,7 +1197,7 @@ alert(" Kode Gudang Harus Diisi ");
 if (sisa < 0  )
       {
 
-       $("#kredit").val(sisa_kredit);
+       $("#kredit").val();
        $("#sisa_pembayaran_pembelian").val('0');
        $("#tanggal_jt").attr("disabled", false);
       }

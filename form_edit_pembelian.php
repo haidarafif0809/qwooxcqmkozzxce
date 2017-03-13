@@ -743,7 +743,16 @@ $(".btn-alert-hapus").click(function(){
     {
     potongan = 0;
     } 
-
+     else
+          {
+            var pos = potongan.search("%");
+           if (pos > 0) 
+            {
+               var potongan_persen = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#potongan1").val()))));
+               potongan_persen = potongan_persen.replace("%","");
+               potongan = jumlah_barang * harga * potongan_persen / 100 ;
+            };
+          }
 
     
     var subtotal = parseInt(jumlah_barang, 10) *  parseInt(harga, 10) - parseInt(potongan, 10);
@@ -875,7 +884,8 @@ $(".btn-alert-hapus").click(function(){
  {
 
   alert("Jumlah Pembayaran Tidak Mencukupi");
-
+  $("#pembayaran_pembelian").val('');
+  $("#pembayaran_pembelian").focus();
  }
 
 
@@ -896,6 +906,13 @@ alert("Pembayaran Harus Di Isi");
  {
 
 alert("Silakan Bayar Hutang");
+
+ }
+
+   else if ((total_1 ==  0 && total ==  0 && potongan_persen != 100 && pembayaran == 0) || (total_1 ==  "" && total == "" &&potongan_persen != 100 && pembayaran == ""))
+ {
+
+alert(" Anda Belum Melakukan Pembelian ");
 
  }
 
@@ -1006,6 +1023,13 @@ else
         alert ("Tanggal Jatuh Tempo Harus Di Isi");
       $("#tanggal_jt").focus();
        }
+
+  else if ((total_1 ==  0 && total ==  0 && potongan_persen != 100 && pembayaran == 0) || (total_1 ==  "" && total == "" &&potongan_persen != 100 && pembayaran == ""))
+ {
+
+alert(" Anda Belum Melakukan Pembelian ");
+
+ }
        
  else if (jumlah_bayar_lama == 0 || x <= total)
  {
@@ -1130,7 +1154,7 @@ $.post("cek_total_coba.php",
   $(document).on('click', '.pilih', function (e) {
     var no_faktur = $("#nomorfaktur").val();
     var kode_barang = $("#kode_barang").val();
-    var kode_barang = kode_barang.substr(0, kode_barang.indexOf('('));
+    
  $.post('cek_kode_barang_edit_tbs_pembelian.php',{kode_barang:kode_barang,no_faktur:no_faktur}, function(data){
   
   if(data == 1){
@@ -1158,7 +1182,7 @@ $.post("cek_total_coba.php",
       if (sisa < 0  )
       {
 
-       $("#kredit").val(sisa_kredit);
+       $("#kredit").val();
        $("#sisa_pembayaran_pembelian").val('0');
        $("#tanggal_jt").attr("disabled", false);
       }
@@ -1179,8 +1203,7 @@ else
   });
 </script>
 
-<!-- AUTOCOMPLETE -->
-
+<!-- AUTOCOMPLETE 
 <script>
 $(function() {
     $( "#kode_barang" ).autocomplete({
@@ -1189,7 +1212,7 @@ $(function() {
 });
 </script>
 
-<!-- AUTOCOMPLETE -->
+
 
 
 <script type="text/javascript">
@@ -1198,7 +1221,7 @@ $(function() {
         $("#kode_barang").keyup(function(){
 
           var kode_barang = $("#kode_barang").val();
-    var kode_barang = kode_barang.substr(0, kode_barang.indexOf('('));
+    
           var no_faktur = $("#nomorfaktur").val();
           
           $.post("cek_barang_pembelian.php",
@@ -1248,7 +1271,7 @@ $(function() {
 
       
       
-</script>
+</script> -->
 
 
 <script>
@@ -1320,6 +1343,8 @@ $(document).ready(function(){
     });
 </script>
 
+
+
 <script>
 
 // untuk memunculkan jumlah kas secara otomatis
@@ -1336,6 +1361,11 @@ $("#pembayaran_pembelian").keyup(function(){
 
       {
           $("#submit").hide();
+          $("#pembayaran_pembelian").val('');
+          $("#potongan_pembelian").val('');
+          $("#potongan_persen").val('');
+          $("#tax").val('');
+
         alert("Jumlah Kas Tidak Mencukupi Atau Kolom Cara Bayar Masih Kosong");
 
       }
