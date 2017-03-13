@@ -1201,7 +1201,7 @@ alert(" Kode Gudang Harus Diisi ");
 if (sisa < 0  )
       {
 
-       $("#kredit").val(sisa_kredit);
+       $("#kredit").val();
        $("#sisa_pembayaran_pembelian").val('0');
        $("#tanggal_jt").attr("disabled", false);
       }

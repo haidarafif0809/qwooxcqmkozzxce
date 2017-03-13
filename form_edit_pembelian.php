@@ -875,7 +875,8 @@ $(".btn-alert-hapus").click(function(){
  {
 
   alert("Jumlah Pembayaran Tidak Mencukupi");
-
+  $("#pembayaran_pembelian").val('');
+  $("#pembayaran_pembelian").focus();
  }
 
 
@@ -1130,7 +1131,7 @@ $.post("cek_total_coba.php",
   $(document).on('click', '.pilih', function (e) {
     var no_faktur = $("#nomorfaktur").val();
     var kode_barang = $("#kode_barang").val();
-    var kode_barang = kode_barang.substr(0, kode_barang.indexOf('('));
+    
  $.post('cek_kode_barang_edit_tbs_pembelian.php',{kode_barang:kode_barang,no_faktur:no_faktur}, function(data){
   
   if(data == 1){
@@ -1158,7 +1159,7 @@ $.post("cek_total_coba.php",
       if (sisa < 0  )
       {
 
-       $("#kredit").val(sisa_kredit);
+       $("#kredit").val();
        $("#sisa_pembayaran_pembelian").val('0');
        $("#tanggal_jt").attr("disabled", false);
       }
@@ -1179,8 +1180,7 @@ else
   });
 </script>
 
-<!-- AUTOCOMPLETE -->
-
+<!-- AUTOCOMPLETE 
 <script>
 $(function() {
     $( "#kode_barang" ).autocomplete({
@@ -1189,7 +1189,7 @@ $(function() {
 });
 </script>
 
-<!-- AUTOCOMPLETE -->
+
 
 
 <script type="text/javascript">
@@ -1198,7 +1198,7 @@ $(function() {
         $("#kode_barang").keyup(function(){
 
           var kode_barang = $("#kode_barang").val();
-    var kode_barang = kode_barang.substr(0, kode_barang.indexOf('('));
+    
           var no_faktur = $("#nomorfaktur").val();
           
           $.post("cek_barang_pembelian.php",
@@ -1248,7 +1248,7 @@ $(function() {
 
       
       
-</script>
+</script> -->
 
 
 <script>
@@ -1320,6 +1320,8 @@ $(document).ready(function(){
     });
 </script>
 
+
+
 <script>
 
 // untuk memunculkan jumlah kas secara otomatis
@@ -1336,6 +1338,11 @@ $("#pembayaran_pembelian").keyup(function(){
 
       {
           $("#submit").hide();
+          $("#pembayaran_pembelian").val('');
+          $("#potongan_pembelian").val('');
+          $("#potongan_persen").val('');
+          $("#tax").val('');
+
         alert("Jumlah Kas Tidak Mencukupi Atau Kolom Cara Bayar Masih Kosong");
 
       }

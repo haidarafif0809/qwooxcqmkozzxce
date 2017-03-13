@@ -17,18 +17,54 @@ $select_suplier = $db->query("SELECT id,nama FROM suplier WHERE id = '$suplier'"
 $ambil_suplier = mysqli_fetch_array($select_suplier);
 
 
-
-
-
-            $no_faktur_suplier = stringdoang($_POST['no_faktur_suplier']);
-            $nomor_faktur = stringdoang($_POST['no_faktur']);
-
-
-
-            $delete_jurnal = $db->query("DELETE FROM jurnal_trans WHERE no_faktur = '$nomor_faktur'");
-
             
-            $select_detail_pem = $db->query("SELECT * FROM detail_pembelian WHERE no_faktur = '$nomor_faktur' ");
+// siapkan "data" query dari post form edit pembelian
+            $sisa_kredit = angkadoang($_POST['kredit']);
+            $nomor_faktur = stringdoang($_POST['no_faktur']);
+            $suplier = stringdoang($_POST['suplier']);
+            $total = angkadoang($_POST['total']);
+            $total_1 = angkadoang($_POST['total_1']);
+            $potongan = angkadoang($_POST['potongan']);
+            $tax = angkadoang($_POST['tax']);
+            $ppn_input = stringdoang($_POST['ppn_input']);
+            $sisa_pembayaran = angkadoang($_POST['sisa_pembayaran']);
+            $cara_bayar = stringdoang($_POST['cara_bayar']);
+            $pembayaran = angkadoang($_POST['pembayaran']);
+            $tanggal = stringdoang($_POST['tanggal']);
+            $user = $_SESSION['user_name'];
+            $no_faktur_suplier = stringdoang($_POST['no_faktur_suplier']);
+            $tanggal_jt = angkadoang($_POST['tanggal_jt']);
+            $x = angkadoang($_POST['x']);
+            $sisa = 0;
+
+            if ($x <= $total) {
+            $sisa = 0;
+            } 
+            
+            else {
+            $sisa = $x - $total;
+            }
+
+            $t_total = $total_1 - $potongan;
+
+            $a = $total_1 - $potongan;
+            $tax_persen = $tax * $a / 100;
+           
+            $_SESSION['no_faktur']=$nomor_faktur;
+
+// end siapkan "data" query dari post form edit pembelian
+
+
+
+
+//query delete jurnal 
+            $delete_jurnal = $db->query("DELETE FROM jurnal_trans WHERE no_faktur = '$nomor_faktur'");
+//query delete jurnal 
+
+
+
+// query untuk menghapus barang di detail yang sudah terhapus di tbs karena pembelian tidak boleh langsung menghapus detail semua (warning)
+            $select_detail_pem = $db->query("SELECT kode_barang FROM detail_pembelian WHERE no_faktur = '$nomor_faktur' ");
             while($for_det = mysqli_fetch_array($select_detail_pem))
             {
 
@@ -41,13 +77,15 @@ $ambil_suplier = mysqli_fetch_array($select_suplier);
                 } 
 
             }
-            
+// query untuk menghapus barang di detail yang sudah terhapus di tbs karena pembelian tidak boleh langsung menghapus detail semua (warning)
+ 
+
+
+
+// query untuk memindahkan data dari tbs -> detail pembelian dengan perubahan data di tbs akan dicek terlebih dahulu di hpp keluar & hpp masuk silakan diamati
             $query12 = $db->query("SELECT * FROM tbs_pembelian WHERE no_faktur = '$nomor_faktur' ");
             while ($data = mysqli_fetch_array($query12))
             {
-
-
-
 
             $select_hpp_keluar = $db->query("SELECT SUM(jumlah_kuantitas) as jum FROM hpp_keluar WHERE no_faktur_hpp_masuk = '$nomor_faktur' AND kode_barang = '$data[kode_barang]'");
             $data_hpp_keluar = mysqli_fetch_array($select_hpp_keluar);
@@ -111,72 +149,57 @@ $ambil_suplier = mysqli_fetch_array($select_suplier);
 
  
         }
+// query untuk memindahkan data dari tbs -> detail pembelian dengan perubahan data di tbs akan dicek terlebih dahulu di hpp keluar & hpp masuk silakan diamati
 
 
 
-            $sisa_kredit = angkadoang($_POST['kredit']);
 
+// BAHAN UNTUK JURNAL PENGAMBILAN SETTING AKUN DAN TOTAL TAX DARI DETAIL PEMBELIAN
+$select_setting_akun = $db->query("SELECT persediaan,pajak,hutang,potongan,kas FROM setting_akun");
+$ambil_setting = mysqli_fetch_array($select_setting_akun);
+
+
+$sum_tax_tbs = $db->query("SELECT SUM(tax) AS total_tax FROM detail_pembelian WHERE no_faktur = '$nomor_faktur'");
+$jumlah_tax = mysqli_fetch_array($sum_tax_tbs);
+$total_tax = $jumlah_tax['total_tax'];
+// BAHAN UNTUK JURNAL PENGAMBILAN SETTING AKUN DAN TOTAL TAX DARI DETAIL PEMBELIAN
+
+
+
+
+//START PROSES UNTUK INSERT PEMBELIAN & JURNAL DENGAN PEMBAYARAN LUNAS
             if ($sisa_kredit == 0 ) 
             {
-                            // buat prepared statements
+// START QUERY PEMBELIAN LUNAS
+
+// buat prepared statements
             $stmt2 = $db->prepare("UPDATE pembelian SET no_faktur = ?, suplier = ?, total = ?, tanggal = ?, jam = ?, user = ?, status = 'Lunas', potongan = ?, tax = ?, sisa = ?, kredit = ?, cara_bayar = ?, tunai = ?, status_beli_awal = 'Tunai', ppn = ?, no_faktur_suplier = ? WHERE no_faktur = ? ");
             
             
             // hubungkan "data" dengan prepared statements
             $stmt2->bind_param("ssisssiiiisisss", 
             $nomor_faktur, $suplier, $total , $tanggal, $jam_sekarang, $user, $potongan, $tax_persen, $sisa, $sisa_kredit, $cara_bayar, $pembayaran, $ppn_input,$no_faktur_suplier, $nomor_faktur);
+            
+             $sisa_kredit = 0;
+
 
             
-            // siapkan "data" query
-            $nomor_faktur = stringdoang($_POST['no_faktur']);
-            $suplier = stringdoang($_POST['suplier']);
-            $total = angkadoang($_POST['total']);
-            $total_1 = angkadoang($_POST['total_1']);
-            $potongan = angkadoang($_POST['potongan']);
-            $tax = angkadoang($_POST['tax']);
-            $ppn_input = stringdoang($_POST['ppn_input']);
-            $sisa_pembayaran = angkadoang($_POST['sisa_pembayaran']);
-            $sisa_kredit = 0;
-            $cara_bayar = stringdoang($_POST['cara_bayar']);
-            $pembayaran = angkadoang($_POST['pembayaran']);
-            $tanggal = stringdoang($_POST['tanggal']);
-            $user = $_SESSION['user_name'];
-            
-            $x = angkadoang($_POST['x']);
-            
-            if ($x <= $total) {
-            $sisa = 0;
-            } 
-            
-            else {
-            $sisa = $x - $total;
-            }
+// jalankan query
+ $stmt2->execute();
 
-            $t_total = $total_1 - $potongan;
+// cek query statment
+if (!$stmt2) {
+   die('Query Error : '.$db->errno.
+   ' - '.$db->error);
+}
+else {
+    echo "Success";
 
-            $a = $total_1 - $potongan;
-            $tax_persen = $tax * $a / 100;
-            
-
-            $_SESSION['no_faktur']=$nomor_faktur;
-            
-            // jalankan query
-            
-            $stmt2->execute(); 
+}
+// cek query statment
 
 
-
-
-
-$select_setting_akun = $db->query("SELECT * FROM setting_akun");
-$ambil_setting = mysqli_fetch_array($select_setting_akun);
-
-$sum_tax_tbs = $db->query("SELECT SUM(tax) AS total_tax FROM detail_pembelian WHERE no_faktur = '$nomor_faktur'");
-$jumlah_tax = mysqli_fetch_array($sum_tax_tbs);
-$total_tax = $jumlah_tax['total_tax'];
-
-           $ppn_input = stringdoang($_POST['ppn_input']);
-
+// END QUERY PEMBELIAN LUNAS
 
 if ($ppn_input == "Non") {
 echo $ppn_input;
@@ -232,15 +255,18 @@ if ($potongan != "" || $potongan != 0 ) {
 //POTONGAN
         $insert_juranl = $db->query("INSERT INTO jurnal_trans (nomor_jurnal,waktu_jurnal,keterangan_jurnal,kode_akun_jurnal,debit,kredit,jenis_transaksi,no_faktur,approved,user_buat) VALUES ('".no_jurnal()."', '$tanggal $jam_sekarang', 'Pembelian Tunai - $ambil_suplier[nama]', '$ambil_setting[potongan]', '0', '$potongan', 'Pembelian', '$nomor_faktur','1', '$user')");
 }
+// END QUERY JURNAL PEMBELIAN LUNAS
 
 
-        
-        }
-         
+}
+//END  PROSES UNTUK INSERT PEMBELIAN & JURNAL DENGAN PEMBAYARAN LUNAS
+
+
+//START PROSES UNTUK INSERT PEMBELIAN & JURNAL DENGAN PEMBAYARAN HUTANG         
          if ($sisa_kredit != 0 ) 
 
             {
-            
+ // START QUERY PEMBELIAN PEMBAYARAN HUTANG                  
             $stmt2 = $db->prepare("UPDATE pembelian SET no_faktur = ?, suplier = ?, total = ?, tanggal = ?, jam = ?, tanggal_jt = ?, user = ?, status = 'Hutang', potongan = ?, tax = ?, sisa = ?, kredit = ?, cara_bayar = ?, tunai = ?, status_beli_awal = 'Kredit', ppn = ? , no_faktur_suplier = ? WHERE no_faktur = ?");
             
             
@@ -248,45 +274,27 @@ if ($potongan != "" || $potongan != 0 ) {
             $stmt2->bind_param("ssissssiiiisisss", 
             $nomor_faktur, $suplier, $total , $tanggal, $jam_sekarang, $tanggal_jt, $user, $potongan, $tax, $sisa, $sisa_kredit, $cara_bayar, $pembayaran, $ppn_input,$no_faktur_suplier, $nomor_faktur);
             
-            // siapkan "data" query
-            $nomor_faktur = stringdoang($_POST['no_faktur']);
-            $no_faktur_suplier = stringdoang($_POST['no_faktur_suplier']);
-            $suplier = stringdoang($_POST['suplier']);
-            $total = angkadoang($_POST['total']);
-            $total_1 = angkadoang($_POST['total_1']);
-            $potongan = angkadoang($_POST['potongan']);
-            $tax = angkadoang($_POST['tax']);
-            $tanggal_jt = angkadoang($_POST['tanggal_jt']);
-            $sisa_pembayaran = angkadoang($_POST['sisa_pembayaran']);
-            $sisa = 0;
-            $ppn_input = stringdoang($_POST['ppn_input']);
             $sisa_kredit = angkadoang($_POST['jumlah_kredit_baru']);
-            $cara_bayar = stringdoang($_POST['cara_bayar']);
-            $pembayaran = angkadoang($_POST['pembayaran']);
-            $tanggal = stringdoang($_POST['tanggal']);
-            $a = $total_1 - $potongan;
-            $tax_persen = $tax * $a / 100;
-            $t_total = $total_1 - $potongan;
 
-            $user = $_SESSION['user_name'];
+// jalankan query
+      $stmt2->execute(); 
 
-            $_SESSION['no_faktur']=$nomor_faktur;
-            
-            // jalankan query
-            $stmt2->execute(); 
+// cek query statment
+if (!$stmt2) {
+   die('Query Error : '.$db->errno.
+   ' - '.$db->error);
+}
+else {
+    echo "Success";
 
+}
+// cek query statment
 
-
-$select_setting_akun = $db->query("SELECT * FROM setting_akun");
-$ambil_setting = mysqli_fetch_array($select_setting_akun);
-
-$sum_tax_tbs = $db->query("SELECT SUM(tax) AS total_tax FROM detail_pembelian WHERE no_faktur = '$nomor_faktur'");
-$jumlah_tax = mysqli_fetch_array($sum_tax_tbs);
-$total_tax = $jumlah_tax['total_tax'];
-
-           $ppn_input = stringdoang($_POST['ppn_input']);
+// END QUERY PEMBELIAN PEMBAYARAN HUTANG
 
 
+
+// QUERY JURNAL PEMBELIAN HUTANG
 if ($ppn_input == "Non") {
 echo $ppn_input;
     $persediaan = $total_1;
@@ -351,29 +359,15 @@ if ($potongan != "" || $potongan != 0 ) {
         $insert_juranl = $db->query("INSERT INTO jurnal_trans (nomor_jurnal,waktu_jurnal,keterangan_jurnal,kode_akun_jurnal,debit,kredit,jenis_transaksi,no_faktur,approved,user_buat) VALUES ('".no_jurnal()."', '$tanggal $jam_sekarang', 'Pembelian Tunai - $ambil_suplier[nama]', '$ambil_setting[potongan]', '0', '$potongan', 'Pembelian', '$nomor_faktur','1', '$user')");
 }
 
-
-
-    }
-
+}
+//END  PROSES UNTUK INSERT PEMBELIAN & JURNAL DENGAN PEMBAYARAN LUNAS
 
             
 
+$perintah2 = $db->query("DELETE FROM tbs_pembelian WHERE no_faktur = '$nomor_faktur'");
 
 
 
-            
-            $perintah2 = $db->query("DELETE FROM tbs_pembelian WHERE no_faktur = '$nomor_faktur'");
-
-    // cek query
-if (!$stmt2) {
-   die('Query Error : '.$db->errno.
-   ' - '.$db->error);
-}
-else {
-
-}
-
-    echo "Success";
 
 //Untuk Memutuskan Koneksi Ke Database
 mysqli_close($db);   
