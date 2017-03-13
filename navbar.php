@@ -599,6 +599,14 @@ if ($lihat['laboratorium_lihat'] > 0)
 
 <?php } ?>
 
+<li ><a class="collapsible-header waves-effect arrow-r"><i class="fa fa-stethoscope"></i>Radiologi <i class="fa fa-angle-down rotate-icon"></i></a>
+    <div class="collapsible-body">
+       <ul>
+<li><a href="daftar_pemeriksaan_radiologi.php" class="waves-effect" >Daftar Pemeriksaan</a></li>
+</ul>
+    </div>
+</li>
+
 <?php
 
  if ($lihat['kas_lihat'] > 0){
