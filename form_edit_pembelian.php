@@ -909,6 +909,13 @@ alert("Silakan Bayar Hutang");
 
  }
 
+   else if ((total_1 ==  0 && total ==  0 && potongan_persen != 100 && pembayaran == 0) || (total_1 ==  "" && total == "" &&potongan_persen != 100 && pembayaran == ""))
+ {
+
+alert(" Anda Belum Melakukan Pembelian ");
+
+ }
+
  else if (jumlah_bayar_lama == 0)
  {
 
