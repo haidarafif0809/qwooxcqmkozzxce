@@ -326,6 +326,9 @@ if ($potongan != "" || $potongan != 0 ) {
     }
 // proses pemindahan data dari tbs -> detail pembelian
 
+// memasukan history edit tbs pembelian   
+    $history_tbs_pembelian = $db->query("INSERT INTO history_tbs_pembelian (session_id,no_faktur,kode_barang,nama_barang,jumlah_barang,satuan,harga,subtotal,potongan,tax) SELECT session_id,no_faktur,kode_barang,nama_barang,jumlah_barang,satuan,harga,subtotal,potongan,tax FROM tbs_pembelian  WHERE session_id = '$session_id' ");
+//end memasukan history edit tbs pembelian   
 
 
 // delete tsb pembelian yang sudah di di pindahkan ke detail pemebelian
@@ -337,5 +340,5 @@ if ($potongan != "" || $potongan != 0 ) {
 //Untuk Memutuskan Koneksi Ke Database
 mysqli_close($db);
 //Untuk Memutuskan Koneksi Ke Database
-   
+
     ?>
