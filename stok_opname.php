@@ -274,12 +274,12 @@ echo '<a href="form_stok_opname.php"  class="btn btn-info" > <i class="fa fa-plu
 <!--Start Ajax Modal DETAIL-->
 <script type="text/javascript" language="javascript" >
    $(document).ready(function() {
+
     $(document).on('click', '.detail', function (e) {
     $("#modal_detail").modal('show');
 
     var no_faktur = $(this).attr("no_faktur");
-    $("#no_faktur_detail").val(no_faktur);
-      var no_faktur_detail = $("#no_faktur_detail").val();
+  
             $('#table_modal_detail').DataTable().destroy();
 
         var dataTable = $('#table_modal_detail').DataTable( {
@@ -288,7 +288,7 @@ echo '<a href="form_stok_opname.php"  class="btn btn-info" > <i class="fa fa-plu
           "ajax":{
             url :"show_detail_stok_opname.php", // json datasource
              "data": function ( d ) {
-                  d.no_faktur = $("#no_faktur_detail").val();
+                  d.no_faktur = no_faktur;
                   // d.custom = $('#myInput').val();
                   // etc
               },
@@ -310,24 +310,6 @@ echo '<a href="form_stok_opname.php"  class="btn btn-info" > <i class="fa fa-plu
  </script>
 <!--Ending Ajax Modal Detail-->
 
-<!--<script type="text/javascript">
-
-		$(document).on('click','.detail',function(e){
-		var no_faktur = $(this).attr('no_faktur');
-		
-		
-		$("#modal_detail").modal('show');
-		
-		$.post('detail_stok_opname.php',{no_faktur:no_faktur},function(info) {
-		
-		$("#modal-detail").html(info);
-		
-		
-		});
-		
-		});
-		
-		</script>-->
 
 
 <script type="text/javascript">
@@ -386,7 +368,8 @@ echo '<a href="form_stok_opname.php"  class="btn btn-info" > <i class="fa fa-plu
 
 <script type="text/javascript">
 	
-		$(".btn-alert").click(function () {
+	$(document).on('click', '.btn-alert', function (e) {    
+
 		var no_faktur = $(this).attr("data-faktur");
 
 		$.post('modal_alert_hapus_data_stok_opname.php',{no_faktur:no_faktur},function(data){

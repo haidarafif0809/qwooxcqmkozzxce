@@ -4,7 +4,8 @@ include 'db.php';
 /* Database connection end */
 include 'sanitasi.php';
 
-$pilih_akses_stok_opname = $db->query("SELECT * FROM otoritas_stok_opname WHERE id_otoritas = '$_SESSION[otoritas_id]'");
+$pilih_akses_stok_opname = $db->query("SELECT stok_opname_edit,
+stok_opname_hapus FROM otoritas_stok_opname WHERE id_otoritas = '$_SESSION[otoritas_id]'");
 $stok_opname = mysqli_fetch_array($pilih_akses_stok_opname);
 
 // storing  request (ie, get/post) global array to a variable  
@@ -24,14 +25,21 @@ $columns = array(
 );
 
 // getting total number records without any search
-$sql = "SELECT * ";
+$sql = "SELECT COUNT(*) AS jumlah_data ";
 $sql.=" FROM stok_opname";
 $query=mysqli_query($conn, $sql) or die("datatable_stok_opname.php: get employees");
-$totalData = mysqli_num_rows($query);
+$query_data = mysqli_fetch_array($query);
+$totalData = $query_data['jumlah_data'];
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
 
-$sql = "SELECT * ";
+$sql = "SELECT no_faktur,
+tanggal,
+jam,
+status,
+total_selisih,
+user,id,
+keterangan ";
 $sql.=" FROM stok_opname WHERE 1=1";
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
 	$sql.=" AND ( no_faktur LIKE '".$requestData['search']['value']."%' ";    
@@ -39,7 +47,7 @@ if( !empty($requestData['search']['value']) ) {   // if there is a search parame
 }
 $query=mysqli_query($conn, $sql) or die("datatable_stok_opname.php: get employees");
 $totalFiltered = mysqli_num_rows($query); // when there is a search parameter then we have to modify total number filtered rows as per search result. 
-$sql.= " ORDER BY tanggal DESC LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
+$sql.= " ORDER BY tanggal ,jam DESC LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
 /* $requestData['order'][0]['column'] contains colmun index, $requestData['order'][0]['dir'] contains order such as asc/desc  */	
 $query=mysqli_query($conn, $sql) or die("employee-grid-data.php: get employees");
 
@@ -63,11 +71,13 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 
   if ($stok_opname['stok_opname_hapus'] > 0) {
 
-      $pilih = $db->query("SELECT no_faktur FROM hpp_masuk WHERE no_faktur = '$row[no_faktur]' AND sisa != jumlah_kuantitas");
-      $row_alert = mysqli_num_rows($pilih);
+      $hpp_keluar_stok_opname = $db->query("SELECT no_faktur_hpp_masuk FROM hpp_keluar WHERE no_faktur_hpp_masuk = '$row[no_faktur]' ");
 
-        
-        if ($row_alert > 0) {
+      $jumlah_hpp_keluar_stok_opname = mysqli_num_rows($hpp_keluar_stok_opname);
+
+        //jika hpp keluar stok opname nya lebih dari 0 maka stok opname tidak bisa di hapus
+        if ($jumlah_hpp_keluar_stok_opname > 0) {
+
         $nestedData[] = "<button class='btn btn-danger btn-alert' data-id='". $row['id'] ."' data-faktur='". $row['no_faktur'] ."'> <i class='fa fa-trash'></i> </button>";
         } 
         else {
