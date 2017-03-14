@@ -743,7 +743,16 @@ $(".btn-alert-hapus").click(function(){
     {
     potongan = 0;
     } 
-
+     else
+          {
+            var pos = potongan.search("%");
+           if (pos > 0) 
+            {
+               var potongan_persen = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#potongan1").val()))));
+               potongan_persen = potongan_persen.replace("%","");
+               potongan = jumlah_barang * harga * potongan_persen / 100 ;
+            };
+          }
 
     
     var subtotal = parseInt(jumlah_barang, 10) *  parseInt(harga, 10) - parseInt(potongan, 10);
@@ -900,6 +909,13 @@ alert("Silakan Bayar Hutang");
 
  }
 
+   else if ((total_1 ==  0 && total ==  0 && potongan_persen != 100 && pembayaran == 0) || (total_1 ==  "" && total == "" &&potongan_persen != 100 && pembayaran == ""))
+ {
+
+alert(" Anda Belum Melakukan Pembelian ");
+
+ }
+
  else if (jumlah_bayar_lama == 0)
  {
 
@@ -1007,6 +1023,13 @@ else
         alert ("Tanggal Jatuh Tempo Harus Di Isi");
       $("#tanggal_jt").focus();
        }
+
+  else if ((total_1 ==  0 && total ==  0 && potongan_persen != 100 && pembayaran == 0) || (total_1 ==  "" && total == "" &&potongan_persen != 100 && pembayaran == ""))
+ {
+
+alert(" Anda Belum Melakukan Pembelian ");
+
+ }
        
  else if (jumlah_bayar_lama == 0 || x <= total)
  {

@@ -362,7 +362,10 @@ if ($potongan != "" || $potongan != 0 ) {
 }
 //END  PROSES UNTUK INSERT PEMBELIAN & JURNAL DENGAN PEMBAYARAN LUNAS
 
-            
+// memasukan history edit tbs pembelian   
+$history_tbs_pembelian = $db->query("INSERT INTO history_edit_tbs_pembelian (session_id,no_faktur,kode_barang,nama_barang,jumlah_barang,satuan,harga,subtotal,potongan,tax) SELECT session_id,no_faktur,kode_barang,nama_barang,jumlah_barang,satuan,harga,subtotal,potongan,tax FROM tbs_pembelian  WHERE no_faktur = '$nomor_faktur' ");
+// end memasukan history edit tbs pembelian   
+
 
 $perintah2 = $db->query("DELETE FROM tbs_pembelian WHERE no_faktur = '$nomor_faktur'");
 
