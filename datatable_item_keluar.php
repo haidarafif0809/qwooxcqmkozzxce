@@ -4,8 +4,9 @@ include 'db.php';
 /* Database connection end */
 include 'sanitasi.php';
 
-$pilih_akses_item_masuk = $db->query("SELECT * FROM otoritas_item_keluar WHERE id_otoritas = '$_SESSION[otoritas_id]'");
-$item_masuk = mysqli_fetch_array($pilih_akses_item_masuk);
+$pilih_akses_item_keluar = $db->query("SELECT item_keluar_edit,
+item_keluar_hapus FROM otoritas_item_keluar WHERE id_otoritas = '$_SESSION[otoritas_id]'");
+$otoritas_item_keluar = mysqli_fetch_array($pilih_akses_item_keluar);
 
 // storing  request (ie, get/post) global array to a variable  
 $requestData= $_REQUEST;
@@ -24,10 +25,11 @@ $columns = array(
 );
 
 // getting total number records without any search
-$sql = "SELECT ik.no_faktur, ik.tanggal, ik.jam, ik.user, ik.user_edit, ik.tanggal_edit, ik.keterangan, ik.total, ik.id, u.nama, uu.nama AS nama_edit ";
+$sql = "SELECT COUNT(*) AS jumlah_data ";
 $sql.=" FROM item_keluar ik LEFT JOIN user u ON ik.user = u.username LEFT JOIN  user uu ON ik.user_edit = uu.username";
 $query=mysqli_query($conn, $sql) or die("datatable_item_keluar.php: get employees");
-$totalData = mysqli_num_rows($query);
+$query_data = mysqli_fetch_array($query);
+$totalData = $query_data['jumlah_data'];
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
 
@@ -46,7 +48,7 @@ $query=mysqli_query($conn, $sql) or die("datatable_item_keluar.phpppp: get emplo
 $totalFiltered = mysqli_num_rows($query); // when there is a search parameter then we have to modify total number filtered rows as per search result. 
 
 
-$sql.= " ORDER BY tanggal DESC LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
+$sql.= " ORDER BY tanggal,jam DESC LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
 
 /* $requestData['order'][0]['column'] contains colmun index, $requestData['order'][0]['dir'] contains order such as asc/desc  */	
 $query=mysqli_query($conn, $sql) or die("employee-grid-data.php: get employees");
@@ -68,11 +70,11 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 
       $nestedData[] = "<button class='btn detail btn-info' no_faktur='". $row['no_faktur'] ."'> <i class='fa fa-th-list'></i> Detail </button>";
 
-if ($item_masuk['item_keluar_edit'] > 0) {
+if ($otoritas_item_keluar['item_keluar_edit'] > 0) {
     $nestedData[] = "<a href='proses_edit_item_keluar.php?no_faktur=". $row['no_faktur']."' class='btn btn-success'> <i class='fa fa-edit'></i> Edit  </a>";
        }
 
-if ($item_masuk['item_keluar_hapus'] > 0) {
+if ($otoritas_item_keluar['item_keluar_hapus'] > 0) {
 
    $nestedData[] = "<button class='btn btn-hapus btn-danger' data-item='". $row['no_faktur'] ."' data-id='". $row['id'] ."'> <i class='fa fa-trash'> </i> Hapus </button>"; 
        } 
