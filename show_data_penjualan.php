@@ -114,6 +114,12 @@ if ($penjualan['penjualan_edit'] > 0) {
         $nestedData[] ='<td> <a href="cek_edit_penjualan_laboratorium.php?id='.$row["id"].'&no_faktur='.$row["no_faktur"].'&no_rm='.$row["kode_pelanggan"].'" class="btn btn-success btn-floating"> <i class="fa fa-edit"> </i></a></td>';
         
         }
+        elseif ($row['jenis_penjualan'] == 'Radiologi')
+        {
+        
+        $nestedData[] ='<td> <a href="cek_edit_penjualan_radiologi.php?id='.$row["id"].'&no_faktur='.$row["no_faktur"].'&no_rm='.$row["kode_pelanggan"].'" class="btn btn-success btn-floating"> <i class="fa fa-edit"> </i></a></td>';
+        
+        }
 
   }
 
