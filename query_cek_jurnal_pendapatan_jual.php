@@ -14,12 +14,14 @@ include 'sanitasi.php';
 
 $dari_tanggal = stringdoang($_GET['dari_tanggal']);
 $sampai_tanggal = stringdoang($_GET['sampai_tanggal']);
-$tanggal_sekarang = date('Y-m-d');
-$jam_sekarang = date('H:i:s');
-$query_penjualan = $db->query("SELECT p.user,p.no_faktur,p.total,p.potongan ,p.tanggal FROM penjualan p  WHERE p.tanggal >= '$dari_tanggal' AND p.tanggal <= '$sampai_tanggal'");
+
+$query_penjualan = $db->query("SELECT p.user,p.no_faktur,p.total,p.potongan ,p.tanggal ,p.jam FROM penjualan p  WHERE p.tanggal >= '$dari_tanggal' AND p.tanggal <= '$sampai_tanggal'");
 
 
 while ($data_penjualan = mysqli_fetch_array($query_penjualan)) {
+
+$tanggal_sekarang = $data_penjualan['tanggal'];
+$jam_sekarang = $data_penjualan['jam'];
 
 $query_jurnal = $db->query("SELECT kredit FROM jurnal_trans WHERE no_faktur = '$data_penjualan[no_faktur]' AND kode_akun_jurnal = '4-1100'");
 $data_jurnal = mysqli_fetch_array($query_jurnal);
