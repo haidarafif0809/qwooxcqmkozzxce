@@ -5,8 +5,9 @@ include 'db.php';
 include 'sanitasi.php';
 
 
-$pilih_akses_item_masuk = $db->query("SELECT * FROM otoritas_item_masuk WHERE id_otoritas = '$_SESSION[otoritas_id]'");
-$item_masuk = mysqli_fetch_array($pilih_akses_item_masuk);
+$pilih_akses_item_masuk = $db->query("SELECT item_masuk_edit,
+item_masuk_hapus FROM otoritas_item_masuk WHERE id_otoritas = '$_SESSION[otoritas_id]'");
+$otoritas_item_masuk = mysqli_fetch_array($pilih_akses_item_masuk);
 
 // storing  request (ie, get/post) global array to a variable  
 $requestData= $_REQUEST;
@@ -25,10 +26,11 @@ $columns = array(
 );
 
 // getting total number records without any search
-$sql = "SELECT ik.no_faktur, ik.tanggal, ik.jam, ik.user, ik.user_edit, ik.tanggal_edit, ik.keterangan, ik.total, ik.id, u.nama, uu.nama AS nama_edit ";
+$sql = "SELECT COUNT(*) AS jumlah_data ";
 $sql.=" FROM item_masuk ik LEFT JOIN user u ON ik.user = u.username LEFT JOIN  user uu ON ik.user_edit = uu.username";
 $query=mysqli_query($conn, $sql) or die("datatable_item_masuk.php: get employees");
-$totalData = mysqli_num_rows($query);
+$query_data = mysqli_fetch_array($query);
+$totalData = $query_data['jumlah_data'];
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
 
@@ -42,7 +44,7 @@ if( !empty($requestData['search']['value']) ) {   // if there is a search parame
 $query=mysqli_query($conn, $sql) or die("datatable_item_masuk.php: get employees");
 $totalFiltered = mysqli_num_rows($query); // when there is a search parameter then we have to modify total number filtered rows as per search result. 
 
-$sql.= " ORDER BY tanggal DESC LIMIT ".$requestData['start']." ,".$requestData['length']."   ";/* $requestData['order'][0]['column'] contains colmun index, $requestData['order'][0]['dir'] contains order such as asc/desc  */	
+$sql.= " ORDER BY tanggal ,jam DESC LIMIT ".$requestData['start']." ,".$requestData['length']."   ";/* $requestData['order'][0]['column'] contains colmun index, $requestData['order'][0]['dir'] contains order such as asc/desc  */	
 $query=mysqli_query($conn, $sql) or die("employee-grid-data.php: get employees");
 
 $data = array();
@@ -61,12 +63,12 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 
       $nestedData[] = "<button class='btn btn-info detail' no_faktur='". $row['no_faktur'] ."' ><i class='fa fa-th-list'></i> Detail </button>";
 
-      if ($item_masuk['item_masuk_edit'] > 0) {
+      if ($otoritas_item_masuk['item_masuk_edit'] > 0) {
               $nestedData[] = "<a href='proses_edit_item_masuk.php?no_faktur=". $row['no_faktur']."' class='btn btn-success'> <i class='fa fa-edit'></i> Edit </a>";
              }
 
 
-      if ($item_masuk['item_masuk_tambah'] > 0) {
+      if ($otoritas_item_masuk['item_masuk_hapus'] > 0) {
 
             $hpp_keluar = $db->query ("SELECT no_faktur FROM hpp_keluar WHERE no_faktur_hpp_masuk = '$row[no_faktur]'");
             $row_hpp_keluar = mysqli_num_rows($hpp_keluar);
