@@ -139,6 +139,27 @@ opacity: 0.9;
 
 
       <span id="tampil_kamar">
+
+            <span id="tampil_kamar">
+
+           <div class="table-responsive">
+
+            <table id="table-kamar" class="table table-bordered table-hover table-striped">
+            <thead>
+              <tr>
+              <th>Kelas</th>
+              <th>Kode Kamar</th>
+              <th>Nama Kamar</th>
+              <th>Fasilitas</th>
+              <th>Jumlah Bed</th>
+              <th>Sisa Bed</th>    
+              </tr>
+          </thead>
+           </table>  
+         </div>
+
+      </span>
+
       </span>
       <form role="form" method="POST">
 <div class="row">
@@ -171,7 +192,7 @@ opacity: 0.9;
 </div>
      
 
-       <button style="width:100px;"" type="button" class="btn btn-warning  waves-effect waves-light" data-ids=""  data-regs="" data-beds="" data-group_beds="" id="pindah_kamar"> <i class="fa fa-reply"></i>Pindah</button>
+       <button style="width:110px;"" type="button" class="btn btn-warning  waves-effect waves-light" data-ids=""  data-regs="" data-beds="" data-group_beds="" id="pindah_kamar"> <i class="fa fa-reply"></i> Pindah</button>
        </div>
        <div class="modal-footer">
         
@@ -1229,11 +1250,33 @@ return val;
             $("#pindah_kamar").attr("data-beds",bed);
             $("#pindah_kamar").attr("data-group_beds",group_bed);
 
-                $.post("pindah_kamar.php",{reg:reg,bed:bed,group_bed:group_bed},function(data){
-                $("#tampil_kamar").html(data);
-                $("#modal_kamar").modal('show');
+            $("#modal_kamar").modal('show');
             $("#kamar_lama").val(group_bed);
-                });
+
+            $('#table-kamar').DataTable().destroy();
+                                var dataTable = $('#table-kamar').DataTable( {
+                                    "processing": true,
+                                    "serverSide": true,
+                                    "ajax":{
+                                      url :"pindah_kamar.php", // json datasource
+                                      type: "post",  // method  , by default get
+                                      error: function(){  // error handling
+                                        $(".tbody").html("");
+                                        $("#table-kamar").append('<tbody class="tbody"><tr ><td colspan="3">No data found in the server</td></tr></tbody>');
+                                        $("#table-kamar_processing").css("display","none");
+                                        
+                                      }
+                                    },
+
+                                     "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+                                          $(nRow).attr('class', "pilih3");
+                                         $(nRow).attr('data-group-bed',aData[2]);
+                                        $(nRow).attr('data-nama',aData[1]);
+
+                          },
+                   });
+
+
             });
 //            tabel lookup mahasiswa         
 
@@ -1280,6 +1323,34 @@ return val;
 </script>
 
 
+
+<script type="text/javascript">
+
+            // jika dipilih, nim akan masuk ke input dan modal di tutup
+            $(document).on('click', '.pilih3', function (e) {
+              var no_reg = $("#no_reg").val();
+              var bed2 = $(this).attr('data-nama');
+              var group_bed2 = $(this).attr('data-group-bed');
+
+
+        $.post("cek_kamar_ranap.php",{bed2:bed2,no_reg:no_reg},function(data){
+
+                          if (data == 1) {
+                    alert("Kamar yang anda masukan sudah ada,Silahkan pilih kamar lain!");
+                      $("#group_bed2").val('')
+                      $("#bed2").val('')
+                          }
+                          else{
+
+                      $("#group_bed2").val(group_bed2)
+                      $("#bed2").val(bed2)
+
+                          }
+             });    
+  });
+           
+          
+</script>
 
 <!--   script untuk Batal-->
 <script type="text/javascript">
