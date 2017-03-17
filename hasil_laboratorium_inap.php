@@ -1,4 +1,4 @@
-P<?php include_once 'session_login.php';
+<?php include_once 'session_login.php';
 // memasukan file session login,  header, navbar, db.php,
 include 'header.php';
 include 'navbar.php';
@@ -9,10 +9,10 @@ $nama = stringdoang($_GET['nama']);
 $no_rm = stringdoang($_GET['no_rm']);
 $no_reg = stringdoang($_GET['no_reg']);
 $jenis_penjualan = stringdoang($_GET['jenis_penjualan']);
-
-
+$no_periksa = stringdoang($_GET['no_periksa']);
 
 ?>
+
 <div class="container">
 <h3>FORM HASIL LABORATORIUM</h3><hr>
 
@@ -35,6 +35,7 @@ $jenis_penjualan = stringdoang($_GET['jenis_penjualan']);
 
 <form  role="form" >
 
+<input style="height: 20px" type="hidden"  class="form-control" id="no_periksa" value="<?php echo $no_periksa; ?>" autocomplete="off">
 <input style="height: 20px" type="hidden"  class="form-control" id="no_rm" value="<?php echo $no_rm; ?>"  autocomplete="off">
 <input style="height: 20px" type="hidden"  class="form-control" id="no_reg" value="<?php echo $no_reg; ?>"  autocomplete="off">
 <input style="height: 20px" type="hidden"  class="form-control" id="nama" value="<?php echo $nama; ?>"  autocomplete="off">
@@ -185,9 +186,9 @@ switch ($model_hitung) {
  ?>
 <button type="submit" id="selesai" class="btn btn-success" style="font-size:15px;">Selesai</button>
 
-<a href='cetak_hasil_lab.php' id="cetak" style="display: none;" class="btn btn-warning" target="blank"><i class="fa fa-print"></i> Cetak </a>
+<a href='cetak_hasil_lab_inap.php' id="cetak" style="display: none;" class="btn btn-warning" target="blank"><i class="fa fa-print"></i> Cetak </a>
 
-<a class="btn btn-danger" href="pasien_sudah_masuk.php" id="kembali" style="display: none"><i class="fa fa-reply"></i> Kembali</a>
+<a class="btn btn-danger" href="rawat_inap.php" id="kembali" style="display: none"><i class="fa fa-reply"></i> Kembali</a>
 
 <div class="alert alert-success" id="alert_berhasil" style="display:none">
           <strong>Success!</strong> Input Hasil Laboratorium Berhasil !!
@@ -305,14 +306,15 @@ $("#input-status-"+id+"").attr("data-status",input_nama);
         var jenis_penjualan = $("#jenis_penjualan").val();
         var dokter = $("#dokter").val();
         var analis = $("#analis").val();
+        var no_periksa = $("#no_periksa").val();
 
- $.post("proses_selesai_lab.php",{no_rm:no_rm,no_reg:no_reg,nama:nama,jenis_penjualan:jenis_penjualan,dokter:dokter,analis:analis},function(info) {
+ $.post("proses_selesai_lab_inap.php",{no_periksa:no_periksa,no_rm:no_rm,no_reg:no_reg,nama:nama,jenis_penjualan:jenis_penjualan,dokter:dokter,analis:analis},function(info) {
 
 
      //$("#table-baru").html(info);
      var no_reg = info;
      $("#cetak").show();
-     $("#cetak").attr('href', 'cetak_hasil_lab.php?no_reg='+no_reg+'');
+     $("#cetak").attr('href', 'cetak_hasil_lab_inap.php?no_periksa='+no_periksa+'&no_reg='+no_reg+'');
 
      $("#alert_berhasil").show();
 

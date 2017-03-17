@@ -4,7 +4,6 @@ include 'navbar.php';
 include 'db.php';
 
 
-
 // AKHIR untuk FEGY NATION
 ?>
 
@@ -59,10 +58,38 @@ include 'db.php';
   <span id="periksa"> 
 <div class="form-group">
   <label for="sel1">Nama Pemeriksaan</label>
-  <select class="form-control" id="pemeriksaan" name="pemeriksaan" required="">  
+<select type="text" class="form-control" id="pemeriksaan" name="pemeriksaan" required="" data-toggle="tooltip" data-placement="top" title="Pilih dahulu kelompok pemeriksaannya, maka data nama pemeriksaan akan tampil, jika kosong cek data jasa atas kelompok pemeriksaan tersebut!!">  
+
   </select>
 </div>
   </span>
+
+<div class="form-group">
+  <label for="sel1">Sub Hasil Pemeriksaan</label>
+  <select class="form-control" id="sub_hasil_lab" name="sub_hasil_lab"> 
+  <option value="">Pilih Sub Pemeriksaan</option>
+  <?php 
+  $get = $db->query("SELECT id,nama_pemeriksaan FROM setup_hasil WHERE kategori_index = 'Header'");
+  while ( $out = mysqli_fetch_array($get))
+    {
+        $take = $db->query("SELECT nama FROM jasa_lab WHERE id = '$out[nama_pemeriksaan]'");
+        $drop = mysqli_fetch_array($take);
+      echo "<option value='".$out['id']."'>".$drop['nama']."</option>";
+    }
+  ?>
+  </select>
+</div>
+
+
+<div class="form-group">
+  <label for="setup">Kategori Index</label>
+  <select  class="form-control" id="kategori_index" name="kategori_index" autocomplete="off">
+<option value="Header">Header</option>
+<option value="Detail">Detail</option>
+</select>
+</div>
+
+
 
 
 
@@ -246,13 +273,6 @@ include 'db.php';
 
 
 
-<div class="form-group">
-  <label for="setup">Kategori Index</label>
-  <select  class="form-control" id="kategori_index" name="kategori_index" autocomplete="off">
-<option value="Header">Header</option>
-<option value="Detail">Detail</option>
-</select>
-</div>
 
 
 <button type="submit" id="tambah" class="btn btn-info"><i class="fa fa-plus"></i> Tambah</button>
@@ -274,16 +294,20 @@ tr:nth-child(even){background-color: #f2f2f2}
   <table id="table_set_up" class="table table-sm table-bordered">
     <thead>
       <tr>
-       <th style='background-color: #4CAF50; color: white'>Text Hasil</th>
-       <th style='background-color: #4CAF50; color: white'>Nama Pemeriksaan</th>
-       <th style='background-color: #4CAF50; color: white'>Kelompok Pemeriksaan</th>
-       <th style='background-color: #4CAF50; color: white'>Model Hitung</th>
-       <th style='background-color: #4CAF50; color: white'>Text Reference</th>
-       <th style='background-color: #4CAF50; color: white'>Normal Laki - Laki</th>
-       <th style='background-color: #4CAF50; color: white'>Normal Perempuan</th>
-       <th style='background-color: #4CAF50; color: white'>Metode</th>
-       <th style='background-color: #4CAF50; color: white'>Edit</th>
-       <th style='background-color: #4CAF50; color: white'>Hapus</th>
+<th style='background-color: #4CAF50; color: white'>Text Hasil</th>
+<th style='background-color: #4CAF50; color: white'>Nama Pemeriksaan</th>
+<th style='background-color: #4CAF50; color: white'>Kelompok Pemeriksaan</th>
+
+<th style='background-color: #4CAF50; color: white'>Sub Pemeriksaan</th>
+<th style='background-color: #4CAF50; color: white'>Kategori Index</th>
+
+<th style='background-color: #4CAF50; color: white'>Model Hitung</th>
+<th style='background-color: #4CAF50; color: white'>Text Reference</th>
+<th style='background-color: #4CAF50; color: white'>Normal Laki - Laki</th>
+<th style='background-color: #4CAF50; color: white'>Normal Perempuan</th>
+<th style='background-color: #4CAF50; color: white'>Metode</th>
+<th style='background-color: #4CAF50; color: white'>Edit</th>
+<th style='background-color: #4CAF50; color: white'>Hapus</th>
 
     </tr>
     </thead>
@@ -318,7 +342,7 @@ tr:nth-child(even){background-color: #f2f2f2}
             }
           },
               "fnCreatedRow": function( nRow, aData, iDataIndex ) {
-              $(nRow).attr('class','tr-id-'+aData[10]+'');
+              $(nRow).attr('class','tr-id-'+aData[12]+'');
             },
         } );
       } );
@@ -540,9 +564,8 @@ $("#nilai_p").val('');
 $("#nilai_lk2").val('');
 $("#nilai_p2").val('');
 $("#text_depan").val('');
-$("#satuan_nilai").val('');
 
-  $("#range").html('Nilai');
+$("#range").html('Nilai');
 $("#sd").hide();
 $("#range1").html('Nilai');
 $("#sd1").hide();
@@ -581,7 +604,14 @@ $.post('table_baru_setup_hasil.php',{q:q},function(data)
 </script>
 <!-- END script cari untuk pegy natio -->
 
+<script type="text/javascript">
+    $(document).ready(function(){
+    // Tooltips Initialization
+    $(function () {
+    $('[data-toggle="tooltip"]').tooltip()
+    });
 
-  <?php 
-  include 'footer.php';
-   ?>
+    });
+</script>
+
+<?php include 'footer.php'; ?>

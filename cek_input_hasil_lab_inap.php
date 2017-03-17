@@ -6,7 +6,7 @@ $nama = stringdoang($_GET['nama']);
 $no_rm = stringdoang($_GET['no_rm']);
 $no_reg = stringdoang($_GET['no_reg']);
 $jenis_penjualan = stringdoang($_GET['jenis_penjualan']);
-
+$no_periksa = stringdoang($_GET['no_periksa']);
 
 
 $perintah3 = $db->query("SELECT * FROM tbs_hasil_lab WHERE no_reg = '$no_reg' ");
@@ -18,9 +18,11 @@ if ($data1 > 0)
 }
 
 
-$perintah = $db->query("SELECT kode_barang,nama_barang FROM tbs_penjualan WHERE no_reg = '$no_reg' AND lab = 'Laboratorium'");
+
+$perintah = $db->query("SELECT lab_ke_berapa,kode_barang,nama_barang FROM tbs_penjualan WHERE no_reg = '$no_reg' AND lab_ke_berapa = '$no_periksa' AND lab = 'Laboratorium' AND status_lab IS NULL");
 while ($data = mysqli_fetch_array($perintah)){
 
+$lab_ke_berapa = $data['lab_ke_berapa'];
 $kode_barang = $data['kode_barang'];
 $nama_barang = $data['nama_barang'];
 
@@ -69,10 +71,10 @@ else
 //Proses untuk Input Jasanya jika bukan Header Laboratorium
 $query6 = "INSERT INTO tbs_hasil_lab (satuan_nilai_normal,model_hitung,
 no_rm,no_reg,id_pemeriksaan,nilai_normal_lk,nilai_normal_pr,
-status_pasien,nama_pemeriksaan,normal_lk2,normal_pr2) VALUES 
+status_pasien,nama_pemeriksaan,normal_lk2,normal_pr2,lab_ke_berapa) VALUES 
 ('$satuan_nilai_normal','$model_hitung','$no_rm','$no_reg',
 '$id_pemeriksaan','$hasil_pria','$hasil_wanita','$jenis_penjualan',
-'$nama_barang','$hasil_pria2','$hasil_wanita2')";
+'$nama_barang','$hasil_pria2','$hasil_wanita2','$lab_ke_berapa')";
 
 	      if ($db->query($query6) === TRUE)
 	      {
@@ -85,12 +87,13 @@ status_pasien,nama_pemeriksaan,normal_lk2,normal_pr2) VALUES
   	}
   }
 }// end while awal!!
+// end while cek hasil lab
 
 //NOTE* BAGIAN ATAS INSERT DARI TBS , DAN BAGIAN BAWAH INSERT DETAIL YANG INDUX (HEADER)-NYA ADA DI TBS PENJUALAN !!
 
 //START Proses untuk input Header and Detail Jasa Laboratorium
 //Ambil setup hasil yang nama pemeriksaaannya (id) sama dengan id di jasa_lab dan di setup hasilnya Header (Indux)
-$perintah = $db->query("SELECT kode_barang FROM tbs_penjualan WHERE no_reg = '$no_reg' AND lab = 'Laboratorium'");
+$perintah = $db->query("SELECT lab_ke_berapa,kode_barang FROM tbs_penjualan WHERE no_reg = '$no_reg' AND lab_ke_berapa = '$no_periksa' AND lab = 'Laboratorium' AND status_lab IS NULL ");
 while($data = mysqli_fetch_array($perintah)){
 
 $kode_barang = $data['kode_barang'];
@@ -127,10 +130,12 @@ else
   	{
 
 	$insert_anaknya = "INSERT INTO tbs_hasil_lab (satuan_nilai_normal,
-	model_hitung,no_rm,no_reg,id_pemeriksaan,nilai_normal_lk,nilai_normal_pr,status_pasien,nama_pemeriksaan,id_sub_header,normal_lk2,normal_pr2) VALUES ('$drop[satuan_nilai_normal]','$drop[model_hitung]',
-	'$no_rm','$no_reg','$drop[nama_pemeriksaan]','$drop[normal_lk]',
-	'$drop[normal_pr]','$jenis_penjualan','$nama_jasa_anak','$id_mother',
-	'$drop[normal_lk2]','$drop[normal_pr2]')";
+	model_hitung,no_rm,no_reg,id_pemeriksaan,nilai_normal_lk,nilai_normal_pr,status_pasien,nama_pemeriksaan,id_sub_header,normal_lk2,normal_pr2,
+	lab_ke_berapa) VALUES ('$drop[satuan_nilai_normal]',
+	'$drop[model_hitung]','$no_rm','$no_reg','$drop[nama_pemeriksaan]',
+	'$drop[normal_lk]','$drop[normal_pr]','$jenis_penjualan',
+	'$nama_jasa_anak','$id_mother','$drop[normal_lk2]',
+	'$drop[normal_pr2]','$data[lab_ke_berapa]')";
 
       if ($db->query($insert_anaknya) === TRUE)
       {
@@ -147,7 +152,8 @@ else
 }
 //Ending Proses untuk input Header and Detail Jasa Laboratorium
 
-echo '<META HTTP-EQUIV="Refresh" Content="0; URL=hasil_laboratorium.php?no_rm='.$no_rm.'&no_reg='.$no_reg.'&nama='.$nama.'&jenis_penjualan='.$jenis_penjualan.'">';
+
+echo '<META HTTP-EQUIV="Refresh" Content="0; URL=hasil_laboratorium_inap.php?no_rm='.$no_rm.'&no_reg='.$no_reg.'&nama='.$nama.'&jenis_penjualan='.$jenis_penjualan.'&no_periksa='.$no_periksa.'">';
 //Untuk Memutuskan Koneksi Ke Database
 mysqli_close($db);   
 

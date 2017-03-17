@@ -184,6 +184,58 @@ opacity: 0.9;
 
 
 
+<!-- Modal Untuk LAB RANAP-->
+<div id="modal_lab_inap" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <!-- Modal content-->
+    <div class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <center><h2>Pemeriksaan Laboratorium Rawat Inap </h2></center>       
+    </div>
+    <div class="modal-body">
+
+      <span id="tampil_lab">
+      </span>
+     
+     <form role="form" method="POST">
+     
+     <div class="form-group">
+
+      <label for="">No RM</label>
+      <input style="height: 20px;" type="text" class="form-control" name="lab_rm" readonly="" autocomplete="off" id="lab_rm" placeholder="Pemeriksaan Ke">
+    </div>
+
+     <div class="form-group">
+      <label for="">Nama Pasien</label>
+      <input  type="text" class="form-control" name="lab_nama" readonly="" autocomplete="off" id="lab_nama" placeholder="Nama Pasien">
+    </div>
+
+    <div class="form-group">
+      <label for="">No Reg</label>
+      <input style="height: 20px;" type="text" class="form-control" name="lab_reg" readonly="" autocomplete="off" id="lab_reg" placeholder=" No Reg">
+    </div>
+
+     <input type="hidden" class="form-control" id="no_reg" name="no_reg" data-reg="" >
+     
+   <center> <a href="data_laboratorium_inap.php" type="submit" class="btn btn-info" id="input_lab" data-id=""> <i class="fa fa-send" ></i> Yes</a>
+
+
+        <button type="button" class="btn btn-danger" data-dismiss="modal" ><i class="fa fa-remove"></i> No</button>
+</center> 
+     </form>
+
+       </div>
+       <div class="modal-footer">
+        
+    </div>
+    </div>
+  </div>
+</div>
+<!--modal end LAB RANAP-->
+
+
+
 <!-- Modal Untuk batal ranap-->
 <div id="modal_batal" class="modal fade" role="dialog">
   <div class="modal-dialog modal-lg">
@@ -739,14 +791,13 @@ tr:nth-child(even){background-color: #f2f2f2}
           <th style='background-color: #4CAF50; color: white' >Edit</th>
    <?php endif ?>
         
-
          <th style='background-color: #4CAF50; color: white'>Transaksi Penjualan</th>
 
   <?php if ($registrasi_ri['registrasi_ri_lihat']):?>      
           <th style='background-color: #4CAF50; color: white'>Pindah Kamar</th>
           <th style='background-color: #4CAF50; color: white'>Operasi</th>
           <th style='background-color:#4CAF50; color: white'> Rujuk Lab</th>
-          <th style='background-color:#4CAF50; color: white'> Input Hasil Lab</th>
+          <!--<th style='background-color:#4CAF50; color: white'> Input Hasil Lab</th>-->
   <?php endif ?>
 
   <?php if ($rekam_medik['rekam_medik_ri_lihat']):?>         
@@ -1438,6 +1489,30 @@ else
     });//penutup click(function()
   });//penutup ready(function()
 </script>
+
+
+<!--   script rujuk lab (input data pemeriksaan lab/jasa lab)-->
+<script type="text/javascript">
+     $(document).on('click', '.pemeriksaan_lab_inap', function (e) {
+               var rm = $(this).attr("data-rm");
+               var nama = $(this).attr("data-nama");
+               var reg = $(this).attr("data-reg");
+
+               var id = $(this).attr("data-id");
+               var pasien = $('#name-tag-'+id).text();
+
+  
+        $("#modal_lab_inap").modal('show');
+
+               $("#lab_nama").val(pasien);
+               $("#lab_rm").val(rm);
+               $("#lab_reg").val(reg);
+
+  $("#input_lab").attr('href','data_laboratorium_inap.php?no_reg='+reg+'&nama='+pasien+'&no_rm='+rm);
+               
+     });
+</script>
+<!--    ENDING script rujuk lab (input data pemeriksaan lab/jasa lab)-->
 
 
 <!-- footer  -->

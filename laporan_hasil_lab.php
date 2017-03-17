@@ -5,14 +5,36 @@ include 'navbar.php';
 include 'sanitasi.php';
 include 'db.php';
 
-
-
 ?>
 
 <div class="container">
-<h3><b>Laporan Hasil Laboratorium</b></h3>
+<!--DROPDOWN UNTUK FILTER LAPORAN-->
+<div class="row">
+
+<div class="col-sm-2">
+<div class="dropdown">
+             <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" style="width:150px"> Jenis Laporan <span class="caret"></span></button>
+
+  <ul class="dropdown-menu dropdown-ins">
+
+      <li><a class="dropdown-item" href="laporan_lab_rekap.php"> Laporan Rekap </a></li>
+
+      <li><a class="dropdown-item" href="laporan_lab_detail.php"> Laporan Detail </a></li>
+
+  </ul>
+
+</div> <!--/ dropdown-->
+</div>
+
+<div class="col-sm-3">
+</div>
+  
+</div>
+<!--DROPDOWN UNTUK FILTER LAPORAN-->
 <br>
 
+<h3><b>Laporan Hasil Laboratorium</b></h3>
+<br>
 
 <div id="modal_detail" class="modal fade" role="dialog">
   <div class="modal-dialog modal-lg">

@@ -8,6 +8,7 @@ include 'db.php';
 
 $no_faktur = $_GET['no_faktur'];
 $no_suplier = $_GET['no_suplier'];
+$suplier = $_GET['suplier'];
 
 $perintah = $db->query("SELECT p.id,p.no_faktur,p.no_faktur_suplier,p.total,p.suplier,p.tanggal,p.tanggal_jt,p.jam,p.user,p.status,p.potongan,p.tax,p.sisa,p.kredit,s.nama,g.nama_gudang FROM pembelian p INNER JOIN suplier s ON p.suplier = s.id INNER JOIN gudang g ON p.kode_gudang = g.kode_gudang ORDER BY p.id DESC");
 
@@ -63,7 +64,7 @@ $data001 = mysqli_fetch_array($perintah);
       <tr><td  width="50%">Tanggal</td> <td> :&nbsp;</td>  <td> <?php echo tanggal($data0['tanggal']);?> </td>
       </tr>
       <tr><td  width="50%">No. Faktur Suplier</td> <td> :&nbsp;</td>  <td> <?php echo $data001['no_faktur_suplier']; ?> </td></tr>
-      <tr><td  width="50%">Suplier</td> <td> :&nbsp;</td>  <td> <?php echo $data001['nama']; ?> </td></tr>
+      <tr><td  width="50%">Suplier</td> <td> :&nbsp;</td>  <td> <?php echo $suplier; ?> </td></tr>
 </tbody>
   </table>         
                  
