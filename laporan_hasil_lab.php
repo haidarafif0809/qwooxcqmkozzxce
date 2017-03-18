@@ -9,6 +9,75 @@ include 'db.php';
 
 <div class="container">
 <!--DROPDOWN UNTUK FILTER LAPORAN-->
+
+
+<!-- Modal Untuk LAB RANAP-->
+<div id="modal_lab_inap" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <!-- Modal content-->
+    <div class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <center><h2>Lihat Data Hasil Detail Laboratorium Rawat Inap </h2></center>       
+    </div>
+    <div class="modal-body">
+
+      <span id="tampil_lab">
+      </span>
+     
+     <form role="form" method="POST">
+
+     <div class="row">
+     <div class="col-sm-6">
+
+       <div class="form-group">
+      <label for="">No RM</label>
+      <input style="height: 20px;" type="text" class="form-control" name="lab_rm" readonly="" autocomplete="off" id="lab_rm" placeholder="No RM">
+    </div>
+
+     <div class="form-group">
+      <label for="">Nama Pasien</label>
+      <input  style="height: 20px;" type="text" class="form-control" name="lab_nama" readonly="" autocomplete="off" id="lab_nama" placeholder="Nama Pasien">
+    </div>
+
+     </div>
+
+
+     <div class="col-sm-6">
+       <div class="form-group">
+      <label for="">No Faktur</label>
+      <input style="height: 20px;" type="text" class="form-control" name="lab_rm" readonly="" autocomplete="off" id="lab_faktur" placeholder="Faktur">
+    </div>
+
+    
+
+    <div class="form-group">
+      <label for="">No Reg</label>
+      <input style="height: 20px;" type="text" class="form-control" name="lab_reg" readonly="" autocomplete="off" id="lab_reg" placeholder=" No Reg">
+    </div>
+
+     </div>
+     </div>
+
+     
+   <center> <a href="'detail_laboratorium_inap.php" type="submit" class="btn btn-info" id="show_lab_inap" data-id=""> <i class="fa fa-send" ></i> Yes</a>
+
+
+        <button type="button" class="btn btn-danger" data-dismiss="modal" ><i class="fa fa-remove"></i> No</button>
+</center> 
+     </form>
+
+       </div>
+       <div class="modal-footer">
+        
+    </div>
+    </div>
+  </div>
+</div>
+<!--modal end LAB RANAP-->
+
+
+
 <div class="row">
 
 <div class="col-sm-2">
@@ -141,5 +210,27 @@ $(document).on('click', '.detail-lab', function (e) {
 		});
 </script>
 
+
+<!--SKRIPT DETAIL RAWAT INAP -->
+<script type="text/javascript">
+     $(document).on('click', '.detail-lab-inap', function (e) {
+               var rm = $(this).attr("data-rm");
+               var nama = $(this).attr("data-nama");
+               var reg = $(this).attr("data-reg");
+               var faktur = $(this).attr("data-faktur");
+
+  
+        $("#modal_lab_inap").modal('show');
+
+               $("#lab_nama").val(nama);
+               $("#lab_rm").val(rm);
+               $("#lab_reg").val(reg);
+               $("#lab_faktur").val(faktur);
+
+  $("#show_lab_inap").attr('href','detail_laboratorium_inap.php?no_reg='+reg+'&faktur='+faktur+'&nama='+nama+'&no_rm='+rm);
+               
+     });
+</script>
+<!-- SKRIPT DETAIL RAWAT INAP -->
 
 <?php include 'footer.php'; ?>

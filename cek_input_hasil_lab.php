@@ -69,10 +69,10 @@ else
 //Proses untuk Input Jasanya jika bukan Header Laboratorium
 $query6 = "INSERT INTO tbs_hasil_lab (satuan_nilai_normal,model_hitung,
 no_rm,no_reg,id_pemeriksaan,nilai_normal_lk,nilai_normal_pr,
-status_pasien,nama_pemeriksaan,normal_lk2,normal_pr2) VALUES 
+status_pasien,nama_pemeriksaan,normal_lk2,normal_pr2,kode_barang) VALUES 
 ('$satuan_nilai_normal','$model_hitung','$no_rm','$no_reg',
 '$id_pemeriksaan','$hasil_pria','$hasil_wanita','$jenis_penjualan',
-'$nama_barang','$hasil_pria2','$hasil_wanita2')";
+'$nama_barang','$hasil_pria2','$hasil_wanita2','$kode_barang')";
 
 	      if ($db->query($query6) === TRUE)
 	      {
@@ -127,10 +127,10 @@ else
   	{
 
 	$insert_anaknya = "INSERT INTO tbs_hasil_lab (satuan_nilai_normal,
-	model_hitung,no_rm,no_reg,id_pemeriksaan,nilai_normal_lk,nilai_normal_pr,status_pasien,nama_pemeriksaan,id_sub_header,normal_lk2,normal_pr2) VALUES ('$drop[satuan_nilai_normal]','$drop[model_hitung]',
+	model_hitung,no_rm,no_reg,id_pemeriksaan,nilai_normal_lk,nilai_normal_pr,status_pasien,nama_pemeriksaan,id_sub_header,normal_lk2,normal_pr2,kode_barang) VALUES ('$drop[satuan_nilai_normal]','$drop[model_hitung]',
 	'$no_rm','$no_reg','$drop[nama_pemeriksaan]','$drop[normal_lk]',
 	'$drop[normal_pr]','$jenis_penjualan','$nama_jasa_anak','$id_mother',
-	'$drop[normal_lk2]','$drop[normal_pr2]')";
+	'$drop[normal_lk2]','$drop[normal_pr2]','$kode_barang')";
 
       if ($db->query($insert_anaknya) === TRUE)
       {

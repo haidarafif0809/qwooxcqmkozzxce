@@ -114,8 +114,20 @@ if($row['no_faktur'] == '')
 	$nestedData[] = "<p style='color:red'> Belum Penjualan</p>";
 }
 else
-{
+{	
+	if($row['status_pasien'] == 'Rawat Inap')
+	{
+		$nestedData[] = "<td><button class='btn btn-floating  btn-info detail-lab-inap' data-faktur='".$row['no_faktur']."' data-reg='".$row['no_reg']."' data-nama='".$row['nama_pasien']."' data-rm='".$row['no_rm']."'><i class='fa fa-list'></i></button></td>";
+
+
+		 
+	}
+	else
+	{
+
 	$nestedData[] = "<td><button class='btn btn-floating  btn-info detail-lab' data-faktur='".$row['no_faktur']."'><i class='fa fa-list'></i></button></td>";
+	}
+	
 }
 	$nestedData[] = $row["id"];
 

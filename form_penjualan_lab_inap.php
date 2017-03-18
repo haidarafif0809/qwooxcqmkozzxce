@@ -3222,7 +3222,7 @@ $(document).on('click','.btn-hapus-tbs',function(e){
          $("#kode_barang").trigger('chosen:open');    
 
 
-        $.post("hapustbs_penjualan_labora.php",{id:id,kode_barang:kode_barang,no_reg:no_reg,kode_pelanggan:kode_pelanggan},function(data){
+        $.post("hapus_tbs_jual_lab_inap.php",{id:id,kode_barang:kode_barang,no_reg:no_reg,kode_pelanggan:kode_pelanggan},function(data){
 
         });
 
