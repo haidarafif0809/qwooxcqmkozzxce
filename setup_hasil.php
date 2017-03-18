@@ -7,6 +7,59 @@ include 'db.php';
 // AKHIR untuk FEGY NATION
 ?>
 
+<div id="modal_detail" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg" role="document">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <center><h4 class="modal-title"><b>Detail Setup</b></h4></center>
+      </div>
+
+      <div class="modal-body">
+      <div class="table-responsive">
+      <span id="modal-detail"> </span>
+
+
+        <div class="table-responsive"> 
+          <table id="table-detail" class="table table-striped">
+          <thead>
+<th style='background-color: #4CAF50; color: white'>Text Hasil</th>
+<th style='background-color: #4CAF50; color: white'>Nama Pemeriksaan</th>
+<th style='background-color: #4CAF50; color: white'>Kelompok Pemeriksaan</th>
+<th style='background-color: #4CAF50; color: white'>Sub Pemeriksaan</th>
+<th style='background-color: #4CAF50; color: white'>Kategori Index</th>
+<th style='background-color: #4CAF50; color: white'>Model Hitung</th>
+<th style='background-color: #4CAF50; color: white'>Text Reference</th>
+<th style='background-color: #4CAF50; color: white'>Normal Laki - Laki</th>
+<th style='background-color: #4CAF50; color: white'>Normal Perempuan</th>
+<th style='background-color: #4CAF50; color: white'>Metode</th>
+<th style='background-color: #4CAF50; color: white'>Edit</th>
+<th style='background-color: #4CAF50; color: white'>Hapus</th>  
+
+          </thead>
+          
+          </table>
+          </div>
+
+
+
+      </div>
+
+     </div>
+
+      <div class="modal-footer">
+        
+  <center><button type="button" class="btn btn-danger" data-dismiss="modal">Close</button></center>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+
    <!-- Modal Untuk Confirm Delete-->
 <div id="modale-delete" class="modal fade" role="dialog">
   <div class="modal-dialog">
@@ -306,6 +359,7 @@ tr:nth-child(even){background-color: #f2f2f2}
 <th style='background-color: #4CAF50; color: white'>Normal Laki - Laki</th>
 <th style='background-color: #4CAF50; color: white'>Normal Perempuan</th>
 <th style='background-color: #4CAF50; color: white'>Metode</th>
+<th style='background-color: #4CAF50; color: white'>Detail</th>
 <th style='background-color: #4CAF50; color: white'>Edit</th>
 <th style='background-color: #4CAF50; color: white'>Hapus</th>
 
@@ -342,7 +396,7 @@ tr:nth-child(even){background-color: #f2f2f2}
             }
           },
               "fnCreatedRow": function( nRow, aData, iDataIndex ) {
-              $(nRow).attr('class','tr-id-'+aData[12]+'');
+              $(nRow).attr('class','tr-id-'+aData[13]+'');
             },
         } );
       } );
@@ -506,7 +560,7 @@ var id = $("#id2").val();
   $(".tr-id-"+id+"").remove();
 
 $.post('delete_setup_hasil.php',{id:id},function(data){
-
+$("#modal_detail").modal('hide');
     });
 
 });
@@ -613,5 +667,53 @@ $.post('table_baru_setup_hasil.php',{q:q},function(data)
 
     });
 </script>
+
+
+
+
+<!--menampilkan detail penjualan-->
+    <script type="text/javascript">
+    
+    $(document).on('click','.detail-set-up',function(e){
+
+    var sub = $(this).attr('data-sub');
+    var id = $(this).attr('data-id');
+
+    $("#modal_detail").modal('show');
+
+      $('#table-detail').DataTable().destroy();
+
+          var dataTable = $('#table-detail').DataTable( {
+          "processing": true,
+          "serverSide": true,
+          "info":     false,
+          "language": {
+        "emptyTable":     "My Custom Message On Empty Table"
+    },
+          "ajax":{
+            url :"show_detail_set_up.php", // json datasource
+             "data": function ( d ) {
+                d.id = id;
+                d.sub = sub;
+                // d.custom = $('#myInput').val();
+                // etc
+            },
+                type: "post",  // method  , by default get
+            error: function(){  // error handling
+              $(".tbody").html("");
+              $("#table-detail").append('<tbody class="tbody"><tr><th colspan="3"></th></tr></tbody>');
+              $("#table-detail_processing").css("display","none");
+              
+            }
+          }
+    
+
+
+        } );
+
+    
+    });
+    
+    </script>
 
 <?php include 'footer.php'; ?>
