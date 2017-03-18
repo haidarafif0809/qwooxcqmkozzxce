@@ -32,14 +32,13 @@ while($out = mysqli_fetch_array($select))
 
 	$input = "INSERT INTO hasil_lab (id_pemeriksaan, nama_pemeriksaan, hasil_pemeriksaan, nilai_normal_lk, nilai_normal_pr, status_abnormal, status_pasien, status, no_rm, no_reg,nama_pasien,tanggal,
 		jam,model_hitung,satuan_nilai_normal,dokter,petugas_analis,
-		id_sub_header,nilai_normal_lk2,nilai_normal_pr2,lab_ke_berapa) VALUES 
-		('$out[id_pemeriksaan]','$out[nama_pemeriksaan]',
+		id_sub_header,nilai_normal_lk2,nilai_normal_pr2,lab_ke_berapa,kode_barang) VALUES ('$out[id_pemeriksaan]','$out[nama_pemeriksaan]',
 		'$out[hasil_pemeriksaan]','$out[nilai_normal_lk]',
 		'$out[nilai_normal_pr]','$out[status_abnormal]',
 		'$jenis_penjualan','Selesai','$no_rm','$no_reg','$nama','$tanggal',
 		'$jam','$out[model_hitung]','$out[satuan_nilai_normal]',
 		'$dokter','$analis','$out[id_sub_header]','$out[normal_lk2]',
-		'$out[normal_pr2]','$no_periksa')";
+		'$out[normal_pr2]','$no_periksa','$kode_barang')";
 
 	  if ($db->query($input) === TRUE)
       {
