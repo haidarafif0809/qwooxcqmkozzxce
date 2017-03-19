@@ -3,8 +3,8 @@
 include 'sanitasi.php';
 include 'db.php';
 
-$no_faktur = $_POST['no_faktur'];
-
+$no_reg = $_POST['no_reg'];
+$no_periksa = $_POST['no_periksa'];
 
 
 ?>
@@ -25,7 +25,7 @@ $no_faktur = $_POST['no_faktur'];
         <tbody>
         <?php
 
-$detail = $db->query("SELECT * FROM hasil_lab WHERE no_faktur = '$no_faktur' GROUP BY id_sub_header");
+$detail = $db->query("SELECT * FROM hasil_lab WHERE no_reg = '$no_reg' AND lab_ke_berapa = '$no_periksa' GROUP BY id_sub_header");
 while($drop_master = mysqli_fetch_array($detail))
 {
 
@@ -40,7 +40,7 @@ while($drop_master = mysqli_fetch_array($detail))
   $name_sub_header = $get['nama'];
                 //menampilkan data
     
-  $show = $db->query("SELECT * FROM hasil_lab WHERE no_faktur = '$no_faktur' AND status = 'Selesai' ");
+  $show = $db->query("SELECT * FROM hasil_lab WHERE no_reg = '$no_reg' AND status = 'Selesai' AND lab_ke_berapa = '$no_periksa' ");
   $drop_show = mysqli_fetch_array($show);
 
 if($face_drop >= 1)
@@ -64,7 +64,7 @@ if($face_drop >= 1)
 
     </tr>";
 
-    $show_one = $db->query("SELECT * FROM hasil_lab WHERE no_faktur = '$no_faktur' AND status = 'Selesai' AND id_sub_header = '$id_get'");
+    $show_one = $db->query("SELECT * FROM hasil_lab WHERE no_reg = '$no_reg' AND status = 'Selesai' AND id_sub_header = '$id_get' AND lab_ke_berapa = '$no_periksa'");
             //menyimpan data sementara yang ada pada $perintah
   
         while ($take = mysqli_fetch_array($show_one))
@@ -129,7 +129,7 @@ if($face_drop >= 1)
 
 
 //start untuk yang sendirian / yang tidak ber HEADER/INDUX
-       $show_two = $db->query("SELECT * FROM hasil_lab WHERE no_faktur = '$no_faktur' AND status = 'Selesai' AND id_sub_header = 0");
+       $show_two = $db->query("SELECT * FROM hasil_lab WHERE no_reg = '$no_reg' AND status = 'Selesai' AND lab_ke_berapa = '$no_periksa' AND id_sub_header = 0");
             //menyimpan data sementara yang ada pada $perintah
   
           while ($drop_two = mysqli_fetch_array($show_two))

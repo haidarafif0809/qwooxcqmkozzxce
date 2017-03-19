@@ -101,6 +101,25 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 	    $nestedData[] = "<button  type='button' data-reg='".$row['no_reg']."' class='btn btn-floating btn-small btn-info rujuk_ri' ><i class='fa fa-hotel'></i>   </button>";
 	}
 	
+//INPUT JASA LAB
+ $nestedData[] = "<a href='form_penjualan_lab.php?no_rm=".$row['no_rm']."&nama=".$row['nama_pasien']."&no_reg=".$row['no_reg']."&dokter=".$row['dokter']."&jenis_penjualan=UGD&rujukan=Rujuk UGD' class='btn btn-floating btn-small btn-info'><i class='fa fa-stethoscope'></i></a>
+       ";
+
+// untuk input hasil lab
+$show = $db->query("SELECT COUNT(*) AS jumlah FROM tbs_penjualan WHERE no_reg = '$row[no_reg]' AND lab = 'Laboratorium' ");
+$take = mysqli_fetch_array($show);
+
+	if ($take['jumlah'] > 0)
+	{
+		$nestedData[] = "<a href='cek_input_hasil_lab.php?no_rm=".$row['no_rm']."&nama=".$row['nama_pasien']."&no_reg=".$row['no_reg']."&jenis_penjualan=Rawat Jalan' class='btn btn-floating btn-small btn-info'><i class='fa fa-pencil'></i></a>";
+	}
+	else
+	{
+	  $nestedData[] = "<p style='color:red'>Input Laboratorium</p>";
+
+	}
+// end untuk input hasil lab
+
 
 	if ($rekam_medik['rekam_medik_ugd_lihat'] > 0) {
 	  $nestedData[] = "<a href='input_rekam_medik_ugd.php?no_reg=".$row['no_reg']."&tgl=".$row['tanggal']."&id=".$row['id_rek']."&jam=".$row['jam']."' class='btn-floating btn-info btn-small' ><i class='fa fa-medkit '></i></a>";

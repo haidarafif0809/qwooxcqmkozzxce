@@ -65,13 +65,14 @@ $dokter = $out_dokter['nama'];
         <div class="col-sm-4">
         
    <table>
-  <tbody>
-
-      <tr><td  width="50%">Tanggal</td> <td> :&nbsp;</td> <td> <?php echo $tanggal; ?> </td></tr>
-      <tr><td  width="50%">Petugas</td> <td> :&nbsp;</td> <td> <?php echo $_SESSION['nama']; ?> </td></tr>
-      <tr><td width="50%">Dokter</td> <td> :&nbsp;</td> <td> <?php echo $dokter; ?> </td></tr>
-      <tr><td  width="50%">Analis</td> <td> :&nbsp;</td> <td> <?php echo $analis; ?> </td></tr>   
+  <tbody> 
  
+      <tr><td  width="50%">Tanggal &nbsp;:&nbsp;<?php echo $tanggal; ?> </td></tr>
+      <tr><td  width="50%">Petugas &nbsp;:&nbsp; <?php echo $_SESSION['nama']; ?> </td></tr>
+
+      <tr><td  width="50%">Dokter &nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;<?php echo $dokter;?> </td></tr>
+      <tr><td  width="50%">Analis &nbsp;&nbsp;&nbsp;&nbsp;:&nbsp; <?php echo $analis;?> </td></tr>
+      
   </tbody>
   </table>       
 
@@ -100,67 +101,180 @@ $dokter = $out_dokter['nama'];
         </thead>
         
         <tbody>
-        <?php
+       <?php
 
-            
-$show = $db->query("SELECT * FROM hasil_lab WHERE no_reg = '$no_reg' AND status = 'Selesai'");
-            //menyimpan data sementara yang ada pada $perintah
-            while ($take = mysqli_fetch_array($show))
-            {
+ $show = $db->query("SELECT * FROM hasil_lab WHERE no_reg = '$no_reg' AND status = 'Selesai' AND id_sub_header != '0' GROUP BY id_sub_header ");
+  while($drop_show = mysqli_fetch_array($show))
+{
+
+  $id_sub_head = $drop_show['id_sub_header']; //ok take id indux /sub
+
+// select id lab nya
+  $select = $db->query("SELECT id,nama_pemeriksaan FROM setup_hasil WHERE id = '$id_sub_head' GROUP BY sub_hasil_lab");
+$drop = mysqli_fetch_array($select);
+   $face_drop = mysqli_num_rows($select);
+
+  $id_set_up = $drop['nama_pemeriksaan'];
+  $id_get = $drop['id'];
+
+  $get_name = $db->query("SELECT nama FROM jasa_lab WHERE id = '$id_set_up' GROUP BY id");
+  $get = mysqli_fetch_array($get_name);
+  $name_sub_header = $get['nama'];
                 //menampilkan data
-            echo "<tr>
-                <td>". $take['nama_pemeriksaan'] ."</td>
-                <td>". $take['hasil_pemeriksaan'] ."</td>";
+    
+ 
 
-
-
-$model_hitung = $take['model_hitung']; 
-if($model_hitung == '')
+if($face_drop >= 1)
 {
-  echo "<td>&nbsp; ". '-' ." </td>
-        <td>&nbsp; ". '-'." </td>
-        ";
-}
-else
-{
-switch ($model_hitung) {
-    case "Lebih Kecil Dari":
-        echo "<td>&lt;&nbsp; ". $take['nilai_normal_lk']."&nbsp;". $take['satuan_nilai_normal']." </td>
-        <td>&lt;&nbsp; ". $take['nilai_normal_pr']."&nbsp;". $take['satuan_nilai_normal']." </td>
-        ";
-        break;
-    case "Lebih Kecil Sama Dengan":
-        echo "<td>&lt;=&nbsp; ". $take['nilai_normal_lk']."&nbsp;". $take['satuan_nilai_normal']." </td>
-        <td>&lt;=&nbsp; ". $take['nilai_normal_pr']."&nbsp;". $take['satuan_nilai_normal']." </td>
-        ";
-        break;
-    case "Lebih Besar Dari":
-        echo "<td>&gt;&nbsp; ". $take['nilai_normal_lk']."&nbsp;". $take['satuan_nilai_normal']." </td>
-        <td>&gt;&nbsp; ". $take['nilai_normal_pr']."&nbsp;". $take['satuan_nilai_normal']." </td>
-        ";
-        break;
+
+    $hitung_baris = 0;
+    echo "
+    <tr>";
+
+    if($hitung_baris != 0)
+      {
+          $name_sub_header = '';
+      }
+          $hitung_baris++;
+
+          echo "<td><b>".$name_sub_header."</b></td>
+                <td><center>-</center></td>
+                <td><center>-</center></td>
+                <td><center>-</center></td>
+                <td><center>-</center></td>
+
+    </tr>";
+
+    $show_one = $db->query("SELECT * FROM hasil_lab WHERE no_reg = '$no_reg' AND status = 'Selesai'  AND id_sub_header = '$id_get' ");
+            //menyimpan data sementara yang ada pada $perintah
+  
+        while ($take = mysqli_fetch_array($show_one))
+        {
+
+        echo "<tr>";
+        echo "<td>  <li> ". $take['nama_pemeriksaan'] ."</li></td>";
+        echo "<td>". $take['hasil_pemeriksaan'] ."</td>";
+
+        $model_hitung = $take['model_hitung']; 
+        if($model_hitung == '')
+        {
+            echo "
+            <td>&nbsp; ". '-' ." </td>
+            <td>&nbsp; ". '-'." </td>
+            ";
+        }
+        else
+        {
+          switch ($model_hitung) {
+          case "Lebih Kecil Dari":
+          echo "<td>&lt;&nbsp; ". $take['nilai_normal_lk']."&nbsp;". $take['satuan_nilai_normal']." </td>
+          <td>&lt;&nbsp; ". $take['nilai_normal_pr']."&nbsp;". $take['satuan_nilai_normal']." </td>";
+          
+          break;
+          case "Lebih Kecil Sama Dengan":
+          echo "<td>&lt;=&nbsp; ". $take['nilai_normal_lk']."&nbsp;". $take['satuan_nilai_normal']." </td>
+          <td>&lt;=&nbsp; ". $take['nilai_normal_pr']."&nbsp;". $take['satuan_nilai_normal']." </td>";
+
+          break;
+          case "Lebih Besar Dari":
+          echo "<td>&gt;&nbsp; ". $take['nilai_normal_lk']."&nbsp;". $take['satuan_nilai_normal']." </td>
+          <td>&gt;&nbsp; ". $take['nilai_normal_pr']."&nbsp;". $take['satuan_nilai_normal']." </td>";
+
+          break;
           case "Lebih Besar Sama Dengan":
-        echo "<td>&gt;=&nbsp; ". $take['nilai_normal_lk']."&nbsp;". $take['satuan_nilai_normal']." </td>
-        <td>&gt;=&nbsp; ". $take['nilai_normal_pr']."&nbsp;". $take['satuan_nilai_normal']." </td>
-        ";
-        break;
+          echo "<td>&gt;=&nbsp; ". $take['nilai_normal_lk']."&nbsp;". $take['satuan_nilai_normal']." </td>
+          <td>&gt;=&nbsp; ". $take['nilai_normal_pr']."&nbsp;". $take['satuan_nilai_normal']." </td>";
+
+          break;
           case "Antara Sama Dengan":
-        echo "<td>". $take['nilai_normal_lk']."&nbsp;-&nbsp; ". $take['nilai_normal_lk']."&nbsp;". $take['satuan_nilai_normal']." </td>
-        <td>". $take['nilai_normal_pr']."&nbsp;-&nbsp; ". $take['nilai_normal_pr']."&nbsp;". $take['satuan_nilai_normal']." </td>
-        ";
-        break;
-    } 
+          echo "<td>". $take['nilai_normal_lk']."&nbsp;-&nbsp; ". $take['nilai_normal_lk']."&nbsp;". $take['satuan_nilai_normal']." </td>
+          <td>". $take['nilai_normal_pr']."&nbsp;-&nbsp; ". $take['nilai_normal_pr']."&nbsp;". $take['satuan_nilai_normal']."</td>";
+                            
+          break;
+          //Text
+          case "Text":
+          echo "<td>&nbsp; ". $take['nilai_normal_lk']."&nbsp;". $take['satuan_nilai_normal']." </td>
+          <td>&nbsp; ". $take['nilai_normal_pr']."&nbsp;". $take['satuan_nilai_normal']." </td>";
+          break;
+          //End Text
+
+                } 
+          }  
+
+        echo " <td>". $take['status_pasien'] ."</td>
+        <tr>";
+
+        } //END WHILE
+} //END IF UNTUK DATA LABORATORIUM YANG ADA HEADER / INDUX
+
 }
 
 
 
-               //<td>". $take['status_abnormal'] ."</td>//
-                echo " <td>". $take['status_pasien'] ."</td>
+
+//start untuk yang sendirian / yang tidak ber HEADER/INDUX
+       $show_two = $db->query("SELECT * FROM hasil_lab WHERE no_reg = '$no_reg' AND status = 'Selesai' AND id_sub_header = 0");
+            //menyimpan data sementara yang ada pada $perintah
+  
+          while ($drop_two = mysqli_fetch_array($show_two))
+          {
+
+            echo "<tr>";
+            echo "<td><b> ".$drop_two['nama_pemeriksaan']."</b></td>";
+            echo "<td>". $drop_two['hasil_pemeriksaan'] ."</td>";
+
+            $model_hitung = $drop_two['model_hitung']; 
+            if($model_hitung == '')
+            {
+              echo "
+              <td>&nbsp; ". '-' ." </td>
+              <td>&nbsp; ". '-'." </td>
+              ";
+            }
+            else
+            {
+            
+            switch ($model_hitung) {
+            case "Lebih Kecil Dari":
+            echo "<td>&lt;&nbsp; ". $drop_two['nilai_normal_lk']."&nbsp;". $drop_two['satuan_nilai_normal']." </td>
+            <td>&lt;&nbsp; ". $drop_two['nilai_normal_pr']."&nbsp;". $drop_two['satuan_nilai_normal']." </td>";
+            break;
+                        
+            case "Lebih Kecil Sama Dengan":
+            echo "<td>&lt;=&nbsp; ". $drop_two['nilai_normal_lk']."&nbsp;". $drop_two['satuan_nilai_normal']." </td>
+            <td>&lt;=&nbsp; ". $drop_two['nilai_normal_pr']."&nbsp;". $drop_two['satuan_nilai_normal']." </td>";
+            
+            break;
+            case "Lebih Besar Dari":
+            echo "<td>&gt;&nbsp; ". $drop_two['nilai_normal_lk']."&nbsp;". $drop_two['satuan_nilai_normal']." </td>
+            <td>&gt;&nbsp; ". $drop_two['nilai_normal_pr']."&nbsp;". $drop_two['satuan_nilai_normal']." </td>";
+                            
+            break;
+            case "Lebih Besar Sama Dengan":
+            echo "<td>&gt;=&nbsp; ". $drop_two['nilai_normal_lk']."&nbsp;". $drop_two['satuan_nilai_normal']." </td>
+            <td>&gt;=&nbsp; ". $drop_two['nilai_normal_pr']."&nbsp;". $drop_two['satuan_nilai_normal']." </td>";
+                            
+            break;
+            case "Antara Sama Dengan":
+            echo "<td>". $drop_two['nilai_normal_lk']."&nbsp;-&nbsp; ". $drop_two['nilai_normal_lk']."&nbsp;". $drop_two['satuan_nilai_normal']." </td>
+            <td>". $drop_two['nilai_normal_pr']."&nbsp;-&nbsp; ". $drop_two['nilai_normal_pr']."&nbsp;". $drop_two['satuan_nilai_normal']." </td>";
+            
+            break;
+            //Text
+            case "Text":
+            echo "<td>&nbsp; ". $drop_two['nilai_normal_lk']."&nbsp;". $drop_two['satuan_nilai_normal']." </td>
+            <td>&nbsp; ". $drop_two['nilai_normal_pr']."&nbsp;". $drop_two['satuan_nilai_normal']." </td>";
+            break;
+            //End Text
+                
+                } 
+              }  
+            echo " 
+            <td>". $drop_two['status_pasien'] ."</td>
             <tr>";
 
-            }
-
-//Untuk Memutuskan Koneksi Ke Database
+          } //END WHILE
+//ending untuk yang sendirian / yang tidak ber HEADER/INDUX
 
 mysqli_close($db); 
 
@@ -182,7 +296,6 @@ mysqli_close($db);
      <div class="col-sm-3">
      </div>
      <div class="col-sm-3"><b>&nbsp;&nbsp;&nbsp;Hormat Kami<br><br><br><br>( ...................... )</b></div>
-
 
 
 </div>

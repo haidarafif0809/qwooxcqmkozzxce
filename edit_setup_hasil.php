@@ -64,6 +64,32 @@ $call = mysqli_fetch_array($select_to);
 </div>
   </span>
 
+<div class="form-group">
+  <label for="sel1">Sub Pemeriksaan</label>
+  <select class="form-control" id="sub_hasil_lab" name="sub_hasil_lab"> 
+  <option value="">Pilih Sub Pemeriksaan</option>
+  <?php 
+  $get = $db->query("SELECT id,nama_pemeriksaan FROM setup_hasil WHERE kategori_index = 'Header'");
+  while ( $out = mysqli_fetch_array($get))
+    {
+        $take = $db->query("SELECT nama FROM jasa_lab WHERE id = '$out[nama_pemeriksaan]'");
+        $drop = mysqli_fetch_array($take);
+      echo "<option value='".$out['id']."'>".$drop['nama']."</option>";
+    }
+  ?>
+  </select>
+</div>
+
+
+<div class="form-group">
+  <label for="setup">Kategori Index</label>
+  <select  class="form-control" id="kategori_index" name="kategori_index" autocomplete="off">
+  <option value="<?php echo $call['kategori_index']; ?>"><?php echo $call['kategori_index']; ?></option>
+<option value="Header">Header</option>
+<option value="Detail">Detail</option>
+</select>
+</div>
+
   <input type="hidden" class="form-control" id="periksa_hidden" value="<?php echo $call['id_lab']; ?>" autocomplete="off">
 
 <div class="form-group">
@@ -276,14 +302,6 @@ else
 
 
 
-<div class="form-group">
-  <label for="setup">Kategori Index</label>
-  <select  class="form-control" id="kategori_index" name="kategori_index" autocomplete="off">
-  <option value="<?php echo $call['kategori_index']; ?>"><?php echo $call['kategori_index']; ?></option>
-<option value="Header">Header</option>
-<option value="Detail">Detail</option>
-</select>
-</div>
 
 
 <button type="submit" class="btn btn-info"><i class="fa fa-save"></i> Simpan</button>

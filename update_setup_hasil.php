@@ -18,18 +18,38 @@ $nilai_p2 = stringdoang($_POST['nilai_p2']);
 $text_p = stringdoang($_POST['text_p']);
 $kategori_index = stringdoang($_POST['kategori_index']);
 $id = stringdoang($_POST['id']);
+$sub_hasil_lab = stringdoang($_POST['sub_hasil_lab']);
+
+$select = $db->query("SELECT nama_pemeriksaan FROM setup_hasil WHERE id = '$sub_hasil_lab'");
+$out = mysqli_fetch_array($select);
+$id_jasa = $out['nama_pemeriksaan'];
+
+$jasa_lab = $db->query("SELECT nama FROM jasa_lab WHERE id = '$id_jasa'");
+$drop = mysqli_fetch_array($jasa_lab);
+$nama_sub = $drop['nama'];
 
 
 if ($model_hitung == 'Numeric')
 {
 
-	$insert_to = $db->query("UPDATE setup_hasil SET text_hasil = '$text_hasil',nama_pemeriksaan = '$pemeriksaan',kelompok_pemeriksaan = '$kelompok' ,model_hitung = '$perhitungan',
-	normal_lk = '$nilai_lk',normal_pr = '$nilai_p',normal_lk2 = '$nilai_lk2',normal_pr2 = '$nilai_p2',metode = '$metode',kategori_index = '$kategori_index' ,text_reference = '$text_depan' ,satuan_nilai_normal = '$satuan_nilai' WHERE id = '$id' ");
+$insert_to = $db->query("UPDATE setup_hasil SET text_hasil = '$text_hasil',
+nama_pemeriksaan = '$pemeriksaan',kelompok_pemeriksaan = '$kelompok',
+model_hitung = '$perhitungan', normal_lk = '$nilai_lk',
+normal_pr = '$nilai_p',normal_lk2 = '$nilai_lk2',
+normal_pr2 = '$nilai_p2',metode = '$metode',
+kategori_index = '$kategori_index' ,text_reference = '$text_depan',
+satuan_nilai_normal = '$satuan_nilai', sub_hasil_lab = '$sub_hasil_lab',
+nama_sub = '$nama_sub' WHERE id = '$id' ");
+
 }
 else
 {
-	$insert_to_and = $db->query("UPDATE setup_hasil SET text_hasil = '$text_hasil',nama_pemeriksaan = '$pemeriksaan',kelompok_pemeriksaan = '$kelompok' ,model_hitung = 'Text',
-	normal_lk = '$text_lk' ,normal_pr = '$text_p' ,metode = '$metode' ,kategori_index = '$kategori_index',text_reference = '$text_depan' ,satuan_nilai_normal = '$satuan_nilai' WHERE id = '$id' "); 
+	$insert_to_and = $db->query("UPDATE setup_hasil SET text_hasil = '$text_hasil',nama_pemeriksaan = '$pemeriksaan',
+		kelompok_pemeriksaan = '$kelompok' ,model_hitung = 'Text',
+	normal_lk = '$text_lk' ,normal_pr = '$text_p' ,metode = '$metode' ,
+	kategori_index = '$kategori_index',text_reference = '$text_depan' ,
+	satuan_nilai_normal = '$satuan_nilai', sub_hasil_lab = '$sub_hasil_lab',
+	nama_sub = '$nama_sub' WHERE id = '$id' "); 
 }
 
 echo '<script>window.location.href="setup_hasil.php";</script>';

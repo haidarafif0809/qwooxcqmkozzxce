@@ -4,9 +4,61 @@ include 'navbar.php';
 include 'db.php';
 
 
-
 // AKHIR untuk FEGY NATION
 ?>
+
+<div id="modal_detail" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg" role="document">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <center><h4 class="modal-title"><b>Detail Setup</b></h4></center>
+      </div>
+
+      <div class="modal-body">
+      <div class="table-responsive">
+      <span id="modal-detail"> </span>
+
+
+        <div class="table-responsive"> 
+          <table id="table-detail" class="table table-striped">
+          <thead>
+<th style='background-color: #4CAF50; color: white'>Text Hasil</th>
+<th style='background-color: #4CAF50; color: white'>Nama Pemeriksaan</th>
+<th style='background-color: #4CAF50; color: white'>Kelompok Pemeriksaan</th>
+<th style='background-color: #4CAF50; color: white'>Sub Pemeriksaan</th>
+<th style='background-color: #4CAF50; color: white'>Kategori Index</th>
+<th style='background-color: #4CAF50; color: white'>Model Hitung</th>
+<th style='background-color: #4CAF50; color: white'>Text Reference</th>
+<th style='background-color: #4CAF50; color: white'>Normal Laki - Laki</th>
+<th style='background-color: #4CAF50; color: white'>Normal Perempuan</th>
+<th style='background-color: #4CAF50; color: white'>Metode</th>
+<th style='background-color: #4CAF50; color: white'>Edit</th>
+<th style='background-color: #4CAF50; color: white'>Hapus</th>  
+
+          </thead>
+          
+          </table>
+          </div>
+
+
+
+      </div>
+
+     </div>
+
+      <div class="modal-footer">
+        
+  <center><button type="button" class="btn btn-danger" data-dismiss="modal">Close</button></center>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
 
    <!-- Modal Untuk Confirm Delete-->
 <div id="modale-delete" class="modal fade" role="dialog">
@@ -59,10 +111,38 @@ include 'db.php';
   <span id="periksa"> 
 <div class="form-group">
   <label for="sel1">Nama Pemeriksaan</label>
-  <select class="form-control" id="pemeriksaan" name="pemeriksaan" required="">  
+<select type="text" class="form-control" id="pemeriksaan" name="pemeriksaan" required="" data-toggle="tooltip" data-placement="top" title="Pilih dahulu kelompok pemeriksaannya, maka data nama pemeriksaan akan tampil, jika kosong cek data jasa atas kelompok pemeriksaan tersebut!!">  
+
   </select>
 </div>
   </span>
+
+<div class="form-group">
+  <label for="sel1">Sub Hasil Pemeriksaan</label>
+  <select class="form-control" id="sub_hasil_lab" name="sub_hasil_lab"> 
+  <option value="">Pilih Sub Pemeriksaan</option>
+  <?php 
+  $get = $db->query("SELECT id,nama_pemeriksaan FROM setup_hasil WHERE kategori_index = 'Header'");
+  while ( $out = mysqli_fetch_array($get))
+    {
+        $take = $db->query("SELECT nama FROM jasa_lab WHERE id = '$out[nama_pemeriksaan]'");
+        $drop = mysqli_fetch_array($take);
+      echo "<option value='".$out['id']."'>".$drop['nama']."</option>";
+    }
+  ?>
+  </select>
+</div>
+
+
+<div class="form-group">
+  <label for="setup">Kategori Index</label>
+  <select  class="form-control" id="kategori_index" name="kategori_index" autocomplete="off">
+<option value="Header">Header</option>
+<option value="Detail">Detail</option>
+</select>
+</div>
+
+
 
 
 
@@ -246,13 +326,6 @@ include 'db.php';
 
 
 
-<div class="form-group">
-  <label for="setup">Kategori Index</label>
-  <select  class="form-control" id="kategori_index" name="kategori_index" autocomplete="off">
-<option value="Header">Header</option>
-<option value="Detail">Detail</option>
-</select>
-</div>
 
 
 <button type="submit" id="tambah" class="btn btn-info"><i class="fa fa-plus"></i> Tambah</button>
@@ -274,16 +347,21 @@ tr:nth-child(even){background-color: #f2f2f2}
   <table id="table_set_up" class="table table-sm table-bordered">
     <thead>
       <tr>
-       <th style='background-color: #4CAF50; color: white'>Text Hasil</th>
-       <th style='background-color: #4CAF50; color: white'>Nama Pemeriksaan</th>
-       <th style='background-color: #4CAF50; color: white'>Kelompok Pemeriksaan</th>
-       <th style='background-color: #4CAF50; color: white'>Model Hitung</th>
-       <th style='background-color: #4CAF50; color: white'>Text Reference</th>
-       <th style='background-color: #4CAF50; color: white'>Normal Laki - Laki</th>
-       <th style='background-color: #4CAF50; color: white'>Normal Perempuan</th>
-       <th style='background-color: #4CAF50; color: white'>Metode</th>
-       <th style='background-color: #4CAF50; color: white'>Edit</th>
-       <th style='background-color: #4CAF50; color: white'>Hapus</th>
+<th style='background-color: #4CAF50; color: white'>Text Hasil</th>
+<th style='background-color: #4CAF50; color: white'>Nama Pemeriksaan</th>
+<th style='background-color: #4CAF50; color: white'>Kelompok Pemeriksaan</th>
+
+<th style='background-color: #4CAF50; color: white'>Sub Pemeriksaan</th>
+<th style='background-color: #4CAF50; color: white'>Kategori Index</th>
+
+<th style='background-color: #4CAF50; color: white'>Model Hitung</th>
+<th style='background-color: #4CAF50; color: white'>Text Reference</th>
+<th style='background-color: #4CAF50; color: white'>Normal Laki - Laki</th>
+<th style='background-color: #4CAF50; color: white'>Normal Perempuan</th>
+<th style='background-color: #4CAF50; color: white'>Metode</th>
+<th style='background-color: #4CAF50; color: white'>Detail</th>
+<th style='background-color: #4CAF50; color: white'>Edit</th>
+<th style='background-color: #4CAF50; color: white'>Hapus</th>
 
     </tr>
     </thead>
@@ -318,7 +396,7 @@ tr:nth-child(even){background-color: #f2f2f2}
             }
           },
               "fnCreatedRow": function( nRow, aData, iDataIndex ) {
-              $(nRow).attr('class','tr-id-'+aData[10]+'');
+              $(nRow).attr('class','tr-id-'+aData[13]+'');
             },
         } );
       } );
@@ -482,7 +560,7 @@ var id = $("#id2").val();
   $(".tr-id-"+id+"").remove();
 
 $.post('delete_setup_hasil.php',{id:id},function(data){
-
+$("#modal_detail").modal('hide');
     });
 
 });
@@ -540,9 +618,8 @@ $("#nilai_p").val('');
 $("#nilai_lk2").val('');
 $("#nilai_p2").val('');
 $("#text_depan").val('');
-$("#satuan_nilai").val('');
 
-  $("#range").html('Nilai');
+$("#range").html('Nilai');
 $("#sd").hide();
 $("#range1").html('Nilai');
 $("#sd1").hide();
@@ -581,7 +658,62 @@ $.post('table_baru_setup_hasil.php',{q:q},function(data)
 </script>
 <!-- END script cari untuk pegy natio -->
 
+<script type="text/javascript">
+    $(document).ready(function(){
+    // Tooltips Initialization
+    $(function () {
+    $('[data-toggle="tooltip"]').tooltip()
+    });
 
-  <?php 
-  include 'footer.php';
-   ?>
+    });
+</script>
+
+
+
+
+<!--menampilkan detail penjualan-->
+    <script type="text/javascript">
+    
+    $(document).on('click','.detail-set-up',function(e){
+
+    var sub = $(this).attr('data-sub');
+    var id = $(this).attr('data-id');
+
+    $("#modal_detail").modal('show');
+
+      $('#table-detail').DataTable().destroy();
+
+          var dataTable = $('#table-detail').DataTable( {
+          "processing": true,
+          "serverSide": true,
+          "info":     false,
+          "language": {
+        "emptyTable":     "My Custom Message On Empty Table"
+    },
+          "ajax":{
+            url :"show_detail_set_up.php", // json datasource
+             "data": function ( d ) {
+                d.id = id;
+                d.sub = sub;
+                // d.custom = $('#myInput').val();
+                // etc
+            },
+                type: "post",  // method  , by default get
+            error: function(){  // error handling
+              $(".tbody").html("");
+              $("#table-detail").append('<tbody class="tbody"><tr><th colspan="3"></th></tr></tbody>');
+              $("#table-detail_processing").css("display","none");
+              
+            }
+          }
+    
+
+
+        } );
+
+    
+    });
+    
+    </script>
+
+<?php include 'footer.php'; ?>

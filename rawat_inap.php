@@ -139,6 +139,27 @@ opacity: 0.9;
 
 
       <span id="tampil_kamar">
+
+            <span id="tampil_kamar">
+
+           <div class="table-responsive">
+
+            <table id="table-kamar" class="table table-bordered table-hover table-striped">
+            <thead>
+              <tr>
+              <th>Kelas</th>
+              <th>Kode Kamar</th>
+              <th>Nama Kamar</th>
+              <th>Fasilitas</th>
+              <th>Jumlah Bed</th>
+              <th>Sisa Bed</th>    
+              </tr>
+          </thead>
+           </table>  
+         </div>
+
+      </span>
+
       </span>
       <form role="form" method="POST">
 <div class="row">
@@ -171,7 +192,7 @@ opacity: 0.9;
 </div>
      
 
-       <button style="width:100px;"" type="button" class="btn btn-warning  waves-effect waves-light" data-ids=""  data-regs="" data-beds="" data-group_beds="" id="pindah_kamar"> <i class="fa fa-reply"></i>Pindah</button>
+       <button style="width:110px;"" type="button" class="btn btn-warning  waves-effect waves-light" data-ids=""  data-regs="" data-beds="" data-group_beds="" id="pindah_kamar"> <i class="fa fa-reply"></i> Pindah</button>
        </div>
        <div class="modal-footer">
         
@@ -181,6 +202,58 @@ opacity: 0.9;
   </div>
 </div>
 <!--modal end Layanan KAMAR-->
+
+
+
+<!-- Modal Untuk LAB RANAP-->
+<div id="modal_lab_inap" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <!-- Modal content-->
+    <div class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <center><h2>Pemeriksaan Laboratorium Rawat Inap </h2></center>       
+    </div>
+    <div class="modal-body">
+
+      <span id="tampil_lab">
+      </span>
+     
+     <form role="form" method="POST">
+     
+     <div class="form-group">
+
+      <label for="">No RM</label>
+      <input style="height: 20px;" type="text" class="form-control" name="lab_rm" readonly="" autocomplete="off" id="lab_rm" placeholder="Pemeriksaan Ke">
+    </div>
+
+     <div class="form-group">
+      <label for="">Nama Pasien</label>
+      <input  type="text" class="form-control" name="lab_nama" readonly="" autocomplete="off" id="lab_nama" placeholder="Nama Pasien">
+    </div>
+
+    <div class="form-group">
+      <label for="">No Reg</label>
+      <input style="height: 20px;" type="text" class="form-control" name="lab_reg" readonly="" autocomplete="off" id="lab_reg" placeholder=" No Reg">
+    </div>
+
+     <input type="hidden" class="form-control" id="no_reg" name="no_reg" data-reg="" >
+     
+   <center> <a href="data_laboratorium_inap.php" type="submit" class="btn btn-info" id="input_lab" data-id=""> <i class="fa fa-send" ></i> Yes</a>
+
+
+        <button type="button" class="btn btn-danger" data-dismiss="modal" ><i class="fa fa-remove"></i> No</button>
+</center> 
+     </form>
+
+       </div>
+       <div class="modal-footer">
+        
+    </div>
+    </div>
+  </div>
+</div>
+<!--modal end LAB RANAP-->
 
 
 
@@ -739,14 +812,13 @@ tr:nth-child(even){background-color: #f2f2f2}
           <th style='background-color: #4CAF50; color: white' >Edit</th>
    <?php endif ?>
         
-
          <th style='background-color: #4CAF50; color: white'>Transaksi Penjualan</th>
 
   <?php if ($registrasi_ri['registrasi_ri_lihat']):?>      
           <th style='background-color: #4CAF50; color: white'>Pindah Kamar</th>
           <th style='background-color: #4CAF50; color: white'>Operasi</th>
           <th style='background-color:#4CAF50; color: white'> Rujuk Lab</th>
-          <th style='background-color:#4CAF50; color: white'> Input Hasil Lab</th>
+          <!--<th style='background-color:#4CAF50; color: white'> Input Hasil Lab</th>-->
   <?php endif ?>
 
   <?php if ($rekam_medik['rekam_medik_ri_lihat']):?>         
@@ -1178,11 +1250,33 @@ return val;
             $("#pindah_kamar").attr("data-beds",bed);
             $("#pindah_kamar").attr("data-group_beds",group_bed);
 
-                $.post("pindah_kamar.php",{reg:reg,bed:bed,group_bed:group_bed},function(data){
-                $("#tampil_kamar").html(data);
-                $("#modal_kamar").modal('show');
+            $("#modal_kamar").modal('show');
             $("#kamar_lama").val(group_bed);
-                });
+
+            $('#table-kamar').DataTable().destroy();
+                                var dataTable = $('#table-kamar').DataTable( {
+                                    "processing": true,
+                                    "serverSide": true,
+                                    "ajax":{
+                                      url :"pindah_kamar.php", // json datasource
+                                      type: "post",  // method  , by default get
+                                      error: function(){  // error handling
+                                        $(".tbody").html("");
+                                        $("#table-kamar").append('<tbody class="tbody"><tr ><td colspan="3">No data found in the server</td></tr></tbody>');
+                                        $("#table-kamar_processing").css("display","none");
+                                        
+                                      }
+                                    },
+
+                                     "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+                                          $(nRow).attr('class', "pilih3");
+                                         $(nRow).attr('data-group-bed',aData[2]);
+                                        $(nRow).attr('data-nama',aData[1]);
+
+                          },
+                   });
+
+
             });
 //            tabel lookup mahasiswa         
 
@@ -1229,6 +1323,34 @@ return val;
 </script>
 
 
+
+<script type="text/javascript">
+
+            // jika dipilih, nim akan masuk ke input dan modal di tutup
+            $(document).on('click', '.pilih3', function (e) {
+              var no_reg = $("#no_reg").val();
+              var bed2 = $(this).attr('data-nama');
+              var group_bed2 = $(this).attr('data-group-bed');
+
+
+        $.post("cek_kamar_ranap.php",{bed2:bed2,no_reg:no_reg},function(data){
+
+                          if (data == 1) {
+                    alert("Kamar yang anda masukan sudah ada,Silahkan pilih kamar lain!");
+                      $("#group_bed2").val('')
+                      $("#bed2").val('')
+                          }
+                          else{
+
+                      $("#group_bed2").val(group_bed2)
+                      $("#bed2").val(bed2)
+
+                          }
+             });    
+  });
+           
+          
+</script>
 
 <!--   script untuk Batal-->
 <script type="text/javascript">
@@ -1438,6 +1560,30 @@ else
     });//penutup click(function()
   });//penutup ready(function()
 </script>
+
+
+<!--   script rujuk lab (input data pemeriksaan lab/jasa lab)-->
+<script type="text/javascript">
+     $(document).on('click', '.pemeriksaan_lab_inap', function (e) {
+               var rm = $(this).attr("data-rm");
+               var nama = $(this).attr("data-nama");
+               var reg = $(this).attr("data-reg");
+
+               var id = $(this).attr("data-id");
+               var pasien = $('#name-tag-'+id).text();
+
+  
+        $("#modal_lab_inap").modal('show');
+
+               $("#lab_nama").val(pasien);
+               $("#lab_rm").val(rm);
+               $("#lab_reg").val(reg);
+
+  $("#input_lab").attr('href','data_laboratorium_inap.php?no_reg='+reg+'&nama='+pasien+'&no_rm='+rm);
+               
+     });
+</script>
+<!--    ENDING script rujuk lab (input data pemeriksaan lab/jasa lab)-->
 
 
 <!-- footer  -->
