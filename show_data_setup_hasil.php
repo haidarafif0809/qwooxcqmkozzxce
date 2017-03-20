@@ -88,8 +88,14 @@ if ($row['model_hitung'] == 'Text')
       $nestedData[] = "<p style='color:red'>Data Detail</p>";
     }
 
+    if($row['kategori_index'] == 'Header')
+    {
+      $nestedData[] = "<p style='color:red'>Header Tidak Bisa Edit</p>";
+    }
+    else
+    {
       $nestedData[] = "<a href='edit_setup_hasil.php?id=".$row['id']."'class='btn btn-warning'> <i class='fa fa-edit'></i> </a>";
-
+    }
       $nestedData[] = " <button data-id='".$row['id']."' class='btn btn-danger delete'> <i class='fa fa-trash'></i> </button>
       ";
 
@@ -157,8 +163,15 @@ switch ($model_hitung) {
     {
       $nestedData[] = "<p style='color:red'>Data Detail</p>";
     }
-      $nestedData[] = "<a href='edit_setup_hasil.php?id=".$row['id']."'class='btn btn-warning'> <i class='fa fa-edit'></i>  </a>";
 
+    if($row['kategori_index'] == 'Header')
+    {
+      $nestedData[] = "<p style='color:red'>Header Tidak Bisa Edit</p>";
+    }
+    else
+    {
+      $nestedData[] = "<a href='edit_setup_hasil.php?id=".$row['id']."'class='btn btn-warning'> <i class='fa fa-edit'></i>  </a>";
+    }
       $nestedData[] = "<button data-id='".$row['id']."' class='btn btn-danger delete'><i class='fa fa-trash'></i>  </button>";
 
 }

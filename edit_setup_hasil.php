@@ -6,8 +6,9 @@ include 'sanitasi.php';
 
 $id = stringdoang($_GET['id']);
 
-$select_to = $db->query("SELECT sh.normal_lk2,sh.normal_pr2,jl.id AS id_lab ,jl.nama AS nama_lab,bl.nama,sh.id,sh.nama_pemeriksaan,sh.kelompok_pemeriksaan,sh.model_hitung,sh.text_reference,sh.normal_lk,sh.normal_pr,sh.metode,sh.kategori_index,sh.text_hasil,sh.satuan_nilai_normal FROM setup_hasil sh INNER JOIN bidang_lab bl ON sh.kelompok_pemeriksaan = bl.id INNER JOIN jasa_lab jl ON jl.id = sh.nama_pemeriksaan WHERE sh.id = '$id'");
+$select_to = $db->query("SELECT sh.normal_lk2,sh.normal_pr2,jl.id AS id_lab ,jl.nama AS nama_lab,bl.nama,sh.id,sh.nama_pemeriksaan,sh.kelompok_pemeriksaan,sh.model_hitung,sh.text_reference,sh.normal_lk,sh.normal_pr,sh.metode,sh.kategori_index,sh.text_hasil,sh.satuan_nilai_normal FROM setup_hasil sh LEFT JOIN bidang_lab bl ON sh.kelompok_pemeriksaan = bl.id LEFT JOIN jasa_lab jl ON jl.id = sh.nama_pemeriksaan WHERE sh.id = '$id'");
 $call = mysqli_fetch_array($select_to);
+
 
 ?>
    <!-- Modal Untuk Confirm Delete-->
@@ -59,7 +60,7 @@ $call = mysqli_fetch_array($select_to);
  <span id="periksa"> 
 <div class="form-group">
   <label for="sel1">Nama Pemeriksaan</label>
-  <select class="form-control" id="pemeriksaan" name="pemeriksaan" required="">  
+  <select class="form-control" id="pemeriksaan" name="pemeriksaan" required=""> 
   </select>
 </div>
   </span>
@@ -263,6 +264,7 @@ else
 
   <input type="hidden" class="form-control" id="id" value="<?php echo $id; ?>" name="id" autocomplete="off">
 
+
 <center> <img src="save_picture\user-perempuan.png" style="width:100px;"> </center>
 
 
@@ -372,9 +374,11 @@ $(".nilai2").hide();
 <script type="text/javascript">
 //saat pilih kelompok pemeriksaan, nama pemeriksaan yang ada dalm kelompok tsb muncul
   $(document).ready(function(){
-          var kelompok = $("#kelompok").val();
-          var pemeriksaan = $("#pemeriksaan").val();
-    $.post("cek_nama_pemeriksaan_edit.php",{kelompok:kelompok,pemeriksaan:pemeriksaan},function(data){
+    var kelompok = $("#kelompok").val();
+    var pemeriksaan = $("#pemeriksaan").val();
+    var periksa_hidden = $("#periksa_hidden").val();
+
+    $.post("cek_nama_pemeriksaan_edit.php",{periksa_hidden:periksa_hidden,kelompok:kelompok,pemeriksaan:pemeriksaan},function(data){
 $("#periksa").html(data);
 });
 
@@ -403,7 +407,6 @@ if(data == 1)
 {
   alert("Pemeriksaan Sudah Ada !!");
   $("#pemeriksaan").focus();
-
   $("#pemeriksaan").val(periksa_hidden);
 }
 else

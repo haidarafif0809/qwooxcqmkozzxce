@@ -2,9 +2,11 @@
 include 'db.php';
 include 'sanitasi.php';
 
+$periksa_hidden = angkadoang($_POST['periksa_hidden']);
+
 $kelompok = angkadoang($_POST['kelompok']);
 $pemeriksaan = angkadoang($_POST['pemeriksaan']);
-$select = $db->query("SELECT id,nama FROM jasa_lab WHERE id = '$pemeriksaan'");
+$select = $db->query("SELECT id,nama FROM jasa_lab WHERE id = '$periksa_hidden'");
 $out = mysqli_fetch_array($select);
 
  ?>
@@ -12,17 +14,21 @@ $out = mysqli_fetch_array($select);
 <div class="form-group">
   <label for="sel1">Nama Pemeriksaan</label>
   <select class="form-control" id="pemeriksaan" name="pemeriksaan" required=""> 
-
   <?php 
   $query2 = $db->query("SELECT id,nama FROM jasa_lab WHERE bidang = '$kelompok' ");
 while ( $data2 = mysqli_fetch_array($query2))
  {	
  	if ($out['id'] == $data2['id']) {
-  echo " <option selected value='".$data2['id']."'>".$data2['nama']."</option>";
+  echo "
+  			<option selected value='".$data2['id']."'>".$data2['nama']."</option>
+  		";
  	}
  	else
  	{
- 		  echo " <option value='".$data2['id']."'>".$data2['nama']."</option>";
+ 		echo "
+ 		  <option value='".$data2['id']."'>".$data2['nama']."</option>
+
+ 		";
 
  	}
  }
