@@ -118,7 +118,7 @@ include 'db.php';
   </span>
 
 <div class="form-group">
-  <label for="sel1">Sub Hasil Pemeriksaan</label>
+  <label for="sel1">Sub Pemeriksaan</label>
   <select class="form-control" id="sub_hasil_lab" name="sub_hasil_lab"> 
   <option value="">Pilih Sub Pemeriksaan</option>
   <?php 
