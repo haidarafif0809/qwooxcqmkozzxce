@@ -577,6 +577,8 @@ $obat = $otoritas_produk['tipe_obat'];
 
 </div>
 <?php endif ?>
+<input type="hidden" class="form-control" name="subt_tbs" autocomplete="off" id="subt_tbs" placeholder="SUBTOTALE TBS" >
+<input type="hidden" class="form-control" name="disc_tbs" autocomplete="off" id="disc_tbs" placeholder="DISKONE TBS" >
     <input type="hidden" class="form-control" name="limit_stok" autocomplete="off" id="limit_stok" placeholder="Limit Stok" >
     <input type="hidden" class="form-control" name="ber_stok" id="ber_stok" placeholder="Ber Stok" >
     <input type="hidden" class="form-control" name="harga_lama" id="harga_lama" placeholder="harga lama">
@@ -1194,6 +1196,13 @@ $(document).ready(function(){
     if (total_lab == "") {
       total_lab = 0;
     }
+     //digunakan untuk mengecek sama tidaknya jumlah disc dg total_subtotal di tbs
+  $.getJSON("cek_jumlah_disc_dg_total_sub_tbs.php",{no_reg:no_reg},function(oke){
+       
+          $("#subt_tbs").val(oke.totale);
+        $("#disc_tbs").val(oke.potongane);
+
+      });
 
     $.post("cek_total_seluruh_raja.php",{no_reg:no_reg},function(data1){
   
@@ -1756,8 +1765,9 @@ $(document).ready(function(){
 
 
 
-   <script>
+   <script type="text/javascript">
    //untuk menampilkan data yang diambil pada form tbs penjualan berdasarkan id=formtambahproduk
+   $(document).ready(function(){
   $("#submit_produk").click(function(){
     var id_user = $("#id_user").val(); 
     var no_reg = $("#no_reg").val();
@@ -1829,7 +1839,6 @@ $(document).ready(function(){
     var ber_stok = $("#ber_stok").val();
     var ppn = $("#ppn").val();
     var stok = parseInt(jumlahbarang,10) - parseInt(jumlah_barang,10);
-
 
     var subtotal = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#total2").val()))));
 
@@ -1968,6 +1977,13 @@ else if (a > 0){
  $.post("proses_tbs_penjualan_raja.php",{id_user:id_user,penjamin:penjamin,asal_poli:asal_poli,level_harga:level_harga,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,no_reg:no_reg,no_rm:no_rm,dokter:dokter,petugas_kasir:petugas_kasir,kode_barang:kode_barang,nama_barang:nama_barang,jumlah_barang:jumlah_barang,harga:harga,potongan:potongan,tax:tax,satuan:satuan, ber_stok:ber_stok,ppn:ppn},function(data){
      
   
+       //digunakan untuk mengecek sama tidaknya jumlah disc dg total_subtotal di tbs
+  $.getJSON("cek_jumlah_disc_dg_total_sub_tbs.php",{no_reg:no_reg},function(oke){
+       
+          $("#subt_tbs").val(oke.totale);
+        $("#disc_tbs").val(oke.potongane);
+
+      });
 
      $("#ppn").attr("disabled", true);
             $('#tabel_tbs_penjualan').DataTable().destroy();
@@ -2044,6 +2060,12 @@ if (limit_stok > stok)
 
    $.post("proses_tbs_penjualan_raja.php",{id_user:id_user,penjamin:penjamin,asal_poli:asal_poli,level_harga:level_harga,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,no_reg:no_reg,no_rm:no_rm,dokter:dokter,petugas_kasir:petugas_kasir,kode_barang:kode_barang,nama_barang:nama_barang,jumlah_barang:jumlah_barang,harga:harga,potongan:potongan,tax:tax,satuan:satuan,ber_stok:ber_stok,ppn:ppn, dosis_obat:dosis_obat},function(data){
      
+ 
+       //digunakan untuk mengecek sama tidaknya jumlah disc dg total_subtotal di tbs
+  $.getJSON("cek_jumlah_disc_dg_total_sub_tbs.php",{no_reg:no_reg},function(oke){
+        $("#subt_tbs").val(oke.totale);
+        $("#disc_tbs").val(oke.potongane);
+      });
 
 
       $("#ppn").attr("disabled", true);
@@ -2129,9 +2151,8 @@ alert("Kode barang harus terisi");
         
         $("#span_tbs").show()
 
-      
   });/// braket penutup submit_produk
-
+});
 
     $("#formtambahproduk").submit(function(){
     return false;
@@ -2157,7 +2178,6 @@ alert("Kode barang harus terisi");
 
 
    </script>
-
 
 
 
@@ -2202,7 +2222,10 @@ alert("Kode barang harus terisi");
         var nama_pasien = $("#nama_pasien").val();
         var analis = $("#analis").val();
         var jenis_penjualan = 'Rawat Jalan';
-
+        var disc_tbs = $("#disc_tbs").val();
+        if (disc_tbs == '') {
+          disc_tbs = 0;
+        }
         
         var sisa = pembayaran - total;
         
@@ -2217,7 +2240,7 @@ alert("Kode barang harus terisi");
  }
 
 
-else if ((total2 != "" && pembayaran == "" && potongan_persen != '100') || (total2 != 0 && pembayaran == "" && potongan_persen != '100')) 
+else if ((total2 != "" || total2 != 0) && pembayaran == "" && potongan_persen != '100' && disc_tbs == 0)
  {
 
 alert("Pembayaran Harus Di Isi");
@@ -2240,7 +2263,7 @@ $("#kode_gudang").focus()
 alert("Silakan Isi Kolom Pembayaran  atau lakukan Bayar Piutang");
 
  }
-    else if ((total2 ==  0 && total ==  0 && potongan_persen != 100 && pembayaran == 0) || (total2 ==  "" && total == "" &&potongan_persen != 100 && pembayaran == "")) 
+    else if ((total2 ==  0 || total2 ==  "") && (total ==  0 || total == "")  && potongan_persen != 100 && (pembayaran == 0 || pembayaran == "") && (disc_tbs == 0))  
         {
         
         alert("Anda Belum Melakukan Pemesanan");
@@ -2298,6 +2321,7 @@ else
      $("#pembayaran_penjualan").val('');
      $("#sisa_pembayaran_penjualan").val('');
      $("#kredit").val('');
+     $("#disc_tbs").val('');
      $("#span_tbs").hide('');
      $('#span_lab').hide();
      $("#dosis_obat").val('');
@@ -2569,7 +2593,7 @@ $('#tabel_tbs_lab').DataTable().clear();
 </script>
 
 
-<script>
+<script type="text/javascript">
    //perintah javascript yang diambil dari form proses_bayar_beli.php dengan id=form_beli
   $("#penjualan").click(function(){
         var id_user = $("#id_user").val();
@@ -2609,7 +2633,10 @@ $('#tabel_tbs_lab').DataTable().clear();
         var nama_pasien = $("#nama_pasien").val();
         var analis = $("#analis").val();
         var jenis_penjualan = 'Rawat Jalan';
-
+        var disc_tbs = $("#disc_tbs").val();
+        if (disc_tbs == '') {
+          disc_tbs = 0;
+        }
         
         var sisa = pembayaran - total;
         
@@ -2624,7 +2651,7 @@ $('#tabel_tbs_lab').DataTable().clear();
  }
 
 
-else if ((total2 != "" && pembayaran == "" && potongan_persen != '100') || (total2 != 0 && pembayaran == "" && potongan_persen != '100'))
+else if ((total2 != "" || total2 != 0) && pembayaran == "" && potongan_persen != '100' && disc_tbs == 0)
  {
 
 alert("Pembayaran Harus Di Isi");
@@ -2647,7 +2674,7 @@ $("#kode_gudang").focus()
 alert("Silakan Bayar Piutang");
 
  }
-  else if ((total2 ==  0 && total ==  0 && potongan_persen != 100 && pembayaran == 0) || (total2 ==  "" && total == "" &&potongan_persen != 100 && pembayaran == "")) 
+  else if ((total2 ==  0 || total2 ==  "") && (total ==  0 || total2 ==  "") && potongan_persen != 100 && (pembayaran == 0 || pembayaran == "") && disc_tbs == 0)
         {
         
         alert("Anda Belum Melakukan Pemesanan");
@@ -2697,6 +2724,7 @@ else
      $("#pembayaran_penjualan").val('');
      $("#sisa_pembayaran_penjualan").val('');
      $("#kredit").val('');
+     $("#disc_tbs").val('');
      $("#span_tbs").hide('');
      $('#span_lab').hide();
      $("#dosis_obat").val('');
@@ -2855,7 +2883,7 @@ else
             $("#potongan_penjualan").val('');
             $("#potongan_persen").val('');
             $("#tanggal_jt").val('');
-            
+            $("#disc_tbs").val('');
             $("#span_tbs").hide('');
             $('#span_lab').hide();
             /*
@@ -4788,14 +4816,18 @@ else{
       total_lab = 0;
     }
 
+
+
 if (no_reg == "") {
 
     }
     else{
-
+      
+       
           $.post("cek_total_seluruh_raja.php",{no_reg:no_reg},function(data1){
         
               if (data1 == 1) {
+
                        $.post("cek_total_seluruh.php",{no_reg:no_reg},function(data){
                       data = data.replace(/\s+/g, '');
                       if (data == "") {
@@ -4877,6 +4909,16 @@ var penjamin = $("#penjamin").val();
 });
 </script>
 
+<script type="text/javascript">
+  $(document).ready(function(){
+     var no_reg = $("#no_reg").val();
+       //digunakan untuk mengecek sama tidaknya jumlah disc dg total_subtotal di tbs
+  $.getJSON("cek_jumlah_disc_dg_total_sub_tbs.php",{no_reg:no_reg},function(oke){
+        $("#subt_tbs").val(oke.totale);
+        $("#disc_tbs").val(oke.potongane);
+      });
+});
+</script>
 
 <script type="text/javascript">
 

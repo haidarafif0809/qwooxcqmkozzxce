@@ -71,7 +71,7 @@ $nestedData=array();
         $nestedData[] = "<b style='color: black;'>$dari_tanggal s/d $sampai_tanggal</b>";
         $nestedData[] = "<b style='color: black;'></b>";
         $nestedData[] = "<b style='color: black;'>Total Fee/Fak :</b>";
-        $nestedData[] = "<b style='color: black;'>$total_fee2</b>";
+        $nestedData[] = "<b style='color: black;'>rp($total_fee2)</b>";
 	$nestedData[] = $row['id'];
 	$data[] = $nestedData;
 
@@ -80,7 +80,7 @@ $nestedData=array();
         $nestedData[] = "<b style='color: black;'>$dari_tanggal s/d $sampai_tanggal</b>";
         $nestedData[] = "<b style='color: black;'></b>";
         $nestedData[] = "<b style='color: black;'>Total Seluruh :</b>";
-        $nestedData[] = "<b style='color: black;'>$total_komisi</b>";
+        $nestedData[] = "<b style='color: black;'>rp($total_komisi)</b>";
 	$nestedData[] = $row['id'];
 	$data[] = $nestedData;
 

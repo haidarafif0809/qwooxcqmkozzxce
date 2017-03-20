@@ -370,9 +370,9 @@ $no_faktur = $nomor."/JL/".$data_bulan_terakhir."/".$tahun_terakhir;
 
           <input type="hidden" class="form-control"  name="over_stok" id="over_stok" autocomplete="off" placeholder="Over Stok">
 
-          <input type="hidden" id="harga_produk" name="harga" class="form-control" placeholder="Harga Produk" required="">
+          <input type="text" id="harga_produk" name="harga" class="form-control" placeholder="Harga Produk" required="">
 
-          <input type="hidden" id="harga_lama" name="harga_lama" class="form-control" placeholder="Harga Lama" required="">
+          <input type="text" id="harga_lama" name="harga_lama" class="form-control" placeholder="Harga Lama" required="">
 
           <input type="hidden" class="form-control" name="jumlahbarang" id="jumlahbarang" placeholder="Jumah Barang">
 
