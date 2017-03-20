@@ -88,7 +88,10 @@ if ($row['model_hitung'] == 'Text')
       $nestedData[] = "<p style='color:red'>Data Detail</p>";
     }
 
-    if($row['kategori_index'] == 'Header')
+    $cek_data = $db->query("SELECT sub_hasil_lab FROM setup_hasil WHERE sub_hasil_lab = '$row[id]'");
+     $show = mysqli_num_rows($cek_data);
+
+    if($show > 0)
     {
       $nestedData[] = "<p style='color:red'>Header Tidak Bisa Edit</p>";
     }
@@ -155,6 +158,7 @@ switch ($model_hitung) {
 
      $nestedData[] = $row['metode'];
 
+
      if($row['kategori_index'] == 'Header')
      {
       $nestedData[] = "<button class='btn btn-floating  btn-info detail-set-up' data-id='".$row['id']."' data-sub='".$row['sub_hasil_lab']."' ><i class='fa fa-list'></i></button>";
@@ -164,12 +168,17 @@ switch ($model_hitung) {
       $nestedData[] = "<p style='color:red'>Data Detail</p>";
     }
 
-    if($row['kategori_index'] == 'Header')
+
+    $cek_data = $db->query("SELECT sub_hasil_lab FROM setup_hasil WHERE sub_hasil_lab = '$row[id]'");
+     $show = mysqli_num_rows($cek_data);
+
+    if($show > 0)
     {
       $nestedData[] = "<p style='color:red'>Header Tidak Bisa Edit</p>";
     }
     else
     {
+      
       $nestedData[] = "<a href='edit_setup_hasil.php?id=".$row['id']."'class='btn btn-warning'> <i class='fa fa-edit'></i>  </a>";
     }
       $nestedData[] = "<button data-id='".$row['id']."' class='btn btn-danger delete'><i class='fa fa-trash'></i>  </button>";
