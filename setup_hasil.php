@@ -449,7 +449,8 @@ $("#periksa").html(data);
   });
 </script> 
 
-<script type="text/javascript">
+<!--<script type="text/javascript">
+//di non aktifkan karena agar bisa detailnya(anaknya) masuk ke induk yang lain !
 $(document).on('change','#periksa',function(e){
 
       var pemeriksaan = $("#pemeriksaan").val();
@@ -469,7 +470,7 @@ else
 
 });
     });
-</script>
+</script>-->
 
 <script type="text/javascript">
 $(document).on('click','#tambah',function(e){
