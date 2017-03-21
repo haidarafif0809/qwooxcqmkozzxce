@@ -577,8 +577,8 @@ $obat = $otoritas_produk['tipe_obat'];
 
 </div>
 <?php endif ?>
-<input type="hidden" class="form-control" name="subt_tbs" autocomplete="off" id="subt_tbs" placeholder="SUBTOTALE TBS" >
-<input type="hidden" class="form-control" name="disc_tbs" autocomplete="off" id="disc_tbs" placeholder="DISKONE TBS" >
+<input type="hidden" class="form-control" name="subt_tbs" autocomplete="off" id="subt_tbs" placeholder="SUBTOTAL TBS" >
+<input type="hidden" class="form-control" name="disc_tbs" autocomplete="off" id="disc_tbs" placeholder="DISKON TBS" >
     <input type="hidden" class="form-control" name="limit_stok" autocomplete="off" id="limit_stok" placeholder="Limit Stok" >
     <input type="hidden" class="form-control" name="ber_stok" id="ber_stok" placeholder="Ber Stok" >
     <input type="hidden" class="form-control" name="harga_lama" id="harga_lama" placeholder="harga lama">
