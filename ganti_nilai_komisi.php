@@ -52,7 +52,7 @@ $query_komisi_penjualan = $db->query("SELECT no_faktur,tanggal,jumlah_fee ,kode_
 
  	if (isset($_GET['terapkan']) AND ( $data_master_komisi_produk['jumlah_uang'] != 0 AND $data_master_komisi_produk['jumlah_uang'] != '' AND $data_jumlah_penjualan['jumlah_barang'] != ''  )) {
  		
- 		$update_komisi_penjualan = $db->query("UPDATE laporan_fee_produk SET jumlah_fee = '$jumlah_komisi_terbaru' WHERE kode_produk = '$data_komisi_penjualan[kode_produk]' AND no_faktur = '$data_komisi_penjualan[no_faktur]' ");
+ 		$update_komisi_penjualan = $db->query("UPDATE laporan_fee_produk SET jumlah_fee = '$jumlah_komisi_terbaru' WHERE kode_produk = '$data_komisi_penjualan[kode_produk]' AND no_faktur = '$data_komisi_penjualan[no_faktur]' AND nama_petugas = '$data_komisi_penjualan[nama_petugas]' ");
 
  	}
 
