@@ -6,8 +6,9 @@ include 'sanitasi.php';
 
 $id = stringdoang($_GET['id']);
 
-$select_to = $db->query("SELECT sh.normal_lk2,sh.normal_pr2,jl.id AS id_lab ,jl.nama AS nama_lab,bl.nama,sh.id,sh.nama_pemeriksaan,sh.kelompok_pemeriksaan,sh.model_hitung,sh.text_reference,sh.normal_lk,sh.normal_pr,sh.metode,sh.kategori_index,sh.text_hasil,sh.satuan_nilai_normal FROM setup_hasil sh INNER JOIN bidang_lab bl ON sh.kelompok_pemeriksaan = bl.id INNER JOIN jasa_lab jl ON jl.id = sh.nama_pemeriksaan WHERE sh.id = '$id'");
+$select_to = $db->query("SELECT sh.normal_lk2,sh.normal_pr2,jl.id AS id_lab ,jl.nama AS nama_lab,bl.nama,sh.id,sh.nama_pemeriksaan,sh.kelompok_pemeriksaan,sh.model_hitung,sh.text_reference,sh.normal_lk,sh.normal_pr,sh.metode,sh.kategori_index,sh.text_hasil,sh.satuan_nilai_normal FROM setup_hasil sh LEFT JOIN bidang_lab bl ON sh.kelompok_pemeriksaan = bl.id LEFT JOIN jasa_lab jl ON jl.id = sh.nama_pemeriksaan WHERE sh.id = '$id'");
 $call = mysqli_fetch_array($select_to);
+
 
 ?>
    <!-- Modal Untuk Confirm Delete-->
@@ -59,10 +60,36 @@ $call = mysqli_fetch_array($select_to);
  <span id="periksa"> 
 <div class="form-group">
   <label for="sel1">Nama Pemeriksaan</label>
-  <select class="form-control" id="pemeriksaan" name="pemeriksaan" required="">  
+  <select class="form-control" id="pemeriksaan" name="pemeriksaan" required=""> 
   </select>
 </div>
   </span>
+
+<div class="form-group">
+  <label for="sel1">Sub Pemeriksaan</label>
+  <select class="form-control" id="sub_hasil_lab" name="sub_hasil_lab"> 
+  <option value="">Pilih Sub Pemeriksaan</option>
+  <?php 
+  $get = $db->query("SELECT id,nama_pemeriksaan FROM setup_hasil WHERE kategori_index = 'Header'");
+  while ( $out = mysqli_fetch_array($get))
+    {
+        $take = $db->query("SELECT nama FROM jasa_lab WHERE id = '$out[nama_pemeriksaan]'");
+        $drop = mysqli_fetch_array($take);
+      echo "<option value='".$out['id']."'>".$drop['nama']."</option>";
+    }
+  ?>
+  </select>
+</div>
+
+
+<div class="form-group">
+  <label for="setup">Kategori Index</label>
+  <select  class="form-control" id="kategori_index" name="kategori_index" autocomplete="off">
+  <option value="<?php echo $call['kategori_index']; ?>"><?php echo $call['kategori_index']; ?></option>
+<option value="Header">Header</option>
+<option value="Detail">Detail</option>
+</select>
+</div>
 
   <input type="hidden" class="form-control" id="periksa_hidden" value="<?php echo $call['id_lab']; ?>" autocomplete="off">
 
@@ -237,6 +264,7 @@ else
 
   <input type="hidden" class="form-control" id="id" value="<?php echo $id; ?>" name="id" autocomplete="off">
 
+
 <center> <img src="save_picture\user-perempuan.png" style="width:100px;"> </center>
 
 
@@ -276,14 +304,6 @@ else
 
 
 
-<div class="form-group">
-  <label for="setup">Kategori Index</label>
-  <select  class="form-control" id="kategori_index" name="kategori_index" autocomplete="off">
-  <option value="<?php echo $call['kategori_index']; ?>"><?php echo $call['kategori_index']; ?></option>
-<option value="Header">Header</option>
-<option value="Detail">Detail</option>
-</select>
-</div>
 
 
 <button type="submit" class="btn btn-info"><i class="fa fa-save"></i> Simpan</button>
@@ -354,9 +374,11 @@ $(".nilai2").hide();
 <script type="text/javascript">
 //saat pilih kelompok pemeriksaan, nama pemeriksaan yang ada dalm kelompok tsb muncul
   $(document).ready(function(){
-          var kelompok = $("#kelompok").val();
-          var pemeriksaan = $("#pemeriksaan").val();
-    $.post("cek_nama_pemeriksaan_edit.php",{kelompok:kelompok,pemeriksaan:pemeriksaan},function(data){
+    var kelompok = $("#kelompok").val();
+    var pemeriksaan = $("#pemeriksaan").val();
+    var periksa_hidden = $("#periksa_hidden").val();
+
+    $.post("cek_nama_pemeriksaan_edit.php",{periksa_hidden:periksa_hidden,kelompok:kelompok,pemeriksaan:pemeriksaan},function(data){
 $("#periksa").html(data);
 });
 
@@ -385,7 +407,6 @@ if(data == 1)
 {
   alert("Pemeriksaan Sudah Ada !!");
   $("#pemeriksaan").focus();
-
   $("#pemeriksaan").val(periksa_hidden);
 }
 else

@@ -170,23 +170,25 @@ if ($data_z['status'] == 'Simpan Sementara') {
 
 else {
 
-	 $nestedData[] = "<a href='form_penjualan_lab.php?no_rm=".$row['no_rm']."&nama=".$row['nama_pasien']."&no_reg=".$row['no_reg']."&dokter=".$row['dokter']."&jenis_penjualan=Rawat Inap&rujukan=Rujuk Rawat Inap' class='btn btn-floating btn-small btn-info'><i class='fa fa-stethoscope'></i></a>
+	 $nestedData[] = "<button  class='btn btn-floating btn-small btn-info pemeriksaan_lab_inap' data-rm=".$row['no_rm']." data-nama=".$row['nama_pasien']." data-reg=".$row['no_reg']." data-id=".$row['id']." '><i class='fa fa-stethoscope'></i></button>
 		   ";
+
+		
 }
 
 
 // untuk input hasil lab
-$show = $db->query("SELECT * FROM tbs_penjualan WHERE no_reg = '$row[no_reg]' AND lab = 'Laboratorium' ");
+/*$show = $db->query("SELECT * FROM tbs_penjualan WHERE no_reg = '$row[no_reg]' AND lab = 'Laboratorium' ");
 $take = mysqli_num_rows($show);
 	if ($take > 0)
 	{
-		$nestedData[] = "<a href='cek_input_hasil_lab.php?no_rm=".$row['no_rm']."&nama=".$row['nama_pasien']."&no_reg=".$row['no_reg']."&jenis_penjualan=Rawat Inap' class='btn btn-floating btn-small btn-info'><i class='fa fa-pencil'></i></a>";
+		$nestedData[] = "<a href='cek_input_hasil_lab_inap.php?no_rm=".$row['no_rm']."&nama=".$row['nama_pasien']."&no_reg=".$row['no_reg']."&jenis_penjualan=Rawat Inap' class='btn btn-floating btn-small btn-info'><i class='fa fa-pencil'></i></a>";
 	}
 	else
 	{
 	  $nestedData[] = "<p style='color:red'>Input Laboratorium</p>";
 
-	}
+	}*/
 // end untuk input hasil lab
 
 
@@ -202,7 +204,7 @@ $take = mysqli_num_rows($show);
 	$nestedData[] = $row["no_rm"];
 	$nestedData[] = $row["no_reg"];
 	$nestedData[] = $row["status"];
-	$nestedData[] = $row["nama_pasien"];
+	$nestedData[] = "<span id='name-tag-".$row['id']."'>".$row["nama_pasien"]."</span>";
 	$nestedData[] = $row["jam"];
 	$nestedData[] = $row["penjamin"];	
 	$nestedData[] = $row["poli"];

@@ -12,6 +12,11 @@ $session_id = session_id();
 
 //menghapus seluruh data yang ada pada tabel tbs penjualan berdasarkan id
 $query = $db->query("DELETE FROM tbs_penjualan WHERE id = '$id'");
+
+$hapus_tbs_hasil = $db->query("DELETE FROM tbs_hasil_lab WHERE no_reg = '$no_reg' AND kode_barang = '$kode_barang'");
+
+$hapus_hasil = $db->query("DELETE FROM hasil_lab WHERE no_reg = '$no_reg' AND kode_barang = '$kode_barang'");
+
 $query2 = $db->query("DELETE FROM tbs_fee_produk WHERE kode_produk = '$kode_barang' AND session_id = '$session_id' AND no_rm = '$no_rm' AND no_reg = '$no_reg'");
 
 //jika $query benar maka akan menuju file formpenjualan.php , jika salah maka failed

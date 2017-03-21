@@ -26,10 +26,12 @@ $columns = array(
 
 // getting total number records without any search
 
-$sql = "SELECT us.nama AS dokter, se.nama AS analis,hl.nama_pasien,hl.no_rm,hl.no_faktur,hl.no_reg,hl.nama_pemeriksaan,
-		hl.status,hl.hasil_pemeriksaan,hl.nilai_normal_lk,hl.nilai_normal_pr,hl.model_hitung,hl.id,hl.satuan_nilai_normal,hl.status_abnormal,hl.status_pasien,hl.tanggal ";
-$sql.= "FROM hasil_lab hl LEFT JOIN user us ON us.id = hl.dokter LEFT JOIN user se ON se.id = hl.petugas_analis";
-$sql.=" GROUP BY hl.no_rm";
+$sql = "SELECT us.nama AS dokter, se.nama AS analis,hl.nama_pasien,hl.no_rm,hl.no_faktur,hl.no_reg,hl.nama_pemeriksaan,hl.status,
+	hl.hasil_pemeriksaan,hl.nilai_normal_lk,hl.nilai_normal_pr,
+	hl.model_hitung,hl.id,hl.satuan_nilai_normal,hl.status_abnormal,
+	hl.status_pasien,hl.tanggal ";
+$sql.= "FROM hasil_lab hl LEFT JOIN user us ON hl.dokter = us.id  LEFT JOIN user se ON hl.petugas_analis = se.id";
+$sql.=" GROUP BY hl.no_reg";
 
 $query=mysqli_query($conn, $sql) or die("1.php: get employees");
 $totalData = mysqli_num_rows($query);
@@ -37,7 +39,7 @@ $totalFiltered = $totalData;  // when there is no search parameter then total nu
 
 $sql = "SELECT us.nama AS dokter, se.nama AS analis,hl.nama_pasien,hl.no_rm,hl.no_faktur,hl.no_reg,hl.nama_pemeriksaan,
 		hl.status,hl.hasil_pemeriksaan,hl.nilai_normal_lk,hl.nilai_normal_pr,hl.model_hitung,hl.id,hl.satuan_nilai_normal,hl.status_abnormal,hl.status_pasien,hl.tanggal ";
-$sql.= "FROM hasil_lab hl LEFT JOIN user us ON us.id = hl.dokter LEFT JOIN user se ON se.id = hl.petugas_analis";
+$sql.= "FROM hasil_lab hl LEFT JOIN user us ON hl.dokter = us.id LEFT JOIN user se ON hl.petugas_analis = se.id";
 $sql.=" WHERE 1=1";
 
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
@@ -55,7 +57,7 @@ if( !empty($requestData['search']['value']) ) {   // if there is a search parame
 	$sql.=" OR hl.nama_pemeriksaan LIKE '".$requestData['search']['value']."%' )";
 }
 
-$sql.=" GROUP BY hl.no_rm";
+$sql.=" GROUP BY hl.no_reg";
 
 $query=mysqli_query($conn, $sql) or die("2.php: get employees");
 $totalFiltered = mysqli_num_rows($query); // when there is a search parameter then we have to modify total number filtered rows as per search result. 
@@ -112,8 +114,20 @@ if($row['no_faktur'] == '')
 	$nestedData[] = "<p style='color:red'> Belum Penjualan</p>";
 }
 else
-{
+{	
+	if($row['status_pasien'] == 'Rawat Inap')
+	{
+		$nestedData[] = "<td><button class='btn btn-floating  btn-info detail-lab-inap' data-faktur='".$row['no_faktur']."' data-reg='".$row['no_reg']."' data-nama='".$row['nama_pasien']."' data-rm='".$row['no_rm']."'><i class='fa fa-list'></i></button></td>";
+
+
+		 
+	}
+	else
+	{
+
 	$nestedData[] = "<td><button class='btn btn-floating  btn-info detail-lab' data-faktur='".$row['no_faktur']."'><i class='fa fa-list'></i></button></td>";
+	}
+	
 }
 	$nestedData[] = $row["id"];
 

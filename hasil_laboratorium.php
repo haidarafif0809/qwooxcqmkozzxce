@@ -1,4 +1,4 @@
-<?php include_once 'session_login.php';
+P<?php include_once 'session_login.php';
 // memasukan file session login,  header, navbar, db.php,
 include 'header.php';
 include 'navbar.php';
@@ -156,6 +156,14 @@ switch ($model_hitung) {
         <td>". $data['nilai_normal_pr']."&nbsp;-&nbsp; ". $data['normal_pr2']."&nbsp;". $data['satuan_nilai_normal']." </td>
         ";
         break;
+
+        //Text
+        case "Text":
+        echo "<td>&nbsp; ". $data['nilai_normal_lk']."&nbsp;". $data['satuan_nilai_normal']." </td>
+        <td>&nbsp; ". $data['nilai_normal_pr']."&nbsp;". $data['satuan_nilai_normal']." </td>
+        ";
+        break;
+        //End Text
 		} 
 }
         /*echo "<td style='background-color: #33b5e5;' class='edit-status' data-id='".$data['id']."'><span id='text-status-".$data['id']."'>". $data['status_abnormal'] ."</span> <input type='hidden' id='input-status-".$data['id']."' value='".$data['status_abnormal']."' class='input_status' data-id='".$data['id']."' data-status='".$data['status_abnormal']."' autofocus=''> </td>";*/
@@ -301,7 +309,7 @@ $("#input-status-"+id+"").attr("data-status",input_nama);
  $.post("proses_selesai_lab.php",{no_rm:no_rm,no_reg:no_reg,nama:nama,jenis_penjualan:jenis_penjualan,dokter:dokter,analis:analis},function(info) {
 
 
-     $("#table-baru").html(info);
+     //$("#table-baru").html(info);
      var no_reg = info;
      $("#cetak").show();
      $("#cetak").attr('href', 'cetak_hasil_lab.php?no_reg='+no_reg+'');
@@ -309,7 +317,7 @@ $("#input-status-"+id+"").attr("data-status",input_nama);
      $("#alert_berhasil").show();
 
      $("#no_rm").val('');
-     $("#no_reg").val('');
+     
      $("#nama").val('');
      $("#jenis_penjualan").val('');
 

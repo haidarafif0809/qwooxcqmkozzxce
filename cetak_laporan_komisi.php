@@ -80,7 +80,7 @@ $sampai_tanggal = $_GET['sampai_tanggal'];
             
             <tbody>
             <?php
-                $query10 = $db->query("SELECT u.nama,lfp.nama_petugas,lfp.no_faktur,lfp.kode_produk,lfp.nama_produk,lfp.jumlah_fee,lfp.tanggal,lfp.jam FROM laporan_fee_produk lfp INNER JOIN user u ON lfp.nama_petugas = u.id WHERE nama_petugas = '$nama_petugas' ");
+                $query10 = $db->query("SELECT u.nama,lfp.nama_petugas,lfp.no_faktur,lfp.kode_produk,lfp.nama_produk,lfp.jumlah_fee,lfp.tanggal,lfp.jam FROM laporan_fee_produk lfp INNER JOIN user u ON lfp.nama_petugas = u.id WHERE nama_petugas = '$nama_petugas' WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' ");
                 while ($data10 = mysqli_fetch_array($query10))
                 {
                   

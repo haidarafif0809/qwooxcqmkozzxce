@@ -382,6 +382,7 @@ echo '<li><a href="cache_produk_penjualan.php" target="blank" class="waves-effec
 echo '<li><a href="cache_produk_lab.php" target="blank" class="waves-effect">Update Cache P.Lab</a></li>';
 echo '<li><a href="cache_produk_obat.php" target="blank" class="waves-effect">Update Cache Obat Obatan</a></li>';
 echo '<li><a href="cache_produk_tindakan.php" target="blank" class="waves-effect">Update Cache Tindakan</a></li>';
+echo '<li><a href="cache_produk_radiologi.php" target="blank" class="waves-effect">Update Cache Radiologi</a></li>';
 
 if ($lihat['persediaan_lihat'] > 0){
                         echo '</ul>
@@ -587,7 +588,7 @@ if ($lihat['setting_lihat'] > 0){
 if ($lihat['laboratorium_lihat'] > 0)
 { ?>
 
-<li ><a class="collapsible-header waves-effect arrow-r"><i class="fa fa-stethoscope"></i>Laboratorium <i class="fa fa-angle-down rotate-icon"></i></a>
+<li ><a class="collapsible-header waves-effect arrow-r"><i class="fa fa-flask"></i>Laboratorium <i class="fa fa-angle-down rotate-icon"></i></a>
     <div class="collapsible-body">
        <ul>
 <li><a href="lab_bidang.php" class="waves-effect" >Kelompok Bidang</a></li>
@@ -598,6 +599,15 @@ if ($lihat['laboratorium_lihat'] > 0)
 </li>
 
 <?php } ?>
+
+<li ><a class="collapsible-header waves-effect arrow-r"><i class="fa fa-stethoscope"></i>Radiologi <i class="fa fa-angle-down rotate-icon"></i></a>
+    <div class="collapsible-body">
+        <ul>
+            <li><a href="daftar_pemeriksaan_radiologi.php" class="waves-effect" >Daftar Pemeriksaan</a></li>
+            <li><a href="form_pemeriksaan_radiologi.php" class="waves-effect" >Pemeriksaan Radiologi</a></li>
+        </ul>
+    </div>
+</li>
 
 <?php
 

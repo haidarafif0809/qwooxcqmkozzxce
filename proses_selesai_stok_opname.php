@@ -81,6 +81,22 @@ $session_id = session_id();
 
 
 
+
+
+//STARTING MASUKIN KE HISTORY TBSNYA
+$queryhtso = "INSERT INTO history_tbs_stok_opname(session_id, no_faktur, kode_barang, nama_barang, satuan, awal, masuk, keluar, stok_sekarang, fisik, selisih_fisik, selisih_harga, harga, hpp) SELECT session_id, no_faktur, kode_barang, nama_barang, satuan, awal, masuk, keluar, stok_sekarang, fisik, selisih_fisik, selisih_harga, harga, hpp FROM tbs_stok_opname WHERE no_faktur = '' OR no_faktur IS NULL";
+            
+            if ($db->query($queryhtso) === TRUE) {
+                
+            } else {
+            echo "Error: " . $queryhtso . "<br>" . $db->error;
+            }
+//ENDING MASUKIN KE HISTORY TBSNYA 
+
+
+
+
+
         $query1 = $db->query("SELECT * FROM tbs_stok_opname WHERE no_faktur = '' OR no_faktur IS NULL ");
         while ($data = mysqli_fetch_array($query1))
         {
@@ -171,14 +187,6 @@ else {
 
 
 
-$queryhtso = "INSERT INTO history_tbs_stok_opname(session_id, no_faktur, kode_barang, nama_barang, satuan, awal, masuk, keluar, stok_sekarang, fisik, selisih_fisik, selisih_harga, harga, hpp) SELECT session_id, no_faktur, kode_barang, nama_barang, satuan, awal, masuk, keluar, stok_sekarang, fisik, selisih_fisik, selisih_harga, harga, hpp FROM tbs_stok_opname WHERE no_faktur = '' OR no_faktur IS NULL '";
-            
-            if ($db->query($queryhtso) === TRUE) {
-                
-            } else {
-            echo "Error: " . $queryhtso . "<br>" . $db->error;
-            }
-//</>END JURNAL TRANSAKSI
 
 
         $query5 = $db->query("DELETE FROM tbs_stok_opname WHERE no_faktur = '' OR no_faktur IS NULL  ");

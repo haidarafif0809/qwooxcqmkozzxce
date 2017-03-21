@@ -11,27 +11,30 @@ $columns = array(
 	1 => 'nama_pemeriksaan',
 	2 => 'kelompok_pemeriksaan',
 	3 => 'model_hitung',
-	4 => 'text_reference',
-	5 => 'nomral_lk',
-	6 => 'normal_pr',
-	7 => 'metode',
-	8 => 'edit',
-	9 => 'hapus',
-	10 => 'id'
+  4 => 'sub_lab',
+  5 => 'kategori_index',
+	6 => 'text_reference',
+	7 => 'nomral_lk',
+	8 => 'normal_pr',
+  9 => 'detail',
+	10 => 'metode',
+	11 => 'edit',
+	12 => 'hapus',
+	13 => 'id'
 
 );
 
 // getting total number records without any search
-$sql = "SELECT jl.nama AS namanya ,bl.nama,sh.id,sh.nama_pemeriksaan,sh.kelompok_pemeriksaan,sh.model_hitung,sh.text_reference,sh.normal_lk,sh.normal_pr,sh.metode,sh.kategori_index,sh.text_hasil,sh.satuan_nilai_normal ";
-$sql.= "FROM setup_hasil sh LEFT JOIN bidang_lab bl ON sh.kelompok_pemeriksaan = bl.id LEFT JOIN jasa_lab jl ON jl.id = sh.nama_pemeriksaan ";
+$sql = "SELECT sh.sub_hasil_lab,sh.normal_lk2,sh.normal_pr2,sh.kategori_index,sh.nama_sub,jl.nama AS namanya ,bl.nama,sh.id,sh.nama_pemeriksaan,sh.kelompok_pemeriksaan,sh.model_hitung,sh.text_reference,sh.normal_lk,sh.normal_pr,sh.metode,sh.kategori_index,sh.text_hasil,sh.satuan_nilai_normal ";
+$sql.= "FROM setup_hasil sh LEFT JOIN bidang_lab bl ON sh.kelompok_pemeriksaan = bl.id LEFT JOIN jasa_lab jl ON jl.id = sh.nama_pemeriksaan WHERE sub_hasil_lab = '0'";
 
 $query=mysqli_query($conn, $sql) or die("1.php: get employees");
 $totalData = mysqli_num_rows($query);
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
-$sql = "SELECT jl.nama AS namanya,bl.nama,sh.id,sh.nama_pemeriksaan,sh.kelompok_pemeriksaan,sh.model_hitung,sh.text_reference,sh.normal_lk,sh.normal_pr,sh.metode,sh.kategori_index,sh.text_hasil,sh.satuan_nilai_normal ";
+$sql = "SELECT sh.sub_hasil_lab,sh.normal_lk2,sh.normal_pr2,sh.kategori_index,sh.nama_sub,jl.nama AS namanya,bl.nama,sh.id,sh.nama_pemeriksaan,sh.kelompok_pemeriksaan,sh.model_hitung,sh.text_reference,sh.normal_lk,sh.normal_pr,sh.metode,sh.kategori_index,sh.text_hasil,sh.satuan_nilai_normal ";
 $sql.= "FROM setup_hasil sh LEFT JOIN bidang_lab bl ON sh.kelompok_pemeriksaan = bl.id LEFT JOIN jasa_lab jl ON jl.id = sh.nama_pemeriksaan ";
-$sql.=" WHERE 1=1";
+$sql.=" WHERE sub_hasil_lab = '0'";
 
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
 	$sql.=" AND ( jl.nama LIKE '".$requestData['search']['value']."%' "; 
@@ -64,15 +67,39 @@ if ($row['model_hitung'] == 'Text')
       }
      
       $nestedData[] = $row['namanya'];
-      $nestedData[] = $row['kelompok_pemeriksaan'];
+      $nestedData[] = $row['nama'];
+
+      $nestedData[] = $row['nama_sub'];
+      $nestedData[] = $row['kategori_index'];
+
       $nestedData[] = $row['model_hitung'];
       $nestedData[] = $row['text_reference'];
       $nestedData[] = $row['normal_lk'];
       $nestedData[] = $row['normal_pr'];
       $nestedData[] = $row['metode'];
 
-      $nestedData[] = "<a href='edit_setup_hasil.php?id=".$row['id']."'class='btn btn-warning'> Edit </a>";
-      $nestedData[] = " <button data-id='".$row['id']."' class='btn btn-danger delete'> Hapus </button>
+
+   if($row['kategori_index'] == 'Header')
+     {
+      $nestedData[] = "<button class='btn btn-floating  btn-info detail-set-up' data-id='".$row['id']."' data-sub='".$row['sub_hasil_lab']."' ><i class='fa fa-list'></i></button>";
+    }
+    else
+    {
+      $nestedData[] = "<p style='color:red'>Data Detail</p>";
+    }
+
+    $cek_data = $db->query("SELECT sub_hasil_lab FROM setup_hasil WHERE sub_hasil_lab = '$row[id]'");
+     $show = mysqli_num_rows($cek_data);
+
+    if($show > 0)
+    {
+      $nestedData[] = "<p style='color:red'>Header Tidak Bisa Edit</p>";
+    }
+    else
+    {
+      $nestedData[] = "<a href='edit_setup_hasil.php?id=".$row['id']."'class='btn btn-warning'> <i class='fa fa-edit'></i> </a>";
+    }
+      $nestedData[] = " <button data-id='".$row['id']."' class='btn btn-danger delete'> <i class='fa fa-trash'></i> </button>
       ";
 
         }
@@ -92,6 +119,10 @@ else
      
       $nestedData[] = $row['namanya'];
       $nestedData[] = $row['nama'];
+
+      $nestedData[] = $row['nama_sub'];
+      $nestedData[] = $row['kategori_index'];
+
       $nestedData[] = $row['model_hitung'];
       $nestedData[] = $row['text_reference'];
 
@@ -126,8 +157,31 @@ switch ($model_hitung) {
 	} 
 
      $nestedData[] = $row['metode'];
-      $nestedData[] = "<a href='edit_setup_hasil.php?id=".$row['id']."'class='btn btn-warning'> Edit </a>";
-      $nestedData[] = "<button data-id='".$row['id']."' class='btn btn-danger delete'> Hapus </button>";
+
+
+     if($row['kategori_index'] == 'Header')
+     {
+      $nestedData[] = "<button class='btn btn-floating  btn-info detail-set-up' data-id='".$row['id']."' data-sub='".$row['sub_hasil_lab']."' ><i class='fa fa-list'></i></button>";
+    }
+    else
+    {
+      $nestedData[] = "<p style='color:red'>Data Detail</p>";
+    }
+
+
+    $cek_data = $db->query("SELECT sub_hasil_lab FROM setup_hasil WHERE sub_hasil_lab = '$row[id]'");
+     $show = mysqli_num_rows($cek_data);
+
+    if($show > 0)
+    {
+      $nestedData[] = "<p style='color:red'>Header Tidak Bisa Edit</p>";
+    }
+    else
+    {
+      
+      $nestedData[] = "<a href='edit_setup_hasil.php?id=".$row['id']."'class='btn btn-warning'> <i class='fa fa-edit'></i>  </a>";
+    }
+      $nestedData[] = "<button data-id='".$row['id']."' class='btn btn-danger delete'><i class='fa fa-trash'></i>  </button>";
 
 }
 // end tampilkan data

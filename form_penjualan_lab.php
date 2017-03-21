@@ -3805,11 +3805,11 @@ var no_reg = $("#no_reg").val();
 if (no_reg == '')
 {
 
-    $.get("cek_total_lab.php",{no_reg:no_reg},function(data1){
+    $.get("cek_total_lab_rj_ugd.php",{no_reg:no_reg},function(data1){
 
 
         if (data1 == 1) {
-                 $.get("cek_total_tbs_form_lab.php",{no_reg:no_reg},function(data){
+                 $.get("cek_total_tbs_form_lab_rj_ugd.php",{no_reg:no_reg},function(data){
                   data = data.replace(/\s+/g, '');
                   if (data == "") {
                     data = 0;
@@ -3858,7 +3858,7 @@ if (no_reg == '')
   else {
 
 
-$.get("cek_total_tbs_form_lab.php",{no_reg:no_reg},function(data){
+$.get("cek_total_tbs_form_lab_rj_ugd.php",{no_reg:no_reg},function(data){
   data = data.replace(/\s+/g, '');
                   if (data == "") {
                     data = 0;
