@@ -362,6 +362,75 @@ while ($data_retur_penjualan = mysqli_fetch_array($query_retur_penjualan)) {
 </tbody>
 </table>
 
+
+
+<h2>Stok Opname</h2>
+<table border="1">
+<thead>
+		<th>No Faktur </th>
+		<th>Tanggal</th>
+		<th>Jumlah Jurnal</th>
+		<th>Total Debit</th>
+		<th>Total Kredit</th>
+		<th>Status Balance Jurnal</th>
+		
+	</thead>
+	<tbody>
+
+
+<?php 
+
+
+// jurnal stok Opname 
+
+$query_stok_opname = $db->query("SELECT no_faktur AS no_faktur ,tanggal FROM stok_opname WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' ");
+
+
+while ($data_stok_opname = mysqli_fetch_array($query_stok_opname)) {
+	# code...
+	//query untuk mengambil ada berapa jumlah jurnal di penjualan tersebut
+	$query_jurnal_stok_opname = $db->query("SELECT COUNT(*) AS jumlah_jurnal,SUM(debit) AS total_debit,SUM(kredit) AS total_kredit  FROM jurnal_trans WHERE no_faktur = '$data_stok_opname[no_faktur]' AND (debit  != 0 OR kredit != 0)");
+	$data_jurnal_stok_opname = mysqli_fetch_array($query_jurnal_stok_opname);
+	//jika jumlah jurnal nya kurang dari 2 , maka penjualannya di lakukan update , agar jurnal nya kembali benar.
+
+	if ($data_jurnal_stok_opname['jumlah_jurnal'] < 2) {
+		# code...
+		$db->query("UPDATE stok_opname SET no_faktur_retur = '$data_stok_opname[no_faktur]' WHERE no_faktur_retur = '$data_stok_opname[no_faktur]'");
+	}
+
+	$selisih_debit_kredit = $data_jurnal_stok_opname['total_debit'] - $data_jurnal_stok_opname['total_kredit'];
+	$status_balance = 'Balance';
+
+	// jika debit kredit nya ada selisih maka lakukan update agar menjadi balance
+	if ($selisih_debit_kredit != 0 ) {
+		# code...
+		$status_balance = 'Tidak Balance';
+
+		$db->query("UPDATE stok_opname SET no_faktur_retur = '$data_stok_opname[no_faktur]' WHERE no_faktur_retur = '$data_stok_opname[no_faktur]'");
+
+	}
+
+
+
+
+
+	
+	echo "<tr>
+			<td>".$data_stok_opname['no_faktur']."</td>
+			<td>".$data_stok_opname['tanggal']."</td>
+			<td>".$data_jurnal_stok_opname['jumlah_jurnal']."</td>
+			<td>".$data_jurnal_stok_opname['total_debit']."</td>
+			<td>".$data_jurnal_stok_opname['total_kredit']."</td>
+			<td>".$status_balance."</td>
+
+		 </tr>";
+}
+
+
+ ?>
+</tbody>
+</table>
+
 <h2>Kas Keluar</h2>
 <table border="1">
 <thead>
