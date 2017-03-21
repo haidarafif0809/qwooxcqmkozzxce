@@ -6,10 +6,10 @@ include 'sanitasi.php';
 
 $id = stringdoang($_GET['id']);
 
-$select_to = $db->query("SELECT sh.normal_lk2,sh.normal_pr2,jl.id AS id_lab ,jl.nama AS nama_lab,bl.nama,sh.id,sh.nama_pemeriksaan,sh.kelompok_pemeriksaan,sh.model_hitung,sh.text_reference,sh.normal_lk,sh.normal_pr,sh.metode,sh.kategori_index,sh.text_hasil,sh.satuan_nilai_normal FROM setup_hasil sh LEFT JOIN bidang_lab bl ON sh.kelompok_pemeriksaan = bl.id LEFT JOIN jasa_lab jl ON jl.id = sh.nama_pemeriksaan WHERE sh.id = '$id'");
+$select_to = $db->query("SELECT sh.nama_sub,sh.sub_hasil_lab,sh.normal_lk2,sh.normal_pr2,jl.id AS id_lab ,jl.nama AS nama_lab,bl.nama,sh.id,sh.nama_pemeriksaan,sh.kelompok_pemeriksaan,sh.model_hitung,sh.text_reference,sh.normal_lk,sh.normal_pr,sh.metode,sh.kategori_index,sh.text_hasil,sh.satuan_nilai_normal FROM setup_hasil sh LEFT JOIN bidang_lab bl ON sh.kelompok_pemeriksaan = bl.id LEFT JOIN jasa_lab jl ON jl.id = sh.nama_pemeriksaan WHERE sh.id = '$id'");
 $call = mysqli_fetch_array($select_to);
-
-
+$header = $call['sub_hasil_lab'];
+$nama_header = $call['nama_sub'];
 ?>
    <!-- Modal Untuk Confirm Delete-->
 <div id="modale-delete" class="modal fade" role="dialog">
@@ -68,7 +68,17 @@ $call = mysqli_fetch_array($select_to);
 <div class="form-group">
   <label for="sel1">Sub Pemeriksaan</label>
   <select class="form-control" id="sub_hasil_lab" name="sub_hasil_lab"> 
-  <option value="">Pilih Sub Pemeriksaan</option>
+
+  <?php 
+  if ($header == 0)
+  {
+      echo '<option value="">Pilih Sub Pemeriksaan</option>';
+  }
+  else
+  {
+      echo "<option value=".$header.">".$nama_header."</option>";
+  }
+  ?>
   <?php 
   $get = $db->query("SELECT id,nama_pemeriksaan FROM setup_hasil WHERE kategori_index = 'Header'");
   while ( $out = mysqli_fetch_array($get))
@@ -372,8 +382,8 @@ $(".nilai2").hide();
 </script>
 
 <script type="text/javascript">
-//saat pilih kelompok pemeriksaan, nama pemeriksaan yang ada dalm kelompok tsb muncul
-  $(document).ready(function(){
+$(document).ready(function(){
+//script untuk cek nama pemeriksaan awal 
     var kelompok = $("#kelompok").val();
     var pemeriksaan = $("#pemeriksaan").val();
     var periksa_hidden = $("#periksa_hidden").val();
@@ -382,11 +392,13 @@ $(".nilai2").hide();
 $("#periksa").html(data);
 });
 
-    $("#kelompok").change(function(){
-      var kelompok = $("#kelompok").val();
-      var pemeriksaan = $("#pemeriksaan").val();
+//Ketika Kelompok pemeriksaan di ganti jalankan ini
+$("#kelompok").change(function(){
+    var kelompok = $("#kelompok").val();
+    var pemeriksaan = $("#pemeriksaan").val();
+    var periksa_hidden = $("#periksa_hidden").val();
 
-$.post("cek_nama_pemeriksaan_edit.php",{kelompok:kelompok,pemeriksaan:pemeriksaan},function(data){
+$.post("cek_nama_pemeriksaan_edit.php",{periksa_hidden:periksa_hidden,kelompok:kelompok,pemeriksaan:pemeriksaan},function(data){
 
 $("#periksa").html(data);
 
@@ -395,7 +407,9 @@ $("#periksa").html(data);
   });
 </script> 
 
-<script type="text/javascript">
+
+<!--<script type="text/javascript">
+//di non aktifkan karena agar bisa detailnya(anaknya) masuk ke induk yang lain !
 // untuk cek nama pemeriksaan ini sudah ada apa belum
 $(document).on('change','#periksa',function(e){
 
@@ -417,7 +431,7 @@ else
 });
     });
 // ENDING untuk cek nama pemeriksaan ini sudah ada apa belum\
-</script>
+</script>-->
 
 <script type="text/javascript">
 $("#perhitungan").change(function(){
