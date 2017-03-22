@@ -398,8 +398,8 @@ tr:nth-child(even){background-color: #f2f2f2}
               "fnCreatedRow": function( nRow, aData, iDataIndex ) {
               $(nRow).attr('class','tr-id-'+aData[13]+'');
             },
-        } );
-      } );
+        });
+      });
     </script>
 <!--end ajax datatable-->
 
@@ -449,7 +449,8 @@ $("#periksa").html(data);
   });
 </script> 
 
-<script type="text/javascript">
+<!--<script type="text/javascript">
+//di non aktifkan karena agar bisa detailnya(anaknya) masuk ke induk yang lain !
 $(document).on('change','#periksa',function(e){
 
       var pemeriksaan = $("#pemeriksaan").val();
@@ -469,7 +470,7 @@ else
 
 });
     });
-</script>
+</script>-->
 
 <script type="text/javascript">
 $(document).on('click','#tambah',function(e){
@@ -561,8 +562,31 @@ var id = $("#id2").val();
 
 $.post('delete_setup_hasil.php',{id:id},function(data){
 $("#modal_detail").modal('hide');
+
     });
 
+//Ajax Ketika detail di hapus dan kosong maka table memperbarui
+$('#table_set_up').DataTable().destroy();
+ var dataTable = $('#table_set_up').DataTable( {
+          "processing": true,
+          "serverSide": true,
+          "ajax":{
+            url :"show_data_setup_hasil.php", // json datasource
+            type: "post",  // method  , by default get
+            error: function(){  // error handling
+              $(".tbody").html("");
+
+             $("#table_set_up").append('<tbody class="tbody"><tr><th colspan="3">Tidak Ada Data Yang Ditemukan</th></tr></tbody>');
+
+              $("#table_set_up_processing").css("display","none");
+              
+            }
+          },
+              "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+              $(nRow).attr('class','tr-id-'+aData[13]+'');
+            },
+        });
+ //Ending Ajax Ketika detail di hapus dan kosong maka table memperbarui
 });
 </script>
 <!--  end modal confirmasi delete lanjutan  -->

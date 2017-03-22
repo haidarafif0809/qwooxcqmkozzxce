@@ -366,13 +366,15 @@ $no_faktur = $nomor."/JL/".$data_bulan_terakhir."/".$tahun_terakhir;
           <br><br>
           </div>
           
+          <input type="hidden" class="form-control" name="disc_tbs" autocomplete="off" id="disc_tbs" placeholder="DISKONE TBS" >
+
           <input type="hidden" class="form-control" name="nama_barang" id="nama_barang" placeholder="Nama Barang" readonly="">
 
           <input type="hidden" class="form-control"  name="over_stok" id="over_stok" autocomplete="off" placeholder="Over Stok">
 
-          <input type="text" id="harga_produk" name="harga" class="form-control" placeholder="Harga Produk" required="">
+          <input type="hidden" id="harga_produk" name="harga" class="form-control" placeholder="Harga Produk" required="">
 
-          <input type="text" id="harga_lama" name="harga_lama" class="form-control" placeholder="Harga Lama" required="">
+          <input type="hidden" id="harga_lama" name="harga_lama" class="form-control" placeholder="Harga Lama" required="">
 
           <input type="hidden" class="form-control" name="jumlahbarang" id="jumlahbarang" placeholder="Jumah Barang">
 
@@ -853,7 +855,12 @@ $(document).ready(function(){
         $("#tax_rp").val(tandaPemisahTitik(Math.round(tax_bener)))
 
         $.post("prosestbspembelian.php",{session_id:session_id,kode_barang:kode_barang,nama_barang:nama_barang,jumlah_barang:jumlah_barang,harga:harga,harga_baru:harga_baru,potongan:potongan,tax:tax,satuan:satuan},function(data){
-      
+        //digunakan untuk mengecek sama tidaknya jumlah disc dg total_subtotal di tbs
+  $.getJSON("cek_jumlah_disc_dg_total_sub_tbspembelian.php",function(oke){
+       
+        $("#disc_tbs").val(oke.potongannya);
+
+      });
 
         $("#tbody").prepend(data);
         $("#kode_barang").focus();
@@ -941,8 +948,11 @@ $("#submit_produk").show('');
        var ppn_input = $("#ppn_input").val();
        var sisa = pembayaran - total;
        var sisa_kredit = total - pembayaran;
-
-
+       var disc_tbs = $("#disc_tbs").val();
+       if (disc_tbs == '')
+       {
+        disc_tbs = 0;
+       }
      
  if (sisa_pembayaran < 0)
  {
@@ -960,13 +970,7 @@ alert("Suplier Harus Di Isi");
 
 
  }
-else if (pembayaran == "") 
- {
-
-alert("Pembayaran Harus Di Isi");
-
- }
- else if (pembayaran == "") 
+ else if (((total_1 != "" || total_1 != 0) && pembayaran == "" && potongan_persen != '100' && disc_tbs == 0)) 
  {
 
 alert("Pembayaran Harus Di Isi");
@@ -980,7 +984,7 @@ alert("Silakan Bayar Hutang ");
  }
 
 
-  else if ((total_1 ==  0 && total ==  0 && potongan_persen != 100 && pembayaran == 0) || (total_1 ==  "" && total == "" &&potongan_persen != 100 && pembayaran == ""))
+  else if ((total_1 ==  0 || total_1 ==  "" ) && (total ==  0 || total == "") && potongan_persen != 100 && (pembayaran == 0 ||  pembayaran == "") && disc_tbs == 0)
  {
 
 alert(" Anda Belum Melakukan Pembelian ");
@@ -1040,6 +1044,16 @@ alert(" Kode Gudang Harus Diisi ");
             
 </script>
 
+<script type="text/javascript">
+// cek ada tidak nya potongan di tbs
+  $(document).ready(function(){
+       //digunakan untuk mengecek sama tidaknya jumlah disc dg total_subtotal di tbs
+  $.getJSON("cek_jumlah_disc_dg_total_sub_tbspembelian.php",function(oke){
+        $("#disc_tbs").val(oke.potongannya);
+      });
+});
+</script>
+
    <script>
        //perintah javascript yang diambil dari form proses_bayar_beli.php dengan id=form_beli
        $("#hutang").click(function(){
@@ -1065,6 +1079,11 @@ alert(" Kode Gudang Harus Diisi ");
        if (pembayaran == '')
        {
         pembayaran = 0;
+       }
+       var disc_tbs = $("#disc_tbs").val();
+       if (disc_tbs == '')
+       {
+        disc_tbs = 0;
        }
        var kode_gudang = $("#kode_gudang").val();
        var ppn = $("#ppn").val();
@@ -1103,7 +1122,7 @@ alert(" Kode Gudang Harus Diisi ");
         
         }
 
-   else if ((total_1 ==  0 && total ==  0 && potongan_persen != 100 && pembayaran == 0) || (total_1 ==  "" && total == "" &&potongan_persen != 100 && pembayaran == ""))
+   else if ((total_1 ==  0 || total_1 ==  "") && (total ==  0 || total == "") && potongan_persen != 100 && (pembayaran == 0 || pembayaran == "" && disc_tbs == 0))
         {
         
         alert("Total Kosong, Anda Belum Melakukan Pembelian");

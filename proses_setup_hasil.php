@@ -19,7 +19,10 @@ $nilai_p2 = stringdoang($_POST['nilai_p2']);
 $text_p = stringdoang($_POST['text_p']);
 $kategori_index = stringdoang($_POST['kategori_index']);
 $sub_hasil_lab = stringdoang($_POST['sub_hasil_lab']);
-
+if($sub_hasil_lab == '')
+{
+	$sub_hasil_lab = 0;
+}
 $select = $db->query("SELECT nama_pemeriksaan FROM setup_hasil WHERE id = '$sub_hasil_lab'");
 $out = mysqli_fetch_array($select);
 $id_jasa = $out['nama_pemeriksaan'];
@@ -63,7 +66,7 @@ else
         }
 }
 
-
 echo '<script>window.location.href="setup_hasil.php";</script>';
+
 
  ?>
