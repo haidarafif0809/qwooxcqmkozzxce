@@ -576,7 +576,7 @@ while ($data_kas_masuk = mysqli_fetch_array($query_kas_masuk)) {
 
 // jurnal penjualan 
 
-$query_kas_mutasi = $db->query("SELECT no_faktur,tanggal FROM kas_masuk WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' ");
+$query_kas_mutasi = $db->query("SELECT no_faktur,tanggal FROM kas_mutasi WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' ");
 
 
 while ($data_kas_mutasi = mysqli_fetch_array($query_kas_mutasi)) {
