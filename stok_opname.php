@@ -155,7 +155,7 @@ echo '<a href="form_stok_opname.php"  class="btn btn-info" > <i class="fa fa-plu
   <input type="hidden" name="no_faktur_detail" class="form-control " id="no_faktur_detail" placeholder="no_faktur  "/>
 <!--START FILTER FAKTUR-->
 <span id="fil_faktur">
-<form class="form-inline" action="show_filter_stok_opname.php" method="post" role="form">
+<form class="form-inline" action="show_filter_stok_opname.php" method="get" role="form">
 					
 					<div class="form-group"> 
 					
@@ -177,7 +177,7 @@ echo '<a href="form_stok_opname.php"  class="btn btn-info" > <i class="fa fa-plu
 
 <!--START FILTER DETAIl-->
 <span id="fil_detail">
-<form class="form-inline" action="show_filter_stok_opname_detail.php" method="post" role="form">
+<form class="form-inline" action="show_filter_stok_opname_detail.php" method="get" role="form">
 					
 					<div class="form-group"> 
 					
