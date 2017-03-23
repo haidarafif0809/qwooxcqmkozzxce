@@ -4,12 +4,27 @@ include 'header.php';
 include 'navbar.php';
 include 'db.php';
 include 'sanitasi.php';
+if (!isset($_GET['dari_tanggal'])) {
+	# code...
+	header('location:stok_opname.php');
+}
 
 
-$dari_tanggal = $_POST['dari_tanggal'];
-$sampai_tanggal= $_POST['sampai_tanggal'];
+$dari_tanggal = stringdoang($_GET['dari_tanggal']);
+$sampai_tanggal= stringdoang($_GET['sampai_tanggal']);
 
-$query = $db->query("SELECT * FROM detail_stok_opname WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' order by tanggal asc");
+$query = $db->query("SELECT no_faktur ,
+					kode_barang ,
+					nama_barang ,
+					stok_sekarang ,
+					fisik ,
+					selisih_fisik ,
+					hpp ,
+					selisih_harga 
+					FROM detail_stok_opname 
+					WHERE tanggal >= '$dari_tanggal'
+					AND tanggal <= '$sampai_tanggal' 
+					order by tanggal asc");
 
 ?>
 <div class="container"><!--start of container-->
@@ -19,7 +34,7 @@ $query = $db->query("SELECT * FROM detail_stok_opname WHERE tanggal >= '$dari_ta
 <?php
 include 'db.php';
 
-$pilih_akses_stok_opname = $db->query("SELECT * FROM otoritas_stok_opname WHERE id_otoritas = '$_SESSION[otoritas_id]'");
+$pilih_akses_stok_opname = $db->query("SELECT stok_opname_tambah FROM otoritas_stok_opname WHERE id_otoritas = '$_SESSION[otoritas_id]'");
 $stok_opname = mysqli_fetch_array($pilih_akses_stok_opname);
 
 if ($stok_opname['stok_opname_tambah'] > 0) {
@@ -36,7 +51,7 @@ echo '<a href="form_stok_opname.php"  class="btn btn-info" > <i class="fa fa-plu
 
 <!--START FILTER FAKTUR-->
 <span id="fil_faktur">
-<form class="form-inline" action="show_filter_stok_opname.php" method="post" role="form">
+<form class="form-inline" action="show_filter_stok_opname.php" method="get" role="form">
 					
 					<div class="form-group"> 
 					
@@ -58,7 +73,7 @@ echo '<a href="form_stok_opname.php"  class="btn btn-info" > <i class="fa fa-plu
 
 <!--START FILTER DETAIl-->
 <span id="fil_detail">
-<form class="form-inline" action="show_filter_stok_opname_detail.php" method="post" role="form">
+<form class="form-inline" action="show_filter_stok_opname_detail.php" method="get" role="form">
 					
 					<div class="form-group"> 
 					
