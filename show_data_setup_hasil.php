@@ -42,8 +42,8 @@ if( !empty($requestData['search']['value']) ) {   // if there is a search parame
 }
 
 $query=mysqli_query($conn, $sql) or die("2.php: get employees");
-$totalFiltered = mysqli_num_rows($query); // when there is a search parameter then we have to modify total number filtered rows as per search result. 
-$sql.=" ORDER BY id ".$requestData['order'][0]['dir']." LIMIT ".$requestData['start']." ,".$requestData['length']."";
+$totalFiltered = mysqli_num_rows($query); // when there is a search parameter then we have to modify total number filtered rows as per search result.
+$sql.=" ORDER BY id DESC LIMIT ".$requestData['start']." ,".$requestData['length']." ";
 /* $requestData['order'][0]['column'] contains colmun index, $requestData['order'][0]['dir'] contains order such as asc/desc  */	
 $query=mysqli_query($conn, $sql) or die("3.php: get employees");
 
@@ -88,12 +88,9 @@ if ($row['model_hitung'] == 'Text')
       $nestedData[] = "<p style='color:red'>Data Detail</p>";
     }
 
-    $cek_data = $db->query("SELECT sub_hasil_lab FROM setup_hasil WHERE sub_hasil_lab = '$row[id]'");
-     $show = mysqli_num_rows($cek_data);
-
-    if($show > 0)
-    {
-      $nestedData[] = "<p style='color:red'>Header Tidak Bisa Edit</p>";
+    if($row['kategori_index'] == 'Header')
+     {
+      $nestedData[] = "<a href='edit_setup_hasil_header.php?id=".$row['id']."'class='btn btn-warning'> <i class='fa fa-edit'></i>  </a>";
     }
     else
     {
@@ -169,18 +166,16 @@ switch ($model_hitung) {
     }
 
 
-    $cek_data = $db->query("SELECT sub_hasil_lab FROM setup_hasil WHERE sub_hasil_lab = '$row[id]'");
-     $show = mysqli_num_rows($cek_data);
-
-    if($show > 0)
-    {
-      $nestedData[] = "<p style='color:red'>Header Tidak Bisa Edit</p>";
+    if($row['kategori_index'] == 'Header')
+     {
+      $nestedData[] = "<a href='edit_setup_hasil_header.php?id=".$row['id']."'class='btn btn-warning'> <i class='fa fa-edit'></i>  </a>";
     }
     else
     {
       
       $nestedData[] = "<a href='edit_setup_hasil.php?id=".$row['id']."'class='btn btn-warning'> <i class='fa fa-edit'></i>  </a>";
     }
+
       $nestedData[] = "<button data-id='".$row['id']."' class='btn btn-danger delete'><i class='fa fa-trash'></i>  </button>";
 
 }

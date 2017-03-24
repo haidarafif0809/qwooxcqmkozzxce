@@ -3,8 +3,6 @@ include 'header.php';
 include 'navbar.php';
 include 'db.php';
 
-
-// AKHIR untuk FEGY NATION
 ?>
 
 <div id="modal_detail" class="modal fade" role="dialog">
@@ -118,6 +116,15 @@ include 'db.php';
   </span>
 
 <div class="form-group">
+  <label for="setup">Kategori Index</label>
+  <select  class="form-control" id="kategori_index" name="kategori_index" autocomplete="off">
+<option value="Header">Header</option>
+<option value="Detail">Detail</option>
+</select>
+</div>
+
+<span id="show_periksa">
+<div class="form-group">
   <label for="sel1">Sub Pemeriksaan</label>
   <select class="form-control" id="sub_hasil_lab" name="sub_hasil_lab"> 
   <option value="">Pilih Sub Pemeriksaan</option>
@@ -132,19 +139,7 @@ include 'db.php';
   ?>
   </select>
 </div>
-
-
-<div class="form-group">
-  <label for="setup">Kategori Index</label>
-  <select  class="form-control" id="kategori_index" name="kategori_index" autocomplete="off">
-<option value="Header">Header</option>
-<option value="Detail">Detail</option>
-</select>
-</div>
-
-
-
-
+</span>
 
 <div class="form-group">
   <label for="setup">Text Hasil</label>
@@ -693,7 +688,29 @@ $.post('table_baru_setup_hasil.php',{q:q},function(data)
 </script>
 
 
+<!-- Change Kategori Index -->
+<script type="text/javascript">
+$(document).ready(function(){
+  //awal kategori index = Header maka sub langsung hide
+     $("#show_periksa").hide();
 
+});
+
+  $("#kategori_index").change(function(){
+
+  var kategori_index = $("#kategori_index").val(); 
+  if (kategori_index == 'Detail')
+  {
+     $("#show_periksa").show();
+  }
+  else
+  {
+     $("#show_periksa").hide();
+  }
+
+});
+</script>
+<!-- Change Kategori Index -->
 
 <!--menampilkan detail penjualan-->
     <script type="text/javascript">
