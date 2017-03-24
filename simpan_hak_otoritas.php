@@ -7,6 +7,7 @@ $id = angkadoang($_POST['id']);
 $nama = stringdoang($_POST['nama']);
 
 $master_data_lihat = angkadoang(isset($_POST['master_data_lihat']));
+$setting_lab_lihat = angkadoang(isset($_POST['setting_lab_lihat']));
 $set_akun_lihat = angkadoang(isset($_POST['set_akun_lihat']));
 $pembayaran_lihat = angkadoang(isset($_POST['pembayaran_lihat']));
 $persediaan_lihat = angkadoang(isset($_POST['persediaan_lihat']));
@@ -474,10 +475,10 @@ $update_otoritas_rekam_medik->bind_param("iiiiiiiiiiiiii",
 $update_otoritas_rekam_medik->execute();
 
 
-$update_otoritas_setting = $db->prepare("UPDATE otoritas_setting SET setting_lihat = ?, setting_registrasi_lihat = ?, penetapan_petugas_lihat = ?, printer_lihat = ? , kamar_lihat = ? WHERE id_otoritas = ?");
+$update_otoritas_setting = $db->prepare("UPDATE otoritas_setting SET setting_lihat = ?, setting_registrasi_lihat = ?, penetapan_petugas_lihat = ?, printer_lihat = ? , kamar_lihat = ? , setting_laboratorium_lihat = ? WHERE id_otoritas = ?");
 
-$update_otoritas_setting->bind_param("iiiiii",
-    $setting_lihat, $setting_registrasi_lihat, $penetapan_petugas_lihat, $printer_lihat, $kamar_lihat, $id);
+$update_otoritas_setting->bind_param("iiiiiii",
+    $setting_lihat, $setting_registrasi_lihat, $penetapan_petugas_lihat, $printer_lihat, $kamar_lihat, $setting_lab_lihat, $id);
 
 $update_otoritas_setting->execute();
 
