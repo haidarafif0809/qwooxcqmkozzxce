@@ -2,10 +2,10 @@
 /* Database connection start */
 include 'db.php';
 include 'sanitasi.php';
+include 'persediaan.function.php';
 /* Database connection end */
 
-$tipe = "barang_jasa";
-$kategori  = "semua";
+
 
 // storing  request (ie, get/post) global array to a variable  
 $requestData= $_REQUEST;
@@ -21,20 +21,21 @@ $columns = array(
 	6 => 'id'
 );
 
-
+$tipe = $requestData['tipe'];
+$kategori = $requestData['kategori'];
 
 // getting total number records without any search
 if ($tipe == 'barang') {
 	if ($kategori == 'semua' AND $tipe = 'barang') {
 
-		$sql = "SELECT * ";
+		$sql = "SELECT  COUNT(*) AS jumlah_data  ";
 		$sql.=" FROM barang WHERE berkaitan_dgn_stok = '$tipe' ";
 
 
 	}
 
 	else{
-		$sql = "SELECT * ";
+		$sql = "SELECT  COUNT(*) AS jumlah_data  ";
 		$sql.=" FROM barang WHERE kategori = '$kategori' AND berkaitan_dgn_stok = '$tipe' ";
     }
 
@@ -43,32 +44,33 @@ if ($tipe == 'barang') {
 else
 {
 	if ($kategori == 'semua') {
-    	$sql = "SELECT * ";
+    	$sql = "SELECT  COUNT(*) AS jumlah_data  ";
 		$sql.=" FROM barang";
     
     }
     
     else{
-    	$sql = "SELECT * ";
+    	$sql = "SELECT COUNT(*) AS jumlah_data ";
 		$sql.=" FROM barang WHERE kategori = '$kategori' ";
     }
 }
 $query=mysqli_query($conn, $sql) or die("datatable_cari_barang.php: get employees");
-$totalData = mysqli_num_rows($query);
+$data_query = mysqli_fetch_array($query);
+$totalData = $data_query['jumlah_data'];
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
 
 if ($tipe == 'barang') {
 	if ($kategori == 'semua' AND $tipe = 'barang') {
 
-		$sql = "SELECT * ";
+		$sql = "SELECT kode_barang,nama_barang,berkaitan_dgn_stok,suplier,foto,limit_stok,over_stok,status,id  ";
 		$sql.=" FROM barang WHERE 1=1 AND berkaitan_dgn_stok = '$tipe' ";
 
 
 	}
 
 	else{
-		$sql = "SELECT * ";
+		$sql = "SELECT kode_barang,nama_barang,berkaitan_dgn_stok,suplier,foto,limit_stok,over_stok,status,id  ";
 		$sql.=" FROM barang WHERE 1=1 AND kategori = '$kategori' AND berkaitan_dgn_stok = '$tipe' ";
     }
 
@@ -77,19 +79,19 @@ if ($tipe == 'barang') {
 else
 {
 	if ($kategori == 'semua') {
-    	$sql = "SELECT * ";
+    	$sql = "SELECT kode_barang,nama_barang,berkaitan_dgn_stok,suplier,foto,limit_stok,over_stok,status,id  ";
 		$sql.=" FROM barang WHERE 1=1";
     
     }
     
     else{
-    	$sql = "SELECT * ";
+    	$sql = "SELECT kode_barang,nama_barang,berkaitan_dgn_stok,suplier,foto,limit_stok,over_stok,status,id ";
 		$sql.=" FROM barang WHERE 1=1 AND kategori = '$kategori' ";
     }
 }
 
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
-	$sql.=" AND ( kode_barang LIKE '".$requestData['search']['value']."%' ";    
+	$sql.=" AND ( kode_barang = '".$requestData['search']['value']."' ";    
 	$sql.=" OR nama_barang LIKE '".$requestData['search']['value']."%' )";
 
 }
@@ -99,16 +101,22 @@ $sql.=" ORDER BY ". $columns[$requestData['order'][0]['column']]."   ".$requestD
 /* $requestData['order'][0]['column'] contains colmun index, $requestData['order'][0]['dir'] contains order such as asc/desc  */	
 $query=mysqli_query($conn, $sql) or die("employee-grid-data.php: get employees");
 
+
+
+ $query_otoritas_item = $db->query("SELECT item_hapus, item_edit FROM otoritas_master_data WHERE id_otoritas = '$_SESSION[otoritas_id]' ");
+ $data_otoritas_item = mysqli_fetch_array($query_otoritas_item);
+				
+
+
+
+
 $data = array();
 while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 	$nestedData=array(); 
 
-		$select_gudang = $db->query("SELECT nama_gudang FROM gudang WHERE kode_gudang = '$row[gudang]'");
-        $ambil_gudang = mysqli_fetch_array($select_gudang);
-
-        $select = $db->query("SELECT SUM(sisa) AS jumlah_barang FROM hpp_masuk WHERE kode_barang = '$row[kode_barang]'");
-        $ambil_sisa = mysqli_fetch_array($select);
-    
+	
+        
+       $stok_barang = cekStokHpp($row['kode_barang']);	
        // menampilkan file yang ada di masing-masing data dibawah ini
 
        $nestedData[] = $row['kode_barang'];
@@ -130,11 +138,8 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 		$nestedData[] = $row['over_stok'];
 		$nestedData[] = $row['status'];
 
-		$pilih_akses_barang_hapus = $db->query("SELECT item_hapus FROM otoritas_master_data WHERE id_otoritas = '$_SESSION[otoritas_id]' AND item_hapus = '1'");
-		$barang_hapus = mysqli_num_rows($pilih_akses_barang_hapus);
-
-
-		    if ($barang_hapus > 0 AND ($ambil_sisa['jumlah_barang'] == '0' OR $ambil_sisa['jumlah_barang'] == ''))        
+			// jika barang nya tidak sama dengan 0 maka barang tidak dapat di hapus
+		    if ($data_otoritas_item['item_hapus'] > 0 AND ( $stok_barang  == '0' OR  $stok_barang  == ''))        
 
 		            {
 		         
@@ -142,35 +147,22 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 		        }
 		        else
 		        {
-		            $nestedData[] = "can not be deleted";
+		            $nestedData[] = "Tidak Bisa Di Hapus";
 		        }
 
-        $pilih_akses_barang_edit = $db->query("SELECT item_edit FROM otoritas_master_data WHERE id_otoritas = '$_SESSION[otoritas_id]' AND item_edit = '1'");
-		$barang_edit = mysqli_num_rows($pilih_akses_barang_edit);
+  
 
+		    if ($data_otoritas_item['item_edit']  > 0) {
 
-		    if ($barang_edit > 0) {
-
-		           if ($ambil_sisa['jumlah_barang'] == '0') 
-
-		             {
+		           if ( $stok_barang  == '0') {
 		               $nestedData[] = "<a href='editbarang.php?id=". $row['id']."' class='btn btn-success'><span class='glyphicon glyphicon-edit'></span> Edit</a>";
 		            
 		            }
 
 		    }
 
-		$pilih_akses_barang_edit = $db->query("SELECT item_edit FROM otoritas_master_data WHERE id_otoritas = '$_SESSION[otoritas_id]' AND item_edit = '1'");
-		$barang_edit = mysqli_num_rows($pilih_akses_barang_edit);
-
-
-		    if ($barang_edit > 0 AND $ambil_sisa['jumlah_barang'] != '0')
-		            {
-
-		            $nestedData[] = "<a href='editbarang.php?id=". $row['id']."' class='btn btn-success'><span class='glyphicon glyphicon-edit'></span> Edit</a>";
-		            }
 		$nestedData[] = $row['id'];
-	$data[] = $nestedData;
+		$data[] = $nestedData;
 }
 
 
