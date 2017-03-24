@@ -46,8 +46,8 @@ $rm = stringdoang($_GET['no_rm']);
 
 
 <h3><b>Data Laboratorium</b></h3>
+<br>
 
-<a href="form_penjualan_lab_inap.php?no_rm=<?php echo $rm ?>&nama=<?php echo $nama ?>&no_reg=<?php echo $reg ?>&jenis_penjualan=Rawat Inap&rujukan=Rujuk Rawat Inap" accesskey="b" class="btn btn-info"><i class="fa fa-plus"></i> Tambah Pemeriksaan</a><br><br>
 <form>
 <div class="form-group">
 <div class="row">
@@ -69,6 +69,9 @@ $rm = stringdoang($_GET['no_rm']);
 
 </div>
 </form>
+
+<a href="form_penjualan_lab_inap.php?no_rm=<?php echo $rm ?>&nama=<?php echo $nama ?>&no_reg=<?php echo $reg ?>&jenis_penjualan=Rawat Inap&rujukan=Rujuk Rawat Inap" accesskey="b" class="btn btn-info"><i class="fa fa-plus"></i> Tambah Pemeriksaan</a>
+
 <div class="table-responsive"><!--membuat agar ada garis pada tabel disetiap kolom-->
 <span id="result">
 <table id="table_lab" class="table table-bordered table-sm">
