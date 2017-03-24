@@ -1734,10 +1734,44 @@ else if(total == 0 && potongan_persen == '100'){
                                                  
                                                      $('#tbody').html('');
 
+
+
+                                                  $("#pembayaran_penjualan").val('');
+                                                  $("#sisa_pembayaran_penjualan").val('');
+                                                  $("#kredit").val('');
+                                                  $("#potongan_penjualan").val('0');
+                                                  $("#potongan_persen").val('0');
+                                                  $("#tanggal_jt").val('');
+                                                  $("#total2").val('');
+                                                  $("#total1").val('');
+                                                  $("#no_resep_dokter").val('');
+                                                  $("#resep_dokter").val('');
+                                                  $("#kd_pelanggan").val('Umum');
+                                                  $("#biaya_admin_select").val('0');
+                                                  $("#biaya_admin_select").trigger("chosen:updated");
+                                                  $("#biaya_admin_persen").val('');
+                                                  $("#biaya_admin").val('');
+                                                  $("#penjamin").val('PERSONAL');
+                                                  $("#keterangan").val('');
+                                                  $("#penjualan").hide();
+                                                  $("#piutang").hide();
+                                                  $("#batal_penjualan").hide(); 
+                                                  $("#transaksi_baru").show();
+                                                  $("#alert_berhasil").show();
+                                                  $("#cetak_tunai").show();
+                                                  $("#cetak_tunai_besar").show();
+                                                  $("#cetak_piutang").show();
+                                                  $("#table-baru").show();
+                                                  
+                                                  $("#kode_barang").trigger('chosen:open');
+                                                  $('#tabel_tbs_penjualan_apotek').DataTable().clear();
+                                                  $('#span_tbs').hide();  
+
                                                 }
 
                   var dataTable = $('#tabel_tbs_penjualan_apotek').DataTable();
                   dataTable.draw();
+
     
        
                         }); // end post proses_bayar_jual_apotek
@@ -1830,6 +1864,39 @@ else if(total == 0 && potongan_persen == '100'){
                                              $("#cetak_tunai").show();
                                              $("#cetak_tunai_besar").show('');
                                             $('#tbody').html('');
+
+
+                                                  $("#pembayaran_penjualan").val('');
+                                                  $("#sisa_pembayaran_penjualan").val('');
+                                                  $("#kredit").val('');
+                                                  $("#potongan_penjualan").val('0');
+                                                  $("#potongan_persen").val('0');
+                                                  $("#tanggal_jt").val('');
+                                                  $("#total2").val('');
+                                                  $("#total1").val('');
+                                                  $("#no_resep_dokter").val('');
+                                                  $("#resep_dokter").val('');
+                                                  $("#kd_pelanggan").val('Umum');
+                                                  $("#biaya_admin_select").val('0');
+                                                  $("#biaya_admin_select").trigger("chosen:updated");
+                                                  $("#biaya_admin_persen").val('');
+                                                  $("#biaya_admin").val('');
+                                                  $("#penjamin").val('PERSONAL');
+                                                  $("#keterangan").val('');
+                                                  $("#penjualan").hide();
+                                                  $("#piutang").hide();
+                                                  $("#batal_penjualan").hide(); 
+                                                  $("#transaksi_baru").show();
+                                                  $("#alert_berhasil").show();
+                                                  $("#cetak_tunai").show();
+                                                  $("#cetak_tunai_besar").show();
+                                                  $("#cetak_piutang").show();
+                                                  $("#table-baru").show();
+                                                  
+                                                  $("#kode_barang").trigger('chosen:open');
+                                                  $('#tabel_tbs_penjualan_apotek').DataTable().clear();
+                                                  $('#span_tbs').hide();  
+
 
                                             }
        
@@ -1983,6 +2050,32 @@ else if(total == 0 && potongan_persen == '100'){
               $("#tanggal_jt").val('');
               $("#cetak_piutang").show();
               $("#tax").val('');
+
+
+              $("#kredit").val('');
+              $("#total2").val('');
+              $("#total1").val('');
+              $("#no_resep_dokter").val('');
+              $("#resep_dokter").val('');
+              $("#kd_pelanggan").val('Umum');
+              $("#biaya_admin_select").val('0');
+              $("#biaya_admin_select").trigger("chosen:updated");
+              $("#biaya_admin_persen").val('');
+              $("#biaya_admin").val('');
+              $("#penjamin").val('PERSONAL');
+              $("#keterangan").val('');
+              $("#penjualan").hide();
+              $("#piutang").hide();
+              $("#batal_penjualan").hide(); 
+              $("#transaksi_baru").show();
+              $("#alert_berhasil").show();
+              $("#cetak_tunai").show();
+              $("#cetak_tunai_besar").show();
+              $("#table-baru").show();
+                                                  
+              $("#kode_barang").trigger('chosen:open');
+              $('#tabel_tbs_penjualan_apotek').DataTable().clear();
+              $('#span_tbs').hide();  
             
        
        
@@ -2001,7 +2094,7 @@ else if(total == 0 && potongan_persen == '100'){
 
 
                              alert("Tidak Bisa Di Jual, ada stok yang habis");
-            $("#tbody-barang-jual").find("tr").remove();
+                            $("#tbody-barang-jual").find("tr").remove();
 
                            $.each(result.barang, function(i, item) {
 
