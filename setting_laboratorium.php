@@ -70,7 +70,7 @@ tr:nth-child(even){background-color: #f2f2f2}
 		<th style='background-color: #4CAF50; color: white'>Edit</th>	
 	</thead>
 
-	<tbody>
+	<tbody id="tbody">
 
 		<?php
 			$perintah = $db->query("SELECT id,nama FROM setting_laboratorium");
@@ -87,7 +87,8 @@ tr:nth-child(even){background-color: #f2f2f2}
 				$nama = 'Tidak dihubungkan';
 			}
 			//menampilkan data
-			echo "<tr>
+			echo "<tr class='tr-id-".$data1['id']."'>
+
 
 			<td>". $nama ."</td>";
 			
@@ -117,8 +118,7 @@ $('#tableuser').dataTable();
 
 <script type="text/javascript">
 //Script fungsi edit data 
-$(".btn-edit").click(function(){
-		
+$(document).on('click','.btn-edit',function(e){		
 	$("#modal_edit").modal('show');
 
 		var nama = $(this).attr("data-nama"); 
@@ -130,15 +130,15 @@ $(".btn-edit").click(function(){
 	});
 
 //Script Proses Edit 	
-$("#submit_edit").click(function(){
-
+$(document).on('click','#submit_edit',function(e){
 	var id = $("#id_edit").val();
 	var nama = $("#nama_edit").val();
 
-	$.post("proses_setting_laboratorium.php",{id:id,nama:nama},function(data){
+		$("#modal_edit").modal("hide");
 		
-		$(".modal").modal("hide");
-		window.location.href="setting_laboratorium.php";	
+$(".tr-id-"+id+"").remove();
+	$.post("proses_setting_laboratorium.php",{id:id,nama:nama},function(data){
+		$("#tbody").prepend(data);
 	});
 	});
 </script>
