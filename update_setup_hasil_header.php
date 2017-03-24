@@ -20,14 +20,13 @@ $kategori_index = stringdoang($_POST['kategori_index']);
 $id = stringdoang($_POST['id']);
 $sub_hasil_lab = stringdoang($_POST['sub_hasil_lab']);
 
-$select = $db->query("SELECT nama_pemeriksaan FROM setup_hasil WHERE id = '$sub_hasil_lab'");
-$out = mysqli_fetch_array($select);
-$id_jasa = $out['nama_pemeriksaan'];
 
-$jasa_lab = $db->query("SELECT nama FROM jasa_lab WHERE id = '$id_jasa'");
+
+$jasa_lab = $db->query("SELECT nama FROM jasa_lab WHERE id = '$pemeriksaan'");
 $drop = mysqli_fetch_array($jasa_lab);
-$nama_sub = $drop['nama'];
+ $nama_sub = $drop['nama'];
 
+$update_nama_sub = $db->query("UPDATE setup_hasil SET nama_sub = '$drop[nama]' WHERE sub_hasil_lab = '$id' AND kategori_index = 'Detail'");
 
 if ($model_hitung == 'Numeric')
 {
@@ -38,8 +37,7 @@ model_hitung = '$perhitungan', normal_lk = '$nilai_lk',
 normal_pr = '$nilai_p',normal_lk2 = '$nilai_lk2',
 normal_pr2 = '$nilai_p2',metode = '$metode',
 kategori_index = '$kategori_index' ,text_reference = '$text_depan',
-satuan_nilai_normal = '$satuan_nilai', sub_hasil_lab = '$sub_hasil_lab',
-nama_sub = '$nama_sub' WHERE id = '$id' ");
+satuan_nilai_normal = '$satuan_nilai' WHERE id = '$id' ");
 
 }
 else
@@ -47,9 +45,10 @@ else
 	$insert_to_and = $db->query("UPDATE setup_hasil SET text_hasil = '$text_hasil',nama_pemeriksaan = '$pemeriksaan',
 		kelompok_pemeriksaan = '$kelompok' ,model_hitung = 'Text',
 	normal_lk = '$text_lk' ,normal_pr = '$text_p' ,metode = '$metode' ,
-	kategori_index = '$kategori_index',text_reference = '$text_depan', 
-	sub_hasil_lab = '$sub_hasil_lab', nama_sub = '$nama_sub' WHERE id = '$id' "); 
+	kategori_index = '$kategori_index',text_reference = '$text_depan' WHERE id = '$id' "); 
 }
 
+
 echo '<script>window.location.href="setup_hasil.php";</script>';
+
  ?>

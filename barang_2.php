@@ -7,41 +7,8 @@
     include 'db.php';
 
 
-$kategori = $_GET['kategori'];
-$tipe = $_GET['tipe'];
-
-
-
-if ($tipe == 'barang') {
-
-    if ($kategori == 'semua' AND $tipe = 'barang') {
-    
-    $perintah = $db->query("SELECT * FROM barang WHERE berkaitan_dgn_stok = '$tipe' ORDER BY id DESC");
-    
-    }
-
-    else{
-    $perintah = $db->query("SELECT * FROM barang WHERE kategori = '$kategori' AND berkaitan_dgn_stok = '$tipe' ORDER BY id DESC");
-    }
-
-    
-}
-
-else{
-
-
-    if ($kategori == 'semua') {
-    
-    $perintah = $db->query("SELECT * FROM barang ORDER BY id DESC");
-    
-    }
-    
-    else{
-    $perintah = $db->query("SELECT * FROM barang WHERE kategori = '$kategori' ORDER BY id DESC");
-    }
-
-}
-
+$kategori = stringdoang($_GET['kategori']);
+$tipe = stringdoang($_GET['tipe']);
 
 
     ?>
@@ -57,13 +24,14 @@ else{
     <div class="col-sm-4">
         
 <?php  
-include 'db.php';
 
-$pilih_akses_barang_tambah = $db->query("SELECT item_tambah FROM otoritas_master_data WHERE id_otoritas = '$_SESSION[otoritas_id]' AND item_tambah = '1'");
-$barang_tambah = mysqli_num_rows($pilih_akses_barang_tambah);
+$pilih_akses_barang = $db->query("SELECT item_tambah ,item_hapus ,
+item_edit FROM otoritas_master_data WHERE id_otoritas = '$_SESSION[otoritas_id]' AND item_tambah = '1'");
+$data_akses = mysqli_fetch_array($pilih_akses_barang);
 
 
-    if ($barang_tambah > 0){
+
+    if ($data_akses['item_tambah'] > 0){
 
 echo '<br><button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"> </i> ITEM </button> <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#my_Modal"><i class="fa fa-upload"> </i> Import Data Excell
 </button>';
@@ -89,8 +57,7 @@ echo '<br><button type="button" class="btn btn-info" data-toggle="modal" data-ta
         }
 
 
-          include 'db.php';
-          $pilih_kategori = $db->query("SELECT * FROM kategori");
+          $pilih_kategori = $db->query("SELECT nama_kategori FROM kategori");
           
           while ($cek = mysqli_fetch_array($pilih_kategori)) 
           {
@@ -172,7 +139,7 @@ echo '<br><button type="button" class="btn btn-info" data-toggle="modal" data-ta
                             <select class="form-control" id="jenis_obat" name="jenis_obat" autocomplete="off">
                             <option value="">Silakan Pilih</option>
                             <?php
-                            $query = $db->query("SELECT * FROM jenis");       
+                            $query = $db->query("SELECT nama FROM jenis");       
                             while ( $data = mysqli_fetch_array($query)) {
                             echo "<option value='".$data['nama']."'>".$data['nama']."</option>";
                             }
@@ -188,7 +155,7 @@ echo '<br><button type="button" class="btn btn-info" data-toggle="modal" data-ta
                                     <option value=""> -- SILAHKAN PILIH -- </option>
                                     <?php 
                                     
-                                    $ambil_kategori = $db->query("SELECT * FROM kategori");
+                                    $ambil_kategori = $db->query("SELECT nama_kategori FROM kategori");
                                     
                                     while($data_kategori = mysqli_fetch_array($ambil_kategori))
                                     {
@@ -265,10 +232,10 @@ echo '<br><button type="button" class="btn btn-info" data-toggle="modal" data-ta
                             <select type="text" name="satuan" class="form-control" required="">
                             <?php 
                             // memasukan file db.php
-                            include 'db.php';
+                       
                             
                             // menampilkan seluruh data yang ada di tabel satuan
-                            $query = $db->query("SELECT * FROM satuan ");
+                            $query = $db->query("SELECT id, nama FROM satuan ");
                             
                             // menyimpan data sementara yang ada pada $query
                             while($data = mysqli_fetch_array($query))
@@ -291,12 +258,10 @@ echo '<br><button type="button" class="btn btn-info" data-toggle="modal" data-ta
                             <option value=""> -- SILAHKAN PILIH -- </option>
                     
                             <?php 
-                            
-                            // memasukan file db.php
-                            include 'db.php';
+                   
                             
                             // menampilkan seluruh data yang ada di tabel satuan
-                            $query = $db->query("SELECT * FROM gudang ");
+                            $query = $db->query("SELECT kode_gudang ,nama_gudang FROM gudang ");
                             
                             // menyimpan data sementara yang ada pada $query
                             while($data = mysqli_fetch_array($query))
@@ -332,10 +297,10 @@ echo '<br><button type="button" class="btn btn-info" data-toggle="modal" data-ta
                             <br>
                             <select type="text" name="suplier" class="form-control">                            
                             <?php 
-                            include 'db.php';
+                    
                             
                             // menampilkan data yang ada pada tabel suplier
-                            $query = $db->query("SELECT * FROM suplier ");
+                            $query = $db->query("SELECT nama FROM suplier ");
                             
                             // menyimpan data sementara yang ada pada $query
                             while($data = mysqli_fetch_array($query))
@@ -530,26 +495,15 @@ th {
             
      
 <?php  
-include 'db.php';
-
-$pilih_akses_barang_hapus = $db->query("SELECT item_hapus FROM otoritas_master_data WHERE id_otoritas = '$_SESSION[otoritas_id]' AND item_hapus = '1'");
-$barang_hapus = mysqli_num_rows($pilih_akses_barang_hapus);
 
 
-    if ($barang_hapus > 0){
+    if ($data_akses['item_hapus'] > 0 ){
 
             echo "<th style='background-color: #4CAF50; color: white'> Hapus </th>";
         }
-    ?>
-
-<?php  
-include 'db.php';
-
-$pilih_akses_barang_edit = $db->query("SELECT item_edit FROM otoritas_master_data WHERE id_otoritas = '$_SESSION[otoritas_id]' AND item_edit = '1'");
-$barang_edit = mysqli_num_rows($pilih_akses_barang_edit);
 
 
-    if ($barang_edit > 0){
+    if ($data_akses['item_edit'] > 0){
 							echo	"<th style='background-color: #4CAF50; color: white'> Edit </th>";
 
 						}
@@ -1069,8 +1023,15 @@ $barang_edit = mysqli_num_rows($pilih_akses_barang_edit);
           "processing": true,
           "serverSide": true,
           "ajax":{
-            url :"datatable_cari_barang2.php", // json datasource
-           
+            "url" :"datatable_cari_barang2.php", // json datasource
+            "data": function ( d ) {
+                
+                d.tipe =  '<?php echo $tipe ?>' ;       
+                d.kategori = '<?php echo $kategori; ?>';   
+               
+                // d.custom = $('#myInput').val();
+                // etc
+            },
             type: "post",  // method  , by default get
             error: function(){  // error handling
               $(".employee-grid-error").html("");

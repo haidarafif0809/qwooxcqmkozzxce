@@ -335,6 +335,21 @@ else{
 
 </div> <!-- / of otoritas setting penetapan petugas -->
 
+<!-- / of otoritas setting LABORATORIUM -->
+<div class="form-group col-sm-2">
+<label>Setting Laboratorium</label><br>
+<?php 
+if ($data_otoritas['setting_laboratorium_lihat'] == '1'){
+    echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="checkbox220" name="setting_lab_lihat" checked=""> 
+    <label for="checkbox220">Lihat</label> <br>';
+}
+else{
+    echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="checkbox2021" name="setting_lab_lihat">
+    <label for="checkbox2021">Lihat</label> <br>';  
+}
+?>
+</div>
+<!-- / of otoritas setting LABORATORIUM -->
 
 <div class="form-group col-sm-2"> <!-- / of otoritas setting printer -->
 <label>Setting Printer</label><br>
