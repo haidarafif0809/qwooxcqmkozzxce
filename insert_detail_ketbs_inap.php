@@ -7,7 +7,7 @@ $no_reg = stringdoang($_POST['no_reg_simpan']);
 $no_faktur = stringdoang($_POST['no_faktur_simpan']);
 
 
-$perintah3 = $db->query("SELECT * FROM tbs_penjualan WHERE no_reg = '$no_reg' ");
+$perintah3 = $db->query("SELECT no_reg FROM tbs_penjualan WHERE no_reg = '$no_reg' ");
 $data1 = mysqli_num_rows($perintah3);
 
 if ($data1 > 0){
@@ -38,7 +38,7 @@ while ($data = mysqli_fetch_array($perintah)){
 
 
 
-$perintah30 = $db->query("SELECT * FROM tbs_fee_produk WHERE no_reg = '$no_reg' ");
+$perintah30 = $db->query("SELECT no_reg FROM tbs_fee_produk WHERE no_reg = '$no_reg' ");
 $data10 = mysqli_num_rows($perintah30);
 
 if ($data10 > 0){
@@ -48,14 +48,14 @@ $perintah2 = $db->query("DELETE FROM tbs_fee_produk WHERE no_reg = '$no_reg' ");
 
 
 $fee_produk = $db->query("SELECT * FROM laporan_fee_produk WHERE no_reg = '$no_reg' ");
-while ($data_fee = mysqli_fetch_array($fee_produk)){
+while ($data_fee1 = mysqli_fetch_array($fee_produk)){
 
-	$barang = $db->query("SELECT * FROM barang WHERE kode_barang = '$data_fee[kode_produk]' ");
+	$barang = $db->query("SELECT kode_barang FROM barang WHERE kode_barang = '$data_fee1[kode_produk]' ");
 $y = mysqli_num_rows($barang);
 
 if ($y > 0) {
 
-$insert2 = "INSERT INTO tbs_fee_produk (no_faktur,no_reg,no_rm,nama_petugas,kode_produk,nama_produk,jumlah_fee,tanggal,jam) VALUES ('$data_fee[no_faktur]','$data_fee[no_reg]','$data_fee[no_rm]','$data_fee[nama_petugas]','$data_fee[kode_produk]','$data_fee[nama_produk]','$data_fee[jumlah_fee]','$data_fee[tanggal]','$data_fee[jam]')";
+$insert2 = "INSERT INTO tbs_fee_produk (no_faktur,no_reg,no_rm,nama_petugas,kode_produk,nama_produk,jumlah_fee,tanggal,jam) VALUES ('$data_fee1[no_faktur]','$data_fee1[no_reg]','$data_fee1[no_rm]','$data_fee1[nama_petugas]','$data_fee1[kode_produk]','$data_fee1[nama_produk]','$data_fee1[jumlah_fee]','$data_fee1[tanggal]','$data_fee1[jam]')";
 
       if ($db->query($insert2) === TRUE) {
       
@@ -70,7 +70,7 @@ $insert2 = "INSERT INTO tbs_fee_produk (no_faktur,no_reg,no_rm,nama_petugas,kode
 
 // INSERT OPERASI
 
-$perintah7 = $db->query("SELECT * FROM tbs_operasi WHERE no_reg = '$no_reg' ");
+$perintah7 = $db->query("SELECT no_reg FROM tbs_operasi WHERE no_reg = '$no_reg' ");
 $data17 = mysqli_num_rows($perintah7);
 
 if ($data17 > 0){
@@ -99,7 +99,7 @@ $insert_operasi = "INSERT INTO tbs_operasi (sub_operasi,petugas_input, no_reg, h
 
 // IBSERT HASIL DETAIL OPERASI
 
-$perintah8 = $db->query("SELECT * FROM tbs_detail_operasi WHERE no_reg = '$no_reg' ");
+$perintah8 = $db->query("SELECT no_reg FROM tbs_detail_operasi WHERE no_reg = '$no_reg' ");
 $data100 = mysqli_num_rows($perintah8);
 
 if ($data100 > 0){
