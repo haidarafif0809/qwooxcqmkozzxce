@@ -43,7 +43,7 @@ $session_id = session_id();
           <?php 
           
           // menampilkan seluruh data yang ada pada tabel suplier
-          $query = $db->query("SELECT p.kode_pelanggan,p.nama FROM penjualan p LEFT JOIN hpp_keluar hk ON p.no_faktur = hk.no_faktur WHERE hk.sisa_barang > '0' ");          
+          $query = $db->query("SELECT p.kode_pelanggan,p.nama FROM penjualan p LEFT JOIN hpp_keluar hk ON p.no_faktur = hk.no_faktur WHERE hk.sisa_barang > '0' GROUP BY p.kode_pelanggan ");          
           // menyimpan data sementara yang ada pada $query
           while($data = mysqli_fetch_array($query))
           {

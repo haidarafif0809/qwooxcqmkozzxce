@@ -14,9 +14,38 @@ try {
 $db->begin_transaction();
     // A set of queries; if one fails, an exception should be thrown
 
-echo$no_faktur = stringdoang($_POST['no_faktur']);
-$no_rm = stringdoang($_POST['no_rm']);
 $no_reg = stringdoang($_POST['no_reg']);
+$total = angkadoang($_POST['total']);
+$potongan = angkadoang($_POST['potongan']);
+$biaya_admin = angkadoang($_POST['biaya_adm']);
+
+
+// menampilakn hasil penjumlah subtotal ALIAS total penjualan dari tabel tbs_penjualan berdasarkan data no faktur
+ $query121 = $db->query("SELECT SUM(subtotal) AS total_penjualan FROM tbs_penjualan WHERE no_reg = '$no_reg'");
+ $data43 = mysqli_fetch_array($query121);
+ $total_ss = $data43['total_penjualan'];
+
+
+// menampilakn hasil penjumlah subtotal ALIAS total penjualan dari tabel tbs_penjualan berdasarkan data no faktur
+ $query212 = $db->query("SELECT SUM(harga_jual) AS harga_jual FROM tbs_operasi WHERE no_reg = '$no_reg'");
+ $data2 = mysqli_fetch_array($query212);
+ $total_operasi = $data2['harga_jual'];
+
+ $total_sum = ($total_ss + $total_operasi);
+
+
+$total_tbs = ($total_sum - $potongan) + $biaya_admin;
+
+if ($total != $total_tbs) {
+    echo 1;
+  }
+  else
+  {
+
+  }
+
+$no_faktur = stringdoang($_POST['no_faktur']);
+$no_rm = stringdoang($_POST['no_rm']);
 $ber_stok = stringdoang($_POST['ber_stok']);
 $tanggal_jt = tanggal_mysql($_POST['tanggal_jt']);
 $nama_petugas = stringdoang($_SESSION['nama']);
@@ -24,6 +53,7 @@ $kode_gudang = stringdoang($_POST['kode_gudang']);
 $ppn_input = stringdoang($_POST['ppn_input']);
 $penjamin = stringdoang($_POST['penjamin']);
 $nama_pasien = stringdoang($_POST['nama_pasien']);
+$analis = stringdoang($_POST['analis']);
 
     $petugas_kasir = stringdoang($_POST['sales']);
     $petugas_paramedik = stringdoang($_POST['petugas_paramedik']);
@@ -32,27 +62,55 @@ $nama_pasien = stringdoang($_POST['nama_pasien']);
     $dokter = stringdoang($_POST['dokter']);
 
 $keterangan = stringdoang($_POST['keterangan']);
-$total = angkadoang($_POST['total']);
 $total2 = angkadoang($_POST['total2']);
-$potongan = angkadoang($_POST['potongan']);
 $tax = angkadoang($_POST['tax']);
 $sisa_pembayaran = angkadoang($_POST['sisa_pembayaran']);
 $sisa_kredit = angkadoang($_POST['kredit']);
 $sisa = angkadoang($_POST['sisa']);
 $cara_bayar = stringdoang($_POST['cara_bayar']);
 $pembayaran = angkadoang($_POST['pembayaran']);
-$biaya_admin = angkadoang($_POST['biaya_admin']);
 $bed = stringdoang($_POST['bed']);
 $group_bed = stringdoang($_POST['group_bed']);
+$status_simpan = stringdoang($_POST['status_simpan']);
+$bayar = stringdoang($_POST['bayar']);
 
 
 $no_jurnal = no_jurnal();
 
 
+
+
+
     $fee_kasir = $db->query("DELETE FROM laporan_fee_faktur WHERE no_faktur = '$no_faktur'");
   
+    $delete_jurnal = $db->query("DELETE FROM jurnal_trans WHERE no_faktur = '$no_faktur' ");
+
     $select_kode_pelanggan = $db->query("SELECT nama_pelanggan FROM pelanggan WHERE kode_pelanggan = '$no_rm'");
     $ambil_kode_pelanggan = mysqli_fetch_array($select_kode_pelanggan);
+
+
+        // petugas analis
+    $fee_kasir = $db->query("SELECT * FROM fee_faktur WHERE nama_petugas = '$analis' ");
+    $data_fee_kasir = mysqli_fetch_array($fee_kasir);           
+    $nominal_kasir = $data_fee_kasir['jumlah_uang'];
+    $prosentase_kasir = $data_fee_kasir['jumlah_prosentase'];
+
+    if ($nominal_kasir != 0) {
+      
+
+      $perintah01 = $db->query("INSERT INTO laporan_fee_faktur (nama_petugas, no_faktur, jumlah_fee, tanggal, jam, status_bayar, no_rm, no_reg) VALUES ('$data_fee_kasir[nama_petugas]', '$no_faktur', '$nominal_kasir', '$tanggal_sekarang', '$jam_sekarang', '', '$no_rm', '$no_reg')");
+
+    }
+
+    elseif ($prosentase_kasir != 0) {
+
+
+     
+      $fee_prosentase = $prosentase_kasir * $total / 100;
+      
+      $perintah01 = $db->query("INSERT INTO laporan_fee_faktur (nama_petugas, no_faktur, jumlah_fee, tanggal, jam, no_rm, no_reg) VALUES ('$data_fee_kasir[nama_petugas]', '$no_faktur', '$fee_prosentase', '$tanggal_sekarang', '$jam_sekarang', '$no_rm', '$no_reg')");
+      
+    }
 
     // petugas kasir
     $fee_kasir = $db->query("SELECT * FROM fee_faktur WHERE nama_petugas = '$petugas_kasir'");
@@ -171,8 +229,9 @@ $no_jurnal = no_jurnal();
     // FEE PETUGAS OPERASI
      
    $delete_fee_produk = $db->query("DELETE FROM laporan_fee_produk WHERE no_reg = '$no_reg'");
-
-    $fee_petugas_operasi = $db->query("SELECT tp.sub_operasi, tdp.id_sub_operasi,do.jumlah_persentase,tdp.id_user,tp.waktu,tp.harga_jual,do.id_detail_operasi,do.nama_detail_operasi FROM tbs_operasi tp INNER JOIN tbs_detail_operasi tdp ON tp.sub_operasi = tdp.id_sub_operasi INNER JOIN detail_operasi do ON tdp.id_detail_operasi = do.id_detail_operasi  WHERE tp.no_reg = '$no_reg'");
+// FEE PETUGAS OPERASI
+              
+    $fee_petugas_operasi = $db->query("SELECT tdp.no_reg,tdp.id_sub_operasi,do.jumlah_persentase,tdp.id_user,tdp.waktu,tp.harga_jual,do.id_detail_operasi,do.nama_detail_operasi FROM tbs_detail_operasi tdp LEFT JOIN sub_operasi tp ON tdp.id_sub_operasi = tp.id_sub_operasi LEFT JOIN detail_operasi do ON tdp.id_detail_operasi = do.id_detail_operasi WHERE tdp.no_reg = '$no_reg'");
    while  ($data_fee_produk = mysqli_fetch_array($fee_petugas_operasi)){
 
           $jumlah_fee1 = ($data_fee_produk['jumlah_persentase'] * $data_fee_produk['harga_jual']) / 100;
@@ -184,71 +243,86 @@ $no_jurnal = no_jurnal();
   
     }
 
-
-    // petugas kasir
-              
-    $fee_produk_ksir = $db->query("SELECT * FROM tbs_fee_produk WHERE nama_petugas = '$petugas_kasir'");
+ 
+// proses masukan fee dari tbs              
+    $fee_produk_ksir = $db->query("SELECT * FROM tbs_fee_produk WHERE no_reg = '$no_reg' ");
    while  ($data_fee_produk = mysqli_fetch_array($fee_produk_ksir)){
 
 
-
-          $query10 = $db->query("INSERT INTO laporan_fee_produk (nama_petugas, no_faktur, kode_produk, nama_produk, jumlah_fee, tanggal, jam,no_reg,no_rm) VALUES ('$data_fee_produk[nama_petugas]', '$no_faktur', '$data_fee_produk[kode_produk]', '$data_fee_produk[nama_produk]', '$data_fee_produk[jumlah_fee]', '$tanggal_sekarang', '$jam_sekarang','$no_reg','$no_rm')");
-
-
-    }
-    
-
-// petugas paramedik
-       
-    $fee_produk_paramedik = $db->query("SELECT * FROM tbs_fee_produk WHERE nama_petugas = '$petugas_paramedik'");
-   while  ($data_fee_produk = mysqli_fetch_array($fee_produk_paramedik)){
-
-
-
-          $query10 = $db->query("INSERT INTO laporan_fee_produk (nama_petugas, no_faktur, kode_produk, nama_produk, jumlah_fee, tanggal, jam,no_reg,no_rm) VALUES ('$data_fee_produk[nama_petugas]', '$no_faktur', '$data_fee_produk[kode_produk]', '$data_fee_produk[nama_produk]', '$data_fee_produk[jumlah_fee]', '$tanggal_sekarang', '$jam_sekarang','$no_reg','$no_rm')");
-
-
-    }
-
-// petugas farmasi
-       
-    $fee_produk_farmasi = $db->query("SELECT * FROM tbs_fee_produk WHERE nama_petugas = '$petugas_farmasi'");
-   while  ($data_fee_produk = mysqli_fetch_array($fee_produk_farmasi)){
-
-
-
-          $query10 = $db->query("INSERT INTO laporan_fee_produk (nama_petugas, no_faktur, kode_produk, nama_produk, jumlah_fee, tanggal, jam,no_reg,no_rm) VALUES ('$data_fee_produk[nama_petugas]', '$no_faktur', '$data_fee_produk[kode_produk]', '$data_fee_produk[nama_produk]', '$data_fee_produk[jumlah_fee]', '$tanggal_sekarang', '$jam_sekarang','$no_reg','$no_rm')");
-
-
-    }
-
-// petugas lain
-       
-    $fee_produk_lain = $db->query("SELECT * FROM tbs_fee_produk WHERE nama_petugas = '$petugas_lain'");
-   while  ($data_fee_produk = mysqli_fetch_array($fee_produk_lain)){
-
-
-
-          $query10 = $db->query("INSERT INTO laporan_fee_produk (nama_petugas, no_faktur, kode_produk, nama_produk, jumlah_fee, tanggal, jam,no_reg,no_rm) VALUES ('$data_fee_produk[nama_petugas]', '$no_faktur', '$data_fee_produk[kode_produk]', '$data_fee_produk[nama_produk]', '$data_fee_produk[jumlah_fee]', '$tanggal_sekarang', '$jam_sekarang','$no_reg','$no_rm')");
-
-
-    }
-
-//dokter 
-       
-    $fee_produk_dokter = $db->query("SELECT * FROM tbs_fee_produk WHERE nama_petugas = '$dokter'");
-   while  ($data_fee_produk = mysqli_fetch_array($fee_produk_dokter)){
-
-
-
-          $query10 = $db->query("INSERT INTO laporan_fee_produk (nama_petugas, no_faktur, kode_produk, nama_produk, jumlah_fee, tanggal, jam,no_reg,no_rm) VALUES ('$data_fee_produk[nama_petugas]', '$no_faktur', '$data_fee_produk[kode_produk]', '$data_fee_produk[nama_produk]', '$data_fee_produk[jumlah_fee]', '$tanggal_sekarang', '$jam_sekarang','$no_reg','$no_rm')");
+          $query10 = $db->query("INSERT INTO laporan_fee_produk (nama_petugas, no_faktur, kode_produk, nama_produk, jumlah_fee, tanggal, jam,no_reg,no_rm) VALUES ('$data_fee_produk[nama_petugas]', '$no_faktur', '$data_fee_produk[kode_produk]', '$data_fee_produk[nama_produk]', '$data_fee_produk[jumlah_fee]', '$data_fee_produk[tanggal]', '$data_fee_produk[jam]','$no_reg','$no_rm')");
 
 
     }
 
 
 
-    $query = $db->query("SELECT * FROM tbs_penjualan WHERE  no_reg = '$no_reg'");
+   // history tbs penjulan 
+         $delete_history_tbs_penjualan = $db->query("DELETE FROM history_edit_tbs_penjualan WHERE no_reg = '$no_reg' ");
+
+
+         $history_edit_tbs_penjualan = "INSERT INTO history_edit_tbs_penjualan (session_id,no_faktur,no_reg,kode_barang,nama_barang,jumlah_barang,satuan,harga,subtotal,potongan,tax,hpp,tipe_barang,dosis,tanggal,jam,lab) SELECT session_id,no_faktur,no_reg,kode_barang,nama_barang,jumlah_barang,satuan,harga,subtotal,potongan,tax,hpp,tipe_barang,dosis,tanggal,jam,lab FROM tbs_penjualan WHERE no_reg = '$no_reg' ";
+
+        if ($db->query($history_edit_tbs_penjualan) === TRUE) {
+        } 
+
+        else {
+        echo "Error: " . $history_edit_tbs_penjualan . "<br>" . $db->error;
+        }
+        // end
+
+           // history tbs fee produk 
+
+
+        $delete_history_tbs_fee_produk = $db->query("DELETE FROM history_edit_tbs_fee_produk WHERE no_reg = '$no_reg' ");
+
+
+         $history_edit_tbs_fee_produk = "INSERT INTO history_edit_tbs_fee_produk (session_id,nama_petugas,no_faktur,kode_produk,nama_produk,jumlah_fee,tanggal,waktu,jam,no_reg,no_rm) SELECT session_id,nama_petugas,no_faktur,kode_produk,nama_produk,jumlah_fee,tanggal,waktu,jam,no_reg,no_rm FROM tbs_fee_produk WHERE no_reg = '$no_reg' ";
+
+        if ($db->query($history_edit_tbs_fee_produk) === TRUE) {
+        } 
+
+        else {
+        echo "Error: " . $history_edit_tbs_fee_produk . "<br>" . $db->error;
+        }
+
+        // end
+
+
+      // history tbs_fee_masuk 
+
+ $delete_history_tbs_detail_operasi = $db->query("DELETE FROM history_edit_tbs_detail_operasi WHERE no_reg = '$no_reg' ");
+
+    $history_edit_tbs_detail_operasi = "INSERT INTO history_edit_tbs_detail_operasi (id_detail_operasi,id_user, id_sub_operasi, id_operasi, petugas_input, no_reg, waktu, id_tbs_operasi) SELECT id_detail_operasi,id_user, id_sub_operasi, id_operasi, petugas_input, no_reg, waktu, id_tbs_operasi FROM tbs_detail_operasi WHERE no_reg = '$no_reg'";
+
+        if ($db->query($history_edit_tbs_detail_operasi) === TRUE) {
+        } 
+
+        else {
+        echo "Error: " . $history_edit_tbs_detail_operasi . "<br>" . $db->error;
+        }
+ // end
+
+
+  // history tbs_fee_masuk 
+ $delete_history_tbs_operasi = $db->query("DELETE FROM history_edit_tbs_operasi WHERE no_reg = '$no_reg' ");
+
+    $history_edit_tbs_operasi = "INSERT INTO history_edit_tbs_operasi (sub_operasi,petugas_input, no_reg, harga_jual, operasi, waktu) SELECT sub_operasi,petugas_input, no_reg, harga_jual, operasi, waktu FROM tbs_operasi WHERE no_reg = '$no_reg' ";
+
+        if ($db->query($history_edit_tbs_operasi) === TRUE) {
+        } 
+
+        else {
+        echo "Error: " . $history_edit_tbs_operasi . "<br>" . $db->error;
+        }
+
+// end
+
+
+
+    //deletee detail penjualan
+    $z = $db->query("DELETE FROM detail_penjualan WHERE no_reg = '$no_reg' ");
+
+   $query = $db->query("SELECT * FROM tbs_penjualan WHERE no_reg = '$no_reg'");
     while ($data = mysqli_fetch_array($query))
       {
 
@@ -266,8 +340,14 @@ $no_jurnal = no_jurnal();
         $satuan = $data['satuan'];
       }
         
-    
-        $query2 = "INSERT INTO detail_penjualan (no_faktur,no_rm, no_reg, tanggal, jam, kode_barang, nama_barang, jumlah_barang, asal_satuan,satuan, harga, subtotal, potongan, tax, sisa,tipe_produk) VALUES ('$no_faktur','$no_rm', '$no_reg', '$tanggal_sekarang', '$jam_sekarang', '$data[kode_barang]','$data[nama_barang]','$jumlah_barang','$satuan','$data[satuan]','$harga','$data[subtotal]','$data[potongan]','$data[tax]', '$jumlah_barang','$data[tipe_barang]')";
+
+      $tanggal_produk = $data['tanggal'];
+
+        $query2 = "INSERT INTO detail_penjualan (no_faktur,no_rm, no_reg, tanggal, jam, kode_barang, nama_barang, jumlah_barang, asal_satuan,satuan, harga, subtotal, potongan, tax, sisa,tipe_produk,lab) VALUES ('$no_faktur','$no_rm', '$no_reg',
+          '$tanggal_produk', '$data[jam]', '$data[kode_barang]',
+          '$data[nama_barang]','$jumlah_barang','$satuan','$data[satuan]',
+          '$harga','$data[subtotal]','$data[potongan]','$data[tax]',
+          '$jumlah_barang','$data[tipe_barang]','$data[lab]')";
 
         if ($db->query($query2) === TRUE) {
         } 
@@ -280,28 +360,32 @@ $no_jurnal = no_jurnal();
       }
 
 
-
     $sisa = angkadoang($_POST['sisa']);
-    $sisa_kredit = angkadoang($_POST['kredit']);
-    $ss_kredit = angkadoang($_POST['sisa_kredit']);
+            $pembayaran = stringdoang($_POST['pembayaran']);
+            $total = stringdoang($_POST['total']);
+            $tunai_i = $pembayaran - $total;
 
-          if ($ss_kredit == 0 ) 
 
-            {
-            // buat prepared statements
-            $stmt2 = $db->prepare("UPDATE penjualan SET penjamin = ?, apoteker = ?, perawat = ?, petugas_lain = ?, dokter = ?, kode_gudang = ?, total = ?, tanggal = ?, jam = ?, user = ?, sales = ?, status = 'Lunas', potongan = ?, tax = ?, sisa = ?, cara_bayar = ?, tunai = ?, status_jual_awal = 'Tunai', keterangan = ?, ppn = ?,jenis_penjualan = 'Rawat Inap',biaya_admin = ? WHERE no_faktur = ?");
-            
-            
-            // hubungkan "data" dengan prepared statements
-            $stmt2->bind_param("ssssssissssiiisissis", 
-            $penjamin,$petugas_farmasi, $petugas_paramedik, $petugas_lain, $dokter, $kode_gudang, $total, $tanggal_sekarang, $jam_sekarang, $nama_petugas, $petugas_kasir, $potongan, $tax, $sisa, $cara_bayar, $pembayaran, $keterangan, $ppn_input,$biaya_admin,$no_faktur);
+          // JIKA PENJUALAN NYA SIMPAN SEMENTARA MAKA AKAN JALANKAN ..
+      if ($status_simpan == 'Simpan Sementara' AND $bayar == 'Simpan Sementara') {
+           
 
+          $nilai_piutang = $total - $pembayaran;
+          $ket_jurnal = "Penjualan Rawat Inap Simpan Sementara ".$ambil_kode_pelanggan['nama_pelanggan']." ";
             
-            $stmt2->execute();  
+             $stmt = $db->prepare("UPDATE penjualan SET apoteker = ?, perawat = ?, petugas_lain = ?, biaya_admin = ?, kode_gudang = ?,kode_pelanggan = ?, total = ?,  status = 'Simpan Sementara', potongan = ?, kredit = ?, cara_bayar = ?, tunai = ?, ppn = ?, keterangan = ?, nilai_kredit = ?, no_faktur_jurnal = ?, keterangan_jurnal = ?, tanggal_jt = ? , tanggal = ?, jam = ? WHERE no_faktur = ? AND no_reg = ?") ;
+              
+      
+  // hubungkan "data" dengan prepared statements
+              $stmt->bind_param("iiiisiiiisississsssss",
+                $petugas_farmasi, $petugas_paramedik, $petugas_lain, $biaya_admin, $kode_gudang,$kode_pelanggan, $total, $potongan, $nilai_piutang, $cara_bayar, $pembayaran, $ppn_input, $keterangan, $nilai_piutang,$no_jurnal,$ket_jurnal,$tanggal_jt, $tanggal_sekarang, $jam_sekarang ,$no_faktur,$no_reg );
+              
+    // jalankan query
+              $stmt->execute();
 
 
                 // cek query
-            if (!$stmt2) 
+            if (!$stmt) 
                   {
                     die('Query Error : '.$db->errno.
                       ' - '.$db->error);
@@ -313,8 +397,50 @@ $no_jurnal = no_jurnal();
                   }
 
 
-$delete_jurnal = $db->query("DELETE FROM jurnal_trans WHERE no_faktur = '$no_faktur' ");
 
+      }
+        else
+      {
+
+          if ($tunai_i >= 0 AND $bayar == 'Lunas') 
+
+            {
+
+              
+              $update_registrasi = $db->query("UPDATE registrasi SET status = 'Sudah Pulang' WHERE no_reg ='$no_reg'");
+
+                               // UPDATE KAMAR
+              $query = $db->query("UPDATE bed SET sisa_bed = sisa_bed + 1 WHERE nama_kamar = '$bed' AND group_bed = '$group_bed'");
+              // END UPDATE KAMAR
+
+                $ket_jurnal = "Penjualan Rawat Inap Lunas ".$ambil_kode_pelanggan['nama_pelanggan']." ";
+            // buat prepared statements
+                
+            
+             $stmt = $db->prepare("UPDATE penjualan SET apoteker = ?, perawat = ?, petugas_lain = ?, biaya_admin = ?, kode_gudang = ?,kode_pelanggan = ? , total = ?, status = 'Lunas', potongan = ?,  sisa = ?, cara_bayar = ?, tunai = ?, ppn = ?, status_jual_awal = 'Tunai', keterangan = ?,no_faktur_jurnal = ?, keterangan_jurnal = ?, petugas_edit = ?, waktu_edit = ?, tanggal_jt = '', kredit = '0', nilai_kredit = '0' , tanggal = ?, jam = ? WHERE no_faktur = ? AND no_reg = ?") ;
+              
+    // hubungkan "data" dengan prepared statements
+              $stmt->bind_param("iiiisiiiisissssssssss",
+                $petugas_farmasi, $petugas_paramedik, $petugas_lain, $biaya_admin, $kode_gudang,$no_rm,$total, $potongan, $sisa_pembayaran, $cara_bayar, $pembayaran, $ppn_input, $keterangan,$no_jurnal,$ket_jurnal, $nama_petugas,$waktu,$tanggal_sekarang, $jam_sekarang ,$no_faktur, $no_reg);
+              
+    // jalankan query
+              $stmt->execute();
+
+
+                // cek query
+            if (!$stmt) 
+                  {
+                    die('Query Error : '.$db->errno.
+                      ' - '.$db->error);
+                  }
+
+            else 
+                  {
+                
+                  }
+
+
+/*
 $select_setting_akun = $db->query("SELECT * FROM setting_akun");
 $ambil_setting = mysqli_fetch_array($select_setting_akun);
 
@@ -331,9 +457,7 @@ $total_tax = $jumlah_tax['total_tax'];
     $select_kode_pelanggan = $db->query("SELECT nama_pelanggan FROM pelanggan WHERE kode_pelanggan = '$no_rm'");
     $ambil_kode_pelanggan = mysqli_fetch_array($select_kode_pelanggan);
 
-
-
-//PERSEDIAAN    
+PERSEDIAAN    
         $insert_jurnal = $db->query("INSERT INTO jurnal_trans (nomor_jurnal,waktu_jurnal,keterangan_jurnal,kode_akun_jurnal,debit,kredit,jenis_transaksi,no_faktur,approved,user_buat) VALUES ('".no_jurnal()."', '$tanggal_sekarang $jam_sekarang', 'Penjualan Rawat Inap Tunai - $ambil_kode_pelanggan[nama_pelanggan]', '$ambil_setting[persediaan]', '0', '$total_hpp', 'Penjualan', '$no_faktur','1', '$nama_petugas')");
         
 
@@ -397,25 +521,34 @@ if ($potongan != "" || $potongan != 0 ) {
         $insert_juranl = $db->query("INSERT INTO jurnal_trans (nomor_jurnal,waktu_jurnal,keterangan_jurnal,kode_akun_jurnal,debit,kredit,jenis_transaksi,no_faktur,approved,user_buat) VALUES ('".no_jurnal()."', '$tanggal_sekarang $jam_sekarang', 'Penjualan Rawat Inap Tunai - $ambil_kode_pelanggan[nama_pelanggan]', '$ambil_setting[potongan_jual]', '$potongan', '0', 'Penjualan', '$no_faktur','1', '$nama_petugas')");
 }
 
-            
+           
+*/ 
               
 }
 
 
 
-              else if ($ss_kredit != 0)
-              
+              else if ($tunai_i != 0 AND $bayar == 'Piutang') 
+    
             {
 
-                          // buat prepared statements
-            $stmt = $db->prepare("UPDATE penjualan SET penjamin = ?, apoteker = ?, perawat = ?, petugas_lain = ?, dokter = ?, kode_gudang = ?, total = ?, tanggal = ?, jam = ?, user = ?, sales = ?, status = 'Piutang', potongan = ?, tax = ?, kredit = ?, cara_bayar = ?, tunai = ?, status_jual_awal = 'Kredit', keterangan = ?, ppn = ?,jenis_penjualan = 'Rawat Inap',biaya_admin = ? WHERE no_faktur = ?");
-              
-              // hubungkan "data" dengan prepared statements
-            $stmt->bind_param("ssssssissssiiisissis", 
-            $penjamin,$petugas_farmasi, $petugas_paramedik, $petugas_lain, $dokter, $kode_gudang, $total, $tanggal_sekarang, $jam_sekarang, $nama_petugas, $petugas_kasir, $potongan, $tax, $sisa, $cara_bayar, $pembayaran, $keterangan, $ppn_input,$biaya_admin,$no_faktur);
- 
 
-              $_SESSION['no_faktur']=$no_faktur;
+              $update_registrasi = $db->query("UPDATE registrasi SET status = 'Sudah Pulang' WHERE no_reg ='$no_reg'");
+
+                      // UPDATE KAMAR
+              $query = $db->query("UPDATE bed SET sisa_bed = sisa_bed + 1 WHERE nama_kamar = '$bed' AND group_bed = '$group_bed'");
+              // END UPDATE KAMAR
+  
+
+          $nilai_piutang = $total - $pembayaran;
+          $ket_jurnal = "Penjualan Rawat Inap Piutang ".$ambil_kode_pelanggan['nama_pelanggan']." ";
+            
+             $stmt = $db->prepare("UPDATE penjualan SET apoteker = ?, perawat = ?, petugas_lain = ?, biaya_admin = ?, kode_gudang = ?,kode_pelanggan = ?, total = ?,  status = 'Piutang', potongan = ?, kredit = ?, cara_bayar = ?, tunai = ?, ppn = ?, status_jual_awal = 'Kredit', keterangan = ?, nilai_kredit = ?, no_faktur_jurnal = ?, keterangan_jurnal = ?, tanggal_jt = ? , tanggal = ?, jam = ? WHERE no_faktur = ? AND no_reg = ?") ;
+              
+      
+  // hubungkan "data" dengan prepared statements
+              $stmt->bind_param("iiiisiiiisississsssss",
+                $petugas_farmasi, $petugas_paramedik, $petugas_lain, $biaya_admin, $kode_gudang,$kode_pelanggan, $total, $potongan, $nilai_piutang, $cara_bayar, $pembayaran, $ppn_input, $keterangan, $nilai_piutang,$no_jurnal,$ket_jurnal,$tanggal_jt, $tanggal_sekarang, $jam_sekarang ,$no_faktur,$no_reg );
               
     // jalankan query
               $stmt->execute();
@@ -435,8 +568,10 @@ if ($potongan != "" || $potongan != 0 ) {
               
               
               
+/*
 $select_setting_akun = $db->query("SELECT * FROM setting_akun");
 $ambil_setting = mysqli_fetch_array($select_setting_akun);
+
 
 $select = $db->query("SELECT SUM(total_nilai) AS total_hpp FROM hpp_keluar WHERE no_faktur = '$no_faktur'");
 $ambil = mysqli_fetch_array($select);
@@ -452,9 +587,9 @@ $total_tax = $jumlah_tax['total_tax'];
     $select_kode_pelanggan = $db->query("SELECT nama_pelanggan FROM pelanggan WHERE kode_pelanggan = '$no_rm'");
     $ambil_kode_pelanggan = mysqli_fetch_array($select_kode_pelanggan);
 
+*/
 
-
-//PERSEDIAAN    
+/*/PERSEDIAAN    
         $insert_jurnal = $db->query("INSERT INTO jurnal_trans (nomor_jurnal,waktu_jurnal,keterangan_jurnal,kode_akun_jurnal,debit,kredit,jenis_transaksi,no_faktur,approved,user_buat) VALUES ('".no_jurnal()."', '$tanggal_sekarang $jam_sekarang', 'Penjualan Rawat Inap Piutang - $ambil_kode_pelanggan[nama_pelanggan]', '$ambil_setting[persediaan]', '0', '$total_hpp', 'Penjualan', '$no_faktur','1', '$nama_petugas')");
         
 
@@ -519,12 +654,18 @@ if ($potongan != "" || $potongan != 0 ) {
         $insert_juranl = $db->query("INSERT INTO jurnal_trans (nomor_jurnal,waktu_jurnal,keterangan_jurnal,kode_akun_jurnal,debit,kredit,jenis_transaksi,no_faktur,approved,user_buat) VALUES ('".no_jurnal()."', '$tanggal_sekarang $jam_sekarang', 'Penjualan Rawat Inap Piutang - $ambil_kode_pelanggan[nama_pelanggan]', '$ambil_setting[potongan_jual]', '$potongan', '0', 'Penjualan', '$no_faktur','1', '$nama_petugas')");
 }
 
-
+*/
    
 }
 
+            }  
+
+
+
 
 // IBSERT HASIL OPERASI
+
+    $tbs_opsss = $db->query("DELETE FROM hasil_operasi WHERE no_reg = '$no_reg'");
 
     $tbs_ops = $db->query("SELECT * FROM tbs_operasi WHERE no_reg = '$no_reg'");
     while ($data_ops = mysqli_fetch_array($tbs_ops))
@@ -543,11 +684,13 @@ if ($potongan != "" || $potongan != 0 ) {
 
 // IBSERT HASIL DETAIL OPERASI
 
+          $tbs_opsddd = $db->query("DELETE FROM hasil_detail_operasi WHERE no_reg = '$no_reg'");
+
     $detail_ops = $db->query("SELECT * FROM tbs_detail_operasi WHERE no_reg = '$no_reg'");
     while ($data_detail_ops = mysqli_fetch_array($detail_ops))
       {
 
-        $insert_detail_operasi = "INSERT INTO hasil_detail_operasi (id_detail_operasi,id_user, id_sub_operasi, id_operasi, petugas_input, no_reg, waktu,id_tbs_operasi) VALUES ('$data_detail_ops[id_detail_operasi]','$data_detail_ops[id_user]', '$data_detail_ops[id_sub_operasi]', '$data_detail_ops[id_operasi]', '$data_detail_ops[petugas_input]', '$no_reg', '$data_detail_ops[waktu]', '$data_detail_ops[id_tbs_operasi]')";
+        $insert_detail_operasi = "INSERT INTO hasil_detail_operasi (id_detail_operasi,id_user, id_sub_operasi, id_operasi, petugas_input, no_reg, waktu, id_tbs_operasi) VALUES ('$data_detail_ops[id_detail_operasi]','$data_detail_ops[id_user]', '$data_detail_ops[id_sub_operasi]', '$data_detail_ops[id_operasi]', '$data_detail_ops[petugas_input]', '$no_reg', '$data_detail_ops[waktu]', '$data_detail_ops[id_tbs_operasi]')";
 
         if ($db->query($insert_detail_operasi) === TRUE) {
         } 
@@ -559,14 +702,14 @@ if ($potongan != "" || $potongan != 0 ) {
       }
 
 
-    $update_registrasi = $db->query("UPDATE registrasi SET status = 'Sudah Pulang' WHERE no_reg ='$no_reg'");
-
-// UPDATE KAMAR
-$query = $db->query("UPDATE bed SET sisa_bed = sisa_bed + 1 WHERE nama_kamar = '$bed' AND group_bed = '$group_bed'");
-// END UPDATE KAMAR
 
 
-    $query3 = $db->query("DELETE  FROM tbs_penjualan WHERE no_reg = '$no_reg' ");
+        
+
+
+
+    $query3 = $db->query("DELETE FROM tbs_penjualan WHERE no_reg = '$no_reg'  ");
+
     $query30 = $db->query("DELETE  FROM tbs_fee_produk WHERE no_reg = '$no_reg' ");
     $hapus_tbs_operasi = $db->query("DELETE  FROM tbs_operasi WHERE no_reg = '$no_reg'");
     $hapus_tbs_detail_operasi = $db->query("DELETE  FROM tbs_detail_operasi WHERE no_reg = '$no_reg'");

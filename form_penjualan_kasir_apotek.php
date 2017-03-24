@@ -305,35 +305,37 @@ $user = $_SESSION['nama'];
 
 
 <!-- Modal Hapus data -->
-<div id="modal_hapus" class="modal fade" role="dialog">
+<div id="modal_barang_tidak_bisa_dijual" class="modal fade" role="dialog">
   <div class="modal-dialog">
 
     <!-- Modal content-->
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Konfirmsi Hapus Data Tbs Penjualan</h4>
+        <h4 class="modal-title"> <h4 class="modal-title">Produk Yang Tidak Bisa Di Jual</h4></h4>
       </div>
       <div class="modal-body">
-   <p>Apakah Anda yakin Ingin Menghapus Data ini ?</p>
-   <form >
-    <div class="form-group">
-     <input type="text" id="nama-barang" class="form-control" readonly=""> 
-     <input type="hidden" id="id_hapus" class="form-control" >
-     <input type="hidden" id="kode_hapus" class="form-control" >
-    </div>
-   
-   </form>
-   
-  <div class="alert alert-success" style="display:none">
-   <strong>Berhasil!</strong> Data berhasil Di Hapus
-  </div>
- 
+          <center>
+            <table class="table table-bordered table-sm">
+                  <thead> <!-- untuk memberikan nama pada kolom tabel -->
+                  
+                      <th>Kode Produk</th>
+                      <th>Nama Produk</th>
+                      <th>Jumlah Yang Akan Di Jual</th>
+                      <th>Stok Saat Ini</th>
+                  
+                  
+                  </thead> <!-- tag penutup tabel -->
+                  <tbody id="tbody-barang-jual">
+                    
+                  </tbody>
+            </table>
+            </center>
 
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-info" id="btn_jadi_hapus"> <span class='glyphicon glyphicon-ok-sign'> </span> Ya</button>
-        <button type="button" class="btn btn-warning" data-dismiss="modal"> <span class='glyphicon glyphicon-remove-sign'> </span>Batal</button>
+    
+        <button type="button" class="btn btn-warning" data-dismiss="modal"> <span class='glyphicon glyphicon-remove-sign'> </span>Tutup</button>
       </div>
     </div>
 
@@ -1708,6 +1710,10 @@ else if(total == 0 && potongan_persen == '100'){
         if (data == 1) {
 
 
+            $.getJSON("cek_status_stok_penjualan_apotek.php", function(result){
+
+                if (result.status == 0) {
+
                      $.post("proses_bayar_jual_apotek.php",{biaya_admin:biaya_admin,total2:total2,sisa_pembayaran:sisa_pembayaran,kredit:kredit,kode_pelanggan:kode_pelanggan,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,cara_bayar:cara_bayar,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,total_hpp:total_hpp,harga:harga,kode_gudang:kode_gudang,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,apoteker:apoteker,no_resep_dokter:no_resep_dokter,resep_dokter:resep_dokter,penjamin:penjamin,analis:analis},function(info) {
 
                                             if (info == 1)
@@ -1728,9 +1734,76 @@ else if(total == 0 && potongan_persen == '100'){
                                                  
                                                      $('#tbody').html('');
 
+
+
+                                                  $("#pembayaran_penjualan").val('');
+                                                  $("#sisa_pembayaran_penjualan").val('');
+                                                  $("#kredit").val('');
+                                                  $("#potongan_penjualan").val('0');
+                                                  $("#potongan_persen").val('0');
+                                                  $("#tanggal_jt").val('');
+                                                  $("#total2").val('');
+                                                  $("#total1").val('');
+                                                  $("#no_resep_dokter").val('');
+                                                  $("#resep_dokter").val('');
+                                                  $("#kd_pelanggan").val('Umum');
+                                                  $("#biaya_admin_select").val('0');
+                                                  $("#biaya_admin_select").trigger("chosen:updated");
+                                                  $("#biaya_admin_persen").val('');
+                                                  $("#biaya_admin").val('');
+                                                  $("#penjamin").val('PERSONAL');
+                                                  $("#keterangan").val('');
+                                                  $("#penjualan").hide();
+                                                  $("#piutang").hide();
+                                                  $("#batal_penjualan").hide(); 
+                                                  $("#transaksi_baru").show();
+                                                  $("#alert_berhasil").show();
+                                                  $("#cetak_tunai").show();
+                                                  $("#cetak_tunai_besar").show();
+                                                  $("#cetak_piutang").show();
+                                                  $("#table-baru").show();
+                                                  
+                                                  $("#kode_barang").trigger('chosen:open');
+                                                  $('#tabel_tbs_penjualan_apotek').DataTable().clear();
+                                                  $('#span_tbs').hide();  
+
                                                 }
+
+                  var dataTable = $('#tabel_tbs_penjualan_apotek').DataTable();
+                  dataTable.draw();
+
+    
        
-                                          });
+                        }); // end post proses_bayar_jual_apotek
+                    } 
+                    else {
+
+                      $("#penjualan").show();
+                      $("#batal_penjualan").show();
+                      $("#piutang").show();
+                      $("#transaksi_baru").hide();
+                      $("#alert_berhasil").hide();
+                      $("#cetak_tunai").hide();
+                      $("#cetak_tunai_besar").hide('');
+
+
+                             alert("Tidak Bisa Di Jual, ada stok yang habis");
+                          $("#tbody-barang-jual").find("tr").remove();
+
+                           $.each(result.barang, function(i, item) {
+
+                         
+                            var tr_barang = "<tr><td>"+ result.barang[i].kode_barang+"</td><td>"+ result.barang[i].nama_barang+"</td><td>"+ result.barang[i].jumlah_jual+"</td><td>"+ result.barang[i].stok+"</td></tr>"
+                             $("#tbody-barang-jual").prepend(tr_barang);
+
+                           });
+
+                           $("#modal_barang_tidak_bisa_dijual").modal('show');
+
+                    }
+
+
+                  });
                 }
               else{
 
@@ -1743,37 +1816,8 @@ else if(total == 0 && potongan_persen == '100'){
                 });
 
 
-               $('#tabel_tbs_penjualan_apotek').DataTable().clear();
-    $('#tabel_tbs_penjualan_apotek').DataTable().destroy();
+        
 
-                          var dataTable = $('#tabel_tbs_penjualan_apotek').DataTable( {
-                            "processing": true,
-                            "serverSide": true,
-                            "info":     true,
-                            "language": { "emptyTable":     "Tidak Ada Data Di Tabel Ini" },
-                            "ajax":{
-                              url :"data_tbs_penjualan_apotek.php", // json datasource
-                               "data": function ( d ) {
-                                  d.session_id = $("#session_id").val();
-                                  // d.custom = $('#myInput').val();
-                                  // etc
-                              },
-                               
-                                type: "post",  // method  , by default get
-                              error: function(){  // error handling
-                                $(".employee-grid-error").html("");
-                                $("#tabel_tbs_penjualan_apotek").append('<tbody class="employee-grid-error"><tr><th colspan="3">No data found in the server</th></tr></tbody>');
-                                $("#employee-grid_processing").css("display","none");
-                                }
-                            },
-                               "fnCreatedRow": function( nRow, aData, iDataIndex ) {
-
-                                $(nRow).attr('class','tr-id-'+aData[11]+'');         
-
-                            }
-                          });
-                  $("#span_tbs").hide();
-    
 
 
 
@@ -1794,6 +1838,9 @@ else if(total == 0 && potongan_persen == '100'){
 
   if (data == 1) {
 
+       $.getJSON("cek_status_stok_penjualan_apotek.php", function(result){
+
+                if (result.status == 0) {
 
                            $.post("proses_bayar_jual_apotek.php",{biaya_admin:biaya_admin,total2:total2,sisa_pembayaran:sisa_pembayaran,kredit:kredit,kode_pelanggan:kode_pelanggan,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,cara_bayar:cara_bayar,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,total_hpp:total_hpp,harga:harga,kode_gudang:kode_gudang,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,apoteker:apoteker,no_resep_dokter:no_resep_dokter,resep_dokter:resep_dokter,penjamin:penjamin,analis:analis},function(info) {
 
@@ -1818,9 +1865,71 @@ else if(total == 0 && potongan_persen == '100'){
                                              $("#cetak_tunai_besar").show('');
                                             $('#tbody').html('');
 
+
+                                                  $("#pembayaran_penjualan").val('');
+                                                  $("#sisa_pembayaran_penjualan").val('');
+                                                  $("#kredit").val('');
+                                                  $("#potongan_penjualan").val('0');
+                                                  $("#potongan_persen").val('0');
+                                                  $("#tanggal_jt").val('');
+                                                  $("#total2").val('');
+                                                  $("#total1").val('');
+                                                  $("#no_resep_dokter").val('');
+                                                  $("#resep_dokter").val('');
+                                                  $("#kd_pelanggan").val('Umum');
+                                                  $("#biaya_admin_select").val('0');
+                                                  $("#biaya_admin_select").trigger("chosen:updated");
+                                                  $("#biaya_admin_persen").val('');
+                                                  $("#biaya_admin").val('');
+                                                  $("#penjamin").val('PERSONAL');
+                                                  $("#keterangan").val('');
+                                                  $("#penjualan").hide();
+                                                  $("#piutang").hide();
+                                                  $("#batal_penjualan").hide(); 
+                                                  $("#transaksi_baru").show();
+                                                  $("#alert_berhasil").show();
+                                                  $("#cetak_tunai").show();
+                                                  $("#cetak_tunai_besar").show();
+                                                  $("#cetak_piutang").show();
+                                                  $("#table-baru").show();
+                                                  
+                                                  $("#kode_barang").trigger('chosen:open');
+                                                  $('#tabel_tbs_penjualan_apotek').DataTable().clear();
+                                                  $('#span_tbs').hide();  
+
+
                                             }
        
                                       });
+
+                      }
+                      else {
+                            $("#penjualan").show();
+                      $("#batal_penjualan").show();
+                      $("#piutang").show();
+                      $("#transaksi_baru").hide();
+                      $("#alert_berhasil").hide();
+                      $("#cetak_tunai").hide();
+                      $("#cetak_tunai_besar").hide('');
+
+
+                             alert("Tidak Bisa Di Jual, ada stok yang habis");
+                        $("#tbody-barang-jual").find("tr").remove();
+
+                           $.each(result.barang, function(i, item) {
+
+                         
+                            var tr_barang = "<tr><td>"+ result.barang[i].kode_barang+"</td><td>"+ result.barang[i].nama_barang+"</td><td>"+ result.barang[i].jumlah_jual+"</td><td>"+ result.barang[i].stok+"</td></tr>"
+                             $("#tbody-barang-jual").prepend(tr_barang);
+
+                           });
+
+                           $("#modal_barang_tidak_bisa_dijual").modal('show');
+
+                      }
+
+
+                    });
               }
               else{
 
@@ -1831,39 +1940,10 @@ else if(total == 0 && potongan_persen == '100'){
 
               });
 
+      var dataTable = $('#tabel_tbs_penjualan_apotek').DataTable();
 
-
-
-    $('#tabel_tbs_penjualan_apotek').DataTable().clear();
-    $('#tabel_tbs_penjualan_apotek').DataTable().destroy();
-
-                          var dataTable = $('#tabel_tbs_penjualan_apotek').DataTable( {
-                            "processing": true,
-                            "serverSide": true,
-                            "info":     true,
-                            "language": { "emptyTable":     "Tidak Ada Data Di Tabel Ini" },
-                            "ajax":{
-                              url :"data_tbs_penjualan_apotek.php", // json datasource
-                               "data": function ( d ) {
-                                  d.session_id = $("#session_id").val();
-                                  // d.custom = $('#myInput').val();
-                                  // etc
-                              },
-                               
-                                type: "post",  // method  , by default get
-                              error: function(){  // error handling
-                                $(".employee-grid-error").html("");
-                                $("#tabel_tbs_penjualan_apotek").append('<tbody class="employee-grid-error"><tr><th colspan="3">No data found in the server</th></tr></tbody>');
-                                $("#employee-grid_processing").css("display","none");
-                                }
-                            },
-                               "fnCreatedRow": function( nRow, aData, iDataIndex ) {
-
-                                $(nRow).attr('class','tr-id-'+aData[11]+'');         
-
-                            }
-                          });
-                  $("#span_tbs").hide();
+      dataTable.draw();
+                
     
  }
 
@@ -1951,56 +2031,86 @@ else if(total == 0 && potongan_persen == '100'){
 
   if (data == 1) {
 
-$.post("proses_bayar_jual_apotek.php",{biaya_admin:biaya_admin,total2:total2,sisa_pembayaran:sisa_pembayaran,kredit:kredit,kode_pelanggan:kode_pelanggan,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,cara_bayar:cara_bayar,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,total_hpp:total_hpp,kode_gudang:kode_gudang,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,apoteker:apoteker,no_resep_dokter:no_resep_dokter,resep_dokter:resep_dokter,penjamin:penjamin,analis:analis},function(info) {
-info = info.replace(/\s/g, '');
-     $("#table-baru").html(info);
-            var no_faktur = info;
-            $("#cetak_piutang").attr('href','cetak_penjualan_piutang.php?no_faktur='+no_faktur+'');
-            $("#table-baru").html(info);
-            $("#alert_berhasil").show();
-            $("#pembayaran_penjualan").val('');
-            $("#sisa_pembayaran_penjualan").val('');
-            $("#kredit").val('');
-            $("#potongan_penjualan").val('');
-            $("#potongan_persen").val('');
-            $("#tanggal_jt").val('');
-            $("#cetak_piutang").show();
-            $("#tax").val('');
+         $.getJSON("cek_status_stok_penjualan_apotek.php", function(result){
+
+                if (result.status == 0) {
+
+              $.post("proses_bayar_jual_apotek.php",{biaya_admin:biaya_admin,total2:total2,sisa_pembayaran:sisa_pembayaran,kredit:kredit,kode_pelanggan:kode_pelanggan,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,cara_bayar:cara_bayar,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,total_hpp:total_hpp,kode_gudang:kode_gudang,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,apoteker:apoteker,no_resep_dokter:no_resep_dokter,resep_dokter:resep_dokter,penjamin:penjamin,analis:analis},function(info) {
+              info = info.replace(/\s/g, '');
+              $("#table-baru").html(info);
+              var no_faktur = info;
+              $("#cetak_piutang").attr('href','cetak_penjualan_piutang.php?no_faktur='+no_faktur+'');
+              $("#table-baru").html(info);
+              $("#alert_berhasil").show();
+              $("#pembayaran_penjualan").val('');
+              $("#sisa_pembayaran_penjualan").val('');
+              $("#kredit").val('');
+              $("#potongan_penjualan").val('');
+              $("#potongan_persen").val('');
+              $("#tanggal_jt").val('');
+              $("#cetak_piutang").show();
+              $("#tax").val('');
+
+
+              $("#kredit").val('');
+              $("#total2").val('');
+              $("#total1").val('');
+              $("#no_resep_dokter").val('');
+              $("#resep_dokter").val('');
+              $("#kd_pelanggan").val('Umum');
+              $("#biaya_admin_select").val('0');
+              $("#biaya_admin_select").trigger("chosen:updated");
+              $("#biaya_admin_persen").val('');
+              $("#biaya_admin").val('');
+              $("#penjamin").val('PERSONAL');
+              $("#keterangan").val('');
+              $("#penjualan").hide();
+              $("#piutang").hide();
+              $("#batal_penjualan").hide(); 
+              $("#transaksi_baru").show();
+              $("#alert_berhasil").show();
+              $("#cetak_tunai").show();
+              $("#cetak_tunai_besar").show();
+              $("#table-baru").show();
+                                                  
+              $("#kode_barang").trigger('chosen:open');
+              $('#tabel_tbs_penjualan_apotek').DataTable().clear();
+              $('#span_tbs').hide();  
             
        
        
-       });
+           });
 
-    $('#tabel_tbs_penjualan_apotek').DataTable().clear();
-    $('#tabel_tbs_penjualan_apotek').DataTable().destroy();
+        } 
+        else {
 
-                          var dataTable = $('#tabel_tbs_penjualan_apotek').DataTable( {
-                            "processing": true,
-                            "serverSide": true,
-                            "info":     true,
-                            "language": { "emptyTable":     "Tidak Ada Data Di Tabel Ini" },
-                            "ajax":{
-                              url :"data_tbs_penjualan_apotek.php", // json datasource
-                               "data": function ( d ) {
-                                  d.session_id = $("#session_id").val();
-                                  // d.custom = $('#myInput').val();
-                                  // etc
-                              },
-                               
-                                type: "post",  // method  , by default get
-                              error: function(){  // error handling
-                                $(".employee-grid-error").html("");
-                                $("#tabel_tbs_penjualan_apotek").append('<tbody class="employee-grid-error"><tr><th colspan="3">No data found in the server</th></tr></tbody>');
-                                $("#employee-grid_processing").css("display","none");
-                                }
-                            },
-                               "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+           $("#penjualan").show();
+                      $("#batal_penjualan").show();
+                      $("#piutang").show();
+                      $("#transaksi_baru").hide();
+                      $("#alert_berhasil").hide();
+                      $("#cetak_tunai").hide();
+                      $("#cetak_tunai_besar").hide('');
 
-                                $(nRow).attr('class','tr-id-'+aData[11]+'');         
 
-                            }
-                          });
-                  $("#span_tbs").hide();
+                             alert("Tidak Bisa Di Jual, ada stok yang habis");
+                            $("#tbody-barang-jual").find("tr").remove();
+
+                           $.each(result.barang, function(i, item) {
+
+                         
+                            var tr_barang = "<tr><td>"+ result.barang[i].kode_barang+"</td><td>"+ result.barang[i].nama_barang+"</td><td>"+ result.barang[i].jumlah_jual+"</td><td>"+ result.barang[i].stok+"</td></tr>"
+                             $("#tbody-barang-jual").prepend(tr_barang);
+
+                           });
+
+                           $("#modal_barang_tidak_bisa_dijual").modal('show');
+        }
+
+    });
+
+       var dataTable = $('#tabel_tbs_penjualan_apotek').DataTable();
+          dataTable.draw();           
     
 
   }
@@ -2547,38 +2657,12 @@ $(document).on('click','.btn-hapus-tbs',function(e){
     $("#kode_barang").trigger('chosen:open');    
 
 
+       var dataTable = $('#tabel_tbs_penjualan_apotek').DataTable();
+
+            dataTable.draw();
+
     });
 
-                      $('#tabel_tbs_penjualan_apotek').DataTable().destroy();
-
-                          var dataTable = $('#tabel_tbs_penjualan_apotek').DataTable( {
-                            "processing": true,
-                            "serverSide": true,
-                            "info":     true,
-                            "language": { "emptyTable":     "Tidak Ada Data Di Tabel Ini" },
-                            "ajax":{
-                              url :"data_tbs_penjualan_apotek.php", // json datasource
-                               "data": function ( d ) {
-                                  d.session_id = $("#session_id").val();
-                                  // d.custom = $('#myInput').val();
-                                  // etc
-                              },
-                               
-                                type: "post",  // method  , by default get
-                              error: function(){  // error handling
-                                $(".employee-grid-error").html("");
-                                $("#tabel_tbs_penjualan_apotek").append('<tbody class="employee-grid-error"><tr><th colspan="3">No data found in the server</th></tr></tbody>');
-                                $("#employee-grid_processing").css("display","none");
-                                }
-                            },
-                               "fnCreatedRow": function( nRow, aData, iDataIndex ) {
-
-                                $(nRow).attr('class','tr-id-'+aData[11]+'');         
-
-                            }
-                          });
-
-                          $("#span_tbs").show();
 
     }
     else{
@@ -2890,48 +2974,8 @@ $.post('cek_tbs_penjualan_apotek.php',{kode_barang:kode_barang, session_id:sessi
     $(document).on('click','#transaksi_baru',function(e){
       
       $('#tabel_cari').DataTable().destroy();
-        var dataTable = $('#tabel_cari').DataTable( {
-          "processing": true,
-          "serverSide": true,
-          "ajax":{
-            url :"modal_jual_baru.php", // json datasource
-            type: "post",  // method  , by default get
-            error: function(){  // error handling
-              $(".employee-grid-error").html("");
-              $("#tabel_cari").append('<tbody class="employee-grid-error"><tr><th colspan="3">Data Tidak Ditemukan.. !!</th></tr></tbody>');
-              $("#employee-grid_processing").css("display","none");
-              
-            }
-          },
-
-          "fnCreatedRow": function( nRow, aData, iDataIndex ) {
-
-            $(nRow).attr('class', "pilih");
-              $(nRow).attr('data-kode', aData[0]);
-              $(nRow).attr('nama-barang', aData[1]);
-              $(nRow).attr('harga', aData[2]);
-              $(nRow).attr('harga_level_2', aData[3]);
-              $(nRow).attr('harga_level_3', aData[4]);
-              $(nRow).attr('harga_level_4', aData[5]);
-              $(nRow).attr('harga_level_5', aData[6]);
-              $(nRow).attr('harga_level_6', aData[7]);
-              $(nRow).attr('harga_level_7', aData[8]);
-              $(nRow).attr('jumlah-barang', aData[9]);
-              $(nRow).attr('satuan', aData[17]);
-              $(nRow).attr('kategori', aData[11]);
-              $(nRow).attr('status', aData[16]);
-              $(nRow).attr('suplier', aData[12]);
-              $(nRow).attr('limit_stok', aData[13]);
-              $(nRow).attr('ber-stok', aData[14]);
-              $(nRow).attr('tipe_barang', aData[15]);
-              $(nRow).attr('id-barang', aData[18]);
-
-
-
-
-          }
-
-        });   
+        var dataTable = $('#tabel_cari').DataTable();   
+        dataTable.draw();
 
             $("#pembayaran_penjualan").val('');
             $("#sisa_pembayaran_penjualan").val('');
@@ -3437,37 +3481,9 @@ $(document).ready(function(){
     if (pesan_alert == true) {
         
         $.get("batal_penjualan_apotek.php",{session_id:session_id},function(data){
-              $('#tabel_tbs_penjualan_apotek').DataTable().destroy();
+            var dataTable = $('#tabel_tbs_penjualan_apotek').DataTable( );
 
-                          var dataTable = $('#tabel_tbs_penjualan_apotek').DataTable( {
-                            "processing": true,
-                            "serverSide": true,
-                            "info":     true,
-                            "language": { "emptyTable":     "Tidak Ada Data Di Tabel Ini" },
-                            "ajax":{
-                              url :"data_tbs_penjualan_apotek.php", // json datasource
-                               "data": function ( d ) {
-                                  d.session_id = $("#session_id").val();
-                                  // d.custom = $('#myInput').val();
-                                  // etc
-                              },
-                               
-                                type: "post",  // method  , by default get
-                              error: function(){  // error handling
-                                $(".employee-grid-error").html("");
-                                $("#tabel_tbs_penjualan_apotek").append('<tbody class="employee-grid-error"><tr><th colspan="3">No data found in the server</th></tr></tbody>');
-                                $("#employee-grid_processing").css("display","none");
-                                }
-                            },
-                               "fnCreatedRow": function( nRow, aData, iDataIndex ) {
-
-                                $(nRow).attr('class','tr-id-'+aData[11]+'');         
-
-                            }
-                          });
-
-              $("#span_tbs").show();
-              
+              dataTable.draw();
 
         });
     } 
