@@ -22,6 +22,7 @@ $columns = array(
 
  
 );
+$cek = $db->query("SELECT * FROM bed WHERE sisa_bed != 0 ");
 // getting total number records without any search
 $sql ="SELECT * ";
 $sql.=" FROM bed ";
