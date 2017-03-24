@@ -2284,7 +2284,8 @@ if (data == 1) {
   $("#transaksi_baru").hide();
 
      alert("Tidak Bisa Di Jual, ada stok yang habis");
-
+     
+$("#tbody-barang-jual").find("tr").remove();
 
    $.each(result.barang, function(i, item) {
 
@@ -2718,7 +2719,7 @@ alert("Silakan Bayar Piutang");
 
      alert("Tidak Bisa Di Jual, ada stok yang habis");
 
-
+$("#tbody-barang-jual").find("tr").remove();
    $.each(result.barang, function(i, item) {
 
  
@@ -2915,7 +2916,7 @@ alert("Silakan Bayar Piutang");
 
      alert("Tidak Bisa Di Jual, ada stok yang habis");
 
-
+$("#tbody-barang-jual").find("tr").remove();
    $.each(result.barang, function(i, item) {
 
  

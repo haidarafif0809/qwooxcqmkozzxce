@@ -1735,7 +1735,7 @@ else if(total == 0 && potongan_persen == '100'){
                                                      $('#tbody').html('');
 
                                                 }
-                                                
+
                   var dataTable = $('#tabel_tbs_penjualan_apotek').DataTable();
                   dataTable.draw();
     
@@ -1754,7 +1754,7 @@ else if(total == 0 && potongan_persen == '100'){
 
 
                              alert("Tidak Bisa Di Jual, ada stok yang habis");
-
+                          $("#tbody-barang-jual").find("tr").remove();
 
                            $.each(result.barang, function(i, item) {
 
@@ -1847,7 +1847,7 @@ else if(total == 0 && potongan_persen == '100'){
 
 
                              alert("Tidak Bisa Di Jual, ada stok yang habis");
-
+                        $("#tbody-barang-jual").find("tr").remove();
 
                            $.each(result.barang, function(i, item) {
 
@@ -2001,7 +2001,7 @@ else if(total == 0 && potongan_persen == '100'){
 
 
                              alert("Tidak Bisa Di Jual, ada stok yang habis");
-
+            $("#tbody-barang-jual").find("tr").remove();
 
                            $.each(result.barang, function(i, item) {
 
