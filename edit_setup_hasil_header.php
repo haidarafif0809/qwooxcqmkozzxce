@@ -41,7 +41,7 @@ $nama_header = $call['nama_sub'];
 <h3>EDIT SETUP HASIL</h3><hr>
 
 
-<form role="form" action="update_setup_hasil.php" method="POST">
+<form role="form" action="update_setup_hasil_header.php" method="POST">
 
 <div class="form-group">
   <label for="sel1">Kelompok Pemeriksaan</label>
@@ -65,7 +65,7 @@ $nama_header = $call['nama_sub'];
 </div>
   </span>
 
-
+<span style="display: none">
 <div class="form-group">
   <label for="setup">Kategori Index</label>
   <select  class="form-control" id="kategori_index" name="kategori_index" autocomplete="off">
@@ -75,7 +75,6 @@ $nama_header = $call['nama_sub'];
 </select>
 </div>
 
-<span id="show_periksa">
 <div class="form-group">
   <label for="sel1">Sub Pemeriksaan</label>
   <select class="form-control" id="sub_hasil_lab" name="sub_hasil_lab"> 
@@ -102,7 +101,6 @@ $nama_header = $call['nama_sub'];
   </select>
 </div>
 </span>
-
 
   <input type="hidden" class="form-control" id="periksa_hidden" value="<?php echo $call['id_lab']; ?>" autocomplete="off">
 
@@ -143,7 +141,7 @@ else
 <div class="form-group">
   <label for="setup">Model Hitung</label>
   <select  class="form-control" id="model_hitung" name="model_hitung" autocomplete="off">
-  <option>Numeric</option>
+  <option >Numeric</option>
   <option >Text</option>
   </select>
 </div>
@@ -158,12 +156,12 @@ else
   <select  class="form-control" id="perhitungan" name="perhitungan" autocomplete="off">
       <option value="<?php echo  $call['model_hitung'];?>"><?php echo  $call['model_hitung'];?></option>
 
-      <option >Lebih Kecil Dari</option>
-      <option >Lebih Kecil Sama Dengan</option>
-      <option >Lebih Besar Dari</option>
-      <option >Lebih Besar Sama Dengan</option>
+    <option >Lebih Kecil Dari</option>
+    <option >Lebih Kecil Sama Dengan</option>
+     <option >Lebih Besar Dari</option>
+    <option >Lebih Besar Sama Dengan</option>
       <option >Antara Sama Dengan</option>
-  </select>
+        </select>
 </div>
   </div>
 
@@ -661,36 +659,7 @@ $.post('table_baru_setup_hasil.php',{q:q},function(data)
 </script>
 <!-- END script cari untuk pegy natio -->
 
-<!-- Change Kategori Index -->
-<script type="text/javascript">
-$(document).ready(function(){
-  //document readynya agar awal masuk form langsung cek
-    var kategori_index = $("#kategori_index").val(); 
-  if (kategori_index == 'Detail')
-  {
-     $("#show_periksa").show();
-  }
-  else
-  {
-     $("#show_periksa").hide();
-  }
 
-});
-
-  $("#kategori_index").change(function(){
-
-  var kategori_index = $("#kategori_index").val(); 
-  if (kategori_index == 'Detail')
-  {
-     $("#show_periksa").show();
-  }
-  else
-  {
-     $("#show_periksa").hide();
-  }
-
-});
-</script>
-<!-- Change Kategori Index -->
-
-<?php include 'footer.php'; ?>
+  <?php 
+  include 'footer.php';
+   ?>
