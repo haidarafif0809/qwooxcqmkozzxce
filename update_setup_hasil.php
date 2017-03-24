@@ -47,9 +47,8 @@ else
 	$insert_to_and = $db->query("UPDATE setup_hasil SET text_hasil = '$text_hasil',nama_pemeriksaan = '$pemeriksaan',
 		kelompok_pemeriksaan = '$kelompok' ,model_hitung = 'Text',
 	normal_lk = '$text_lk' ,normal_pr = '$text_p' ,metode = '$metode' ,
-	kategori_index = '$kategori_index',text_reference = '$text_depan' ,
-	satuan_nilai_normal = '$satuan_nilai', sub_hasil_lab = '$sub_hasil_lab',
-	nama_sub = '$nama_sub' WHERE id = '$id' "); 
+	kategori_index = '$kategori_index',text_reference = '$text_depan', 
+	sub_hasil_lab = '$sub_hasil_lab', nama_sub = '$nama_sub' WHERE id = '$id' "); 
 }
 
 echo '<script>window.location.href="setup_hasil.php";</script>';

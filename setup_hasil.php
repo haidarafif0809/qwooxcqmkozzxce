@@ -118,8 +118,8 @@ include 'db.php';
 <div class="form-group">
   <label for="setup">Kategori Index</label>
   <select  class="form-control" id="kategori_index" name="kategori_index" autocomplete="off">
-<option value="Header">Header</option>
-<option value="Detail">Detail</option>
+<option >Header</option>
+<option >Detail</option>
 </select>
 </div>
 
@@ -157,9 +157,9 @@ include 'db.php';
     <div class="form-group">
   <label for="setup">Model Hitung</label>
   <select  class="form-control" id="model_hitung" name="model_hitung" autocomplete="off">
-    <option value="Numeric">Numeric</option>
-        <option value="Text">Text</option>
-        </select>
+        <option >Numeric</option>
+        <option >Text</option>
+  </select>
 </div>
   </div>
 
@@ -168,11 +168,11 @@ include 'db.php';
   <label for="setup">&nbsp;</label>
 
   <select  class="form-control" id="perhitungan" name="perhitungan" autocomplete="off">
-    <option value="Lebih Kecil Dari">Lebih Kecil Dari</option>
-    <option value="Lebih Kecil Sama Dengan">Lebih Kecil Sama Dengan</option>
-     <option value="Lebih Besar Dari">Lebih Besar Dari</option>
-    <option value="Lebih Besar Sama Dengan">Lebih Besar Sama Dengan</option>
-      <option value="Antara Sama Dengan">Antara Sama Dengan</option>
+    <option >Lebih Kecil Dari</option>
+    <option >Lebih Kecil Sama Dengan</option>
+     <option >Lebih Besar Dari</option>
+    <option >Lebih Besar Sama Dengan</option>
+      <option >Antara Sama Dengan</option>
         </select>
 </div>
   </div>
@@ -188,19 +188,19 @@ include 'db.php';
 <div class="form-group itung">
 <label for="setup">Satuan Nilai Normal</label>
 <select class="form-control" id="satuan_nilai" placeholder="Ketik / Pilih Satuan Nilai" name="satuan_nilai" autocomplete="off">
-  <option value="mg/dL">mg/dL</option>
-  <option value="mg/dL">mg/dL</option>
-  <option value="g/dL">g/dL</option>
-  <option value="ug/dL">ug/dL</option>
-  <option value="U/L">U/L</option>
-  <option value="/lp">/lp</option>
-  <option value="/mL">/mL</option>
-  <option value="IU/mL">IU/mL</option>
-  <option value="mm/jam">mm/jam</option>
-  <option value="mmol/L">mmol/L</option>
-  <option value="%">%</option>
-  <option value="/mm3">/mm3</option>
-  <option value="seconds">seconds</option>
+  <option >mg/dL</option>
+  <option >mg/dL</option>
+  <option >g/dL</option>
+  <option >ug/dL</option>
+  <option >U/L</option>
+  <option >/lp</option>
+  <option >/mL</option>
+  <option >IU/mL</option>
+  <option >mm/jam</option>
+  <option >mmol/L</option>
+  <option >%</option>
+  <option >/mm3</option>
+  <option >seconds</option>
 </select>
 </div>
 </div>
