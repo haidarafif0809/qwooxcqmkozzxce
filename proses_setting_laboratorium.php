@@ -43,7 +43,6 @@ $perintah = $db->query("SELECT id,nama FROM setting_laboratorium ORDER BY id DES
 
 			</tr>";
 		
-	
 //Untuk Memutuskan Koneksi Ke Database
 mysqli_close($db);   
 ?>

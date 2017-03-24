@@ -6,8 +6,7 @@ include 'navbar.php';
 include 'sanitasi.php';
 include 'db.php';
 
-
- ?>
+?>
 
 <style>
 tr:nth-child(even){background-color: #f2f2f2}
@@ -16,7 +15,6 @@ tr:nth-child(even){background-color: #f2f2f2}
 <div class="container">
 
 <h3><b>SETTING LABORATORIUM </b></h3><hr>
-
 
 <!-- Modal edit data -->
 <div id="modal_edit" class="modal fade" role="dialog">
@@ -40,18 +38,14 @@ tr:nth-child(even){background-color: #f2f2f2}
                   
           </select>
 	</div>
-
-						
-
+			
 	<input type="hidden" name="id" id="id_edit" value="">
-   
    
   </form>
   <div class="alert alert-success" style="display:none">
    <strong>Berhasil!</strong> Data Berhasil Di Edit
   </div>
  
-
       </div>
       <div class="modal-footer">
       <center>
@@ -109,9 +103,10 @@ mysqli_close($db);
   <h6 style="text-align: left ; color: red"><i> Note* Jika nama setting Dihubungkan, maka jika pasien tersebut rujuk laboratorium dan belum di input hasilnya (Tombol Bayar Tidak akan Muncul).</i></h6>
 </div>
 
-<script>		
+<script>
+//Datatable 		
 $(document).ready(function(){
-$('#tableuser').dataTable();
+	$('#tableuser').dataTable();
 });
 </script>
 
@@ -135,8 +130,8 @@ $(document).on('click','#submit_edit',function(e){
 	var nama = $("#nama_edit").val();
 
 		$("#modal_edit").modal("hide");
-		
-$(".tr-id-"+id+"").remove();
+		$(".tr-id-"+id+"").remove();
+
 	$.post("proses_setting_laboratorium.php",{id:id,nama:nama},function(data){
 		$("#tbody").prepend(data);
 	});
