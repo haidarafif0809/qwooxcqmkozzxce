@@ -172,9 +172,8 @@ if ($data_z['status'] == 'Simpan Sementara') {
 
 else {
 
-	 $nestedData[] = "<button  class='btn btn-floating btn-small btn-info pemeriksaan_lab_inap' data-rm=".$row['no_rm']." data-nama=".$row['nama_pasien']." data-reg=".$row['no_reg']." data-id=".$row['id']." '><i class='fa fa-stethoscope'></i></button>
+	 $nestedData[] = "<button  class='btn btn-floating btn-small btn-info pemeriksaan_lab_inap' data-kamar=".$row['group_bed']." data-bed=".$row['bed']." data-rm=".$row['no_rm']." data-nama=".$row['nama_pasien']." data-reg=".$row['no_reg']." data-id=".$row['id']." '><i class='fa fa-stethoscope'></i></button>
 		   ";
-
 		
 }
 

@@ -64,6 +64,8 @@ else
 
 $select_penjamin = $db->query("SELECT penjamin, poli, dokter_pengirim, bed, group_bed FROM registrasi WHERE no_reg = '$no_reg' ");
 $data_penjamin = mysqli_fetch_array($select_penjamin);
+$bed = $data_penjamin['bed'];
+$group_bed = $data_penjamin['group_bed'];
 
 $select_level = $db->query("SELECT harga FROM penjamin WHERE nama = '$data_penjamin[penjamin]' ");
 $data_level = mysqli_fetch_array($select_level);
@@ -163,6 +165,9 @@ $data_ops = mysqli_fetch_array($sql_ops);
   <input  name="nama_pelanggan" type="text" style="height:15px;" id="nama_pelanggan" class="form-control" required="" autofocus="" value="<?php echo $nama; ?>" >
   <input  name="kode_pelanggan1" type="hidden" style="height:15px;" id="kd_pelanggan1" class="form-control" required="" autofocus="" value="<?php echo $pasien; ?>" >
 </div>
+
+<input  name="" type="hidden" style="height:15px;" id="bed" class="form-control" required="" autofocus="" value="<?php echo $bed; ?>" >
+<input  name="" type="hidden" style="height:15px;" id="group_bed" class="form-control" required="" autofocus="" value="<?php echo $group_bed; ?>" >
 
 <input  name="" type="hidden" style="height:15px;" id="rujukan" class="form-control" required="" autofocus="" value="<?php echo $rujukan; ?>" >
 <input  name="nama_pasien" type="hidden" style="height:15px;" id="nama_pasien" class="form-control" required="" autofocus="" value="<?php echo $kel['nama']; ?>" >
@@ -3937,11 +3942,12 @@ $.get("cek_total_tbs_form_lab.php",{pemeriksa_keberapa:pemeriksa_keberapa,no_reg
     var nama_pasien = $("#nama_pelanggan").val();
     var no_rm = $("#no_rm").val();
     var no_reg = $("#no_reg").val();
+    var bed = $("#bed").val();
+    var group_bed = $("#group_bed").val();
 
  $.post('proses_simpan_lab_inap.php',{no_reg:no_reg,pemeriksa_keberapa:pemeriksa_keberapa,no_rm:no_rm,nama_pasien:nama_pasien}, function(data){
 
-
-  window.location.href='data_laboratorium_inap.php?no_reg='+no_reg+'&nama='+nama_pasien+'&no_rm='+no_rm;
+  window.location.href='data_laboratorium_inap.php?no_reg='+no_reg+'&nama='+nama_pasien+'&bed='+bed+'&kamar='+group_bed+'&no_rm='+no_rm;
 
     });////penutup function(data)
 

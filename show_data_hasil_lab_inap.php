@@ -28,29 +28,25 @@ $columns = array(
 
 // getting total number records without any search
 
-$sql = "SELECT *";
-$sql.= "FROM pemeriksaan_lab_inap  ";
-$sql.= "WHERE no_reg = '$no_reg' AND no_rm = '$no_rm' ";
-$sql.=" ORDER BY no_periksa";
+
+$sql = "SELECT us.nama AS dokter,se.nama AS analis,pi.no_reg,pi.no_rm,pi.nama_pasien,pi.no_periksa,pi.status,pi.waktu,pi.id FROM pemeriksaan_lab_inap pi LEFT JOIN user us ON pi.dokter = us.id LEFT JOIN user se ON pi.analis = se.id WHERE pi.no_reg = '$no_reg' AND pi.no_rm = '$no_rm' ORDER BY pi.no_periksa DESC";
 
 $query=mysqli_query($conn, $sql) or die("1.php: get employees");
 $totalData = mysqli_num_rows($query);
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
-$sql = "SELECT *";
-$sql.= "FROM pemeriksaan_lab_inap  ";
-$sql.= "WHERE no_reg = '$no_reg' AND no_rm = '$no_rm' ";
+$sql = "SELECT us.nama AS dokter,se.nama AS analis,pi.no_reg,pi.no_rm,pi.nama_pasien,pi.no_periksa,pi.status,pi.waktu,pi.id FROM pemeriksaan_lab_inap pi LEFT JOIN user us ON pi.dokter = us.id LEFT JOIN user se ON pi.analis = se.id WHERE pi.no_reg = '$no_reg' AND pi.no_rm = '$no_rm' ";
 
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
 
-$sql.=" AND ( nama_pasien LIKE '".$requestData['search']['value']."%' ";    
-$sql.=" OR no_rm LIKE '".$requestData['search']['value']."%' ";     
-$sql.=" OR no_reg LIKE '".$requestData['search']['value']."%' ";    
-$sql.=" OR no_periksa LIKE '".$requestData['search']['value']."%' )";
+$sql.=" AND ( pi.nama_pasien LIKE '".$requestData['search']['value']."%' ";    
+$sql.=" OR pi.no_rm LIKE '".$requestData['search']['value']."%' ";     
+$sql.=" OR pi.no_reg LIKE '".$requestData['search']['value']."%' ";    
+$sql.=" OR pi.no_periksa LIKE '".$requestData['search']['value']."%' )";
 
 }
 
-$sql.=" ORDER BY no_periksa";
+$sql.=" ORDER BY pi.no_periksa DESC";
 
 $query=mysqli_query($conn, $sql) or die("2.php: get employees");
 $totalFiltered = mysqli_num_rows($query); // when there is a search parameter then we have to modify total number filtered rows as per search result. 
@@ -83,10 +79,6 @@ else
 $nestedData[] = "<a href='cetak_hasil_lab_inap_after_input_hasil.php?no_reg=".$row['no_reg']."&no_periksa=".$row['no_periksa']."' target='blank' class='btn btn-floating btn-primary' data-target='blank'> <i class='fa fa-print'></i> </a>";
 
 }
-
-
-
-
 	
 	$nestedData[] = $row["no_periksa"];
 	$nestedData[] = $row["no_reg"];

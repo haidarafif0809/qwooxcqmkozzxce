@@ -8,6 +8,8 @@ include_once 'sanitasi.php';
 $reg = stringdoang($_GET['no_reg']);
 $nama = stringdoang($_GET['nama']);
 $rm = stringdoang($_GET['no_rm']);
+$bed = stringdoang($_GET['bed']);
+$kamar = stringdoang($_GET['kamar']);
 
 ?>
 
@@ -48,26 +50,42 @@ $rm = stringdoang($_GET['no_rm']);
 <h3><b>Data Laboratorium</b></h3>
 <br>
 
+
 <form>
-<div class="form-group">
-<div class="row">
-	<div class="col-sm-2">
-<label>No REG</label>		
-<input type="text" value="<?php echo $reg ?>" class="form-control" name="no_reg" autocomplete="off" id="no_reg" readonly="" placeholder="No REG">
+  <div class="form-group">
+    <div class="card card-block">
 
-	</div>
-	<div class="col-sm-2">
-	<label>No RM</label>
-<input type="text" value="<?php echo $rm ?>" class="form-control" name="no_rm" autocomplete="off" id="no_rm" readonly="" placeholder="No RM">
-		
-	</div>
-	<div class="col-sm-2">
-		<label>Nama Pasien</label>
-<input type="text" value="<?php echo $nama ?>" class="form-control" name="nama" autocomplete="off" id="nama" readonly="" placeholder="Nama">
-	</div>
-</div>
+      <div class="row">
 
-</div>
+          <div class="col-sm-2">
+              <label>No REG</label>		
+              <input type="text" value="<?php echo $reg ?>" class="form-control" name="no_reg" autocomplete="off" id="no_reg" readonly="" placeholder="No REG">
+	       </div>
+
+	       <div class="col-sm-2">
+              <label>No RM</label>
+              <input type="text" value="<?php echo $rm ?>" class="form-control" name="no_rm" autocomplete="off" id="no_rm" readonly="" placeholder="No RM">
+          </div>
+
+	       <div class="col-sm-3">
+		          <label>Nama Pasien</label>
+              <input type="text" value="<?php echo $nama ?>" class="form-control" name="nama" autocomplete="off" id="nama" readonly="" placeholder="Nama">
+	       </div>
+
+        <div class="col-sm-2">
+            <label>Bed</label>
+            <input type="text" value="<?php echo $bed ?>" class="form-control" name="bed" autocomplete="off" id="bed" readonly="" placeholder="Bed">
+        </div>
+
+        <div class="col-sm-3">
+            <label>Kamar</label>
+            <input type="text" value="<?php echo $kamar ?>" class="form-control" name="kamar" autocomplete="off" id="kamar" readonly="" placeholder="Kamar">
+        </div>
+
+      </div>
+
+    </div>
+  </div>
 </form>
 
 <a href="form_penjualan_lab_inap.php?no_rm=<?php echo $rm ?>&nama=<?php echo $nama ?>&no_reg=<?php echo $reg ?>&jenis_penjualan=Rawat Inap&rujukan=Rujuk Rawat Inap" accesskey="b" class="btn btn-info"><i class="fa fa-plus"></i> Tambah Pemeriksaan</a>
