@@ -25,23 +25,25 @@ $columns = array(
     9=>'bed',
     10=>'group_bed',
     11=>'level_harga',
-    12=>'id'
+    12=>'id',
+    13=>'status',
+    14=>'no_faktur_simpan'
  
 );
 
 // getting total number records without any search
-$sql ="SELECT reg.no_rm, reg.no_reg, reg.nama_pasien, reg.penjamin, reg.poli, reg.dokter_pengirim, reg.dokter, reg.bed, reg.group_bed, reg.tanggal, reg.id, reg.jenis_pasien, u.id  AS id_dokter, uu.id  AS id_dokter_pengirim, p.harga AS level_harga ";
+$sql ="SELECT penj.no_faktur AS no_faktur_simpan,penj.status,reg.no_rm, reg.no_reg, reg.nama_pasien, reg.penjamin, reg.poli, reg.dokter_pengirim, reg.dokter, reg.bed, reg.group_bed, reg.tanggal, reg.id, reg.jenis_pasien, u.id  AS id_dokter, uu.id  AS id_dokter_pengirim, p.harga AS level_harga ";
 $sql.=" FROM registrasi reg LEFT JOIN user u ON reg.dokter = u.nama LEFT JOIN user uu ON reg.dokter_pengirim = uu.nama LEFT JOIN penjamin p ON reg.penjamin = p.nama LEFT JOIN penjualan penj ON reg.no_reg = penj.no_reg ";
-$sql.=" WHERE reg.jenis_pasien = 'Rawat Inap' AND reg.status = 'menginap' AND reg.status != 'Batal Rawat Inap' AND penj.no_faktur IS NULL ";
+$sql.=" WHERE reg.jenis_pasien = 'Rawat Inap' AND ( reg.status = 'menginap' OR penj.status = 'Simpan Sementara' ) AND reg.status != 'Batal Rawat Inap'  AND ( penj.no_faktur IS NULL OR penj.no_faktur IS NOT NULL) ";
 
 $query = mysqli_query($conn, $sql) or die("eror 1");
 $totalData = mysqli_num_rows($query);
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
-$sql ="SELECT reg.no_rm, reg.no_reg, reg.nama_pasien, reg.penjamin, reg.poli, reg.dokter_pengirim, reg.dokter, reg.bed, reg.group_bed, reg.tanggal, reg.id, reg.jenis_pasien, u.id  AS id_dokter, p.harga AS level_harga ";
+$sql ="SELECT penj.no_faktur AS no_faktur_simpan,penj.status,reg.no_rm, reg.no_reg, reg.nama_pasien, reg.penjamin, reg.poli, reg.dokter_pengirim, reg.dokter, reg.bed, reg.group_bed, reg.tanggal, reg.id, reg.jenis_pasien, u.id  AS id_dokter, p.harga AS level_harga ";
 $sql.=" FROM registrasi reg LEFT JOIN user u ON reg.dokter = u.nama LEFT JOIN user uu ON reg.dokter_pengirim = uu.nama LEFT JOIN penjamin p ON reg.penjamin = p.nama LEFT JOIN penjualan penj ON reg.no_reg = penj.no_reg ";
-$sql.=" WHERE reg.jenis_pasien = 'Rawat Inap' AND reg.status = 'menginap' AND reg.status != 'Batal Rawat Inap' AND penj.no_faktur IS NULL ";
+$sql.=" WHERE reg.jenis_pasien = 'Rawat Inap' AND ( reg.status = 'menginap' OR penj.status = 'Simpan Sementara' ) AND reg.status != 'Batal Rawat Inap'  AND ( penj.no_faktur IS NULL OR penj.no_faktur IS NOT NULL) ";
 
     $sql.=" AND (reg.no_rm LIKE '".$requestData['search']['value']."%'";  
     $sql.=" OR reg.no_reg LIKE '".$requestData['search']['value']."%' ";
@@ -77,6 +79,8 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
       $nestedData[] = $row["group_bed"];
       $nestedData[] = $row["level_harga"];
       $nestedData[] = $row["id"];
+      $nestedData[] = $row["status"];      
+      $nestedData[] = $row["no_faktur_simpan"];
 
 
 

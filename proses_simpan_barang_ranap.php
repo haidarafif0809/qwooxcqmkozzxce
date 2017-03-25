@@ -61,7 +61,7 @@ if ($cek_jumlah_bulan == 1) {
  }
 //ambil bulan dari tanggal penjualan terakhir
 
- $bulan_terakhir = $db->query("SELECT MONTH(tanggal) as bulan FROM penjualan ORDER BY id DESC LIMIT 1");
+ $bulan_terakhir = $db->query("SELECT MONTH(waktu_input) as bulan FROM penjualan ORDER BY id DESC LIMIT 1");
  $v_bulan_terakhir = mysqli_fetch_array($bulan_terakhir);
 
 //ambil nomor  dari penjualan terakhir
@@ -684,9 +684,59 @@ if ($ambil_beef > 0) {
 
 
   */
+// coding untuk memasukan history_tbs dan menghapus tbs
+
+// IBSERT HASIL OPERASI
+
+    $tbs_ops = $db->query("SELECT * FROM tbs_operasi WHERE no_reg = '$no_reg'");
+    while ($data_ops = mysqli_fetch_array($tbs_ops))
+      {
+
+        $insert_operasi = "INSERT INTO hasil_operasi (sub_operasi,petugas_input, no_reg, harga_jual, operasi, waktu) VALUES ('$data_ops[sub_operasi]','$data_ops[petugas_input]', '$no_reg', '$data_ops[harga_jual]', '$data_ops[operasi]', '$data_ops[waktu]')";
+
+        if ($db->query($insert_operasi) === TRUE) {
+        } 
+
+        else {
+        echo "Error: " . $insert_operasi . "<br>" . $db->error;
+        }
+
+      }
+
+// IBSERT HASIL DETAIL OPERASI
+
+    $detail_ops = $db->query("SELECT * FROM tbs_detail_operasi WHERE no_reg = '$no_reg'");
+    while ($data_detail_ops = mysqli_fetch_array($detail_ops))
+      {
+
+        $insert_detail_operasi = "INSERT INTO hasil_detail_operasi (id_detail_operasi,id_user, id_sub_operasi, id_operasi, petugas_input, no_reg, waktu, id_tbs_operasi) VALUES ('$data_detail_ops[id_detail_operasi]','$data_detail_ops[id_user]', '$data_detail_ops[id_sub_operasi]', '$data_detail_ops[id_operasi]', '$data_detail_ops[petugas_input]', '$no_reg', '$data_detail_ops[waktu]', '$data_detail_ops[id_tbs_operasi]')";
+
+        if ($db->query($insert_detail_operasi) === TRUE) {
+        } 
+
+        else {
+        echo "Error: " . $insert_detail_operasi . "<br>" . $db->error;
+        }
+
+      }
+
+
+
+    $tbs_penjualan_masuk = $db->query("INSERT INTO history_tbs_penjualan (no_reg,kode_barang,nama_barang,jumlah_barang,harga,subtotal,tipe_barang,tanggal,jam,potongan,tax,session_id,satuan,dosis) SELECT no_reg,kode_barang,nama_barang,jumlah_barang,harga,subtotal,tipe_barang,tanggal,jam,potongan,tax,session_id,satuan,dosis FROM tbs_penjualan  WHERE no_reg = '$no_reg' ");
+
+    $tbs_fee_masuk = $db->query(" INSERT INTO history_tbs_fee_produk 
+      (no_reg,no_rm,nama_petugas,kode_produk,nama_produk,jumlah_fee,tanggal,jam,waktu,session_id) SELECT no_reg,no_rm,nama_petugas,kode_produk,nama_produk,jumlah_fee,tanggal,jam,waktu,session_id FROM tbs_fee_produk WHERE no_reg = '$no_reg'");
+
+    $tbs_detail_operasi_masuk = $db->query(" INSERT INTO history_tbs_detail_operasi (id_detail_operasi,id_user, id_sub_operasi, id_operasi, petugas_input, no_reg, waktu, id_tbs_operasi) SELECT id_detail_operasi,id_user, id_sub_operasi, id_operasi, petugas_input, no_reg, waktu, id_tbs_operasi FROM tbs_detail_operasi WHERE no_reg = '$no_reg'");
+
+    $tbs_operasi_masuk = $db->query("INSERT INTO history_tbs_operasi (sub_operasi,petugas_input, no_reg, harga_jual, operasi, waktu) SELECT sub_operasi,petugas_input, no_reg, harga_jual, operasi, waktu FROM tbs_operasi WHERE no_reg = '$no_reg' ");
+
 
      $query00 = $db->query("DELETE FROM tbs_penjualan WHERE no_reg = '$no_reg' ");
      $query01 = $db->query("DELETE FROM tbs_fee_produk WHERE no_reg = '$no_reg' ");
+
+    $tbs_detail_operasi_hapuss = $db->query("DELETE  FROM tbs_operasi WHERE no_reg = '$no_reg'");
+    $tbs_operasi_hapuss = $db->query("DELETE  FROM tbs_detail_operasi WHERE no_reg = '$no_reg'");
 
 
 }//braket cek subtotal (diproses)
