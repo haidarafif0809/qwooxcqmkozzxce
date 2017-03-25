@@ -1,4 +1,4 @@
-P<?php include_once 'session_login.php';
+<?php include_once 'session_login.php';
 // memasukan file session login,  header, navbar, db.php,
 include 'header.php';
 include 'navbar.php';
@@ -62,7 +62,7 @@ $jenis_penjualan = stringdoang($_GET['jenis_penjualan']);
 
 
 <div class="col-xs-3">
-          <label> <b>Dokter Laboratorium </b></label><br>
+          <label> <b>Dokter </b></label><br>
           
           <select name="dokter" id="dokter" class="form-control chosen" required="" >
           <?php 
