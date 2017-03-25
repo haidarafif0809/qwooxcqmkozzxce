@@ -111,7 +111,7 @@ else
 	if($row['status_pasien'] == 'Rawat Inap')
 	{
 
-	$nestedData[] = '<p><a href="detail_laboratorium_inap?faktur='.$row["no_faktur"].'&no_reg='.$row["no_reg"].'&nama='.$row["nama_pasien"].'&no_rm='.$row["no_rm"].'" class="btn btn-floating btn-info"><i class="fa fa-list"></i></a></p>';
+	$nestedData[] = '<p><a href="detail_laboratorium_inap.php?faktur='.$row["no_faktur"].'&no_reg='.$row["no_reg"].'&nama='.$row["nama_pasien"].'&no_rm='.$row["no_rm"].'" class="btn btn-floating btn-info"><i class="fa fa-list"></i></a></p>';
 		 
 	}
 	else
