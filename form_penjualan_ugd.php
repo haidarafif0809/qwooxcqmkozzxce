@@ -1349,6 +1349,31 @@ var penjamin = $("#penjamin").val();
   });
 // END JATUH TEMPO
 
+//start Perbaruan TBS LABORATORIUM
+$('#tabel_tbs_lab').DataTable().destroy();
+          var dataTable = $('#tabel_tbs_lab').DataTable( {
+            "processing": true,
+            "serverSide": true,
+            "info":     false,
+            "language": { "emptyTable":     "My Custom Message On Empty Table" },
+            "ajax":{
+              url :"data_tbs_lab.php", // json datasource
+               "data": function ( d ) {
+                  d.no_reg = $("#no_reg").val();
+                  // d.custom = $('#myInput').val();
+                  // etc
+              },
+                  type: "post",  // method  , by default get
+              error: function(){  // error handling
+                $(".tbody").html("");
+                $("#tabel_tbs_lab").append('<tbody class="tbody"><tr><th colspan="3"></th></tr></tbody>');
+                $("#tableuser_processing").css("display","none");
+                
+              }
+            } 
+          });
+//ENDING Perbaruan TBS LABORATORIUM
+
 //Start Cek Hasil Laboratorium
 var pasien = $("#nama_pasien").val();
 $.post("cek_setting_laboratorium.php",{no_reg:no_reg},function(data){
