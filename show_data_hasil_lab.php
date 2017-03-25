@@ -26,21 +26,14 @@ $columns = array(
 
 // getting total number records without any search
 
-$sql = "SELECT us.nama AS dokter, se.nama AS analis,hl.nama_pasien,hl.no_rm,hl.no_faktur,hl.no_reg,hl.nama_pemeriksaan,hl.status,
-	hl.hasil_pemeriksaan,hl.nilai_normal_lk,hl.nilai_normal_pr,
-	hl.model_hitung,hl.id,hl.satuan_nilai_normal,hl.status_abnormal,
-	hl.status_pasien,hl.tanggal ";
-$sql.= "FROM hasil_lab hl LEFT JOIN user us ON hl.dokter = us.id  LEFT JOIN user se ON hl.petugas_analis = se.id";
-$sql.=" GROUP BY hl.no_reg";
+$sql = "SELECT us.nama AS dokter, se.nama AS analis,hl.nama_pasien,hl.no_rm,hl.no_faktur,hl.no_reg,hl.nama_pemeriksaan,hl.status,hl.hasil_pemeriksaan,hl.nilai_normal_lk,hl.nilai_normal_pr,hl.model_hitung,hl.id,hl.satuan_nilai_normal,hl.status_abnormal,hl.status_pasien,hl.tanggal FROM hasil_lab hl LEFT JOIN user us ON hl.dokter = us.id LEFT JOIN user se ON hl.petugas_analis = se.id GROUP BY hl.no_reg ";
 
 $query=mysqli_query($conn, $sql) or die("1.php: get employees");
 $totalData = mysqli_num_rows($query);
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
-$sql = "SELECT us.nama AS dokter, se.nama AS analis,hl.nama_pasien,hl.no_rm,hl.no_faktur,hl.no_reg,hl.nama_pemeriksaan,
-		hl.status,hl.hasil_pemeriksaan,hl.nilai_normal_lk,hl.nilai_normal_pr,hl.model_hitung,hl.id,hl.satuan_nilai_normal,hl.status_abnormal,hl.status_pasien,hl.tanggal ";
-$sql.= "FROM hasil_lab hl LEFT JOIN user us ON hl.dokter = us.id LEFT JOIN user se ON hl.petugas_analis = se.id";
-$sql.=" WHERE 1=1";
+
+$sql = "SELECT us.nama AS dokter, se.nama AS analis,hl.nama_pasien,hl.no_rm,hl.no_faktur,hl.no_reg,hl.nama_pemeriksaan,hl.status,hl.hasil_pemeriksaan,hl.nilai_normal_lk,hl.nilai_normal_pr,hl.model_hitung,hl.id,hl.satuan_nilai_normal,hl.status_abnormal,hl.status_pasien,hl.tanggal FROM hasil_lab hl LEFT JOIN user us ON hl.dokter = us.id LEFT JOIN user se ON hl.petugas_analis = se.id GROUP BY hl.no_reg ";
 
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
 	$sql.=" AND ( hl.nama_pasien LIKE '".$requestData['search']['value']."%' ";    
@@ -57,12 +50,14 @@ if( !empty($requestData['search']['value']) ) {   // if there is a search parame
 	$sql.=" OR hl.nama_pemeriksaan LIKE '".$requestData['search']['value']."%' )";
 }
 
-$sql.=" GROUP BY hl.no_reg";
 
 $query=mysqli_query($conn, $sql) or die("2.php: get employees");
 $totalFiltered = mysqli_num_rows($query); // when there is a search parameter then we have to modify total number filtered rows as per search result. 
-/*$sql.=" GROUP BY hl.no_rm ".$requestData['order'][0]['dir']." LIMIT ".$requestData['start']." ,".$requestData['length']."";*/
+
+$sql.=" ORDER BY CONCAT(hl.tanggal,' ',hl.jam) DESC LIMIT ".$requestData['start']." ,".$requestData['length']."";
+
 /* $requestData['order'][0]['column'] contains colmun index, $requestData['order'][0]['dir'] contains order such as asc/desc  */	
+
 $query=mysqli_query($conn, $sql) or die("3.php: get employees");
 
 $data = array();
@@ -89,8 +84,6 @@ else
 	$nestedData[] = "<p style='color:red'> Belum Bisa Cetak</p>";
 }
 
-
-	
 	$nestedData[] = $row["no_rm"];
 	$nestedData[] = $row["no_reg"];
 
@@ -117,15 +110,14 @@ else
 {	
 	if($row['status_pasien'] == 'Rawat Inap')
 	{
-		$nestedData[] = "<td><button class='btn btn-floating  btn-info detail-lab-inap' data-faktur='".$row['no_faktur']."' data-reg='".$row['no_reg']."' data-nama='".$row['nama_pasien']."' data-rm='".$row['no_rm']."'><i class='fa fa-list'></i></button></td>";
 
-
+	$nestedData[] = '<p><a href="detail_laboratorium_inap?faktur='.$row["no_faktur"].'&no_reg='.$row["no_reg"].'&nama='.$row["nama_pasien"].'&no_rm='.$row["no_rm"].'" class="btn btn-floating btn-info"><i class="fa fa-list"></i></a></p>';
 		 
 	}
 	else
 	{
 
-	$nestedData[] = "<td><button class='btn btn-floating  btn-info detail-lab' data-faktur='".$row['no_faktur']."'><i class='fa fa-list'></i></button></td>";
+	$nestedData[] = "<p><button class='btn btn-floating  btn-info detail-lab' data-faktur='".$row['no_faktur']."'><i class='fa fa-list'></i></button></p>";
 	}
 	
 }
