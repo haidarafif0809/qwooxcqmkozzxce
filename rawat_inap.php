@@ -220,24 +220,41 @@ opacity: 0.9;
       </span>
      
      <form role="form" method="POST">
-     
-     <div class="form-group">
 
-      <label for="">No RM</label>
-      <input style="height: 20px;" type="text" class="form-control" name="lab_rm" readonly="" autocomplete="off" id="lab_rm" placeholder="Pemeriksaan Ke">
+<div class="row">
+    <div class="col-sm-6">
+
+          <div class="form-group">
+            <label for="">No RM</label>
+            <input style="height: 20px;" type="text" class="form-control" name="lab_rm" readonly="" autocomplete="off" id="lab_rm" placeholder="Pemeriksaan Ke">
+          </div>
+
+          <div class="form-group">
+              <label for="">Nama Pasien</label>
+              <input  type="text" class="form-control" name="lab_nama" readonly="" autocomplete="off" id="lab_nama" placeholder="Nama Pasien">
+          </div>
+
+          <div class="form-group">
+              <input style="height: 20px;" type="hidden" class="form-control" name="lab_reg" readonly="" autocomplete="off" id="lab_reg" placeholder=" No Reg">
+          </div>
+
     </div>
 
-     <div class="form-group">
-      <label for="">Nama Pasien</label>
-      <input  type="text" class="form-control" name="lab_nama" readonly="" autocomplete="off" id="lab_nama" placeholder="Nama Pasien">
-    </div>
+    <div class="col-sm-6">
 
-    <div class="form-group">
-      <label for="">No Reg</label>
-      <input style="height: 20px;" type="text" class="form-control" name="lab_reg" readonly="" autocomplete="off" id="lab_reg" placeholder=" No Reg">
-    </div>
+        <div class="form-group">
+          <label for="">Bed</label>
+          <input style="height: 20px;" type="text" class="form-control" name="lab_bed" readonly="" autocomplete="off" id="lab_bed" placeholder=" No Reg">
+        </div>
 
-     <input type="hidden" class="form-control" id="no_reg" name="no_reg" data-reg="" >
+        <div class="form-group">
+          <label for="">Kamar</label>
+          <input type="text" class="form-control" name="lab_kamar" readonly="" autocomplete="off" id="lab_kamar" placeholder=" No Reg">
+        </div>
+
+    </div>
+  
+</div>
      
    <center> <a href="data_laboratorium_inap.php" type="submit" class="btn btn-info" id="input_lab" data-id=""> <i class="fa fa-send" ></i> Yes</a>
 
@@ -1569,6 +1586,9 @@ else
                var nama = $(this).attr("data-nama");
                var reg = $(this).attr("data-reg");
 
+               var kamar = $(this).attr("data-kamar");
+               var bed = $(this).attr("data-bed");
+
                var id = $(this).attr("data-id");
                var pasien = $('#name-tag-'+id).text();
 
@@ -1578,8 +1598,10 @@ else
                $("#lab_nama").val(pasien);
                $("#lab_rm").val(rm);
                $("#lab_reg").val(reg);
+               $("#lab_bed").val(bed);
+               $("#lab_kamar").val(kamar);
 
-  $("#input_lab").attr('href','data_laboratorium_inap.php?no_reg='+reg+'&nama='+pasien+'&no_rm='+rm);
+  $("#input_lab").attr('href','data_laboratorium_inap.php?no_reg='+reg+'&nama='+pasien+'&bed='+bed+'&kamar='+kamar+'&no_rm='+rm);
                
      });
 </script>

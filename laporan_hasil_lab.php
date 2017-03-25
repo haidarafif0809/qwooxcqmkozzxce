@@ -60,7 +60,7 @@ include 'db.php';
      </div>
 
      
-   <center> <a href="'detail_laboratorium_inap.php" type="submit" class="btn btn-info" id="show_lab_inap" data-id=""> <i class="fa fa-send" ></i> Yes</a>
+   <center> <a href="detail_laboratorium_inap.php" type="submit" class="btn btn-info" id="show_lab_inap" data-id=""> <i class="fa fa-send" ></i> Yes</a>
 
 
         <button type="button" class="btn btn-danger" data-dismiss="modal" ><i class="fa fa-remove"></i> No</button>

@@ -1,27 +1,23 @@
 <?php include 'session_login.php';
-
-
 //memasukkan file session login, header, navbar, db.php
 include 'header.php';
 include 'navbar.php';
 include 'sanitasi.php';
 include 'db.php';
 
-
  ?>
 
-     <script>
-    $(function() {
+<script>
+$(function() {
     $( "#dari_tanggal" ).datepicker({dateFormat: "yy-mm-dd"});
-    });
-    </script>
+});
+</script>
 
-
-    <script>
-    $(function() {
+<script>
+$(function() {
     $( "#sampai_tanggal" ).datepicker({dateFormat: "yy-mm-dd"});
-    });
-    </script>
+});
+</script>
 
 <style>
 
@@ -36,42 +32,41 @@ tr:nth-child(even){background-color: #f2f2f2}
 <form class="form-inline" role="form">
 				
 	<div class="form-group"> 
-    <input type="text" name="dari_tanggal" id="dari_tanggal" class="form-control" placeholder="Dari Tanggal" required="">
+      <input type="text" name="dari_tanggal" id="dari_tanggal" class="form-control" placeholder="Dari Tanggal" required="">
     </div>
 
-    <div class="form-group">
-    <input type="text" name="sampai_tanggal" id="sampai_tanggal" class="form-control" placeholder="Sampai Tanggal" value="<?php echo date("Y-m-d"); ?>" required="">
+  <div class="form-group">
+        <input type="text" name="sampai_tanggal" id="sampai_tanggal" class="form-control" placeholder="Sampai Tanggal" value="<?php echo date("Y-m-d"); ?>" required="">
     </div>
 
-    <button type="submit" name="submit" id="submit" class="btn btn-primary" > <i class="fa fa-eye"> </i> Tampil </button>
+  <button type="submit" name="submit" id="submit" class="btn btn-primary" > <i class="fa fa-eye"> </i> Tampil </button>
 
 </form>
 
  <br>
- <div class="table-responsive"><!--membuat agar ada garis pada tabel disetiap kolom-->
+ <div class="table-responsive">
 <span id="result">
-<table id="tableuser" class="table table-bordered">
+  <table id="tableuser" class="table table-bordered">
 		<thead>
 
-	<th style="background-color: #4CAF50; color: white;"> No RM</th>
-	<th style="background-color: #4CAF50; color: white;"> No REG</th>
-	<th style="background-color: #4CAF50; color: white;"> No Faktur</th>
-	<th style="background-color: #4CAF50; color: white;"> Pasien</th>
-
-<th style="background-color: #4CAF50; color: white;">Pemeriksaan</th>
-<th style="background-color: #4CAF50; color: white;">Hasil Pemeriksaan</th>
-<th style="background-color: #4CAF50; color: white;">Nilai Normal Pria</th>
-<th style="background-color: #4CAF50; color: white;">Nilai Normal Wanita</th>
-
-	<th style="background-color: #4CAF50; color: white;"> Dokter</th>
-	<th style="background-color: #4CAF50; color: white;"> Analis</th>
-	<th style="background-color: #4CAF50; color: white;"> Status Rawat </th>
-	<th style="background-color: #4CAF50; color: white;"> Tanggal </th>
+    <th style="background-color: #4CAF50; color: white;"> No RM</th>
+    	<th style="background-color: #4CAF50; color: white;"> No REG</th>
+    	 <th style="background-color: #4CAF50; color: white;"> No Faktur</th>
+    	   <th style="background-color: #4CAF50; color: white;"> Pasien</th>
+          <th style="background-color: #4CAF50; color: white;">Pemeriksaan</th>
+        <th style="background-color: #4CAF50; color: white;">Hasil Pemeriksaan</th>
+      <th style="background-color: #4CAF50; color: white;">Nilai Normal Pria</th>
+    <th style="background-color: #4CAF50; color: white;">Nilai Normal Wanita</th>
+      <th style="background-color: #4CAF50; color: white;"> Dokter</th>
+    	   <th style="background-color: #4CAF50; color: white;"> Analis</th>
+    	 <th style="background-color: #4CAF50; color: white;"> Status Rawat </th>
+    <th style="background-color: #4CAF50; color: white;"> Tanggal </th>
 
 		</thead>
 	</table>
 </span>
 </div> <!--/ responsive-->
+
 <table>
   <tbody>
             

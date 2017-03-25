@@ -82,9 +82,6 @@ $no_faktur = stringdoang($_GET['faktur']);
 <th style="background-color: #4CAF50; color: white;"> Input Hasil</th>
 <th style="background-color: #4CAF50; color: white;"> Cetak</th>
 <th style="background-color: #4CAF50; color: white;"> No Periksa</th>
-<th style="background-color: #4CAF50; color: white;"> No REG</th>
-<th style="background-color: #4CAF50; color: white;"> No RM</th>
-<th style="background-color: #4CAF50; color: white;"> Nama Pasien</th>
 <th style="background-color: #4CAF50; color: white;"> Dokter</th>
 <th style="background-color: #4CAF50; color: white;"> Analis</th>
 <th style="background-color: #4CAF50; color: white;"> Status</th>
@@ -133,7 +130,7 @@ $no_faktur = stringdoang($_GET['faktur']);
             }
           },
               "fnCreatedRow": function( nRow, aData, iDataIndex ) {
-              $(nRow).attr('class','tr-id-'+aData[12]+'');
+              $(nRow).attr('class','tr-id-'+aData[9]+'');
             },
         } );
       } );
