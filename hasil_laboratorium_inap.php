@@ -63,7 +63,7 @@ $no_periksa = stringdoang($_GET['no_periksa']);
 
 
 <div class="col-xs-3">
-          <label> <b>Dokter Laboratorium </b></label><br>
+          <label> <b>Dokter </b></label><br>
           
           <select name="dokter" id="dokter" class="form-control chosen" required="" >
           <?php 
