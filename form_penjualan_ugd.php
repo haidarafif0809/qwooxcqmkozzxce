@@ -1322,6 +1322,28 @@ var penjamin = $("#penjamin").val();
   });
 // END JATUH TEMPO
 
+//Start Cek Hasil Laboratorium
+var pasien = $("#nama_pasien").val();
+$.post("cek_setting_laboratorium.php",{no_reg:no_reg},function(data){
+  if(data == 1){
+    $("#penjualan").hide();
+     $("#simpan_sementara").hide();
+     $("#batal_penjualan").hide(); 
+     $("#cetak_langsung").hide();
+     $("#piutang").hide();
+    alert("Pasien atas nama ("+pasien+") Hasil laboratorium belum di isi!");
+
+  }
+  else
+  {
+     $("#penjualan").show();
+     $("#simpan_sementara").show();
+     $("#batal_penjualan").show(); 
+     $("#cetak_langsung").show();
+     $("#piutang").show();
+  }
+});
+//End Cek Hasil Laboratorium
 
 });
  </script>
@@ -4651,6 +4673,7 @@ $(document).ready(function(){
 
     }); 
 </script>
+
 
 
 <?php include 'footer.php'; ?>
