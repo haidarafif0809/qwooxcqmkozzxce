@@ -9,7 +9,7 @@ $get = mysqli_fetch_array($cek_setting);
 $hasil = $get['nama'];
 if($hasil == 1){
 
-	$cek_jasa_lab_tbs = $db->query("SELECT * FROM tbs_penjualan WHERE no_reg = '$no_reg' AND lab = 'Laboratorium'");
+	$cek_jasa_lab_tbs = $db->query("SELECT no_reg,lab FROM tbs_penjualan WHERE no_reg = '$no_reg' AND lab = 'Laboratorium'");
 	$show_jasa = mysqli_num_rows($cek_jasa_lab_tbs);
 	if($show_jasa > 0){
 

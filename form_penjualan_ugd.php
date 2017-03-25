@@ -1322,7 +1322,7 @@ var penjamin = $("#penjamin").val();
   });
 // END JATUH TEMPO
 
-//End Cek Hasil Laboratorium
+//Start Cek Hasil Laboratorium
 var pasien = $("#nama_pasien").val();
 $.post("cek_setting_laboratorium.php",{no_reg:no_reg},function(data){
   if(data == 1){
