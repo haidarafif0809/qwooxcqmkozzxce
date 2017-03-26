@@ -58,7 +58,7 @@ $columns = array(
 
 // getting total number records without any search
 $sql = "SELECT reg.no_rm, reg.no_reg, reg.status, reg.nama_pasien, reg.jam, reg.penjamin, reg.poli, reg.dokter_pengirim, reg.dokter, reg.bed, reg.group_bed, reg.tanggal_masuk, reg.penanggung_jawab, reg.umur_pasien, reg.id, rek.tanggal_periksa,rek.id AS id_rek ";
-$sql.=" FROM registrasi reg LEFT JOIN rekam_medik_inap rek ON reg.no_reg = rek.no_reg WHERE reg.jenis_pasien = 'Rawat Inap' AND reg.status = 'menginap' AND reg.status != 'Batal Rawat Inap' AND TO_DAYS(NOW()) - TO_DAYS(reg.tanggal) <= 7 ";
+$sql.=" FROM registrasi reg INNER JOIN rekam_medik_inap rek ON reg.no_reg = rek.no_reg WHERE reg.jenis_pasien = 'Rawat Inap' AND reg.status = 'menginap' AND reg.status != 'Batal Rawat Inap' AND TO_DAYS(NOW()) - TO_DAYS(reg.tanggal) <= 7 ";
 
 
 
@@ -68,7 +68,7 @@ $totalFiltered = $totalData;  // when there is no search parameter then total nu
 
 
 $sql = "SELECT reg.no_rm, reg.no_reg, reg.status, reg.nama_pasien, reg.jam, reg.penjamin, reg.poli, reg.dokter_pengirim, reg.dokter, reg.bed, reg.group_bed, reg.tanggal_masuk, reg.penanggung_jawab, reg.umur_pasien, reg.id, rek.tanggal_periksa,rek.id AS id_rek ";
-$sql.=" FROM registrasi reg LEFT JOIN rekam_medik_inap rek ON reg.no_reg = rek.no_reg WHERE reg.jenis_pasien = 'Rawat Inap' AND reg.status = 'menginap' AND reg.status != 'Batal Rawat Inap' AND TO_DAYS(NOW()) - TO_DAYS(reg.tanggal) <= 7 ";
+$sql.=" FROM registrasi reg INNER JOIN rekam_medik_inap rek ON reg.no_reg = rek.no_reg WHERE reg.jenis_pasien = 'Rawat Inap' AND reg.status = 'menginap' AND reg.status != 'Batal Rawat Inap' AND TO_DAYS(NOW()) - TO_DAYS(reg.tanggal) <= 7 ";
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
 	$sql.=" AND ( reg.no_reg LIKE '".$requestData['search']['value']."%' ";    
 	$sql.=" OR reg.no_rm LIKE '".$requestData['search']['value']."%' ";
@@ -129,7 +129,7 @@ $data_z = mysqli_fetch_array($query_z);
 
         if ($penjualan['penjualan_tambah'] > 0) {                
              
-                /* 
+                 
                  if ($data_z['status'] == 'Simpan Sementara') {
                  
                  		$nestedData[] =  "<a href='proses_pesanan_barang_ranap.php?no_faktur=".$data_z['no_faktur']."&no_reg=".$row['no_reg']."&kode_pelanggan=".$row['no_rm']."&nama_pelanggan=".$data_z['nama']."&kode_gudang=".$data_z['kode_gudang']."' class='btn btn-floating btn-small btn btn-danger'><i class='fa fa-credit-card'></i></a>"; 
@@ -138,8 +138,6 @@ $data_z = mysqli_fetch_array($query_z);
                  else {
                 		$nestedData[] =  ""; 
                  }
-                 */
-                 $nestedData[] =  ""; 
 
         }
         else{

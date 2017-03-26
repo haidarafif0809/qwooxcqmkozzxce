@@ -4959,7 +4959,6 @@ var penjamin = $("#penjamin").val();
        var table_pasien = $('#tabel_cari_pasien').DataTable();
        table_pasien.draw();
 
-
     }); 
 </script>
 
