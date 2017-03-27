@@ -1383,7 +1383,7 @@ $.post("cek_setting_laboratorium.php",{no_reg:no_reg},function(data){
      $("#batal_penjualan").hide(); 
      $("#cetak_langsung").hide();
      $("#piutang").hide();
-    alert("Pasien atas nama ("+pasien+") Hasil laboratorium belum di isi!");
+    alert("Pasien dengan No RM dan Nama ("+pasien+") Hasil laboratorium belum di isi!");
 
   }
   else

@@ -605,7 +605,7 @@ Level 7
 <?php if ($no_reg == ""): ?>
 
 <?php else: ?>
-  <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample" id="rawat"><i class='fa fa-wheelchair-alt'> </i> Rawat Jalan / Inap</button>
+  <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample" id="rawat"><i class='fa fa-wheelchair-alt'> </i> Daftar Produk Rujuk</button>
 
        <?php if ($jenis_penjualan == 'Rawat Inap'): ?>
 
@@ -1071,6 +1071,11 @@ Level 7
 
               <?php endif ?> 
 
+               <?php if ($jenis_penjualan == 'UGD'): ?>
+                  <button class="btn btn-warning" id="ugd"> <i class="fa fa-reply-all"></i> Kembali UGD </button>
+
+              <?php endif ?> 
+
                <?php if ($jenis_penjualan == 'Simpan Rawat Jalan'): ?>
                   <button class="btn btn-warning" id="simpan_raja"> <i class="fa fa-reply-all"></i> Kembali Simpan Rawat Jalan </button>
 
@@ -1172,6 +1177,12 @@ $(document).ready(function(){
     var analis = $("#apoteker").val();
 
     window.location.href="form_penjualan_kasir.php?no_reg="+no_reg+"&nama_pasien="+nama_pasien+"&no_rm="+no_rm+"&penjamin="+penjamin+"&dokter="+dokter+"&level_harga="+level_harga+"&poli="+poli+"&analis="+analis+"";
+
+  });
+
+// UGD
+  $(document).on('click','#ugd',function(e){
+    window.location.href="registrasi_ugd.php";
 
   });
 

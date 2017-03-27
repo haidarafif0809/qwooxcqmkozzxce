@@ -111,7 +111,7 @@ $take = mysqli_fetch_array($show);
 
 	if ($take['jumlah'] > 0)
 	{
-		$nestedData[] = "<a href='cek_input_hasil_lab.php?no_rm=".$row['no_rm']."&nama=".$row['nama_pasien']."&no_reg=".$row['no_reg']."&jenis_penjualan=Rawat Jalan' class='btn btn-floating btn-small btn-info'><i class='fa fa-pencil'></i></a>";
+		$nestedData[] = "<a href='cek_input_hasil_lab.php?no_rm=".$row['no_rm']."&nama=".$row['nama_pasien']."&no_reg=".$row['no_reg']."&jenis_penjualan=UGD' class='btn btn-floating btn-small btn-info'><i class='fa fa-pencil'></i></a>";
 	}
 	else
 	{
