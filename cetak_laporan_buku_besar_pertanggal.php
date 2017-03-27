@@ -103,7 +103,7 @@ $rekap = stringdoang($_GET['rekap']);
 						<td>". rp($cek['kredit']) ."</td>";
 
 
-						$saldo = $saldo + $total_debit - $total_kredit;
+						$saldo = $saldo + $cek['debit'] - $cek['kredit'];
 
 						echo "<td>". rp($saldo) ."</td></tr>";
 
@@ -168,9 +168,7 @@ $rekap = stringdoang($_GET['rekap']);
 
 				{
 
-				$total_debit += $cek['debit'];
-				$total_kredit += $cek['kredit'];
-
+				
 						
 						echo "<tr>
 						<td>". $cek['no_faktur']."</td>
@@ -178,7 +176,12 @@ $rekap = stringdoang($_GET['rekap']);
 						<td>". tanggal($cek['waktu_jurnal']) ."</td>
 						<td>". rp($cek['debit']) ."</td>
 						<td>". rp($cek['kredit']) ."</td>";
-						$saldo = $saldo + $total_debit - $total_kredit;
+						$saldo = $saldo + $cek['debit'] - $cek['kredit'];
+
+						$total_debit += $cek['debit'];
+						$total_kredit += $cek['kredit'];
+
+
 				  echo "<td>". rp($saldo) ."</td></tr>";
 				}
 
