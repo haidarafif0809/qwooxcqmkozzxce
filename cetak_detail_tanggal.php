@@ -95,6 +95,12 @@ if($mutasi_masuk == 0 OR $mutasi_masuk == '')
 
  ?>
 
+<style type="text/css">
+  
+  .rata-kanan {
+    text-align: right;
+  }
+</style>
 
 <div class="container"> <!--open container KOP JUDUL-->
     <h3> <center><b> CASHFLOW DETAIL PERTANGGAL</b></center></h3><hr>
@@ -163,7 +169,7 @@ if($mutasi_masuk == 0 OR $mutasi_masuk == '')
                 <td>". $out_masuk['keterangan_jurnal'] ."</td>
                 <td>". $out_masuk['jenis_transaksi'] ."</td>
                 <td>". $out_masuk['nama_daftar_akun'] ."</td>
-                <td>". $out_masuk['masuk'] ."</td>
+                <td class='rata-kanan'>". rp($out_masuk['masuk']) ."</td>
                 <td>". $out_masuk['user_buat'] ."</td>
                 <td>". $out_masuk['user_edit'] ."</td>
                 <td>". $tanggal ."</td>
@@ -211,7 +217,7 @@ if($mutasi_masuk == 0 OR $mutasi_masuk == '')
                 <td>". $out_keluar['keterangan_jurnal'] ."</td>
                 <td>". $out_keluar['nama_daftar_akun'] ."</td>
                 <td>". $out_keluar['jenis_transaksi'] ."</td>
-                <td>". $out_keluar['keluar'] ."</td>
+                <td class='rata-kanan'>". rp($out_keluar['keluar']) ."</td>
                 <td>". $out_keluar['user_buat'] ."</td>
                 <td>". $out_keluar['user_edit'] ."</td>
                 <td>". $tanggal ."</td>
@@ -257,7 +263,7 @@ if($mutasi_masuk == 0 OR $mutasi_masuk == '')
                 <td>". $out_mutasi['keterangan_jurnal'] ."</td>
                 <td>". $out_three['nama_daftar_akun'] ."</td>
                 <td>". $out_mutasi['nama_daftar_akun'] ."</td>
-                <td>". $out_mutasi['mutasi_masuk'] ."</td>
+                <td class='rata-kanan'>". rp($out_mutasi['mutasi_masuk']) ."</td>
                 <td>". $out_mutasi['user_buat'] ."</td>
                 <td>". $out_mutasi['user_edit'] ."</td>
                 <td>". $tanggal ."</td>
@@ -306,7 +312,7 @@ if($mutasi_masuk == 0 OR $mutasi_masuk == '')
                 <td>". $out_mutasi_keluar['keterangan_jurnal'] ."</td>
                 <td>". $out_mutasi_keluar['nama_daftar_akun'] ."</td>
                 <td>". $out_four['nama_daftar_akun'] ."</td>
-                <td>". rp($out_mutasi_keluar['mutasi_keluar']) ."</td>
+                <td class='rata-kanan'>". rp($out_mutasi_keluar['mutasi_keluar']) ."</td>
                 <td>". $out_mutasi_keluar['user_buat'] ."</td>
                 <td>". $out_mutasi_keluar['user_edit'] ."</td>
                 <td>". $tanggal ."</td>

@@ -84,6 +84,12 @@ if($mutasi_masuk == 0 OR $mutasi_masuk == '')
 }
 ?>
 
+<style type="text/css">
+  
+  .rata-kanan {
+    text-align: right;
+  }
+</style>
 
 <div class="container">
     <h3> <center><b> CASHFLOW REKAP PERTANGGAL</b></center></h3><hr>
@@ -151,7 +157,7 @@ if($mutasi_masuk == 0 OR $mutasi_masuk == '')
                 <td>". $tanggal ."</td>
                 <td>". $out_masuk['jenis_transaksi'] ."</td>
                 <td>". $out_masuk['nama_daftar_akun'] ."</td>
-                <td>". rp($out_masuk['masuk']) ."</td>
+                <td class='rata-kanan'>". rp($out_masuk['masuk']) ."</td>
             <tr>";
 
             }
@@ -192,7 +198,7 @@ if($mutasi_masuk == 0 OR $mutasi_masuk == '')
                 <td>". $tanggal ."</td>
                 <td>". $out_keluar['nama_daftar_akun'] ."</td>
                 <td>". $out_keluar['jenis_transaksi'] ."</td>
-                <td>". rp($out_keluar['keluar']) ."</td>
+                <td class='rata-kanan'>". rp($out_keluar['keluar']) ."</td>
             <tr>";
 
             }
@@ -232,7 +238,7 @@ if($mutasi_masuk == 0 OR $mutasi_masuk == '')
                 <td>". $tanggal ."</td>
                 <td>". $out_mutasi_masuk['nama_dari_akun'] ."</td>
                 <td>". $out_mutasi_masuk['nama_daftar_akun'] ."</td>
-                <td>". rp($datadariakun['mutasi_masuk']) ."</td>
+                <td class='rata-kanan'>". rp($datadariakun['mutasi_masuk']) ."</td>
             <tr>";
 
             }
@@ -272,7 +278,7 @@ if($mutasi_masuk == 0 OR $mutasi_masuk == '')
                 <td>". $tanggal ."</td>
                 <td>". $out_mutasi_keluar['nama_daftar_akun'] ."</td>
                 <td>". $out_mutasi_keluar['nama_dari_akun'] ."</td>
-                <td>". rp($datadariakun['mutasi_keluar']) ."</td>
+                <td class='rata-kanan'>". rp($datadariakun['mutasi_keluar']) ."</td>
             <tr>";
 
             }
@@ -319,4 +325,4 @@ $(document).ready(function(){
 });
 </script>
 
-<?php include 'footer.php'; ?>
+<?php include 'footer.php'; ?>  
