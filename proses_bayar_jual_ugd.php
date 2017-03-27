@@ -332,7 +332,7 @@ $no_jurnal = no_jurnal();
 
 // START INSERT KE HASIL LABORATORIUM
 // update no_faktur di hasil_lab and insert ke hasil lab
-$cek_lab = $db->query("SELECT * FROM hasil_lab WHERE no_reg = '$no_reg'");
+$cek_lab = $db->query("SELECT no_reg FROM hasil_lab WHERE no_reg = '$no_reg'");
 $out_lab = mysqli_num_rows($cek_lab);
 if($out_lab > 0 ){
 
