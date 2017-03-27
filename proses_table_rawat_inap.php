@@ -52,7 +52,7 @@ $columns = array(
 
 // getting total number records without any search
 $sql = "SELECT reg.no_rm, reg.no_reg, reg.status, reg.nama_pasien, reg.jam, reg.penjamin, reg.poli, reg.dokter_pengirim, reg.dokter, reg.bed, reg.group_bed, reg.tanggal_masuk, reg.penanggung_jawab, reg.umur_pasien, reg.id, rek.tanggal_periksa,rek.id AS id_rek ";
-$sql.=" FROM registrasi reg LEFT JOIN rekam_medik_inap rek ON reg.no_reg = rek.no_reg WHERE reg.jenis_pasien = 'Rawat Inap' AND reg.status = 'menginap' AND reg.status != 'Batal Rawat Inap' AND TO_DAYS(NOW()) - TO_DAYS(reg.tanggal) <= 7 ";
+$sql.=" FROM registrasi reg LEFT JOIN rekam_medik_inap rek ON reg.no_reg = rek.no_reg WHERE reg.jenis_pasien = 'Rawat Inap' AND reg.status = 'menginap' AND reg.status != 'Batal Rawat Inap'";
 
 
 
