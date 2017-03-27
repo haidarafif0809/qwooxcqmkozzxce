@@ -8,7 +8,7 @@ include 'sanitasi.php';
  $no_reg = stringdoang($_POST['no_reg']);
 
 // menampilakn hasil penjumlah subtotal ALIAS total penjualan dari tabel tbs_penjualan berdasarkan data no faktur
- $query = $db->query("SELECT SUM(subtotal) AS total_penjualan FROM tbs_penjualan WHERE  no_reg = '$no_reg' AND lab IS NULL AND no_faktur IS NULL");
+ $query = $db->query("SELECT SUM(subtotal) AS total_penjualan FROM tbs_penjualan WHERE  no_reg = '$no_reg' AND no_faktur IS NULL");
  $data = mysqli_fetch_array($query);
  echo$total = $data['total_penjualan'];
 

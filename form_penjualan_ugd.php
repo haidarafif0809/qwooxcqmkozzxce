@@ -86,7 +86,7 @@ $obat = $otoritas_produk['tipe_obat'];
           <?php 
           
           // menampilkan seluruh data yang ada pada tabel suplier
-          $query = $db->query("SELECT * FROM gudang");
+          $query = $db->query("SELECT kode_gudang,nama_gudang FROM gudang");
           
           // menyimpan data sementara yang ada pada $query
           while($data = mysqli_fetch_array($query))
@@ -116,9 +116,9 @@ $obat = $otoritas_produk['tipe_obat'];
 <div class="col-xs-2">
           <label>PPN</label>
           <select style="font-size:15px; height:35px" name="ppn" id="ppn" class="form-control chosen">
-            <option value="Include">Include</option>  
-            <option value="Exclude">Exclude</option>
-            <option value="Non">Non</option>          
+            <option >Include</option>  
+            <option >Exclude</option>
+            <option >Non</option>          
           </select>
 </div>
 
@@ -1375,7 +1375,7 @@ $('#tabel_tbs_lab').DataTable().destroy();
 //ENDING Perbaruan TBS LABORATORIUM
 
 //Start Cek Hasil Laboratorium
-var pasien = $("#nama_pasien").val();
+var pasien = $("#no_rm").val();
 $.post("cek_setting_laboratorium.php",{no_reg:no_reg},function(data){
   if(data == 1){
     $("#penjualan").hide();
@@ -1383,7 +1383,7 @@ $.post("cek_setting_laboratorium.php",{no_reg:no_reg},function(data){
      $("#batal_penjualan").hide(); 
      $("#cetak_langsung").hide();
      $("#piutang").hide();
-    alert("Pasien atas nama ("+pasien+") Hasil laboratorium belum di isi!");
+    alert("Pasien dengan No RM dan Nama ("+pasien+") Hasil laboratorium belum di isi!");
 
   }
   else
@@ -2037,7 +2037,7 @@ else
      $("#dosis_obat").val('');
      $("#col_dosis").hide();
      $("#span_tbs").hide();
- 
+     $('#span_lab').hide();
  }    
        
    });
@@ -2187,6 +2187,7 @@ else
               $("#dosis_obat").val('');
               $("#col_dosis").hide();
               $("#span_tbs").hide();
+              $('#span_lab').hide();
 }           
        
    });
@@ -3824,6 +3825,7 @@ else
              $("#dosis_obat").val('');
              $("#col_dosis").hide();
 
+            $('#span_lab').hide();
              $("#span_tbs").hide();
 
          var win = window.open('cetak_penjualan_tunai.php?no_faktur='+info+'');
