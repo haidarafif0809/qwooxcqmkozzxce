@@ -94,8 +94,8 @@ $nama_pasien = stringdoang($_GET['nama_pasien']);
     </thead>
     <tbody id="tbody">
     
-   <?php 
-$query = $db->query("SELECT * FROM hasil_lab WHERE no_faktur = '$no_faktur'");
+  <?php 
+$query = $db->query("SELECT * FROM hasil_lab WHERE no_faktur = '$no_faktur' ");
    while($data = mysqli_fetch_array($query))      
       {
 
@@ -104,6 +104,7 @@ $query = $db->query("SELECT * FROM hasil_lab WHERE no_faktur = '$no_faktur'");
      echo "<td>". $data['nama_pemeriksaan'] ." </td>";
 
       echo "<td style='background-color: #33b5e5;' class='edit-nama' data-id='".$data['id']."'><span id='text-nama-".$data['id']."'>". $data['hasil_pemeriksaan'] ."</span> <input type='hidden' id='input-nama-".$data['id']."' value='".$data['hasil_pemeriksaan']."' class='input_nama' data-id='".$data['id']."' data-nama='".$data['hasil_pemeriksaan']."' autofocus=''> </td>";
+
 
 
 $model_hitung = $data['model_hitung']; 
@@ -115,7 +116,6 @@ if($model_hitung == '')
 }
 else
 {
-
 switch ($model_hitung) {
     case "Lebih Kecil Dari":
         echo "<td>&lt;&nbsp; ". $data['nilai_normal_lk']."&nbsp;". $data['satuan_nilai_normal']." </td>
@@ -138,19 +138,27 @@ switch ($model_hitung) {
         ";
         break;
           case "Antara Sama Dengan":
-        echo "<td>". $data['nilai_normal_lk']."&nbsp;-&nbsp; ". $data['nilai_normal_lk']."&nbsp;". $data['satuan_nilai_normal']." </td>
-        <td>". $data['nilai_normal_pr']."&nbsp;-&nbsp; ". $data['nilai_normal_pr']."&nbsp;". $data['satuan_nilai_normal']." </td>
+        echo "<td>". $data['nilai_normal_lk']."&nbsp;-&nbsp; ". $data['normal_lk2']."&nbsp;". $data['satuan_nilai_normal']." </td>
+        <td>". $data['nilai_normal_pr']."&nbsp;-&nbsp; ". $data['normal_pr2']."&nbsp;". $data['satuan_nilai_normal']." </td>
         ";
         break;
-		} 
+
+        //Text
+        case "Text":
+        echo "<td>&nbsp; ". $data['nilai_normal_lk']."&nbsp;". $data['satuan_nilai_normal']." </td>
+        <td>&nbsp; ". $data['nilai_normal_pr']."&nbsp;". $data['satuan_nilai_normal']." </td>
+        ";
+        break;
+        //End Text
+    } 
 }
         /*echo "<td style='background-color: #33b5e5;' class='edit-status' data-id='".$data['id']."'><span id='text-status-".$data['id']."'>". $data['status_abnormal'] ."</span> <input type='hidden' id='input-status-".$data['id']."' value='".$data['status_abnormal']."' class='input_status' data-id='".$data['id']."' data-status='".$data['status_abnormal']."' autofocus=''> </td>";*/
 
 
    echo "</tr>";
-      }
+      
   
-
+}
     ?>
   </tbody>
  </table>

@@ -129,7 +129,7 @@ if($face_drop >= 1)
 
 
 //start untuk yang sendirian / yang tidak ber HEADER/INDUX
-       $show_two = $db->query("SELECT * FROM hasil_lab WHERE no_faktur = '$no_faktur' AND status = 'Selesai' AND id_sub_header = 0");
+       $show_two = $db->query("SELECT * FROM hasil_lab WHERE no_faktur = '$no_faktur' AND status = 'Selesai' AND (id_sub_header = 0 OR id_sub_header IS NULL)");
             //menyimpan data sementara yang ada pada $perintah
   
           while ($drop_two = mysqli_fetch_array($show_two))
