@@ -98,6 +98,13 @@ if($mutasi_masuk == 0 OR $mutasi_masuk == '')
 ?>
 
 
+<style type="text/css">
+  
+  .rata-kanan {
+    text-align: right;
+  }
+</style>
+
 <div class="container">
     <h3> <center><b> CASHFLOW REKAP PERPERIODE</b></center></h3><hr>
     <div class="row"><!--row1-->
@@ -171,7 +178,7 @@ if($mutasi_masuk == 0 OR $mutasi_masuk == '')
                   }
 
                 echo "<td>". $out_masuk['nama_daftar_akun'] ."</td>
-                <td>". $out_masuk['masuk'] ."</td>
+                <td class='rata-kanan'>". rp($out_masuk['masuk']) ."</td>
             <tr>";
 
             }
@@ -207,7 +214,7 @@ if($mutasi_masuk == 0 OR $mutasi_masuk == '')
                 <td>". $out_keluar['tanggal'] ."</td>
                 <td>". $out_keluar['nama_daftar_akun'] ."</td>
                 <td>". $out['nama_daftar_akun'] ."</td>
-                <td>". $out_keluar['keluar'] ."</td>
+                <td class='rata-kanan'>". rp($out_keluar['keluar']) ."</td>
                 </tr>";
 
             }
@@ -244,7 +251,7 @@ if($mutasi_masuk == 0 OR $mutasi_masuk == '')
                 <td>". $out_keluar['tanggal'] ."</td>
                 <td>". $out['nama_daftar_akun'] ."</td>
                 <td>". $out_keluar['nama_daftar_akun'] ."</td>
-                <td>". $out_keluar['mutasi_masuk'] ."</td>
+                <td class='rata-kanan'>". rp($out_keluar['mutasi_masuk']) ."</td>
             <tr>";
 
             }
@@ -279,7 +286,7 @@ if($mutasi_masuk == 0 OR $mutasi_masuk == '')
                 <td>". $out_keluar['tanggal'] ."</td>
                 <td>". $out_keluar['nama_daftar_akun'] ."</td>
                 <td>". $out['nama_daftar_akun'] ."</td>
-                <td>". $out_keluar['keluar'] ."</td>
+                <td class='rata-kanan'>". rp($out_keluar['keluar']) ."</td>
             <tr>";
 
             }

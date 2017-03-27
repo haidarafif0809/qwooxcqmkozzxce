@@ -97,6 +97,13 @@ $out_mutasi_keluar_jumlah = mysqli_fetch_array($select_mutasi_keluar_jumlah);
 
 ?>
 
+<style type="text/css">
+  
+
+  .rata-kanan {
+    text-align: right;
+  }
+</style>
 
 <div class="container">
     <h3> <center><b> CASHFLOW DETAIL PERPERIODE</b></center></h3><hr>
@@ -167,7 +174,7 @@ $out_mutasi_keluar_jumlah = mysqli_fetch_array($select_mutasi_keluar_jumlah);
                 <td>". $out_masuk['keterangan_jurnal'] ."</td>
                 <td>". $out_masuk['jenis_transaksi'] ."</td>
                 <td>". $out_masuk['nama_daftar_akun'] ."</td>
-                <td>". $out_masuk['masuk'] ."</td>
+                <td class='rata-kanan'>". rp($out_masuk['masuk']) ."</td>
                 <td>". $out_masuk['user_buat'] ."</td>
                 <td>". $out_masuk['user_edit'] ."</td>
                 <td>". $out_masuk['waktu_jurnal'] ."</td>
@@ -211,7 +218,7 @@ $out_mutasi_keluar_jumlah = mysqli_fetch_array($select_mutasi_keluar_jumlah);
                 <td>". $out_keluar['keterangan_jurnal'] ."</td>
                 <td>". $out_keluar['nama_daftar_akun'] ."</td>
                 <td>". $out_keluar['jenis_transaksi'] ."</td>
-                <td>". $out_keluar['keluar'] ."</td>
+                <td class='rata-kanan'>". rp($out_keluar['keluar']) ."</td>
                 <td>". $out_keluar['user_buat'] ."</td>
                 <td>". $out_keluar['user_edit'] ."</td>
                 <td>". $out_keluar['waktu_jurnal'] ."</td>
@@ -256,7 +263,7 @@ $out_mutasi_keluar_jumlah = mysqli_fetch_array($select_mutasi_keluar_jumlah);
                 <td>". $out_keluar['keterangan_jurnal'] ."</td>
                 <td>". $out['nama_daftar_akun'] ."</td>
                 <td>". $out_keluar['nama_daftar_akun'] ."</td>
-                <td>". $out_keluar['mutasi_masuk'] ."</td>
+                <td class='rata-kanan'>". rp($out_keluar['mutasi_masuk']) ."</td>
                 <td>". $out_keluar['user_buat'] ."</td>
                 <td>". $out_keluar['user_edit'] ."</td>
                 <td>". $out_keluar['waktu_jurnal'] ."</td>
@@ -299,7 +306,7 @@ $out_mutasi_keluar_jumlah = mysqli_fetch_array($select_mutasi_keluar_jumlah);
                 <td>". $out_keluar['keterangan_jurnal'] ."</td>
                 <td>". $out_keluar['nama_daftar_akun'] ."</td>
                 <td>". $out['nama_daftar_akun'] ."</td>
-                <td>". $out_keluar['keluar'] ."</td>
+                <td class='rata-kanan'>". rp($out_keluar['keluar']) ."</td>
                 <td>". $out_keluar['user_buat'] ."</td>
                 <td>". $out_keluar['user_edit'] ."</td>
                 <td>". $out_keluar['waktu_jurnal'] ."</td>
