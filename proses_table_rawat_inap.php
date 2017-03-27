@@ -11,12 +11,6 @@ $bulan_php = date('m');
 $tahun_php = date('Y');
 
 
-$qertu= $db->query("SELECT nama_dokter,nama_paramedik,nama_farmasi FROM penetapan_petugas ");
-$ss = mysqli_fetch_array($qertu);
-
-$q = $db->query("SELECT * FROM setting_registrasi");
-$dq = mysqli_fetch_array($q);
-
 $pilih_akses_registrasi_ri = $db->query("SELECT registrasi_ri_lihat, registrasi_ri_tambah, registrasi_ri_edit, registrasi_ri_hapus FROM otoritas_registrasi WHERE id_otoritas = '$_SESSION[otoritas_id]'");
 $registrasi_ri = mysqli_fetch_array($pilih_akses_registrasi_ri);
 
@@ -58,7 +52,7 @@ $columns = array(
 
 // getting total number records without any search
 $sql = "SELECT reg.no_rm, reg.no_reg, reg.status, reg.nama_pasien, reg.jam, reg.penjamin, reg.poli, reg.dokter_pengirim, reg.dokter, reg.bed, reg.group_bed, reg.tanggal_masuk, reg.penanggung_jawab, reg.umur_pasien, reg.id, rek.tanggal_periksa,rek.id AS id_rek ";
-$sql.=" FROM registrasi reg LEFT JOIN rekam_medik_inap rek ON reg.no_reg = rek.no_reg WHERE reg.jenis_pasien = 'Rawat Inap' AND reg.status = 'menginap' AND reg.status != 'Batal Rawat Inap' AND TO_DAYS(NOW()) - TO_DAYS(reg.tanggal) <= 7 ";
+$sql.=" FROM registrasi reg LEFT JOIN rekam_medik_inap rek ON reg.no_reg = rek.no_reg WHERE reg.jenis_pasien = 'Rawat Inap' AND reg.status = 'menginap' AND reg.status != 'Batal Rawat Inap'  ";
 
 
 
@@ -68,7 +62,7 @@ $totalFiltered = $totalData;  // when there is no search parameter then total nu
 
 
 $sql = "SELECT reg.no_rm, reg.no_reg, reg.status, reg.nama_pasien, reg.jam, reg.penjamin, reg.poli, reg.dokter_pengirim, reg.dokter, reg.bed, reg.group_bed, reg.tanggal_masuk, reg.penanggung_jawab, reg.umur_pasien, reg.id, rek.tanggal_periksa,rek.id AS id_rek ";
-$sql.=" FROM registrasi reg LEFT JOIN rekam_medik_inap rek ON reg.no_reg = rek.no_reg WHERE reg.jenis_pasien = 'Rawat Inap' AND reg.status = 'menginap' AND reg.status != 'Batal Rawat Inap' AND TO_DAYS(NOW()) - TO_DAYS(reg.tanggal) <= 7 ";
+$sql.=" FROM registrasi reg LEFT JOIN rekam_medik_inap rek ON reg.no_reg = rek.no_reg WHERE reg.jenis_pasien = 'Rawat Inap' AND reg.status = 'menginap' AND reg.status != 'Batal Rawat Inap' ";
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
 	$sql.=" AND ( reg.no_reg LIKE '".$requestData['search']['value']."%' ";    
 	$sql.=" OR reg.no_rm LIKE '".$requestData['search']['value']."%' ";
