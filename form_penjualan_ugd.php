@@ -1375,7 +1375,7 @@ $('#tabel_tbs_lab').DataTable().destroy();
 //ENDING Perbaruan TBS LABORATORIUM
 
 //Start Cek Hasil Laboratorium
-var pasien = $("#nama_pasien").val();
+var pasien = $("#no_rm").val();
 $.post("cek_setting_laboratorium.php",{no_reg:no_reg},function(data){
   if(data == 1){
     $("#penjualan").hide();

@@ -402,9 +402,7 @@ else
       }
     }
   }// end if setting lab
-  else{
 
-  }
 }
 //selesai untuk yang tidak memiliki Header / Ibu
 //NOTE* BAGIAN ATAS INSERT DARI TBS , DAN BAGIAN BAWAH INSERT DETAIL YANG INDUX (HEADER)-NYA ADA DI TBS PENJUALAN !!
