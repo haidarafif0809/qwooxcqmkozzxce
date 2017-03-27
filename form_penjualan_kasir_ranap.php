@@ -894,8 +894,6 @@ Laboratorium  </button>
            
            <label style="display: none"> Adm Bank  (%)</label>
            <input type="hidden" name="adm_bank" id="adm_bank"  value="" class="form-control" >
-           <input type="hidden" name="status_simpan" id="status_simpan"  class="form-control" >
-           <input type="hidden" name="no_faktur_simpan" id="no_faktur_simpan"  class="form-control" >
            
            <div class="col-xs-6">
              
@@ -1417,8 +1415,6 @@ $(document).ready(function(){
             document.getElementById("bed").value = $(this).attr('bed');
             document.getElementById("kamar").value = $(this).attr('kamar');
 
-            var status = $(this).attr('status');
-
             document.getElementById("penjamin").value = $(this).attr('penjamin');
             $("#penjamin").trigger('chosen:updated');
 
@@ -1432,33 +1428,6 @@ $(document).ready(function(){
             $("#level_harga").trigger('chosen:updated');
 
             $('#modal_reg').modal('hide'); 
-
-
-
-            // Jika status nya simpan sementara, maka data yang ada di detail penjualan akan di insert ke tbs penjualan
-            if (status == 'Simpan Sementara') {
-
-              var no_reg_simpan = $(this).attr('no_reg');
-              var no_faktur_simpan = $(this).attr('no_faktur_simpan');
-
-
-              $.post("insert_detail_ketbs_inap.php",{no_reg_simpan:no_reg_simpan,no_faktur_simpan:no_faktur_simpan},function(data){
-
-              });
-
-              $("#status_simpan").val(status);              
-              $("#no_faktur_simpan").val(no_faktur_simpan);
-
-
-            }
-            else
-            {
-                $("#status_simpan").val('');              
-                $("#no_faktur_simpan").val('');
-            }
-
-
-
 
 // START DATATABLE AJAX START DATATABLE AJAX START DATATABLE AJAX START DATATABLE AJAX START DATATABLE AJAX START DATATABLE AJAX
 
@@ -1494,7 +1463,6 @@ $(document).ready(function(){
         $("#biaya_admin_select").trigger('chosen:updated');
         $('#potongan_penjualan').val('');
         $('#potongan_persen').val('');
-
 
 // END DATATABLE AJAX END DATATABLE AJAX END DATATABLE AJAX END DATATABLE AJAX END DATATABLE AJAX END DATATABLE AJAX
 
@@ -1828,8 +1796,6 @@ else if (level_harga == "harga_7") {
               $(nRow).attr('bed', aData[9]);
               $(nRow).attr('kamar', aData[10]);
               $(nRow).attr('level_harga', aData[11]);
-              $(nRow).attr('status', aData[13]);
-              $(nRow).attr('no_faktur_simpan', aData[14]);
 
 
           }
@@ -2058,13 +2024,10 @@ $(document).ready(function(){
         var petugas_lain = $("#petugas_lain").val();
         var bed = $("#bed").val();
         var group_bed = $("#kamar").val();
-
         var penjamin = $("#penjamin").val();
         var poli = $("#asal_poli").val();
         var nama_pasien = $("#nama_pasien").val();
         var analis = $("#analis").val();
-        var status_simpan = $("#status_simpan").val();
-        var no_faktur_simpan = $("#no_faktur_simpan").val();
         var biaya_adm = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#biaya_admin").val()))));
         var disc_tbs = $("#disc_tbs").val();
         if (disc_tbs== '') {
@@ -2116,122 +2079,69 @@ alert("Silakan Bayar Piutang");
 
  else
 
- { // else terakhir
+ {
 
 
 
- $.post("cek_subtotal_penjualan_inap.php",{total:total,total2:total2,no_reg:no_reg,potongan:potongan,tax:tax,biaya_adm:biaya_adm},function(data) { //$.post("cek_subtotal_penjualan_inap.php
+ $.post("cek_subtotal_penjualan_inap.php",{total:total,total2:total2,no_reg:no_reg,potongan:potongan,tax:tax,biaya_adm:biaya_adm},function(data) {
 
-    if (data == 1) {// start  if (data == 1)
+  if (data == 1) {
 
-              if (status_simpan == 'Simpan Sementara') {// start if (status_simpan == 'Simpan Sementara') 
+ $.post("proses_bayar_kasir_ranap.php",{total2:total2,sisa_pembayaran:sisa_pembayaran,kredit:kredit,no_rm:no_rm,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,cara_bayar:cara_bayar,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,total_hpp:total_hpp,harga:harga,sales:sales,kode_gudang:kode_gudang,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,nama_pasien:nama_pasien,no_reg:no_reg,dokter:dokter,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,penjamin:penjamin,bed:bed,group_bed:group_bed,biaya_adm:biaya_adm,analis:analis},function(info) {
 
-                    var bayar = 'Lunas';
+if (info == 1)
+{
 
-                     $.post("proses_bayar_simpan_ranap.php",{no_faktur:no_faktur_simpan,total2:total2,sisa_pembayaran:sisa_pembayaran,kredit:kredit,no_rm:no_rm,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,cara_bayar:cara_bayar,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,total_hpp:total_hpp,harga:harga,sales:sales,kode_gudang:kode_gudang,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,nama_pasien:nama_pasien,no_reg:no_reg,dokter:dokter,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,penjamin:penjamin,bed:bed,group_bed:group_bed,biaya_adm:biaya_adm,analis:analis,status_simpan:status_simpan,bayar:bayar},function(info) { // ,function(info) {
+    alert("Maaf Subtotal Penjualan Tidak Sesuai, Silakan Tunggu Sebentar! (2) ");       
+        window.location.href="form_penjualan_kasir_ranap.php";
 
-                      if (info == 1) // start  if (info == 1)
-                      {
-
-                          alert("Maaf Subtotal Penjualan Tidak Sesuai, Silakan Tunggu Sebentar! (2) ");       
-                              window.location.href="form_penjualan_kasir_ranap.php";
-
-                      } // else punya // start  if (info == 1)
-                      else
-                      { // else punya // start  if (info == 1)
+}
+else
+{
 
 
-                           $("#table-baru").html(info);
-                           $("#tabel-lab").html("");
-                           var no_faktur = info;
-                           $("#cetak_tunai").attr('href', 'cetak_penjualan_tunai.php?no_faktur='+no_faktur+'');
-                           $("#cetak_tunai_kategori").attr('href', 'cetak_penjualan_tunai_kategori.php?no_faktur='+no_faktur+'');
-                           $("#cetak_tunai_besar").attr('href', 'cetak_penjualan_tunai_besar_ranap.php?no_faktur='+no_faktur+'');
-                           $("#alert_berhasil").show();
-                           $("#pembayaran_penjualan").val('');
-                           $("#sisa_pembayaran_penjualan").val('');
-                           $("#kredit").val('');
-                           $("#cetak_tunai").show();
-                           $("#cetak_tunai_kategori").show();
-                           $("#cetak_tunai_besar").show();
-                           
-                           $("#tabel-operasi").hide();
-                           $("#tabel-lab").hide();
-                           $("#penjualan").hide();
-                           $("#simpan_sementara").hide();
-                           $("#batal_penjualan").hide();
-                           $("#cetak_langsung").hide();
-                           $("#piutang").hide();
-                           $("#transaksi_baru").show();
-                           $("#span_tbs").hide();
-                           $('#span_lab').hide();
-                          $('#span_operasi').hide();
-                           $("#dosis_obat").val('');
-                           $("#col_dosis").hide();
-                           
-                       } //else punya // start  if (info == 1)
-                             
-                         });// ,function(info) {
+     $("#table-baru").html(info);
+     $("#tabel-lab").html("");
+     var no_faktur = info;
+     $("#cetak_tunai").attr('href', 'cetak_penjualan_tunai.php?no_faktur='+no_faktur+'');
+     $("#cetak_tunai_kategori").attr('href', 'cetak_penjualan_tunai_kategori.php?no_faktur='+no_faktur+'');
+     $("#cetak_tunai_besar").attr('href', 'cetak_penjualan_tunai_besar_ranap.php?no_faktur='+no_faktur+'');
+     $("#alert_berhasil").show();
+     $("#pembayaran_penjualan").val('');
+     $("#sisa_pembayaran_penjualan").val('');
+     $("#kredit").val('');
+     $("#cetak_tunai").show();
+     $("#cetak_tunai_kategori").show();
+     $("#cetak_tunai_besar").show();
+     
+     $("#tabel-operasi").hide();
+     $("#tabel-lab").hide();
+     $("#penjualan").hide();
+     $("#simpan_sementara").hide();
+     $("#batal_penjualan").hide();
+     $("#cetak_langsung").hide();
+     $("#piutang").hide();
+     $("#transaksi_baru").show();
+     $("#span_tbs").hide();
+     $('#span_lab').hide();
+     $("#disc_tbs").val('');
+      $('#span_operasi').hide();
+     $("#dosis_obat").val('');
+     $("#col_dosis").hide();
+     
+ }
+       
+   });
 
-              }//  end if (status_simpan == 'Simpan Sementara') 
-              else
-              { // else punya if (status_simpan == 'Simpan Sementara') 
-                    
-                       $.post("proses_bayar_kasir_ranap.php",{total2:total2,sisa_pembayaran:sisa_pembayaran,kredit:kredit,no_rm:no_rm,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,cara_bayar:cara_bayar,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,total_hpp:total_hpp,harga:harga,sales:sales,kode_gudang:kode_gudang,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,nama_pasien:nama_pasien,no_reg:no_reg,dokter:dokter,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,penjamin:penjamin,bed:bed,group_bed:group_bed,biaya_adm:biaya_adm,analis:analis,status_simpan:status_simpan},function(info) { //  $.post("proses_bayar_kasir_ranap.php"
+  }
+  else{
+    alert("Maaf Subtotal Penjualan Tidak Sesuai, Silakan Tunggu Sebentar! (1) ");       
+        window.location.href="form_penjualan_kasir_ranap.php";
+  }
 
-                      if (info == 1) // start  if (info == 1)
-                      {
+ });
 
-                          alert("Maaf Subtotal Penjualan Tidak Sesuai, Silakan Tunggu Sebentar! (2) ");       
-                              window.location.href="form_penjualan_kasir_ranap.php";
-
-                      }// end start  if (info == 1)
-                      else
-                      {// else start  if (info == 1)
-
-
-                           $("#table-baru").html(info);
-                           $("#tabel-lab").html("");
-                           var no_faktur = info;
-                           $("#cetak_tunai").attr('href', 'cetak_penjualan_tunai.php?no_faktur='+no_faktur+'');
-                           $("#cetak_tunai_kategori").attr('href', 'cetak_penjualan_tunai_kategori.php?no_faktur='+no_faktur+'');
-                           $("#cetak_tunai_besar").attr('href', 'cetak_penjualan_tunai_besar_ranap.php?no_faktur='+no_faktur+'');
-                           $("#alert_berhasil").show();
-                           $("#pembayaran_penjualan").val('');
-                           $("#sisa_pembayaran_penjualan").val('');
-                           $("#kredit").val('');
-                           $("#cetak_tunai").show();
-                           $("#cetak_tunai_kategori").show();
-                           $("#cetak_tunai_besar").show();
-                           
-                           $("#tabel-operasi").hide();
-                           $("#tabel-lab").hide();
-                           $("#penjualan").hide();
-                           $("#simpan_sementara").hide();
-                           $("#batal_penjualan").hide();
-                           $("#cetak_langsung").hide();
-                           $("#piutang").hide();
-                           $("#transaksi_baru").show();
-                           $("#span_tbs").hide();
-                           $('#span_lab').hide();
-                            $('#span_operasi').hide();
-                           $("#dosis_obat").val('');
-                           $("#col_dosis").hide();
-                           
-                       } // {// else start  if (info == 1)
-                             
-                         }); ////  $.post("proses_bayar_kasir_ranap.php"
-              } // else punya if (status_simpan == 'Simpan Sementara') 
-
-    }// start  if (data == 1)
-    else{// else  alert("Maaf Subtotal Penjualan Tidak Sesuai, Silakan Tunggu Sebentar! (1) ");    
-      alert("Maaf Subtotal Penjualan Tidak Sesuai, Silakan Tunggu Sebentar! (1) ");       
-          window.location.href="form_penjualan_kasir_ranap.php";
-    }// else  alert("Maaf Subtotal Penjualan Tidak Sesuai, Silakan Tunggu Sebentar! (1) ");    
-
- });//end  $.post("cek_subtotal_penjualan_inap.php
-
- } // else terakhir
+ }
 
 
 
@@ -2294,8 +2204,6 @@ alert("Silakan Bayar Piutang");
         var poli = $("#asal_poli").val();
         var nama_pasien = $("#nama_pasien").val();
         var analis = $("#analis").val();
-        var status_simpan = $("#status_simpan").val();
-        var no_faktur_simpan = $("#no_faktur_simpan").val();
         var biaya_adm = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#biaya_admin").val()))));
         var disc_tbs = $("#disc_tbs").val();
         if (disc_tbs=='') {
@@ -2347,134 +2255,80 @@ alert("Silakan Isi Kolom Pembayaran  atau lakukan Bayar Piutang");
 
  else
 
- {// else
+ {
 
 
 
 
- $.post("cek_subtotal_penjualan_inap.php",{total:total,total2:total2,no_reg:no_reg,potongan:potongan,tax:tax,biaya_adm:biaya_adm},function(data) {// $.post("cek_subtotal_penjualan_inap.php"
+ $.post("cek_subtotal_penjualan_inap.php",{total:total,total2:total2,no_reg:no_reg,potongan:potongan,tax:tax,biaya_adm:biaya_adm},function(data) {
 
-  if (data == 1) { // stasrt if (data == 1) {
+  if (data == 1) {
 
+ $.post("proses_bayar_kasir_ranap.php",{total2:total2,sisa_pembayaran:sisa_pembayaran,kredit:kredit,no_rm:no_rm,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,cara_bayar:cara_bayar,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,total_hpp:total_hpp,harga:harga,sales:sales,kode_gudang:kode_gudang,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,nama_pasien:nama_pasien,no_reg:no_reg,dokter:dokter,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,penjamin:penjamin,bed:bed,group_bed:group_bed,biaya_adm:biaya_adm,analis:analis},function(info) {
 
-              if (status_simpan == 'Simpan Sementara') {/// starts  if (status_simpan == 'Simpan Sementara') 
-                var bayar = 'Lunas';
+if (info == 1)
+{
 
-                     $.post("proses_bayar_simpan_ranap.php",{no_faktur:no_faktur_simpan,total2:total2,sisa_pembayaran:sisa_pembayaran,kredit:kredit,no_rm:no_rm,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,cara_bayar:cara_bayar,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,total_hpp:total_hpp,harga:harga,sales:sales,kode_gudang:kode_gudang,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,nama_pasien:nama_pasien,no_reg:no_reg,dokter:dokter,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,penjamin:penjamin,bed:bed,group_bed:group_bed,biaya_adm:biaya_adm,analis:analis,status_simpan:status_simpan,bayar:bayar},function(info) { //function(info) {
+    alert("Maaf Subtotal Penjualan Tidak Sesuai, Silakan Tunggu Sebentar! (2) ");       
+        window.location.href="form_penjualan_kasir_ranap.php";
 
-                  
-                      if (info == 1) // start  if (info == 1)
-                      {
-
-                          alert("Maaf Subtotal Penjualan Tidak Sesuai, Silakan Tunggu Sebentar! (2) ");       
-                              window.location.href="form_penjualan_kasir_ranap.php";
-
-                      }// end start  if (info == 1)
-                      else
-                      {// else start  if (info == 1)
+}
+else
+{
 
 
-                           $("#table-baru").html(info);
-                           $("#tabel-lab").html("");
-                           var no_faktur = info;
-                           $("#cetak_tunai").attr('href', 'cetak_penjualan_tunai.php?no_faktur='+no_faktur+'');
-                           $("#cetak_tunai_kategori").attr('href', 'cetak_penjualan_tunai_kategori.php?no_faktur='+no_faktur+'');
-                           $("#cetak_tunai_besar").attr('href', 'cetak_penjualan_tunai_besar_ranap.php?no_faktur='+no_faktur+'');
-                           $("#alert_berhasil").show();
-                           $("#pembayaran_penjualan").val('');
-                           $("#sisa_pembayaran_penjualan").val('');
-                           $("#kredit").val('');
-                           $("#cetak_tunai").show();
-                           $("#cetak_tunai_kategori").show();
-                           $("#cetak_tunai_besar").show();
-                           
-                           $("#tabel-operasi").hide();
-                           $("#tabel-lab").hide();
-                           $("#penjualan").hide();
-                           $("#simpan_sementara").hide();
-                           $("#batal_penjualan").hide();
-                           $("#cetak_langsung").hide();
-                           $("#piutang").hide();
-                           $("#transaksi_baru").show();
-                           $("#span_tbs").hide();
-                           $('#span_lab').hide();
-                            $('#span_operasi').hide();
-                           $("#dosis_obat").val('');
-                           $("#col_dosis").hide();
-                           
-                       }// else end  if (info == 1)
-                             
-                         }); //function(info) {
+     $("#table-baru").html(info);
+     $("#tabel-lab").html("");
+     var no_faktur = info;
+     $("#cetak_tunai").attr('href', 'cetak_penjualan_tunai.php?no_faktur='+no_faktur+'');
+     $("#cetak_tunai_kategori").attr('href', 'cetak_penjualan_tunai_kategori.php?no_faktur='+no_faktur+'');
+     $("#cetak_tunai_besar").attr('href', 'cetak_penjualan_tunai_besar_ranap.php?no_faktur='+no_faktur+'');
+     $("#alert_berhasil").show();
+     $("#pembayaran_penjualan").val('');
+     $("#sisa_pembayaran_penjualan").val('');
+     $("#kredit").val('');
+     $("#disc_tbs").val('');
+     
+     $("#tabel-operasi").hide();
+     $("#tabel-lab").hide();
+     $("#penjualan").hide();
+     $("#simpan_sementara").hide();
+     $("#cetak_langsung").hide();
+     $("#batal_penjualan").hide();
+     $("#piutang").hide();
+     $("#transaksi_baru").show();
+            $("#span_tbs").hide();
+            $('#span_lab').hide();
+            $('#span_operasi').hide();
+            $("#dosis_obat").val('');
+            $("#col_dosis").hide();
 
-              } //  /// end  if (status_simpan == 'Simpan Sementara') 
-              else { //else /// starts  if (status_simpan == 'Simpan Sementara') 
+  var win = window.open('cetak_penjualan_tunai.php?no_faktur='+no_faktur+'');
+     if (win) 
+     {  
+    win.focus(); 
+     } 
+    else { alert('Mohon Izinkan PopUps Pada Website Ini !'); }   
+  
+ }
+       
+   });
 
-                   $.post("proses_bayar_kasir_ranap.php",{total2:total2,sisa_pembayaran:sisa_pembayaran,kredit:kredit,no_rm:no_rm,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,cara_bayar:cara_bayar,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,total_hpp:total_hpp,harga:harga,sales:sales,kode_gudang:kode_gudang,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,nama_pasien:nama_pasien,no_reg:no_reg,dokter:dokter,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,penjamin:penjamin,bed:bed,group_bed:group_bed,biaya_adm:biaya_adm,analis:analis,status_simpan:status_simpan},function(info) {//function(info) {
-
-                  if (info == 1)// start  if (info == 1)
-                  {
-
-                      alert("Maaf Subtotal Penjualan Tidak Sesuai, Silakan Tunggu Sebentar! (2) ");       
-                          window.location.href="form_penjualan_kasir_ranap.php";
-
-                  }// end start  if (info == 1)
-                  else
-                  {// else start  if (info == 1)
-
-
-                       $("#table-baru").html(info);
-                       $("#tabel-lab").html("");
-                       var no_faktur = info;
-                       $("#cetak_tunai").attr('href', 'cetak_penjualan_tunai.php?no_faktur='+no_faktur+'');
-                       $("#cetak_tunai_kategori").attr('href', 'cetak_penjualan_tunai_kategori.php?no_faktur='+no_faktur+'');
-                       $("#cetak_tunai_besar").attr('href', 'cetak_penjualan_tunai_besar_ranap.php?no_faktur='+no_faktur+'');
-                       $("#alert_berhasil").show();
-                       $("#pembayaran_penjualan").val('');
-                       $("#sisa_pembayaran_penjualan").val('');
-                       $("#kredit").val('');
-                       
-                       
-                       $("#tabel-operasi").hide();
-                       $("#tabel-lab").hide();
-                       $("#penjualan").hide();
-                       $("#simpan_sementara").hide();
-                       $("#cetak_langsung").hide();
-                       $("#batal_penjualan").hide();
-                       $("#piutang").hide();
-                       $("#transaksi_baru").show();
-                      $("#span_tbs").hide();
-                      $('#span_lab').hide();
-                      $('#span_operasi').hide();
-                      $("#dosis_obat").val('');
-                      $("#col_dosis").hide();
-
-                            var win = window.open('cetak_penjualan_tunai.php?no_faktur='+no_faktur+'');
-                               if (win) 
-                               {  
-                              win.focus(); 
-                               } 
-                              else { alert('Mohon Izinkan PopUps Pada Website Ini !'); }   
-                
-               }// else end  if (info == 1)
-                     
-                 });//function(info) {
-         }//else /// end  if (status_simpan == 'Simpan Sementara') 
-
-  }// end   if (data == 1) { // stasrt if (data == 1) {
-  else{ // else // end   if (data == 1) { // stasrt if (data == 1) {
+  }
+  else{
         alert("Maaf Subtotal Penjualan Tidak Sesuai, Silakan Tunggu Sebentar! (1) ");
         window.location.href="form_penjualan_kasir_ranap.php";
        
-  }// else // end   if (data == 1) { // stasrt if (data == 1) {
+  }
 
- });/// $.post("cek_subtotal_penjualan_inap.php"
+ });
 
 
  $('#tabel_tbs_penjualan').DataTable().clear();
 $('#tabel_tbs_lab').DataTable().clear();
 
 
- }// tutup else terakhir
+ }
 
  $("form").submit(function(){
     return false;
@@ -2984,11 +2838,7 @@ else
         var poli = $("#asal_poli").val();
         var analis = $("#analis").val();
         var nama_pasien = $("#nama_pasien").val();
-        var status_simpan = $("#status_simpan").val();
-        var no_faktur_simpan = $("#no_faktur_simpan").val();
         var biaya_adm = $("#biaya_admin").val();
-        
-        var harga = $("#harga_produk").val();
         if (biaya_adm == '')
         {
           biaya_adm = 0;
@@ -3025,7 +2875,7 @@ else
          }
          
        else
-       { // else terakhir
+       {
 
 
         $("#piutang").hide();
@@ -3038,122 +2888,65 @@ else
         
 
 
- $.post("cek_subtotal_penjualan_inap.php",{total:total,total2:total2,no_reg:no_reg,potongan:potongan,tax:tax,biaya_adm:biaya_adm},function(data) {// function $.post("cek_subtotal_penjualan_inap.php"
+ $.post("cek_subtotal_penjualan_inap.php",{total:total,total2:total2,no_reg:no_reg,potongan:potongan,tax:tax,biaya_adm:biaya_adm},function(data) {
 
-  if (data == 1) { // start if (data == 1)
+  if (data == 1) {
 
-              if (status_simpan == 'Simpan Sementara') { //if (status_simpan == 'Simpan Sementara') {
+$.post("proses_bayar_kasir_ranap.php",{total2:total2,sisa_pembayaran:sisa_pembayaran,kredit:kredit,no_rm:no_rm,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,cara_bayar:cara_bayar,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,total_hpp:total_hpp,sales:sales,kode_gudang:kode_gudang,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,nama_pasien:nama_pasien,no_reg:no_reg,dokter:dokter,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,penjamin:penjamin,bed:bed,group_bed:group_bed,biaya_adm:biaya_adm,analis:analis},function(info) {
 
-
-                var bayar = 'Piutang';
-
-                     $.post("proses_bayar_simpan_ranap.php",{no_faktur:no_faktur_simpan,total2:total2,sisa_pembayaran:sisa_pembayaran,kredit:kredit,no_rm:no_rm,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,cara_bayar:cara_bayar,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,total_hpp:total_hpp,harga:harga,sales:sales,kode_gudang:kode_gudang,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,nama_pasien:nama_pasien,no_reg:no_reg,dokter:dokter,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,penjamin:penjamin,bed:bed,group_bed:group_bed,biaya_adm:biaya_adm,analis:analis,status_simpan:status_simpan,bayar:bayar},function(info) {//function(info) {
-
-                      if (info == 1) //  start if (info == 1)
-                      {
-
-                          alert("Maaf Subtotal Penjualan Tidak Sesuai, Silakan Tunggu Sebentar! (2) ");       
-                              window.location.href="form_penjualan_kasir_ranap.php";
-
-                      }//  end  if (info == 1)
-                      else
-                      { // else start if (info == 1)
+if (info == 1)
+{
+       alert("Maaf Subtotal Penjualan Tidak Sesuai, Silakan Tunggu Sebentar! (2) ");       
+        window.location.href="form_penjualan_kasir_ranap.php";
+}
+else
+{
 
 
-                           $("#table-baru").html(info);
-                           $("#tabel-lab").html("");
-                           var no_faktur = info;
-                           $("#cetak_tunai").attr('href', 'cetak_penjualan_tunai.php?no_faktur='+no_faktur+'');
-                           $("#cetak_tunai_kategori").attr('href', 'cetak_penjualan_tunai_kategori.php?no_faktur='+no_faktur+'');
-                           $("#cetak_tunai_besar").attr('href', 'cetak_penjualan_tunai_besar_ranap.php?no_faktur='+no_faktur+'');
-                           $("#alert_berhasil").show();
-                           $("#pembayaran_penjualan").val('');
-                           $("#sisa_pembayaran_penjualan").val('');
-                           $("#kredit").val('');
-                           $("#cetak_tunai").show();
-                           $("#cetak_tunai_kategori").show();
-                           $("#cetak_tunai_besar").show();
-                           
-                           $("#tabel-operasi").hide();
-                           $("#tabel-lab").hide();
-                           $("#penjualan").hide();
-                           $("#simpan_sementara").hide();
-                           $("#batal_penjualan").hide();
-                           $("#cetak_langsung").hide();
-                           $("#piutang").hide();
-                           $("#transaksi_baru").show();
-                           $("#span_tbs").hide();
-                           $('#span_lab').hide();
-                            $('#span_operasi').hide();
-                           $("#dosis_obat").val('');
-                           $("#col_dosis").hide();
-                           
-                       }// else end if (info == 1)
-                             
-                         });//function(info) {
+            var no_faktur = info;
+            $("#cetak_piutang").attr('href', 'cetak_penjualan_piutang_ranap.php?no_faktur='+no_faktur+'');
+            $("#table-baru").html(info);
+            $("#alert_berhasil").show();
+            $("#pembayaran_penjualan").val('');
+            $("#sisa_pembayaran_penjualan").val('');
+            $("#kredit").val('');
+            $("#potongan_penjualan").val('');
+            $("#potongan_persen").val('');
+            $("#tanggal_jt").val('');
+            $("#cetak_piutang").show();
+            $("#tax").val('');
+            $("#piutang").hide();
+            $("#tabel-operasi").hide();
+            $("#tabel-lab").hide();
+            $("#simpan_sementara").hide();
+            $("#batal_penjualan").hide();
+            $("#cetak_langsung").hide();
+            $("#penjualan").hide();
+            $("#transaksi_baru").show(); 
+            $("#span_tbs").hide();
+            $('#span_lab').hide();
+            $('#span_operasi').hide();
+            $("#dosis_obat").val('');
+     $("#disc_tbs").val('');
+            $("#col_dosis").hide();
+       
+}     
+       
+  });
 
-              }// end  //if (status_simpan == 'Simpan Sementara') {
-              else
-              {// else  //if (status_simpan == 'Simpan Sementara') {
-
-                  $.post("proses_bayar_kasir_ranap.php",{total2:total2,sisa_pembayaran:sisa_pembayaran,kredit:kredit,no_rm:no_rm,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,cara_bayar:cara_bayar,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,total_hpp:total_hpp,sales:sales,kode_gudang:kode_gudang,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,nama_pasien:nama_pasien,no_reg:no_reg,dokter:dokter,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,penjamin:penjamin,bed:bed,group_bed:group_bed,biaya_adm:biaya_adm,analis:analis,status_simpan:status_simpan},function(info) {// function(info) 
-
-                      if (info == 1)//   if (info == 1)
-                      {
-                             alert("Maaf Subtotal Penjualan Tidak Sesuai, Silakan Tunggu Sebentar! (2) ");       
-                              window.location.href="form_penjualan_kasir_ranap.php";
-                      }//  end  if (info == 1)
-
-                      else
-                      {// else start if (info == 1)
-
-
-                                  var no_faktur = info;
-                                  $("#cetak_piutang").attr('href', 'cetak_penjualan_piutang_ranap.php?no_faktur='+no_faktur+'');
-                                  $("#table-baru").html(info);
-                                  $("#alert_berhasil").show();
-                                  $("#pembayaran_penjualan").val('');
-                                  $("#sisa_pembayaran_penjualan").val('');
-                                  $("#kredit").val('');
-                                  $("#potongan_penjualan").val('');
-                                  $("#potongan_persen").val('');
-                                  $("#tanggal_jt").val('');
-                                  $("#cetak_piutang").show();
-                                  $("#tax").val('');
-                                  $("#piutang").hide();
-                                  $("#tabel-operasi").hide();
-                                  $("#tabel-lab").hide();
-                                  $("#simpan_sementara").hide();
-                                  $("#batal_penjualan").hide();
-                                  $("#cetak_langsung").hide();
-                                  $("#penjualan").hide();
-                                  $("#transaksi_baru").show(); 
-                                  $("#span_tbs").hide();
-                                  $('#span_lab').hide();
-                                  $('#span_operasi').hide();
-                                  $("#dosis_obat").val('');
-                                  $("#col_dosis").hide();
-                             
-                      }   // else end if (info == 1)
-                             
-                        });// function(info) 
-
-                }// end  else //if (status_simpan == 'Simpan Sementara') {
-
-
-  }//  // end if (data == 1)
-  else{// end else if (data == 1)
+  }
+  else{
     alert("Maaf Subtotal Penjualan Tidak Sesuai, Silakan Tunggu Sebentar! (1) ");       
         window.location.href="form_penjualan_kasir_ranap.php";
-  }// end else if (data == 1)
+  }
 
- });// function $.post("cek_subtotal_penjualan_inap.php"
+ });
 
 
-}  // else terakhir
+}  
        //mengambil no_faktur pembelian agar berurutan
 
-});// $("#piutang").click(function(){
+});
 
     $('#tabel_tbs_penjualan').DataTable().clear();
     $('#tabel_tbs_lab').DataTable().clear();   
@@ -4356,6 +4149,7 @@ function myFunction(event) {
 </script>
 
 
+<!--
 
      <script>
        //perintah javascript yang diambil dari form proses_bayar_beli.php dengan id=form_beli
@@ -4391,15 +4185,12 @@ function myFunction(event) {
         var petugas_farmasi = $("#petugas_farmasi").val();
         var petugas_lain = $("#petugas_lain").val();
         var bed = $("#bed").val();
-        var group_bed = $("#kamar").val();
+        var group_bed = $("#group_bed").val();
         var penjamin = $("#penjamin").val();
         var poli = $("#asal_poli").val();
         var nama_pasien = $("#nama_pasien").val();
         var analis = $("#analis").val();
         var biaya_adm = $("#biaya_admin").val();
-        var status_simpan = $("#status_simpan").val();
-        var no_faktur_simpan = $("#no_faktur_simpan").val();        
-        var harga = $("#harga_produk").val();
 
         if (biaya_adm == '')
         {
@@ -4416,147 +4207,68 @@ function myFunction(event) {
          alert("Anda Belum Melakukan Transaksi");
          
          }
-  else if (sisa > 0) {
-
-      alert("Silakan Bayar Lunas!");
-
-  }
          
        else
-       { // else terakhir
+       {
 
        
 
- $.post("cek_subtotal_penjualan_inap.php",{total:total,no_reg:no_reg,potongan:potongan,tax:tax,biaya_adm:biaya_adm},function(data) {///$.post("cek_subtotal_penjualan_inap.php",
+ $.post("cek_subtotal_penjualan_inap.php",{total:total,no_reg:no_reg,potongan:potongan,tax:tax,biaya_adm:biaya_adm},function(data) {
 
-          if (data == 1) { // if (data == 1) 
+  if (data == 1) {
 
-              if (status_simpan == 'Simpan Sementara') {// if (status_simpan == 'Simpan Sementara')
+       $.post("proses_simpan_barang_ranap.php",{total2:total2,sisa_pembayaran:sisa_pembayaran,kredit:kredit,no_rm:no_rm,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,cara_bayar:cara_bayar,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,total_hpp:total_hpp,sales:sales,kode_gudang:kode_gudang,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,nama_pasien:nama_pasien,no_reg:no_reg,dokter:dokter,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,penjamin:penjamin,biaya_adm:biaya_adm,dokter_pj:dokter_pj,analis:analis},function(info) {
 
-                      var bayar = 'Simpan Sementara';
+if (info == 1)
+{
+    alert("Maaf Subtotal Penjualan Tidak Sesuai, Silakan Tunggu Sebentar! (2) ");       
+        window.location.href="form_penjualan_kasir_ranap.php";
+}
+else
+{       
+            $("#table-baru").html(info);
+            $("#alert_berhasil").show();
+            $("#pembayaran_penjualan").val('');
+            $("#sisa_pembayaran_penjualan").val('');
+            $("#kredit").val('');
+            $("#simpan_sementara").hide();
+            $("#potongan_penjualan").val('');
+            $("#potongan_persen").val('');
+            $("#tanggal_jt").val('');
+            $("#tax").val('');
 
-
-                     $.post("proses_bayar_simpan_ranap.php",{no_faktur:no_faktur_simpan,total2:total2,sisa_pembayaran:sisa_pembayaran,kredit:kredit,no_rm:no_rm,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,cara_bayar:cara_bayar,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,total_hpp:total_hpp,harga:harga,sales:sales,kode_gudang:kode_gudang,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,nama_pasien:nama_pasien,no_reg:no_reg,dokter:dokter,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,penjamin:penjamin,bed:bed,group_bed:group_bed,biaya_adm:biaya_adm,analis:analis,status_simpan:status_simpan,bayar:bayar},function(info) {/// $.post("proses_bayar_simpan_ranap.php",
-
-                      if (info == 1)// if (info == 1)
-                      {
-
-                          alert("Maaf Subtotal Penjualan Tidak Sesuai, Silakan Tunggu Sebentar! (2) ");       
-                              window.location.href="form_penjualan_kasir_ranap.php";
-
-                      }// if (info == 1)
-                      else
-                      {// else if (info == 1)
-
-
-                           $("#table-baru").html(info);
-                           $("#tabel-lab").html("");
-                           var no_faktur = info;
-                           $("#cetak_tunai").attr('href', 'cetak_penjualan_tunai.php?no_faktur='+no_faktur+'');
-                           $("#cetak_tunai_kategori").attr('href', 'cetak_penjualan_tunai_kategori.php?no_faktur='+no_faktur+'');
-                           $("#cetak_tunai_besar").attr('href', 'cetak_penjualan_tunai_besar_ranap.php?no_faktur='+no_faktur+'');
-                           $("#alert_berhasil").show();
-                           $("#pembayaran_penjualan").val('');
-                           $("#sisa_pembayaran_penjualan").val('');
-                           $("#kredit").val('');
-                           $("#cetak_tunai").show();
-                           $("#cetak_tunai_kategori").show();
-                           $("#cetak_tunai_besar").show();
-                           
-                           $("#tabel-operasi").hide();
-                           $("#tabel-lab").hide();
-                           $("#penjualan").hide();
-                           $("#simpan_sementara").hide();
-                           $("#batal_penjualan").hide();
-                           $("#cetak_langsung").hide();
-                           $("#piutang").hide();
-                           $("#transaksi_baru").show();
-                           $("#span_tbs").hide();
-                           $('#span_lab').hide();
-                            $('#span_operasi').hide();
-                           $("#dosis_obat").val('');
-                           $("#col_dosis").hide();
-                           
-                       }// else if (info == 1)
-                             
-                         });/// $.post("proses_bayar_simpan_ranap.php",
-
-              }// else // end  if (status_simpan == 'Simpan Sementara')
-              else
-              {// else // if (status_simpan == 'Simpan Sementara')
-                   $.post("proses_simpan_barang_ranap.php",{total2:total2,sisa_pembayaran:sisa_pembayaran,kredit:kredit,no_rm:no_rm,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,cara_bayar:cara_bayar,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,total_hpp:total_hpp,sales:sales,kode_gudang:kode_gudang,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,nama_pasien:nama_pasien,no_reg:no_reg,dokter:dokter,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,penjamin:penjamin,biaya_adm:biaya_adm,dokter_pj:dokter_pj,analis:analis,status_simpan:status_simpan},function(info) {//  $.post("proses_simpan_barang_ranap.php"
-
-                        if (info == 1)// if (info == 1)
-                        {
-                            alert("Maaf Subtotal Penjualan Tidak Sesuai, Silakan Tunggu Sebentar! (2) ");       
-                                window.location.href="form_penjualan_kasir_ranap.php";
-                        }// if (info == 1)
-                        else
-                        {   // else if (info == 1)    
-                                    $("#piutang").hide();
-                                    $("#simpan_sementara").hide();
-                                    $("#batal_penjualan").hide();
-                                    $("#penjualan").hide();
-                                    $("#transaksi_baru").show();
-                                    $("#pembayaran_penjualan").val('');
-                                    $("#sisa_pembayaran_penjualan").val('');
-                                    $("#kredit").val('');
-                                    $("#potongan_penjualan").val('');
-                                    $("#potongan_persen").val('');
-                                    $("#tanggal_jt").val('');
-                                    $("#total2").val('');
-                                    $("#total1").val('');
-                                    $("#biaya_admin_select").val('');
-                                    $("#biaya_adm").val('');
-                                    $("#no_rm").val('');
-                                    $("#no_reg").val('');
-                                    $("#asal_poli").val('');
-                                    $("#penjamin").val('');
-                                    $("#level_harga").val('');
-                                    $("#keterangan").val('');
-                                    $("#cetak_langsung").hide();
-                                    $("#transaksi_baru").show();
-                                    $("#cetak_tunai").hide();
-                                    $("#cetak_tunai_besar").hide();
-                                    $("#cetak_piutang").hide();
-                                    $("#cetak_tunai_kategori").hide(); 
-                                    $("#btnRujukLab").hide();    
-                                    $('#span_tbs').hide();
-                                    $('#span_lab').hide();            
-                                    $('#span_operasi').hide();
-
-                                    var url = window.location.href;
-                                     url = getPathFromUrl(url);
-                                    history.pushState('', 'Sim Klinik',  url);
-
-                                    function getPathFromUrl(url) {
-                                      return url.split("?")[0];
-                                    }
-
-
-                                    $("#alert_simpan_berhasil").show();
-                                    
-                         }    // else if (info == 1)  
+        $("#pembayaran_penjualan").val('');
+        $("#tabel-operasi").hide();
+        $("#simpan_sementara").hide();
+        $("#tabel-lab").hide();
+        $("#sisa_pembayaran_penjualan").val('');
+        $("#kredit").val('');
+        $("#piutang").hide();
+        $("#batal_penjualan").hide();
+        $("#cetak_langsung").hide();
+        $("#penjualan").hide();
+        $("#transaksi_baru").show();
+        $("#total1").val('');
+            
+ }      
        
-                        });//  $.post("proses_simpan_barang_ranap.php"
-                 }// else // if (status_simpan == 'Simpan Sementara')
+       });
 
-  }//  end if (data == 1) 
+  }
 
-  else{// else // if (data == 1) 
+  else{
     alert("Maaf Subtotal Penjualan Tidak Sesuai, Silakan Tunggu Sebentar! (1) ");       
         window.location.href="form_penjualan_kasir_ranap.php";
-  } //else // if (data == 1) 
+  }
 
- });///$.post("cek_subtotal_penjualan_inap.php",
+ });
 
 
        
-       }  // else terakhir
+       }  
        //mengambil no_faktur pembelian agar berurutan
 
-       });//   $("#simpan_sementara").click(function(){
-
+       });
  $("form").submit(function(){
        return false;
        });
@@ -4572,8 +4284,9 @@ function myFunction(event) {
                });
   </script>    
 
+-->
 
-<!--
+
 <script type="text/javascript">
 
   $(document).ready(function(){
@@ -4607,8 +4320,6 @@ function myFunction(event) {
               $(nRow).attr('bed', aData[9]);
               $(nRow).attr('kamar', aData[10]);
               $(nRow).attr('level_harga', aData[11]);
-              $(nRow).attr('status', aData[13]);
-              $(nRow).attr('no_faktur_simpan', aData[14]);
 
 
           }
@@ -4661,7 +4372,7 @@ function myFunction(event) {
     });
   });
 
-</script>-->
+</script>
 
 
 
@@ -4698,8 +4409,6 @@ function myFunction(event) {
               $(nRow).attr('bed', aData[9]);
               $(nRow).attr('kamar', aData[10]);
               $(nRow).attr('level_harga', aData[11]);
-              $(nRow).attr('status', aData[13]);
-              $(nRow).attr('no_faktur_simpan', aData[14]);
 
           }
 
@@ -5982,8 +5691,6 @@ var penjamin = $("#penjamin").val();
               $(nRow).attr('bed', aData[9]);
               $(nRow).attr('kamar', aData[10]);
               $(nRow).attr('level_harga', aData[11]);
-              $(nRow).attr('status', aData[13]);
-              $(nRow).attr('no_faktur_simpan', aData[14]);
 
           }
 

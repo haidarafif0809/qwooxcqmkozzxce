@@ -673,7 +673,7 @@ $query = $db->query("UPDATE bed SET sisa_bed = sisa_bed + 1 WHERE nama_kamar = '
 
     $tbs_detail_operasi_masuk = $db->query(" INSERT INTO history_tbs_detail_operasi (id_detail_operasi,id_user, id_sub_operasi, id_operasi, petugas_input, no_reg, waktu, id_tbs_operasi) SELECT id_detail_operasi,id_user, id_sub_operasi, id_operasi, petugas_input, no_reg, waktu, id_tbs_operasi FROM tbs_detail_operasi WHERE no_reg = '$no_reg'");
 
-    $tbs_operasi_masuk = $db->query("INSERT INTO history_tbs_operasi (sub_operasi,petugas_input, no_reg, harga_jual, operasi, waktu) SELECT sub_operasi,petugas_input, no_reg, harga_jual, operasi, waktu FROM tbs_operasi WHERE no_reg = '$no_reg' ");
+    $tbs_operasi_masuk = $db->query(" INSERT INTO history_tbs_operasi (sub_operasi,petugas_input, no_reg, harga_jual, operasi, waktu) SELECT sub_operasi,petugas_input, no_reg, harga_jual, operasi, waktu FROM tbs_operasi WHERE no_reg = '$no_reg' ");
 
 
     $tbs_penjualan_hapus = $db->query("DELETE  FROM tbs_penjualan WHERE no_reg = '$no_reg' ");

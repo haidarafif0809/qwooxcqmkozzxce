@@ -615,8 +615,35 @@ $obat = $otoritas_produk['tipe_obat'];
                 <h6 style="text-align: left ; color: red"><i> * Klik 2x pada kolom jumlah barang jika ingin mengedit.</i></h6>
                 <h6 style="text-align: left ;"><i><b> * Short Key (F2) untuk mencari Kode Produk atau Nama Produk.</b></i></h6>
 
-  
+
+<button class="btn btn-primary" id="btnLab" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample"><i class='fa fa-stethoscope'> </i>
+Laboratorium  </button>
+
+<div class="collapse" id="collapseExample">
+    <span id="span_lab">
+          <div class="table-responsive">
+              <table id="tabel_tbs_lab" class="table table-bordered table-sm">
+                    <thead> <!-- untuk memberikan nama pada kolom tabel -->
+                              
+                        <th> Kode  </th>
+                        <th> Nama </th>
+                        <th> Nama Petugas</th>
+                        <th> Jumlah </th>
+                        <th> Harga </th>
+                        <th> Subtotal </th>
+                        <th> Potongan </th>
+                        <th> Pajak </th>
+                          
+                    </thead> <!-- tag penutup tabel -->
+              </table>
+          </div>
+    </span>
+</div>
+
+
 </div> <!-- / END COL SM 6 (1)-->
+
+
 
 
 
@@ -1322,6 +1349,53 @@ var penjamin = $("#penjamin").val();
   });
 // END JATUH TEMPO
 
+//start Perbaruan TBS LABORATORIUM
+$('#tabel_tbs_lab').DataTable().destroy();
+          var dataTable = $('#tabel_tbs_lab').DataTable( {
+            "processing": true,
+            "serverSide": true,
+            "info":     false,
+            "language": { "emptyTable":     "My Custom Message On Empty Table" },
+            "ajax":{
+              url :"data_tbs_lab.php", // json datasource
+               "data": function ( d ) {
+                  d.no_reg = $("#no_reg").val();
+                  // d.custom = $('#myInput').val();
+                  // etc
+              },
+                  type: "post",  // method  , by default get
+              error: function(){  // error handling
+                $(".tbody").html("");
+                $("#tabel_tbs_lab").append('<tbody class="tbody"><tr><th colspan="3"></th></tr></tbody>');
+                $("#tableuser_processing").css("display","none");
+                
+              }
+            } 
+          });
+//ENDING Perbaruan TBS LABORATORIUM
+
+//Start Cek Hasil Laboratorium
+var pasien = $("#nama_pasien").val();
+$.post("cek_setting_laboratorium.php",{no_reg:no_reg},function(data){
+  if(data == 1){
+    $("#penjualan").hide();
+     $("#simpan_sementara").hide();
+     $("#batal_penjualan").hide(); 
+     $("#cetak_langsung").hide();
+     $("#piutang").hide();
+    alert("Pasien atas nama ("+pasien+") Hasil laboratorium belum di isi!");
+
+  }
+  else
+  {
+     $("#penjualan").show();
+     $("#simpan_sementara").show();
+     $("#batal_penjualan").show(); 
+     $("#cetak_langsung").show();
+     $("#piutang").show();
+  }
+});
+//End Cek Hasil Laboratorium
 
 });
  </script>
@@ -4652,5 +4726,37 @@ $(document).ready(function(){
     }); 
 </script>
 
+<script type="text/javascript" language="javascript" >
+$(document).ready(function() {
+  $(document).on('click', '#btnLab', function (e) {
+
+      $('#tabel_tbs_lab').DataTable().destroy();
+          var dataTable = $('#tabel_tbs_lab').DataTable( {
+            "processing": true,
+            "serverSide": true,
+            "info":     false,
+            "language": { "emptyTable":     "My Custom Message On Empty Table" },
+            "ajax":{
+              url :"data_tbs_lab.php", // json datasource
+               "data": function ( d ) {
+                  d.no_reg = $("#no_reg").val();
+                  // d.custom = $('#myInput').val();
+                  // etc
+              },
+                  type: "post",  // method  , by default get
+              error: function(){  // error handling
+                $(".tbody").html("");
+                $("#tabel_tbs_lab").append('<tbody class="tbody"><tr><th colspan="3"></th></tr></tbody>');
+                $("#tableuser_processing").css("display","none");
+                
+              }
+            } 
+          });
+        
+    $("#span_lab").show()
+  });
+});
+
+</script>
 
 <?php include 'footer.php'; ?>
