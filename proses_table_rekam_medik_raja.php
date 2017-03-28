@@ -5,7 +5,7 @@ include 'db.php';
 /* Database connection end */
 
 
-$pilih_akses_rekam_medik = $db->query("SELECT rekam_medik_rj_lihat, rekam_medik_rj_tambah, rekam_medik_rj_edit, rekam_medik_rj_hapus FROM otoritas_rekam_medik WHERE id_otoritas = '$_SESSION[otoritas_id]'");
+$pilih_akses_rekam_medik = $db->query("SELECT rekam_medik_rj_lihat  FROM otoritas_rekam_medik WHERE id_otoritas = '$_SESSION[otoritas_id]'");
 $rekam_medik = mysqli_fetch_array($pilih_akses_rekam_medik);
 
 
@@ -30,8 +30,8 @@ $columns = array(
 
 // getting total number records without any search
 $sql = "SELECT COUNT(*) AS jumlah_data ";
-$sql.=" FROM rekam_medik INNER JOIN registrasi ON rekam_medik.no_reg = registrasi.no_reg";
-$sql.=" WHERE registrasi.status != 'Batal Rawat' AND registrasi.status != 'Rujuk Keluar Klinik Tidak Ditangani' AND rekam_medik.status IS NULL  ";
+$sql.=" FROM rekam_medik";
+$sql.=" WHERE rekam_medik.status IS NULL  ";
 $sql.=" ORDER BY rekam_medik.tanggal_periksa DESC ";
 $query = mysqli_query($conn, $sql) or die("proses_table_rekam_medik_raja.php: get employees");
 $query_data = mysqli_fetch_array($query);
@@ -41,10 +41,8 @@ $totalFiltered = $totalData;  // when there is no search parameter then total nu
 
 $sql = "SELECT rekam_medik.no_reg, rekam_medik.no_rm, rekam_medik.nama, rekam_medik.alamat,
   rekam_medik.umur, rekam_medik.jenis_kelamin, rekam_medik.poli, rekam_medik.dokter, rekam_medik.jam, rekam_medik.tanggal_periksa,rekam_medik.id";
-$sql.=" FROM rekam_medik INNER JOIN registrasi ON rekam_medik.no_reg = registrasi.no_reg";
+$sql.=" FROM rekam_medik ";
 $sql.=" WHERE 1=1 ";
-$sql.=" AND registrasi.status != 'Batal Rawat' ";
-$sql.=" AND registrasi.status != 'Rujuk Keluar Klinik Tidak Ditangani' ";
 $sql.=" AND rekam_medik.status IS NULL ";
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
 	$sql.=" AND ( rekam_medik.no_reg LIKE '".$requestData['search']['value']."%' ";    
@@ -80,26 +78,17 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 	$nestedData[] = $row["tanggal_periksa"];
 
  if ($rekam_medik['rekam_medik_rj_lihat'] > 0) 
- 	{//if ($rekam_medik['rekam_medik_rj_lihat'] > 0) 
-	      $nestedData[] = "<a href='input_rekammedik_raja.php?no_reg=".$row['no_reg']."&tgl=".$row['tanggal_periksa']."&jam=".$row['jam']."' class='btn-floating btn-info btn-small'><i class='fa fa-medkit '></i></a>";
-	            
-        $table23 = $db->query("SELECT status FROM penjualan WHERE no_reg = '$row[no_reg]' ");
-        $data_penj = mysqli_fetch_array($table23);
-
-        if ( $data_penj['status'] == 'Lunas' OR $data_penj['status'] == 'Piutang'  OR  $data_penj['status'] == 'Piutang Apotek' )
-        {
-        	$nestedData[] = "<a href='selesai_rj.php?no_reg=".$row['no_reg']."' class='btn-floating btn-info btn-small'><i class='fa  fa-check'></i> </a>";
-        }
-         else
-        {
-          $nestedData[] = "";
-        }
-        
-	}//if ($rekam_medik['rekam_medik_rj_lihat'] > 0) 
-	else{
+	{
+		   $nestedData[] = "<a href='input_rekammedik_raja.php?no_reg=".$row['no_reg']."&tgl=".$row['tanggal_periksa']."&jam=".$row['jam']."' class='btn-floating btn-info btn-small'><i class='fa fa-medkit '></i></a>";
+		
+	        $nestedData[] = "<a href='selesai_rj.php?no_reg=".$row['no_reg']."' class='btn-floating btn-info btn-small'><i class='fa  fa-check'></i> </a>";
+	              
+	}
+	else
+	{
        $nestedData[] = "";
        $nestedData[] = "";
-      }
+    }
 
 
 	$data[] = $nestedData;

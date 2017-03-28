@@ -4,7 +4,7 @@ include 'navbar.php';
 include 'db.php';
 include_once 'sanitasi.php';
 
-$pilih_akses_rekam_medik = $db->query("SELECT rekam_medik_ri_lihat, rekam_medik_ri_tambah, rekam_medik_ri_edit, rekam_medik_ri_hapus FROM otoritas_rekam_medik WHERE id_otoritas = '$_SESSION[otoritas_id]'");
+$pilih_akses_rekam_medik = $db->query("SELECT rekam_medik_ri_tambah FROM otoritas_rekam_medik WHERE id_otoritas = '$_SESSION[otoritas_id]'");
 $rekam_medik = mysqli_fetch_array($pilih_akses_rekam_medik);
 
  ?>

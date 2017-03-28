@@ -7,8 +7,6 @@ include 'navbar.php';
 include 'db.php';
 include 'sanitasi.php';
 
-//menampilkan seluruh data yang ada pada tabel pembelian
-$perintah = $db->query("SELECT * FROM retur_pembelian");
 
 $session_id = session_id();
 
@@ -50,7 +48,7 @@ $session_id = session_id();
                         <?php 
                         
                         // menampilkan seluruh data yang ada pada tabel suplier
-                        $query = $db->query("SELECT * FROM suplier");
+                        $query = $db->query("SELECT id,nama FROM suplier");
                         
                         // menyimpan data sementara yang ada pada $query
                         while($data = mysqli_fetch_array($query))
@@ -1468,57 +1466,7 @@ var pot_fakt_per = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#p
 //end fungsi hapus data
 </script>
       
-       <script type="text/javascript">
-  
-        $(document).ready(function(){
-        $("#kode_barang").blur(function(){
-          var kode_barang = $("#kode_barang").val();
-          var kode_barang = kode_barang.substr(0, kode_barang.indexOf('('));
-          var kode_barang = kode_barang.substr(0, kode_barang.indexOf('('));
-          $("#jumlah_barang").val(kode_barang);
-          var session_id = $("#session_id").val();
-          var no_faktur_pembelian = $("#no_faktur2").val();
-
-            $.post('cek_kode_barang_tbs_retur_pembelian.php',{kode_barang:kode_barang,session_id:session_id,no_faktur_pembelian:no_faktur_pembelian}, function(data){
-            
-            if(data == 1){
-            alert("Anda Tidak Bisa Menambahkan Barang Yang Sudah Ada, Silakan Edit atau Pilih Barang Yang Lain !");
-            $("#kode_barang").val('');
-            $("#nama_barang").val('');
-            }//penutup if
-            
-            });////penutup function(data)
-
-
-      $.getJSON('lihat_retur_pembelian.php',{kode_barang:kode_barang}, function(json){
-      
-      if (json == null)
-      {
-        
-                $('#nama_barang').val('');
-                $('#jumlahbarang').val('');
-                $('#satuan_produk').val('');
-                $('#harga_produk').val('');
-                $('#no_faktur2').val('');
-                $('#sisabarang').val('');
-      }
-
-      else 
-      {
-        $('#nama_barang').val(json.nama_barang);
-        $('#jumlahbarang').val(json.jumlah_barang);
-        $('#satuan_produk').val(json.satuan);
-        $('#harga_produk').val(json.harga);
-        $('#no_faktur2').val(json.no_fakturhidden);
-        $('#sisabarang').val(json.sisa);
-      }
-                                              
-        });
-        
-        });
-        });
-  
-</script>
+       
 
   <script type="text/javascript">
 //berfunsi untuk mencekal username ganda
