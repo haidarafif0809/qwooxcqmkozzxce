@@ -2,8 +2,8 @@
 include 'db.php';
 include 'sanitasi.php';
 
-echo $no_reg = stringdoang($_POST['reg']);
-echo $keterangan = stringdoang($_POST['keterangan']);
+ $no_reg = stringdoang($_POST['reg']);
+ $keterangan = stringdoang($_POST['keterangan']);
 
 $select = $db->query("SELECT no_faktur FROM penjualan WHERE no_reg = '$no_reg'");
 $taked = mysqli_num_rows($select);

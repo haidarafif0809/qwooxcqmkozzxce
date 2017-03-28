@@ -4,13 +4,8 @@ include 'navbar.php';
 include 'db.php';
 include_once 'sanitasi.php';
 
-$db->query("SET SQL_BIG_SELECTS=1");
 
-
-$query = $db->query("SELECT rekam_medik_ugd.no_reg, rekam_medik_ugd.no_rm, rekam_medik_ugd.nama, rekam_medik_ugd.alamat,
-rekam_medik_ugd.umur, rekam_medik_ugd.jenis_kelamin, rekam_medik_ugd.alergi, rekam_medik_ugd.dokter, rekam_medik_ugd.jam, rekam_medik_ugd.tanggal, rekam_medik_ugd.id FROM rekam_medik_ugd INNER JOIN registrasi ON rekam_medik_ugd.no_reg = registrasi.no_reg WHERE registrasi.status != 'Batal UGD' AND rekam_medik_ugd.status IS NULL ORDER BY rekam_medik_ugd.id DESC ");
-
-$pilih_akses_rekam_medik = $db->query("SELECT rekam_medik_ugd_lihat, rekam_medik_ugd_tambah, rekam_medik_ugd_edit, rekam_medik_ugd_hapus FROM otoritas_rekam_medik WHERE id_otoritas = '$_SESSION[otoritas_id]'");
+$pilih_akses_rekam_medik = $db->query("SELECT rekam_medik_ugd_tambah FROM otoritas_rekam_medik WHERE id_otoritas = '$_SESSION[otoritas_id]'");
 $rekam_medik = mysqli_fetch_array($pilih_akses_rekam_medik);
 
  ?>
