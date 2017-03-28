@@ -5,17 +5,17 @@ include 'sanitasi.php';
 include 'db.php';
 
 
-$no_faktur_retur = $_SESSION['no_faktur_retur'];
+    $no_faktur_retur = $_SESSION['no_faktur_retur'];
 
-$perintah = $db->query("SELECT p.id,p.no_faktur_retur,p.nama_suplier,s.nama FROM retur_pembelian p INNER JOIN suplier s ON p.nama_suplier = s.id ORDER BY p.id DESC ");
+    $perintah = $db->query("SELECT s.nama FROM retur_pembelian p INNER JOIN suplier s ON p.nama_suplier = s.id ORDER BY p.id DESC ");
 
-$data001 = mysqli_fetch_array($perintah);
+    $data001 = mysqli_fetch_array($perintah);
 
 
-    $query0 = $db->query("SELECT * FROM retur_pembelian WHERE no_faktur_retur = '$no_faktur_retur' ");
+    $query0 = $db->query("SELECT no_faktur_retur, tanggal  ,total,potongan,tax,total,tunai,sisa FROM retur_pembelian WHERE no_faktur_retur = '$no_faktur_retur' ");
     $data0 = mysqli_fetch_array($query0);
 
-    $query1 = $db->query("SELECT * FROM perusahaan ");
+    $query1 = $db->query("SELECT foto,nama_perusahaan,alamat_perusahaan, no_telp FROM perusahaan ");
     $data1 = mysqli_fetch_array($query1);
 
     $query2 = $db->query("SELECT SUM(subtotal) as j_subtotal FROM detail_retur_pembelian WHERE no_faktur_retur = '$no_faktur_retur' ");
@@ -29,6 +29,13 @@ $data001 = mysqli_fetch_array($perintah);
 
 
  ?>
+
+ <style type="text/css">
+  
+  .rata-kanan {
+    text-align: right;
+  }
+</style>
 
 <div class="container">
     
@@ -84,9 +91,9 @@ $data001 = mysqli_fetch_array($perintah);
            <th> Satuan </th>
            <th> Harga </th>
            <th> Potongan </th>
-           <th> Total </th>
+            <th> Tax </th>
            <th> Subtotal </th>
-           <th> Tax </th>
+          
            
             
         </thead>
@@ -94,7 +101,7 @@ $data001 = mysqli_fetch_array($perintah);
         <tbody>
         <?php
 
-            $query5 = $db->query("SELECT * FROM detail_retur_pembelian WHERE no_faktur_retur = '$no_faktur_retur' ");
+            $query5 = $db->query("SELECT kode_barang,nama_barang,jumlah_retur,harga,potongan,subtotal,tax,satuan.nama AS satuan FROM detail_retur_pembelian INNER JOIN satuan ON detail_retur_pembelian.satuan = satuan.id WHERE no_faktur_retur = '$no_faktur_retur' ");
             //menyimpan data sementara yang ada pada $perintah
             while ($data5 = mysqli_fetch_array($query5))
             {
@@ -106,13 +113,13 @@ $data001 = mysqli_fetch_array($perintah);
             echo "<tr>
                 <td>". $data5['kode_barang'] ."</td>
                 <td>". $data5['nama_barang'] ."</td>
-                <td>". $data5['jumlah_retur'] ."</td>
-                <td>". $cek['satuan'] ."</td>
-                <td>". rp($data5['harga']) ."</td>
-                <td>". rp($data5['potongan']) ."</td>
-                <td>". rp($data0['total']) ."</td>
-                <td>". rp($data5['subtotal']) ."</td>
-                <td>". rp($data5['tax']) ."</td>
+                <td class='rata-kanan'>". $data5['jumlah_retur'] ."</td>
+                <td>". $data5['satuan'] ."</td>
+                <td class='rata-kanan'>". rp($data5['harga']) ."</td>
+                <td class='rata-kanan'>". rp($data5['potongan']) ."</td>
+                <td class='rata-kanan'>". rp($data5['tax']) ."</td>
+                <td class='rata-kanan'>". rp($data5['subtotal']) ."</td>
+                
             <tr>";
 
             }
@@ -134,7 +141,7 @@ mysqli_close($db);
 <table>
   <tbody>
     <tr><td>Jumlah Retur</td> <td>:&nbsp;</td><td><?php echo $j_retur; ?></td></tr>
-    <tr><td>Potongan</td> <td>:&nbsp;</td><td><?php echo rp($data0['potongan']); ?></td></tr>
+    <tr><td>Potongan (Faktur)</td> <td>:&nbsp;</td><td><?php echo rp($data0['potongan']); ?></td></tr>
     <tr><td>Tax</td> <td>:&nbsp;</td><td><?php echo rp($data0['tax']); ?></td></tr>
   </tbody>
 </table>    
