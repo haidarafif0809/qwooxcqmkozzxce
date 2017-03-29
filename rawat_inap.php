@@ -243,12 +243,12 @@ opacity: 0.9;
     <div class="col-sm-6">
 
         <div class="form-group">
-          <label for="">Bed</label>
+          <label for="">Kode Kamar</label>
           <input style="height: 20px;" type="text" class="form-control" name="lab_bed" readonly="" autocomplete="off" id="lab_bed" placeholder=" No Reg">
         </div>
 
         <div class="form-group">
-          <label for="">Kamar</label>
+          <label for="">Nama Kamar</label>
           <input type="text" class="form-control" name="lab_kamar" readonly="" autocomplete="off" id="lab_kamar" placeholder=" No Reg">
         </div>
 

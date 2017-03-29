@@ -694,18 +694,17 @@ Level 7
            <input style="height:25px;font-size:15px" type="text" name="total" id="total2" class="form-control" placeholder="Total" readonly="" >
         </div>
 
-                  <?php
-                  $ambil_diskon_tax = $db->query("SELECT * FROM setting_diskon_tax");
+            <?php
+            $ambil_diskon_tax = $db->query("SELECT diskon_persen,diskon_nominal,tax FROM setting_diskon_tax");
                   $data_diskon = mysqli_fetch_array($ambil_diskon_tax);
-
-                  ?>
+            ?>
 
         <div class="col-xs-6">
             <label>Biaya Admin </label><br>
               <select class="form-control chosen" id="biaya_admin_select" name="biaya_admin_select" >
               <option value="0"> Silahkan Pilih </option>
                 <?php 
-                $get_biaya_admin = $db->query("SELECT * FROM biaya_admin");
+                $get_biaya_admin = $db->query("SELECT persentase,nama FROM biaya_admin");
                 while ( $take_admin = mysqli_fetch_array($get_biaya_admin))
                 {
                 echo "<option value='".$take_admin['persentase']."'>".$take_admin['nama']."</option>";
@@ -857,7 +856,7 @@ Level 7
           </div>
 
                   <?php
-                  $ambil_diskon_tax = $db->query("SELECT * FROM setting_diskon_tax");
+                  $ambil_diskon_tax = $db->query("SELECT diskon_nominal,diskon_persen,tax FROM setting_diskon_tax");
                   $data_diskon = mysqli_fetch_array($ambil_diskon_tax);
 
                   ?>
@@ -1167,16 +1166,8 @@ $(document).ready(function(){
 <script type="text/javascript">
   // Rawat jalan
   $(document).on('click','#raja',function(e){
-    var no_reg = $("#no_reg").val();
-    var nama_pasien = $("#nama_pelanggan").val();
-    var no_rm = $("#no_rm").val();
-    var penjamin = $("#penjamin").val();
-    var dokter = $("#dokter").val();
-    var level_harga = $("#level_harga").val();
-    var poli = $("#asal_poli").val();
-    var analis = $("#apoteker").val();
 
-    window.location.href="form_penjualan_kasir.php?no_reg="+no_reg+"&nama_pasien="+nama_pasien+"&no_rm="+no_rm+"&penjamin="+penjamin+"&dokter="+dokter+"&level_harga="+level_harga+"&poli="+poli+"&analis="+analis+"";
+    window.location.href="pasien_sudah_masuk.php";
 
   });
 

@@ -26,11 +26,11 @@ $perintah = $db->query("SELECT id,nama FROM setting_laboratorium ORDER BY id DES
 			//karena setting INT 1 & 0 maka digunakan if agar menampilkan karakter
 			if ($data1['nama'] == 1)
 			{
-				$nama = 'Dihubungkan';
+				$nama = 'Input Hasil Baru Bayar';
 			}
-			else
+			else 
 			{
-				$nama = 'Tidak dihubungkan';
+				$nama = 'Bayar Dulu Baru Input Hasil';
 			}
 			//menampilkan data
 			

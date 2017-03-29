@@ -73,12 +73,12 @@ $kamar = stringdoang($_GET['kamar']);
 	       </div>
 
         <div class="col-sm-2">
-            <label>Bed</label>
+            <label>Kode Kamar</label>
             <input type="text" value="<?php echo $bed ?>" class="form-control" name="bed" autocomplete="off" id="bed" readonly="" placeholder="Bed">
         </div>
 
         <div class="col-sm-3">
-            <label>Kamar</label>
+            <label>Nama Kamar</label>
             <input type="text" value="<?php echo $kamar ?>" class="form-control" name="kamar" autocomplete="off" id="kamar" readonly="" placeholder="Kamar">
         </div>
 

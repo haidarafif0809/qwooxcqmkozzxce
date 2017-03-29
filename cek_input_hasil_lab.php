@@ -9,7 +9,7 @@ $jenis_penjualan = stringdoang($_GET['jenis_penjualan']);
 
 
 
-$perintah3 = $db->query("SELECT * FROM tbs_hasil_lab WHERE no_reg = '$no_reg' ");
+$perintah3 = $db->query("SELECT hasil_pemeriksaan,no_reg FROM tbs_hasil_lab WHERE no_reg = '$no_reg' ");
 $data1 = mysqli_num_rows($perintah3);
 
 if ($data1 > 0)
@@ -66,6 +66,7 @@ if($out_data > 0 AND $datanya != '')
 else
   	{
 
+
 //Proses untuk Input Jasanya jika bukan Header Laboratorium
 $query6 = "INSERT INTO tbs_hasil_lab (satuan_nilai_normal,model_hitung,
 no_rm,no_reg,id_pemeriksaan,nilai_normal_lk,nilai_normal_pr,
@@ -84,6 +85,18 @@ status_pasien,nama_pemeriksaan,normal_lk2,normal_pr2,kode_barang) VALUES
 	      }
   	}
   }
+
+  	//Start untuk yang sudah ada hasilnya
+ 	$hasil_lab = $db->query("SELECT id_pemeriksaan,hasil_pemeriksaan,kode_barang FROM hasil_lab WHERE kode_barang = '$kode_barang' AND no_reg = '$no_reg'");
+	$loot = mysqli_num_rows($hasil_lab);
+	if($loot > 0)
+	{
+		while($get_hasil = mysqli_fetch_array($hasil_lab))
+		{
+			$update_hasil = $db->query("UPDATE tbs_hasil_lab SET hasil_pemeriksaan = '$get_hasil[hasil_pemeriksaan]' WHERE kode_barang = '$get_hasil[kode_barang]' AND id_pemeriksaan = '$get_hasil[id_pemeriksaan]'AND no_reg = '$no_reg'");
+		}
+	}//akhir untuk yang sudah ada hasilnya
+
 }// end while awal!!
 
 //NOTE* BAGIAN ATAS INSERT DARI TBS , DAN BAGIAN BAWAH INSERT DETAIL YANG INDUX (HEADER)-NYA ADA DI TBS PENJUALAN !!
@@ -144,8 +157,20 @@ else
   	//under while 3x
   }
  }
+		//Start untuk yang sudah ada hasilnya
+		$hasil_lab = $db->query("SELECT id_pemeriksaan,hasil_pemeriksaan,kode_barang FROM hasil_lab WHERE kode_barang = '$kode_barang' AND no_reg = '$no_reg'");
+		$loot = mysqli_num_rows($hasil_lab);
+		if($loot > 0)
+		{
+			while($get_hasil = mysqli_fetch_array($hasil_lab))
+			{
+			$update_hasil = $db->query("UPDATE tbs_hasil_lab SET hasil_pemeriksaan = '$get_hasil[hasil_pemeriksaan]' WHERE kode_barang = '$get_hasil[kode_barang]' AND id_pemeriksaan = '$get_hasil[id_pemeriksaan]'AND no_reg = '$no_reg'");
+			}
+		}//akhir untuk yang sudah ada hasilnya
+
 }
 //Ending Proses untuk input Header and Detail Jasa Laboratorium
+
 
 echo '<META HTTP-EQUIV="Refresh" Content="0; URL=hasil_laboratorium.php?no_rm='.$no_rm.'&no_reg='.$no_reg.'&nama='.$nama.'&jenis_penjualan='.$jenis_penjualan.'">';
 //Untuk Memutuskan Koneksi Ke Database
