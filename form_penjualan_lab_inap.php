@@ -1208,19 +1208,8 @@ $(document).ready(function(){
 
   //Rawat Inap
    $(document).on('click','#ranap',function(e){
-     var no_reg = $("#no_reg").val();
-    var nama_pasien = $("#nama_pelanggan").val();
-    var no_rm = $("#no_rm").val();
-    var penjamin = $("#penjamin").val();
-    var dokter = $("#dokter").val();
-    var level_harga = $("#level_harga").val();
-    var poli = $("#asal_poli").val();
-    var dokter_pj = $("#dokter_pj").val();
-    var bed = $("#bed").val();
-    var kamar = $("#kamar").val();
-    var analis = $("#apoteker").val();
 
-    window.location.href="form_penjualan_kasir_ranap.php?no_reg="+no_reg+"&nama_pasien="+nama_pasien+"&no_rm="+no_rm+"&penjamin="+penjamin+"&dokter="+dokter+"&level_harga="+level_harga+"&poli="+poli+"&bed="+bed+"&kamar="+kamar+"&analis="+analis+"&analis="+analis+"";
+    window.location.href="rawat_inap.php";
 
   });
 

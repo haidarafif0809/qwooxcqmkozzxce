@@ -38,7 +38,7 @@ while($out = mysqli_fetch_array($select))
 		'$jenis_penjualan','Selesai','$no_rm','$no_reg','$nama','$tanggal',
 		'$jam','$out[model_hitung]','$out[satuan_nilai_normal]',
 		'$dokter','$analis','$out[id_sub_header]','$out[normal_lk2]',
-		'$out[normal_pr2]','$no_periksa','$kode_barang')";
+		'$out[normal_pr2]','$no_periksa','$out[kode_barang]')";
 
 	  if ($db->query($input) === TRUE)
       {

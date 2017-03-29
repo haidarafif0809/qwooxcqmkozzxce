@@ -1167,16 +1167,8 @@ $(document).ready(function(){
 <script type="text/javascript">
   // Rawat jalan
   $(document).on('click','#raja',function(e){
-    var no_reg = $("#no_reg").val();
-    var nama_pasien = $("#nama_pelanggan").val();
-    var no_rm = $("#no_rm").val();
-    var penjamin = $("#penjamin").val();
-    var dokter = $("#dokter").val();
-    var level_harga = $("#level_harga").val();
-    var poli = $("#asal_poli").val();
-    var analis = $("#apoteker").val();
 
-    window.location.href="form_penjualan_kasir.php?no_reg="+no_reg+"&nama_pasien="+nama_pasien+"&no_rm="+no_rm+"&penjamin="+penjamin+"&dokter="+dokter+"&level_harga="+level_harga+"&poli="+poli+"&analis="+analis+"";
+    window.location.href="pasien_sudah_masuk.php";
 
   });
 

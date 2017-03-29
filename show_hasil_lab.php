@@ -7,6 +7,7 @@ $no_faktur = $_POST['no_faktur'];
 
 
 
+
 ?>
 
 <div class="container">				
@@ -15,8 +16,7 @@ $no_faktur = $_POST['no_faktur'];
         <thead>
            <th> Nama Pemeriksaan </th>
            <th> Hasil Pemeriksaan </th>
-           <th> Nilai Normal Pria </th>
-           <th> Nilai Normal Wanita </th>
+           <th> Nilai Normal  </th>
            <th> Status Rawat </th>
            
             
@@ -28,6 +28,10 @@ $no_faktur = $_POST['no_faktur'];
 $detail = $db->query("SELECT * FROM hasil_lab WHERE no_faktur = '$no_faktur' GROUP BY id_sub_header");
 while($drop_master = mysqli_fetch_array($detail))
 {
+
+$take_gander = $db->query("SELECT jenis_kelamin FROM registrasi WHERE no_reg = '$drop_master[no_reg]'");
+$out_gander = mysqli_fetch_array($take_gander);
+$jenis_kelamin = $out_gander['jenis_kelamin'];
 
   $select = $db->query("SELECT id,nama_pemeriksaan FROM setup_hasil WHERE id = '$drop_master[id_sub_header]' AND kategori_index = 'Header'");
   $drop = mysqli_fetch_array($select);
@@ -60,7 +64,6 @@ if($face_drop >= 1)
                 <td><center>-</center></td>
                 <td><center>-</center></td>
                 <td><center>-</center></td>
-                <td><center>-</center></td>
 
     </tr>";
 
@@ -79,45 +82,79 @@ if($face_drop >= 1)
         {
             echo "
             <td>&nbsp; ". '-' ." </td>
-            <td>&nbsp; ". '-'." </td>
             ";
         }
         else
         {
-          switch ($model_hitung) {
-          case "Lebih Kecil Dari":
-          echo "<td>&lt;&nbsp; ". $take['nilai_normal_lk']."&nbsp;". $take['satuan_nilai_normal']." </td>
-          <td>&lt;&nbsp; ". $take['nilai_normal_pr']."&nbsp;". $take['satuan_nilai_normal']." </td>";
-          
-          break;
-          case "Lebih Kecil Sama Dengan":
-          echo "<td>&lt;=&nbsp; ". $take['nilai_normal_lk']."&nbsp;". $take['satuan_nilai_normal']." </td>
-          <td>&lt;=&nbsp; ". $take['nilai_normal_pr']."&nbsp;". $take['satuan_nilai_normal']." </td>";
-
-          break;
-          case "Lebih Besar Dari":
-          echo "<td>&gt;&nbsp; ". $take['nilai_normal_lk']."&nbsp;". $take['satuan_nilai_normal']." </td>
-          <td>&gt;&nbsp; ". $take['nilai_normal_pr']."&nbsp;". $take['satuan_nilai_normal']." </td>";
-
-          break;
+  if($jenis_kelamin == 'laki-laki'){
+    switch ($model_hitung) {
+    case "Lebih Kecil Dari":
+        echo "<td>&lt;&nbsp; ". $take['nilai_normal_lk']."&nbsp;". $take['satuan_nilai_normal']." </td>
+        ";
+        break;
+    case "Lebih Kecil Sama Dengan":
+        echo "<td>&lt;=&nbsp; ". $take['nilai_normal_lk']."&nbsp;". $take['satuan_nilai_normal']." </td>
+        ";
+        break;
+    case "Lebih Besar Dari":
+        echo "<td>&gt;&nbsp; ". $take['nilai_normal_lk']."&nbsp;". $take['satuan_nilai_normal']." </td>
+        ";
+        break;
           case "Lebih Besar Sama Dengan":
-          echo "<td>&gt;=&nbsp; ". $take['nilai_normal_lk']."&nbsp;". $take['satuan_nilai_normal']." </td>
-          <td>&gt;=&nbsp; ". $take['nilai_normal_pr']."&nbsp;". $take['satuan_nilai_normal']." </td>";
-
-          break;
+        echo "<td>&gt;=&nbsp; ". $take['nilai_normal_lk']."&nbsp;". $take['satuan_nilai_normal']." </td>
+        ";
+        break;
           case "Antara Sama Dengan":
-          echo "<td>". $take['nilai_normal_lk']."&nbsp;-&nbsp; ". $take['nilai_normal_lk2']."&nbsp;". $take['satuan_nilai_normal']." </td>
-          <td>". $take['nilai_normal_pr']."&nbsp;-&nbsp; ". $take['nilai_normal_pr2']."&nbsp;". $take['satuan_nilai_normal']."</td>";
-                            
-          break;
-          //Text
-          case "Text":
-          echo "<td>&nbsp; ". $take['nilai_normal_lk']."&nbsp;". $take['satuan_nilai_normal']." </td>
-          <td>&nbsp; ". $take['nilai_normal_pr']."&nbsp;". $take['satuan_nilai_normal']." </td>";
-          break;
-          //End Text
+        echo "<td>". $take['nilai_normal_lk']."&nbsp;-&nbsp; ". $take['normal_lk2']."&nbsp;". $take['satuan_nilai_normal']." </td>
+        ";
+        break;
 
-                } 
+        //Text
+        case "Text":
+        echo "<td>&nbsp; ". $take['nilai_normal_lk']."&nbsp;". $take['satuan_nilai_normal']." </td>
+        ";
+        break;
+        //End Text
+    } 
+  }
+  else{
+    switch ($model_hitung) {
+    case "Lebih Kecil Dari":
+        echo "
+        <td>&lt;&nbsp; ". $take['nilai_normal_pr']."&nbsp;". $take['satuan_nilai_normal']." </td>
+        ";
+        break;
+    case "Lebih Kecil Sama Dengan":
+        echo "
+        <td>&lt;=&nbsp; ". $take['nilai_normal_pr']."&nbsp;". $take['satuan_nilai_normal']." </td>
+        ";
+        break;
+    case "Lebih Besar Dari":
+        echo "
+        <td>&gt;&nbsp; ". $take['nilai_normal_pr']."&nbsp;". $take['satuan_nilai_normal']." </td>
+        ";
+        break;
+          case "Lebih Besar Sama Dengan":
+        echo "
+        <td>&gt;=&nbsp; ". $take['nilai_normal_pr']."&nbsp;". $take['satuan_nilai_normal']." </td>
+        ";
+        break;
+          case "Antara Sama Dengan":
+        echo "
+        <td>". $take['nilai_normal_pr']."&nbsp;-&nbsp; ". $take['normal_pr2']."&nbsp;". $take['satuan_nilai_normal']." </td>
+        ";
+        break;
+
+        //Text
+        case "Text":
+        echo "
+        <td>&nbsp; ". $take['nilai_normal_pr']."&nbsp;". $take['satuan_nilai_normal']." </td>
+        ";
+        break;
+        //End Text
+    } 
+  }
+
           }  
 
         echo " <td>". $take['status_pasien'] ."</td>
@@ -135,6 +172,10 @@ if($face_drop >= 1)
           while ($drop_two = mysqli_fetch_array($show_two))
           {
 
+            $take_gander = $db->query("SELECT jenis_kelamin FROM registrasi WHERE no_rm = '$no_rm' AND no_reg = '$drop_two[no_reg]'");
+            $out_gander = mysqli_fetch_array($take_gander);
+            $jenis_kelamin = $out_gander['jenis_kelamin'];
+
             echo "<tr>";
             echo "<td><b> ".$drop_two['nama_pemeriksaan']."</b></td>";
             echo "<td>". $drop_two['hasil_pemeriksaan'] ."</td>";
@@ -149,41 +190,75 @@ if($face_drop >= 1)
             }
             else
             {
-            
-            switch ($model_hitung) {
-            case "Lebih Kecil Dari":
-            echo "<td>&lt;&nbsp; ". $drop_two['nilai_normal_lk']."&nbsp;". $drop_two['satuan_nilai_normal']." </td>
-            <td>&lt;&nbsp; ". $drop_two['nilai_normal_pr']."&nbsp;". $drop_two['satuan_nilai_normal']." </td>";
-            break;
-                        
-            case "Lebih Kecil Sama Dengan":
-            echo "<td>&lt;=&nbsp; ". $drop_two['nilai_normal_lk']."&nbsp;". $drop_two['satuan_nilai_normal']." </td>
-            <td>&lt;=&nbsp; ". $drop_two['nilai_normal_pr']."&nbsp;". $drop_two['satuan_nilai_normal']." </td>";
-            
-            break;
-            case "Lebih Besar Dari":
-            echo "<td>&gt;&nbsp; ". $drop_two['nilai_normal_lk']."&nbsp;". $drop_two['satuan_nilai_normal']." </td>
-            <td>&gt;&nbsp; ". $drop_two['nilai_normal_pr']."&nbsp;". $drop_two['satuan_nilai_normal']." </td>";
-                            
-            break;
-            case "Lebih Besar Sama Dengan":
-            echo "<td>&gt;=&nbsp; ". $drop_two['nilai_normal_lk']."&nbsp;". $drop_two['satuan_nilai_normal']." </td>
-            <td>&gt;=&nbsp; ". $drop_two['nilai_normal_pr']."&nbsp;". $drop_two['satuan_nilai_normal']." </td>";
-                            
-            break;
-            case "Antara Sama Dengan":
-            echo "<td>". $drop_two['nilai_normal_lk']."&nbsp;-&nbsp; ". $drop_two['nilai_normal_lk']."&nbsp;". $drop_two['satuan_nilai_normal']." </td>
-            <td>". $drop_two['nilai_normal_pr']."&nbsp;-&nbsp; ". $drop_two['nilai_normal_pr']."&nbsp;". $drop_two['satuan_nilai_normal']." </td>";
-            
-            break;
-            //Text
-            case "Text":
-            echo "<td>&nbsp; ". $drop_two['nilai_normal_lk']."&nbsp;". $drop_two['satuan_nilai_normal']." </td>
-            <td>&nbsp; ". $drop_two['nilai_normal_pr']."&nbsp;". $drop_two['satuan_nilai_normal']." </td>";
-            break;
-            //End Text
-                
-                } 
+  if($jenis_kelamin == 'laki-laki'){
+    switch ($model_hitung) {
+    case "Lebih Kecil Dari":
+        echo "<td>&lt;&nbsp; ". $drop_two['nilai_normal_lk']."&nbsp;". $drop_two['satuan_nilai_normal']." </td>
+        ";
+        break;
+    case "Lebih Kecil Sama Dengan":
+        echo "<td>&lt;=&nbsp; ". $drop_two['nilai_normal_lk']."&nbsp;". $drop_two['satuan_nilai_normal']." </td>
+        ";
+        break;
+    case "Lebih Besar Dari":
+        echo "<td>&gt;&nbsp; ". $drop_two['nilai_normal_lk']."&nbsp;". $drop_two['satuan_nilai_normal']." </td>
+        ";
+        break;
+          case "Lebih Besar Sama Dengan":
+        echo "<td>&gt;=&nbsp; ". $drop_two['nilai_normal_lk']."&nbsp;". $drop_two['satuan_nilai_normal']." </td>
+        ";
+        break;
+          case "Antara Sama Dengan":
+        echo "<td>". $drop_two['nilai_normal_lk']."&nbsp;-&nbsp; ". $drop_two['normal_lk2']."&nbsp;". $drop_two['satuan_nilai_normal']." </td>
+        ";
+        break;
+
+        //Text
+        case "Text":
+        echo "<td>&nbsp; ". $drop_two['nilai_normal_lk']."&nbsp;". $drop_two['satuan_nilai_normal']." </td>
+        ";
+        break;
+        //End Text
+    } 
+  }
+  else{
+    switch ($model_hitung) {
+    case "Lebih Kecil Dari":
+        echo "
+        <td>&lt;&nbsp; ". $drop_two['nilai_normal_pr']."&nbsp;". $drop_two['satuan_nilai_normal']." </td>
+        ";
+        break;
+    case "Lebih Kecil Sama Dengan":
+        echo "
+        <td>&lt;=&nbsp; ". $drop_two['nilai_normal_pr']."&nbsp;". $drop_two['satuan_nilai_normal']." </td>
+        ";
+        break;
+    case "Lebih Besar Dari":
+        echo "
+        <td>&gt;&nbsp; ". $drop_two['nilai_normal_pr']."&nbsp;". $drop_two['satuan_nilai_normal']." </td>
+        ";
+        break;
+          case "Lebih Besar Sama Dengan":
+        echo "
+        <td>&gt;=&nbsp; ". $drop_two['nilai_normal_pr']."&nbsp;". $drop_two['satuan_nilai_normal']." </td>
+        ";
+        break;
+          case "Antara Sama Dengan":
+        echo "
+        <td>". $drop_two['nilai_normal_pr']."&nbsp;-&nbsp; ". $drop_two['normal_pr2']."&nbsp;". $drop_two['satuan_nilai_normal']." </td>
+        ";
+        break;
+
+        //Text
+        case "Text":
+        echo "
+        <td>&nbsp; ". $drop_two['nilai_normal_pr']."&nbsp;". $drop_two['satuan_nilai_normal']." </td>
+        ";
+        break;
+        //End Text
+    } 
+  }
+
               }  
             echo " 
             <td>". $drop_two['status_pasien'] ."</td>
