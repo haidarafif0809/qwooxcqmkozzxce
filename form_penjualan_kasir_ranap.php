@@ -5,7 +5,7 @@ include 'navbar.php';
 include 'db.php';
 include 'sanitasi.php';
 
-$pilih_akses_tombol = $db->query("SELECT * FROM otoritas_penjualan_inap WHERE id_otoritas = '$_SESSION[otoritas_id]' ");
+$pilih_akses_tombol = $db->query("SELECT tombol_submit_inap,tombol_bayar_inap,tombol_piutang_inap,tombol_simpan_inap,tombol_bayar_inap,tombol_batal_inap FROM otoritas_penjualan_inap WHERE id_otoritas = '$_SESSION[otoritas_id]' ");
 $otoritas_tombol = mysqli_fetch_array($pilih_akses_tombol);
 
   
@@ -109,7 +109,7 @@ padding-right: 5%;
           <?php 
           
           // menampilkan seluruh data yang ada pada tabel suplier
-          $query = $db->query("SELECT * FROM gudang");
+          $query = $db->query("SELECT default_sett,kode_gudang,nama_gudang FROM gudang");
           
           // menyimpan data sementara yang ada pada $query
           while($data = mysqli_fetch_array($query))
@@ -872,7 +872,7 @@ Laboratorium  </button>
           <select class="form-control chosen" id="biaya_admin_select" name="biaya_admin_select" >
           <option value="0"> Silahkan Pilih </option>
             <?php 
-            $get_biaya_admin = $db->query("SELECT * FROM biaya_admin");
+            $get_biaya_admin = $db->query("SELECT persentase,nama FROM biaya_admin");
             while ( $take_admin = mysqli_fetch_array($get_biaya_admin))
             {
             echo "<option value='".$take_admin['persentase']."'>".$take_admin['nama']." ".$take_admin['persentase']."%</option>";
@@ -899,7 +899,7 @@ Laboratorium  </button>
       
 
            <?php
-                  $ambil_diskon_tax = $db->query("SELECT * FROM setting_diskon_tax");
+                  $ambil_diskon_tax = $db->query("SELECT diskon_nominal,diskon_persen FROM setting_diskon_tax");
                   $data_diskon = mysqli_fetch_array($ambil_diskon_tax);
 
                   ?>
@@ -1299,7 +1299,7 @@ $(document).ready(function(){
 
     }
     else{
-                                $.post("update_kamar_inap.php",{lama_inap:lama_inap,bed_before:bed_before,group_bed_before:group_bed_before,group_bed2:group_bed2,bed2:bed2,lama_inap:lama_inap,penjamin:penjamin,no_reg:no_reg},function(data){
+                $.post("update_kamar_inap.php",{lama_inap:lama_inap,bed_before:bed_before,group_bed_before:group_bed_before,group_bed2:group_bed2,bed2:bed2,lama_inap:lama_inap,penjamin:penjamin,no_reg:no_reg},function(data){
                                   
                                   $("#modal_kamar").modal('hide');
 
@@ -1307,29 +1307,10 @@ $(document).ready(function(){
                                   $("#bed").val(bed2);
 
 
-                $('#tabel_tbs_penjualan').DataTable().destroy();
-                      var dataTable = $('#tabel_tbs_penjualan').DataTable( {
-                      "processing": true,
-                      "serverSide": true,
-                      "info":     false,
-                      "language": { "emptyTable":     "My Custom Message On Empty Table" },
-                      "ajax":{
-                        url :"data_tbs_penjualan_inap.php", // json datasource
-                         "data": function ( d ) {
-                            d.no_reg = $("#no_reg").val();
-                            // d.custom = $('#myInput').val();
-                            // etc
-                        },
-                            type: "post",  // method  , by default get
-                        error: function(){  // error handling
-                          $(".tbody").html("");
-                          $("#tabel_tbs_penjualan").append('<tbody class="tbody"><tr><th colspan="3"></th></tr></tbody>');
-                          $("#tableuser_processing").css("display","none");
-                          
-                        }
-                      }   
+        var tabel_tbs_penjualan = $('#tabel_tbs_penjualan').DataTable();
+        tabel_tbs_penjualan.draw();
 
-                });
+                
       });
 
 
@@ -2739,12 +2720,14 @@ else if (a > 0){
 
       });
 
+          var tabel_tbs_penjualan = $('#tabel_tbs_penjualan').DataTable();
+        tabel_tbs_penjualan.draw();
+
         $("#kode_barang").val('');
         $("#kode_barang").trigger("chosen:updated");
 
 
      $("#ppn").attr("disabled", true);
-     $("#tbody").prepend(data);
      $("#kode_barang").val('');
 
 
@@ -2798,8 +2781,10 @@ else if (a > 0){
 
       });
 
+        var tabel_tbs_penjualan = $('#tabel_tbs_penjualan').DataTable();
+        tabel_tbs_penjualan.draw();
+
      $("#ppn").attr("disabled", true);
-     $("#tbody").prepend(data);  
      $("#kode_barang").val('');
      $("#kode_barang").trigger("chosen:updated");
 
@@ -2833,30 +2818,6 @@ else
 
 }
 
-
-       $('#tabel_tbs_penjualan').DataTable().destroy();
-            var dataTable = $('#tabel_tbs_penjualan').DataTable( {
-            "processing": true,
-            "serverSide": true,
-            "info":     false,
-            "language": { "emptyTable":     "My Custom Message On Empty Table" },
-            "ajax":{
-              url :"data_tbs_penjualan_inap.php", // json datasource
-               "data": function ( d ) {
-                  d.no_reg = $("#no_reg").val();
-                  // d.custom = $('#myInput').val();
-                  // etc
-              },
-                  type: "post",  // method  , by default get
-              error: function(){  // error handling
-                $(".tbody").html("");
-                $("#tabel_tbs_penjualan").append('<tbody class="tbody"><tr><th colspan="3"></th></tr></tbody>');
-                $("#tableuser_processing").css("display","none");
-                
-              }
-            }   
-
-      });
         
         $("#span_tbs").show()
 
@@ -3775,29 +3736,10 @@ if (pesan_alert == true) {
 
         $.post("hapustbs_penjualan_ranap.php",{id:id,kode_barang:kode_barang,no_reg:no_reg},function(data){
 
-      $('#tabel_tbs_penjualan').DataTable().destroy();
-            var dataTable = $('#tabel_tbs_penjualan').DataTable( {
-            "processing": true,
-            "serverSide": true,
-            "info":     false,
-            "language": { "emptyTable":     "My Custom Message On Empty Table" },
-            "ajax":{
-              url :"data_tbs_penjualan_inap.php", // json datasource
-               "data": function ( d ) {
-                  d.no_reg = $("#no_reg").val();
-                  // d.custom = $('#myInput').val();
-                  // etc
-              },
-                  type: "post",  // method  , by default get
-              error: function(){  // error handling
-                $(".tbody").html("");
-                $("#tabel_tbs_penjualan").append('<tbody class="tbody"><tr><th colspan="3"></th></tr></tbody>');
-                $("#tableuser_processing").css("display","none");
-                
-              }
-            }   
+        var tabel_tbs_penjualan = $('#tabel_tbs_penjualan').DataTable();
+        tabel_tbs_penjualan.draw();
 
-      });
+
             $("#span_tbs").show()
         
 

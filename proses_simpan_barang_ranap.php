@@ -20,7 +20,7 @@ $user = stringdoang($_SESSION['nama']);
 $no_jurnal = no_jurnal();
  
     // ubtuk mengambil nama pelanggan
-    $select_kode_pelanggan = $db->query("SELECT nama_pelanggan FROM pelanggan WHERE kode_pelanggan = '$no_rm'");
+    $select_kode_pelanggan = $db_pasien->query("SELECT nama_pelanggan FROM pelanggan WHERE kode_pelanggan = '$no_rm'");
     $ambil_kode_pelanggan = mysqli_fetch_array($select_kode_pelanggan);
 
     // hapus detail penjualan
@@ -67,7 +67,7 @@ $no_jurnal = no_jurnal();
 // deleet jurnal trans
 $delete_jurnal = $db->query("DELETE FROM jurnal_trans WHERE no_faktur = '$no_reg' ");
 
-$select_setting_akun = $db->query("SELECT * FROM setting_akun");
+$select_setting_akun = $db->query("SELECT persediaan,hpp_penjualan,pembayaran_kredit,total_penjualan,pajak_jual,potongan_jual FROM setting_akun");
 $ambil_setting = mysqli_fetch_array($select_setting_akun);
 
 $select = $db->query("SELECT SUM(total_nilai) AS total_hpp FROM hpp_keluar WHERE no_faktur = '$no_reg'");
@@ -86,8 +86,7 @@ $total_tax = $jumlah_tax['total_tax'];
 
         //PERSEDIAAN    
               $insert_jurnal = $db->query("INSERT INTO jurnal_trans (nomor_jurnal,waktu_jurnal,keterangan_jurnal,kode_akun_jurnal,debit,kredit,jenis_transaksi,no_faktur,approved,user_buat) VALUES ('".no_jurnal()."', '$tanggal_sekarang $jam_sekarang', 'Penjualan R.Inap Simpan Sementara - $ambil_kode_pelanggan[nama_pelanggan]', '$ambil_setting[persediaan]', '0', '$total_hpp', 'Penjualan', '$no_reg','1', '$user')");
-              
-
+               
       //HPP    
             $insert_jurnal = $db->query("INSERT INTO jurnal_trans (nomor_jurnal,waktu_jurnal,keterangan_jurnal,kode_akun_jurnal,debit,kredit,jenis_transaksi,no_faktur,approved,user_buat) VALUES ('".no_jurnal()."', '$tanggal_sekarang $jam_sekarang', 'Penjualan R.Inap Simpan Sementara - $ambil_kode_pelanggan[nama_pelanggan]', '$ambil_setting[hpp_penjualan]', '$total_hpp', '0', 'Penjualan', '$no_reg','1', '$user')");
 
@@ -158,205 +157,6 @@ $total_tax = $jumlah_tax['total_tax'];
 
 //Untuk Memutuskan Koneksi Ke Database
 mysqli_close($db);   
-
-/*/ BOT STAR AUTO
-     $ambil_tbs = $db->query("SELECT * FROM tbs_penjualan WHERE no_faktur = '$no_reg'");
-      $data10 = mysqli_fetch_array($ambil_tbs);
-      
-      
-      $url = "https://api.telegram.org/bot233675698:AAEbTKDcPH446F-bje4XIf1YJ0kcmoUGffA/sendMessage?chat_id=-129639785&text=";
-      $text = urlencode("No Faktur : ".$no_reg."\n");
-      $pesanan_jadi = "";
-      $ambil_tbs1 = $db->query("SELECT tp.kode_barang, tp.nama_barang, tp.jumlah_barang FROM tbs_penjualan tp INNER JOIN barang b ON b.kode_barang = tp.kode_barang  WHERE tp.session_id = '$session_id' ORDER BY tp.id ASC");
-
- while ($data12 = mysqli_fetch_array($ambil_tbs1))
-
- {
-      
-      $pesanan =  $data12['nama_barang']." ".$data12['jumlah_barang']."\n";
-      $pesanan_jadi = $pesanan_jadi.$pesanan;
-      
-      $ambil_tbs2 = $db->query("SELECT tp.kode_barang FROM tbs_penjualan tp INNER JOIN barang b ON b.kode_barang = tp.kode_barang  WHERE tp.session_id = '$session_id' ORDER BY tp.id DESC Limit 1");
-      $ambil_tbs3 = mysqli_fetch_array($ambil_tbs2);
-      $data_terakhir = $ambil_tbs3['kode_barang'];
-      
-      if ($data12['kode_barang'] == $data_terakhir ) {
-      
-      $pesanan_terakhir =  urlencode($pesanan_jadi);
-      $url = $url.$text.$pesanan_terakhir;
-      
-      $url = str_replace(" ", "%20", $url);
-      
-    
-      
-      }
-
-
-     
-     
-}*/
-
-   
-    /* bot makanan
-      
-      $ambil_tbs = $db->query("SELECT * FROM detail_penjualan WHERE no_faktur = '$no_reg'");
-      $data10 = mysqli_fetch_array($ambil_tbs);
-      
-      
-      $url = "https://api.telegram.org/bot209101173:AAG1zjYq2rTH2SkspeEgVYS8f6DqOYILVyc/sendMessage?chat_id=-134496145&text=";
-      $text = urlencode("Meja : ".$data10['kode_meja']."\n No Faktur : ".$no_reg."\n");
-      $pesanan_jadi = "";
-      $ambil_tbs1 = $db->query("SELECT tp.kode_barang, tp.nama_barang, tp.jumlah_barang, tp.komentar  FROM tbs_penjualan tp INNER JOIN barang b ON b.kode_barang = tp.kode_barang  WHERE tp.session_id = '$session_id' AND b.kategori = 'Minuman' ORDER BY tp.id ASC");
-      
- while ($data12 = mysqli_fetch_array($ambil_tbs1))
-
- {
-      
-      $pesanan =  $data12['nama_barang']." ".$data12['jumlah_barang']." ".$data12['komentar']."\n";
-      $pesanan_jadi = $pesanan_jadi.$pesanan;
-      
-      $ambil_tbs2 = $db->query("SELECT tp.kode_barang FROM tbs_penjualan tp INNER JOIN barang b ON b.kode_barang = tp.kode_barang  WHERE tp.session_id = '$session_id' AND b.kategori = 'Minuman' ORDER BY tp.id DESC Limit 1");
-      $ambil_tbs3 = mysqli_fetch_array($ambil_tbs2);
-      $data_terakhir = $ambil_tbs3['kode_barang'];
-      
-      if ($data12['kode_barang'] == $data_terakhir ) {
-      
-      $pesanan_terakhir =  urlencode($pesanan_jadi);
-      $url = $url.$text.$pesanan_terakhir;
-      
-      $url = str_replace(" ", "%20", $url);
-      
-      $bot_wiseman = url_get_contents($url);
-      
-      }
-
-
-     
-     
-}//
-        
-
-// bot minuman
-     $ambil_tbs = $db->query("SELECT * FROM detail_penjualan WHERE no_faktur = '$no_reg'");
-      $data10 = mysqli_fetch_array($ambil_tbs);
-      
-      
-      $url = "https://api.telegram.org/bot209101173:AAG1zjYq2rTH2SkspeEgVYS8f6DqOYILVyc/sendMessage?chat_id=-147051127&text=";
-      $text = urlencode("Meja : ".$data10['kode_meja']."\n No Faktur : ".$no_reg."\n");
-      $pesanan_jadi = "";
-      $ambil_tbs1 = $db->query("SELECT tp.kode_barang, tp.nama_barang, tp.jumlah_barang, tp.komentar  FROM tbs_penjualan tp INNER JOIN barang b ON b.kode_barang = tp.kode_barang  WHERE tp.session_id = '$session_id' AND b.kategori = 'Makanan' ORDER BY tp.id ASC");
-      
- while ($data12 = mysqli_fetch_array($ambil_tbs1))
-
- {
-      
-      $pesanan =  $data12['nama_barang']." ".$data12['jumlah_barang']." ".$data12['komentar']."\n";
-      $pesanan_jadi = $pesanan_jadi.$pesanan;
-      
-      $ambil_tbs2 = $db->query("SELECT tp.kode_barang FROM tbs_penjualan tp INNER JOIN barang b ON b.kode_barang = tp.kode_barang  WHERE tp.session_id = '$session_id' AND b.kategori = 'Makanan' ORDER BY tp.id DESC Limit 1");
-      $ambil_tbs3 = mysqli_fetch_array($ambil_tbs2);
-      $data_terakhir = $ambil_tbs3['kode_barang'];
-      
-      if ($data12['kode_barang'] == $data_terakhir ) {
-      
-      $pesanan_terakhir =  urlencode($pesanan_jadi);
-      $url = $url.$text.$pesanan_terakhir;
-      
-      $url = str_replace(" ", "%20", $url);
-      
-      $bot_wiseman = url_get_contents($url);
-      
-      }
-
-
-     
-     
-}
-
-
-// bot beef
-     $ambil_tbs = $db->query("SELECT * FROM detail_penjualan WHERE no_faktur = '$no_reg'");
-      $data10 = mysqli_fetch_array($ambil_tbs);
-      
-      
-      $url = "https://api.telegram.org/bot209101173:AAG1zjYq2rTH2SkspeEgVYS8f6DqOYILVyc/sendMessage?chat_id=-127377681&text=";
-      $text = urlencode("Meja : ".$data10['kode_meja']."\n No Faktur : ".$no_reg."\n");
-      $pesanan_jadi = "";
-      $ambil_tbs1 = $db->query("SELECT tp.kode_barang, tp.nama_barang, tp.jumlah_barang, tp.komentar  FROM tbs_penjualan tp INNER JOIN barang b ON b.kode_barang = tp.kode_barang  WHERE tp.session_id = '$session_id' AND b.kategori = 'Beef' ORDER BY tp.id ASC");
-      
- while ($data12 = mysqli_fetch_array($ambil_tbs1))
-
- {
-      
-      $pesanan =  $data12['nama_barang']." ".$data12['jumlah_barang']." ".$data12['komentar']."\n";
-      $pesanan_jadi = $pesanan_jadi.$pesanan;
-      
-      $ambil_tbs2 = $db->query("SELECT tp.kode_barang FROM tbs_penjualan tp INNER JOIN barang b ON b.kode_barang = tp.kode_barang  WHERE tp.session_id = '$session_id' AND b.kategori = 'Beef' ORDER BY tp.id DESC Limit 1");
-      $ambil_tbs3 = mysqli_fetch_array($ambil_tbs2);
-      $data_terakhir = $ambil_tbs3['kode_barang'];
-      
-      if ($data12['kode_barang'] == $data_terakhir ) {
-      
-      $pesanan_terakhir =  urlencode($pesanan_jadi);
-      $url = $url.$text.$pesanan_terakhir;
-      
-      $url = str_replace(" ", "%20", $url);
-      
-      $bot_wiseman = url_get_contents($url);
-      
-      }
-
-
-     
-     
-}
-
-// PRINT OTOMATIS (DARI SINI)
-
-
-$pilih_makanan = $db->query("SELECT dp.no_faktur, dp.no_pesanan, b.kategori FROM detail_penjualan dp INNER JOIN barang b ON dp.kode_barang = b.kode_barang WHERE dp.no_faktur = '$no_reg' AND b.kategori = 'Makanan'");
-$ambil_makanan = mysqli_num_rows($pilih_makanan);
-
-
-
-if ($ambil_makanan > 0) {
-  $insert_status_print_makanan = $db->query("INSERT INTO status_print (no_faktur, tipe_produk, no_pesanan) VALUES ('$no_reg', 'Makanan', '1') ");
-
-
-}
-
-
-    
-$pilih_minuman = $db->query("SELECT dp.no_faktur, dp.no_pesanan, b.kategori FROM detail_penjualan dp INNER JOIN barang b ON dp.kode_barang = b.kode_barang WHERE dp.no_faktur = '$no_reg' AND b.kategori = 'Minuman'");
-$ambil_minuman = mysqli_num_rows($pilih_minuman);
-
-
-
-if ($ambil_minuman > 0 ) {
-  $insert_status_print_minuman = $db->query("INSERT INTO status_print (no_faktur, tipe_produk, no_pesanan) VALUES ('$no_reg', 'Minuman', '1') ");
-}
-
-
-
-$pilih_beef = $db->query("SELECT dp.no_faktur, dp.no_pesanan, b.kategori FROM detail_penjualan dp INNER JOIN barang b ON dp.kode_barang = b.kode_barang WHERE dp.no_faktur = '$no_reg' AND b.kategori = 'Beef'");
-$ambil_beef = mysqli_num_rows($pilih_beef);
-
-if ($ambil_beef > 0) {
-  $insert_status_print_beef = $db->query("INSERT INTO status_print (no_faktur, tipe_produk, no_pesanan) VALUES ('$no_reg', 'Beef', '1') ");
-}
-
-
-    
-
-  $insert_status_print_bill = $db->query("INSERT INTO status_print (no_faktur,tipe_produk,no_pesanan) VALUES ('$no_reg', 'Semua', '1') ");
-
-
-
-
-  */
-
-
-
 
 
     ?>
