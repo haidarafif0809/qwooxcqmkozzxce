@@ -5,9 +5,6 @@ include 'db.php';
 
 $no_faktur = $_POST['no_faktur'];
 
-
-
-
 ?>
 
 <div class="container">				

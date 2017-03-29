@@ -7,10 +7,10 @@ include 'db.php';
 $no_reg = stringdoang($_GET['no_reg']);
 $no_periksa = stringdoang($_GET['no_periksa']);
 
-$select = $db->query("SELECT * FROM hasil_lab WHERE no_reg = '$no_reg' AND status = 'Selesai' AND lab_ke_berapa = '$no_periksa'");
+$select = $db->query("SELECT no_rm,no_reg,nama_pasien,petugas_analis,dokter FROM hasil_lab WHERE no_reg = '$no_reg' AND status = 'Selesai' AND lab_ke_berapa = '$no_periksa'");
 $out = mysqli_fetch_array($select);
 
-$query1 = $db->query("SELECT * FROM perusahaan ");
+$query1 = $db->query("SELECT foto,nama_perusahaan,alamat_perusahaan,no_telp FROM perusahaan ");
 $data1 = mysqli_fetch_array($query1);
 
 $tanggal = date('Y-m-d');

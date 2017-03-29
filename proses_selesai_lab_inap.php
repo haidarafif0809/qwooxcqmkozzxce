@@ -17,7 +17,7 @@ $update_pemeriksaan = $db->query("UPDATE pemeriksaan_lab_inap SET dokter = '$dok
 
 $update_lab = $db->query("UPDATE tbs_penjualan SET status_lab = 'Selesai' WHERE no_reg = '$no_reg' AND lab_ke_berapa = '$no_periksa' AND lab = 'Laboratorium'");
 
-$perintah3 = $db->query("SELECT * FROM hasil_lab WHERE no_reg = '$no_reg' ");
+$perintah3 = $db->query("SELECT no_reg FROM hasil_lab WHERE no_reg = '$no_reg' ");
 $data1 = mysqli_num_rows($perintah3);
 
 if ($data1 > 0)
