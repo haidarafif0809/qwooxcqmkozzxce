@@ -53,21 +53,7 @@ while ($data_detail_stok_opname = mysqli_fetch_array($query_detail_stok_opname))
 			$status_selisih_hpp = 'Tidak Ada';
 			$sisa_barang = $stok_barang - $data_detail_stok_opname['selisih_fisik'];
 
-			if ($sisa_barang >= 0) {
-				# code...
-
-					$db->query("DELETE FROM  detail_stok_opname WHERE no_faktur = '$data_detail_stok_opname[no_faktur]' AND kode_barang = '$data_detail_stok_opname[kode_barang]'");
-
-			  $query_insert_detail_stok_opname = "INSERT INTO detail_stok_opname (no_faktur, tanggal, jam, kode_barang, nama_barang, awal, masuk, keluar, stok_sekarang, fisik, selisih_fisik, selisih_harga, harga, hpp) 
-            VALUES ('$data_detail_stok_opname[no_faktur]', '$data_detail_stok_opname[tanggal]', '$data_detail_stok_opname[jam]', '$data_detail_stok_opname[kode_barang]', '$data_detail_stok_opname[nama_barang]', '$data_detail_stok_opname[awal]', '$data_detail_stok_opname[masuk]', '$data_detail_stok_opname[keluar]', '$data_detail_stok_opname[stok_sekarang]', '$data_detail_stok_opname[fisik]', '$data_detail_stok_opname[selisih_fisik]', '$data_detail_stok_opname[selisih_harga]', '$data_detail_stok_opname[harga]', '$data_detail_stok_opname[hpp]')";
-
-                if ($db->query($query_insert_detail_stok_opname) === TRUE) {
-                
-	            } else {
-	            echo "Error: " . $query_insert_detail_stok_opname . "<br>" . $db->error;
-	            }
-
-			}
+	
 		
             
             
