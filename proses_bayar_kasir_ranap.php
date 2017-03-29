@@ -289,7 +289,12 @@ $no_jurnal = no_jurnal();
     }
 
 
+    // hapus detail penjualan yang khusus simpan sementara
+    $delete_detail_penjualan = $db->query("DELETE FROM detail_penjualan WHERE no_faktur = '$no_reg' ");
 
+
+    // deleet jurnal trans yang khusus simpan sementara
+    $delete_jurnal = $db->query("DELETE FROM jurnal_trans WHERE no_faktur = '$no_reg' ");
 
     $query = $db->query("SELECT * FROM tbs_penjualan WHERE  no_reg = '$no_reg'");
     while ($data = mysqli_fetch_array($query))

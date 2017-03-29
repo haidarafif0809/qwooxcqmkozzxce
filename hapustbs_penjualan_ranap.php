@@ -18,6 +18,10 @@ $query = $db->query("DELETE FROM tbs_penjualan WHERE id = '$id'");
 $query2 = $db->query("DELETE FROM tbs_fee_produk WHERE kode_produk = '$kode_barang' AND no_reg = '$no_reg' AND waktu = '$waktu' ");
 
 
+    // hapus detail penjualan yang  masuk sebgai simpan sementara
+    $delete_detail_penjualan = $db->query("DELETE FROM detail_penjualan WHERE no_faktur = '$no_reg' AND kode_barang = '$kode_barang' ");
+
+
 //Untuk Memutuskan Koneksi Ke Database
 mysqli_close($db);   
 ?>
