@@ -679,8 +679,7 @@ $data_reg = mysqli_fetch_array($select_reg);
                
  </div>
 
-                <h6 style="text-align: left ; color: red"><i> * Klik 2x pada kolom jumlah barang jika ingin mengedit.</i></h6>
-                <h6 style="text-align: left ;"><i><b> * Short Key (F2) untuk mencari Kode Produk atau Nama Produk.</b></i></h6>
+                <h6 style="text-align: left; color: red"><i><b> * Short Key (F2) untuk mencari Kode Produk atau Nama Produk.</b></i></h6>
 
   
 </div> <!-- / END COL SM 6 (1)-->

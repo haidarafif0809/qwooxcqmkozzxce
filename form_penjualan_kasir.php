@@ -681,8 +681,10 @@ Radiologi  </button>
                               <th> Dokter Pengirim </th>
                               <th style="text-align: right" > Jumlah </th>
                               <th style="text-align: right" > Harga </th>
+                              <!--
                               <th style="text-align: right" > Potongan </th>
                               <th style="text-align: right" > Pajak </th>
+                              -->
                               <th style="text-align: right" > Subtotal </th>
                           
                           </thead> <!-- tag penutup tabel -->

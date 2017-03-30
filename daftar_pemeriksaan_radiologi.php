@@ -49,6 +49,8 @@ tr:nth-child(even){background-color: #f2f2f2}
                           </thead> <!-- tag penutup tabel -->
                     </table>
                   </div>
+                  <h6 style="text-align: left ; color: red"><i><b> * Klik 2x Pada Kolom Yang Akan Diedit. </b></i></h6>
+
 
 </span>
 <!-- / TABEL PEMeRIKSAAN -->

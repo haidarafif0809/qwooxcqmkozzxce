@@ -38,7 +38,7 @@ $columns = array(
 );
 
 // getting total number records without any search
-$sql =" SELECT tr.id, tr.session_id, tr.no_faktur, tr.no_reg, tr.kode_barang, tr.nama_barang, tr.jumlah_barang, tr.harga, tr.subtotal, tr.potongan, tr.tax, tr.foto, tr.tipe_barang, tr.tanggal, tr.jam, tr.radiologi, tr.dokter_pengirim, tr.dokter_pelaksana, tr.dokter_periksa, u.nama AS nama_dkoter_pengirim";
+$sql =" SELECT tr.id, tr.session_id, tr.no_faktur, tr.no_reg, tr.kode_barang, tr.nama_barang, tr.jumlah_barang, tr.harga, tr.subtotal, tr.potongan, tr.tax, tr.foto, tr.tipe_barang, tr.tanggal, tr.jam, tr.radiologi, tr.dokter_pengirim, tr.dokter_pelaksana, tr.dokter_periksa, u.nama AS nama_dokter_pengirim";
 $sql.=" FROM tbs_penjualan_radiologi tr LEFT JOIN user u ON tr.dokter_pengirim = u.id";
 $sql.=" WHERE tr.no_reg = '$no_reg' AND tr.status_periksa = '1' AND tr.radiologi = 'Radiologi' AND (tr.no_faktur IS NULL OR tr.no_faktur = '')";
 
@@ -48,7 +48,7 @@ $totalData = mysqli_num_rows($query);
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
-$sql =" SELECT tr.id, tr.session_id, tr.no_faktur, tr.no_reg, tr.kode_barang, tr.nama_barang, tr.jumlah_barang, tr.harga, tr.subtotal, tr.potongan, tr.tax, tr.foto, tr.tipe_barang, tr.tanggal, tr.jam, tr.radiologi, tr.dokter_pengirim, tr.dokter_pelaksana, tr.dokter_periksa, u.nama AS nama_dkoter_pengirim";
+$sql =" SELECT tr.id, tr.session_id, tr.no_faktur, tr.no_reg, tr.kode_barang, tr.nama_barang, tr.jumlah_barang, tr.harga, tr.subtotal, tr.potongan, tr.tax, tr.foto, tr.tipe_barang, tr.tanggal, tr.jam, tr.radiologi, tr.dokter_pengirim, tr.dokter_pelaksana, tr.dokter_periksa, u.nama AS nama_dokter_pengirim";
 $sql.=" FROM tbs_penjualan_radiologi tr LEFT JOIN user u ON tr.dokter_pengirim = u.id";
 $sql.=" WHERE tr.no_reg = '$no_reg' AND tr.status_periksa = '1' AND tr.radiologi = 'Radiologi' AND (tr.no_faktur IS NULL OR tr.no_faktur = '')";
 
@@ -83,15 +83,18 @@ while( $row = mysqli_fetch_array($query) ) {  // preparing an array
       $nestedData[] = "-";
       }
       else{
-      $nestedData[] = $row["nama_dkoter_pengirim"];
+      $nestedData[] = $row["nama_dokter_pengirim"];
       }
 
       $nestedData[] = "<p style='font-size:15px' align='right'> ".rp($row["jumlah_barang"])." </p>";
 
 
       $nestedData[] = "<p  align='right'> ".rp($row["harga"])."</p>";
+  /*
       $nestedData[] = "<p style='font-size:15px' align='right'><span id='text-potongan-".$row['id']."'> ".rp($row["potongan"])." </span> </p>";
       $nestedData[] = "<p style='font-size:15px' align='right'><span id='text-tax-".$row['id']."'> ".rp($row["tax"])." </span> </p>";
+  */
+ 
       $nestedData[] = "<p style='font-size:15px' align='right'><span id='text-subtotal-".$row['id']."'> ".rp($row["subtotal"])." </span> </p>";
 
 
