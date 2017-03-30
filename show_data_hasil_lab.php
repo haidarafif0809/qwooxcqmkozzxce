@@ -76,8 +76,12 @@ else
 
 if($row['status'] == 'Selesai' AND $row['no_faktur'] != '')
 {
-
+	if($row['status_pasien'] == 'Rawat Inap'){
+		$nestedData[] = "<p style='color:red'>Klik Detail</p>";
+	}
+	else{
 $nestedData[] = "<a href='cetak_laporan_hasil_lab.php?no_faktur=".$row['no_faktur']."' target='blank' class='btn btn-floating btn-primary' data-target='blank'> <i class='fa fa-print'></i> </a>";
+	}
 }
 else
 {

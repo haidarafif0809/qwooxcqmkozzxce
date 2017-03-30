@@ -10,7 +10,9 @@ $no_rm = stringdoang($_GET['no_rm']);
 $no_reg = stringdoang($_GET['no_reg']);
 $jenis_penjualan = stringdoang($_GET['jenis_penjualan']);
 
-
+$take_gander = $db->query("SELECT jenis_kelamin FROM registrasi WHERE no_rm = '$no_rm' AND no_reg = '$no_reg'");
+$out_gander = mysqli_fetch_array($take_gander);
+$jenis_kelamin = $out_gander['jenis_kelamin'];
 
 ?>
 <div class="container">
@@ -98,18 +100,18 @@ $jenis_penjualan = stringdoang($_GET['jenis_penjualan']);
     <thead>
       <tr>
 
-          <th style='background-color: #4CAF50; color: white;' >Nama Pemeriksaan</th>
-          <th style='background-color: #4CAF50; color: white;' >Hasil Pemeriksaan</th>
-          <th style='background-color: #4CAF50; color: white;' >Nilai Pria</th>
-          <th style='background-color: #4CAF50; color: white;' >Nilai Wanita</th>
-          <!--<th style='background-color: #4CAF50; color: white;' >Normal / Tidak Normal</th>-->
+        <th style='background-color: #4CAF50; color: white;' >Nama Pemeriksaan</th>
+        <th style='background-color: #4CAF50; color: white;' >Hasil Pemeriksaan</th>
+        <th style='background-color: #4CAF50; color: white;' >Nilai Normal</th>
+          <!--<th style='background-color: #4CAF50; color: white;' >Nilai Wanita</th>
+          <th style='background-color: #4CAF50; color: white;' >Normal / Tidak Normal</th>-->
 
     </tr>
     </thead>
     <tbody id="tbody">
     
    <?php 
-$query = $db->query("SELECT * FROM tbs_hasil_lab WHERE no_reg = '$no_reg' AND no_rm = '$no_rm'");
+$query = $db->query("SELECT * FROM tbs_hasil_lab WHERE no_reg = '$no_reg' AND no_rm = '$no_rm' ORDER BY id ASC");
    while($data = mysqli_fetch_array($query))      
       {
 
@@ -117,54 +119,93 @@ $query = $db->query("SELECT * FROM tbs_hasil_lab WHERE no_reg = '$no_reg' AND no
 
      echo "<td>". $data['nama_pemeriksaan'] ." </td>";
 
-      echo "<td style='background-color: #33b5e5;' class='edit-nama' data-id='".$data['id']."'><span id='text-nama-".$data['id']."'>". $data['hasil_pemeriksaan'] ."</span> <input type='hidden' id='input-nama-".$data['id']."' value='".$data['hasil_pemeriksaan']."' class='input_nama' data-id='".$data['id']."' data-nama='".$data['hasil_pemeriksaan']."' autofocus=''> </td>";
-
-
+    if ($data['hasil_pemeriksaan'] == '')
+      {
+      echo "<td style='background-color:#90caf9;cursor:pointer;' class='edit-nama' data-id='".$data['id']."'><span id='text-nama-".$data['id']."'>". $data['hasil_pemeriksaan'] ."</span> <input type='text' id='input-nama-".$data['id']."' value='".$data['hasil_pemeriksaan']."' style='background-color:white;' class='input_nama' data-id='".$data['id']."' data-nama='".$data['hasil_pemeriksaan']."' autofocus=''> </td>";
+    }
+    else
+      {
+          echo "<td style='background-color:#90caf9;cursor:pointer;' class='edit-nama' data-id='".$data['id']."'><span id='text-nama-".$data['id']."'>". $data['hasil_pemeriksaan'] ."</span> <input type='hidden' id='input-nama-".$data['id']."' value='".$data['hasil_pemeriksaan']."' class='input_nama' data-id='".$data['id']."' data-nama='".$data['hasil_pemeriksaan']."' autofocus=''> </td>";
+      }
 
 $model_hitung = $data['model_hitung']; 
 if($model_hitung == '')
 {
   echo "<td>&nbsp; ". '-' ." </td>
-        <td>&nbsp; ". '-'." </td>
+       
         ";
 }
 else
 {
-switch ($model_hitung) {
+  if($jenis_kelamin == 'laki-laki'){
+    switch ($model_hitung) {
     case "Lebih Kecil Dari":
         echo "<td>&lt;&nbsp; ". $data['nilai_normal_lk']."&nbsp;". $data['satuan_nilai_normal']." </td>
-        <td>&lt;&nbsp; ". $data['nilai_normal_pr']."&nbsp;". $data['satuan_nilai_normal']." </td>
         ";
         break;
     case "Lebih Kecil Sama Dengan":
         echo "<td>&lt;=&nbsp; ". $data['nilai_normal_lk']."&nbsp;". $data['satuan_nilai_normal']." </td>
-        <td>&lt;=&nbsp; ". $data['nilai_normal_pr']."&nbsp;". $data['satuan_nilai_normal']." </td>
         ";
         break;
     case "Lebih Besar Dari":
         echo "<td>&gt;&nbsp; ". $data['nilai_normal_lk']."&nbsp;". $data['satuan_nilai_normal']." </td>
-        <td>&gt;&nbsp; ". $data['nilai_normal_pr']."&nbsp;". $data['satuan_nilai_normal']." </td>
         ";
         break;
           case "Lebih Besar Sama Dengan":
         echo "<td>&gt;=&nbsp; ". $data['nilai_normal_lk']."&nbsp;". $data['satuan_nilai_normal']." </td>
-        <td>&gt;=&nbsp; ". $data['nilai_normal_pr']."&nbsp;". $data['satuan_nilai_normal']." </td>
         ";
         break;
           case "Antara Sama Dengan":
         echo "<td>". $data['nilai_normal_lk']."&nbsp;-&nbsp; ". $data['normal_lk2']."&nbsp;". $data['satuan_nilai_normal']." </td>
-        <td>". $data['nilai_normal_pr']."&nbsp;-&nbsp; ". $data['normal_pr2']."&nbsp;". $data['satuan_nilai_normal']." </td>
         ";
         break;
 
         //Text
         case "Text":
         echo "<td>&nbsp; ". $data['nilai_normal_lk']."&nbsp;". $data['satuan_nilai_normal']." </td>
+        ";
+        break;
+        //End Text
+    } 
+  }
+  else{
+    switch ($model_hitung) {
+    case "Lebih Kecil Dari":
+        echo "
+        <td>&lt;&nbsp; ". $data['nilai_normal_pr']."&nbsp;". $data['satuan_nilai_normal']." </td>
+        ";
+        break;
+    case "Lebih Kecil Sama Dengan":
+        echo "
+        <td>&lt;=&nbsp; ". $data['nilai_normal_pr']."&nbsp;". $data['satuan_nilai_normal']." </td>
+        ";
+        break;
+    case "Lebih Besar Dari":
+        echo "
+        <td>&gt;&nbsp; ". $data['nilai_normal_pr']."&nbsp;". $data['satuan_nilai_normal']." </td>
+        ";
+        break;
+          case "Lebih Besar Sama Dengan":
+        echo "
+        <td>&gt;=&nbsp; ". $data['nilai_normal_pr']."&nbsp;". $data['satuan_nilai_normal']." </td>
+        ";
+        break;
+          case "Antara Sama Dengan":
+        echo "
+        <td>". $data['nilai_normal_pr']."&nbsp;-&nbsp; ". $data['normal_pr2']."&nbsp;". $data['satuan_nilai_normal']." </td>
+        ";
+        break;
+
+        //Text
+        case "Text":
+        echo "
         <td>&nbsp; ". $data['nilai_normal_pr']."&nbsp;". $data['satuan_nilai_normal']." </td>
         ";
         break;
         //End Text
-		} 
+    } 
+  }
+
 }
         /*echo "<td style='background-color: #33b5e5;' class='edit-status' data-id='".$data['id']."'><span id='text-status-".$data['id']."'>". $data['status_abnormal'] ."</span> <input type='hidden' id='input-status-".$data['id']."' value='".$data['status_abnormal']."' class='input_status' data-id='".$data['id']."' data-status='".$data['status_abnormal']."' autofocus=''> </td>";*/
 
@@ -187,13 +228,31 @@ switch ($model_hitung) {
 
 <a href='cetak_hasil_lab.php' id="cetak" style="display: none;" class="btn btn-warning" target="blank"><i class="fa fa-print"></i> Cetak </a>
 
-<a class="btn btn-danger" href="pasien_sudah_masuk.php" id="kembali" style="display: none"><i class="fa fa-reply"></i> Kembali</a>
+<?php if ($jenis_penjualan == 'Rawat Jalan'): ?>
+  <button class="btn btn-danger" style="display: none;" id="kembali"> <i class="fa fa-reply-all"></i> Kembali  </button> 
+<?php endif ?>
+
+<?php if ($jenis_penjualan == 'UGD'): ?>
+  <button class="btn btn-danger" style="display: none;" id="kembali_ugd"> <i class="fa fa-reply-all"></i> Kembali  </button>
+<?php endif ?>
 
 <div class="alert alert-success" id="alert_berhasil" style="display:none">
           <strong>Success!</strong> Input Hasil Laboratorium Berhasil !!
           </div>
 </div>
           
+
+<script type="text/javascript">
+$(document).on('click','#kembali',function(e){
+    window.location.href="pasien_sudah_masuk.php";
+});
+
+$(document).on('click','#kembali_ugd',function(e){
+    window.location.href="registrasi_ugd.php";
+});  
+</script>
+
+
 
 <script type="text/javascript">
 // untuk update hasil pemeriksaaan
@@ -306,6 +365,13 @@ $("#input-status-"+id+"").attr("data-status",input_nama);
         var dokter = $("#dokter").val();
         var analis = $("#analis").val();
 
+$.post("cek_pemeriksaan_sementara.php",{no_reg:no_reg},function(data) {
+if(data == 1){
+  alert("Data Hasil Laboratorium Tidak Boleh Kosong, Silahkan Anda Isi Terlebih Dahulu !!");
+}
+else
+{
+
  $.post("proses_selesai_lab.php",{no_rm:no_rm,no_reg:no_reg,nama:nama,jenis_penjualan:jenis_penjualan,dokter:dokter,analis:analis},function(info) {
 
 
@@ -319,17 +385,24 @@ $("#input-status-"+id+"").attr("data-status",input_nama);
      $("#no_rm").val('');
      
      $("#nama").val('');
-     $("#jenis_penjualan").val('');
-
+     
+      $("#kembali_ugd").show();
+    if(jenis_penjualan == 'UGD')
+    {
+      $("#kembali_ugd").show();
+    }else{
+      $("#kembali").show();
+    }
     
-     $("#kembali").show();
+    
+
      $("#selesai").hide();
      $("#result").hide();
      $("#petugasnya").hide();
    });
 
-
- 
+}
+}); 
 
 $("form").submit(function(){
    return false;
