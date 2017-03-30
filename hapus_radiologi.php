@@ -3,22 +3,13 @@
 include 'db.php';
 include 'sanitasi.php';
 //mengirimkan $id menggunakan metode GET
-
-$id = angkadoang($_POST['id']);
+$session_id = session_id();
+$kode_barang = stringdoang($_POST['kode_barang']);
+$no_reg = stringdoang($_POST['no_reg']);
 
 //menghapus seluruh data yang ada pada tabel tbs penjualan berdasarkan id
-$query = $db->query("DELETE FROM tbs_penjualan_radiologi WHERE id = '$id'");
+$query = $db->query("DELETE FROM tbs_penjualan_radiologi WHERE session_id = '$session_id' AND kode_barang = '$kode_barang' AND no_reg = '$no_reg'");
 
-
-//jika $query benar maka akan menuju file formpenjualan.php , jika salah maka failed
-if ($query == TRUE)
-{
-echo "sukses";
-}
-else
-{
-	
-}
 //Untuk Memutuskan Koneksi Ke Database
 mysqli_close($db);   
 ?>

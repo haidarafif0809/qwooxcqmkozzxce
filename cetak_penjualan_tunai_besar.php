@@ -214,18 +214,18 @@ include 'db.php';
 
 // OPERASI TABLE
  $take_data_or = $db->query("SELECT * FROM hasil_operasi WHERE no_reg = '$data_inner[no_reg]'");
-
+$nomor_op = $no_urut;
     while($out_operasi = mysqli_fetch_array($take_data_or))
       {
                    
         $select_or = $db->query("SELECT id_operasi,nama_operasi FROM operasi WHERE id_operasi = '$out_operasi[operasi]'");
         $outin = mysqli_fetch_array($select_or);
         
-        $nomor = $no_urut +1;
+        $nomor_op++;
 
         echo"<tr>
                     
-            <td class='table1' align='center'>".$nomor."</td>";
+            <td class='table1' align='center'>".$nomor_op."</td>";
 
             if($out_operasi['operasi'] == $outin['id_operasi'])
             {
@@ -248,6 +248,35 @@ include 'db.php';
                     
                   
     }
+
+// RADIOLOGI TABLE
+
+   $nomor_radiologi = $nomor_op;
+
+ $select_hasil_radiologi = $db->query("SELECT nama_barang, jumlah_barang, harga, potongan, tax, subtotal FROM hasil_pemeriksaan_radiologi WHERE no_faktur = '$no_faktur'");
+
+    while($data_hasil = mysqli_fetch_array($select_hasil_radiologi))
+      {
+       
+       $nomor_radiologi++;
+
+        echo"<tr>
+                    
+            <td class='table1' align='center'>".$nomor_radiologi."</td>   
+            <td class='table1'>".$data_hasil['nama_barang']."</td> 
+            <td class='table1' align='center'>-</td>            
+            <td class='table1' align='center'>".$data_hasil['jumlah_barang']."</td>
+            <td class='table1' align='center'>Radiologi</td>
+            <td class='table1' align='right'>". rp($data_hasil['harga']) ."</td>
+            <td class='table1' align='right'>". rp($data_hasil['potongan']) ."</td>
+            <td class='table1' align='right'>". rp($data_hasil['tax']) ."</td>
+            <td class='table1' align='right'>". rp($data_hasil['subtotal']) ."</td>
+      </tr>";
+
+                    
+                  
+    }
+
 //Untuk Memutuskan Koneksi Ke Database
 mysqli_close($db); 
 

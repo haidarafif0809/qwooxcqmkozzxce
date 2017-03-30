@@ -18,8 +18,13 @@ $nama_perusahaan = $keluar['nama_perusahaan'];
 $alamat_perusahaan = $keluar['alamat_perusahaan'];
 $no_telp = $keluar['no_telp'];
 
-$cek_pembelian = $db->query("SELECT * FROM detail_penjualan WHERE no_faktur = '$no_faktur' ");
-$jumlah_beli = mysqli_num_rows($cek_pembelian);
+$cek_penjualan = $db->query("SELECT nama_barang, harga, jumlah_barang, subtotal FROM detail_penjualan WHERE no_faktur = '$no_faktur' ");
+$jumlah_jual = mysqli_num_rows($cek_penjualan);
+
+$select_radiologi = $db->query("SELECT nama_barang, harga, jumlah_barang, subtotal FROM hasil_pemeriksaan_radiologi WHERE no_faktur = '$no_faktur' ");
+$jumlah_radiologi = mysqli_num_rows($cek_penjualan);
+
+$total_qty = $jumlah_jual + $jumlah_radiologi;
 
 $cek_total = $db->query("SELECT * FROM penjualan WHERE id = '$id' ");
 $keluar = mysqli_fetch_array($cek_total);
@@ -75,7 +80,7 @@ $printer = $ggo['status_print'];
 <table>
 	<tbody>
 <?php 
-while($data = mysqli_fetch_array($cek_pembelian))
+while($data = mysqli_fetch_array($cek_penjualan))
 {
 	
 		
@@ -84,6 +89,20 @@ while($data = mysqli_fetch_array($cek_pembelian))
 			<td style='padding:3px'>$data[harga]</td>
 			<td style='padding:3px'>$data[jumlah_barang]</td>
 			<td style='padding:3px'>$data[subtotal] </td>
+			</tr>";
+		
+
+
+}
+while($data_radiologi = mysqli_fetch_array($select_radiologi))
+{
+	
+		
+			echo "<tr>
+			<td>$data_radiologi[nama_barang]</td>
+			<td style='padding:3px'>$data_radiologi[harga]</td>
+			<td style='padding:3px'>$data_radiologi[jumlah_barang]</td>
+			<td style='padding:3px'>$data_radiologi[subtotal] </td>
 			</tr>";
 		
 
@@ -147,7 +166,7 @@ echo "
 <table>
 	<tbody>
 		
-			<tr><td>Total Item </td> <td>&nbsp;:&nbsp;</td> <td>(<?php echo $jumlah_beli;?>)&nbsp;</td><td><?php echo rp($total_penjualan);?></td></tr>
+			<tr><td>Total Item </td> <td>&nbsp;:&nbsp;</td> <td>(<?php echo $total_qty;?>)&nbsp;</td><td><?php echo rp($total_penjualan);?></td></tr>
 			<tr><td>Tunai</td> <td>&nbsp;:&nbsp;</td> <td>&nbsp;</td><td><?php echo rp($bayar);?> </td></tr>
 			<tr><td>Kembalian</td> <td>&nbsp;:&nbsp;</td><td>&nbsp;</td> <td><?php echo rp($sisa);?></td></tr>
 

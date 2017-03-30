@@ -40,11 +40,15 @@ if ($data_row > 0) {
     $query_lab = $db->query("SELECT SUM(subtotal) AS subtotal_lab FROM tbs_penjualan WHERE no_reg = '$no_reg' AND tipe_barang = 'Jasa' AND lab = 'Laboratorium' ");
     $data_lab = mysqli_fetch_array($query_lab);
 
-      $query_bed = $db->query("SELECT SUM(subtotal) AS subtotal_bed FROM tbs_penjualan WHERE no_reg = '$no_reg' AND tipe_barang = 'Bed' ");
+    $query_bed = $db->query("SELECT SUM(subtotal) AS subtotal_bed FROM tbs_penjualan WHERE no_reg = '$no_reg' AND tipe_barang = 'Bed' ");
     $data_bed = mysqli_fetch_array($query_bed);
 
     $select_operasi = $db->query("SELECT SUM(harga_jual) AS total_operasi FROM hasil_operasi WHERE no_reg = '$no_reg'");
-        $out_operasi = mysqli_fetch_array($select_operasi);
+    $out_operasi = mysqli_fetch_array($select_operasi);
+
+    $sum_radiologi = $db->query("SELECT SUM(subtotal) AS subtotal_radiologi FROM tbs_penjualan_radiologi WHERE no_reg = '$no_reg' AND tipe_barang = 'Jasa' AND status_periksa = '1' ");
+    $data_radiologi = mysqli_fetch_array($sum_radiologi);
+
 
 }
 else{
@@ -77,11 +81,14 @@ else{
     $query_lab = $db->query("SELECT SUM(subtotal) AS subtotal_lab FROM detail_penjualan WHERE no_reg = '$no_reg' AND tipe_produk = 'Jasa' AND lab = 'Laboratorium' ");
     $data_lab = mysqli_fetch_array($query_lab);
 
-      $query_bed = $db->query("SELECT SUM(subtotal) AS subtotal_bed FROM detail_penjualan WHERE no_reg = '$no_reg' AND tipe_produk = 'Bed' ");
+    $query_bed = $db->query("SELECT SUM(subtotal) AS subtotal_bed FROM detail_penjualan WHERE no_reg = '$no_reg' AND tipe_produk = 'Bed' ");
     $data_bed = mysqli_fetch_array($query_bed);
 
     $select_operasi = $db->query("SELECT SUM(harga_jual) AS total_operasi FROM hasil_operasi WHERE no_reg = '$no_reg'");
-        $out_operasi = mysqli_fetch_array($select_operasi);
+    $out_operasi = mysqli_fetch_array($select_operasi);
+
+    $sum_radiologi = $db->query("SELECT SUM(subtotal) AS subtotal_radiologi FROM hasil_pemeriksaan_radiologi WHERE no_reg = '$no_reg'");
+    $data_radiologi = mysqli_fetch_array($sum_radiologi);
 }
 
 
@@ -122,7 +129,8 @@ else{
  <tbody>
       <tr><td width="50%">Obat Obatan</td> <td> :</td> <td><?php echo rp($data2['subtotal_obat']);?> </tr>
       <tr><td  width="50%">Tindakan</td> <td> :</td> <td> <?php echo rp($dataja['subtotal_jasa']);?> </td></tr>            
-      <tr><td width="50%">Laboratorium</td> <td> :</td> <td><?php echo rp($data_lab['subtotal_lab']);?> </tr>
+      <tr><td width="50%">Laboratorium</td> <td> :</td> <td><?php echo rp($data_lab['subtotal_lab']);?> </tr>         
+      <tr><td width="50%">Radiologi</td> <td> :</td> <td><?php echo rp($data_radiologi['subtotal_radiologi']);?> </tr>
       <?php if ($data0['jenis_penjualan'] == 'Rawat Inap')
       {
 echo '<tr><td  width="50%">Laundry</td> <td> :</td> <td>'.$data_l['subtotal_laundry'].' </td></tr>

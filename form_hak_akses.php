@@ -10,7 +10,7 @@
     $nama = $_GET['nama'];
     $id = $_GET['id'];
 
-    $otoritas_akses = $db->query("SELECT * FROM hak_otoritas ho LEFT JOIN otoritas_penjualan open ON ho.id = open.id_otoritas LEFT JOIN otoritas_pembelian opem ON ho.id = opem.id_otoritas LEFT JOIN otoritas_master_data omd ON ho.id = omd.id_otoritas LEFT JOIN otoritas_pembayaran opemb ON ho.id = opemb.id_otoritas LEFT JOIN otoritas_transaksi_kas otk ON ho.id = otk.id_otoritas LEFT JOIN otoritas_kas_keluar okk ON ho.id = okk.id_otoritas LEFT JOIN otoritas_kas_masuk okm ON ho.id = okm.id_otoritas LEFT JOIN otoritas_kas_mutasi okmut ON ho.id = okmut.id_otoritas LEFT JOIN otoritas_persediaan operse ON ho.id = operse.id_otoritas LEFT JOIN otoritas_stok_opname oso ON ho.id = oso.id_otoritas LEFT JOIN otoritas_stok_awal osa ON ho.id = osa.id_otoritas LEFT JOIN otoritas_item_masuk oim ON ho.id = oim.id_otoritas LEFT JOIN otoritas_item_keluar oik ON ho.id = oik.id_otoritas LEFT JOIN otoritas_kas ok ON ho.id = ok.id_otoritas LEFT JOIN otoritas_laporan ol ON ho.id = ol.id_otoritas LEFT JOIN otoritas_registrasi oreg ON ho.id = oreg.id_otoritas LEFT JOIN otoritas_rekam_medik orm ON ho.id = orm.id_otoritas LEFT JOIN otoritas_setting os ON ho.id = os.id_otoritas LEFT JOIN otoritas_tipe_produk otp ON ho.id = otp.id_otoritas LEFT JOIN otoritas_laboratorium olab ON ho.id = olab.id_otoritas WHERE ho.id = '$id'");
+    $otoritas_akses = $db->query("SELECT * FROM hak_otoritas ho LEFT JOIN otoritas_penjualan open ON ho.id = open.id_otoritas LEFT JOIN otoritas_pembelian opem ON ho.id = opem.id_otoritas LEFT JOIN otoritas_master_data omd ON ho.id = omd.id_otoritas LEFT JOIN otoritas_pembayaran opemb ON ho.id = opemb.id_otoritas LEFT JOIN otoritas_transaksi_kas otk ON ho.id = otk.id_otoritas LEFT JOIN otoritas_kas_keluar okk ON ho.id = okk.id_otoritas LEFT JOIN otoritas_kas_masuk okm ON ho.id = okm.id_otoritas LEFT JOIN otoritas_kas_mutasi okmut ON ho.id = okmut.id_otoritas LEFT JOIN otoritas_persediaan operse ON ho.id = operse.id_otoritas LEFT JOIN otoritas_stok_opname oso ON ho.id = oso.id_otoritas LEFT JOIN otoritas_stok_awal osa ON ho.id = osa.id_otoritas LEFT JOIN otoritas_item_masuk oim ON ho.id = oim.id_otoritas LEFT JOIN otoritas_item_keluar oik ON ho.id = oik.id_otoritas LEFT JOIN otoritas_kas ok ON ho.id = ok.id_otoritas LEFT JOIN otoritas_laporan ol ON ho.id = ol.id_otoritas LEFT JOIN otoritas_registrasi oreg ON ho.id = oreg.id_otoritas LEFT JOIN otoritas_rekam_medik orm ON ho.id = orm.id_otoritas LEFT JOIN otoritas_setting os ON ho.id = os.id_otoritas LEFT JOIN otoritas_tipe_produk otp ON ho.id = otp.id_otoritas LEFT JOIN otoritas_laboratorium olab ON ho.id = olab.id_otoritas LEFT JOIN otoritas_radiologi ord ON ho.id = ord.id_otoritas WHERE ho.id = '$id'");
     $data_otoritas = mysqli_fetch_array($otoritas_akses);
 
 
@@ -1108,6 +1108,7 @@ else{
 
 
 
+
 <div class="form-group col-sm-2">
 
 
@@ -1386,6 +1387,141 @@ else{
      ?>
     
 </div>
+
+
+<div class="form-group col-sm-12">
+    
+</div>
+
+<div class="form-group col-sm-4">
+    OTORITAS MENU RADIOLOGI
+</div>
+
+<div class="form-group col-sm-8">
+    OTORITAS HASIL RADIOLOGI
+</div>
+
+
+<div class="form-group col-sm-4"> <!-- start otoritas RADIOLOGI -->
+
+<?php 
+
+if ($data_otoritas['radiologi_lihat'] == '1'){
+    echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="radiologi_lihat" name="radiologi_lihat" checked="">
+    <label for="radiologi_lihat">Menu Radiologi</label> <br>';
+}
+
+else{
+    echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="radiologi_lihat" name="radiologi_lihat">
+    <label for="radiologi_lihat">Menu Radiologi</label> <br>';  
+}
+
+ ?>
+
+<?php 
+
+if ($data_otoritas['daftar_radiologi'] == '1'){
+    echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="daftar_radiologi" name="daftar_radiologi" checked="">
+    <label for="daftar_radiologi">Daftar Radiologi</label> <br>';
+}
+
+else{
+    echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="daftar_radiologi" name="daftar_radiologi">
+    <label for="daftar_radiologi">Daftar Radiologi</label> <br>';  
+}
+
+ ?>
+
+<?php 
+
+if ($data_otoritas['pemeriksaan_radiologi'] == '1'){
+    echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="pemeriksaan_radiologi" name="pemeriksaan_radiologi" checked="">
+    <label for="pemeriksaan_radiologi">Pemeriksaan Radiologi</label> <br>';
+}
+
+else{
+    echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="pemeriksaan_radiologi" name="pemeriksaan_radiologi">
+    <label for="pemeriksaan_radiologi">Pemeriksaan Radiologi</label> <br>';  
+}
+
+ ?>
+
+<?php 
+
+if ($data_otoritas['hasil_radiologi'] == '1'){
+    echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="hasil_radiologi" name="hasil_radiologi" checked="">
+    <label for="hasil_radiologi">Hasil Radiologi</label> <br>';
+}
+
+else{
+    echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="hasil_radiologi" name="hasil_radiologi">
+    <label for="hasil_radiologi">Hasil Radiologi</label> <br>';  
+}
+
+ ?>
+
+</div> <!-- / of otoritas RADIOLOGI -->
+
+
+<div class="form-group col-sm-4"> <!-- start otoritas RADIOLOGI -->
+
+<?php 
+
+if ($data_otoritas['simpan_hasil_radiologi'] == '1'){
+    echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="simpan_hasil_radiologi" name="simpan_hasil_radiologi" checked="">
+    <label for="simpan_hasil_radiologi">Simpan Hasil Radiologi</label> <br>';
+}
+
+else{
+    echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="simpan_hasil_radiologi" name="simpan_hasil_radiologi">
+    <label for="simpan_hasil_radiologi">Simpan Hasil Radiologi</label> <br>';  
+}
+
+ ?>
+
+<?php 
+
+if ($data_otoritas['status_hasil'] == '1'){
+    echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="status_hasil" name="status_hasil" checked="">
+    <label for="status_hasil">Status Hasil Radiologi</label> <br>';
+}
+
+else{
+    echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="status_hasil" name="status_hasil">
+    <label for="status_hasil">Status Hasil Radiologi</label> <br>';  
+}
+
+ ?>
+
+<?php 
+
+if ($data_otoritas['foto_hasil'] == '1'){
+    echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="foto_hasil" name="foto_hasil" checked="">
+    <label for="foto_hasil">Foto Hasil Radiologi</label> <br>';
+}
+
+else{
+    echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="foto_hasil" name="foto_hasil">
+    <label for="foto_hasil">Foto Hasil Radiologi</label> <br>';  
+}
+
+ ?>
+
+<?php 
+
+if ($data_otoritas['keterangan_hasil'] == '1'){
+    echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="keterangan_hasil" name="keterangan_hasil" checked="">
+    <label for="keterangan_hasil">Keterangan Hasil Radiologi</label> <br>';
+}
+
+else{
+    echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="keterangan_hasil" name="keterangan_hasil">
+    <label for="keterangan_hasil">Keterangan Hasil Radiologi</label> <br>';  
+}
+
+ ?>
+
+</div> <!-- / of otoritas RADIOLOGI -->
 
 
 <div class="form-group col-sm-12">

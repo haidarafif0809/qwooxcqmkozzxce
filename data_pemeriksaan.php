@@ -28,7 +28,7 @@ $columns = array(
 );
 
 // getting total number records without any search
-$sql =" SELECT kode_pemeriksaan, nama_pemeriksaan, harga_1, harga_2, harga_3, harga_4, harga_5, harga_6, harga_7, kontras, id ";
+$sql =" SELECT kode_pemeriksaan, nama_pemeriksaan, harga_1, harga_2, harga_3, harga_4, harga_5, harga_6, harga_7, kontras, no_urut, id ";
 $sql.=" FROM pemeriksaan_radiologi";
 
 $query = mysqli_query($conn, $sql) or die("eror 1");
@@ -36,7 +36,7 @@ $totalData = mysqli_num_rows($query);
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
-$sql =" SELECT kode_pemeriksaan, nama_pemeriksaan, harga_1, harga_2, harga_3, harga_4, harga_5, harga_6, harga_7, kontras, id ";
+$sql =" SELECT kode_pemeriksaan, nama_pemeriksaan, harga_1, harga_2, harga_3, harga_4, harga_5, harga_6, harga_7, kontras, no_urut, id ";
 $sql.=" FROM pemeriksaan_radiologi";
 
     $sql.=" WHERE kode_pemeriksaan LIKE '".$requestData['search']['value']."%'";  
@@ -47,7 +47,7 @@ $sql.=" FROM pemeriksaan_radiologi";
 $query=mysqli_query($conn, $sql) or die("eror 2");
 $totalFiltered = mysqli_num_rows($query); // when there is a search parameter then we have to modify total number filtered rows as per search result. 
         
-$sql.=" ORDER BY id DESC LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
+$sql.=" ORDER BY no_urut ASC LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
 
 
 /* $requestData['order'][0]['column'] contains colmun index, $requestData['order'][0]['dir'] contains order such as asc/desc  */    
@@ -82,7 +82,7 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 
 
       $nestedData[] = "<p style='font-size:15px' class='edit-harga-1' data-id='".$row['id']."' align='right'> <span id='text-harga-1-".$row['id']."'>".rp($row["harga_1"])."</span> <input type='hidden' id='input-harga-1-".$row['id']."' value='".$row['harga_1']."' class='input_harga_1' data-id='".$row['id']."' autofocus='' data-kode='".$row['kode_pemeriksaan']."' data-harga-1='".$row['harga_1']."'> </p>";
-
+/*
       $nestedData[] = "<p style='font-size:15px' class='edit-harga-2' data-id='".$row['id']."' align='right'> <span id='text-harga-2-".$row['id']."'>".rp($row["harga_2"])."</span> <input type='hidden' id='input-harga-2-".$row['id']."' value='".$row['harga_2']."' class='input_harga_2' data-id='".$row['id']."' autofocus='' data-kode='".$row['kode_pemeriksaan']."' data-harga-2='".$row['harga_2']."'> </p>";
 
       $nestedData[] = "<p style='font-size:15px' class='edit-harga-3' data-id='".$row['id']."' align='right'> <span id='text-harga-3-".$row['id']."'>".rp($row["harga_3"])."</span> <input type='hidden' id='input-harga-3-".$row['id']."' value='".$row['harga_3']."' class='input_harga_3' data-id='".$row['id']."' autofocus='' data-kode='".$row['kode_pemeriksaan']."' data-harga-3='".$row['harga_3']."'> </p>";
@@ -94,6 +94,11 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
       $nestedData[] = "<p style='font-size:15px' class='edit-harga-6' data-id='".$row['id']."' align='right'> <span id='text-harga-6-".$row['id']."'>".rp($row["harga_6"])."</span> <input type='hidden' id='input-harga-6-".$row['id']."' value='".$row['harga_6']."' class='input_harga_6' data-id='".$row['id']."' autofocus='' data-kode='".$row['kode_pemeriksaan']."' data-harga-6='".$row['harga_6']."'> </p>";
 
       $nestedData[] = "<p style='font-size:15px' class='edit-harga-7' data-id='".$row['id']."' align='right'> <span id='text-harga-7-".$row['id']."'>".rp($row["harga_7"])."</span> <input type='hidden' id='input-harga-7-".$row['id']."' value='".$row['harga_7']."' class='input_harga_7' data-id='".$row['id']."' autofocus='' data-kode='".$row['kode_pemeriksaan']."' data-harga-7='".$row['harga_7']."'> </p>";
+
+*/
+
+      $nestedData[] = "<p style='font-size:15px' class='edit-urutan' data-id='".$row['id']."' align='right'> <span id='text-urutan-".$row['id']."'>".rp($row["no_urut"])."</span> <input type='hidden' id='input-urutan-".$row['id']."' value='".$row['no_urut']."' class='input_urutan' data-id='".$row['id']."' autofocus='' data-kode='".$row['kode_pemeriksaan']."' data-urutan='".$row['no_urut']."'> </p>";
+
 
       $nestedData[] = "<button class='btn btn-danger btn-sm btn-hapus' id='hapus-tbs-".$row['id']."' data-id='". $row['id'] ."' data-kode-pemeriksaan='". $row['kode_pemeriksaan'] ."' data-pemeriksaan='". $row['nama_pemeriksaan'] ."'>Hapus</button>";
 
