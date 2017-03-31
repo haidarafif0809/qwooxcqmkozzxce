@@ -1485,7 +1485,29 @@ $(document).ready(function(){
         $('#potongan_persen').val('');
 
 // END DATATABLE AJAX END DATATABLE AJAX END DATATABLE AJAX END DATATABLE AJAX END DATATABLE AJAX END DATATABLE AJAX
+//End Cek Hasil Laboratorium
+            var pasien = $("#nama_pasien").val();
+            var no_reg = $("#no_reg").val();
+            $.post("cek_setting_laboratorium_inap.php",{no_reg:no_reg},function(data){
+              if(data == 1){
+                $("#penjualan").hide();
+                 $("#simpan_sementara").hide();
+                 $("#batal_penjualan").hide(); 
+                 $("#cetak_langsung").hide();
+                 $("#piutang").hide();
+                alert("Pasien atas nama ("+pasien+") Hasil laboratorium belum di isi!");
 
+              }
+              else
+              {
+                 $("#penjualan").show();
+                 $("#simpan_sementara").show();
+                 $("#batal_penjualan").show(); 
+                 $("#cetak_langsung").show();
+                 $("#piutang").show();
+              }
+            });
+      //End Cek Hasil Laboratorium
 
 // CEK TOTAL CEK TOTAL CEK TOTAL CEK TOTAL CEK TOTAL CEK TOTAL CEK TOTAL CEK TOTAL CEK TOTAL CEK TOTAL CEK TOTAL CEK TOTAL CEK TOTAL
 
