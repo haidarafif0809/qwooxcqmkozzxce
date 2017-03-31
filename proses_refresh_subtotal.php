@@ -23,10 +23,13 @@ include 'sanitasi.php';
  $totallab = $datalab['total_penjualan'];
 
  $sql_ops = $db->query("SELECT SUM(harga_jual) AS total_ops FROM tbs_operasi WHERE no_reg = '$no_reg'");
-$data_ops = mysqli_fetch_array($sql_ops);
+ $data_ops = mysqli_fetch_array($sql_ops);
+
+ $sum_radiologi = $db->query("SELECT SUM(harga) AS total_radiologi FROM tbs_penjualan_radiologi WHERE no_reg = '$no_reg' AND status_periksa = '1'");
+ $data_sum = mysqli_fetch_array($sum_radiologi);
 
 
-echo$tt = $total + $totallab + $data_ops['total_ops'];
+echo $subtotal = $total + $totallab + $data_ops['total_ops'] + $data_sum['total_radiologi'];
 
  }
  else
@@ -37,8 +40,12 @@ echo$tt = $total + $totallab + $data_ops['total_ops'];
  $datalab = mysqli_fetch_array($querylab);
  $totallab = $datalab['total_penjualan'];
 
+  $sum_radiologi = $db->query("SELECT SUM(harga) AS total_radiologi FROM tbs_penjualan_radiologi WHERE session_id = '$session_id' AND status_periksa = '1' AND no_faktur IS NULL");
+ $data_sum = mysqli_fetch_array($sum_radiologi);
 
-echo$totallab;
+
+
+echo $subtotal = $totallab + $data_sum['total_radiologi'];
  }
 
 

@@ -77,7 +77,7 @@ $sttus = mysqli_num_rows($penjual);
 $query_z = $db->query("SELECT p.status,p.no_faktur,p.nama,p.kode_gudang,g.nama_gudang FROM penjualan p INNER JOIN gudang g ON p.kode_gudang = g.kode_gudang WHERE p.no_reg = '$row[no_reg]' ");
 $data_z = mysqli_fetch_array($query_z);
 
-
+/*
 
 if ($penjualan['penjualan_tambah'] > 0) {
   if ($data_z['status'] == 'Simpan Sementara') {
@@ -96,7 +96,8 @@ else{
        $nestedData[] = "";
 
 }
-      
+
+*/   
  
 if ($registrasi_rj['registrasi_rj_lihat'] > 0) {
   if ($row['status'] == 'Rujuk Keluar Ditangani')
@@ -125,6 +126,9 @@ else
   $nestedData[] = "
 		   <button class='btn btn-floating btn-small btn-info rujuk_ri' data-reg='".$row['no_reg']."'><i class='fa fa-hotel'></i></button>
 		   ";
+
+$nestedData[] = "<a href='form_pemeriksaan_radiologi.php?no_rm=".$row['no_rm']."&nama=".$row['nama_pasien']."&no_reg=".$row['no_reg']."&dokter=".$row['dokter']."&jenis_penjualan=Rawat Jalan&rujukan=Rujuk Rawat Jalan&penjamin=".$row['penjamin']."' class='btn btn-floating btn-small btn-info'><i class='fa fa-universal-access'></i></a>
+       ";
 
  if ($data_z['status'] == 'Simpan Sementara') {
 

@@ -13,15 +13,10 @@
 
 	// perhitungan saldo awal
 
-	$sum_saldo1 = $db->query("SELECT SUM(debit) AS saldo1 ,SUM(kredit) AS saldo2 FROM jurnal_trans WHERE DATE(waktu_jurnal) < '$dari_tanggal' AND kode_akun_jurnal = '$daftar_akun'");
+	$sum_saldo1 = $db->query("SELECT SUM(debit) - SUM(kredit) AS saldo FROM jurnal_trans WHERE DATE(waktu_jurnal) < '$dari_tanggal' AND kode_akun_jurnal = '$daftar_akun'");
 	$cek_saldo1 = mysqli_fetch_array($sum_saldo1);
 
-	$saldo1 = $cek_saldo1['saldo1'];
-
-	$saldo2 = $cek_saldo1['saldo2'];
-
-	$saldo = $saldo1 - $saldo2;
-
+	$saldo = $cek_saldo1['saldo'];
 	// end perhitungan saldo awal
 
 	$total_debit = 0;

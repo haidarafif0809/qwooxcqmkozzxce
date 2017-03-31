@@ -10,17 +10,52 @@ $session_id = session_id();
 
 $user = $_SESSION['nama'];
 
-if (isset($_GET['no_rm']))
+if (isset($_GET['no_reg']))
+{
+
+$nama = stringdoang($_GET['nama']);
+$no_rm = stringdoang($_GET['no_rm']);
+$no_reg = stringdoang($_GET['no_reg']);
+$dokter_pengirim = stringdoang($_GET['dokter']);
+$jenis_penjualan = stringdoang($_GET['jenis_penjualan']);
+$rujukan = stringdoang($_GET['rujukan']);
+$penjamin = stringdoang($_GET['penjamin']);
+}
+
+else if (isset($_GET['no_rm']))
 {
 $nama = stringdoang($_GET['nama']);
 $no_rm = stringdoang($_GET['no_rm']);
+$no_reg = "";
+$dokter_pengirim = "";
+$jenis_penjualan = "";
+$rujukan = "";
+$penjamin = "";
 }
 else
 {
 $nama = 'Umum';
 $no_rm = "Umum";
+$no_reg = "";
+$dokter_pengirim = "";
+$jenis_penjualan = "";
+$rujukan = "";
+$penjamin = "";
 }
 
+
+//HITUNG TOTAL HRGA PRODUK YANG ADA DI R> JALAN / INPA dan OPERASI JIKA ADA
+$sum_rj_ri = $db->query("SELECT SUM(subtotal) AS total_rj_ri FROM tbs_penjualan WHERE no_reg = '$no_reg' AND no_reg != '' AND radiologi IS NULL ");
+$data_rj_ri = mysqli_fetch_array($sum_rj_ri);
+
+$sql_ops = $db->query("SELECT SUM(harga_jual) AS total_ops FROM tbs_operasi WHERE no_reg = '$no_reg'");
+$data_ops = mysqli_fetch_array($sql_ops);
+//HITUNG TOTAL HRGA PRODUK YANG ADA DI R> JALAN / INPA dan OPERASI JIKA ADA
+
+//DATA YANG DIBUTUHKAN UNTK KEMBALI KE FORM R> JALAN / INAP
+$select_reg = $db->query("SELECT poli, bed, group_bed FROM registrasi WHERE no_reg = '$no_reg' ");
+$data_reg = mysqli_fetch_array($select_reg);
+//DATA YANG DIBUTUHKAN UNTK KEMBALI KE FORM R> JALAN / INAP
 
 
  ?>
@@ -37,6 +72,11 @@ $no_rm = "Umum";
     disabled: true;
 }
 </style>
+
+<style>
+  tr:nth-child(even){background-color: #f2f2f2}
+</style>
+
 
 
 <script>
@@ -70,7 +110,7 @@ $no_rm = "Umum";
 <!--untuk membuat agar tampilan form terlihat rapih dalam satu tempat -->
 
  <div style="padding-left: 5%; padding-right: 5%">
-  <h3> FORM PEMERIKSAAN RADIOLOGI</h3><hr>
+  <h3> FORM INPUT PEMERIKSAAN RADIOLOGI</h3><hr>
 <div class="row">
 
 <div class="col-xs-8">
@@ -86,21 +126,38 @@ $no_rm = "Umum";
 
 <div class="row">
 
-  <input  name="no_reg" type="hidden" style="height:15px;" id="no_reg" class="form-control" required="" autofocus="" value="" >
+<?php if ($no_reg  != ""): ?>
+  <div class="col-xs-2">
+  <label> No. Reg </label><br>
+    <input  name="no_reg" style="height: 15px" type="text" id="no_reg" class="form-control" required="" autofocus="" value="<?php echo $no_reg ?>" readonly="">
+  </div>
+<?php else: ?>
+
+  <div class="col-xs-2" style="display: none">
+  <label> No. Reg </label><br>
+    <input  name="no_reg" style="height: 15px" type="text" id="no_reg" class="form-control" required="" autofocus="" value="<?php echo $no_reg ?>" readonly="">
+  </div>
+<?php endif ?>
 
 
 <div class="col-xs-2 form-group"> 
     <label> Nama Pasien </label><br>
   <input  name="kode_pelanggan" type="hidden" style="height:15px;" id="kd_pelanggan" class="form-control" required="" autofocus="" >
   <input  name="nama_pelanggan" type="text" style="height:15px;" id="nama_pelanggan" class="form-control" required="" autofocus="" value="<?php echo $nama ?>">
-  <input  name="kode_pelanggan1" type="hidden" style="height:15px;" id="kd_pelanggan1" class="form-control" required="" autofocus="" value="<?php echo $no_rm ?>">
+<input  name="kode_pelanggan1" type="hidden" style="height:15px;" id="kd_pelanggan1" class="form-control" required="" autofocus="" value="<?php echo $no_rm ?>">
 </div>
 
+<!-- DATA YANG DIUBUTHKAN UNTUK KEMABLI KE FORM PENJUALAN R. JALAN / INAP -->
+<input  name="asal_poli" type="hidden" style="height:15px;" id="asal_poli" class="form-control" required="" autofocus="" value="<?php echo $data_reg['poli']; ?>" >
+<input  name="bed" type="hidden" style="height:15px;" id="bed" class="form-control" required="" autofocus="" value="<?php echo $data_reg['bed']; ?>" >
+<input  name="kamar" type="hidden" style="height:15px;" id="kamar" class="form-control" required="" autofocus="" value="<?php echo $data_reg['group_bed']; ?>" >
+<!-- DATA YANG DIUBUTHKAN UNTUK KEMABLI KE FORM PENJUALAN R. JALAN / INAP -->
 
-  <div class="form-group col-xs-2">
+
+  <div class="form-group col-xs-2" style="display: none">
     <label for="email">Penjamin:</label>
     <select class="form-control chosen" id="penjamin" name="penjamin" required="">
-    <option value="">--SILAKAN PILIH--</option>
+    <option value="<?php echo $penjamin ?>"><?php echo $penjamin ?></option>
       <?php 
       $query = $db->query("SELECT nama FROM penjamin");
       while ( $icd = mysqli_fetch_array($query))
@@ -113,11 +170,10 @@ $no_rm = "Umum";
 </div>
 
 
-<div class="col-xs-2">
+<div class="col-xs-2" style="display: none" >
   <label> Level Harga </label><br>
 
   <select style="font-size:15px; height:35px" type="text" name="level_harga" id="level_harga" class="form-control chosen" required="" >
-  <option value="">--SILAKAN PILIH--</option>
   <option value="harga_1">Level 1</option>
   <option value="harga_2">Level 2</option>
   <option value="harga_3">Level 3</option>
@@ -130,7 +186,7 @@ $no_rm = "Umum";
     </div>
 
 
-<div class="col-xs-2">
+<div class="col-xs-2" style="display: none">
           <label>PPN</label>
           <select style="font-size:15px; height:35px" name="ppn" id="ppn" class="form-control">
 
@@ -141,77 +197,58 @@ $no_rm = "Umum";
 </div>
 
 
-  <div class="col-xs-3">
-   <label> Dokter Pengirim </label><br>
-          
-    <select name="dokter" id="dokter" class="form-control chosen" required="" >
-    <option value=''>--SILAKAN PILIH--</option>
-  <?php 
-        //untuk menampilkan semua data pada tabel pelanggan dalam DB
-    $query01 = $db->query("SELECT nama,id FROM user WHERE tipe = '1'");
+<?php if ($no_reg == ""): ?>
+    <div class="col-xs-3">
+       <label> Dokter Pengirim </label><br>
+              
+        <select name="dokter" id="dokter" class="form-control chosen" required="" >
 
-    //untuk menyimpan data sementara yang ada pada $query
-    while($data01 = mysqli_fetch_array($query01))
-    {
-    
+      <?php 
+            //untuk menampilkan semua data pada tabel pelanggan dalam DB
+        $query01 = $db->query("SELECT nama,id FROM user WHERE tipe = '1'");
 
-      if ($data01['id'] == $dokter) {
-       echo "<option selected value='".$data01['id'] ."'>".$data01['nama'] ."</option>";
+        //untuk menyimpan data sementara yang ada pada $query
+        while($data01 = mysqli_fetch_array($query01))
+        {    
+
+          if ($data01['id'] == $dokter_pengirim) {
+           echo "<option selected value='".$data01['id'] ."'>".$data01['nama'] ."</option>";
+          }
+          else{
+            echo "<option value='".$data01['id'] ."'>".$data01['nama'] ."</option>";
+          }
+
+        
+        }
+    ?>
+      </select>
+    </div>
+
+    <div class="col-xs-3">
+     <label> Dokter Pemeriksa </label><br>
+
+            
+      <select name="dokter" id="dokter_pemeriksa" class="form-control chosen" required="" >
+      
+    <?php 
+          //untuk menampilkan semua data pada tabel pelanggan dalam DB
+      $query01 = $db->query("SELECT nama,id FROM user WHERE tipe = '1'");
+
+      //untuk menyimpan data sementara yang ada pada $query
+      while($data01 = mysqli_fetch_array($query01))    {
+
+          echo "<option value='".$data01['id'] ."'>".$data01['nama'] ."</option>";
+      
       }
-      else{
-        echo "<option value='".$data01['id'] ."'>".$data01['nama'] ."</option>";
-      }
-
-    
-    }
-?>
-  </select>
-</div>
-
-
-
-  <div class="col-xs-3">
-   <label> Dokter Pemeriksa </label><br>
-
-          
-    <select name="dokter" id="dokter_pemeriksa" class="form-control chosen" required="" >
-    <option value=''>--SILAKAN PILIH--</option>
-  <?php 
-        //untuk menampilkan semua data pada tabel pelanggan dalam DB
-    $query01 = $db->query("SELECT nama,id FROM user WHERE tipe = '1'");
-
-    //untuk menyimpan data sementara yang ada pada $query
-    while($data01 = mysqli_fetch_array($query01))    {
-
-        echo "<option value='".$data01['id'] ."'>".$data01['nama'] ."</option>";
-    
-    }
-?>
-  </select>
-</div>
-
-</div>
-
-<div class="row">
-
-  <div class="col-xs-8">
-
-  <button type="button" id="cari_produk_penjualan" class="btn btn-info " data-toggle="modal" data-target="#myModal"><i class='fa fa-search'></i> Cari (F1) </button> 
-
-  
-  <a href="form_pendaftaran_pasien_radiologi.php" class="btn btn-default"> <i class="fa fa-plus"></i> Pasien Baru</a>  
-
-
-<button type="button" class="btn btn-default" id="btnRefreshsubtotal"> <i class='fa fa-refresh'></i> Refresh Subtotal</button>
-
-<button type="button" id="lay" class="btn btn-primary" ><i class='fa  fa-list'></i> Layanan  </button> 
+  ?>
+    </select>
   </div>
 
-  <div class="col-xs-3">
+    <div class="col-xs-3">
    <label> Petugas Radiologi </label><br>
           
     <select name="petugas" id="petugas_radiologi" class="form-control chosen" required="" >
-   <option value=''>--SILAKAN PILIH--</option>
+
   <?php 
         //untuk menampilkan semua data pada tabel pelanggan dalam DB
     $query01 = $db->query("SELECT nama,id FROM user WHERE tipe = '5'");
@@ -226,6 +263,118 @@ $no_rm = "Umum";
   </select>
 </div>
 
+<?php else: ?>
+
+  <div class="col-xs-2">
+   <label> Dokter Pengirim </label><br>
+          
+    <select name="dokter" id="dokter" class="form-control chosen" required="" >
+
+  <?php 
+        //untuk menampilkan semua data pada tabel pelanggan dalam DB
+    $query01 = $db->query("SELECT nama,id FROM user WHERE tipe = '1'");
+
+    //untuk menyimpan data sementara yang ada pada $query
+    while($data01 = mysqli_fetch_array($query01))
+    {    
+
+      if ($data01['id'] == $dokter_pengirim) {
+       echo "<option selected value='".$data01['id'] ."'>".$data01['nama'] ."</option>";
+      }
+      else{
+        echo "<option value='".$data01['id'] ."'>".$data01['nama'] ."</option>";
+      }
+
+    
+    }
+?>
+  </select>
+</div>
+
+  <div class="col-xs-2">
+   <label> Dokter Pemeriksa </label><br>
+
+          
+    <select name="dokter" id="dokter_pemeriksa" class="form-control chosen" required="" >
+    
+  <?php 
+        //untuk menampilkan semua data pada tabel pelanggan dalam DB
+    $query01 = $db->query("SELECT nama,id FROM user WHERE tipe = '1'");
+
+    //untuk menyimpan data sementara yang ada pada $query
+    while($data01 = mysqli_fetch_array($query01))    {
+
+        echo "<option value='".$data01['id'] ."'>".$data01['nama'] ."</option>";
+    
+    }
+?>
+  </select>
+</div>
+
+    <div class="col-xs-2">
+   <label> Petugas Radiologi </label><br>
+          
+    <select name="petugas" id="petugas_radiologi" class="form-control chosen" required="" >
+
+  <?php 
+        //untuk menampilkan semua data pada tabel pelanggan dalam DB
+    $query01 = $db->query("SELECT nama,id FROM user WHERE tipe = '5'");
+
+    //untuk menyimpan data sementara yang ada pada $query
+    while($data01 = mysqli_fetch_array($query01))    {
+
+        echo "<option value='".$data01['id'] ."'>".$data01['nama'] ."</option>";
+    
+    }
+?>
+  </select>
+</div>
+
+<?php endif ?>
+
+</div>
+
+<div class="row">
+
+
+<?php if ($no_reg == ""): ?>
+
+
+  <div class="col-xs-8">
+
+  <button type="button" id="cari_produk_penjualan" class="btn btn-info " data-toggle="modal" data-target="#myModal"><i class='fa fa-search'></i> Cari (F1) </button> 
+
+    <?php if ($no_reg == ""): ?>
+
+          <a href="form_pendaftaran_pasien_radiologi.php" class="btn btn-default"> <i class="fa fa-plus"></i> Pasien Baru</a>  
+          <button type="button" class="btn btn-default" id="btnRefreshsubtotal"> <i class='fa fa-refresh'></i> Refresh Subtotal</button>
+          <button type="button" id="lay" class="btn btn-warning" ><i class='fa  fa-list'></i> Layanan  </button> 
+
+    <?php endif ?>  
+
+  </div>
+
+
+<?php else: ?>
+
+  <div class="col-xs-10">
+
+  <button type="button" id="cari_produk_penjualan" class="btn btn-info " data-toggle="modal" data-target="#myModal"><i class='fa fa-search'></i> Cari (F1) </button> 
+
+    <?php if ($no_reg == ""): ?>
+
+          <a href="form_pendaftaran_pasien_radiologi.php" class="btn btn-default"> <i class="fa fa-plus"></i> Pasien Baru</a> 
+          <button type="button" class="btn btn-default" id="btnRefreshsubtotal"> <i class='fa fa-refresh'></i> Refresh Subtotal</button> 
+          <button type="button" id="lay" class="btn btn-warning" ><i class='fa  fa-list'></i> Layanan  </button>
+          
+    <?php endif ?>  
+
+  </div>
+
+
+<?php endif ?>
+
+
 </div>
 
 
@@ -235,43 +384,85 @@ $no_rm = "Umum";
 
 <!--tampilan modal-->
 <div id="myModal" class="modal fade" role="dialog">
-  <div class="modal-dialog modal-lg">
+  <div class="modal-dialog">
 
-    <!-- isi modal-->
+    <!-- Modal content-->
     <div class="modal-content">
-
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Daftar Pemeriksaan Radiologi</h4>
+               
+              <h4 class="modal-title">Daftar Pemeriksaan Radiologi</h4>
       </div>
       <div class="modal-body">
 
-            <span class="modal_baru">
-          <div class="table-responsive">                             <!-- membuat agar ada garis pada tabel, disetiap kolom-->
-        <table id="table-radioogi" class="table table-bordered">
+        <form class="form"  role="form" id="formtambahprodukcari">
+            <div class="table-responsive">
+              
+              <div class="form-group col-xs-6"> <!-- /  -->
 
-        <thead> <!-- untuk memberikan nama pada kolom tabel -->
-        
-        <th>Kode Pemeriksaan </th>
-        <th>Nama Pemeriksaan </th>
-        <th>Kontras </th>
-        <th>Harga 1</th>
-        <th>Harga 2</th>
-        <th>Harga 3</th>
-        <th>Harga 4</th>
-        <th>Harga 5</th>
-        <th>Harga 6</th>   
-        <th>Harga 7</th>
-        
-        </thead> <!-- tag penutup tabel -->
-       
-        </table> <!-- tag penutup table-->
+                <h5><b> Pakai Kontras </b></h5><br>
 
-        </div>
-</span>
-</div> <!-- tag penutup modal-body-->
+                  <input type="checkbox" class="cekcbox1 filled-in" id="checkbox1">
+                  <label for="checkbox1"><b> PILIH SEMUA </b></label><br>
+                  
+                  <?php 
+                    $select_pemriksaan_kontras = $db->query("SELECT id, kode_pemeriksaan, nama_pemeriksaan, kontras, harga_1 FROM pemeriksaan_radiologi WHERE kontras = '1' ORDER BY no_urut ASC");
+
+                    while ($data_kontras = mysqli_fetch_array($select_pemriksaan_kontras)) {
+                      
+                      echo '<input type="checkbox" class="cekcbox-1 filled-in" id="pemeriksaan-'.$data_kontras['id'].'" name="pakai_kontras" value="'.$data_kontras['kode_pemeriksaan'].'">
+                      <label for="pemeriksaan-'.$data_kontras['id'].'"
+                      data-id="'.$data_kontras['id'].'"
+                      data-kode="'.$data_kontras['kode_pemeriksaan'].'"
+                      data-nama="'.$data_kontras['nama_pemeriksaan'].'"
+                      data-kontras="'.$data_kontras['kontras'].'"
+                      data-harga="'.$data_kontras['harga_1'].'" class="insert-tbs" data-toogle="0" id="label-'.$data_kontras['id'].'"
+                      >'.$data_kontras['nama_pemeriksaan'].'</label> <br>';
+
+                    }
+                    
+                  ?>
+
+              </div> <!-- /  -->
+
+              <div class="form-group col-xs-6"> <!-- /  -->
+
+                <h5><b> Tidak Pakai Kontras </b></h5><br>
+
+                  <input type="checkbox" class="cekcbox2 filled-in" id="checkbox2">
+                  <label for="checkbox2"><b> PILIH SEMUA </b></label><br>
+
+                  <?php 
+                    $select_pemriksaan_tanpa_kontras = $db->query("SELECT id, kode_pemeriksaan, nama_pemeriksaan, kontras, harga_1 FROM pemeriksaan_radiologi WHERE kontras = '0' ORDER BY no_urut ASC");
+
+                    while ($data_tanpa_kontras = mysqli_fetch_array($select_pemriksaan_tanpa_kontras)) {
+
+                        echo '<input type="checkbox" class="cekcbox-2 filled-in" name="tanpa_kontras" 
+                        id="pemeriksaan-'.$data_tanpa_kontras['id'].'" value="'.$data_tanpa_kontras['kode_pemeriksaan'].'"> 
+                        <label for="pemeriksaan-'.$data_tanpa_kontras['id'].'"
+                        data-id="'.$data_tanpa_kontras['id'].'"
+                        data-kode="'.$data_tanpa_kontras['kode_pemeriksaan'].'"
+                        data-nama="'.$data_tanpa_kontras['nama_pemeriksaan'].'"
+                        data-kontras="'.$data_tanpa_kontras['kontras'].'"
+                        data-harga="'.$data_tanpa_kontras['harga_1'].'" class="insert-tbs" data-toogle="0" id="label-'.$data_kontras['id'].'"
+                        >'.$data_tanpa_kontras['nama_pemeriksaan'].'</label> <br>';
+
+                    }
+
+
+                    
+                  ?>
+
+              </div> <!-- /  -->
+
+            </div>
+        </form>
+      
+      </div>
+
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-warning" id="btnSubmit"> <i class='fa fa-plus'></i> Submit</button>
+        <button type="button" accesskey="e" class="btn btn-danger" data-dismiss="modal"><i class='fa fa-close'></i> Cancel</button>
       </div>
     </div>
 
@@ -391,23 +582,21 @@ $no_rm = "Umum";
             id-barang="'.$key['id'].'" > '. $key['kode_pemeriksaan'].' ( '.$key['nama_pemeriksaan'].' ) </option>';
           }
 
-        ?>
+  ?>
         </select>
   </div>
 
     <input type="hidden" class="form-control" name="nama_barang" autocomplete="off" id="nama_barang" placeholder="nama" >
 
-  <div class="col-xs-2">
+  <div class="col-xs-2" style="display: none">
     <input style="height:15px;" type="text" class="form-control" name="jumlah_barang" autocomplete="off" id="jumlah_barang" placeholder="Jumlah" >
   </div>
 
-
-
-   <div class="col-xs-2">
+   <div class="col-xs-2" style="display: none">
     <input style="height:15px;" type="text" class="form-control" name="potongan" autocomplete="off" id="potongan1" data-toggle="tooltip" data-placement="top" title="Jika Ingin Potongan Dalam Bentuk Persen (%), input : 10%" placeholder="Potongan">
   </div>
 
-   <div class="col-xs-1">
+   <div class="col-xs-1" style="display: none">
     <input style="height:15px;" type="text" class="form-control" name="tax" autocomplete="off" id="tax1" placeholder="Tax%" >
   </div>
 
@@ -435,15 +624,19 @@ $no_rm = "Umum";
                     <table id="tabel_tbs_radiologi" class="table table-bordered table-sm">
                           <thead> <!-- untuk memberikan nama pada kolom tabel -->
                               
-                              <th> Kode  </th>
-                              <th> Nama </th>
-                              <th> Dokter Pengirim </th>
-                              <th style="text-align: right" > Jumlah </th>
-                              <th style="text-align: right" > Harga </th>
-                              <th style="text-align: right" > Subtotal </th>
-                              <th style="text-align: right" > Potongan </th>
-                              <th style="text-align: right" > Pajak </th>
-                              <th> Hapus </th>
+                              <th style='background-color: #4CAF50; color: white'> Kode  </th>
+                              <th style='background-color: #4CAF50; color: white'> Nama </th>
+                              <th style='background-color: #4CAF50; color: white'> Dokter Pengirim </th>
+                          <!--
+                              <th style='background-color: #4CAF50; color: white'; text-align: right" > Jumlah </th>
+                              <th style='background-color: #4CAF50; color: white'; text-align: right" > Harga </th>
+                              <th style='background-color: #4CAF50; color: white'; text-align: right" > Subtotal </th>
+                              <th style='background-color: #4CAF50; color: white'; text-align: right" > Potongan </th>
+                              <th style='background-color: #4CAF50; color: white'; text-align: right" > Pajak </th>
+
+                              -->
+
+                              <th style='background-color: #4CAF50; color: white'> Hapus </th>
                           
                           </thead> <!-- tag penutup tabel -->
                     </table>
@@ -451,10 +644,42 @@ $no_rm = "Umum";
 
                 </span>                
 
+<?php if ($no_reg != ""): ?>
+
+  <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample" id="rawat"><i class='fa fa-wheelchair-alt'> </i> Rawat Jalan / Inap</button>
+
+       <?php if ($jenis_penjualan == 'Rawat Inap'): ?>
+
+        <button class="btn btn-primary" type="button" id="btnOperasi" data-toggle="collapse" data-target="#collapseExampleops" aria-expanded="false" aria-controls="collapseExample"><i class='fa fa-plus-circle'> </i>
+      Operasi  </button>
+      <?php endif ?>
+
+<?php endif ?>
 
 
-                <h6 style="text-align: left ; color: red"><i> * Klik 2x pada kolom jumlah barang jika ingin mengedit.</i></h6>
-                <h6 style="text-align: left ;"><i><b> * Short Key (F2) untuk mencari Kode Produk atau Nama Produk.</b></i></h6>
+ <div class="collapse" id="collapseExample">
+
+                <table id="table-rawat" class="table table-sm">
+                <thead>
+                <th> Kode  </th>
+                <th> Nama </th>
+                <th> Nama Petugas </th>
+                <th> Jumlah </th>
+                <th> Satuan </th>
+                <th> Dosis </th>
+                <th align="right"> Harga </th>
+                <th align="right"> Subtotal </th>
+                <th align="right"> Potongan </th>
+                <th align="right"> Pajak </th>
+                
+                </thead>
+              
+                
+                </table>
+               
+ </div>
+
+                <h6 style="text-align: left; color: red"><i><b> * Short Key (F2) untuk mencari Kode Produk atau Nama Produk.</b></i></h6>
 
   
 </div> <!-- / END COL SM 6 (1)-->
@@ -477,7 +702,7 @@ $no_rm = "Umum";
 
   <div class="form-group">
     <div class="card card-block">
-      
+        <?php if ($no_reg == ""): ?>
 
 
       <div class="row">
@@ -597,7 +822,7 @@ $no_rm = "Umum";
     
            
            
-      <div class="form-group">
+
       <div class="row">
        
         <div class="col-xs-6">
@@ -653,13 +878,175 @@ $no_rm = "Umum";
           mysqli_close($db);   
           ?>
 
+        <?php else: ?>
+          <div class="row">
+            <div class="col-xs-6">          
+              <label style="font-size:15px"> <b> Subtotal Keseluruhan</b></label><br>
+              <input style="height:25px;font-size:15px" type="text" name="total" id="total2" class="form-control" placeholder="Subtotal Keseluruhan" readonly="" >
+            </div>
 
+            <div class="col-xs-6">
+              <label style="font-size:15px"> <b> Subtotal Radiologi</b></label><br>
+              <input style="height:25px;font-size:15px" type="text" name="total" id="sub_radiologi" class="form-control" placeholder="Subtotal Radiologi" readonly="" >
+            </div>
+          </div>
 
-      </div><!-- END card-block -->
+          <?php
+                  $ambil_diskon_tax = $db->query("SELECT * FROM setting_diskon_tax");
+                  $data_diskon = mysqli_fetch_array($ambil_diskon_tax);
 
-       </div>
+                  ?>
 
+          <div class="col-xs-6" style="display: none">
+            <label>Biaya Admin </label><br>
+              <select class="form-control chosen" id="biaya_admin_select" name="biaya_admin_select" >
+              <option value="0"> Silahkan Pilih </option>
+                <?php 
+                $get_biaya_admin = $db->query("SELECT * FROM biaya_admin");
+                while ( $take_admin = mysqli_fetch_array($get_biaya_admin))
+                {
+                echo "<option value='".$take_admin['persentase']."'>".$take_admin['nama']."</option>";
+                }
+                ?>
+              </select>
+        </div>
+
+      </div>
+      
+      <div class="row">
+
+          <div class="col-xs-6" style="display: none">          
+            <label>Biaya Admin (Rp)</label>
+            <input type="text" name="biaya_admin_rupiah" style="height:15px;font-size:15px" id="biaya_admin" class="form-control" placeholder="Biaya Admin Rp" autocomplete="off" onkeydown="return numbersonly(this, event);" onkeyup="javascript:tandaPemisahTitik(this);">
+           </div>
+
+          <div class="col-xs-6" style="display: none">
+            <label>Biaya Admin (%)</label>
+            <input type="text" name="biaya_admin_persen" style="height:15px;font-size:15px" id="biaya_admin_persen" class="form-control" placeholder="Biaya Admin %" autocomplete="off" >
+          </div>
+
+      </div> 
           
+          <div class="row">
+
+            <div style="display: none" class="col-xs-4">
+          <label> Diskon ( Rp )</label><br>
+          <input type="text" name="potongan" style="height:25px;font-size:15px" id="potongan_penjualan" value="<?php echo $data_diskon['diskon_nominal']; ?>" class="form-control" placeholder="" autocomplete="off"  onkeydown="return numbersonly(this, event);" onkeyup="javascript:tandaPemisahTitik(this);">
+            
+          </div>
+
+          <div style="display: none" class="col-xs-4">
+            <label> Diskon ( % )</label><br>
+          <input type="text" name="potongan_persen" style="height:25px;font-size:15px" id="potongan_persen" value="<?php echo $data_diskon['diskon_persen']; ?>" class="form-control" placeholder="" autocomplete="off" >
+          </div>
+
+          <div style="display: none;" class="col-xs-4">
+           <label> Pajak (%)</label>
+           <input type="text" name="tax" id="tax" style="height:25px;font-size:15px" value="<?php echo $data_diskon['tax']; ?>" style="height:25px;font-size:15px" class="form-control" autocomplete="off" >
+          </div>
+
+
+          </div>
+          
+
+          <div class="row">
+
+           <input type="hidden" name="tax_rp" id="tax_rp" class="form-control"  autocomplete="off" >
+           
+           <label style="display: none"> Adm Bank  (%)</label>
+           <input type="hidden" name="adm_bank" id="adm_bank"  value="" class="form-control" >
+           
+           <div style="display: none" class="col-xs-6">
+           <label> Tanggal</label>
+           <input type="text" name="tanggal_jt" id="tanggal_jt"  value="" style="height:25px;font-size:15px" placeholder="Tanggal JT" class="form-control" >
+
+           </div>
+
+        <div style="display: none" class="col-xs-6">
+            <label style="font-size:15px"> <b> Cara Bayar (F4) </b> </label><br>
+                      <select type="text" name="cara_bayar" id="carabayar1" class="form-control" required=""  style="font-size: 15px" >
+                      <option value=""> Silahkan Pilih </option>
+                         <?php 
+                         
+                         
+                         $sett_akun = $db->query("SELECT sa.kas, da.nama_daftar_akun FROM setting_akun sa INNER JOIN daftar_akun da ON sa.kas = da.kode_daftar_akun");
+                         $data_sett = mysqli_fetch_array($sett_akun);
+                         
+                         
+                         
+                         echo "<option selected value='".$data_sett['kas']."'>".$data_sett['nama_daftar_akun'] ."</option>";
+                         
+                         $query = $db->query("SELECT nama_daftar_akun, kode_daftar_akun FROM daftar_akun WHERE tipe_akun = 'Kas & Bank'");
+                         while($data = mysqli_fetch_array($query))
+                         {
+                         
+                         
+                         
+                         
+                         echo "<option value='".$data['kode_daftar_akun']."'>".$data['nama_daftar_akun'] ."</option>";
+                         
+                         
+                         
+                         
+                         }
+                         
+                         
+                         ?>
+                      
+                      </select>
+            </div>
+
+           </div>
+
+    
+           
+           
+      <div class="form-group">
+      <div class="row">
+       
+        <div style="display: none" class="col-xs-6">
+
+           <label style="font-size:15px"> <b> Total Akhir </b></label><br>
+           <b><input type="text" name="total" id="total1" class="form-control" style="height: 25px; width:90%; font-size:20px;" placeholder="Total" readonly="" ></b>
+          
+        </div>
+ 
+            <div style="display: none" class="col-xs-6">
+              
+           <label style="font-size:15px">  <b> Pembayaran (F7)</b> </label><br>
+           <b><input type="text" name="pembayaran" id="pembayaran_penjualan" style="height: 20px; width:90%; font-size:20px;" autocomplete="off" class="form-control"   style="font-size: 20px"  onkeydown="return numbersonly(this, event);" onkeyup="javascript:tandaPemisahTitik(this);"></b>
+
+            </div>
+      </div>
+           
+           
+          <div class="row">
+            <div style="display: none" class="col-xs-6">
+              
+           <label> Kembalian </label><br>
+           <b><input type="text" name="sisa_pembayaran"  id="sisa_pembayaran_penjualan"  style="height:25px;font-size:15px" class="form-control"  readonly="" required=""></b>
+            </div>
+
+            <div style="display: none" class="col-xs-6">
+              
+          <label> Kredit </label><br>
+          <b><input type="text" name="kredit" id="kredit" class="form-control"  style="height:25px;font-size:15px"  readonly="" required="" ></b>
+            </div>
+          </div> 
+          
+
+
+           <div style="display: none" class="col-xs-12">
+           <label> Keterangan </label><br>
+           <textarea style="height:40px;font-size:15px" type="text" name="keterangan" id="keterangan" class="form-control"> 
+           </textarea>
+           </div>
+
+        <?php endif ?>
+    </div><!-- END card-block -->
+  </div>
+
+        <?php if ($no_reg == ""): ?>
           
           <input style="height:15px" type="hidden" name="jumlah" id="jumlah1" class="form-control" placeholder="jumlah">
           
@@ -668,7 +1055,8 @@ $no_rm = "Umum";
 
           
           <input type="hidden" name="kode_pelanggan" id="k_pelanggan" class="form-control" required="" >
-          <input type="hidden" name="ppn_input" id="ppn_input" value="Include" class="form-control" placeholder="ppn input">  
+          <input type="hidden" name="ppn_input" id="ppn_input" value="Include" class="form-control" placeholder="ppn input">
+
       
 
           <div class="row"> 
@@ -690,6 +1078,24 @@ $no_rm = "Umum";
             
 
           </div> <!--row 3-->
+        <?php else: ?>
+
+
+              <?php if ($jenis_penjualan == 'Rawat Jalan'): ?>
+                  <button class="btn btn-warning" id="raja"> <i class="fa fa-reply-all"></i> Kembali Rawat Jalan </button>
+              <?php endif ?>
+
+              <?php if ($jenis_penjualan == 'Rawat Inap'): ?>
+                  <button class="btn btn-warning" id="ranap"> <i class="fa fa-reply-all"></i> Kembali Rawat Inap </button>
+              <?php endif ?>
+
+        <?php endif ?>
+
+
+          <input  name="total_rj_ri" type="hidden" style="height:15px;" id="total_rj_ri" class="form-control" required="" autofocus="" value="<?php echo $data_rj_ri['total_rj_ri']; ?>" >
+          
+          <input  name="total_ops" type="hidden" style="height:15px;" id="total_ops" class="form-control" required="" autofocus="" value="<?php echo $data_ops['total_ops']; ?>" >
+
           
           <div class="alert alert-success" id="alert_berhasil" style="display:none">
           <strong>Success!</strong> Pembayaran Berhasil
@@ -729,7 +1135,12 @@ $(document).ready(function(){
             "language": { "emptyTable":     "Tidak Ada Data" },
             "ajax":{
               url :"data_tbs_penjualan_radiologi.php", // json datasource
-              type: "post",  // method  , by default get
+                              "data": function ( d ) {
+                                d.no_reg = $("#no_reg").val();
+                                // d.custom = $('#myInput').val();
+                                // etc
+                              },
+                              type: "post",  // method  , by default get
               error: function(){  // error handling
                 $(".tbody").html("");
                 $("#tabel_tbs_radiologi").append('<tbody class="tbody"><tr><th colspan="3"></th></tr></tbody>');
@@ -799,7 +1210,7 @@ $(document).ready(function(){
 //end Hitu8ng Biaya Admin
 </script>
 
-
+<!--
 <script type="text/javascript" language="javascript" >
 
 $(document).ready(function() {
@@ -837,7 +1248,7 @@ $(document).ready(function() {
    } );        
          
 </script>
-
+-->
 
 
 
@@ -1171,7 +1582,9 @@ $(document).on('click','#submit_produk',function(e){
     var nama_barang = $("#nama_barang").val();
     var no_reg = $("#no_reg").val();
     var kontras = $("#kontras").val();
-    var jumlah_barang = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#jumlah_barang").val()))));
+    var petugas_radiologi = $("#petugas_radiologi").val();
+    var dokter_pemeriksa = $("#dokter_pemeriksa").val();
+    var jumlah_barang = 1;
     var harga = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#harga_produk").val()))));
 
 
@@ -1314,38 +1727,19 @@ if (ppn == 'Exclude') {
 
     if (no_reg != '') {
 
-          var sub_lab = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#sub_lab").val()))));
-          if (sub_lab == '') {
-            sub_lab = 0;
+          var sub_radiologi = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#sub_radiologi").val()))));
+          if (sub_radiologi == '') {
+            sub_radiologi = 0;
           }
 
           var total1 = parseInt(jumlah_barang,10) * parseInt(hargaa,10) - parseInt(potongan,10);
-          var hitung_lab = parseInt(total1,10) + parseInt(sub_lab,10);
+          var hitung_lab = parseInt(total1,10) + parseInt(sub_radiologi,10);
 
     }
 
-
-
-if (penjamin == ''){
-  alert("Penjamin Harus Dipilih");
-      $("#penjamin").trigger('chosen:open');
-  }
-
-else if (jumlah_barang == ''){
-  alert("Jumlah Barang Harus Diisi");
-       $("#jumlah_barang").focus();
-  }
-
-  else if (kode_barang == '') {
+  if (kode_barang == '') {
       alert("Masukkan Dahulu Kode Barang ")
       $("#kode_barang").trigger('chosen:open');
-    }
-    else if (level_harga == '') {
-      alert("Level Harga Harus Diisi");
-      $("#level_harga").focus();
-      $("#kode_barang").val('');
-      $("#kode_barang").trigger('chosen:updated').trigger('chosen:open');
-      $("#jumlah_barang").val('');
     }
     else if (harga == 0) {
 
@@ -1357,6 +1751,17 @@ else if (jumlah_barang == ''){
 
     }
 
+
+else if (dokter_pemeriksa == ''){
+  alert("Silakan Pilih Dokter Pemeriksa");
+       $("#dokter_pemeriksa").trigger('chosen:open');
+  }
+
+else if (petugas_radiologi == ''){
+  alert("Silakan Pilih Petugas Radiologi");
+       $("#petugas_radiologi").trigger('chosen:open');
+  }
+
   else 
   {
 
@@ -1365,11 +1770,11 @@ else if (jumlah_barang == ''){
       $("#potongan_penjualan").val(Math.round(potongaaan));
       $("#total2").val(tandaPemisahTitik(total_akhir1));
       if (no_reg != '') {
-      $("#sub_lab").val(tandaPemisahTitik(hitung_lab));
+      $("#sub_radiologi").val(tandaPemisahTitik(hitung_lab));
       }
       $("#biaya_admin").val(Math.round(biaya_admin));
 
-          $.post("proses_tbs_radiologi.php",{nama_barang:nama_barang,jumlah_barang:jumlah_barang,harga:harga,potongan:potongan,tax:tax,tipe_barang:ber_stok,no_rm:no_rm,penjamin:penjamin,hargaa:hargaa,ppn:ppn, kode_barang:kode_barang,no_reg:no_reg,dokter:dokter, kontras:kontras},function(data){ 
+          $.post("proses_tbs_radiologi.php",{nama_barang:nama_barang,jumlah_barang:jumlah_barang,harga:harga,potongan:potongan,tax:tax,tipe_barang:ber_stok,no_rm:no_rm,penjamin:penjamin,hargaa:hargaa,ppn:ppn, kode_barang:kode_barang,no_reg:no_reg,dokter:dokter, kontras:kontras, dokter_pemeriksa:dokter_pemeriksa, petugas_radiologi:petugas_radiologi},function(data){ 
      
 
                    
@@ -1396,7 +1801,12 @@ else if (jumlah_barang == ''){
             "language": { "emptyTable":     "Tidak Ada Data" },
             "ajax":{
               url :"data_tbs_penjualan_radiologi.php", // json datasource
-              type: "post",  // method  , by default get
+                              "data": function ( d ) {
+                                d.no_reg = $("#no_reg").val();
+                                // d.custom = $('#myInput').val();
+                                // etc
+                              },
+                              type: "post",  // method  , by default get
               error: function(){  // error handling
                 $(".tbody").html("");
                 $("#tabel_tbs_radiologi").append('<tbody class="tbody"><tr><th colspan="3"></th></tr></tbody>');
@@ -1415,7 +1825,7 @@ else if (jumlah_barang == ''){
       
  });
 
-    $("#formtambahproduk").submit(function(){
+    $("form").submit(function(){
     return false;
     
     });
@@ -1442,42 +1852,6 @@ else if (jumlah_barang == ''){
 //            tabel lookup mahasiswa         
 </script>
 
-
-<script type="text/javascript">
-  $(document).ready(function(){
-
-  $(document).on('click','#btnRefreshsubtotal',function(e){
-
-    var no_reg = $("#no_reg").val();
-
-      $.post("proses_refresh_subtotal_radiologi.php",{no_reg:no_reg},function(data){
-
-        if (data == '') {
-          data = 0;
-        }
-
-            var biaya_admin = $("#biaya_admin_select").val();
-            var hitung_biaya = parseInt(biaya_admin,10) * parseInt(data,10) / 100;
-
-            $("#biaya_adm").val(tandaPemisahTitik(Math.round(hitung_biaya)));
-
-            var diskon = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#potongan_penjualan").val()))));
-            if(diskon == '')
-            {
-              diskon = 0
-            }
-           var hasilnya = parseInt(data,10) + parseInt(Math.round(hitung_biaya),10) - parseInt(diskon,10);
-
-            $("#total1").val(tandaPemisahTitik(hasilnya));
-            $("#total2").val(tandaPemisahTitik(data));
-
-      });
-    
-
-  });
-
-});
-</script>
 
 
 <script>
@@ -1589,6 +1963,11 @@ alert("Silakan Bayar Piutang");
                             "serverSide": true,
                             "ajax":{
                               url :"data_tbs_penjualan_radiologi.php", // json datasource
+                              "data": function ( d ) {
+                                d.no_reg = $("#no_reg").val();
+                                // d.custom = $('#myInput').val();
+                                // etc
+                              },
                               type: "post",  // method  , by default get
                               error: function(){  // error handling
                                 $(".employee-grid-error").html("");
@@ -1731,6 +2110,11 @@ alert("Silakan Bayar Piutang");
                             "serverSide": true,
                             "ajax":{
                               url :"data_tbs_penjualan_radiologi.php", // json datasource
+                              "data": function ( d ) {
+                                d.no_reg = $("#no_reg").val();
+                                // d.custom = $('#myInput').val();
+                                // etc
+                              },
                               type: "post",  // method  , by default get
                               error: function(){  // error handling
                                 $(".employee-grid-error").html("");
@@ -1864,6 +2248,11 @@ alert("Silakan Bayar Piutang");
                             "serverSide": true,
                             "ajax":{
                               url :"data_tbs_penjualan_radiologi.php", // json datasource
+                              "data": function ( d ) {
+                                d.no_reg = $("#no_reg").val();
+                                // d.custom = $('#myInput').val();
+                                // etc
+                              },
                               type: "post",  // method  , by default get
                               error: function(){  // error handling
                                 $(".employee-grid-error").html("");
@@ -2610,16 +2999,21 @@ $(document).on('click','.btn-hapus-tbs',function(e){
 
 
 
-  $(".tr-id-"+id+"").remove();
+
+
+var pesan_alert = confirm("Apakah Anda Yakin Ingin Menghapus "+nama_barang+""+ "?");
+if (pesan_alert == true) {
+
+    $(".tr-id-"+id+"").remove();
         if (no_reg != '') {
 
-        var sub_lab = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#sub_lab").val()))));
-            if (sub_lab == '') {
-               sub_lab = 0;
+        var sub_radiologi = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#sub_radiologi").val()))));
+            if (sub_radiologi == '') {
+               sub_radiologi = 0;
                 }
 
-        var hitung_lab = parseInt(sub_lab,10) - parseInt(subtotal,10);
-         $("#sub_lab").val(tandaPemisahTitik(hitung_lab)); 
+        var hitung_lab = parseInt(sub_radiologi,10) - parseInt(subtotal,10);
+         $("#sub_radiologi").val(tandaPemisahTitik(hitung_lab)); 
         } 
 
 
@@ -2643,10 +3037,14 @@ $(document).on('click','.btn-hapus-tbs',function(e){
          $("#tax_rp").val(Math.round(tax_bener));
          $("#kode_barang").trigger('chosen:open');    
 
-
-        $.post("hapus_tbs_penjualan_radiologi.php",{id:id,kode_barang:kode_barang,no_reg:no_reg,kode_pelanggan:kode_pelanggan},function(data){
+          $.post("hapus_tbs_penjualan_radiologi.php",{id:id},function(data){
 
         });
+}
+else{
+
+}
+
 
         $('#tabel_tbs_radiologi').DataTable().destroy();
             var dataTable = $('#tabel_tbs_radiologi').DataTable( {
@@ -2656,7 +3054,12 @@ $(document).on('click','.btn-hapus-tbs',function(e){
             "language": { "emptyTable":     "Tidak Ada Data" },
             "ajax":{
               url :"data_tbs_penjualan_radiologi.php", // json datasource
-              type: "post",  // method  , by default get
+                              "data": function ( d ) {
+                                d.no_reg = $("#no_reg").val();
+                                // d.custom = $('#myInput').val();
+                                // etc
+                              },
+                              type: "post",  // method  , by default get
               error: function(){  // error handling
                 $(".tbody").html("");
                 $("#tabel_tbs_radiologi").append('<tbody class="tbody"><tr><th colspan="3"></th></tr></tbody>');
@@ -2723,29 +3126,50 @@ $(function() {
 
 
 <script type="text/javascript">
-  $("#penjamin").change(function(){
-    var jumlah_barang = $("#jumlah_barang").val();
-    var penjamin = $("#penjamin").val();
-    var kode_barang = $("#kode_barang").val();
-    $.post("cek_harga_radiologi_penjamin.php",{penjamin:penjamin,kode_barang:kode_barang,jumlah_barang:jumlah_barang},function(data){
-        data = data.replace(/\s+/g, '');
-          $("#harga_produk").val(data);
-          $("#harga_baru").val(data);
-          $("#harga_penjamin").val(data);
-    });
+  $(document).ready(function(){
 
-    $.post("cek_level_harga_penjamin.php",{penjamin:penjamin},function(data){
-    $("#level_harga").val(data);
-    $("#level_harga").trigger('chosen:updated');
+  $(document).on('click','#btnRefreshsubtotal',function(e){
 
-    });
+    var no_reg = $("#no_reg").val();
+    var total_rj_ri = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#total_rj_ri").val()))));
+    var total_ops = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#total_ops").val()))));
+    if (total_ops == '') {
+    total_ops = 0;
+    }
+    
+    if (total_rj_ri == "") {
+    total_rj_ri = 0;
+    }
 
+      $.post("proses_refresh_subtotal_radiologi.php",{no_reg:no_reg},function(data){
+    var total_sebenarnya = parseInt(total_rj_ri,10) + parseInt(total_ops,10) + parseInt(data,10);
+
+        if (total_sebenarnya == '') {
+          total_sebenarnya = 0
+        }
+
+            var biaya_admin = $("#biaya_admin_select").val();
+            var hitung_biaya = parseInt(biaya_admin,10) * parseInt(total_sebenarnya,10) / 100;
+
+            $("#biaya_adm").val(tandaPemisahTitik(Math.round(hitung_biaya)));
+
+            var diskon = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#potongan_penjualan").val()))));
+            if(diskon == '')
+            {
+              diskon = 0
+            }
+           var hasilnya = parseInt(total_sebenarnya,10) + parseInt(Math.round(hitung_biaya),10) - parseInt(diskon,10);
+
+            $("#total1").val(tandaPemisahTitik(hasilnya));
+            $("#total2").val(tandaPemisahTitik(total_sebenarnya));
+
+      });
+    
 
   });
-  </script>
 
-
-
+});
+</script>
 
 
 
@@ -2851,14 +3275,14 @@ function myFunction(event) {
 
                                         if (no_reg != '') {
 
-                                            var sub_lab = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#sub_lab").val()))));
-                                            if (sub_lab == '') {
-                                              sub_lab = 0;
+                                            var sub_radiologi = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#sub_radiologi").val()))));
+                                            if (sub_radiologi == '') {
+                                              sub_radiologi = 0;
                                             }
 
                                             var total_baru = parseInt(jumlah_baru,10) * parseInt(harga,10) - parseInt(potongan,10);
 
-                                            var hitung_lab = parseInt(sub_lab,10)  - parseInt(subtotal_lama,10) + parseInt(total_baru,10); 
+                                            var hitung_lab = parseInt(sub_radiologi,10)  - parseInt(subtotal_lama,10) + parseInt(total_baru,10); 
 
                                       }
 
@@ -2887,7 +3311,7 @@ function myFunction(event) {
                                                         $("#text-jumlah-"+id+"").text(jumlah_baru);
 
                                                         if (no_reg != '') {
-                                                          $("#sub_lab").val(tandaPemisahTitik(hitung_lab));
+                                                          $("#sub_radiologi").val(tandaPemisahTitik(hitung_lab));
                                                         }
 
                                                         $("#text-subtotal-"+id+"").text(tandaPemisahTitik(subtotal));
@@ -2925,7 +3349,7 @@ function myFunction(event) {
                                                     else{
 
                                                         if (no_reg != '') {
-                                                          $("#sub_lab").val(tandaPemisahTitik(hitung_lab));
+                                                          $("#sub_radiologi").val(tandaPemisahTitik(hitung_lab));
                                                         }
 
                                                       $("#text-jumlah-"+id+"").show();
@@ -2977,6 +3401,11 @@ function myFunction(event) {
                             "serverSide": true,
                             "ajax":{
                               url :"data_tbs_penjualan_radiologi.php", // json datasource
+                              "data": function ( d ) {
+                                d.no_reg = $("#no_reg").val();
+                                // d.custom = $('#myInput').val();
+                                // etc
+                              },
                               type: "post",  // method  , by default get
                               error: function(){  // error handling
                                 $(".employee-grid-error").html("");
@@ -3065,6 +3494,11 @@ $(document).ready(function(){
                             "serverSide": true,
                             "ajax":{
                               url :"data_tbs_penjualan_radiologi.php", // json datasource
+                              "data": function ( d ) {
+                                d.no_reg = $("#no_reg").val();
+                                // d.custom = $('#myInput').val();
+                                // etc
+                              },
                               type: "post",  // method  , by default get
                               error: function(){  // error handling
                                 $(".employee-grid-error").html("");
@@ -3178,7 +3612,15 @@ $(document).ready(function(){
   $(document).ready(function(){
 var pot_fakt_per = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#potongan_persen").val()))));
 var pot_fakt_rp = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#potongan_penjualan").val()))));
+var total_rj_ri = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#total_rj_ri").val()))));
+var total_ops = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#total_ops").val()))));
+if (total_ops == '') {
+  total_ops = 0;
+}
 
+if (total_rj_ri == "") {
+  total_rj_ri = 0;
+}
 var no_reg = $("#no_reg").val();
 
 
@@ -3238,19 +3680,19 @@ if (no_reg == '')
   else {
 
 
-$.get("cek_total_tbs_form_lab.php",{no_reg:no_reg},function(data){
+$.get("cek_total_tbs_form_radiologi.php",{no_reg:no_reg},function(data){
   data = data.replace(/\s+/g, '');
                   if (data == "") {
                     data = 0;
                   }
 
-                var sum = parseInt(data,10);
+                var sum = parseInt(data,10) + parseInt(total_rj_ri,10) + parseInt(total_ops,10);
 
                   $("#total2").val(tandaPemisahTitik(sum));
-                  $("#sub_lab").val(tandaPemisahTitik(data));
+                  $("#sub_radiologi").val(tandaPemisahTitik(data));
 
 
-              if (pot_fakt_per == '0%') {
+            if (pot_fakt_per == '0%') {
               var potongaaan = pot_fakt_rp;
               var potongaaan = parseInt(potongaaan,10) / parseInt(data,10) * 100;
               $("#potongan_persen").val(Math.round(potongaaan));
@@ -3344,6 +3786,352 @@ $.get("cek_total_tbs_form_lab.php",{no_reg:no_reg},function(data){
 
 
   });
+  });
+</script>
+
+
+
+<script type="text/javascript" language="javascript" >
+
+  $(document).ready(function() {
+    $(document).on('click', '#rawat', function (e) {
+      $('#table-rawat').DataTable().destroy();
+            var dataTable = $('#table-rawat').DataTable( {
+            "processing": true,
+            "serverSide": true,
+            "info":     false,
+            "language": { "emptyTable":     "My Custom Message On Empty Table" },
+            "ajax":{
+              url :"table_rawat_rujuk_radiologi.php", // json datasource
+               "data": function ( d ) {
+                  d.no_reg = $("#no_reg").val();
+                  // d.custom = $('#myInput').val();
+                  // etc
+              },
+                  type: "post",  // method  , by default get
+              error: function(){  // error handling
+                $(".tbody").html("");
+                $("#table-rawat").append('<tbody class="tbody"><tr><th colspan="3"></th></tr></tbody>');
+                $("#table-rawat_processing").css("display","none");
+                
+              }
+            }   
+
+      });
+
+
+    });
+
+
+  });
+
+</script>
+
+<script type="text/javascript">
+  // Rawat jalan
+  $(document).on('click','#raja',function(e){
+    var no_reg = $("#no_reg").val();
+    var nama_pasien = $("#nama_pelanggan").val();
+    var no_rm = $("#kd_pelanggan1").val();
+    var penjamin = $("#penjamin").val();
+    var dokter = $("#dokter").val();
+    var level_harga = $("#level_harga").val();
+    var poli = $("#asal_poli").val();
+    var petugas_radiologi = $("#petugas_radiologi").val();
+    var dokter_pemeriksa = $("#dokter_pemeriksa").val();
+
+    if (dokter_pemeriksa == "") {
+      alert("Silakan Pilih Dokter Pemeriksa");
+      $("#dokter_pemeriksa").trigger('chosen:open');
+    }
+    else if(petugas_radiologi == ""){
+
+      alert("Silakan Pilih Petugas Radiologi");
+      $("#petugas_radiologi").trigger('chosen:open');
+    }
+    else{
+
+    window.location.href="form_penjualan_kasir.php?no_reg="+no_reg+"&nama_pasien="+nama_pasien+"&no_rm="+no_rm+"&penjamin="+penjamin+"&dokter="+dokter+"&level_harga="+level_harga+"&poli="+poli+"&petugas_radiologi="+petugas_radiologi+"";
+    }
+
+
+  });
+
+  //Rawat Inap
+   $(document).on('click','#ranap',function(e){
+     var no_reg = $("#no_reg").val();
+    var nama_pasien = $("#nama_pelanggan").val();
+    var no_rm = $("#no_rm").val();
+    var penjamin = $("#penjamin").val();
+    var dokter = $("#dokter").val();
+    var level_harga = $("#level_harga").val();
+    var poli = $("#asal_poli").val();
+    var dokter_pj = $("#dokter_pj").val();
+    var bed = $("#bed").val();
+    var kamar = $("#kamar").val();
+    var petugas_radiologi = $("#petugas_radiologi").val();
+
+    window.location.href="form_penjualan_kasir_ranap.php?no_reg="+no_reg+"&nama_pasien="+nama_pasien+"&no_rm="+no_rm+"&penjamin="+penjamin+"&dokter="+dokter+"&level_harga="+level_harga+"&poli="+poli+"&bed="+bed+"&kamar="+kamar+"&petugas_radiologi="+petugas_radiologi+"&petugas_radiologi="+petugas_radiologi+"";
+
+  });
+
+
+</script>
+
+
+<script type="text/javascript">
+$(function() {
+    $('.cekcbox1').click(function() {
+        $('.cekcbox-1').prop('checked', this.checked);
+    });
+});
+</script>
+
+
+<script type="text/javascript">
+$(function() {
+    $('.cekcbox2').click(function() {
+        $('.cekcbox-2').prop('checked', this.checked);
+    });
+});
+</script>
+
+
+
+<script>
+
+$(document).on('click','.insert-tbs',function(e){
+
+    var data_toggle = $(this).attr('data-toogle');
+
+    var kode_barang = $(this).attr('data-kode');
+    var nama_barang = $(this).attr('data-nama');
+    var kontras = $(this).attr('data-kontras');
+    var harga = $(this).attr('data-harga');
+    var id = $(this).attr('data-id');
+
+    var no_reg = $("#no_reg").val();
+    var petugas_radiologi = $("#petugas_radiologi").val();
+    var dokter_pemeriksa = $("#dokter_pemeriksa").val();
+    var dokter = $("#dokter").val();
+    var jumlah_barang = 1;
+    var tipe_barang ="Jasa";
+
+    $('#kode_barang').trigger('chosen:update');
+    $('#kode_barang').val(kode_barang);
+
+    $('#nama_barang').val(nama_barang);
+    $('#id_radiologi').val(id);
+    $('#kontras').val(kontras);
+    $('#harga_produk').val(harga);
+    $('#kolom_cek_harga').val('1');
+
+    var nama_barang = $("#nama_barang").val();
+    var id = $("#id_radiologi").val();
+    var kontras = $("#kontras").val();
+    var harga = $("#harga_produk").val();
+    var kolom_cek_harga = $("#kolom_cek_harga").val();
+    var kode_barang = $("#kode_barang").val();
+
+
+    if (data_toggle == 0) {
+        
+       
+        $.post('cek_tbs_penjualan_radiologi.php',{kode_barang:kode_barang,no_reg:no_reg}, function(data){
+
+
+          if(data == 1){
+
+              $('#pemeriksaan-'+id+'').prop('checked', false);
+              $('#label-'+id+'').attr("data-toogle", 0);
+
+              alert("Pemeriksaan '"+nama_barang+"' Sudah Ada, Silakan Pilih Pemeriksaan Yang Lain !");            
+
+           }
+           else{
+              
+              $('#label-'+id+'').attr("data-toogle", 1);
+              console.log(data_toggle);
+
+              $.post("proses_insert_tbs_radiologi.php",{nama_barang:nama_barang,jumlah_barang:jumlah_barang,harga:harga,tipe_barang:tipe_barang,kode_barang:kode_barang,no_reg:no_reg,dokter:dokter,kontras:kontras,dokter_pemeriksa:dokter_pemeriksa,petugas_radiologi:petugas_radiologi},function(data){
+
+
+            });
+
+           }
+
+        });
+
+
+    }
+    else{
+                  
+        $('#label-'+id+'').attr("data-toogle", 0);
+
+        $.post("hapus_radiologi.php",{no_reg:no_reg, kode_barang:kode_barang},function(data){
+
+        });
+    }
+    
+
+
+    $("form").submit(function(){
+      return false;    
+    });
+});
+</script>
+
+
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    $(document).on('click','#btnSubmit',function(e){
+    // START DATATABLE AJAX START DATATABLE AJAX START DATATABLE AJAX START DATATABLE AJAX START DATATABLE AJAX START DATATABLE AJAX
+      $('#tabel_tbs_radiologi').DataTable().destroy();
+            var dataTable = $('#tabel_tbs_radiologi').DataTable( {
+            "processing": true,
+            "serverSide": true,
+            "info":     true,
+            "language": { "emptyTable":     "Tidak Ada Data" },
+            "ajax":{
+              url :"data_tbs_penjualan_radiologi.php", // json datasource
+                              "data": function ( d ) {
+                                d.no_reg = $("#no_reg").val();
+                                // d.custom = $('#myInput').val();
+                                // etc
+                              },
+                              type: "post",  // method  , by default get
+              error: function(){  // error handling
+                $(".tbody").html("");
+                $("#tabel_tbs_radiologi").append('<tbody class="tbody"><tr><th colspan="3"></th></tr></tbody>');
+                $("#tableuser_processing").css("display","none");
+                
+              }
+            }   
+
+      });
+        
+        $("#span_tbs").show();
+        $("#myModal").modal('hide');
+
+// END DATATABLE AJAX END DATATABLE AJAX END DATATABLE AJAX END DATATABLE AJAX END DATATABLE AJAX END DATATABLE AJAX
+
+
+
+var pot_fakt_per = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#potongan_persen").val()))));
+var pot_fakt_rp = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#potongan_penjualan").val()))));
+var total_rj_ri = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#total_rj_ri").val()))));
+var total_ops = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#total_ops").val()))));
+if (total_ops == '') {
+  total_ops = 0;
+}
+
+if (total_rj_ri == "") {
+  total_rj_ri = 0;
+}
+var no_reg = $("#no_reg").val();
+
+
+if (no_reg == '')
+{
+
+    $.get("cek_total_radiologi.php",{no_reg:no_reg},function(data1){
+
+
+        if (data1 == 1) {
+                 $.get("cek_total_tbs_form_radiologi.php",{no_reg:no_reg},function(data){
+                  data = data.replace(/\s+/g, '');
+                  if (data == "") {
+                    data = 0;
+                  }
+                var sum = parseInt(data,10);
+                
+
+                  $("#total2").val(tandaPemisahTitik(sum));
+
+
+                  if (pot_fakt_per == '0%') {
+                  var potongaaan = pot_fakt_rp;
+                  var potongaaan = parseInt(potongaaan,10) / parseInt(data,10) * 100;
+                  $("#potongan_persen").val(Math.round(potongaaan));
+
+                 var total = parseInt(data,10) - parseInt(pot_fakt_rp,10);
+
+                  $("#total1").val(tandaPemisahTitik(total));
+
+                }
+                    else if(pot_fakt_rp == 0)
+                    {
+                          var potongaaan = pot_fakt_per;
+                          var pos = potongaaan.search("%");
+                          var potongan_persen = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah(potongaaan))));
+                          potongan_persen = potongan_persen.replace("%","");
+                          potongaaan = data * potongan_persen / 100;
+                          $("#potongan_penjualan").val(potongaaan);
+
+                          var total = parseInt(data,10) - parseInt(potongaaan,10);
+
+                          $("#total1").val(tandaPemisahTitik(total))
+
+                    }
+
+                });
+        }
+
+            else
+            {
+
+            }
+});
+
+}
+  else {
+
+
+$.get("cek_total_tbs_form_radiologi.php",{no_reg:no_reg},function(data){
+  data = data.replace(/\s+/g, '');
+                  if (data == "") {
+                    data = 0;
+                  }
+
+                var sum = parseInt(data,10) + parseInt(total_rj_ri,10) + parseInt(total_ops,10);
+
+                  $("#total2").val(tandaPemisahTitik(sum));
+                  $("#sub_radiologi").val(tandaPemisahTitik(data));
+
+
+            if (pot_fakt_per == '0%') {
+              var potongaaan = pot_fakt_rp;
+              var potongaaan = parseInt(potongaaan,10) / parseInt(data,10) * 100;
+              $("#potongan_persen").val(Math.round(potongaaan));
+
+             var total = parseInt(data,10) - parseInt(pot_fakt_rp,10);
+
+              $("#total1").val(tandaPemisahTitik(total));
+
+            }
+            else if(pot_fakt_rp == 0)
+            {
+                  var potongaaan = pot_fakt_per;
+                  var pos = potongaaan.search("%");
+                  var potongan_persen = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah(potongaaan))));
+                  potongan_persen = potongan_persen.replace("%","");
+                  potongaaan = data * potongan_persen / 100;
+                  $("#potongan_penjualan").val(potongaaan);
+
+                  var total = parseInt(data,10) - parseInt(potongaaan,10);
+
+                  $("#total1").val(tandaPemisahTitik(total))
+
+            }
+
+                });
+
+
+
+}
+
+    });
   });
 </script>
 

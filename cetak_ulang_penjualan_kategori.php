@@ -18,7 +18,7 @@ $no_faktur = $_GET['no_faktur'];
     $query2 = $db->query("SELECT SUM(subtotal) AS subtotal_obat FROM detail_penjualan WHERE no_faktur = '$no_faktur' AND (tipe_produk = 'Obat Obatan' OR tipe_produk = 'Barang') ");
     $data2 = mysqli_fetch_array($query2);
 
-    $queryja = $db->query("SELECT SUM(subtotal) AS subtotal_jasa FROM detail_penjualan WHERE no_faktur = '$no_faktur' AND tipe_produk = 'Jasa' ");
+    $queryja = $db->query("SELECT SUM(subtotal) AS subtotal_jasa FROM detail_penjualan WHERE no_faktur = '$no_faktur' AND tipe_produk = 'Jasa' AND lab != 'Laboratorium' ");
     $dataja = mysqli_fetch_array($queryja);
 
     $query_l = $db->query("SELECT SUM(subtotal) AS subtotal_laundry FROM detail_penjualan WHERE no_faktur = '$no_faktur' AND tipe_produk = 'Laundry' ");
@@ -27,8 +27,11 @@ $no_faktur = $_GET['no_faktur'];
     $query_lab = $db->query("SELECT SUM(subtotal) AS subtotal_lab FROM detail_penjualan WHERE no_faktur = '$no_faktur' AND tipe_produk = 'Jasa' AND lab = 'Laboratorium' ");
     $data_lab = mysqli_fetch_array($query_lab);
 
-      $query_bed = $db->query("SELECT SUM(subtotal) AS subtotal_bed FROM detail_penjualan WHERE no_faktur = '$no_faktur' AND tipe_produk = 'Bed' ");
+    $query_bed = $db->query("SELECT SUM(subtotal) AS subtotal_bed FROM detail_penjualan WHERE no_faktur = '$no_faktur' AND tipe_produk = 'Bed' ");
     $data_bed = mysqli_fetch_array($query_bed);
+
+    $sum_radiologi = $db->query("SELECT SUM(subtotal) AS subtotal_radiologi FROM hasil_pemeriksaan_radiologi WHERE no_faktur = '$no_faktur'");
+    $data_radiologi = mysqli_fetch_array($sum_radiologi);
 
  ?>
 
@@ -63,6 +66,7 @@ $no_faktur = $_GET['no_faktur'];
       <tr><td width="50%">Obat Obatan</td> <td> :</td> <td><?php echo rp($data2['subtotal_obat']);?> </tr>
       <tr><td  width="50%">Tindakan</td> <td> :</td> <td> <?php echo rp($dataja['subtotal_jasa']);?> </td></tr>            
       <tr><td width="50%">Laboratorium</td> <td> :</td> <td><?php echo rp($data_lab['subtotal_lab']);?> </tr>
+      <tr><td width="50%">Radiologi</td> <td> :</td> <td><?php echo rp($data_radiologi['subtotal_radiologi']);?> </tr>
       <?php if ($data0['jenis_penjualan'] == 'Rawat Inap')
       {
 echo '<tr><td  width="50%">Laundry</td> <td> :</td> <td>'.$data_l['subtotal_laundry'].' </td></tr>

@@ -7,6 +7,8 @@ $session_id = session_id();
 $tipe = stringdoang($_POST['tipe_barang']);
 $penjamin = stringdoang($_POST['penjamin']);
 $dokter_pengirim = stringdoang($_POST['dokter']);
+$dokter_pemeriksa = stringdoang($_POST['dokter_pemeriksa']);
+$petugas_radiologi = stringdoang($_POST['petugas_radiologi']);
 $no_rm  = stringdoang($_POST['no_rm']);
 $no_reg  = stringdoang($_POST['no_reg']);
 $petugas = $_SESSION['id'];
@@ -119,7 +121,7 @@ $subtotal = $harga * $jumlah - $potongan_jadi;
 } 
                           
 
-          $query6 = "INSERT INTO tbs_penjualan_radiologi (session_id, kode_barang, nama_barang, jumlah_barang, harga, subtotal, tipe_barang, potongan, tax, tanggal, jam, radiologi, no_reg, kontras, dokter_pengirim) VALUES ('$session_id','$kode','$nama','$jumlah','$hargaa','$subtotal','$tipe','$potongan_tampil','$tax_persen','$tanggal_sekarang','$jam_sekarang','Radiologi','$no_reg', '$kontras', '$dokter_pengirim')";
+          $query6 = "INSERT INTO tbs_penjualan_radiologi (session_id, kode_barang, nama_barang, jumlah_barang, harga, subtotal, tipe_barang, potongan, tax, tanggal, jam, radiologi, no_reg, kontras, dokter_pengirim, dokter_periksa, dokter_pelaksana) VALUES ('$session_id','$kode','$nama','$jumlah','$hargaa','$subtotal','$tipe','$potongan_tampil','$tax_persen','$tanggal_sekarang','$jam_sekarang','Radiologi','$no_reg', '$kontras', '$dokter_pengirim', '$dokter_pemeriksa', '$petugas_radiologi')";
 
           if ($db->query($query6) === TRUE)
           { 

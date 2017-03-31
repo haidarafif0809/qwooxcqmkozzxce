@@ -14,7 +14,7 @@ tr:nth-child(even){background-color: #f2f2f2}
 
 <div class="container">
 
-<h3><b>SETTING LABORATORIUM </b></h3><hr>
+<h3><b>Setting Laboratorium - Penjualan</b></h3><hr>
 
 <!-- Modal edit data -->
 <div id="modal_edit" class="modal fade" role="dialog">
@@ -33,8 +33,8 @@ tr:nth-child(even){background-color: #f2f2f2}
 		<label> Nama Setting </label><br>
 		
 		 <select style="font-size:15px; height:40px" name="nama_edit" id="nama_edit" class="form-control chosen">
-        <option value="1">Dihubungkan</option>  
-        <option value="0">Tidak dihubungkan</option>  
+        <option value="1">Input Hasil Baru Bayar</option>  
+        <option value="0">Bayar Dulu Baru Input Hasil</option>  
                   
           </select>
 	</div>
@@ -74,11 +74,11 @@ tr:nth-child(even){background-color: #f2f2f2}
 			//karena setting INT 1 & 0 maka digunakan if agar menampilkan karakter
 			if ($data1['nama'] == 1)
 			{
-				$nama = 'Dihubungkan';
+				$nama = 'Input Hasil Baru Bayar';
 			}
-			else
+			else 
 			{
-				$nama = 'Tidak dihubungkan';
+				$nama = 'Bayar Dulu Baru Input Hasil';
 			}
 			//menampilkan data
 			echo "<tr class='tr-id-".$data1['id']."'>
