@@ -568,26 +568,9 @@ tr:nth-child(even){background-color: #f2f2f2}
                     $("#detail2").modal('hide');
                     
                     $.post("proses_keterangan_batal.php",{reg:reg, keterangan:keterangan},function(data){
-                      $('#table_rawat_jalan').DataTable().destroy();
+                      $('#table_rawat_jalan').DataTable().draw();
      
-                  var dataTable = $('#table_rawat_jalan').DataTable( {
-                      "processing": true,
-                      "serverSide": true,
-                      "ajax":{
-                        url :"datatable_registrasi_rawat_jalan.php", // json datasource
-                        type: "post",  // method  , by default get
-                        error: function(){  // error handling
-                          $(".employee-grid-error").html("");
-                          $("#table_rawat_jalan").append('<tbody class="employee-grid-error"><tr><th colspan="3">No data found in the server</th></tr></tbody>');
-                          $("#employee-grid_processing").css("display","none");
-                          }
-                      },
-                         "fnCreatedRow": function( nRow, aData, iDataIndex ) {
-
-                          $(nRow).attr('class','tr-id-'+aData[12]+'');         
-
-                      }
-                    });
+                 
                     });
 
                     
@@ -769,26 +752,9 @@ else{
    $("#demo").hide();
  $.post("proses_rawat_jalan.php",{no_rm:no_rm,nama_lengkap:nama_lengkap,alamat:alamat,jenis_kelamin:jenis_kelamin,hp:hp,kondisi:kondisi,penjamin:penjamin,rujukan:rujukan,poli:poli,umur:umur,sistole_distole:sistole_distole,respiratory_rate:respiratory_rate,suhu:suhu,nadi:nadi,berat_badan:berat_badan,tinggi_badan:tinggi_badan,alergi:alergi,tanggal_lahir:tanggal_lahir, token:token, petugas_dokter:petugas_dokter},function(data){
      
-     $('#table_rawat_jalan').DataTable().destroy();
+     $('#table_rawat_jalan').DataTable().draw();
      
-      var dataTable = $('#table_rawat_jalan').DataTable( {
-          "processing": true,
-          "serverSide": true,
-          "ajax":{
-            url :"datatable_registrasi_rawat_jalan.php", // json datasource
-            type: "post",  // method  , by default get
-            error: function(){  // error handling
-              $(".employee-grid-error").html("");
-              $("#table_rawat_jalan").append('<tbody class="employee-grid-error"><tr><th colspan="3">No data found in the server</th></tr></tbody>');
-              $("#employee-grid_processing").css("display","none");
-              }
-          },
-             "fnCreatedRow": function( nRow, aData, iDataIndex ) {
-
-              $(nRow).attr('class','tr-id-'+aData[12]+'');         
-
-          }
-        });
+     
 
      $("#no_rm").val('');
      $("#nama_lengkap").val('');
