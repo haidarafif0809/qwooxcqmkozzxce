@@ -5,6 +5,10 @@ include 'navbar.php';
 include 'sanitasi.php';
 include 'db.php';
 
+$otoritas_laboratorium = $db->query("SELECT input_hasil_lab FROM otoritas_laboratorium WHERE id_otoritas = '$_SESSION[otoritas_id]'");
+$take_lab = mysqli_fetch_array($otoritas_laboratorium);
+$input_hasil_lab = $take_lab['input_hasil_lab'];
+
 ?>
 
 <div class="container">
@@ -136,7 +140,9 @@ include 'db.php';
 <span id="result">
 <table id="table_lab" class="table table-bordered table-sm">
 		<thead>
+    <?php if ($input_hasil_lab): ?> 
 			<th style="background-color: #4CAF50; color: white;"> Input Hasil</th>
+    <?php endif?>
 			<th style="background-color: #4CAF50; color: white;"> Cetak</th>
 			<th style="background-color: #4CAF50; color: white;"> No RM</th>
 			<th style="background-color: #4CAF50; color: white;"> No REG</th>

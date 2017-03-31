@@ -5,6 +5,11 @@ include 'sanitasi.php';
 $no_rm = stringdoang($_POST['no_rm']);
 $no_reg = stringdoang($_POST['no_reg']);
 // storing  request (ie, get/post) global array to a variable  
+$otoritas_laboratorium = $db->query("SELECT input_jasa_lab, input_hasil_lab FROM otoritas_laboratorium WHERE id_otoritas = '$_SESSION[otoritas_id]'");
+$take_lab = mysqli_fetch_array($otoritas_laboratorium);
+$input_jasa_lab = $take_lab['input_jasa_lab'];
+$input_hasil_lab = $take_lab['input_hasil_lab'];
+
 $requestData= $_REQUEST;
 
 $columns = array( 
@@ -58,15 +63,18 @@ $data = array();
 while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 	$nestedData=array(); 
 
-if($row['status'] == '0')
-{
-$jenis_penjualan = "Rawat Inap";
+// untuk input hasil lab
+if ($input_hasil_lab > 0) {
+	if($row['status'] == '0')
+	{
+	$jenis_penjualan = "Rawat Inap";
 
-$nestedData[] = "<a href='cek_input_hasil_lab_inap.php?no_reg=". $row['no_reg']."&nama=". $row['nama_pasien']."&no_rm=". $row['no_rm']."&jenis_penjualan=". $jenis_penjualan."&no_periksa=". $row['no_periksa']."' class='btn btn-success'> Input </a>";
-}
-else
-{
-	$nestedData[] = "<p style='color:red'> Selesai </p>";
+	$nestedData[] = "<a href='cek_input_hasil_lab_inap.php?no_reg=". $row['no_reg']."&nama=". $row['nama_pasien']."&no_rm=". $row['no_rm']."&jenis_penjualan=". $jenis_penjualan."&no_periksa=". $row['no_periksa']."' class='btn btn-success'> Input </a>";
+	}
+	else
+	{
+		$nestedData[] = "<p style='color:red'> Selesai </p>";
+	}
 }
 
 if($row['status'] == '0')

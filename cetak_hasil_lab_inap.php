@@ -151,7 +151,7 @@ if($face_drop >= 1)
 
     </tr>";
 
-    $show_one = $db->query("SELECT nama_pemeriksaan,hasil_pemeriksaan,nilai_normal_lk,satuan_nilai_normal,nilai_normal_pr,model_hitung FROM hasil_lab WHERE no_reg = '$no_reg' AND status = 'Selesai' AND lab_ke_berapa = '$no_periksa' AND status_lab IS NULL AND id_sub_header = '$id_get' ");
+    $show_one = $db->query("SELECT nama_pemeriksaan,hasil_pemeriksaan,nilai_normal_lk,satuan_nilai_normal,nilai_normal_pr,model_hitung,status_pasien FROM hasil_lab WHERE no_reg = '$no_reg' AND status = 'Selesai' AND lab_ke_berapa = '$no_periksa' AND status_lab IS NULL AND id_sub_header = '$id_get' ");
             //menyimpan data sementara yang ada pada $perintah
   
         while ($take = mysqli_fetch_array($show_one))
@@ -252,7 +252,7 @@ if($face_drop >= 1)
 
 
 //start untuk yang sendirian / yang tidak ber HEADER/INDUX
-       $show_two = $db->query("SELECT nama_pemeriksaan,hasil_pemeriksaan,nilai_normal_lk,satuan_nilai_normal,nilai_normal_pr,model_hitung FROM hasil_lab WHERE no_reg = '$no_reg' AND status = 'Selesai' AND lab_ke_berapa = '$no_periksa' AND status_lab IS NULL AND id_sub_header = 0");
+       $show_two = $db->query("SELECT nama_pemeriksaan,hasil_pemeriksaan,nilai_normal_lk,satuan_nilai_normal,nilai_normal_pr,model_hitung,status_pasien FROM hasil_lab WHERE no_reg = '$no_reg' AND status = 'Selesai' AND lab_ke_berapa = '$no_periksa' AND status_lab IS NULL AND id_sub_header = 0");
             //menyimpan data sementara yang ada pada $perintah
   
           while ($drop_two = mysqli_fetch_array($show_two))

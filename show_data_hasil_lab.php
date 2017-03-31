@@ -2,6 +2,10 @@
 include 'db.php';
 include 'sanitasi.php';
 
+$otoritas_laboratorium = $db->query("SELECT input_hasil_lab FROM otoritas_laboratorium WHERE id_otoritas = '$_SESSION[otoritas_id]'");
+$take_lab = mysqli_fetch_array($otoritas_laboratorium);
+$input_hasil_lab = $take_lab['input_hasil_lab'];
+
 // storing  request (ie, get/post) global array to a variable  
 $requestData= $_REQUEST;
 
@@ -64,14 +68,15 @@ $data = array();
 while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 	$nestedData=array(); 
 
-if($row['status'] != 'Selesai')
-{
-
-	$nestedData[] = "<a href='input_hasil_lab.php?no_faktur=". $row['no_faktur']."&nama_pasien=". $row['nama_pasien']."' class='btn btn-success'> Input </a>";
-}
-else
-{
-	$nestedData[] = "<p style='color:red'> Selesai </p>";
+if($input_hasil_lab > 0){
+	if($row['status'] != 'Selesai')
+	{
+		$nestedData[] = "<a href='input_hasil_lab.php?no_faktur=". $row['no_faktur']."&nama_pasien=". $row['nama_pasien']."' class='btn btn-success'> Input </a>";
+	}
+	else
+	{
+		$nestedData[] = "<p style='color:red'> Selesai </p>";
+	}
 }
 
 if($row['status'] == 'Selesai' AND $row['no_faktur'] != '')
