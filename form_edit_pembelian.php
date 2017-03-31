@@ -685,7 +685,7 @@
   document.getElementById("harga_baru").value = $(this).attr('harga');
   document.getElementById("jumlahbarang").value = $(this).attr('jumlah-barang');
 
-
+ $("#kode_barang").trigger("chosen:updated");
   
   $('#myModal').modal('hide');
   });

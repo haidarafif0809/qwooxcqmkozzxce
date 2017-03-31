@@ -3,15 +3,25 @@
     include 'db.php';
     include 'sanitasi.php';
     // mengirim data sesuai variabel yang ada dengan menggunakan metode POST
-    $no_faktur = $_POST['no_faktur'];
-    $kode_barang = $_POST['kode_barang'];
-    $nama_barang = $_POST['nama_barang'];
-    $jumlah_barang = $_POST['jumlah_barang'];
-    $satuan = $_POST['satuan'];
-    $harga = $_POST['harga'];
-    $potongan = $_POST['potongan'];
-    $tax = stringdoang($_POST['tax']);
+    $no_faktur = stringdoang($_POST['no_faktur']);
+    $kode_barang = stringdoang($_POST['kode_barang']);
+    $nama_barang = stringdoang($_POST['nama_barang']);
+    $jumlah_barang = angkadoang($_POST['jumlah_barang']);
+    $harga_baru = angkadoang($_POST['harga_baru']);
+
+    $satuan = stringdoang($_POST['satuan']);
+    $harga = angkadoang($_POST['harga']);
+    $potongan = angkadoang($_POST['potongan']);
+    $tax = angkadoang($_POST['tax']);
     $satu = 1;
+
+     if ( $harga != $harga_baru) {
+
+      $query00 = $db->query("UPDATE barang SET harga_beli = '$harga_baru' WHERE kode_barang = '$kode_barang'");
+      $harga = $harga_baru;
+    }
+
+
 
     $a = $harga * $jumlah_barang;
 

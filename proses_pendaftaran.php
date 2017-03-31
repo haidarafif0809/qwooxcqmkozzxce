@@ -149,7 +149,7 @@ $stmt = $db->prepare("INSERT INTO registrasi
   VALUES
   (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
  $stmt->bind_param("ssssssssssssssssssssssssss",$alergi,$no_kk,$nama_kk,$poli,$no_urut_terakhir,
-  $nama_lengkap,$jam,$penjamin,$dokter,$menunggu,$no_reg,$no_rm,$tanggal_sekarang,$kondisi,$username,$alamat_ktp,$umur,$jenis_kelamin,$rujukan, $rawat_jalan_nya,$gol_darah,$nama_penanggungjawab,$alamat_penanggung,$no_hp_penanggung,$status_kawin,$pekerjaan_pasien);
+  $nama_lengkap,$jam,$penjamin,$dokter,$menunggu,$no_reg,$no_rm,$tanggal_sekarang,$kondisi,$username,$alamat_sekarang,$umur,$jenis_kelamin,$rujukan, $rawat_jalan_nya,$gol_darah,$nama_penanggungjawab,$alamat_penanggung,$no_hp_penanggung,$status_kawin,$pekerjaan_pasien);
 
 $menunggu = 'menunggu';
 $rawat_jalan_nya = 'Rawat Jalan';
@@ -211,7 +211,7 @@ $sql7 = $db->prepare("INSERT INTO registrasi
   VALUES
   (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
  $sql7->bind_param("ssssssssssssssssssssssssss", $alergi,$no_kk,$nama_kk,$poli,$no_urut,
-  $nama_lengkap,$jam,$penjamin,$dokter,$menunggu2,$no_reg,$no_rm,$tanggal_sekarang,$kondisi,$username,$alamat_ktp,$umur,$jenis_kelamin,$rujukan,
+  $nama_lengkap,$jam,$penjamin,$dokter,$menunggu2,$no_reg,$no_rm,$tanggal_sekarang,$kondisi,$username,$alamat_sekarang,$umur,$jenis_kelamin,$rujukan,
  $rawat_jalan_nya2,$gol_darah,$nama_penanggungjawab,$alamat_penanggung,$no_hp_penanggung,$status_kawin,$pekerjaan_pasien);
 
 

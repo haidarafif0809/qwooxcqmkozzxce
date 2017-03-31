@@ -1224,6 +1224,7 @@ $(document).ready(function(){
 
         //End Cek Hasil Laboratorium
             var pasien = $("#nama_pasien").val();
+            var no_reg = $("#no_reg").val();
             $.post("cek_setting_laboratorium.php",{no_reg:no_reg},function(data){
               if(data == 1){
                 $("#penjualan").hide();

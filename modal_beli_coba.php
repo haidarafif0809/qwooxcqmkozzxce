@@ -82,7 +82,7 @@
             
 
         // menampilkan data
-        echo "<tr class='pilih' data-kode='". $data1['kode_barang'] ."(". $data1['nama_barang'] .")' nama-barang='". $data1['nama_barang'] ."' over_stok='". $data1['over_stok'] ."'
+        echo "<tr class='pilih' data-kode='". $data1['kode_barang'] ."' nama-barang='". $data1['nama_barang'] ."' over_stok='". $data1['over_stok'] ."'
         satuan='". $data1['satuan'] ."' harga='". $data1['harga_beli'] ."' jumlah-barang='". $stok_barang ."' id-barang='". $data1['id'] ."' harga-pokok='". $data1['harga_pokok'] ."'>
         
             <td>". $data1['kode_barang'] ."</td>
