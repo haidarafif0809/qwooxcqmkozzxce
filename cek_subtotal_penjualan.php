@@ -19,8 +19,12 @@ include 'sanitasi.php';
  $data = mysqli_fetch_array($query);
  $total = $data['total_penjualan'];
 
+ $sum_harga = $db->query("SELECT SUM(subtotal) AS harga_radiologi FROM tbs_penjualan_radiologi WHERE no_reg = '$no_reg' AND status_periksa = '1' AND no_faktur IS NULL");
+ $data_radiologi= mysqli_fetch_array($sum_harga);
+ 
 
-$total_tbs = ($total - $diskon) + $biaya_admin;
+
+$total_tbs = ($total - $diskon) + $biaya_admin + $data_radiologi['harga_radiologi'];
 
 if ($total_akhir == $total_tbs) {
 		echo 1;

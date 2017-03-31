@@ -27,7 +27,9 @@ $no_faktur = $_GET['no_faktur'];
     $pajakee = $data4['pajak'];
 
 
-    $select_operasi = $db->query("SELECT * FROM hasil_operasi WHERE no_reg = '$data0[no_reg]'");
+    $select_radiologi = $db->query("SELECT nama_barang, jumlah_barang, harga, subtotal FROM hasil_pemeriksaan_radiologi WHERE no_reg = '$data0[no_reg]'");
+
+    $select_operasi = $db->query("SELECT operasi, harga_jual FROM hasil_operasi WHERE no_reg = '$data0[no_reg]'");
 
     $query4 = $db->query("SELECT status_print FROM setting_printer WHERE nama_print = 'Printer Struk' OR nama_print = 'Printer Besar'");
     $datas = mysqli_fetch_array($query4);
@@ -71,10 +73,10 @@ $no_faktur = $_GET['no_faktur'];
 
            while ($data2 = mysqli_fetch_array($query2)){
            
-           echo '<tr>
-           <td width:"50%"> '. $data2['nama_barang'] .' </td> 
-           <td style="padding:3px"> '. $data2['jumlah_barang'] .'</td> 
-            <td style="padding:3px"> '. rp($data2['harga']) .'</td> 
+             echo '<tr>
+             <td width:"50%"> '. $data2['nama_barang'] .' </td> 
+             <td style="padding:3px"> '. $data2['jumlah_barang'] .'</td> 
+             <td style="padding:3px"> '. rp($data2['harga']) .'</td> 
              <td style="padding:3px"> '. rp($data2['subtotal']) . ' </td></tr>';
            
            }
@@ -103,6 +105,18 @@ $no_faktur = $_GET['no_faktur'];
                         <td style="padding:3px"> '. rp($out_operasi['harga_jual']) .'</td> 
 
               </tr>';
+
+           }
+
+           while ($data_radiologi = mysqli_fetch_array($select_radiologi))
+           {
+                 
+              echo '<tr>
+               <td width:"50%"> '. $data_radiologi['nama_barang'] .' </td> 
+               <td style="padding:3px"> '. $data_radiologi['jumlah_barang'] .'</td> 
+               <td style="padding:3px"> '. rp($data_radiologi['harga']) .'</td> 
+               <td style="padding:3px"> '. rp($data_radiologi['subtotal']) . ' </td>
+               </tr>';
 
            }
 //Untuk Memutuskan Koneksi Ke Database

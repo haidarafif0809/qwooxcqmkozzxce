@@ -4,15 +4,14 @@
     include 'db.php';
     // mengrim data dengan menggunakan metode POST
     $id = angkadoang($_POST['id']);
-    $input_nama = stringdoang($_POST['input_nama']);
-    $input_harga_1 = stringdoang($_POST['input_harga_1']);
+    /*
     $input_harga_2 = stringdoang($_POST['input_harga_2']);
     $input_harga_3 = stringdoang($_POST['input_harga_3']);
     $input_harga_4 = stringdoang($_POST['input_harga_4']);
     $input_harga_5 = stringdoang($_POST['input_harga_5']);
     $input_harga_6 = stringdoang($_POST['input_harga_6']);
     $input_harga_7 = stringdoang($_POST['input_harga_7']);
-    $select_kontras = stringdoang($_POST['select_kontras']);
+    */
     $jenis_edit = stringdoang($_POST['jenis_edit']);
     
 
@@ -22,6 +21,8 @@ if ($jenis_edit == 'nama_pemeriksaan') {
 
        $query->bind_param("si",
         $input_nama, $id);
+
+    $input_nama = stringdoang($_POST['input_nama']);
 
 
         $query->execute();
@@ -46,6 +47,7 @@ if ($jenis_edit == 'harga_1') {
        $query->bind_param("si",
         $input_harga_1, $id);
 
+    $input_harga_1 = stringdoang($_POST['input_harga_1']);
 
         $query->execute();
 
@@ -60,7 +62,8 @@ else
 }
 
 }
-    
+
+/*    
 
 if ($jenis_edit == 'harga_2') {
 
@@ -199,6 +202,32 @@ else
 
 }
     
+*/
+
+
+if ($jenis_edit == 'no_urut') {
+
+       $query =$db->prepare("UPDATE pemeriksaan_radiologi SET no_urut = ?  WHERE id = ?");
+
+       $query->bind_param("si",
+        $no_urut, $id);
+
+    $no_urut = stringdoang($_POST['input_urutan']);
+
+        $query->execute();
+
+if (!$query) 
+{
+ die('Query Error : '.$db->errno.
+ ' - '.$db->error);
+}
+else 
+{
+
+}
+
+}
+
 
 if ($jenis_edit == 'kontras') {
 
@@ -207,6 +236,7 @@ if ($jenis_edit == 'kontras') {
        $query->bind_param("si",
         $select_kontras, $id);
 
+    $select_kontras = stringdoang($_POST['select_kontras']);
 
         $query->execute();
 

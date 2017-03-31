@@ -22,7 +22,11 @@ $no_reg = stringdoang($_POST['no_reg']);
  $data = mysqli_fetch_array($query);
  $total_ss = $data['total_penjualan'];
 
-$total_tbs = ($total_ss - $potongan) + $biaya_admin;
+ $sum_harga = $db->query("SELECT SUM(subtotal) AS harga_radiologi FROM tbs_penjualan_radiologi WHERE no_reg = '$no_reg' AND status_periksa = '1' AND no_faktur IS NULL");
+ $data_radiologi= mysqli_fetch_array($sum_harga);
+
+
+$total_tbs = ($total_ss - $potongan) + $biaya_admin + $data_radiologi['harga_radiologi'];
 
 if ($total != $total_tbs) {
     echo 1;
@@ -304,7 +308,22 @@ $no_jurnal = no_jurnal();
         
       }
 
-// update no_faktur di hasil_lab and insert ke hasil lab
+//INSERT DARI TBS PENJUALAN RADIOLOGI KE HASIL PEMERIKSAAN RADIOLOGI
+        $insert_hasil_radiologi = "INSERT INTO hasil_pemeriksaan_radiologi (no_faktur, no_reg, kode_barang, nama_barang, jumlah_barang, harga, subtotal, potongan, tax, foto, tipe_barang, tanggal, jam, radiologi, kontras, dokter_pengirim, dokter_pelaksana, dokter_periksa, status_periksa, status_simpan, keterangan) SELECT '$no_faktur', no_reg, kode_barang, nama_barang, jumlah_barang, harga, subtotal, potongan, tax, foto, tipe_barang, tanggal, jam, radiologi, kontras, dokter_pengirim, dokter_pelaksana, dokter_periksa, status_periksa, status_simpan, keterangan FROM tbs_penjualan_radiologi WHERE no_reg = '$no_reg' AND status_periksa = '1'";
+
+          if ($db->query($insert_hasil_radiologi) === TRUE) {
+          
+            }
+
+          else {
+              echo "Error: " . $insert_hasil_radiologi . "<br>" . $db->error;
+            }
+
+//INSERT DARI TBS PENJUALAN RADIOLOGI KE HASIL PEMERIKSAAN RADIOLOGI
+
+
+//update no_faktur di hasil_lab and insert ke hasil lab             //
+///////////////////////////////////////////////////////////////////////
 $cek_lab = $db->query("SELECT * FROM hasil_lab WHERE no_reg = '$no_reg'");
 $out_lab = mysqli_num_rows($cek_lab);
 if($out_lab > 0 )
@@ -607,8 +626,9 @@ if ($potongan != "" || $potongan != 0 ) {
       (no_reg,no_rm,nama_petugas,kode_produk,nama_produk,jumlah_fee,tanggal,jam,waktu,session_id) SELECT no_reg,no_rm,nama_petugas,kode_produk,nama_produk,jumlah_fee,tanggal,jam,waktu,session_id FROM tbs_fee_produk WHERE no_reg = '$no_reg'");
 
 
-    $tbs_penjualan_hapus = $db->query("DELETE  FROM tbs_penjualan WHERE  no_reg = '$no_reg' ");
-    $tbs_fee_hapus = $db->query("DELETE  FROM tbs_fee_produk WHERE  no_reg = '$no_reg' ");
+    $tbs_penjualan_hapus = $db->query("DELETE FROM tbs_penjualan WHERE no_reg = '$no_reg' ");
+    $tbs_penjualan_radiologi_hapus = $db->query("DELETE FROM tbs_penjualan_radiologi WHERE no_reg = '$no_reg' ");
+    $tbs_fee_hapus = $db->query("DELETE FROM tbs_fee_produk WHERE no_reg = '$no_reg' ");
 // end coding untuk memasukan history_tbs dan menghapus tbs
 
 

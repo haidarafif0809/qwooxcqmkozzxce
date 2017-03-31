@@ -31,21 +31,26 @@ tr:nth-child(even){background-color: #f2f2f2}
                     <table id="tabel_pemeriksaan" class="table table-bordered table-sm">
                           <thead> <!-- untuk memberikan nama pada kolom tabel -->
                               
-                              <th style='background-color: #4CAF50; color: white;'> Kode Pemeriksaan </th>
+                              <th style='background-color: #4CAF50; color: white;'> Kode Pemeriksaan</th>
                               <th style='background-color: #4CAF50; color: white;'> Nama Pemeriksaan</th>
                               <th style='background-color: #4CAF50; color: white;'> Kontras </th>
-                              <th style='background-color: #4CAF50; color: white;'> Harga 1</th>
+                              <th style='background-color: #4CAF50; color: white;'> Harga</th>
+                              <th style='background-color: #4CAF50; color: white;'> No. Urut</th>
+                            <!--
                               <th style='background-color: #4CAF50; color: white;'> Harga 2</th>
                               <th style='background-color: #4CAF50; color: white;'> Harga 3</th>
                               <th style='background-color: #4CAF50; color: white;'> Harga 4</th>
                               <th style='background-color: #4CAF50; color: white;'> Harga 5</th>
                               <th style='background-color: #4CAF50; color: white;'> Harga 6</th>
                               <th style='background-color: #4CAF50; color: white;'> Harga 7</th>
+                              -->
                               <th style='background-color: #4CAF50; color: white;'> Hapus</th>
                           
                           </thead> <!-- tag penutup tabel -->
                     </table>
                   </div>
+                  <h6 style="text-align: left ; color: red"><i><b> * Klik 2x Pada Kolom Yang Akan Diedit. </b></i></h6>
+
 
 </span>
 <!-- / TABEL PEMeRIKSAAN -->
@@ -76,9 +81,11 @@ tr:nth-child(even){background-color: #f2f2f2}
 </div>
 
 <div class="form-group">
-  <label for="sel1">Harga 1</label>
+  <label for="sel1">Harga</label>
   <input  style="height: 20px" type="text" class="form-control" autocomplete="off" onkeydown="return numbersonly(this, event);" onkeyup="javascript:tandaPemisahTitik(this);"  id="harga_1" autocomplete="off" name="harga_1">
 </div>
+
+<!--
 
 <div class="form-group">
   <label for="sel1">Harga 2</label>
@@ -108,6 +115,14 @@ tr:nth-child(even){background-color: #f2f2f2}
 <div class="form-group">
   <label for="sel1">Harga 7</label>
   <input  style="height: 20px" type="text" class="form-control" autocomplete="off" onkeydown="return numbersonly(this, event);" onkeyup="javascript:tandaPemisahTitik(this);"  id="harga_7" autocomplete="off" name="harga_7">
+</div>
+
+-->
+
+
+<div class="form-group">
+  <label for="sel1"> No. Urut </label>
+  <input  style="height: 20px" type="text" class="form-control" autocomplete="off" onkeydown="return numbersonly(this, event);" onkeyup="javascript:tandaPemisahTitik(this);"  id="no_urut" autocomplete="off" name="no_urut">
 </div>
 
 <div class="form-group">
@@ -167,12 +182,15 @@ $(document).ready(function(){
     var kode_pemeriksaan = $("#kode_pemeriksaan").val();
     var nama_pemeriksaan = $("#nama_pemeriksaan").val();
     var harga_1 = $("#harga_1").val();
+/**
     var harga_2 = $("#harga_2").val();
     var harga_3 = $("#harga_3").val();
     var harga_4 = $("#harga_4").val();
     var harga_5 = $("#harga_5").val();
     var harga_6 = $("#harga_6").val();
     var harga_7 = $("#harga_7").val();
+*/
+    var no_urut = $("#no_urut").val();
     var kontras = $("#kontras").val();
 
 
@@ -197,7 +215,7 @@ $(document).ready(function(){
     {
 
       $("#modal").modal('hide');
-      $.post("proses_tambah_pemeriksaan.php",{kode_pemeriksaan:kode_pemeriksaan,nama_pemeriksaan:nama_pemeriksaan,harga_1:harga_1,harga_2:harga_2,harga_3:harga_3,harga_4:harga_4,harga_5:harga_5,harga_6:harga_6,harga_7:harga_7,kontras:kontras},function(data){
+      $.post("proses_tambah_pemeriksaan.php",{kode_pemeriksaan:kode_pemeriksaan,nama_pemeriksaan:nama_pemeriksaan,harga_1:harga_1,no_urut:no_urut,kontras:kontras},function(data){
 
       });
 
@@ -225,12 +243,7 @@ $(document).ready(function(){
               $("#kode_pemeriksaan").val('');
               $("#nama_pemeriksaan").val('');
               $("#harga_1").val('');
-              $("#harga_2").val('');
-              $("#harga_3").val('');
-              $("#harga_4").val('');
-              $("#harga_5").val('');
-              $("#harga_6").val('');
-              $("#harga_7").val('');
+              $("#no_urut").val('');
               $("#kontras").val('');
 
     }
@@ -259,6 +272,28 @@ $(document).ready(function(){
           }
 
         });
+   });
+</script>
+
+
+<script type="text/javascript">
+   $("#no_urut").blur(function(){
+        var no_urut = $(this).val()
+
+      if (no_urut == 0 || no_urut == "") {
+
+      }
+      else{
+
+            $.post("cek_no_urut_radiologi.php",{no_urut:no_urut},function(data){
+              if (data == 1) {
+                alert("No. Urut '"+no_urut+"' Sudah Terdaftar, Silakan Masukan Urutan Lain !");
+                $("#no_urut").val('');
+                $("#no_urut").focus();
+              }
+
+            });        
+      }
    });
 </script>
 
@@ -380,7 +415,11 @@ $(document).on('blur','.input_harga_1',function(e){
 </script>
 <!-- /EDIT HARGA 1 -->
 
-<!-- EDIT HARGA 2 -->
+
+<!--
+
+
+ EDIT HARGA 2
 <script type="text/javascript">
                                  
 $(document).on('dblclick','.edit-harga-2',function(e){
@@ -406,9 +445,9 @@ $(document).on('blur','.input_harga_2',function(e){
 });
 
 </script>
-<!-- /EDIT HARGA 2 -->
+ /EDIT HARGA 2
 
-<!-- EDIT HARGA 3 -->
+ EDIT HARGA 3
 <script type="text/javascript">
                                  
 $(document).on('dblclick','.edit-harga-3',function(e){
@@ -434,9 +473,9 @@ $(document).on('blur','.input_harga_3',function(e){
 });
 
 </script>
-<!-- /EDIT HARGA 3 -->
+ /EDIT HARGA 3
 
-<!-- EDIT HARGA 4 -->
+ EDIT HARGA 4
 <script type="text/javascript">
                                  
 $(document).on('dblclick','.edit-harga-4',function(e){
@@ -462,9 +501,9 @@ $(document).on('blur','.input_harga_4',function(e){
 });
 
 </script>
-<!-- /EDIT HARGA 4 -->
+ /EDIT HARGA 4
 
-<!-- EDIT HARGA 5 -->
+ EDIT HARGA 5
 <script type="text/javascript">
                                  
 $(document).on('dblclick','.edit-harga-5',function(e){
@@ -490,9 +529,9 @@ $(document).on('blur','.input_harga_5',function(e){
 });
 
 </script>
-<!-- /EDIT HARGA 5 -->
+ /EDIT HARGA 5
 
-<!-- EDIT HARGA 6 -->
+ EDIT HARGA 6
 <script type="text/javascript">
                                  
 $(document).on('dblclick','.edit-harga-6',function(e){
@@ -518,9 +557,9 @@ $(document).on('blur','.input_harga_6',function(e){
 });
 
 </script>
-<!-- /EDIT HARGA 6 -->
+ /EDIT HARGA 6
 
-<!-- EDIT HARGA 7 -->
+ EDIT HARGA 7
 <script type="text/javascript">
                                  
 $(document).on('dblclick','.edit-harga-7',function(e){
@@ -546,7 +585,70 @@ $(document).on('blur','.input_harga_7',function(e){
 });
 
 </script>
-<!-- /EDIT HARGA 7 -->
+ EDIT HARGA 7
+
+-->
+
+
+
+<!-- EDIT HARGA 1 -->
+<script type="text/javascript">
+                                 
+$(document).on('dblclick','.edit-urutan',function(e){
+
+    var id = $(this).attr("data-id");
+    $("#text-urutan-"+id+"").hide();
+    $("#input-urutan-"+id+"").attr("type", "text");
+
+});
+
+$(document).on('blur','.input_urutan',function(e){
+
+  var id = $(this).attr("data-id");
+  var input_urutan = $(this).val();
+  var no_urut_lama = $("#text-urutan-"+id+"").text();
+
+$.post("cek_no_urut_radiologi.php",{no_urut:input_urutan},function(data){
+
+  if (input_urutan == 0) {
+
+      $.post("update_pemeriksaan.php",{id:id, input_urutan:input_urutan,jenis_edit:"no_urut"},function(data){
+
+        $("#text-urutan-"+id+"").show();
+        $("#text-urutan-"+id+"").text(tandaPemisahTitik(input_urutan));
+        $("#input-urutan-"+id+"").attr("type", "hidden");
+
+      });
+
+  }
+  else{
+
+    if (data == 1) {
+      alert("No. Urut '"+input_urutan+"' Sudah Terdaftar, Silakan Masukan Urutan Lain !");
+      $("#input-urutan-"+id+"").val(no_urut_lama);
+      $("#text-urutan-"+id+"").text(no_urut_lama);
+      $("#text-urutan-"+id+"").show();
+      $("#input-urutan-"+id+"").attr("type", "hidden");
+    }
+    else{
+
+      $.post("update_pemeriksaan.php",{id:id, input_urutan:input_urutan,jenis_edit:"no_urut"},function(data){
+
+        $("#text-urutan-"+id+"").show();
+        $("#text-urutan-"+id+"").text(tandaPemisahTitik(input_urutan));
+        $("#input-urutan-"+id+"").attr("type", "hidden");
+
+      });
+    }
+
+  }
+
+});
+
+});
+
+</script>
+<!-- /EDIT HARGA 1 -->
 
 <!-- EDIT KONTRAS -->
 <script type="text/javascript">

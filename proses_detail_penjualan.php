@@ -99,6 +99,30 @@ echo "<tr>
                     
                   
     }
+
+
+// RADIOLOGI TABLE
+ $select_hasil_radiologi = $db->query("SELECT no_faktur, kode_barang, nama_barang, jumlah_barang, harga, tipe_barang, subtotal FROM hasil_pemeriksaan_radiologi WHERE no_reg = '$no_reg'");
+
+    while($data_hasil = mysqli_fetch_array($select_hasil_radiologi))
+      {
+       
+        echo"<tr>
+                    
+            <td class='table1'>".$data_hasil['no_faktur']."</td>   
+            <td class='table1'>".$data_hasil['kode_barang']."</td>  
+            <td class='table1'>".$data_hasil['nama_barang']."</td>  
+            <td class='table1'>".$data_hasil['jumlah_barang']."</td>
+            <td class='table1'>Radiologi</td>
+            <td class='table1'>". $data_hasil['tipe_barang'] ."</td>
+            <td class='table1'>". rp($data_hasil['harga']) ."</td>
+            <td class='table1'>". rp($data_hasil['subtotal']) ."</td>
+      </tr>";
+
+                    
+                  
+    }
+
 //Untuk Memutuskan Koneksi Ke Database
 mysqli_close($db);   
 ?>

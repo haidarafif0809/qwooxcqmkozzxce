@@ -27,6 +27,9 @@ $rekam_medik_lihat = angkadoang(isset($_POST['rekam_medik_lihat']));
 $laboratorium_lihat = angkadoang(isset($_POST['laboratorium_lihat']));
 $laporan_laboratorium_lihat = angkadoang(isset($_POST['laporan_laboratorium_lihat']));
 
+//Untuk Rujuk Laboratorium
+$input_jasa_lab = angkadoang(isset($_POST['input_jasa_lab']));
+$input_hasil_lab = angkadoang(isset($_POST['input_hasil_lab']));
 
 //untuk penjualan
 $menu_rawat_jalan = angkadoang(isset($_POST['menu_rawat_jalan']));
@@ -326,14 +329,26 @@ $tipe_alat = angkadoang(isset($_POST['tipe_alat']));
 $tipe_bhp = angkadoang(isset($_POST['tipe_bhp']));
 $tipe_obat = angkadoang(isset($_POST['tipe_obat']));
 
+//RADIOLOGI
 
-$update_otoritas_laboratorium = $db->prepare("UPDATE otoritas_laboratorium SET laboratorium_lihat = ? WHERE id_otoritas = ?");
+$radiologi_lihat = angkadoang(isset($_POST['radiologi_lihat']));
+$daftar_radiologi = angkadoang(isset($_POST['daftar_radiologi']));
+$pemeriksaan_radiologi = angkadoang(isset($_POST['pemeriksaan_radiologi']));
+$hasil_radiologi = angkadoang(isset($_POST['hasil_radiologi']));
+$simpan_hasil_radiologi = angkadoang(isset($_POST['simpan_hasil_radiologi']));
+$status_hasil = angkadoang(isset($_POST['status_hasil']));
+$foto_hasil = angkadoang(isset($_POST['foto_hasil']));
+$keterangan_hasil = angkadoang(isset($_POST['keterangan_hasil']));
 
-$update_otoritas_laboratorium->bind_param("ii",
-	$laboratorium_lihat, $id);
+//RADIOLOGI
+
+//OTORITAS LABORATORIUM
+$update_otoritas_laboratorium = $db->prepare("UPDATE otoritas_laboratorium SET laboratorium_lihat = ?, input_jasa_lab = ?, input_hasil_lab = ? WHERE id_otoritas = ?");
+
+$update_otoritas_laboratorium->bind_param("iiii",
+	$laboratorium_lihat, $input_jasa_lab, $input_hasil_lab, $id);
 
 $update_otoritas_laboratorium->execute();
-
 
 
 $update_otoritas_item_keluar = $db->prepare("UPDATE otoritas_item_keluar SET item_keluar_lihat = ?, item_keluar_tambah = ?, item_keluar_edit = ?, item_keluar_hapus = ? WHERE id_otoritas = ?");
@@ -529,6 +544,14 @@ $update_otoritas_tipe_produk->bind_param("iiiiii",
  $tipe_barang, $tipe_jasa, $tipe_alat, $tipe_bhp, $tipe_obat, $id);
 
 $update_otoritas_tipe_produk->execute();
+
+
+$update_otoritas_radiologi = $db->prepare("UPDATE otoritas_radiologi SET radiologi_lihat = ?, daftar_radiologi = ?, pemeriksaan_radiologi = ?, hasil_radiologi = ?, simpan_hasil_radiologi = ?, status_hasil = ?, foto_hasil = ?, keterangan_hasil = ? WHERE id_otoritas = ?");
+
+$update_otoritas_radiologi->bind_param("iiiiiiiii",
+ $radiologi_lihat, $daftar_radiologi, $pemeriksaan_radiologi, $hasil_radiologi, $simpan_hasil_radiologi, $status_hasil, $foto_hasil, $keterangan_hasil, $id);
+
+$update_otoritas_radiologi->execute();
 
                 echo '<META HTTP-EQUIV="Refresh" Content="0; URL=hak_otoritas.php">';
 

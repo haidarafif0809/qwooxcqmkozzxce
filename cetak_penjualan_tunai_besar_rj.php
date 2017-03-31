@@ -38,8 +38,6 @@ if ($data_row > 0) {
     $query1 = $db->query("SELECT * FROM perusahaan ");
     $data1 = mysqli_fetch_array($query1);
 
-    $query2 = $db->query("SELECT * FROM tbs_penjualan WHERE no_reg = '$no_reg' ");
-    $data2 = mysqli_fetch_array($query2);
 
     $query3 = $db->query("SELECT SUM(jumlah_barang) as total_item FROM tbs_penjualan WHERE no_reg = '$no_reg'");
     $data3 = mysqli_fetch_array($query3);
@@ -54,10 +52,11 @@ if ($data_row > 0) {
     $data_or = mysqli_fetch_array($query_orp);
     $t_operasi = $data_or['t_operasi'];
 
-    $t_subtotal = $t_awal_subtotal + $t_operasi;
+    $sum_hasil_radiologi = $db->query("SELECT  SUM(subtotal) as sub_radiologi FROM tbs_penjualan_radiologi WHERE no_reg = '$no_reg' AND status_periksa = '1' ");
+    $data_radiologi = mysqli_fetch_array($sum_hasil_radiologi);
+    $t_radiologi = $data_radiologi['sub_radiologi'];
 
-    $setting_bahasa = $db->query("SELECT * FROM setting_bahasa WHERE kata_asal = 'Sales' ");
-    $data20 = mysqli_fetch_array($setting_bahasa);
+    $t_subtotal = $t_awal_subtotal + $t_operasi + $t_radiologi;
 
     $setting_bahasa0 = $db->query("SELECT * FROM setting_bahasa WHERE kata_asal = 'Pelanggan' ");
     $data200 = mysqli_fetch_array($setting_bahasa0); 
@@ -82,9 +81,6 @@ else{
     $query1 = $db->query("SELECT * FROM perusahaan ");
     $data1 = mysqli_fetch_array($query1);
 
-    $query2 = $db->query("SELECT * FROM detail_penjualan WHERE no_reg = '$no_reg' ");
-    $data2 = mysqli_fetch_array($query2);
-
     $query3 = $db->query("SELECT SUM(jumlah_barang) as total_item FROM detail_penjualan WHERE no_reg = '$no_reg'");
     $data3 = mysqli_fetch_array($query3);
     $total_item = $data3['total_item'];
@@ -101,10 +97,12 @@ else{
     $data_or = mysqli_fetch_array($query_orp);
     $t_operasi = $data_or['t_operasi'];
 
-    $t_subtotal = $t_awal_subtotal + $t_operasi;
+    $sum_hasil_radiologi = $db->query("SELECT  SUM(subtotal) as sub_radiologi FROM hasil_pemeriksaan_radiologi WHERE no_reg = '$no_reg' ");
+    $data_radiologi = mysqli_fetch_array($sum_hasil_radiologi);
+    $t_radiologi = $data_radiologi['sub_radiologi'];
 
-    $setting_bahasa = $db->query("SELECT * FROM setting_bahasa WHERE kata_asal = 'Sales' ");
-    $data20 = mysqli_fetch_array($setting_bahasa);
+
+    $t_subtotal = $t_awal_subtotal + $t_operasi + $t_radiologi;
 
     $setting_bahasa0 = $db->query("SELECT * FROM setting_bahasa WHERE kata_asal = 'Pelanggan' ");
     $data200 = mysqli_fetch_array($setting_bahasa0);
@@ -321,6 +319,31 @@ else{
                     
                   
     }
+
+
+// RADIOLOGI TABLE
+ $select_hasil_radiologi = $db->query("SELECT nama_barang, jumlah_barang, harga, potongan, tax, subtotal FROM tbs_penjualan_radiologi WHERE no_reg = '$no_reg' AND status_periksa = '1'");
+
+    while($data_hasil = mysqli_fetch_array($select_hasil_radiologi))
+      {
+        $nomor = $no_urut +1;
+
+        echo"<tr>
+                    
+            <td class='table1' align='center'>".$nomor."</td>   
+            <td class='table1'>".$data_hasil['nama_barang']."</td> 
+            <td class='table1' align='center'>-</td>            
+            <td class='table1' align='center'>".$data_hasil['jumlah_barang']."</td>
+            <td class='table1' align='center'>Radiologi</td>
+            <td class='table1' align='right'>". rp($data_hasil['harga']) ."</td>
+            <td class='table1' align='right'>". rp($data_hasil['potongan']) ."</td>
+            <td class='table1' align='right'>". rp($data_hasil['tax']) ."</td>
+            <td class='table1' align='right'>". rp($data_hasil['subtotal']) ."</td>
+      </tr>";
+
+                    
+                  
+    }
 //Untuk Memutuskan Koneksi Ke Database
 mysqli_close($db); 
 
@@ -411,18 +434,18 @@ mysqli_close($db);
 
 // OPERASI TABLE
  $take_data_or = $db->query("SELECT * FROM hasil_operasi WHERE no_reg = '$data_inner[no_reg]'");
-
+$nomor_op = $no_urut;
     while($out_operasi = mysqli_fetch_array($take_data_or))
       {
                    
         $select_or = $db->query("SELECT id_operasi,nama_operasi FROM operasi WHERE id_operasi = '$out_operasi[operasi]'");
         $outin = mysqli_fetch_array($select_or);
         
-        $nomor = $no_urut +1;
+        $nomor_op++;
 
         echo"<tr>
                     
-            <td class='table1' align='center'>".$nomor."</td>";
+            <td class='table1' align='center'>".$nomor_op."</td>";
 
             if($out_operasi['operasi'] == $outin['id_operasi'])
             {
@@ -445,6 +468,35 @@ mysqli_close($db);
                     
                   
     }
+
+// RADIOLOGI TABLE
+
+   $nomor_radiologi = $nomor_op;
+
+ $select_hasil_radiologi = $db->query("SELECT nama_barang, jumlah_barang, harga, potongan, tax, subtotal FROM hasil_pemeriksaan_radiologi WHERE no_reg = '$no_reg'");
+
+    while($data_hasil = mysqli_fetch_array($select_hasil_radiologi))
+      {
+       
+       $nomor_radiologi++;
+
+        echo"<tr>
+                    
+            <td class='table1' align='center'>".$nomor_radiologi."</td>   
+            <td class='table1'>".$data_hasil['nama_barang']."</td> 
+            <td class='table1' align='center'>-</td>            
+            <td class='table1' align='center'>".$data_hasil['jumlah_barang']."</td>
+            <td class='table1' align='center'>Radiologi</td>
+            <td class='table1' align='right'>". rp($data_hasil['harga']) ."</td>
+            <td class='table1' align='right'>". rp($data_hasil['potongan']) ."</td>
+            <td class='table1' align='right'>". rp($data_hasil['tax']) ."</td>
+            <td class='table1' align='right'>". rp($data_hasil['subtotal']) ."</td>
+      </tr>";
+
+                    
+                  
+    }
+
 //Untuk Memutuskan Koneksi Ke Database
 mysqli_close($db); 
 

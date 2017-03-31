@@ -13,6 +13,14 @@ if (isset($_GET['analis'])) {
 else
 {
   $analis = '';
+};
+
+if (isset($_GET['petugas_radiologi'])) {
+ $petugas_radiologi = stringdoang($_GET['petugas_radiologi']);
+}
+else
+{
+  $petugas_radiologi = '';
 }
 
 $session_id = session_id();
@@ -29,6 +37,7 @@ $jasa = $otoritas_produk['tipe_jasa'];
 $alat = $otoritas_produk['tipe_alat'];
 $bhp = $otoritas_produk['tipe_bhp'];
 $obat = $otoritas_produk['tipe_obat'];
+
 
  ?>
 
@@ -93,8 +102,6 @@ $obat = $otoritas_produk['tipe_obat'];
 
 </div>
     
-    <input type="hidden" readonly="" style="font-size:15px; height:15px" name="total_lab" id="total_lab" value="" class="form-control" >
-
 
 <div class="col-xs-2">
           <label> Gudang </label><br>
@@ -328,7 +335,8 @@ $obat = $otoritas_produk['tipe_obat'];
 
 <button type="button" class="btn btn-warning" id="cari_pasien" data-toggle="modal" data-target="#modal_reg"><i class="fa fa-user"></i> Cari Pasien (Alt + P)</button>
 
-<a href="form_penjualan_lab.php" id="btnRujukLab" class="btn btn-default" style="display: none"> <i class="fa fa-flask"></i> Rujuk Lab</a>  
+<a href="form_penjualan_lab.php" id="btnRujukLab" class="btn btn-purple" style="display: none"> <i class="fa fa-flask"></i> Rujuk Lab</a>  
+<a href="form_pemeriksaan_radiologi.php" id="btnRujukRadiologi" class="btn btn-purple" style="display: none"> <i class="fa fa-universal-access"></i> Rujuk Radiologi</a>  
   
 <button type="button" class="btn btn-default" id="btnRefreshsubtotal"> <i class='fa fa-refresh'></i> Refresh Subtotal</button>
 
@@ -568,7 +576,7 @@ $obat = $otoritas_produk['tipe_obat'];
   </div>
 
 <div class="col-xs-2">
-  <button type="submit" id="submit_produk" class="btn btn-success" style="font-size:15px" > <i class="fa fa-plus"></i> Submit (F3)</button>
+  <button type="submit" id="submit_produk" class="btn btn-success" style="font-size:15px" > <i class="fa fa-plus"></i>Submit(F3)</button>
 
 </div>
 
@@ -586,6 +594,7 @@ $obat = $otoritas_produk['tipe_obat'];
     <input type="hidden" id="id_produk" name="id_produk" class="form-control" value="" placeholder="Id barang"> 
     <input type="hidden" id="level_hidden" name="level_hidden" class="form-control" value="">   
     <input type="hidden" id="analis" name="analis" class="form-control" value="<?php echo $analis;?>">     
+    <input type="hidden" id="petugas_radiologi" name="petugas_radiologi" class="form-control" value="<?php echo $petugas_radiologi;?>">     
 
     <input type="hidden" id="tipe_produk" name="tipe_produk" class="form-control" value="" placeholder="Tipe Produk">    
 
@@ -631,6 +640,10 @@ $obat = $otoritas_produk['tipe_obat'];
 Laboratorium  </button>
 
 
+<button class="btn btn-primary" id="btnRadiologi" type="button" data-toggle="collapse" data-target="#collapseExampleRadiologi" aria-expanded="false" aria-controls="collapseExample"><i class='fa fa-universal-access'> </i>
+Radiologi  </button>
+
+
 
             <div class="collapse" id="collapseExample">
               <span id="span_lab">
@@ -646,6 +659,33 @@ Laboratorium  </button>
                               <th> Subtotal </th>
                               <th> Potongan </th>
                               <th> Pajak </th>
+                          
+                          </thead> <!-- tag penutup tabel -->
+                    </table>
+                  </div>
+              </span>
+            </div>
+
+
+
+
+
+            <div class="collapse" id="collapseExampleRadiologi">
+              <span id="span_radiologi">
+                  <div class="table-responsive">
+                    <table id="tabel_tbs_radiologi" class="table table-bordered table-sm">
+                          <thead> <!-- untuk memberikan nama pada kolom tabel -->
+                              
+                              <th> Kode  </th>
+                              <th> Nama </th>
+                              <th> Dokter Pengirim </th>
+                              <th style="text-align: right" > Jumlah </th>
+                              <th style="text-align: right" > Harga </th>
+                              <!--
+                              <th style="text-align: right" > Potongan </th>
+                              <th style="text-align: right" > Pajak </th>
+                              -->
+                              <th style="text-align: right" > Subtotal </th>
                           
                           </thead> <!-- tag penutup tabel -->
                     </table>
@@ -1174,12 +1214,37 @@ $(document).ready(function(){
         
         $("#span_tbs").show()
         $("#btnRujukLab").show()
+        $("#btnRujukRadiologi").show()
         $('#pembayaran_penjualan').val('');
         $('#biaya_adm').val('');
         $('#biaya_admin_select').val('0');
         $("#biaya_admin_select").trigger('chosen:updated');
         $('#potongan_penjualan').val('');
         $('#potongan_persen').val('');
+
+        //End Cek Hasil Laboratorium
+            var pasien = $("#nama_pasien").val();
+            var no_reg = $("#no_reg").val();
+            $.post("cek_setting_laboratorium.php",{no_reg:no_reg},function(data){
+              if(data == 1){
+                $("#penjualan").hide();
+                 $("#simpan_sementara").hide();
+                 $("#batal_penjualan").hide(); 
+                 $("#cetak_langsung").hide();
+                 $("#piutang").hide();
+                alert("Pasien atas nama ("+pasien+") Hasil laboratorium belum di isi!");
+
+              }
+              else
+              {
+                 $("#penjualan").show();
+                 $("#simpan_sementara").show();
+                 $("#batal_penjualan").show(); 
+                 $("#cetak_langsung").show();
+                 $("#piutang").show();
+              }
+            });
+      //End Cek Hasil Laboratorium
 
 // END DATATABLE AJAX END DATATABLE AJAX END DATATABLE AJAX END DATATABLE AJAX END DATATABLE AJAX END DATATABLE AJAX
 
@@ -1189,10 +1254,8 @@ $(document).ready(function(){
     var no_reg = $("#no_reg").val();
     var pot_fakt_per = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#potongan_persen").val()))));
     var pot_fakt_rp = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#potongan_penjualan").val()))));
-    var total_lab = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#total_lab").val()))));
-    if (total_lab == "") {
-      total_lab = 0;
-    }
+
+
      //digunakan untuk mengecek sama tidaknya jumlah disc dg total_subtotal di tbs
   $.getJSON("cek_jumlah_disc_dg_total_sub_tbs.php",{no_reg:no_reg},function(oke){
        
@@ -1200,6 +1263,7 @@ $(document).ready(function(){
         $("#disc_tbs").val(oke.potongane);
 
       });
+
 
     $.post("cek_total_seluruh_raja.php",{no_reg:no_reg},function(data1){
   
@@ -1210,7 +1274,7 @@ $(document).ready(function(){
                     data = 0;
                   }
 
-                var sum = parseInt(data,10) + parseInt(total_lab,10);
+                var sum = parseInt(data,10);
 
                   $("#total2").val(tandaPemisahTitik(sum))
 
@@ -1230,7 +1294,7 @@ $(document).ready(function(){
               
 
 
-      var total = parseInt(data,10) - parseInt(pot_fakt_rp,10) + parseInt(total_lab,10);
+      var total = parseInt(data,10) - parseInt(pot_fakt_rp,10);
                   $("#total1").val(tandaPemisahTitik(total))
 
             }
@@ -1249,7 +1313,7 @@ $(document).ready(function(){
                   $("#potongan1").val(potongaaan);
 
 
-      var total = parseInt(data,10) - parseInt(potongaaan,10) + parseInt(total_lab,10);
+      var total = parseInt(data,10) - parseInt(potongaaan,10);
                   $("#total1").val(tandaPemisahTitik(total))
             }
       
@@ -1325,6 +1389,44 @@ var penjamin = $("#penjamin").val();
 </script>
 
 
+
+<script type="text/javascript" language="javascript" >
+
+  $(document).ready(function() {
+    $(document).on('click', '#btnRadiologi', function (e) {
+      $('#tabel_tbs_radiologi').DataTable().destroy();
+            var dataTable = $('#tabel_tbs_radiologi').DataTable( {
+            "processing": true,
+            "serverSide": true,
+            "info":     false,
+            "language": { "emptyTable":     "My Custom Message On Empty Table" },
+            "ajax":{
+              url :"data_tbs_radiologi.php", // json datasource
+               "data": function ( d ) {
+                  d.no_reg = $("#no_reg").val();
+                  // d.custom = $('#myInput').val();
+                  // etc
+              },
+                  type: "post",  // method  , by default get
+              error: function(){  // error handling
+                $(".tbody").html("");
+                $("#tabel_tbs_radiologi").append('<tbody class="tbody"><tr><th colspan="3"></th></tr></tbody>');
+                $("#tableuser_processing").css("display","none");
+                
+              }
+            }   
+
+      });
+        
+        $("#span_radiologi").show()
+
+    });
+
+  });
+
+</script>
+
+
 <script type="text/javascript">
     $(document).on('click', '#btnRujukLab', function (e) {
 
@@ -1337,6 +1439,23 @@ var penjamin = $("#penjamin").val();
     var rujukan = 'Rujuk Rawat Jalan';
 
         $("#btnRujukLab").attr('href', 'form_penjualan_lab.php?no_rm='+no_rm+'&nama='+nama+'&no_reg='+no_reg+'&dokter='+dokter+'&jenis_penjualan='+jenis_penjualan+'&rujukan='+rujukan+'');
+
+    });
+</script>
+
+<script type="text/javascript">
+    $(document).on('click', '#btnRujukRadiologi', function (e) {
+
+    var no_reg = $("#no_reg").val();
+    var no_rm = $("#no_rm").val();
+    var no_rm = no_rm.substr(0, no_rm.indexOf(' |'));
+    var nama = $("#nama_pasien").val();
+    var dokter = $("#dokter").val();
+    var penjamin = $("#penjamin").val();
+    var jenis_penjualan = 'Rawat Jalan';
+    var rujukan = 'Rujuk Rawat Jalan';
+
+        $("#btnRujukRadiologi").attr('href', 'form_pemeriksaan_radiologi.php?no_rm='+no_rm+'&nama='+nama+'&no_reg='+no_reg+'&dokter='+dokter+'&jenis_penjualan='+jenis_penjualan+'&rujukan='+rujukan+'&penjamin='+penjamin+'');
 
     });
 </script>
@@ -1742,7 +1861,8 @@ $(document).ready(function(){
             $("#cetak_tunai_besar").hide();
             $("#cetak_piutang").hide();
             $("#cetak_tunai_kategori").hide(); 
-            $("#btnRujukLab").hide();    
+            $("#btnRujukLab").hide();   
+            $("#btnRujukRadiologi").hide();    
             $('#span_tbs').hide();
             $('#span_lab').hide();
 
@@ -2156,6 +2276,7 @@ alert("Kode barang harus terisi");
         var penjamin = $("#penjamin").val();
         var nama_pasien = $("#nama_pasien").val();
         var analis = $("#analis").val();
+        var petugas_radiologi = $("#petugas_radiologi").val();
         var jenis_penjualan = 'Rawat Jalan';
         var disc_tbs = $("#disc_tbs").val();
         if (disc_tbs == '') {
@@ -2245,7 +2366,7 @@ if (data == 1) {
      $("#cetak_tunai_kategori").show();
      $("#cetak_tunai_besar").show('');
 
- $.post("proses_bayar_jual_kasir.php",{id_user:id_user,sisa_pembayaran:sisa_pembayaran, kredit:kredit,no_rm:no_rm,no_reg:no_reg,tanggal_jt:tanggal_jt,total:total,total2:total2,potongan:potongan,potongan_persen:potongan_persen,/*tax:tax,*/cara_bayar:cara_bayar,pembayaran:pembayaran,total_hpp:total_hpp,harga:harga,kode_gudang:kode_gudang,dokter:dokter,petugas_kasir:petugas_kasir,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,sisa:sisa,ppn:ppn,penjamin:penjamin,nama_pasien:nama_pasien,jenis_penjualan:jenis_penjualan,biaya_adm:biaya_adm,analis:analis},function(info) {
+ $.post("proses_bayar_jual_kasir.php",{id_user:id_user,sisa_pembayaran:sisa_pembayaran, kredit:kredit,no_rm:no_rm,no_reg:no_reg,tanggal_jt:tanggal_jt,total:total,total2:total2,potongan:potongan,potongan_persen:potongan_persen,/*tax:tax,*/cara_bayar:cara_bayar,pembayaran:pembayaran,total_hpp:total_hpp,harga:harga,kode_gudang:kode_gudang,dokter:dokter,petugas_kasir:petugas_kasir,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,sisa:sisa,ppn:ppn,penjamin:penjamin,nama_pasien:nama_pasien,jenis_penjualan:jenis_penjualan,biaya_adm:biaya_adm,analis:analis,petugas_radiologi:petugas_radiologi},function(info) {
 
         if (info == 1)
         {
@@ -2541,7 +2662,8 @@ $('#tabel_tbs_lab').DataTable().clear();
             $("#cetak_tunai_besar").hide();
             $("#cetak_piutang").hide();
             $("#cetak_tunai_kategori").hide(); 
-            $("#btnRujukLab").hide();    
+            $("#btnRujukLab").hide();   
+            $("#btnRujukRadiologi").hide();    
             $('#span_tbs').hide();
             $('#span_lab').hide();
 
@@ -2602,6 +2724,7 @@ $('#tabel_tbs_lab').DataTable().clear();
         var penjamin = $("#penjamin").val();
         var nama_pasien = $("#nama_pasien").val();
         var analis = $("#analis").val();
+        var petugas_radiologi = $("#petugas_radiologi").val();
         var jenis_penjualan = 'Rawat Jalan';
         var disc_tbs = $("#disc_tbs").val();
         if (disc_tbs == '') {
@@ -2813,6 +2936,7 @@ $("#tbody-barang-jual").find("tr").remove();
         var penjamin = $("#penjamin").val();
         var nama_pasien = $("#nama_pasien").val();
         var analis = $("#analis").val();
+        var petugas_radiologi = $("#petugas_radiologi").val();
         var jenis_penjualan = 'Rawat Jalan';
         
         var sisa = pembayaran - total;
@@ -4812,6 +4936,7 @@ else{
         
         $("#span_tbs").show()
         $("#btnRujukLab").show()
+        $("#btnRujukRadiologi").show()
         $('#pembayaran_penjualan').val('');
         $('#biaya_adm').val('');
         $('#biaya_admin_select').val('0');
@@ -4827,10 +4952,7 @@ else{
     var no_reg = $("#no_reg").val();
     var pot_fakt_per = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#potongan_persen").val()))));
     var pot_fakt_rp = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#potongan_penjualan").val()))));
-    var total_lab = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#total_lab").val()))));
-    if (total_lab == "") {
-      total_lab = 0;
-    }
+
 
 
 
@@ -4850,7 +4972,7 @@ if (no_reg == "") {
                           data = 0;
                         }
 
-                      var sum = parseInt(data,10) + parseInt(total_lab,10);
+                      var sum = parseInt(data,10);
 
                         $("#total2").val(tandaPemisahTitik(sum))
 
@@ -4870,7 +4992,7 @@ if (no_reg == "") {
                     
 
 
-            var total = parseInt(data,10) - parseInt(pot_fakt_rp,10) + parseInt(total_lab,10);
+            var total = parseInt(data,10) - parseInt(pot_fakt_rp,10);
                         $("#total1").val(tandaPemisahTitik(total))
 
                   }
@@ -4889,7 +5011,7 @@ if (no_reg == "") {
                         $("#potongan1").val(potongaaan);
 
 
-            var total = parseInt(data,10) - parseInt(potongaaan,10) + parseInt(total_lab,10);
+            var total = parseInt(data,10) - parseInt(potongaaan,10);
                         $("#total1").val(tandaPemisahTitik(total))
                   }
             
