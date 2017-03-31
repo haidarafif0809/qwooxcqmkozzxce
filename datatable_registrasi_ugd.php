@@ -4,6 +4,11 @@ include 'db.php';
 include 'sanitasi.php';
 /* Database connection end */
 
+$otoritas_laboratorium = $db->query("SELECT input_jasa_lab, input_hasil_lab FROM otoritas_laboratorium WHERE id_otoritas = '$_SESSION[otoritas_id]'");
+$take_lab = mysqli_fetch_array($otoritas_laboratorium);
+$input_jasa_lab = $take_lab['input_jasa_lab'];
+$input_hasil_lab = $take_lab['input_hasil_lab'];
+
 //untuk otoritas akses
 $pilih_akses_registrasi_rj = $db->query("SELECT registrasi_ugd_lihat, registrasi_ugd_tambah, registrasi_ugd_edit, registrasi_ugd_hapus FROM otoritas_registrasi WHERE id_otoritas = '$_SESSION[otoritas_id]'");
 $registrasi_rj = mysqli_fetch_array($pilih_akses_registrasi_rj);
@@ -101,11 +106,14 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 	    $nestedData[] = "<button  type='button' data-reg='".$row['no_reg']."' class='btn btn-floating btn-small btn-info rujuk_ri' ><i class='fa fa-hotel'></i>   </button>";
 	}
 	
-//INPUT JASA LAB
+// untuk input jasa lab
+if ($input_jasa_lab > 0) {
  $nestedData[] = "<a href='form_penjualan_lab.php?no_rm=".$row['no_rm']."&nama=".$row['nama_pasien']."&no_reg=".$row['no_reg']."&dokter=".$row['dokter']."&jenis_penjualan=UGD&rujukan=Rujuk UGD' class='btn btn-floating btn-small btn-info'><i class='fa fa-stethoscope'></i></a>
        ";
+}
 
 // untuk input hasil lab
+if ($input_hasil_lab > 0) {
 $show = $db->query("SELECT COUNT(*) AS jumlah FROM tbs_penjualan WHERE no_reg = '$row[no_reg]' AND lab = 'Laboratorium' ");
 $take = mysqli_fetch_array($show);
 
@@ -118,6 +126,7 @@ $take = mysqli_fetch_array($show);
 	  $nestedData[] = "<p style='color:red'>Input Laboratorium</p>";
 
 	}
+}
 // end untuk input hasil lab
 
 

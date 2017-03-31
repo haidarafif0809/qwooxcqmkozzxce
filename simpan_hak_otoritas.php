@@ -27,6 +27,9 @@ $rekam_medik_lihat = angkadoang(isset($_POST['rekam_medik_lihat']));
 $laboratorium_lihat = angkadoang(isset($_POST['laboratorium_lihat']));
 $laporan_laboratorium_lihat = angkadoang(isset($_POST['laporan_laboratorium_lihat']));
 
+//Untuk Rujuk Laboratorium
+$input_jasa_lab = angkadoang(isset($_POST['input_jasa_lab']));
+$input_hasil_lab = angkadoang(isset($_POST['input_hasil_lab']));
 
 //untuk penjualan
 $menu_rawat_jalan = angkadoang(isset($_POST['menu_rawat_jalan']));
@@ -339,13 +342,13 @@ $keterangan_hasil = angkadoang(isset($_POST['keterangan_hasil']));
 
 //RADIOLOGI
 
-$update_otoritas_laboratorium = $db->prepare("UPDATE otoritas_laboratorium SET laboratorium_lihat = ? WHERE id_otoritas = ?");
+//OTORITAS LABORATORIUM
+$update_otoritas_laboratorium = $db->prepare("UPDATE otoritas_laboratorium SET laboratorium_lihat = ?, input_jasa_lab = ?, input_hasil_lab = ? WHERE id_otoritas = ?");
 
-$update_otoritas_laboratorium->bind_param("ii",
-	$laboratorium_lihat, $id);
+$update_otoritas_laboratorium->bind_param("iiii",
+	$laboratorium_lihat, $input_jasa_lab, $input_hasil_lab, $id);
 
 $update_otoritas_laboratorium->execute();
-
 
 
 $update_otoritas_item_keluar = $db->prepare("UPDATE otoritas_item_keluar SET item_keluar_lihat = ?, item_keluar_tambah = ?, item_keluar_edit = ?, item_keluar_hapus = ? WHERE id_otoritas = ?");

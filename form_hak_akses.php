@@ -1397,10 +1397,13 @@ else{
     OTORITAS MENU RADIOLOGI
 </div>
 
-<div class="form-group col-sm-8">
+<div class="form-group col-sm-4">
     OTORITAS HASIL RADIOLOGI
 </div>
 
+<div class="form-group col-sm-4">
+    OTORITAS LABORATORIUM
+</div>
 
 <div class="form-group col-sm-4"> <!-- start otoritas RADIOLOGI -->
 
@@ -1523,6 +1526,30 @@ else{
 
 </div> <!-- / of otoritas RADIOLOGI -->
 
+<div class="form-group col-sm-2"> <!-- start otoritas LABORATORIUM -->
+
+<?php 
+if ($data_otoritas['input_jasa_lab'] == '1'){
+    echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="checkbox1361" name="input_jasa_lab" checked="">
+    <label for="checkbox1361">Input Jasa Lab</label> <br>';
+}
+else{
+    echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="checkbox1361" name="input_jasa_lab">
+    <label for="checkbox1361">Input Jasa Lab</label> <br>';  
+}
+?>
+
+<?php 
+if ($data_otoritas['input_hasil_lab'] == '1'){
+    echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="checkbox1372" name="input_hasil_lab" checked="">
+    <label for="checkbox1372">Input Hasil Lab</label> <br>';
+}
+else{
+    echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="checkbox1372" name="input_hasil_lab">
+    <label for="checkbox1372">Input Hasil Lab</label> <br>';  
+}
+?>
+</div> <!-- / of otoritas LABORATORIUM -->
 
 <div class="form-group col-sm-12">
     
