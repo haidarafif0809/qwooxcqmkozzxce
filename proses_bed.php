@@ -2,7 +2,8 @@
 include 'db.php';
 include_once 'sanitasi.php';
 	
-		$kelas = stringdoang($_POST['kelas']);
+		$kelas = angkadoang($_POST['kelas']);
+		$ruangan = angkadoang($_POST['ruangan']);
 		$nama = stringdoang($_POST['nama_kamar']);
 		$group_bed = stringdoang($_POST['grup_kamar']);
 		$tarif = angkadoang($_POST['tarif']);
@@ -16,9 +17,9 @@ include_once 'sanitasi.php';
 		$fasilitas = stringdoang($_POST['fasilitas']);
 
 
-$query = $db->prepare("INSERT INTO bed (kelas,nama_kamar,group_bed,tarif,fasilitas,tarif_2,tarif_3,tarif_4,tarif_5,tarif_6,tarif_7,jumlah_bed,sisa_bed) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?) ");
+$query = $db->prepare("INSERT INTO bed (kelas,ruangan,nama_kamar,group_bed,tarif,fasilitas,tarif_2,tarif_3,tarif_4,tarif_5,tarif_6,tarif_7,jumlah_bed,sisa_bed) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?) ");
 
-$query->bind_param("sssisiiiiiiii",$kelas,$nama,$group_bed,$tarif,$fasilitas,$tarif_2,$tarif_3,$tarif_4,$tarif_5,$tarif_6,$tarif_7,$jumlah_bed,$jumlah_bed);
+$query->bind_param("iissisiiiiiiii",$kelas,$ruangan,$nama,$group_bed,$tarif,$fasilitas,$tarif_2,$tarif_3,$tarif_4,$tarif_5,$tarif_6,$tarif_7,$jumlah_bed,$jumlah_bed);
 
 $query->execute();
 
@@ -27,9 +28,9 @@ $query->execute();
     die('Query Error : '.$db->errno.
     ' - '.$db->error);
     }
-	    else{
-	    	echo '<META HTTP-EQUIV="Refresh" Content="0; URL=kamar.php">';
-	 }
+	    //else{
+	    	//echo '<META HTTP-EQUIV="Refresh" Content="0; URL=kamar">';
+	 //}
 
 
 	?>

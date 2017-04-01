@@ -24,19 +24,20 @@ $columns = array(
 	11 => 'fasilitas',
 	12 => 'jumlah_bed',
 	13 => 'kode_kamar',
-	14 => 'id'
+	14 => 'ruangam',
+	15 => 'id'
 );
 
 // getting total number records without any search
-$sql = "SELECT b.id,kk.nama ,b.nama_kamar,b.group_bed,b.tarif,b.tarif_2,b.tarif_3,b.tarif_4,b.tarif_5,b.tarif_6,b.tarif_7,b.fasilitas,b.jumlah_bed,b.sisa_bed ";
-$sql.=" FROM bed b INNER JOIN kelas_kamar kk ON b.kelas = kk.id ";
+$sql = "SELECT b.id,kk.nama ,b.nama_kamar,b.group_bed,b.tarif,b.tarif_2,b.tarif_3,b.tarif_4,b.tarif_5,b.tarif_6,b.tarif_7,b.fasilitas,b.jumlah_bed,b.sisa_bed,r.nama_ruangan ";
+$sql.=" FROM bed b LEFT JOIN kelas_kamar kk ON b.kelas = kk.id LEFT JOIN ruangan r ON b.ruangan = r.id";
 $query=mysqli_query($conn, $sql) or die("datatable_kamar.php: get employees");
 $totalData = mysqli_num_rows($query);
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
 
-$sql = "SELECT b.id,kk.nama ,b.nama_kamar,b.group_bed,b.tarif,b.tarif_2,b.tarif_3,b.tarif_4,b.tarif_5,b.tarif_6,b.tarif_7,b.fasilitas,b.jumlah_bed,b.sisa_bed ";
-$sql.=" FROM bed b INNER JOIN kelas_kamar kk ON b.kelas = kk.id WHERE 1=1";
+$sql = "SELECT b.id,kk.nama ,b.nama_kamar,b.group_bed,b.tarif,b.tarif_2,b.tarif_3,b.tarif_4,b.tarif_5,b.tarif_6,b.tarif_7,b.fasilitas,b.jumlah_bed,b.sisa_bed,r.nama_ruangan ";
+$sql.=" FROM bed b LEFT JOIN kelas_kamar kk ON b.kelas = kk.id LEFT JOIN ruangan r ON b.ruangan = r.id WHERE 1=1";
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
 	$sql.=" AND ( nama_kamar LIKE '".$requestData['search']['value']."%' ";
 	$sql.=" OR group_bed LIKE '".$requestData['search']['value']."%' ";
@@ -44,7 +45,7 @@ if( !empty($requestData['search']['value']) ) {   // if there is a search parame
 }
 $query=mysqli_query($conn, $sql) or die("datatableee_kamar.php: get employees");
 $totalFiltered = mysqli_num_rows($query); // when there is a search parameter then we have to modify total number filtered rows as per search result. 
-$sql.=" ORDER BY ". $columns[$requestData['order'][0]['column']]."   ".$requestData['order'][0]['dir']."  LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
+$sql.=" ORDER BY id DESC  LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
 /* $requestData['order'][0]['column'] contains colmun index, $requestData['order'][0]['dir'] contains order such as asc/desc  */	
 $query=mysqli_query($conn, $sql) or die("employee-grid-data.php: get employees");
 
@@ -53,6 +54,7 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 	$nestedData=array(); 
 
 	$nestedData[] = $row["nama"];
+	$nestedData[] = $row["nama_ruangan"];
 	$nestedData[] = $row["nama_kamar"];
 	$nestedData[] = $row["group_bed"];
 	$nestedData[] = $row["tarif"];
@@ -78,7 +80,7 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 	          }
 	          else
 	          {
-	            $nestedData[] = "can not be edited";
+	            $nestedData[] = "Tidak ada akses";
 	          }
 	      }
 	      //hapus
@@ -94,7 +96,7 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 	          }
 	          else
 	          {
-	            $nestedData[] = "can not be deleted";
+	            $nestedData[] = "Tidak ada akses";
 	          }
 	      }
 	$nestedData[] = $row["id"];
