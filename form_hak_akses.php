@@ -4606,6 +4606,66 @@ else{
     
 </div>
 
+<div class="form-group col-sm-2"> <!-- start otoritas master Ruangan -->
+<label>Master Ruangan</label><br>
+
+<?php 
+
+if ($data_otoritas['ruangan_lihat'] == '1'){
+    echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="checkbox1313" name="ruangan_lihat" checked="">
+    <label for="checkbox1313">Lihat</label> <br>';
+}
+
+else{
+    echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="checkbox1313" name="ruangan_lihat">
+    <label for="checkbox1313">Lihat</label> <br>';  
+}
+
+ ?>
+
+<?php 
+
+if ($data_otoritas['ruangan_tambah'] == '1'){
+    echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="checkbox13131" name="ruangan_tambah" checked=""> 
+    <label for="checkbox13131">Tambah</label><br>';
+}
+
+else{
+    echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="checkbox13131" name="ruangan_tambah"> 
+    <label for="checkbox13131">Tambah</label><br>';  
+}
+
+ ?>
+
+<?php 
+
+if ($data_otoritas['ruangan_edit'] == '1'){
+    echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="checkbox13132" name="ruangan_edit" checked="">
+    <label for="checkbox13132">Edit</label> <br>';
+}
+
+else{
+    echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="checkbox13132" name="ruangan_edit">
+    <label for="checkbox13132">Edit</label> <br>';  
+}
+
+ ?>
+
+<?php 
+
+if ($data_otoritas['ruangan_hapus'] == '1'){
+    echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="checkbox13133" name="ruangan_hapus" checked="">
+    <label for="checkbox13133">Hapus</label> <br>';
+}
+
+else{
+    echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="checkbox13133" name="ruangan_hapus">
+    <label for="checkbox13133">Hapus</label> <br>';  
+}
+
+ ?>
+
+</div> <!-- / of otoritas master Ruangan -->
 
  <div class="form-group col-sm-2"> <!-- start otoritas set_diskon_tax -->
 <label>Diskon / Pajak</label><br>
