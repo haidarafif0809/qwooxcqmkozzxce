@@ -723,7 +723,7 @@ $data_reg = mysqli_fetch_array($select_reg);
               <select class="form-control chosen" id="biaya_admin_select" name="biaya_admin_select" >
               <option value="0"> Silahkan Pilih </option>
                 <?php 
-                $get_biaya_admin = $db->query("SELECT * FROM biaya_admin");
+                $get_biaya_admin = $db->query("SELECT persentase, nama FROM biaya_admin");
                 while ( $take_admin = mysqli_fetch_array($get_biaya_admin))
                 {
                 echo "<option value='".$take_admin['persentase']."'>".$take_admin['nama']."</option>";
@@ -892,7 +892,7 @@ $data_reg = mysqli_fetch_array($select_reg);
           </div>
 
           <?php
-                  $ambil_diskon_tax = $db->query("SELECT * FROM setting_diskon_tax");
+                  $ambil_diskon_tax = $db->query("SELECT diskon_nominal, diskon_persen, tax FROM setting_diskon_tax");
                   $data_diskon = mysqli_fetch_array($ambil_diskon_tax);
 
                   ?>
@@ -902,7 +902,7 @@ $data_reg = mysqli_fetch_array($select_reg);
               <select class="form-control chosen" id="biaya_admin_select" name="biaya_admin_select" >
               <option value="0"> Silahkan Pilih </option>
                 <?php 
-                $get_biaya_admin = $db->query("SELECT * FROM biaya_admin");
+                $get_biaya_admin = $db->query("SELECT persentase, nama FROM biaya_admin");
                 while ( $take_admin = mysqli_fetch_array($get_biaya_admin))
                 {
                 echo "<option value='".$take_admin['persentase']."'>".$take_admin['nama']."</option>";
