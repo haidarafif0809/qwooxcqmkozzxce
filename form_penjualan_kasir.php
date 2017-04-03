@@ -609,13 +609,41 @@ $obat = $otoritas_produk['tipe_obat'];
 
 
 
-
+<!--OBAT / ALKES (BARANG) -->
 
                 <!--untuk mendefinisikan sebuah bagian dalam dokumen-->  
-                <span id="span_tbs">            
-                
+                <span id="span_tbs_obat" style="display:none">            
+                <h5><b><u>Obat Obatan / Alkes</u></b></h5>
                   <div class="table-responsive">
-                    <table id="tabel_tbs_penjualan" class="table table-bordered table-sm">
+                    <table id="tabel_tbs_penjualan_obat" class="table table-bordered table-sm">
+                          <thead> <!-- untuk memberikan nama pada kolom tabel -->
+                              
+                              <th> Kode  </th>
+                              <th> Nama </th>
+                              <th> Nama Pelaksana </th>
+                              <th> Jumlah </th>
+                              <th> Satuan </th>
+                              <th> Dosis </th>
+                              <th> Harga </th>
+                              <th> Subtotal </th>
+                              <th> Potongan </th>
+                              <th> Pajak </th>
+                              <th> Hapus </th>
+                          
+                          </thead> <!-- tag penutup tabel -->
+                    </table>
+                  </div>
+                  <br>
+
+                </span>
+
+<!--TINDAKAN (JASA) -->
+
+                <!--untuk mendefinisikan sebuah bagian dalam dokumen-->  
+                <span id="span_tbs_jasa" style="display:none">            
+                <h5><b><u>Jasa / Tindakan</u></b></h5>
+                  <div class="table-responsive">
+                    <table id="tabel_tbs_penjualan_jasa" class="table table-bordered table-sm">
                           <thead> <!-- untuk memberikan nama pada kolom tabel -->
                               
                               <th> Kode  </th>
@@ -647,6 +675,7 @@ Radiologi  </button>
 
             <div class="collapse" id="collapseExample">
               <span id="span_lab">
+              <h5><b><u>Laboratorium</u></b></h5>
                   <div class="table-responsive">
                     <table id="tabel_tbs_lab" class="table table-bordered table-sm">
                           <thead> <!-- untuk memberikan nama pada kolom tabel -->
@@ -663,6 +692,7 @@ Radiologi  </button>
                           </thead> <!-- tag penutup tabel -->
                     </table>
                   </div>
+                  <br>
               </span>
             </div>
 
@@ -672,6 +702,7 @@ Radiologi  </button>
 
             <div class="collapse" id="collapseExampleRadiologi">
               <span id="span_radiologi">
+              <h5><b><u>Radiologi</u></b></h5>
                   <div class="table-responsive">
                     <table id="tabel_tbs_radiologi" class="table table-bordered table-sm">
                           <thead> <!-- untuk memberikan nama pada kolom tabel -->
@@ -1188,8 +1219,11 @@ $(document).ready(function(){
             $('#modal_reg').modal('hide'); 
 
 // START DATATABLE AJAX START DATATABLE AJAX START DATATABLE AJAX START DATATABLE AJAX START DATATABLE AJAX START DATATABLE AJAX
-      $('#tabel_tbs_penjualan').DataTable().destroy();
-            var dataTable = $('#tabel_tbs_penjualan').DataTable( {
+// 
+// OBAT / ALKES (BARANG)
+
+      $('#tabel_tbs_penjualan_obat').DataTable().destroy();
+            var dataTable = $('#tabel_tbs_penjualan_obat').DataTable( {
             "processing": true,
             "serverSide": true,
             "info":     false,
@@ -1204,7 +1238,33 @@ $(document).ready(function(){
                   type: "post",  // method  , by default get
               error: function(){  // error handling
                 $(".tbody").html("");
-                $("#tabel_tbs_penjualan").append('<tbody class="tbody"><tr><th colspan="3"></th></tr></tbody>');
+                $("#tabel_tbs_penjualan_obat").append('<tbody class="tbody"><tr><th colspan="3"></th></tr></tbody>');
+                $("#tableuser_processing").css("display","none");
+                
+              }
+            }   
+
+      });
+
+// TINDAKAN (JASA)
+
+      $('#tabel_tbs_penjualan_jasa').DataTable().destroy();
+            var dataTable = $('#tabel_tbs_penjualan_jasa').DataTable( {
+            "processing": true,
+            "serverSide": true,
+            "info":     false,
+            "language": { "emptyTable":     "My Custom Message On Empty Table" },
+            "ajax":{
+              url :"data_tbs_penjualan_jasa.php", // json datasource
+               "data": function ( d ) {
+                  d.no_reg = $("#no_reg").val();
+                  // d.custom = $('#myInput').val();
+                  // etc
+              },
+                  type: "post",  // method  , by default get
+              error: function(){  // error handling
+                $(".tbody").html("");
+                $("#tabel_tbs_penjualan_jasa").append('<tbody class="tbody"><tr><th colspan="3"></th></tr></tbody>');
                 $("#tableuser_processing").css("display","none");
                 
               }
@@ -1212,7 +1272,8 @@ $(document).ready(function(){
 
       });
         
-        $("#span_tbs").show()
+        $("#span_tbs_obat").show()
+        $("#span_tbs_jasa").show()
         $("#btnRujukLab").show()
         $("#btnRujukRadiologi").show()
         $('#pembayaran_penjualan').val('');
@@ -1310,7 +1371,6 @@ $(document).ready(function(){
                   potongan_persen = potongan_persen.replace("%","");
                   potongaaan = data * potongan_persen / 100;
                   $("#potongan_penjualan").val(Math.round(potongaaan));
-                  $("#potongan1").val(potongaaan);
 
 
       var total = parseInt(data,10) - parseInt(potongaaan,10);
@@ -1863,7 +1923,8 @@ $(document).ready(function(){
             $("#cetak_tunai_kategori").hide(); 
             $("#btnRujukLab").hide();   
             $("#btnRujukRadiologi").hide();    
-            $('#span_tbs').hide();
+            $('#span_tbs_obat').hide();
+            $("#span_tbs_jasa").hide()
             $('#span_lab').hide();
 
             var url = window.location.href;
@@ -2103,11 +2164,16 @@ else if (a > 0){
       });
 
      $("#ppn").attr("disabled", true);
-      var tabel_tbs_penjualan = $('#tabel_tbs_penjualan').DataTable();
-      tabel_tbs_penjualan.draw();
+     
+      var tabel_tbs_penjualan_obat = $('#tabel_tbs_penjualan_obat').DataTable();
+          tabel_tbs_penjualan_obat.draw();
+     
+      var tabel_tbs_penjualan_jasa = $('#tabel_tbs_penjualan_jasa').DataTable();
+          tabel_tbs_penjualan_jasa.draw();
            
         
-     $("#span_tbs").show()
+     $("#span_tbs_obat").show()
+     $("#span_tbs_jasa").show()
      $("#kode_barang").val('').trigger("chosen:updated");
      $("#kode_barang").trigger('chosen:open');
      $("#nama_barang").val('');
@@ -2167,10 +2233,14 @@ if (limit_stok > stok)
 
       $("#ppn").attr("disabled", true);
 
-         var tabel_tbs_penjualan = $('#tabel_tbs_penjualan').DataTable();
-            tabel_tbs_penjualan.draw();
+         var tabel_tbs_penjualan_obat = $('#tabel_tbs_penjualan_obat').DataTable();
+          tabel_tbs_penjualan_obat.draw();
+          
+          var tabel_tbs_penjualan_jasa = $('#tabel_tbs_penjualan_jasa').DataTable();
+          tabel_tbs_penjualan_jasa.draw();
         
-        $("#span_tbs").show()
+     $("#span_tbs_obat").show()
+     $("#span_tbs_jasa").show()
      $("#kode_barang").val('').trigger("chosen:updated").trigger("chosen:open");
      $("#nama_barang").val('');
      $("#jumlah_barang").val('');
@@ -2178,12 +2248,10 @@ if (limit_stok > stok)
      $("#tax1").val('');
      $("#sisa_pembayaran_penjualan").val('');
      $("#kredit").val('');
-
-    $("#sisa_pembayaran_penjualan").val('');
-    $("#kolom_cek_harga").val('0');
-
-       $("#dosis_obat").val('');
-       $("#col_dosis").hide();
+     $("#sisa_pembayaran_penjualan").val('');
+     $("#kolom_cek_harga").val('0');
+     $("#dosis_obat").val('');
+     $("#col_dosis").hide();
 
      
      });
@@ -2204,7 +2272,8 @@ alert("Kode barang harus terisi");
 
        
         
-        $("#span_tbs").show()
+        $("#span_tbs_obat").show()
+        $("#span_tbs_jasa").show()
 
   });/// braket penutup submit_produk
 });
@@ -2383,7 +2452,8 @@ if (data == 1) {
              $("#sisa_pembayaran_penjualan").val('');
              $("#kredit").val('');
              $("#disc_tbs").val('');
-             $("#span_tbs").hide('');
+             $("#span_tbs_obat").hide('');
+             $("#span_tbs_jasa").hide('');
              $('#span_lab').hide();
              $("#dosis_obat").val('');
              $("#col_dosis").hide();
@@ -2433,8 +2503,9 @@ $("#tbody-barang-jual").find("tr").remove();
  }); // end post cek_subtotal_penjualan
 
 
- $('#tabel_tbs_penjualan').DataTable().clear();
-$('#tabel_tbs_lab').DataTable().clear();
+ $('#tabel_tbs_penjualan_obat').DataTable().clear();
+ $('#tabel_tbs_penjualan_jasa').DataTable().clear();
+ $('#tabel_tbs_lab').DataTable().clear();
 
 
  }
@@ -2554,7 +2625,7 @@ $('#tabel_tbs_lab').DataTable().clear();
             $("#pembayaran_penjualan").val('');
             $("#sisa_pembayaran_penjualan").val('');
             $("#kredit").val('');
-            $("#span_tbs").hide('');
+            $("#span_tbs_obat").hide('');
             $('#span_lab').hide();
             $("#dosis_obat").val('');
             $("#col_dosis").hide();
@@ -2563,7 +2634,7 @@ $('#tabel_tbs_lab').DataTable().clear();
     });
 
 
-    $('#tabel_tbs_penjualan').DataTable().clear();
+    $('#tabel_tbs_penjualan_obat').DataTable().clear();
     $('#tabel_tbs_lab').DataTable().clear();
 
 
@@ -2664,7 +2735,8 @@ $('#tabel_tbs_lab').DataTable().clear();
             $("#cetak_tunai_kategori").hide(); 
             $("#btnRujukLab").hide();   
             $("#btnRujukRadiologi").hide();    
-            $('#span_tbs').hide();
+            $('#span_tbs_obat').hide();
+            $("#span_tbs_jasa").hide();
             $('#span_lab').hide();
 
             var url = window.location.href;
@@ -2820,7 +2892,8 @@ alert("Silakan Bayar Piutang");
              $("#sisa_pembayaran_penjualan").val('');
              $("#kredit").val('');
              $("#disc_tbs").val('');
-             $("#span_tbs").hide('');
+             $("#span_tbs_obat").hide('');
+             $("#span_tbs_jasa").hide('');
              $('#span_lab').hide();
              $("#dosis_obat").val('');
              $("#col_dosis").hide();
@@ -2877,7 +2950,8 @@ $("#tbody-barang-jual").find("tr").remove();
 
 
 
-    $('#tabel_tbs_penjualan').DataTable().clear();
+    $('#tabel_tbs_penjualan_obat').DataTable().clear();
+    $('#tabel_tbs_penjualan_jasa').DataTable().clear();
     $('#tabel_tbs_lab').DataTable().clear();
     
     $("form").submit(function(){
@@ -3020,7 +3094,8 @@ $("#tbody-barang-jual").find("tr").remove();
                 $("#potongan_persen").val('');
                 $("#tanggal_jt").val('');
                 $("#disc_tbs").val('');
-                $("#span_tbs").hide('');
+                $("#span_tbs_obat").hide('');
+                $("#span_tbs_jasa").hide('');
                 $('#span_lab').hide();
                 /*
                 $("#tax").val('');*/
@@ -3067,7 +3142,8 @@ $("#tbody-barang-jual").find("tr").remove();
  }
 
 
-    $('#tabel_tbs_penjualan').DataTable().clear();
+    $('#tabel_tbs_penjualan_obat').DataTable().clear();    
+    $('#tabel_tbs_penjualan_jasa').DataTable().clear();
     $('#tabel_tbs_lab').DataTable().clear();
 
 
@@ -3780,9 +3856,11 @@ if (pesan_alert == true) {
         $("#sisa_pembayaran_penjualan").val('');
         $.post("hapustbs_penjualan.php",{id:id,kode_barang:kode_barang,no_reg:no_reg},function(data){
           
-         var tabel_tbs_penjualan = $('#tabel_tbs_penjualan').DataTable();
-        
-        tabel_tbs_penjualan.draw();
+         var tabel_tbs_penjualan_obat = $('#tabel_tbs_penjualan_obat').DataTable();
+             tabel_tbs_penjualan_obat.draw();
+
+         var tabel_tbs_penjualan_jasa = $('#tabel_tbs_penjualan_jasa').DataTable();
+             tabel_tbs_penjualan_jasa.draw();
                       
 
             if (total_akhir1 == 0) {
@@ -4716,9 +4794,10 @@ $(document).ready(function(){
     if (pesan_alert == true) {
         
         $.get("batal_penjualan_raja.php",{no_reg:no_reg},function(data){
-              $('#tabel_tbs_penjualan').DataTable().destroy();
 
-                          var dataTable = $('#tabel_tbs_penjualan').DataTable( {
+          //OBAT / ALKES (BARANG)
+              $('#tabel_tbs_penjualan_obat').DataTable().destroy();
+                          var dataTable = $('#tabel_tbs_penjualan_obat').DataTable( {
                             "processing": true,
                             "serverSide": true,
                             "ajax":{
@@ -4732,7 +4811,7 @@ $(document).ready(function(){
                                 type: "post",  // method  , by default get
                               error: function(){  // error handling
                                 $(".employee-grid-error").html("");
-                                $("#tabel_tbs_penjualan").append('<tbody class="employee-grid-error"><tr><th colspan="3">No data found in the server</th></tr></tbody>');
+                                $("#tabel_tbs_penjualan_obat").append('<tbody class="employee-grid-error"><tr><th colspan="3">No data found in the server</th></tr></tbody>');
                                 $("#employee-grid_processing").css("display","none");
                                 }
                             },
@@ -4743,8 +4822,35 @@ $(document).ready(function(){
                             }
                           });
 
+        // TINDAKAN (JASA)
+
+              $('#tabel_tbs_penjualan_jasa').DataTable().destroy();
+                    var dataTable = $('#tabel_tbs_penjualan_jasa').DataTable( {
+                    "processing": true,
+                    "serverSide": true,
+                    "info":     false,
+                    "language": { "emptyTable":     "My Custom Message On Empty Table" },
+                    "ajax":{
+                      url :"data_tbs_penjualan_jasa.php", // json datasource
+                       "data": function ( d ) {
+                          d.no_reg = $("#no_reg").val();
+                          // d.custom = $('#myInput').val();
+                          // etc
+                      },
+                          type: "post",  // method  , by default get
+                      error: function(){  // error handling
+                        $(".tbody").html("");
+                        $("#tabel_tbs_penjualan_jasa").append('<tbody class="tbody"><tr><th colspan="3"></th></tr></tbody>');
+                        $("#tableuser_processing").css("display","none");
+                        
+                      }
+                    }   
+
+              });
+
               
-              $("#span_tbs").show()
+              $("#span_tbs_obat").show();
+              $("#span_tbs_jasa").show();
 
         });
     } 
@@ -4910,8 +5016,11 @@ else{
             $('#modal_reg').modal('hide'); 
 
 // START DATATABLE AJAX START DATATABLE AJAX START DATATABLE AJAX START DATATABLE AJAX START DATATABLE AJAX START DATATABLE AJAX
-      $('#tabel_tbs_penjualan').DataTable().destroy();
-            var dataTable = $('#tabel_tbs_penjualan').DataTable( {
+      
+// OBAT / ALKES (BARANG)
+
+      $('#tabel_tbs_penjualan_obat').DataTable().destroy();
+            var dataTable = $('#tabel_tbs_penjualan_obat').DataTable( {
             "processing": true,
             "serverSide": true,
             "info":     false,
@@ -4926,15 +5035,42 @@ else{
                   type: "post",  // method  , by default get
               error: function(){  // error handling
                 $(".tbody").html("");
-                $("#tabel_tbs_penjualan").append('<tbody class="tbody"><tr><th colspan="3"></th></tr></tbody>');
+                $("#tabel_tbs_penjualan_obat").append('<tbody class="tbody"><tr><th colspan="3"></th></tr></tbody>');
                 $("#tableuser_processing").css("display","none");
                 
               }
             }   
 
       });
+
+        // TINDAKAN (JASA)
+
+              $('#tabel_tbs_penjualan_jasa').DataTable().destroy();
+                    var dataTable = $('#tabel_tbs_penjualan_jasa').DataTable( {
+                    "processing": true,
+                    "serverSide": true,
+                    "info":     false,
+                    "language": { "emptyTable":     "My Custom Message On Empty Table" },
+                    "ajax":{
+                      url :"data_tbs_penjualan_jasa.php", // json datasource
+                       "data": function ( d ) {
+                          d.no_reg = $("#no_reg").val();
+                          // d.custom = $('#myInput').val();
+                          // etc
+                      },
+                          type: "post",  // method  , by default get
+                      error: function(){  // error handling
+                        $(".tbody").html("");
+                        $("#tabel_tbs_penjualan_jasa").append('<tbody class="tbody"><tr><th colspan="3"></th></tr></tbody>');
+                        $("#tableuser_processing").css("display","none");
+                        
+                      }
+                    }   
+
+              });
         
-        $("#span_tbs").show()
+        $("#span_tbs_obat").show();
+        $("#span_tbs_jasa").show();
         $("#btnRujukLab").show()
         $("#btnRujukRadiologi").show()
         $('#pembayaran_penjualan').val('');
