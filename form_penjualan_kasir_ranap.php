@@ -750,10 +750,66 @@ padding-right: 5%;
 
 
                 <!--untuk mendefinisikan sebuah bagian dalam dokumen-->  
-                 <span id="span_tbs">            
-                
+                 <span id="span_tbs_kamar" style="display: none">            
+                  <h5><b> <u> Kamar </u></b></h5>
                   <div class="table-responsive">
-                    <table id="tabel_tbs_penjualan" class="table table-bordered table-sm">
+                    <table id="tabel_tbs_penjualan_kamar" class="table table-bordered table-sm">
+                          <thead> <!-- untuk memberikan nama pada kolom tabel -->
+                              
+                              <th> Kode  </th>
+                              <th > Nama </th>
+                              <th >Nama Pelaksana</th>
+                              <th> Jumlah </th>
+                              <th> Satuan </th>
+                              <th> Dosis </th>
+                              <th align="right"> Harga </th>
+                              <th align="right"> Subtotal </th>
+                              <th align="right"> Potongan </th>
+                              <th align="right"> Pajak </th>
+                              <th align="right">Waktu</th>
+                              <th> Hapus </th>
+                          
+                          </thead> <!-- tag penutup tabel -->
+                    </table>
+                  </div>
+                  <br>
+
+                </span>  
+
+
+                <!--untuk mendefinisikan sebuah bagian dalam dokumen-->  
+                 <span id="span_tbs_obat" style="display:none">            
+                  <h5><b> <u> Obat Obatan / Alkes</u></b></h5>
+                  <div class="table-responsive">
+                    <table id="tabel_tbs_penjualan_obat" class="table table-bordered table-sm">
+                          <thead> <!-- untuk memberikan nama pada kolom tabel -->
+                              
+                              <th> Kode  </th>
+                              <th > Nama </th>
+                              <th >Nama Pelaksana</th>
+                              <th> Jumlah </th>
+                              <th> Satuan </th>
+                              <th> Dosis </th>
+                              <th align="right"> Harga </th>
+                              <th align="right"> Subtotal </th>
+                              <th align="right"> Potongan </th>
+                              <th align="right"> Pajak </th>
+                              <th align="right">Waktu</th>
+                              <th> Hapus </th>
+                          
+                          </thead> <!-- tag penutup tabel -->
+                    </table>
+                  </div>
+                  <br>
+
+                </span>  
+
+
+                <!--untuk mendefinisikan sebuah bagian dalam dokumen-->  
+                 <span id="span_tbs_jasa" style="display: none">            
+                  <h5><b> <u> Jasa / Tindakan</u></b></h5>
+                  <div class="table-responsive">
+                    <table id="tabel_tbs_penjualan_jasa" class="table table-bordered table-sm">
                           <thead> <!-- untuk memberikan nama pada kolom tabel -->
                               
                               <th> Kode  </th>
@@ -1307,8 +1363,14 @@ $(document).ready(function(){
                                   $("#bed").val(bed2);
 
 
-        var tabel_tbs_penjualan = $('#tabel_tbs_penjualan').DataTable();
-        tabel_tbs_penjualan.draw();
+                                  var tabel_tbs_penjualan_kamar = $('#tabel_tbs_penjualan_kamar').DataTable();
+                                  tabel_tbs_penjualan_kamar.draw();
+                                  
+                                  var tabel_tbs_penjualan_obat = $('#tabel_tbs_penjualan_obat').DataTable();
+                                  tabel_tbs_penjualan_obat.draw();
+                                  
+                                  var tabel_tbs_penjualan_jasa = $('#tabel_tbs_penjualan_jasa').DataTable();
+                                  tabel_tbs_penjualan_jasa.draw();
 
                 
       });
@@ -1451,8 +1513,10 @@ $(document).ready(function(){
 
 // START DATATABLE AJAX START DATATABLE AJAX START DATATABLE AJAX START DATATABLE AJAX START DATATABLE AJAX START DATATABLE AJAX
 
-      $('#tabel_tbs_penjualan').DataTable().destroy();
-            var dataTable = $('#tabel_tbs_penjualan').DataTable( {
+// KAMAR
+
+      $('#tabel_tbs_penjualan_kamar').DataTable().destroy();
+            var dataTable = $('#tabel_tbs_penjualan_kamar').DataTable( {
             "processing": true,
             "serverSide": true,
             "info":     false,
@@ -1467,7 +1531,59 @@ $(document).ready(function(){
                   type: "post",  // method  , by default get
               error: function(){  // error handling
                 $(".tbody").html("");
-                $("#tabel_tbs_penjualan").append('<tbody class="tbody"><tr><th colspan="3"></th></tr></tbody>');
+                $("#tabel_tbs_penjualan_kamar").append('<tbody class="tbody"><tr><th colspan="3"></th></tr></tbody>');
+                $("#tableuser_processing").css("display","none");
+                
+              }
+            }   
+
+      });
+
+// OBAT
+
+      $('#tabel_tbs_penjualan_obat').DataTable().destroy();
+            var dataTable = $('#tabel_tbs_penjualan_obat').DataTable( {
+            "processing": true,
+            "serverSide": true,
+            "info":     false,
+            "language": { "emptyTable":     "My Custom Message On Empty Table" },
+            "ajax":{
+              url :"data_tbs_penjualan_inap_obat.php", // json datasource
+               "data": function ( d ) {
+                  d.no_reg = $("#no_reg").val();
+                  // d.custom = $('#myInput').val();
+                  // etc
+              },
+                  type: "post",  // method  , by default get
+              error: function(){  // error handling
+                $(".tbody").html("");
+                $("#tabel_tbs_penjualan_obat").append('<tbody class="tbody"><tr><th colspan="3"></th></tr></tbody>');
+                $("#tableuser_processing").css("display","none");
+                
+              }
+            }   
+
+      });
+
+// JASA
+
+      $('#tabel_tbs_penjualan_jasa').DataTable().destroy();
+            var dataTable = $('#tabel_tbs_penjualan_jasa').DataTable( {
+            "processing": true,
+            "serverSide": true,
+            "info":     false,
+            "language": { "emptyTable":     "My Custom Message On Empty Table" },
+            "ajax":{
+              url :"data_tbs_penjualan_inap_jasa.php", // json datasource
+               "data": function ( d ) {
+                  d.no_reg = $("#no_reg").val();
+                  // d.custom = $('#myInput').val();
+                  // etc
+              },
+                  type: "post",  // method  , by default get
+              error: function(){  // error handling
+                $(".tbody").html("");
+                $("#tabel_tbs_penjualan_jasa").append('<tbody class="tbody"><tr><th colspan="3"></th></tr></tbody>');
                 $("#tableuser_processing").css("display","none");
                 
               }
@@ -1475,7 +1591,9 @@ $(document).ready(function(){
 
       });
         
-        $("#span_tbs").show()
+        $("#span_tbs_kamar").show()
+        $("#span_tbs_obat").show()
+        $("#span_tbs_jasa").show()
         $("#btnRujukLab").show()
         $('#pembayaran_penjualan').val('');
         $('#biaya_adm').val('');
@@ -2168,10 +2286,12 @@ alert("Silakan Bayar Piutang");
                           $("#cetak_langsung").hide();
                           $("#piutang").hide();
                           $("#transaksi_baru").show();
-                          $("#span_tbs").hide();
+                          $("#span_tbs_kamar").hide();
+                          $("#span_tbs_obat").hide();
+                          $("#span_tbs_jasa").hide();
                           $('#span_lab').hide();
                           $("#disc_tbs").val('');
-                            $('#span_operasi').hide();
+                          $('#span_operasi').hide();
                           $("#dosis_obat").val('');
                           $("#col_dosis").hide();
          
@@ -2213,7 +2333,9 @@ alert("Silakan Bayar Piutang");
 
 
 
-    $('#tabel_tbs_penjualan').DataTable().clear();
+    $('#tabel_tbs_penjualan_kamar').DataTable().clear();
+    $('#tabel_tbs_penjualan_obat').DataTable().clear();
+    $('#tabel_tbs_penjualan_jasa').DataTable().clear();
     $('#tabel_tbs_lab').DataTable().clear();
 
       $("form").submit(function(){
@@ -2369,7 +2491,9 @@ alert("Silakan Isi Kolom Pembayaran  atau lakukan Bayar Piutang");
                                     $("#batal_penjualan").hide();
                                     $("#piutang").hide();
                                     $("#transaksi_baru").show();
-                                    $("#span_tbs").hide();
+                                    $("#span_tbs_kamar").hide();
+                                    $("#span_tbs_obat").hide();
+                                    $("#span_tbs_jasa").hide();
                                     $('#span_lab').hide();
                                     $('#span_operasi').hide();
                                     $("#dosis_obat").val('');
@@ -2418,7 +2542,9 @@ alert("Silakan Isi Kolom Pembayaran  atau lakukan Bayar Piutang");
  });//  $.post("cek_subtotal_penjualan_inap.php
 
 
- $('#tabel_tbs_penjualan').DataTable().clear();
+ $('#tabel_tbs_penjualan_kamar').DataTable().clear();
+ $('#tabel_tbs_penjualan_obat').DataTable().clear();
+ $('#tabel_tbs_penjualan_jasa').DataTable().clear();
 $('#tabel_tbs_lab').DataTable().clear();
 
 
@@ -2742,8 +2868,14 @@ else if (a > 0){
 
       });
 
-          var tabel_tbs_penjualan = $('#tabel_tbs_penjualan').DataTable();
-        tabel_tbs_penjualan.draw();
+          var tabel_tbs_penjualan_kamar = $('#tabel_tbs_penjualan_kamar').DataTable();
+              tabel_tbs_penjualan_kamar.draw();
+
+          var tabel_tbs_penjualan_obat = $('#tabel_tbs_penjualan_obat').DataTable();
+              tabel_tbs_penjualan_obat.draw();
+
+          var tabel_tbs_penjualan_jasa = $('#tabel_tbs_penjualan_jasa').DataTable();
+              tabel_tbs_penjualan_jasa.draw();
 
         $("#kode_barang").val('');
         $("#kode_barang").trigger("chosen:updated");
@@ -2803,8 +2935,14 @@ else if (a > 0){
 
       });
 
-        var tabel_tbs_penjualan = $('#tabel_tbs_penjualan').DataTable();
-        tabel_tbs_penjualan.draw();
+              var tabel_tbs_penjualan_kamar = $('#tabel_tbs_penjualan_kamar').DataTable();
+              tabel_tbs_penjualan_kamar.draw();
+              
+              var tabel_tbs_penjualan_obat = $('#tabel_tbs_penjualan_obat').DataTable();
+              tabel_tbs_penjualan_obat.draw();
+              
+              var tabel_tbs_penjualan_jasa = $('#tabel_tbs_penjualan_jasa').DataTable();
+              tabel_tbs_penjualan_jasa.draw();
 
      $("#ppn").attr("disabled", true);
      $("#kode_barang").val('');
@@ -2841,7 +2979,9 @@ else
 }
 
         
-        $("#span_tbs").show()
+        $("#span_tbs_kamar").show()
+        $("#span_tbs_obat").show()
+        $("#span_tbs_jasa").show()
 
   });
 
@@ -3003,7 +3143,9 @@ else
                                     $("#cetak_langsung").hide();
                                     $("#penjualan").hide();
                                     $("#transaksi_baru").show(); 
-                                    $("#span_tbs").hide();
+                                    $("#span_tbs_kamar").hide();
+                                    $("#span_tbs_obat").hide();
+                                    $("#span_tbs_jasa").hide();
                                     $('#span_lab').hide();
                                     $('#span_operasi').hide();
                                     $("#dosis_obat").val('');
@@ -3058,7 +3200,9 @@ else
 
 });
 
-    $('#tabel_tbs_penjualan').DataTable().clear();
+    $('#tabel_tbs_penjualan_kamar').DataTable().clear();
+    $('#tabel_tbs_penjualan_obat').DataTable().clear();
+    $('#tabel_tbs_penjualan_jasa').DataTable().clear();
     $('#tabel_tbs_lab').DataTable().clear();   
 
  $("form").submit(function(){
@@ -3758,11 +3902,19 @@ if (pesan_alert == true) {
 
         $.post("hapustbs_penjualan_ranap.php",{id:id,kode_barang:kode_barang,no_reg:no_reg},function(data){
 
-        var tabel_tbs_penjualan = $('#tabel_tbs_penjualan').DataTable();
-        tabel_tbs_penjualan.draw();
+              var tabel_tbs_penjualan_kamar = $('#tabel_tbs_penjualan_kamar').DataTable();
+              tabel_tbs_penjualan_kamar.draw();
+              
+              var tabel_tbs_penjualan_obat = $('#tabel_tbs_penjualan_obat').DataTable();
+              tabel_tbs_penjualan_obat.draw();
+              
+              var tabel_tbs_penjualan_jasa = $('#tabel_tbs_penjualan_jasa').DataTable();
+              tabel_tbs_penjualan_jasa.draw();
 
 
-            $("#span_tbs").show()
+            $("#span_tbs_kamar").show()
+            $("#span_tbs_obat").show()
+            $("#span_tbs_jasa").show()
         
 
               if (sisa_potongan == 0) {
@@ -4448,7 +4600,9 @@ else
                           $("#cetak_piutang").hide();
                           $("#cetak_tunai_kategori").hide(); 
                           $("#btnRujukLab").hide();    
-                          $('#span_tbs').hide();
+                          $('#span_tbs_kamar').hide(); 
+                          $('#span_tbs_obat').hide(); 
+                          $('#span_tbs_jasa').hide();
                           $('#span_lab').hide();            
                           $('#span_operasi').hide();
 
@@ -4577,7 +4731,9 @@ else
             $("#cetak_piutang").hide();
             $("#cetak_tunai_kategori").hide(); 
             $("#btnRujukLab").hide();    
-            $('#span_tbs').hide();
+            $('#span_tbs_kamar').hide(); 
+            $('#span_tbs_obat').hide(); 
+            $('#span_tbs_jasa').hide();
             $('#span_lab').hide();            
             $('#span_operasi').hide();
 
@@ -4925,9 +5081,10 @@ $(document).ready(function(){
     if (pesan_alert == true) {
         
         $.get("batal_penjualan_ranap.php",{no_reg:no_reg},function(data){
-              $('#tabel_tbs_penjualan').DataTable().destroy();
 
-                          var dataTable = $('#tabel_tbs_penjualan').DataTable( {
+          //KAMAR
+              $('#tabel_tbs_penjualan_kamar').DataTable().destroy();
+                          var dataTable = $('#tabel_tbs_penjualan_kamar').DataTable( {
                             "processing": true,
                             "serverSide": true,
                             "ajax":{
@@ -4941,7 +5098,7 @@ $(document).ready(function(){
                                 type: "post",  // method  , by default get
                               error: function(){  // error handling
                                 $(".employee-grid-error").html("");
-                                $("#tabel_tbs_penjualan").append('<tbody class="employee-grid-error"><tr><th colspan="3">No data found in the server</th></tr></tbody>');
+                                $("#tabel_tbs_penjualan_kamar").append('<tbody class="employee-grid-error"><tr><th colspan="3">No data found in the server</th></tr></tbody>');
                                 $("#employee-grid_processing").css("display","none");
                                 }
                             },
@@ -4952,8 +5109,62 @@ $(document).ready(function(){
                             }
                           });
 
+          // OBAT
+
+                $('#tabel_tbs_penjualan_obat').DataTable().destroy();
+                      var dataTable = $('#tabel_tbs_penjualan_obat').DataTable( {
+                      "processing": true,
+                      "serverSide": true,
+                      "info":     false,
+                      "language": { "emptyTable":     "My Custom Message On Empty Table" },
+                      "ajax":{
+                        url :"data_tbs_penjualan_inap_obat.php", // json datasource
+                         "data": function ( d ) {
+                            d.no_reg = $("#no_reg").val();
+                            // d.custom = $('#myInput').val();
+                            // etc
+                        },
+                            type: "post",  // method  , by default get
+                        error: function(){  // error handling
+                          $(".tbody").html("");
+                          $("#tabel_tbs_penjualan_obat").append('<tbody class="tbody"><tr><th colspan="3"></th></tr></tbody>');
+                          $("#tableuser_processing").css("display","none");
+                          
+                        }
+                      }   
+
+                });
+
+          // JASA
+
+                $('#tabel_tbs_penjualan_jasa').DataTable().destroy();
+                      var dataTable = $('#tabel_tbs_penjualan_jasa').DataTable( {
+                      "processing": true,
+                      "serverSide": true,
+                      "info":     false,
+                      "language": { "emptyTable":     "My Custom Message On Empty Table" },
+                      "ajax":{
+                        url :"data_tbs_penjualan_inap_jasa.php", // json datasource
+                         "data": function ( d ) {
+                            d.no_reg = $("#no_reg").val();
+                            // d.custom = $('#myInput').val();
+                            // etc
+                        },
+                            type: "post",  // method  , by default get
+                        error: function(){  // error handling
+                          $(".tbody").html("");
+                          $("#tabel_tbs_penjualan_jasa").append('<tbody class="tbody"><tr><th colspan="3"></th></tr></tbody>');
+                          $("#tableuser_processing").css("display","none");
+                          
+                        }
+                      }   
+
+                });
+
               
-              $("#span_tbs").show()
+              $("#span_tbs_kamar").show()
+              $("#span_tbs_obat").show()
+              $("#span_tbs_jasa").show()
 
         });
     } 
@@ -5649,8 +5860,10 @@ else{
 
 // START DATATABLE AJAX START DATATABLE AJAX START DATATABLE AJAX START DATATABLE AJAX START DATATABLE AJAX START DATATABLE AJAX
 
-      $('#tabel_tbs_penjualan').DataTable().destroy();
-            var dataTable = $('#tabel_tbs_penjualan').DataTable( {
+//KAMAR
+
+      $('#tabel_tbs_penjualan_kamar').DataTable().destroy();
+            var dataTable = $('#tabel_tbs_penjualan_kamar').DataTable( {
             "processing": true,
             "serverSide": true,
             "info":     false,
@@ -5665,15 +5878,69 @@ else{
                   type: "post",  // method  , by default get
               error: function(){  // error handling
                 $(".tbody").html("");
-                $("#tabel_tbs_penjualan").append('<tbody class="tbody"><tr><th colspan="3"></th></tr></tbody>');
+                $("#tabel_tbs_penjualan_kamar").append('<tbody class="tbody"><tr><th colspan="3"></th></tr></tbody>');
                 $("#tableuser_processing").css("display","none");
                 
               }
             }   
 
       });
+
+// OBAT
+
+                $('#tabel_tbs_penjualan_obat').DataTable().destroy();
+                      var dataTable = $('#tabel_tbs_penjualan_obat').DataTable( {
+                      "processing": true,
+                      "serverSide": true,
+                      "info":     false,
+                      "language": { "emptyTable":     "My Custom Message On Empty Table" },
+                      "ajax":{
+                        url :"data_tbs_penjualan_inap_obat.php", // json datasource
+                         "data": function ( d ) {
+                            d.no_reg = $("#no_reg").val();
+                            // d.custom = $('#myInput').val();
+                            // etc
+                        },
+                            type: "post",  // method  , by default get
+                        error: function(){  // error handling
+                          $(".tbody").html("");
+                          $("#tabel_tbs_penjualan_obat").append('<tbody class="tbody"><tr><th colspan="3"></th></tr></tbody>');
+                          $("#tableuser_processing").css("display","none");
+                          
+                        }
+                      }   
+
+                });
+
+          // JASA
+
+                $('#tabel_tbs_penjualan_jasa').DataTable().destroy();
+                      var dataTable = $('#tabel_tbs_penjualan_jasa').DataTable( {
+                      "processing": true,
+                      "serverSide": true,
+                      "info":     false,
+                      "language": { "emptyTable":     "My Custom Message On Empty Table" },
+                      "ajax":{
+                        url :"data_tbs_penjualan_inap_jasa.php", // json datasource
+                         "data": function ( d ) {
+                            d.no_reg = $("#no_reg").val();
+                            // d.custom = $('#myInput').val();
+                            // etc
+                        },
+                            type: "post",  // method  , by default get
+                        error: function(){  // error handling
+                          $(".tbody").html("");
+                          $("#tabel_tbs_penjualan_jasa").append('<tbody class="tbody"><tr><th colspan="3"></th></tr></tbody>');
+                          $("#tableuser_processing").css("display","none");
+                          
+                        }
+                      }   
+
+                });
         
-        $("#span_tbs").show()
+        $("#span_tbs_kamar").show()
+        $("#span_tbs_obat").show()
+        $("#span_tbs_jasa").show()
         $("#btnRujukLab").show()
         $('#pembayaran_penjualan').val('');
         $('#biaya_adm').val('');
