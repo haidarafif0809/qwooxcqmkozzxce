@@ -29,6 +29,20 @@ $no_faktur = stringdoang($_GET['faktur']);
       <div class="modal-body">
       <div class="table-responsive">
       <span id="modal-detail"> </span>
+
+       <table id="table_detail" class="table table-bordered table-sm">
+        <thead>
+           <th> Nama Pemeriksaan </th>
+           <th> Hasil Pemeriksaan </th>
+           <th> Nilai Normal </th>
+           <th> Status Rawat </th>
+           
+            
+        </thead>
+        
+        <tbody id="data_detail">
+        </tbody>
+        </table>
       </div>
 
      </div>
@@ -70,6 +84,12 @@ $no_faktur = stringdoang($_GET['faktur']);
 		<label>Nama Pasien</label>
 <input type="text" value="<?php echo $nama ?>" class="form-control" name="nama" autocomplete="off" id="nama" readonly="" placeholder="Nama">
 	</div>
+
+
+ <input type="hidden" class="form-control" name="no_reg_hidden" autocomplete="off" id="no_reg_hidden" readonly="" placeholder="No Reg">
+
+ <input type="hidden"  class="form-control" name="no_periksa_hidden" autocomplete="off" id="no_periksa_hidden" readonly="" placeholder="No Periksa">
+
 </div>
 
 </div>
@@ -138,26 +158,48 @@ $no_faktur = stringdoang($_GET['faktur']);
 <!--end ajax datatable-->
 
 
-
 <!--Script mulai untuk tombol detail-->
 <script type="text/javascript">
-$(document).ready(function () {
 $(document).on('click', '.detail-lab-inap', function (e) {
 
-		var no_reg = $(this).attr('data-reg');
+    var no_reg = $(this).attr('data-reg');
     var no_periksa = $(this).attr('data-periksa');
-		
+    $("#no_reg_hidden").val(no_reg);
+    $("#no_periksa_hidden").val(no_periksa);
+ //ajax
+      $('#table_detail').DataTable().destroy();
+            var dataTable = $('#table_detail').DataTable( {
+            "processing": true,
+            "serverSide": true,
+            "info":     false,
+            "language": { "emptyTable":     "My Custom Message On Empty Table" },
+            "ajax":{
+              url :"show_lab_pemeriksaan_inap.php", // json datasource
+               "data": function ( d ) {
+                  d.no_reg = $("#no_reg_hidden").val();
+                  d.no_periksa = $("#no_periksa_hidden").val();
+                  // d.custom = $('#myInput').val();
+                  // etc
+              },
+                  type: "post",  // method  , by default get
+              error: function(){  // error handling
+                $("#data_detail").html("");
+                $("#table_detail").append('<tbody class="tbody"><tr><th colspan="3"></th></tr></tbody>');
+                $("#table_detail_processing").css("display","none");
+                
+              }
+            },
+              "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+              $(nRow).attr('class','tr-id-'+aData[4]+'');
+            },  
 
-		
-		$.post('show_lab_pemeriksaan_inap.php',{no_reg:no_reg,no_periksa:no_periksa},function(info) {
-		    $("#modal_detail").modal('show');
-		$("#modal-detail").html(info);
-		
-		
-		});
-		
-		});
-		});
+      });
+      // ajax end
+    
+        $("#modal_detail").modal('show');
+    
+    });
+
 </script>
 <!--Script akhir untuk tombol detail-->
 

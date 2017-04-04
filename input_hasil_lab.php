@@ -8,6 +8,14 @@ include 'sanitasi.php';
 $no_faktur = stringdoang($_GET['no_faktur']);
 $nama_pasien = stringdoang($_GET['nama_pasien']);
 
+$query_ambil_no_reg = $db->query("SELECT no_reg FROM hasil_lab WHERE no_faktur = '$no_faktur'");
+$data_ambil_no_reg = mysqli_fetch_array($query_ambil_no_reg);
+$reg = $data_ambil_no_reg['no_reg'];
+
+$query_jenis_kelamin = $db->query("SELECT jenis_kelamin FROM registrasi WHERE no_reg = '$reg'");
+$data_jenis_kelamin = mysqli_fetch_array($query_jenis_kelamin);
+$jenis_kelamin = $data_jenis_kelamin['jenis_kelamin'];
+
 ?>
 <div class="container">
 <h1>Form Hasil Laboratorium</h1>
@@ -84,10 +92,9 @@ $nama_pasien = stringdoang($_GET['nama_pasien']);
     <thead>
       <tr>
 
-          <th style='background-color: #4CAF50; color: white;'>Nama Pemeriksaan</th>
-          <th style='background-color: #4CAF50; color: white;'>Hasil Pemeriksaan</th>
-          <th style='background-color: #4CAF50; color: white;' >Nilai Pria</th>
-          <th style='background-color: #4CAF50; color: white;' >Nilai Wanita</th>
+  <th style='background-color: #4CAF50; color: white;'>Nama Pemeriksaan</th>
+  <th style='background-color: #4CAF50; color: white;'>Hasil Pemeriksaan</th>
+  <th style='background-color: #4CAF50; color: white;' >Nilai Normal</th>
           <!--<th style='background-color: #4CAF50; color: white'>Apakah Ab-Normal</th>-->
 
     </tr>
@@ -95,7 +102,7 @@ $nama_pasien = stringdoang($_GET['nama_pasien']);
     <tbody id="tbody">
     
   <?php 
-$query = $db->query("SELECT * FROM hasil_lab WHERE no_faktur = '$no_faktur' ");
+$query = $db->query("SELECT * FROM hasil_lab WHERE no_faktur = '$no_faktur' ORDER BY id ASC ");
    while($data = mysqli_fetch_array($query))      
       {
 
@@ -103,54 +110,99 @@ $query = $db->query("SELECT * FROM hasil_lab WHERE no_faktur = '$no_faktur' ");
 
      echo "<td>". $data['nama_pemeriksaan'] ." </td>";
 
-      echo "<td style='background-color: #33b5e5;' class='edit-nama' data-id='".$data['id']."'><span id='text-nama-".$data['id']."'>". $data['hasil_pemeriksaan'] ."</span> <input type='hidden' id='input-nama-".$data['id']."' value='".$data['hasil_pemeriksaan']."' class='input_nama' data-id='".$data['id']."' data-nama='".$data['hasil_pemeriksaan']."' autofocus=''> </td>";
+if ($data['hasil_pemeriksaan'] == '')
+      {
+      echo "<td style='background-color:#90caf9;cursor:pointer;' class='edit-nama' data-id='".$data['id']."'><span id='text-nama-".$data['id']."'>". $data['hasil_pemeriksaan'] ."</span> <input type='text' id='input-nama-".$data['id']."' value='".$data['hasil_pemeriksaan']."' style='background-color:white;' class='input_nama' data-id='".$data['id']."' data-nama='".$data['hasil_pemeriksaan']."' autofocus=''> </td>";
+    }
+    else
+      {
+          echo "<td style='background-color:#90caf9;cursor:pointer;' class='edit-nama' data-id='".$data['id']."'><span id='text-nama-".$data['id']."'>". $data['hasil_pemeriksaan'] ."</span> <input type='hidden' id='input-nama-".$data['id']."' value='".$data['hasil_pemeriksaan']."' class='input_nama' data-id='".$data['id']."' data-nama='".$data['hasil_pemeriksaan']."' autofocus=''> </td>";
+      }
 
 
 
 $model_hitung = $data['model_hitung']; 
 if($model_hitung == '')
 {
-  echo "<td>&nbsp; ". '-' ." </td>
-        <td>&nbsp; ". '-'." </td>
-        ";
+  echo "<td>&nbsp; ". '-' ." </td>";
 }
 else
 {
-switch ($model_hitung) {
+  if($jenis_kelamin == 'laki-laki'){
+    switch ($model_hitung) {
+
     case "Lebih Kecil Dari":
         echo "<td>&lt;&nbsp; ". $data['nilai_normal_lk']."&nbsp;". $data['satuan_nilai_normal']." </td>
+        ";
+        break;
+
+    case "Lebih Kecil Sama Dengan":
+        echo "<td>&lt;=&nbsp; ". $data['nilai_normal_lk']."&nbsp;". $data['satuan_nilai_normal']." </td>
+        ";
+        break;
+
+    case "Lebih Besar Dari":
+        echo "<td>&gt;&nbsp; ". $data['nilai_normal_lk']."&nbsp;". $data['satuan_nilai_normal']." </td>
+        ";
+        break;
+
+    case "Lebih Besar Sama Dengan":
+        echo "<td>&gt;=&nbsp; ". $data['nilai_normal_lk']."&nbsp;". $data['satuan_nilai_normal']." </td>
+        ";
+        break;
+
+    case "Antara Sama Dengan":
+        echo "<td>". $data['nilai_normal_lk']."&nbsp;-&nbsp; ". $data['normal_lk2']."&nbsp;". $data['satuan_nilai_normal']." </td>
+        ";
+        break;
+
+        //Text
+    case "Text":
+        echo "<td>&nbsp; ". $data['nilai_normal_lk']."&nbsp;". $data['satuan_nilai_normal']." </td>
+        ";
+        break;
+        //End Text
+    } 
+  }
+  else
+  {
+    switch ($model_hitung) {
+    case "Lebih Kecil Dari":
+        echo "
         <td>&lt;&nbsp; ". $data['nilai_normal_pr']."&nbsp;". $data['satuan_nilai_normal']." </td>
         ";
         break;
     case "Lebih Kecil Sama Dengan":
-        echo "<td>&lt;=&nbsp; ". $data['nilai_normal_lk']."&nbsp;". $data['satuan_nilai_normal']." </td>
+        echo "
         <td>&lt;=&nbsp; ". $data['nilai_normal_pr']."&nbsp;". $data['satuan_nilai_normal']." </td>
         ";
         break;
     case "Lebih Besar Dari":
-        echo "<td>&gt;&nbsp; ". $data['nilai_normal_lk']."&nbsp;". $data['satuan_nilai_normal']." </td>
+        echo "
         <td>&gt;&nbsp; ". $data['nilai_normal_pr']."&nbsp;". $data['satuan_nilai_normal']." </td>
         ";
         break;
           case "Lebih Besar Sama Dengan":
-        echo "<td>&gt;=&nbsp; ". $data['nilai_normal_lk']."&nbsp;". $data['satuan_nilai_normal']." </td>
+        echo "
         <td>&gt;=&nbsp; ". $data['nilai_normal_pr']."&nbsp;". $data['satuan_nilai_normal']." </td>
         ";
         break;
           case "Antara Sama Dengan":
-        echo "<td>". $data['nilai_normal_lk']."&nbsp;-&nbsp; ". $data['normal_lk2']."&nbsp;". $data['satuan_nilai_normal']." </td>
+        echo "
         <td>". $data['nilai_normal_pr']."&nbsp;-&nbsp; ". $data['normal_pr2']."&nbsp;". $data['satuan_nilai_normal']." </td>
         ";
         break;
 
         //Text
         case "Text":
-        echo "<td>&nbsp; ". $data['nilai_normal_lk']."&nbsp;". $data['satuan_nilai_normal']." </td>
+        echo "
         <td>&nbsp; ". $data['nilai_normal_pr']."&nbsp;". $data['satuan_nilai_normal']." </td>
         ";
         break;
         //End Text
-    } 
+  }
+}
+
 }
         /*echo "<td style='background-color: #33b5e5;' class='edit-status' data-id='".$data['id']."'><span id='text-status-".$data['id']."'>". $data['status_abnormal'] ."</span> <input type='hidden' id='input-status-".$data['id']."' value='".$data['status_abnormal']."' class='input_status' data-id='".$data['id']."' data-status='".$data['status_abnormal']."' autofocus=''> </td>";*/
 
