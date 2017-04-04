@@ -54,7 +54,7 @@ $input_hasil_lab = $take_lab['input_hasil_lab'];
 
       <div class="modal-footer">
 
-<h6 style="text-align: left ; color: red"><i>* Jika ingin Edit Silahkan Klik 2x Pada Hasil Pemeriksaan !!</i></h6>
+<h6 style="text-align: left ; color: red"><i>* Edit Hasil Pemeriksaan Klik 2x !!</i></h6>
      
   <center> <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button></center> 
       </div>
@@ -132,7 +132,7 @@ $input_hasil_lab = $take_lab['input_hasil_lab'];
 <th style="background-color: #4CAF50; color: white;"> Analis</th>
 <th style="background-color: #4CAF50; color: white;"> Status</th>
 <th style="background-color: #4CAF50; color: white;"> Waktu </th>
-<th style="background-color: #4CAF50; color: white;"> Detail </th>
+<th style="background-color: #4CAF50; color: white;"> Detail / Edit</th>
 
 		</thead>
 		<tbody>

@@ -52,7 +52,7 @@ if( !empty($requestData['search']['value']) ) {   // if there is a search parame
 
 $sql =" SELECT *  ";
 $sql.=" FROM hasil_lab ";
-$sql.=" WHERE no_reg = '$no_reg' AND status = 'Selesai' AND id_sub_header = '$id_setup' AND lab_ke_berapa = '$no_periksa' AND id_sub_header != '' AND AND id_sub_header != '0'";
+$sql.=" WHERE no_reg = '$no_reg' AND status = 'Selesai' AND id_sub_header = '$id_setup' AND lab_ke_berapa = '$no_periksa' AND id_sub_header != '' AND id_sub_header != '0'";
 
   $sql.=" AND (nama_pemeriksaan LIKE '".$requestData['search']['value']."%'";
   $sql.=" OR status_pasien LIKE '".$requestData['search']['value']."%' ";
