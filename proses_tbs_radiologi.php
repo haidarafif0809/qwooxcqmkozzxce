@@ -121,7 +121,7 @@ $subtotal = $harga * $jumlah - $potongan_jadi;
 } 
                           
 
-          $query6 = "INSERT INTO tbs_penjualan_radiologi (session_id, kode_barang, nama_barang, jumlah_barang, harga, subtotal, tipe_barang, potongan, tax, tanggal, jam, radiologi, no_reg, kontras, dokter_pengirim, dokter_periksa, dokter_pelaksana) VALUES ('$session_id','$kode','$nama','$jumlah','$hargaa','$subtotal','$tipe','$potongan_tampil','$tax_persen','$tanggal_sekarang','$jam_sekarang','Radiologi','$no_reg', '$kontras', '$dokter_pengirim', '$dokter_pemeriksa', '$petugas_radiologi')";
+          $query6 = "INSERT INTO tbs_penjualan_radiologi (session_id, kode_barang, nama_barang, jumlah_barang, harga, subtotal, tipe_barang, potongan, tax, tanggal, jam, radiologi, no_reg, kontras, dokter_pengirim, dokter_pelaksana) VALUES ('$session_id','$kode','$nama','$jumlah','$hargaa','$subtotal','$tipe','$potongan_tampil','$tax_persen','$tanggal_sekarang','$jam_sekarang','Radiologi','$no_reg', '$kontras', '$dokter_pengirim', '$petugas_radiologi')";
 
           if ($db->query($query6) === TRUE)
           { 

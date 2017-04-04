@@ -91,7 +91,7 @@ $otoritas_tombol = mysqli_fetch_array($pilih_akses_tombol);
      </div>
 
 
-		<div class="col-xs-2" style="display: none">
+		<div class="col-xs-2" style="display: none;">
 			<input style="height:15px" type="text" class="form-control"  id="data_foto" name="data_foto" value="" >   
 		</div>
 
@@ -137,10 +137,14 @@ $otoritas_tombol = mysqli_fetch_array($pilih_akses_tombol);
 				<input type="file" name="photoimg" id="photoimg"/>
 				<input type="hidden" name="reg" id="reg"/>
 				<input type="hidden" name="kode_barang" id="kode_barang"/>
+        
 			</form>
-		</div>
+    
+
+    </div>
 		<div class="col-xs-12">
-			<span id='preview'></span>
+      <span id='preview'></span>
+      <span id='loading-id'></span>
 		</div>		
 
       </div>
@@ -420,7 +424,7 @@ img:hover {
             $("#dokter").trigger('chosen:updated');
 
             $('#modal_pasien').modal('hide');
-            $('#span_foto').hide('fast');
+            $('.tampil_col').hide('fast');
 
 
     // START DATATABLE AJAX START DATATABLE AJAX START DATATABLE AJAX START DATATABLE AJAX START DATATABLE AJAX START DATATABLE AJAX
@@ -489,6 +493,7 @@ img:hover {
 		<script type="text/javascript">
 
 			function tambah(image){
+        $("#loading-id").html('');
 				$("#preview").prepend(image);
 				var preview = $("#preview").text();
 				$("#data_foto").val(preview);
@@ -499,6 +504,8 @@ img:hover {
 		<script type="text/javascript" >
 			$(document).ready(function() { 
 				$('#photoimg').change(function() {
+          $("#loading-id").html('Mohon Tunggu...');
+
 					$("#imageform").ajaxForm(function(data){
 						tambah(data);
 					}).submit();
@@ -650,17 +657,16 @@ $(document).ready(function() {
 
         var jumlah_foto = JSON.parse(data);
 
+        $("#span-hapus").remove();
 //PERULANGAN JIKA ADA LEBIH DARI 1 (SATU) DATA YANG DIAMBIL (SEPERTI WHILE)
         for (var foto = 0; foto < jumlah_foto.length; foto++) {
         var nama_foto = jumlah_foto[foto];
         if (nama_foto != "") {
 
 //MENAMPILKAN FOTO
-          $("#span-hapus").hide();
 
-          $("#span_foto").prepend('<span id="span-hapus" data-hide=""> <img src="save_picture/'+nama_foto+'" data-zoom-image="save_picture/'+nama_foto+'" class="zoom_foto hapus" id="id-'+kode+'-'+nama_foto+'" height="250px" width="350px"> '+' <button class="btn btn-danger btn-floating hapus" src="save_picture/'+nama_foto+'" data-kode="'+kode+'" data-nama="'+nama+'" data-reg="'+no_reg+'" style="font-size:15px"><i class="fa fa-trash"></i></button> </span>');
-          $("#span_foto").show();
           
+          $("#span_foto").prepend('<span id="span-hapus"> <img src="save_picture/'+nama_foto+'" data-zoom-image="save_picture/'+nama_foto+'" class="zoom_foto" id="id-'+kode+'-'+nama_foto+'" height="250px" width="350px"> '+' <button class="btn btn-danger btn-floating hapus" src="save_picture/'+nama_foto+'" data-kode="'+kode+'" data-nama="'+nama+'" data-reg="'+no_reg+'" style="font-size:15px"><i class="fa fa-trash"></i></button> </span>');        
 
           }
 
@@ -918,27 +924,37 @@ $(document).ready(function() {
 
       var no_reg = $("#no_reg").val();
       var nama_pasien = $("#nama_pasien").val();
+      var dokter_radiologi = $("#dokter_radiologi").val();
 
-      $.post("cek_satus_pemriksaan.php",{no_reg:no_reg},function(data){
+      if (dokter_radiologi == "") {
+        alert("Silakan Pilih Dokter Spesialis Radiologi");
+        $("#dokter_radiologi").trigger('chosen:open');
+      }
+      else{
+        $.post("cek_satus_pemriksaan.php",{no_reg:no_reg},function(data){
 
-              if (data == 0) {
-                alert("Anda Belum Melakukan Pemeriksaan Pada Pasien '"+nama_pasien+"'. Silakan Cek Kembali Status Pemeriksaan !");
-              }
-              else{
+                if (data == 0) {
+                  alert("Anda Belum Melakukan Pemeriksaan Pada Pasien '"+nama_pasien+"'. Silakan Cek Kembali Status Pemeriksaan !");
+                }
+                else{
 
-                $.post("simpan_pemeriksaan_radiologi.php",{no_reg:no_reg},function(data){
-                   $('#tabel_tbs_radiologi').DataTable().clear();
-                   $("#span_tbs").hide()
-                   $("#alert_berhasil").show()
-                   $("#transaksi_baru").show()
-                   $("#cetak_radiologi").show()
-                });
+                  $.post("simpan_pemeriksaan_radiologi.php",{no_reg:no_reg, dokter_radiologi:dokter_radiologi},function(data){
+                     $('#tabel_tbs_radiologi').DataTable().clear();
+                     $("#span_tbs").hide()
+                     $("#alert_berhasil").show()
+                     $("#transaksi_baru").show()
+                     $("#cetak_radiologi").show()
+                     $("#simpan_pemeriksaan").hide('fast')
+                  });
 
-              }
+                }
 
-      });
+        });
 
-      $("#cetak_radiologi").attr('href', 'cetak_hasil_radiologi.php?no_reg='+no_reg+'');
+        $("#cetak_radiologi").attr('href', 'cetak_hasil_radiologi.php?no_reg='+no_reg+'');
+        $(".tampil_col").hide('fast');
+      }
+
       
     });
 
@@ -957,10 +973,9 @@ $(document).ready(function() {
         $("#no_rm").val('');
         $("#nama_pasien").val('');
         $("#jenis_pasien").val('');
-        $("#alert_berhasil").hide();
-        $("#simpan_pemeriksaan").hide();
-        $("#transaksi_baru").hide();
-        $("#cetak_radiologi").hide();
+        $("#alert_berhasil").hide('fast');
+        $("#transaksi_baru").hide('fast');
+        $("#cetak_radiologi").hide('fast');
         $("#tampil_col").hide();
 
        $('#tabel_cari_pasien').DataTable().destroy();

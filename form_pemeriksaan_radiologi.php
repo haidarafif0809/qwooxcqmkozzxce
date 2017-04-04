@@ -403,7 +403,7 @@ $data_reg = mysqli_fetch_array($select_reg);
                 <h5><b> Pakai Kontras </b></h5><br>
 
                   <input type="checkbox" class="cekcbox1 filled-in" id="checkbox1">
-                  <label for="checkbox1"><b> PILIH SEMUA </b></label><br>
+                  <label for="checkbox1" class="pilih-semua-kontras" data-toogle="0"><b> PILIH SEMUA </b></label><br>
                   
                   <?php 
                     $select_pemriksaan_kontras = $db->query("SELECT id, kode_pemeriksaan, nama_pemeriksaan, kontras, harga_1 FROM pemeriksaan_radiologi WHERE kontras = '1' ORDER BY no_urut ASC");
@@ -430,7 +430,7 @@ $data_reg = mysqli_fetch_array($select_reg);
                 <h5><b> Tidak Pakai Kontras </b></h5><br>
 
                   <input type="checkbox" class="cekcbox2 filled-in" id="checkbox2">
-                  <label for="checkbox2"><b> PILIH SEMUA </b></label><br>
+                  <label for="checkbox2" class="pilih-semua-tanpa-kontras" data-toogle="0"><b> PILIH SEMUA </b></label><br>
 
                   <?php 
                     $select_pemriksaan_tanpa_kontras = $db->query("SELECT id, kode_pemeriksaan, nama_pemeriksaan, kontras, harga_1 FROM pemeriksaan_radiologi WHERE kontras = '0' ORDER BY no_urut ASC");
@@ -3896,7 +3896,7 @@ $(function() {
 });
 </script>
 
-
+<!--INSERT SATU SATU -->
 
 <script>
 
@@ -3981,7 +3981,97 @@ $(document).on('click','.insert-tbs',function(e){
 });
 </script>
 
+<!--INSERT SEMUANYA (PILIH SEMUA KONTRAS)-->
 
+<script>
+
+$(document).on('click','.pilih-semua-kontras',function(e){
+
+    var data_toggle = $(this).attr('data-toogle');
+
+    var no_reg = $("#no_reg").val();
+    var petugas_radiologi = $("#petugas_radiologi").val();
+    var dokter_pemeriksa = $("#dokter_pemeriksa").val();
+    var dokter = $("#dokter").val();
+    var jumlah_barang = 1;
+    var tipe_barang ="Jasa";
+
+    $('#kolom_cek_harga').val('1');
+
+    var kolom_cek_harga = $("#kolom_cek_harga").val();
+
+    if (data_toggle == 0) {
+              
+        $(this).attr("data-toogle", 1);
+
+        $.post("proses_insert_tbs_radiologi_semua_kontras.php",{tipe_barang:tipe_barang,no_reg:no_reg,dokter:dokter,dokter_pemeriksa:dokter_pemeriksa,petugas_radiologi:petugas_radiologi},function(data){
+              
+        });
+
+
+    }
+    else{
+                  
+        $(this).attr("data-toogle", 0);
+
+        $.post("hapus_radiologi_semua_kontras.php",{no_reg:no_reg},function(data){
+
+        });
+    }
+    
+
+
+    $("form").submit(function(){
+      return false;    
+    });
+});
+</script>
+
+<!--INSERT SEMUANYA (PILIH SEMUA TANPA KONTRAS)-->
+
+<script>
+
+$(document).on('click','.pilih-semua-tanpa-kontras',function(e){
+
+    var data_toggle = $(this).attr('data-toogle');
+
+    var no_reg = $("#no_reg").val();
+    var petugas_radiologi = $("#petugas_radiologi").val();
+    var dokter_pemeriksa = $("#dokter_pemeriksa").val();
+    var dokter = $("#dokter").val();
+    var jumlah_barang = 1;
+    var tipe_barang ="Jasa";
+
+    $('#kolom_cek_harga').val('1');
+
+    var kolom_cek_harga = $("#kolom_cek_harga").val();
+
+    if (data_toggle == 0) {
+              
+        $(this).attr("data-toogle", 1);
+
+        $.post("proses_insert_tbs_radiologi_semua_tanpa_kontras.php",{tipe_barang:tipe_barang,no_reg:no_reg,dokter:dokter,dokter_pemeriksa:dokter_pemeriksa,petugas_radiologi:petugas_radiologi},function(data){
+              
+        });
+
+
+    }
+    else{
+                  
+        $(this).attr("data-toogle", 0);
+
+        $.post("hapus_radiologi_semua_tanpa_kontras.php",{no_reg:no_reg},function(data){
+
+        });
+    }
+    
+
+
+    $("form").submit(function(){
+      return false;    
+    });
+});
+</script>
 
 <script type="text/javascript">
   $(document).ready(function(){
