@@ -42,13 +42,14 @@ $no_faktur = stringdoang($_GET['faktur']);
         
         <tbody id="data_detail">
         </tbody>
+
         </table>
       </div>
 
      </div>
 
       <div class="modal-footer">
-        
+        <h6 style="text-align: left ; color: red"><i>* Edit Hasil Pemeriksaan Click 2x !!</i></h6>
   <center> <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button></center> 
       </div>
     </div>
@@ -106,7 +107,7 @@ $no_faktur = stringdoang($_GET['faktur']);
 <th style="background-color: #4CAF50; color: white;"> Analis</th>
 <th style="background-color: #4CAF50; color: white;"> Status</th>
 <th style="background-color: #4CAF50; color: white;"> Waktu </th>
-<th style="background-color: #4CAF50; color: white;"> Detail </th>
+<th style="background-color: #4CAF50; color: white;"> Detail / Edit</th>
 
 		</thead>
 		<tbody>
@@ -122,8 +123,9 @@ $no_faktur = stringdoang($_GET['faktur']);
  <h6 style="text-align: left ; color: red"><i>* Detail Laboratorium Akan Tampil Jika Sudah Melakukan Penjualan !!</i></h6>
 </div> <!--/ responsive-->
 
-</div>
 
+
+</div><!-- container  -->
 
 
 <!--start ajax datatable-->
@@ -203,7 +205,51 @@ $(document).on('click', '.detail-lab-inap', function (e) {
 </script>
 <!--Script akhir untuk tombol detail-->
 
-</div><!-- container  -->
+
+<script type="text/javascript">
+// untuk update hasil pemeriksaaan
+$(document).on('dblclick','.edit-nama',function(e){
+  
+var id = $(this).attr("data-id");
+$("#text-nama-"+id+"").hide();
+ $("#input-nama-"+id+"").attr("type", "text");
+
+ });
+
+$(document).on('blur','.input_nama',function(e){
+var nama_lama = $(this).attr("data-nama");
+var id = $(this).attr("data-id");
+var input_nama = $(this).val();
+
+if (input_nama == '') {
+      alert('Hasil Tidak Boleh Kosong !!');
+
+    $("#input-nama-"+id+"").val(nama_lama);
+    $("#text-nama-"+id+"").text(nama_lama);
+    $("#text-nama-"+id+"").show();
+    $("#input-nama-"+id+"").attr("type", "hidden");
+
+    }
+    else
+    {
+
+// Start Proses
+$.post("update_hasil_laboratorium_registrasi.php",{id:id, input_nama:input_nama},function(data){
+
+$("#text-nama-"+id+"").show();
+$("#text-nama-"+id+"").text(input_nama);
+$("#input-nama-"+id+"").attr("type", "hidden");           
+$("#input-nama-"+id+"").val(input_nama);
+$("#input-nama-"+id+"").attr("data-nama",input_nama);
+
+
+});
+// Finish Proses
+        }
+});
+// ending untuk update hasil pemeriksaaan
+</script>
+
 
 <!-- footer  -->
 <?php include 'footer.php'; ?>

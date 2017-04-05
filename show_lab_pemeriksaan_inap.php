@@ -40,7 +40,7 @@ while($data_sub_header = mysqli_fetch_array($query_sub_header))
 
 
 // getting total number records without any search
-$sql =" SELECT *  ";
+$sql =" SELECT id,nama_pemeriksaan,hasil_pemeriksaan,model_hitung,nilai_normal_lk,satuan_nilai_normal,nilai_normal_pr,status_pasien ";
 $sql.=" FROM hasil_lab ";
 $sql.=" WHERE no_reg = '$no_reg' AND status = 'Selesai' AND id_sub_header = '$id_setup' AND lab_ke_berapa = '$no_periksa' AND id_sub_header != '' AND id_sub_header != '0'";
 
@@ -50,7 +50,7 @@ $totalFiltered = $totalData;  // when there is no search parameter then total nu
 
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
 
-$sql =" SELECT *  ";
+$sql =" SELECT id,nama_pemeriksaan,hasil_pemeriksaan,model_hitung,nilai_normal_lk,satuan_nilai_normal,nilai_normal_pr,status_pasien ";
 $sql.=" FROM hasil_lab ";
 $sql.=" WHERE no_reg = '$no_reg' AND status = 'Selesai' AND id_sub_header = '$id_setup' AND lab_ke_berapa = '$no_periksa' AND id_sub_header != '' AND id_sub_header != '0'";
 
@@ -90,8 +90,6 @@ if($face_drop >= 1){
 
 while($row=mysqli_fetch_array($query) ) { // preparing an array
   $nestedData=array(); 
-
-
 
       $nestedData[] = "<li> ". $row['nama_pemeriksaan'] ."</li>";
 
@@ -135,6 +133,7 @@ while($row=mysqli_fetch_array($query) ) { // preparing an array
               } 
           }
           else{
+
           switch ($model_hitung) {
           case "Lebih Kecil Dari":
              $nestedData[] = "
@@ -174,7 +173,6 @@ while($row=mysqli_fetch_array($query) ) { // preparing an array
             }
           }
 
-
       $nestedData[] = $row["status_pasien"];
       $nestedData[] = $row["id"];
       $data[] = $nestedData;
@@ -187,15 +185,15 @@ while($row=mysqli_fetch_array($query) ) { // preparing an array
 
 
 //START HASIL DETAIL (SETUP SENDIRIAN)!!
-$sql_moon = "SELECT * FROM hasil_lab WHERE no_reg = '$no_reg' AND status = 'Selesai' AND lab_ke_berapa = '$no_periksa' AND (id_sub_header = 0 OR id_sub_header IS NULL) ";
+$query_detail_hasil_sendirian = "SELECT id,nama_pemeriksaan,hasil_pemeriksaan,model_hitung,nilai_normal_lk,satuan_nilai_normal,nilai_normal_pr,status_pasien FROM hasil_lab WHERE no_reg = '$no_reg' AND status = 'Selesai' AND lab_ke_berapa = '$no_periksa' AND (id_sub_header = 0 OR id_sub_header IS NULL) ";
 
-$query12 = mysqli_query($conn, $sql_moon) or die("eror 1");
-$totalData2 = mysqli_num_rows($query12);
+$data_detail_hasil_sendiri = mysqli_query($conn, $query_detail_hasil_sendirian) or die("eror 1");
+$totalData2 = mysqli_num_rows($data_detail_hasil_sendiri);
 $totalFiltered2 = $totalData2; 
             //menyimpan data sementara yang ada pada $perintah
     if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
 
-$sql_moon = "SELECT * FROM hasil_lab WHERE no_reg = '$no_reg' AND status = 'Selesai' AND lab_ke_berapa = '$no_periksa' AND (id_sub_header = 0 OR id_sub_header IS NULL) ";
+$query_detail_hasil_sendirian = "SELECT id,nama_pemeriksaan,hasil_pemeriksaan,model_hitung,nilai_normal_lk,satuan_nilai_normal,nilai_normal_pr,status_pasien FROM hasil_lab WHERE no_reg = '$no_reg' AND status = 'Selesai' AND lab_ke_berapa = '$no_periksa' AND (id_sub_header = 0 OR id_sub_header IS NULL) ";
 
 
     $sql.=" AND (nama_pemeriksaan LIKE '".$requestData['search']['value']."%'";  
@@ -203,13 +201,13 @@ $sql_moon = "SELECT * FROM hasil_lab WHERE no_reg = '$no_reg' AND status = 'Sele
     $sql.=" OR hasil_pemeriksaan LIKE '".$requestData['search']['value']."%' )";
 
 }
-$query2=mysqli_query($conn, $sql_moon) or die("eror 2");
+$query2=mysqli_query($conn, $query_detail_hasil_sendirian) or die("eror 2");
 $totalFiltered2 = mysqli_num_rows($query2); // when there is a search parameter then we have to modify total number filtered rows as per search result. 
         
-$sql_moon.=" ORDER BY id DESC LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
+$query_detail_hasil_sendirian.=" ORDER BY id DESC LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
 
 /* $requestData['order'][0]['column'] contains colmun index, $requestData['order'][0]['dir'] contains order such as asc/desc  */    
-$query2=mysqli_query($conn, $sql_moon) or die("eror 3");
+$query2=mysqli_query($conn, $query_detail_hasil_sendirian) or die("eror 3");
 
 $next = array();
 while( $drop_two=mysqli_fetch_array($query2) ) { // preparing an array

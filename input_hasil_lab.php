@@ -20,7 +20,6 @@ $jenis_kelamin = $data_jenis_kelamin['jenis_kelamin'];
 <div class="container">
 <h1>Form Hasil Laboratorium</h1>
 
-
  <table>
   <tbody>
 
@@ -102,7 +101,9 @@ $jenis_kelamin = $data_jenis_kelamin['jenis_kelamin'];
     <tbody id="tbody">
     
   <?php 
-$query = $db->query("SELECT * FROM hasil_lab WHERE no_faktur = '$no_faktur' ORDER BY id ASC ");
+$query = $db->query("SELECT id,nama_pemeriksaan,hasil_pemeriksaan,
+  model_hitung,nilai_normal_lk,satuan_nilai_normal,nilai_normal_pr 
+  FROM hasil_lab WHERE no_faktur = '$no_faktur' ORDER BY id ASC ");
    while($data = mysqli_fetch_array($query))      
       {
 

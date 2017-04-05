@@ -40,7 +40,7 @@ while($data_sub_header = mysqli_fetch_array($query_sub_header))
 
 
 // getting total number records without any search
-$sql =" SELECT *  ";
+$sql =" SELECT id,nama_pemeriksaan,hasil_pemeriksaan,model_hitung,nilai_normal_lk,satuan_nilai_normal,nilai_normal_pr,status_pasien  ";
 $sql.=" FROM hasil_lab ";
 $sql.=" WHERE no_reg = '$no_reg' AND no_faktur = '$no_faktur' AND status = 'Selesai' AND id_sub_header = '$id_setup' AND id_sub_header != '' AND id_sub_header != '0'";
 
@@ -50,7 +50,7 @@ $totalFiltered = $totalData;  // when there is no search parameter then total nu
 
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
 
-$sql =" SELECT *  ";
+$sql =" SELECT id,nama_pemeriksaan,hasil_pemeriksaan,model_hitung,nilai_normal_lk,satuan_nilai_normal,nilai_normal_pr,status_pasien  ";
 $sql.=" FROM hasil_lab ";
 $sql.=" WHERE no_reg = '$no_reg' AND no_faktur = '$no_faktur' AND status = 'Selesai' AND id_sub_header = '$id_setup' AND id_sub_header != '' AND id_sub_header != '0'";
 
@@ -187,7 +187,7 @@ while($row=mysqli_fetch_array($query) ) { // preparing an array
 
 
 //START HASIL DETAIL (SETUP SENDIRIAN)!!
-$sql_moon = "SELECT * FROM hasil_lab WHERE no_reg = '$no_reg' AND status = 'Selesai' AND (id_sub_header = 0 OR id_sub_header IS NULL) ";
+$sql_moon = "SELECT id,nama_pemeriksaan,hasil_pemeriksaan,model_hitung,nilai_normal_lk,satuan_nilai_normal,nilai_normal_pr,status_pasien FROM hasil_lab WHERE no_reg = '$no_reg' AND status = 'Selesai' AND (id_sub_header = 0 OR id_sub_header IS NULL) ";
 
 $query12 = mysqli_query($conn, $sql_moon) or die("eror line 1");
 $totalData2 = mysqli_num_rows($query12);
@@ -195,7 +195,7 @@ $totalFiltered2 = $totalData2;
             //menyimpan data sementara yang ada pada $perintah
     if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
 
-$sql_moon = "SELECT * FROM hasil_lab WHERE no_reg = '$no_reg' AND status = 'Selesai' AND (id_sub_header = 0 OR id_sub_header IS NULL) ";
+$sql_moon = "SELECT id,nama_pemeriksaan,hasil_pemeriksaan,model_hitung,nilai_normal_lk,satuan_nilai_normal,nilai_normal_pr,status_pasien FROM hasil_lab WHERE no_reg = '$no_reg' AND status = 'Selesai' AND (id_sub_header = 0 OR id_sub_header IS NULL) ";
 
 
     $sql.=" AND (nama_pemeriksaan LIKE '".$requestData['search']['value']."%'";  
