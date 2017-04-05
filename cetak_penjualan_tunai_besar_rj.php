@@ -13,7 +13,7 @@ $total_kredit = $_GET['kredit'];
 
 
    
-$row = $db->query("SELECT * FROM tbs_penjualan WHERE no_reg = '$no_reg' ");
+$row = $db->query("SELECT no_reg FROM tbs_penjualan WHERE no_reg = '$no_reg' ");
 $data_row = mysqli_num_rows($row);
 if ($data_row > 0) {
 
@@ -35,7 +35,7 @@ if ($data_row > 0) {
     $data = mysqli_fetch_array($select_akun);
     $nama_daftar_akun = $data['nama_daftar_akun'];
 
-    $query1 = $db->query("SELECT * FROM perusahaan ");
+    $query1 = $db->query("SELECT foto, nama_perusahaan, alamat_perusahaan, no_telp FROM perusahaan ");
     $data1 = mysqli_fetch_array($query1);
 
 
@@ -58,7 +58,7 @@ if ($data_row > 0) {
 
     $t_subtotal = $t_awal_subtotal + $t_operasi + $t_radiologi;
 
-    $setting_bahasa0 = $db->query("SELECT * FROM setting_bahasa WHERE kata_asal = 'Pelanggan' ");
+    $setting_bahasa0 = $db->query("SELECT kata_ubah FROM setting_bahasa WHERE kata_asal = 'Pelanggan' ");
     $data200 = mysqli_fetch_array($setting_bahasa0); 
 }
 
@@ -78,7 +78,7 @@ else{
 
 
 
-    $query1 = $db->query("SELECT * FROM perusahaan ");
+    $query1 = $db->query("SELECT foto, nama_perusahaan, alamat_perusahaan, no_telp FROM perusahaan ");
     $data1 = mysqli_fetch_array($query1);
 
     $query3 = $db->query("SELECT SUM(jumlah_barang) as total_item FROM detail_penjualan WHERE no_reg = '$no_reg'");
@@ -104,7 +104,7 @@ else{
 
     $t_subtotal = $t_awal_subtotal + $t_operasi + $t_radiologi;
 
-    $setting_bahasa0 = $db->query("SELECT * FROM setting_bahasa WHERE kata_asal = 'Pelanggan' ");
+    $setting_bahasa0 = $db->query("SELECT kata_ubah FROM setting_bahasa WHERE kata_asal = 'Pelanggan' ");
     $data200 = mysqli_fetch_array($setting_bahasa0);
 }
 
@@ -222,7 +222,7 @@ else{
 
         $no_urut = 0;
 
-            $query5 = $db->query("SELECT * FROM tbs_penjualan WHERE no_reg = '$no_reg' ");
+            $query5 = $db->query("SELECT kode_barang, nama_barang, no_faktur, jumlah_barang, lab, harga, potongan, tax, subtotal FROM tbs_penjualan WHERE no_reg = '$no_reg' ");
             //menyimpan data sementara yang ada pada $perintah
             while ($data5 = mysqli_fetch_array($query5))
             {
@@ -284,7 +284,7 @@ else{
 
 
 // OPERASI TABLE
- $take_data_or = $db->query("SELECT * FROM hasil_operasi WHERE no_reg = '$no_reg'");
+ $take_data_or = $db->query("SELECT operasi, harga_jual FROM hasil_operasi WHERE no_reg = '$no_reg'");
 
     while($out_operasi = mysqli_fetch_array($take_data_or))
       {

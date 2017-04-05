@@ -27,7 +27,7 @@ $session_id = session_id();
 $user = $_SESSION['nama'];
 $id_user = $_SESSION['id'];
 
-$pilih_akses_tombol = $db->query("SELECT * FROM otoritas_penjualan_rj WHERE id_otoritas = '$_SESSION[otoritas_id]' ");
+$pilih_akses_tombol = $db->query("SELECT tombol_submit, tombol_bayar, tombol_piutang, tombol_simpan, tombol_batal FROM otoritas_penjualan_rj WHERE id_otoritas = '$_SESSION[otoritas_id]' ");
 $otoritas_tombol = mysqli_fetch_array($pilih_akses_tombol);
 
 $pilih_akses_produk = $db->query("SELECT tipe_barang, tipe_jasa, tipe_alat, tipe_bhp, tipe_obat FROM otoritas_tipe_produk WHERE id_otoritas = '$_SESSION[otoritas_id]' ");
@@ -110,7 +110,7 @@ $obat = $otoritas_produk['tipe_obat'];
           <?php 
           
           // menampilkan seluruh data yang ada pada tabel suplier
-          $query = $db->query("SELECT * FROM gudang");
+          $query = $db->query("SELECT default_set, kode_gudang, nama_gudang FROM gudang");
           
           // menyimpan data sementara yang ada pada $query
           while($data = mysqli_fetch_array($query))
@@ -757,7 +757,7 @@ Radiologi  </button>
               <select class="form-control chosen" id="biaya_admin_select" name="biaya_admin_select" >
               <option value="0" selected=""> Silahkan Pilih </option>
                 <?php 
-                $get_biaya_admin = $db->query("SELECT * FROM biaya_admin");
+                $get_biaya_admin = $db->query("SELECT persentase, nama FROM biaya_admin");
                 while ( $take_admin = mysqli_fetch_array($get_biaya_admin))
                 {
                 echo "<option value='".$take_admin['persentase']."'>".$take_admin['nama']." ".$take_admin['persentase']."%</option>";
@@ -785,7 +785,7 @@ Radiologi  </button>
       <div class="row">
 
                   <?php
-                  $ambil_diskon_tax = $db->query("SELECT * FROM setting_diskon_tax");
+                  $ambil_diskon_tax = $db->query("SELECT diskon_nominal, diskon_persen FROM setting_diskon_tax");
                   $data_diskon = mysqli_fetch_array($ambil_diskon_tax);
 
                   ?>

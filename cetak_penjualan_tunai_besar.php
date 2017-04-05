@@ -13,11 +13,8 @@ include 'db.php';
 
 
 
-    $query1 = $db->query("SELECT * FROM perusahaan ");
+    $query1 = $db->query("SELECT foto, nama_perusahaan, alamat_perusahaan, no_telp FROM perusahaan ");
     $data1 = mysqli_fetch_array($query1);
-
-    $query2 = $db->query("SELECT * FROM detail_penjualan WHERE no_faktur = '$no_faktur' ");
-    $data2 = mysqli_fetch_array($query2);
 
     $query3 = $db->query("SELECT SUM(jumlah_barang) as total_item FROM detail_penjualan WHERE no_faktur = '$no_faktur'");
     $data3 = mysqli_fetch_array($query3);
@@ -43,10 +40,7 @@ include 'db.php';
 
     $t_subtotal = $t_awal_subtotal + $t_operasi + $t_radiologi;
 
-    $setting_bahasa = $db->query("SELECT * FROM setting_bahasa WHERE kata_asal = 'Sales' ");
-    $data20 = mysqli_fetch_array($setting_bahasa);
-
-    $setting_bahasa0 = $db->query("SELECT * FROM setting_bahasa WHERE kata_asal = 'Pelanggan' ");
+    $setting_bahasa0 = $db->query("SELECT kata_ubah FROM setting_bahasa WHERE kata_asal = 'Pelanggan' ");
     $data200 = mysqli_fetch_array($setting_bahasa0);
 
     

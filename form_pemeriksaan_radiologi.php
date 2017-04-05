@@ -713,7 +713,7 @@ $data_reg = mysqli_fetch_array($select_reg);
         </div>
 
                   <?php
-                  $ambil_diskon_tax = $db->query("SELECT * FROM setting_diskon_tax");
+                  $ambil_diskon_tax = $db->query("SELECT diskon_nominal, diskon_persen, tax FROM setting_diskon_tax");
                   $data_diskon = mysqli_fetch_array($ambil_diskon_tax);
 
                   ?>
