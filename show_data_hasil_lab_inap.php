@@ -62,9 +62,18 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 if ($input_hasil_lab > 0) {
 	if($row['status'] == '0')
 	{
-	$jenis_penjualan = "Rawat Inap";
 
-	$nestedData[] = "<a href='cek_input_hasil_lab_inap.php?no_reg=". $row['no_reg']."&nama=". $row['nama_pasien']."&no_rm=". $row['no_rm']."&jenis_penjualan=". $jenis_penjualan."&no_periksa=". $row['no_periksa']."' class='btn btn-success'> Input </a>";
+		$query_cek_setting = $db->query("SELECT nama FROM setting_laboratorium");
+		$data_cek_setting = mysqli_fetch_array($query_cek_setting);
+		$angka_setting_lab = $data_cek_setting['nama'];
+		if($angka_setting_lab == 0){
+		$nestedData[] = "<p style='color:red'>Cek Setting Laboratorium</p>";
+		}
+		else{
+		$jenis_penjualan = "Rawat Inap";
+
+		$nestedData[] = "<a href='cek_input_hasil_lab_inap.php?no_reg=". $row['no_reg']."&nama=". $row['nama_pasien']."&no_rm=". $row['no_rm']."&jenis_penjualan=". $jenis_penjualan."&no_periksa=". $row['no_periksa']."' class='btn btn-success'> Input </a>";
+		}
 	}
 	else
 	{

@@ -119,7 +119,15 @@ $take = mysqli_fetch_array($show);
 
 	if ($take['jumlah'] > 0)
 	{
+		$query_cek_setting = $db->query("SELECT nama FROM setting_laboratorium");
+		$data_cek_setting = mysqli_fetch_array($query_cek_setting);
+		$angka_setting_lab = $data_cek_setting['nama'];
+		if($angka_setting_lab == 0){
+		$nestedData[] = "<p style='color:red'>Cek Setting Laboratorium</p>";
+		}
+		else{
 		$nestedData[] = "<a href='cek_input_hasil_lab.php?no_rm=".$row['no_rm']."&nama=".$row['nama_pasien']."&no_reg=".$row['no_reg']."&jenis_penjualan=UGD' class='btn btn-floating btn-small btn-info'><i class='fa fa-pencil'></i></a>";
+		}
 	}
 	else
 	{
