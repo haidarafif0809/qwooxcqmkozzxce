@@ -5,9 +5,17 @@ include 'db.php';
 
 $dari_tanggal = stringdoang($_POST['dari_tanggal']);
 $sampai_tanggal = stringdoang($_POST['sampai_tanggal']);
+$konsumen = stringdoang($_POST['penjamin']);
 
+// LOGIKA UNTUK AMBIL BERDASARKAN KONSUMEN DAN SALES (QUERY TAMPIL AWAL)
+if ($konsumen == 'semua')
+{
   $query02 = $db->query("SELECT SUM(pen.tunai) AS tunai_penjualan,SUM(pen.total) AS total_akhir, SUM(pen.kredit) AS total_kredit ,SUM(dpp.jumlah_bayar) + SUM(dpp.potongan) AS ambil_total_bayar FROM penjualan pen LEFT JOIN detail_pembayaran_piutang dpp ON pen.no_faktur = dpp.no_faktur_penjualan WHERE pen.tanggal >= '$dari_tanggal' AND pen.tanggal <= '$sampai_tanggal' AND pen.kredit != 0 ");
-
+}
+else
+{
+   $query02 = $db->query("SELECT SUM(pen.tunai) AS tunai_penjualan,SUM(pen.total) AS total_akhir, SUM(pen.kredit) AS total_kredit,SUM(dpp.jumlah_bayar) + SUM(dpp.potongan) AS ambil_total_bayar FROM penjualan pen LEFT JOIN detail_pembayaran_piutang dpp ON pen.no_faktur = dpp.no_faktur_penjualan WHERE pen.tanggal >= '$dari_tanggal' AND pen.tanggal <= '$sampai_tanggal' AND pen.kredit != 0 AND pen.penjamin = '$konsumen' ");
+}
 // LOGIKA UNTUK  UNTUK AMBIL  BERDASARKAN KONSUMEN DAN SALES (QUERY TAMPIL AWAL)
 
 $cek02 = mysqli_fetch_array($query02);
@@ -33,11 +41,17 @@ $columns = array(
 );
 
 // LOGIKA UNTUK FILTER BERDASARKAN KONSUMEN DAN SALES (QUERY TAMPIL AWAL)
-
+if ($konsumen == 'semua')
+{
 // getting total number records without any search
 $sql =" SELECT dp.id,pel.nama_pelanggan,dp.tanggal,dp.tanggal_jt, DATEDIFF(DATE(NOW()), dp.tanggal) AS usia_piutang ,dp.no_faktur,dp.kode_pelanggan,dp.total,dp.jam,dp.penjamin,dp.status,dp.potongan,dp.tax,dp.sisa,dp.kredit ";
 $sql.=" FROM penjualan dp LEFT JOIN pelanggan pel ON dp.kode_pelanggan = pel.kode_pelanggan WHERE dp.tanggal >= '$dari_tanggal' AND dp.tanggal <= '$sampai_tanggal' AND dp.kredit != 0  ";
-
+}
+else{
+  // getting total number records without any search
+$sql =" SELECT dp.id,pel.nama_pelanggan,dp.tanggal,dp.tanggal_jt, DATEDIFF(DATE(NOW()), dp.tanggal) AS usia_piutang ,dp.no_faktur,dp.kode_pelanggan,dp.total,dp.jam,dp.penjamin,dp.status,dp.potongan,dp.tax,dp.sisa,dp.kredit ";
+$sql.=" FROM penjualan dp LEFT JOIN pelanggan pel ON dp.kode_pelanggan = pel.kode_pelanggan WHERE dp.tanggal >= '$dari_tanggal' AND dp.tanggal <= '$sampai_tanggal' AND dp.kredit != 0 AND dp.penjamin = '$konsumen'  ";
+}
 // LOGIKA UNTUK FILTER BERDASARKAN KONSUMEN DAN SALES (QUERY TAMPIL AWAL)
 
 $query=mysqli_query($conn, $sql) or die("eror 1");
@@ -45,8 +59,17 @@ $totalData = mysqli_num_rows($query);
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
 // LOGIKA UNTUK FILTER BERDASARKAN KONSUMEN DAN SALES (QUERY PENCARIAN DATATABLE)
+if ($konsumen == 'semua')
+{
+// getting total number records without any search
 $sql =" SELECT dp.id,pel.nama_pelanggan,dp.tanggal,dp.tanggal_jt, DATEDIFF(DATE(NOW()), dp.tanggal) AS usia_piutang ,dp.no_faktur,dp.kode_pelanggan,dp.total,dp.jam,dp.penjamin,dp.status,dp.potongan,dp.tax,dp.sisa,dp.kredit ";
 $sql.=" FROM penjualan dp LEFT JOIN pelanggan pel ON dp.kode_pelanggan = pel.kode_pelanggan WHERE dp.tanggal >= '$dari_tanggal' AND dp.tanggal <= '$sampai_tanggal' AND dp.kredit != 0  ";
+}
+else{
+  // getting total number records without any search
+$sql =" SELECT dp.id,pel.nama_pelanggan,dp.tanggal,dp.tanggal_jt, DATEDIFF(DATE(NOW()), dp.tanggal) AS usia_piutang ,dp.no_faktur,dp.kode_pelanggan,dp.total,dp.jam,dp.penjamin,dp.status,dp.potongan,dp.tax,dp.sisa,dp.kredit ";
+$sql.=" FROM penjualan dp LEFT JOIN pelanggan pel ON dp.kode_pelanggan = pel.kode_pelanggan WHERE dp.tanggal >= '$dari_tanggal' AND dp.tanggal <= '$sampai_tanggal' AND dp.kredit != 0 AND dp.penjamin = '$konsumen'  ";
+}
 // LOGIKA UNTUK FILTER BERDASARKAN KONSUMEN DAN SALES (QUERY PENCARIAN DATATABLE)
 
 

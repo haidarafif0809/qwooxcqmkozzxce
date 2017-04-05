@@ -431,7 +431,7 @@ img:hover {
             $("#dokter_radiologi").trigger('chosen:updated');
 
             $('#modal_pasien').modal('hide');
-            $('.tampil_col').hide('fast');
+            $('.tampil_col').hide();
 
 
     // START DATATABLE AJAX START DATATABLE AJAX START DATATABLE AJAX START DATATABLE AJAX START DATATABLE AJAX START DATATABLE AJAX
@@ -533,11 +533,12 @@ img:hover {
 
         var pesan_alert = confirm("Anda Yakin Ingin Menghapus Foto Ini ?");
         if (pesan_alert == true) {
-
-        $("#span-hapus").remove();
+        
         $.post("hapus_foto_radiologi.php",{hapus:gambar, kode:kode, nama:nama},function(data){
 
         });
+
+        $("#span-hapus").remove();
 
 
 

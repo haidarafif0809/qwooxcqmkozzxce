@@ -1,7 +1,12 @@
 <?php 
-include 'header.php';
-include 'sanitasi.php';
+// Fungsi header dengan mengirimkan raw data excel
+header("Content-type: application/vnd-ms-excel");
+ 
+// Mendefinisikan nama file ekspor "hasil-export.xls"
+header("Content-Disposition: attachment; filename=laporan_penjualan_piutang.xls");
+
 include 'db.php';
+include 'sanitasi.php';
 
 
 $dari_tanggal = stringdoang($_GET['dari_tanggal']);
@@ -19,16 +24,9 @@ $total_kredit = $cek02['total_kredit'];
 $total_bayar = $cek02['tunai_penjualan'] +  $cek02['ambil_total_bayar'];
 
 
-
-
  ?>
 <div class="container">
  <div class="row"><!--row1-->
-        <div class="col-sm-2">
-        <br><br>
-                <img src='save_picture/<?php echo $data1['foto']; ?>' class='img-rounded' alt='Cinque Terre' width='160' height='140`'> 
-        </div><!--penutup colsm2-->
-
         <div class="col-sm-6">
                  <h3> <b> LAPORAN PIUTANG PERIODE </b></h3>
                  <hr>
@@ -51,8 +49,6 @@ $total_bayar = $cek02['tunai_penjualan'] +  $cek02['ambil_total_bayar'];
                  
         </div><!--penutup colsm4-->
 
-
-        
     </div><!--penutup row1-->
     <br>
     <br>
@@ -62,7 +58,7 @@ $total_bayar = $cek02['tunai_penjualan'] +  $cek02['ambil_total_bayar'];
  <table id="tableuser" class="table table-bordered table-sm">
             <thead>
       <th style="background-color: #4CAF50; color: white;"> Nomor Faktur </th>
-      <th style="background-color: #4CAF50; color: white;"> Penjamin </th>
+      <th style="background-color: #4CAF50; color: white;"> Peanjamin </th>
       <th style="background-color: #4CAF50; color: white;"> Nama Pasien</th>
       <th style="background-color: #4CAF50; color: white;"> Tgl. Transaksi </th>
       <th style="background-color: #4CAF50; color: white;"> Tgl. Jatuh Tempo </th>
@@ -76,7 +72,7 @@ $total_bayar = $cek02['tunai_penjualan'] +  $cek02['ambil_total_bayar'];
             <tbody>
             <?php
 
-          $perintah009 = $db->query("SELECT dp.id,pel.nama_pelanggan,dp.tanggal,dp.tanggal_jt, DATEDIFF(DATE(NOW()), dp.tanggal) AS usia_piutang ,dp.no_faktur,dp.kode_pelanggan,dp.total,dp.jam,dp.sales,dp.status,dp.potongan,dp.tax,dp.sisa,dp.kredit FROM penjualan dp LEFT JOIN pelanggan pel ON dp.kode_pelanggan = pel.kode_pelanggan WHERE dp.tanggal >= '$dari_tanggal' AND dp.tanggal <= '$sampai_tanggal' AND dp.kredit != 0 ORDER BY dp.tanggal DESC ");
+          $perintah009 = $db->query("SELECT dp.id,pel.nama_pelanggan,dp.tanggal,dp.tanggal_jt, DATEDIFF(DATE(NOW()), dp.tanggal) AS usia_piutang ,dp.no_faktur,dp.kode_pelanggan,dp.total,dp.jam,dp.penjamin,dp.status,dp.potongan,dp.tax,dp.sisa,dp.kredit FROM penjualan dp LEFT JOIN pelanggan pel ON dp.kode_pelanggan = pel.kode_pelanggan WHERE dp.tanggal >= '$dari_tanggal' AND dp.tanggal <= '$sampai_tanggal' AND dp.kredit != 0 ");
                   while ($data11 = mysqli_fetch_array($perintah009))
 
                   {
@@ -92,25 +88,23 @@ $Dp = $data_sum['tunai_penjualan'];
 
 $tot_bayar = $kel_bayar['total_bayar'] + $Dp;
 
-
-
                   echo "<tr>
                   <td>". $data11['no_faktur'] ."</td>
+                  <td>". $data11['penjamin'] ."</td>
                   <td>". $data11['nama_pelanggan'] ."</td>
-                  <td>". $data11['sales'] ."</td>
                   <td>". $data11['tanggal'] ."</td>
                   <td>". $data11['tanggal_jt'] ."</td>
-                  <td  align='right' >". rp($data11['usia_piutang']) ." Hari</td>
-                  <td  align='right' >". rp($data11['total']) ."</td>";
+                  <td align='right'>". rp($data11['usia_piutang']) ." Hari</td>
+                  <td align='right'>". rp($data11['total']) ."</td>";
                   if ($num_rows > 0)
                   {
-                      echo "<td align='right' >". rp($tot_bayar) ."</td>";
+                      echo "<td align='right'>". rp($tot_bayar) ."</td>";
                   }
                   else
                   {
                     echo 0;
                   }
-                  echo "<td align='right' >". rp($data11['kredit']) ."</td>
+                  echo "<td align='right'>". rp($data11['kredit']) ."</td>
                   </tr>";
 
 
@@ -123,11 +117,10 @@ $tot_bayar = $kel_bayar['total_bayar'] + $Dp;
       <td><p style='color:red'> - </p></td>
       <td><p style='color:red'> - </p></td>
       <td><p style='color:red' align='right'> - </p></td>
-      <td><p style='color:red' align='right' > ".rp($total_akhir)." </p></td>
-      <td><p style='color:red' align='right' > ".rp($total_bayar)." </p></td>
-      <td><p style='color:red' align='right' > ".rp($total_kredit)." </p></td>";              
-
-
+      <td><p style='color:red'> ".rp($total_akhir)." </p></td>
+      <td><p style='color:red'> ".rp($total_bayar)." </p></td>
+      <td><p style='color:red'> ".rp($total_kredit)." </p></td>";     
+      
 //Untuk Memutuskan Koneksi Ke Database
 
 mysqli_close($db); 
@@ -136,22 +129,11 @@ mysqli_close($db);
             </tbody>
 
       </table>
+      <hr>
 </div>
 </div>
 <br>
 
-<div class="col-sm-6">
-</div>
-
-
 
 
      </div>
-
- <script>
-$(document).ready(function(){
-  window.print();
-});
-</script>
-
-<?php include 'footer.php'; ?>
