@@ -96,7 +96,9 @@ $otoritas_tombol = mysqli_fetch_array($pilih_akses_tombol);
 		</div>
 
 <div class="col-xs-12" >
-      <button type="button" class="btn btn-warning" id="cari_pasien" data-toggle="modal" data-target="#modal_pasien"><i class="fa fa-user"></i> Cari Pasien (Alt + P)</button>
+      <button type="button" class="btn btn-warning" id="cari_pasien" data-toggle="modal" data-target="#modal_pasien"><i class="fa fa-user"></i> Pasien R. Jalan (Alt + P)</button>
+
+      <button type="button" class="btn btn-primary" id="cari_pasien" data-toggle="modal" data-target="#modal_pasien"><i class="fa fa-user"></i> Pasien UGD (Alt + P)</button>
 
 
 <?php if ($otoritas_tombol['simpan_hasil_radiologi'] > 0): ?>
@@ -369,6 +371,8 @@ img:hover {
               $(nRow).attr('penjamin', aData[6]);
               $(nRow).attr('dokter', aData[7]);
               $(nRow).attr('jenis_pasien', aData[3]);
+              $(nRow).attr('dokter_radiologi', aData[8]);
+
 
 
           }
@@ -422,6 +426,9 @@ img:hover {
 
             document.getElementById("dokter").value = $(this).attr('dokter');
             $("#dokter").trigger('chosen:updated');
+
+            document.getElementById("dokter_radiologi").value = $(this).attr('dokter_radiologi');
+            $("#dokter_radiologi").trigger('chosen:updated');
 
             $('#modal_pasien').modal('hide');
             $('.tampil_col').hide('fast');
@@ -906,6 +913,7 @@ else{
               $(nRow).attr('penjamin', aData[6]);
               $(nRow).attr('dokter', aData[7]);
               $(nRow).attr('jenis_pasien', aData[3]);
+              $(nRow).attr('dokter_radiologi', aData[8]);
 
 
           }
@@ -973,6 +981,8 @@ $(document).ready(function() {
         $("#no_rm").val('');
         $("#nama_pasien").val('');
         $("#jenis_pasien").val('');
+        $("#dokter_radiologi").val('');
+        $("#dokter_radiologi").trigger('chosen:updated');
         $("#alert_berhasil").hide('fast');
         $("#transaksi_baru").hide('fast');
         $("#cetak_radiologi").hide('fast');
@@ -1002,6 +1012,8 @@ $(document).ready(function() {
               $(nRow).attr('penjamin', aData[6]);
               $(nRow).attr('dokter', aData[7]);
               $(nRow).attr('jenis_pasien', aData[3]);
+              $(nRow).attr('dokter_radiologi', aData[8]);
+
 
 
           }

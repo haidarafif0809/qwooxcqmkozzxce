@@ -224,7 +224,7 @@ $data_reg = mysqli_fetch_array($select_reg);
       </select>
     </div>
 
-    <div class="col-xs-3">
+    <div class="col-xs-3" style="display: none;">
      <label> Dokter Pemeriksa </label><br>
 
             
@@ -291,7 +291,7 @@ $data_reg = mysqli_fetch_array($select_reg);
   </select>
 </div>
 
-  <div class="col-xs-2">
+  <div class="col-xs-2" style="display: none;">
    <label> Dokter Pemeriksa </label><br>
 
           
@@ -3445,6 +3445,8 @@ function myFunction(event) {
             $("#penjamin").trigger("chosen:updated");
             $("#level_harga").val('');
             $("#level_harga").trigger("chosen:updated");
+            $("#dokter_radiologi").val('');
+            $("#dokter_radiologi").trigger("chosen:updated");
             $("#keterangan").val('');
             $("#penjualan").show();
             $("#cetak_langsung").show();
@@ -3830,6 +3832,8 @@ $.get("cek_total_tbs_form_radiologi.php",{no_reg:no_reg},function(data){
 <script type="text/javascript">
   // Rawat jalan
   $(document).on('click','#raja',function(e){
+
+  /*
     var no_reg = $("#no_reg").val();
     var nama_pasien = $("#nama_pelanggan").val();
     var no_rm = $("#kd_pelanggan1").val();
@@ -3853,12 +3857,17 @@ $.get("cek_total_tbs_form_radiologi.php",{no_reg:no_reg},function(data){
 
     window.location.href="form_penjualan_kasir.php?no_reg="+no_reg+"&nama_pasien="+nama_pasien+"&no_rm="+no_rm+"&penjamin="+penjamin+"&dokter="+dokter+"&level_harga="+level_harga+"&poli="+poli+"&petugas_radiologi="+petugas_radiologi+"";
     }
+    */
+   
+    window.location.href="pasien_sudah_masuk.php";
 
 
   });
 
   //Rawat Inap
    $(document).on('click','#ranap',function(e){
+
+    /*
      var no_reg = $("#no_reg").val();
     var nama_pasien = $("#nama_pelanggan").val();
     var no_rm = $("#no_rm").val();
@@ -3872,6 +3881,10 @@ $.get("cek_total_tbs_form_radiologi.php",{no_reg:no_reg},function(data){
     var petugas_radiologi = $("#petugas_radiologi").val();
 
     window.location.href="form_penjualan_kasir_ranap.php?no_reg="+no_reg+"&nama_pasien="+nama_pasien+"&no_rm="+no_rm+"&penjamin="+penjamin+"&dokter="+dokter+"&level_harga="+level_harga+"&poli="+poli+"&bed="+bed+"&kamar="+kamar+"&petugas_radiologi="+petugas_radiologi+"&petugas_radiologi="+petugas_radiologi+"";
+
+    */
+   
+   window.location.href="rawat_inap.php";
 
   });
 

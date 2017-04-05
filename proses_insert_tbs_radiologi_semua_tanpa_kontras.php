@@ -22,14 +22,23 @@ $query_pemeriksaan_radiologi = $db->query("SELECT kode_pemeriksaan, nama_pemerik
     while ($data_pemeriksaan_radiologi = mysqli_fetch_array($query_pemeriksaan_radiologi))
       {
       	$subtotal = $data_pemeriksaan_radiologi['harga_1'] * $jumlah_barang;
+      	$query_tbs_radiologi = $db->query("SELECT kode_barang FROM tbs_penjualan_radiologi WHERE kode_barang = '$data_pemeriksaan_radiologi[kode_pemeriksaan]' AND no_reg = '$no_reg'");
+		$data_tbs_radiologi = mysqli_fetch_array($query_tbs_radiologi);
 
-		$insert_tbs = "INSERT INTO tbs_penjualan_radiologi (session_id, kode_barang, nama_barang, jumlah_barang, harga, subtotal, tipe_barang, tanggal, jam, no_reg, kontras, dokter_pengirim, dokter_pelaksana, radiologi) VALUES ('$session_id', '$data_pemeriksaan_radiologi[kode_pemeriksaan]', '$data_pemeriksaan_radiologi[nama_pemeriksaan]', '$jumlah_barang', $data_pemeriksaan_radiologi[harga_1], $subtotal, '$tipe_barang', '$tanggal_sekarang', '$jam_sekarang', '$no_reg', '$data_pemeriksaan_radiologi[kontras]', '$dokter_pengirim', '$petugas_radiologi', 'Radiologi' )";
+      	if ($data_pemeriksaan_radiologi['kode_pemeriksaan'] == $data_tbs_radiologi['kode_barang']) {
+      		//TIDAK MELAKUKAN PROSES APAPUN KARENA PRODUK (JASA) SUDAH DIINPUT SEBELUMNYA
+      	}
+      	else{
 
-		    if ($db->query($insert_tbs) === TRUE){                        
-		    } 
-		    else{
-		      echo "Error: " . $insert_tbs . "<br>" . $db->error;
-		    }
+			$insert_tbs = "INSERT INTO tbs_penjualan_radiologi (session_id, kode_barang, nama_barang, jumlah_barang, harga, subtotal, tipe_barang, tanggal, jam, no_reg, kontras, dokter_pengirim, dokter_pelaksana, radiologi, status_pilih) VALUES ('$session_id', '$data_pemeriksaan_radiologi[kode_pemeriksaan]', '$data_pemeriksaan_radiologi[nama_pemeriksaan]', '$jumlah_barang', $data_pemeriksaan_radiologi[harga_1], $subtotal, '$tipe_barang', '$tanggal_sekarang', '$jam_sekarang', '$no_reg', '$data_pemeriksaan_radiologi[kontras]', '$dokter_pengirim', '$petugas_radiologi', 'Radiologi', 'Pilih Semua' )";
+
+			    if ($db->query($insert_tbs) === TRUE){                        
+			    } 
+			    else{
+			      echo "Error: " . $insert_tbs . "<br>" . $db->error;
+			    }
+
+		}
 
 	  }
 
