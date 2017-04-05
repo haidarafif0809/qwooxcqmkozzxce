@@ -3,8 +3,8 @@
 include 'db.php';
 include 'sanitasi.php';
 /* Database connection end */
-$pilih_akses = $db->query("SELECT ruangan_edit, ruangan_hapus FROM otoritas_master_data WHERE id_otoritas = '$_SESSION[otoritas_id]'");
-$ruangan = mysqli_fetch_array($pilih_akses);
+
+$ruangan = angkadoang($_POST['ruangan']);
 
 // storing  request (ie, get/post) global array to a variable  
 $requestData= $_REQUEST;
@@ -12,25 +12,36 @@ $requestData= $_REQUEST;
 $columns = array( 
 // datatable column index  => database column name
 	0 =>'nama_ruangan', 
-	1 => 'id'
+	1 => 'id',
+	2 => 'nama_kamar',
+	3 => 'group_bed',
+	4 => 'fasilitas',
+	5 => 'jumlah_bed',
+	6 => 'sisa_bed',
+	7 => 'kelas'
 );
 
 // getting total number records without any search
-$sql = "SELECT id ,nama_ruangan ";
-$sql.=" FROM ruangan ";
-$query=mysqli_query($conn, $sql) or die("datatable_ruangan.php: get employees");
+$sql = "SELECT r.nama_ruangan, b.id, b.nama_kamar, b.group_bed, b.fasilitas, b.jumlah_bed, b.sisa_bed, b.kelas ";
+$sql.=" FROM bed b INNER JOIN ruangan r ON b.ruangan = r.id WHERE b.sisa_bed != 0 AND b.ruangan = '$ruangan' ";
+$query=mysqli_query($conn, $sql) or die("datatable_kamar.php: get employees");
 $totalData = mysqli_num_rows($query);
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
 
-$sql = "SELECT id , nama_ruangan ";
-$sql.=" FROM ruangan WHERE 1=1";
+$sql = "SELECT r.nama_ruangan, b.id, b.nama_kamar, b.group_bed, b.fasilitas, b.jumlah_bed, b.sisa_bed, b.kelas ";
+$sql.=" FROM bed b INNER JOIN ruangan r ON b.ruangan = r.id WHERE b.sisa_bed != 0 AND b.ruangan = '$ruangan' AND 1=1";
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
-	$sql.=" AND ( nama_ruangan LIKE '".$requestData['search']['value']."%' )";
+	$sql.=" AND ( r.nama_ruangan  LIKE '".$requestData['search']['value']."%' ";
+$sql.=" OR b.nama_kamar LIKE '".$requestData['search']['value']."%' ";
+$sql.=" OR b.group_bed LIKE '".$requestData['search']['value']."%' "; 
+$sql.=" OR b.fasilitas LIKE '".$requestData['search']['value']."%' "; 
+$sql.=" OR b.jumlah_bed LIKE '".$requestData['search']['value']."%' "; 
+$sql.=" OR b.kelas LIKE '".$requestData['search']['value']."%' )";
 }
-$query=mysqli_query($conn, $sql) or die("datatableee_ruangan.php: get employees");
+$query=mysqli_query($conn, $sql) or die("datatableee_kamar.php: get employees");
 $totalFiltered = mysqli_num_rows($query); // when there is a search parameter then we have to modify total number filtered rows as per search result. 
-$sql.=" ORDER BY id DESC  LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
+$sql.=" GROUP BY b.ruangan LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
 /* $requestData['order'][0]['column'] contains colmun index, $requestData['order'][0]['dir'] contains order such as asc/desc  */	
 $query=mysqli_query($conn, $sql) or die("employee-grid-data.php: get employees");
 
@@ -39,15 +50,13 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 	$nestedData=array(); 
 
 	$nestedData[] = $row["nama_ruangan"];
-	
-	 if ($ruangan['ruangan_edit'] != 0) {
-        $nestedData[] = "<button data-id='".$row['id']."' data-nama='".$row['nama_ruangan']."' class='btn btn-warning edit'><span class='glyphicon glyphicon-edit'></span> Edit </button>";
-      }
-
-     if ($ruangan['ruangan_hapus'] != 0) {
-        $nestedData[] = "<button data-id='".$row['id']."' data-nama='".$row['nama_ruangan']."' class='btn btn-danger delete'><span class='glyphicon glyphicon-trash'></span> Hapus </button>";
-      }
-      $nestedData[] = $row["id"];
+	$nestedData[] = $row["nama_kamar"];
+	$nestedData[] = $row["group_bed"];
+	$nestedData[] = $row["fasilitas"];
+	$nestedData[] = $row["jumlah_bed"];
+	$nestedData[] = $row["sisa_bed"];
+	$nestedData[] = $row["kelas"];
+	$nestedData[] = $row["id"];
 
 	$data[] = $nestedData;
 }

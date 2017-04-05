@@ -44,6 +44,11 @@ $biaya_admin_tambah = angkadoang(isset($_POST['biaya_admin_tambah']));
 $biaya_admin_edit = angkadoang(isset($_POST['biaya_admin_edit']));
 $biaya_admin_hapus = angkadoang(isset($_POST['biaya_admin_hapus']));
 
+$ruangan_lihat = angkadoang(isset($_POST['ruangan_lihat']));
+$ruangan_tambah = angkadoang(isset($_POST['ruangan_tambah']));
+$ruangan_edit = angkadoang(isset($_POST['ruangan_edit']));
+$ruangan_hapus = angkadoang(isset($_POST['ruangan_hapus']));
+
 $transaksi_jurnal_manual_lihat = angkadoang(isset($_POST['transaksi_jurnal_manual_lihat']));
 $transaksi_jurnal_manual_tambah = angkadoang(isset($_POST['transaksi_jurnal_manual_tambah']));
 $transaksi_jurnal_manual_edit = angkadoang(isset($_POST['transaksi_jurnal_manual_edit']));

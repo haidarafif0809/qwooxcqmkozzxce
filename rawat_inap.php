@@ -104,7 +104,7 @@ opacity: 0.9;
 <div style="padding-left:5%; padding-right:5%;">
 
 <!-- Modal Untuk Confirm LAYANAN PERUSAHAAN-->
-<div id="detail" class="modal fade" role="dialog">
+<div id="detail" class="modal" role="dialog">
   <div class="modal-dialog modal-lg">
     <!-- Modal content-->
     <div class="modal-content">
@@ -127,7 +127,7 @@ opacity: 0.9;
 
 
 <!-- Modal Untuk Confirm KAMAR-->
-<div id="modal_kamar" class="modal fade" role="dialog">
+<div id="modal_kamar" class="modal" role="dialog">
   <div class="modal-dialog modal-lg">
     <!-- Modal content-->
     <div class="modal-content">
@@ -206,7 +206,7 @@ opacity: 0.9;
 
 
 <!-- Modal Untuk LAB RANAP-->
-<div id="modal_lab_inap" class="modal fade" role="dialog">
+<div id="modal_lab_inap" class="modal" role="dialog">
   <div class="modal-dialog modal-lg">
     <!-- Modal content-->
     <div class="modal-content">
@@ -275,7 +275,7 @@ opacity: 0.9;
 
 
 <!-- Modal Untuk batal ranap-->
-<div id="modal_batal" class="modal fade" role="dialog">
+<div id="modal_batal" class="modal" role="dialog">
   <div class="modal-dialog modal-lg">
     <!-- Modal content-->
     <div class="modal-content">
@@ -324,7 +324,7 @@ else
 
 
   <!-- Modal -->
-<div id="myModal" class="modal fade" role="dialog">
+<div id="myModal" class="modal" role="dialog">
   <div class="modal-dialog modal-lg">
 
     <!-- Modal content-->
@@ -362,74 +362,10 @@ else
 <!-- akhir modal -->
 
 
- <!-- Modalkamar -->
-<div id="myModal1" class="modal fade" role="dialog">
-  <div class="modal-dialog">
-
-    <!-- Modal content2 -->
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Pencarian Kamar Pasien </h4>
-      </div>
-      <div class="modal-body">
-      <div class="table-responsive">
-        <table id="siswa1" class="table table-bordered table-hover table-striped">
-          <thead>
-          <tr>
-          <th>Kelas</th>
-          <th>Kode Kamar</th>
-          <th>Nama Kamar</th>
-          <th> Fasilitas</th>
-          <th>Jumlah Bed</th>  
-          <th>Sisa Bed</th>                                          
-          </tr>
-          </thead>
-          <tbody>
-          <?php
-          //Data mentah yang ditampilkan ke tabel    
-          include 'db.php';
-          $hasil = $db->query("SELECT * FROM bed WHERE sisa_bed != 0 ");
-                                        
-          while ($data =  $hasil->fetch_assoc()) {
-             $select_kelas = $db->query("SELECT id,nama FROM kelas_kamar");
-        while($out_kelas = mysqli_fetch_array($select_kelas))
-        {
-          if($data['kelas'] == $out_kelas['id'])
-          {
-            $kelas = $out_kelas['nama'];
-          }
-        }
-          ?>
-          <tr class="pilih2" 
-          data-nama="<?php echo $data['nama_kamar']; ?>" 
-          data-group-bed ="<?php echo $data['group_bed']; ?>" >
-          
-          <td><?php echo $kelas; ?></td>
-          <td><?php echo $data['nama_kamar']; ?></td>
-          <td><?php echo $data['group_bed']; ?></td>
-          <td><?php echo $data['fasilitas']; ?></td>
-           <td><?php echo $data['jumlah_bed']; ?></td>         
-           <td><?php echo $data['sisa_bed']; ?></td>                           
-          </tr>
-          <?php
-          }
-          ?>
-          </tbody>
-          </table>  
-       </div> <!-- table responsive  -->
-        </div>
-        <div class="modal-footer">
-        <button type="button" accesskey="o" class="btn btn-danger" data-dismiss="modal">Cl<u>o</u>se</button>
-        </div>
-        </div>
-        
-        </div>
-        </div> 
-<!-- akhir modal Kamar-->
+ 
 
 <!-- Modal rujukan lab-->
-<div id="Modal3" class="modal fade" role="dialog">
+<div id="Modal3" class="modal" role="dialog">
  
 <div class="modal-dialog modal-lg">
     <!-- Modal content-->
@@ -482,13 +418,25 @@ else
 <br>
 <div class="col-sm-4">
 
+<div class="card card-block">
+
 <form role="form" method="POST">
 
-<button type="button" accesskey="c" class="btn btn-success" data-toggle="modal" data-target="#myModal1" data-placement='top' title='Klik untuk cari kamar.'> <i class="fa fa-search"></i> <u>C</u>ari kamar</button>
- <br>
- <br>
+<div class="form-group">
+  <label for="sel1">Ruangan:</label>
+  <select class="form-control" id="ruangan" name="ruangan"  autocomplete="off">
+   <option value="">Silakan Pilih</option>
+      <?php 
+      $query_ruangan = $db->query("SELECT id,nama_ruangan FROM ruangan ORDER BY id");
+      while ( $data_ruangan = mysqli_fetch_array($query_ruangan)) {
+      echo "<option value='".$data_ruangan['id']."'>".$data_ruangan['nama_ruangan']."</option>";
+      }
+      ?>
+  </select>
+</div>
 
-<div class="card card-block">
+<button type="button" accesskey="c" class="btn btn-success" data-toggle="modal" id="cari_kamar" data-placement='top' title='Klik untuk cari kamar.'> <i class="fa fa-search"></i> <u>C</u>ari kamar</button>
+ <br>
 
   <input style="height: 20px;" type="hidden" class="form-control" id="token" name="token" value="Kosasih" autocomplete="off"> 
 
@@ -513,9 +461,9 @@ else
   <select class="form-control" id="rujukan" name="rujukan"  autocomplete="off">
    <option value="Non Rujukan">Non Rujukan</option>
       <?php 
-      $query = $db->query("SELECT nama FROM perujuk ");
-      while ( $data = mysqli_fetch_array($query)) {
-      echo "<option value='".$data['nama']."'>".$data['nama']."</option>";
+      $query_perujuk = $db->query("SELECT nama FROM perujuk ");
+      while ( $data_perujuk = mysqli_fetch_array($query)) {
+      echo "<option value='".$data_perujuk['nama']."'>".$data_perujuk['nama']."</option>";
       }
       ?>
   </select>
@@ -546,9 +494,9 @@ else
  <select class="form-control" id="penjamin" name="penjamin"  autocomplete="off">
  <option value=""> --SILAKAN PILIH--</option>
  <?php 
-  $query = $db->query("SELECT nama FROM penjamin WHERE status = 'Aktif' ORDER BY id ASC");
-  while ( $data = mysqli_fetch_array($query)) {
-  echo "<option value='".$data['nama']."'>".$data['nama']."</option>";
+  $query_penjamin = $db->query("SELECT nama FROM penjamin WHERE status = 'Aktif' ORDER BY id ASC");
+  while ( $data_penjamin = mysqli_fetch_array($query)) {
+  echo "<option value='".$data_penjamin['nama']."'>".$data_penjamin['nama']."</option>";
   }
   ?>
   </select>
@@ -599,6 +547,74 @@ else
 
 </div><!-- penutp colm 1-->
 
+
+<!--modal Kamar-->
+<!-- Modalkamar -->
+<div id="myModal1" class="modal" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content2 -->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Pencarian Kamar Pasien </h4>
+      </div>
+      <div class="modal-body">
+      <div class="table-responsive">
+        <table id="table_kamar" class="table table-bordered table-hover table-striped">
+          <thead>
+          <tr>
+          <th>Kelas</th>
+          <th>Ruangan</th>
+          <th>Kode Kamar</th>
+          <th>Nama Kamar</th>
+          <th> Fasilitas</th>
+          <th>Jumlah Bed</th>  
+          <th>Sisa Bed</th>                                          
+          </tr>
+          </thead>
+          <tbody>
+          <?php
+          //Data mentah yang ditampilkan ke tabel    
+          /*$query_bed = $db->query("SELECT r.nama_ruangan, b.id, b.nama_kamar, b.group_bed, b.fasilitas, b.jumlah_bed, b.sisa_bed, b.kelas  FROM bed b INNER JOIN ruangan r ON b.ruangan = r.id WHERE b.sisa_bed != 0 AND b.ruangan = '$data_ruangan[id]' GROUP BY b.ruangan ");
+                                        
+          while ($data_bed =  $query_bed->fetch_assoc()) {
+             $query_kelas = $db->query("SELECT id,nama FROM kelas_kamar");
+        while($data_kelas = mysqli_fetch_array($query_kelas))
+        {
+          if($data_bed['kelas'] == $data_kelas['id'])
+          {
+            $kelas = $data_kelas['nama'];
+          }
+        }
+          ?>
+          <tr class="pilih2" 
+          data-nama="<?php echo $data_bed['nama_kamar']; ?>" 
+          data-group-bed ="<?php echo $data_bed['group_bed']; ?>" >
+          
+          <td><?php echo $kelas; ?></td>
+          <td><?php echo $data_bed['nama_ruangan'] ?></td>
+          <td><?php echo $data_bed['nama_kamar']; ?></td>
+          <td><?php echo $data_bed['group_bed']; ?></td>
+          <td><?php echo $data_bed['fasilitas']; ?></td>
+           <td><?php echo $data_bed['jumlah_bed']; ?></td>         
+           <td><?php echo $data_bed['sisa_bed']; ?></td>                           
+          </tr>
+          <?php
+          }*/
+          ?>
+          </tbody>
+          </table>  
+       </div> <!-- table responsive  -->
+        </div>
+        <div class="modal-footer">
+        <button type="button" accesskey="o" class="btn btn-danger" data-dismiss="modal">Cl<u>o</u>se</button>
+        </div>
+        </div>
+        
+        </div>
+        </div> 
+<!-- akhir modal Kamar-->
 
 <!-- SPAN untuk PENANGGUNG-->
 
@@ -869,7 +885,7 @@ tr:nth-child(even){background-color: #f2f2f2}
 
 
 <script type="text/javascript">
-  
+  //cari pasien migrasi
     $(document).on('click','#submit_cari',function() {
   
     var cari = $("#cari_migrasi").val();
@@ -929,6 +945,59 @@ tr:nth-child(even){background-color: #f2f2f2}
   </script>
 
 
+<script type="text/javascript">
+  // cari kamar seuai dengan ruangannya
+    $(document).on('click','#cari_kamar',function() {
+  
+    var ruangan = $("#ruangan").val();
+    if (ruangan == '') {  
+      alert("Silakan pilih ruangan terlebih dahulu.");
+      $("#ruangan").focus();
+    }
+    else
+    {
+        $("#myModal1").modal('show');
+        $('#table_kamar').DataTable().destroy();
+
+          var dataTable = $('#table_kamar').DataTable( {
+          "processing": true,
+          "serverSide": true,
+          "info":     false,
+          "language": {
+        "emptyTable":     "My Custom Message On Empty Table"
+    },
+          "ajax":{
+            url :"datatable_cari_kamar_dirawat_inap.php", // json datasource
+             "data": function ( d ) {
+                d.ruangan = $("#ruangan").val();
+                // d.custom = $('#myInput').val();
+                // etc
+            },
+                type: "post",  // method  , by default get
+            error: function(){  // error handling
+              $(".tbody").html("");
+              $("#table_ruangan").append('<tbody class="tbody"><tr><th colspan="3"></th></tr></tbody>');
+              $("#table_ruangan_processing").css("display","none");
+              
+            }
+          },
+              "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+
+              $(nRow).attr('class', "pilih2 tr-id-"+aData[8]+"");
+              $(nRow).attr('data-nama', aData[1]);
+              $(nRow).attr('data-group-bed', aData[2]);
+
+          } 
+
+        } );
+
+
+          
+    }
+   
+  
+  });
+  </script>
 
  <script type="text/javascript">
           $("#alamat").focus(function(){
@@ -946,10 +1015,10 @@ else
         });
 </script>
 
-   <script>
+   <script type="text/javascript">
    //untuk menampilkan data yang diambil pada form tbs penjualan berdasarkan id=formtambahproduk
   $("#daftar").click(function(){
-
+    var ruangan = $("#ruangan").val();
     var group_bed = $("#group_bed").val();
     var bed = $("#bed").val();
     var rujukan = $("#rujukan").val();
@@ -997,8 +1066,15 @@ else
     $("#kembali").hide();
     $("#daftar").show();
 
+if (ruangan == '')
+{
 
-if (group_bed == '')
+alert("Ruangan Masih Kosong");
+  $("#group_bed").focus();
+
+}
+
+else if (group_bed == '')
 {
 
 alert("Kamar Masih Kosong");
@@ -1057,7 +1133,7 @@ $("#surat_jaminan").focus();
 
 else{
   $("#coba").show();
- $.post("proses_rawat_inap.php",{group_bed:group_bed,bed:bed,rujukan:rujukan,penjamin:penjamin,no_rm:no_rm,nama_lengkap:nama_lengkap,jenis_kelamin:jenis_kelamin,tanggal_lahir:tanggal_lahir,umur:umur,alamat:alamat,hp_pasien:hp_pasien,penanggung_jawab:penanggung_jawab,alamat_penanggung:alamat_penanggung,no_hp_penanggung:no_hp_penanggung,pekerjaan_penanggung:pekerjaan_penanggung,hubungan_dengan_pasien:hubungan_dengan_pasien,perkiraan_menginap:perkiraan_menginap,surat_jaminan:surat_jaminan,dokter_pengirim:dokter_pengirim,poli:poli,dokter_penanggung_jawab:dokter_penanggung_jawab,kondisi:kondisi,sistole_distole:sistole_distole,respiratory_rate:respiratory_rate,suhu:suhu,nadi:nadi,berat_badan:berat_badan,tinggi_badan:tinggi_badan,alergi:alergi,token:token},function(data){
+ $.post("proses_rawat_inap.php",{ruangan:ruangan,group_bed:group_bed,bed:bed,rujukan:rujukan,penjamin:penjamin,no_rm:no_rm,nama_lengkap:nama_lengkap,jenis_kelamin:jenis_kelamin,tanggal_lahir:tanggal_lahir,umur:umur,alamat:alamat,hp_pasien:hp_pasien,penanggung_jawab:penanggung_jawab,alamat_penanggung:alamat_penanggung,no_hp_penanggung:no_hp_penanggung,pekerjaan_penanggung:pekerjaan_penanggung,hubungan_dengan_pasien:hubungan_dengan_pasien,perkiraan_menginap:perkiraan_menginap,surat_jaminan:surat_jaminan,dokter_pengirim:dokter_pengirim,poli:poli,dokter_penanggung_jawab:dokter_penanggung_jawab,kondisi:kondisi,sistole_distole:sistole_distole,respiratory_rate:respiratory_rate,suhu:suhu,nadi:nadi,berat_badan:berat_badan,tinggi_badan:tinggi_badan,alergi:alergi,token:token},function(data){
      
      $("#demo").hide();
 
@@ -1084,7 +1160,7 @@ else{
 
 },
         } );
-
+      $("#ruangan").val('');
      $("#group_bed").val('');
      $("#bed").val('');
      $("#no_rm").val('');
@@ -1509,10 +1585,8 @@ else
   </script>
 
 
-
 <!-- modal ambil data dari table RI  -->
 <script type="text/javascript">
-
 //            jika dipilih, nim akan masuk ke input dan modal di tutup
   $(document).on('click', '.pilih2', function (e) {
             document.getElementById("bed").value = $(this).attr('data-nama');
@@ -1520,12 +1594,12 @@ else
                 
   $('#myModal1').modal('hide');
   });
-      
+/*      
   $(function () {
   $("#siswa1").dataTable();
   });
 // tabel lookup mahasiswa
-  
+  */
           
 </script>
 <!-- end ambil data RI  -->
