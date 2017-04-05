@@ -126,7 +126,7 @@ else
 	else
 	{
 
-	$nestedData[] = "<p><button class='btn btn-floating  btn-info detail-lab' data-faktur='".$row['no_faktur']."'><i class='fa fa-list'></i></button></p>";
+	$nestedData[] = "<p><button class='btn btn-floating  btn-info detail-lab' data-faktur='".$row['no_faktur']."' data-reg='".$row['no_reg']."'><i class='fa fa-list'></i></button></p>";
 	}
 	
 }

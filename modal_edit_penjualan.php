@@ -80,10 +80,22 @@ while( $row=mysqli_fetch_array($query) ) {
             $ambil_masuk = mysqli_fetch_array($select);
              
             $select_2 = $db->query("SELECT SUM(jumlah_kuantitas) AS jumlah_hpp_keluar FROM hpp_keluar WHERE kode_barang = '$row[kode_barang]'");
+            $ambil_keluar = mysqli_fetch_array($select_2);    
+
+            $query_jumlah_detail = $db->query("SELECT jumlah_barang FROM detail_penjualan WHERE no_faktur = '$no_faktur' AND kode_barang ='$row[kode_barang]' ");
+            $cek_jumlah_detail = mysqli_fetch_array($query_jumlah_detail);
+
+            $query_jumlah_tbs = $db->query("SELECT jumlah_barang FROM tbs_penjualan WHERE no_faktur = '$no_faktur' AND kode_barang ='$row[kode_barang]' ");
+            $cek_jumlah_tbs = mysqli_fetch_array($query_jumlah_tbs);
+
+
+            $select_2 = $db->query("SELECT SUM(jumlah_kuantitas) AS jumlah_hpp_keluar FROM hpp_keluar WHERE kode_barang = '$row[kode_barang]'");
             $ambil_keluar = mysqli_fetch_array($select_2);
+
+
              
             $stok_barang = $ambil_masuk['jumlah_hpp_masuk'] - $ambil_keluar['jumlah_hpp_keluar'];
-            $sisa_barang = ($stok_barang + $data000['jumlah_detail']) - $jumlah_tbs;
+            $sisa_barang = ($stok_barang + $cek_jumlah_detail['jumlah_barang']) - $cek_jumlah_tbs['jumlah_barang'];
 
             $harga1 = $row['harga_jual'];
             if ($harga1 == '') {

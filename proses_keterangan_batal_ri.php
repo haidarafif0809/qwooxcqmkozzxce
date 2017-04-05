@@ -20,6 +20,9 @@ else
 
 }
 
+$query_hapus_tbs_hasil = $db->query("DELETE FROM tbs_hasil_lab WHERE no_reg = '$no_reg'");
+$query_hapus_hasil = $db->query("DELETE FROM hasil_lab WHERE no_reg = '$no_reg'");
+
 $delete_penjualan = $db->query("DELETE FROM penjualan WHERE no_reg = '$no_reg'");
 $delete_detail_penjualan = $db->query("DELETE FROM detail_penjualan WHERE no_reg = '$no_reg'");
 

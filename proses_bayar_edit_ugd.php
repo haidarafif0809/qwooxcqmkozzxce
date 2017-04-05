@@ -258,8 +258,8 @@ if ($potongan != "") {
               
       
   // hubungkan "data" dengan prepared statements
-              $stmt->bind_param("sssisisiisisssssss",
-                $petugas_farmasi, $petugas_paramedik, $petugas_lain, $biaya_adm, $kode_gudang, $total, $jam_sekarang, $potongan, $kredit_s, $cara_bayar, $pembayaran, $ppn_input, $keterangan,$tanggal_edit,$no_jurnal,$ket_jurnal,$nama_petugas,$waktu,$tanggal_jt, $nomor_faktur,$no_reg );
+              $stmt->bind_param("sssisisiisississssssss",
+                $petugas_farmasi, $petugas_paramedik, $petugas_lain, $biaya_adm, $kode_gudang, $total, $jam_sekarang, $potongan, $kredit_s, $cara_bayar, $pembayaran, $ppn_input, $keterangan,$kredit_s,$tanggal_edit,$no_jurnal,$ket_jurnal,$nama_petugas,$waktu,$tanggal_jt, $nomor_faktur,$no_reg );
               
  
 
