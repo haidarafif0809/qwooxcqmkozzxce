@@ -45,7 +45,7 @@ $dq = mysqli_fetch_array($q);
 </script>
 
 <!-- Modalkamar -->
-<div id="myModal1" class="modal fade" role="dialog">
+<div id="myModal1" class="modal" role="dialog">
   <div class="modal-dialog">
 
     <!-- Modal content2 -->
@@ -56,7 +56,7 @@ $dq = mysqli_fetch_array($q);
       </div>
       <div class="modal-body">
       <div class="table-responsive">
-        <table id="siswa1" class="table table-bordered table-hover table-striped">
+        <table id="table_kamar" class="table table-bordered table-hover table-striped">
           <thead>
           <tr>
           <th>Kelas</th>
@@ -70,7 +70,7 @@ $dq = mysqli_fetch_array($q);
           <tbody>
           <?php
           //Data mentah yang ditampilkan ke tabel    
-          include 'db.php';
+         /* include 'db.php';
           $hasil = $db->query("SELECT * FROM bed WHERE sisa_bed != 0 ");
                                         
           while ($data =  $hasil->fetch_assoc()) {
@@ -95,7 +95,7 @@ $dq = mysqli_fetch_array($q);
                                         
           </tr>
           <?php
-          }
+          }*/
           ?>
           </tbody>
           </table>  
@@ -113,7 +113,7 @@ $dq = mysqli_fetch_array($q);
  
 
 <!-- Modal Untuk Confirm LAYANAN PERUSAHAAN-->
-<div id="detail" class="modal fade" role="dialog">
+<div id="detail" class="modal" role="dialog">
   <div class="modal-dialog modal-lg">
     <!-- Modal content-->
     <div class="modal-content">
@@ -165,11 +165,26 @@ $dq = mysqli_fetch_array($q);
     <input style="height: 20px;" type="hidden" class="form-control" id="no_rm_lama" name="no_rm_lama" readonly="">
 </div>
 
-
-<button type="button" accesskey="c" class="btn btn-warning" data-toggle="modal" data-target="#myModal1"> <i class="fa fa-search"></i> <u>C</u>ari kamar</button>
- <br><br>
-
 <div class="card card-block">
+
+<div class="form-group">
+  <label for="sel1">Ruangan </label>
+  <select class="form-control ss" id="ruangan" name="ruangan" required=""  autocomplete="off">
+   
+   <option value="">Silakan Pilih</option>
+
+ <?php 
+  $query = $db->query("SELECT id,nama_ruangan FROM ruangan ORDER BY id "); 
+  while ( $data = mysqli_fetch_array($query)) 
+  {
+  echo "<option value='".$data['id']."'>".$data['nama_ruangan']."</option>";
+  }
+?>
+  </select>
+</div>
+
+<button type="button" accesskey="c" class="btn btn-warning" id="cari_kamar" data-toggle="modal"> <i class="fa fa-search"></i> <u>C</u>ari kamar</button>
+ <br>
 
 <input style="height: 20px;" type="hidden" class="form-control" id="token" name="token" value="Kosasih" autocomplete="off"> 
  
@@ -815,6 +830,59 @@ else
 </script>
 <!--  end script untuk akhir detail layanan PERUSAHAAN -->
 
+<script type="text/javascript">
+  // cari kamar seuai dengan ruangannya
+    $(document).on('click','#cari_kamar',function() {
+  
+    var ruangan = $("#ruangan").val();
+    if (ruangan == '') {  
+      alert("Silakan pilih ruangan terlebih dahulu.");
+      $("#ruangan").focus();
+    }
+    else
+    {
+        $("#myModal1").modal('show');
+        $('#table_kamar').DataTable().destroy();
+
+          var dataTable = $('#table_kamar').DataTable( {
+          "processing": true,
+          "serverSide": true,
+          "info":     false,
+          "language": {
+        "emptyTable":     "My Custom Message On Empty Table"
+    },
+          "ajax":{
+            url :"datatable_cari_kamar_dirawat_inap.php", // json datasource
+             "data": function ( d ) {
+                d.ruangan = $("#ruangan").val();
+                // d.custom = $('#myInput').val();
+                // etc
+            },
+                type: "post",  // method  , by default get
+            error: function(){  // error handling
+              $(".tbody").html("");
+              $("#table_ruangan").append('<tbody class="tbody"><tr><th colspan="3"></th></tr></tbody>');
+              $("#table_ruangan_processing").css("display","none");
+              
+            }
+          },
+              "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+
+              $(nRow).attr('class', "pilih2 tr-id-"+aData[8]+"");
+              $(nRow).attr('data-nama', aData[1]);
+              $(nRow).attr('data-group-bed', aData[2]);
+
+          } 
+
+        } );
+
+
+          
+    }
+   
+  
+  });
+  </script>
 
 <!-- DATATABLE AJAX PASIEN LAMA-->
     <script type="text/javascript" language="javascript" >
@@ -851,6 +919,7 @@ else
       });
     </script>
 <!-- / DATATABLE AJAX PASIEN LAMA-->
+
 
 <!--footer-->
 <?php 

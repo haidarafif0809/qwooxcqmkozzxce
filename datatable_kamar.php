@@ -39,9 +39,11 @@ $totalFiltered = $totalData;  // when there is no search parameter then total nu
 $sql = "SELECT b.id,kk.nama ,b.nama_kamar,b.group_bed,b.tarif,b.tarif_2,b.tarif_3,b.tarif_4,b.tarif_5,b.tarif_6,b.tarif_7,b.fasilitas,b.jumlah_bed,b.sisa_bed,r.nama_ruangan ";
 $sql.=" FROM bed b LEFT JOIN kelas_kamar kk ON b.kelas = kk.id LEFT JOIN ruangan r ON b.ruangan = r.id WHERE 1=1";
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
-	$sql.=" AND ( nama_kamar LIKE '".$requestData['search']['value']."%' ";
-	$sql.=" OR group_bed LIKE '".$requestData['search']['value']."%' ";
-	$sql.=" OR kelas LIKE '".$requestData['search']['value']."%' )";
+	$sql.=" AND ( b.nama_kamar LIKE '".$requestData['search']['value']."%' ";
+	$sql.=" OR b.group_bed LIKE '".$requestData['search']['value']."%' ";
+	$sql.=" OR r.nama_ruangan LIKE '".$requestData['search']['value']."%' ";
+	$sql.=" OR kk.nama LIKE '".$requestData['search']['value']."%' ";
+	$sql.=" OR b.kelas LIKE '".$requestData['search']['value']."%' )";
 }
 $query=mysqli_query($conn, $sql) or die("datatableee_kamar.php: get employees");
 $totalFiltered = mysqli_num_rows($query); // when there is a search parameter then we have to modify total number filtered rows as per search result. 

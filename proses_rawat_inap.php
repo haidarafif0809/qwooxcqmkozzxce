@@ -29,7 +29,7 @@ else
 
 $username = stringdoang($_SESSION['user_name']);
 $tanggal_lahir = stringdoang($_POST['tanggal_lahir']);
-
+$ruangan = angkadoang(['ruangan']);
 $umur = stringdoang($_POST['umur']);
 $no_rm = stringdoang($_POST['no_rm']);
 $nama_lengkap = stringdoang($_POST['nama_lengkap']);
@@ -163,9 +163,9 @@ $nomor = 1 + $ambil_nomor ;
 
 
 
-$query2 = $db->prepare("INSERT INTO registrasi (alergi,rujukan,nama_pasien,jam,penjamin,status,no_reg,no_rm,tanggal_masuk,kondisi,petugas,alamat_pasien,umur_pasien,hp_pasien,bed,group_bed,menginap,dokter,dokter_pengirim,penanggung_jawab,alamat_penanggung_jawab,hp_penanggung_jawab,pekerjaan_penanggung_jawab,hubungan_dengan_pasien,jenis_kelamin,poli,jenis_pasien,tanggal) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+$query2 = $db->prepare("INSERT INTO registrasi (alergi,rujukan,nama_pasien,jam,penjamin,status,no_reg,no_rm,tanggal_masuk,kondisi,petugas,alamat_pasien,umur_pasien,hp_pasien,bed,group_bed,menginap,dokter,dokter_pengirim,penanggung_jawab,alamat_penanggung_jawab,hp_penanggung_jawab,pekerjaan_penanggung_jawab,hubungan_dengan_pasien,jenis_kelamin,poli,jenis_pasien,tanggal,ruangan) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
-$query2->bind_param("ssssssssssssssssssssssssssss",$alergi,$perujuk,$nama_lengkap,$jam,$penjamin,$menginap_status,$no_reg,$no_rm,$tanggal_sekarang,$kondisi,$username,$alamat,$umur,$hp_pasien,$bed,$group_bed,$menginap,$dokter_penanggung_jawab,$dokter_pengirim,$penanggung_jawab,$alamat_penanggung,$no_hp_penanggung,$pekerjaan,$hubungan_dengan_pasien,$jenis_kelamin,$poli,$rw_inap,$tanggal_sekarang);
+$query2->bind_param("ssssssssssssssssssssssssssssi",$alergi,$perujuk,$nama_lengkap,$jam,$penjamin,$menginap_status,$no_reg,$no_rm,$tanggal_sekarang,$kondisi,$username,$alamat,$umur,$hp_pasien,$bed,$group_bed,$menginap,$dokter_penanggung_jawab,$dokter_pengirim,$penanggung_jawab,$alamat_penanggung,$no_hp_penanggung,$pekerjaan,$hubungan_dengan_pasien,$jenis_kelamin,$poli,$rw_inap,$tanggal_sekarang,$ruangan);
 
 
 $menginap_status = "menginap";
@@ -175,12 +175,9 @@ $query2->execute();
 
 
 
-$sql0 = $db->prepare("INSERT INTO rekam_medik_inap
-(group_bed,alergi,no_reg,no_rm,nama,alamat,umur,jenis_kelamin,sistole_distole,suhu,berat_badan,tinggi_badan,nadi,
-respiratory,poli,tanggal_periksa,jam,dokter,kondisi,rujukan,dokter_penanggung_jawab,bed)
-VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+$sql0 = $db->prepare("INSERT INTO rekam_medik_inap (group_bed,alergi,no_reg,no_rm,nama,alamat,umur,jenis_kelamin,sistole_distole,suhu,berat_badan,tinggi_badan,nadi,respiratory,poli,tanggal_periksa,jam,dokter,kondisi,rujukan,dokter_penanggung_jawab,bed,ruangan) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
-$sql0->bind_param("ssssssssssssssssssssss",$group_bed,$alergi,$no_reg,$no_rm,$nama_lengkap,$alamat,$umur,$jenis_kelamin,$sistole_distole,$suhu,$berat_badan,$tinggi_badan,$nadi,$respiratory_rate,$poli,$tanggal_sekarang,$jam,$dokter_pengirim,$kondisi,$perujuk,$dokter_penanggung_jawab,$bed);
+$sql0->bind_param("ssssssssssssssssssssssi",$group_bed,$alergi,$no_reg,$no_rm,$nama_lengkap,$alamat,$umur,$jenis_kelamin,$sistole_distole,$suhu,$berat_badan,$tinggi_badan,$nadi,$respiratory_rate,$poli,$tanggal_sekarang,$jam,$dokter_pengirim,$kondisi,$perujuk,$dokter_penanggung_jawab,$bed, $ruangan);
 
 
 $sql0->execute();
