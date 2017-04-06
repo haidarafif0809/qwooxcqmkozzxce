@@ -200,6 +200,9 @@ if ($lihat['perujuk_lihat'] > 0){
     echo '<li><a href="perujuk.php" class="waves-effect">Perujuk</a></li>';
 }
 
+if ($lihat['perujuk_lihat'] > 0){
+    echo '<li><a href="perujuk.php" class="waves-effect">Perujuk</a></li>';
+}
 
 ?>
 
