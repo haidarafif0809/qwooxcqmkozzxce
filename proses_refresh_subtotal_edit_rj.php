@@ -12,16 +12,7 @@ include 'sanitasi.php';
  $query = $db->query("SELECT SUM(subtotal) AS total_penjualan FROM tbs_penjualan WHERE no_reg = '$no_reg' AND no_faktur = '$no_faktur' ");
  $data = mysqli_fetch_array($query);
 
- $total = $data['total_penjualan'];
-
-// menampilakn hasil penjumlah subtotal ALIAS total penjualan dari tabel tbs_penjualan berdasarkan data no faktur
- $querylab = $db->query("SELECT SUM(subtotal) AS total_penjualan FROM tbs_penjualan WHERE no_reg = '$no_reg' AND lab = 'Laboratorium' AND no_faktur = '$no_faktur' ");
- $datalab = mysqli_fetch_array($querylab);
- $totallab = $datalab['total_penjualan'];
-
-
-echo$tt = $total + $totallab;
-
+ echo$total = $data['total_penjualan'];
 
 
 //Untuk Memutuskan Koneksi Ke Database

@@ -771,12 +771,10 @@ Level 7
                 <th> Jumlah </th>
                 <th> Satuan </th>
                 <th> Harga </th>
-                <th> Subtotal </th>
                 <th> Potongan </th>
                 <th> Pajak </th>
+                <th> Subtotal </th>
                 <th>Waktu</th>
-                
-                
                 <th> Hapus </th>
                 
                 </thead>
@@ -1992,7 +1990,7 @@ alert("Silakan Bayar Piutang");
  {
 
 
- $.post("cek_subtotal_penjualan_edit_inap.php",{total:total,total2:total2,no_reg:no_reg,no_faktur:no_faktur,tax:tax,potongan_persen:potongan_persen,biaya_adm:biaya_admin},function(data) {
+ $.post("cek_subtotal_penjualan_edit_inap.php",{total:total,total2:total2,no_reg:no_reg,no_faktur:no_faktur,tax:tax,potongan:potongan,biaya_adm:biaya_admin},function(data) {
 
   if (data == 1) {
 
