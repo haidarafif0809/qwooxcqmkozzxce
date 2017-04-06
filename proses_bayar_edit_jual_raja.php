@@ -13,10 +13,13 @@ $no_reg = stringdoang($_POST['no_reg']);
 // menampilakn hasil penjumlah subtotal ALIAS total penjualan dari tabel tbs_penjualan berdasarkan data no faktur
  $query = $db->query("SELECT SUM(subtotal) AS total_penjualan FROM tbs_penjualan WHERE no_reg = '$no_reg' AND no_faktur = '$nomor_faktur'");
  $data = mysqli_fetch_array($query);
- $total_ss = $data['total_penjualan'];
+ $total_penjualan = $data['total_penjualan'];
+
+  $sum_harga = $db->query("SELECT SUM(subtotal) AS harga_radiologi FROM tbs_penjualan_radiologi WHERE no_reg = '$no_reg' AND status_periksa = '1' AND no_faktur = '$nomor_faktur'");
+ $data_radiologi= mysqli_fetch_array($sum_harga);
 
 
-$total_tbs = ($total_ss - $potongan) + $biaya_admin;
+$total_tbs = ($total_penjualan + $data_radiologi['harga_radiologi'] - $potongan) + $biaya_admin;
 
 if ($total != $total_tbs) {
     echo 1;
