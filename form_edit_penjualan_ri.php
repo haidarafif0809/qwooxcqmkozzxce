@@ -1992,7 +1992,7 @@ alert("Silakan Bayar Piutang");
  {
 
 
- $.post("cek_subtotal_penjualan_edit_inap.php",{total:total,total2:total2,no_reg:no_reg,no_faktur:no_faktur,tax:tax,potongan_persen:potongan_persen,biaya_adm:biaya_admin},function(data) {
+ $.post("cek_subtotal_penjualan_edit_inap.php",{total:total,total2:total2,no_reg:no_reg,no_faktur:no_faktur,tax:tax,potongan:potongan,biaya_adm:biaya_admin},function(data) {
 
   if (data == 1) {
 
@@ -2158,7 +2158,7 @@ alert("Silakan Bayar Piutang");
  {
 
 
- $.post("cek_subtotal_penjualan_edit_inap.php",{total:total,total2:total2,no_reg:no_reg,no_faktur:no_faktur,tax:tax,potongan_persen:potongan_persen,biaya_adm:biaya_admin},function(data) {
+ $.post("cek_subtotal_penjualan_edit_inap.php",{total:total,total2:total2,no_reg:no_reg,no_faktur:no_faktur,tax:tax,potongan:potongan,biaya_adm:biaya_admin},function(data) {
 
   if (data == 1) {
 
@@ -2250,6 +2250,7 @@ else
         var total = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah( $("#total1").val() )))); 
         var total2 = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah( $("#total2").val() )))); 
         var potongan =  bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah( $("#potongan_penjualan").val() ))));
+        potongan = Math.round(potongan);
         var potongan_persen = $("#potongan_persen").val();
         var tax = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#tax_rp").val()))));
         var cara_bayar = $("#carabayar1").val();
@@ -2304,7 +2305,7 @@ else
        {
 
 
- $.post("cek_subtotal_penjualan_edit_inap.php",{total:total,total2:total2,no_reg:no_reg,no_faktur:no_faktur,tax:tax,potongan_persen:potongan_persen,biaya_adm:biaya_admin},function(data) {
+ $.post("cek_subtotal_penjualan_edit_inap.php",{total:total,total2:total2,no_reg:no_reg,no_faktur:no_faktur,tax:tax,potongan:potongan,biaya_adm:biaya_admin},function(data) {
 
   if (data == 1) {
 
@@ -2391,6 +2392,7 @@ else
         var total = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah( $("#total1").val() )))); 
         var total2 = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah( $("#total2").val() )))); 
         var potongan =  bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah( $("#potongan_penjualan").val() ))));
+        potongan = Math.round(potongan);
         var potongan_persen = $("#potongan_persen").val();
         var tax1 = $("#tax_rp").val();
         var tax = Math.round(tax1);
@@ -2436,7 +2438,7 @@ else
        else
        {
 
- $.post("cek_subtotal_penjualan_edit_inap.php",{total:total,total2:total2,no_reg:no_reg,no_faktur:no_faktur,tax:tax,potongan_persen:potongan_persen,biaya_adm:biaya_admin},function(data) {
+ $.post("cek_subtotal_penjualan_edit_inap.php",{total:total,total2:total2,no_reg:no_reg,no_faktur:no_faktur,tax:tax,potongan:potongan,biaya_adm:biaya_admin},function(data) {
 
   if (data == 1) {
 
