@@ -118,7 +118,7 @@ if ($otoritas_tombol['foto_hasil'] > 0) {
       }
       else{
 
-      $nestedData[] = "<button class='btn btn-floating btn-small btn-info tampil_foto' data-reg='". $row['no_reg']."' data-nama='". $row['nama_barang']."' data-kode='". $row['kode_barang']."' ><i class='fa fa-photo'></i></button>";
+      $nestedData[] = "<button class='btn btn-floating btn-small btn-info tampil_foto' data-reg='". $row['no_reg']."' data-nama='". $row['nama_barang']."' data-kode='". $row['kode_barang']."' data-status='".$row['status_periksa']."' ><i class='fa fa-photo'></i></button>";
         
       }
 }

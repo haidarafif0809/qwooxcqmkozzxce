@@ -36,9 +36,7 @@ $columns = array(
 // getting total number records without any search
 $sql =" SELECT tp.no_reg,tp.id,tp.no_faktur,tp.kode_barang,tp.satuan,tp.nama_barang,tp.jumlah_barang,tp.harga,tp.subtotal,tp.potongan,tp.tax,tp.jam,tp.tipe_barang,s.nama ";
 $sql.=" FROM tbs_penjualan tp LEFT JOIN satuan s ON tp.satuan = s.id ";
-
-$sql.=" WHERE tp.no_faktur = '$no_faktur' AND tp.no_reg = '$no_reg' AND (tp.lab IS NULL OR tp.lab = '') AND tp.tipe_barang = 'Barang' ";
-
+$sql.=" WHERE tp.no_faktur = '$no_faktur' AND tp.no_reg = '$no_reg' AND tp.tipe_barang = 'Jasa' AND (tp.lab IS NULL OR tp.lab = '')";
 
 $query = mysqli_query($conn, $sql) or die("eror 1");
 $totalData = mysqli_num_rows($query);
@@ -47,8 +45,7 @@ $totalFiltered = $totalData;  // when there is no search parameter then total nu
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
 $sql ="SELECT tp.no_reg,tp.id,tp.no_faktur,tp.kode_barang,tp.satuan,tp.nama_barang,tp.jumlah_barang,tp.harga,tp.subtotal,tp.potongan,tp.tax,tp.jam,tp.tipe_barang,s.nama ";
 $sql.="  FROM tbs_penjualan tp LEFT JOIN satuan s ON tp.satuan = s.id ";
-$sql.=" WHERE tp.no_faktur = '$no_faktur' AND tp.no_reg = '$no_reg' AND (tp.lab IS NULL OR tp.lab = '') AND tp.tipe_barang = 'Barang' ";
-
+$sql.=" WHERE tp.no_faktur = '$no_faktur' AND tp.no_reg = '$no_reg' AND tp.tipe_barang = 'Jasa' AND (tp.lab IS NULL OR tp.lab = '') ";
 
     $sql.=" AND (tp.kode_barang LIKE '".$requestData['search']['value']."%'";  
     $sql.=" OR tp.nama_barang LIKE '".$requestData['search']['value']."%' ";
