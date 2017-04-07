@@ -22,6 +22,8 @@ $detail = $db->query("SELECT * FROM detail_penjualan WHERE no_faktur = '$no_fakt
 	<th> Satuan </th>
 	<th> Tipe Produk </th>
 	<th> Harga </th>
+	<th> Potongan </th>
+	<th> Tax </th>
 	<th> Subtotal </th>
 					
 					
@@ -56,6 +58,8 @@ echo "<tr>
 					echo"<td>". $data['nama'] ."</td>
 					<td>". $data['tipe_produk'] ."</td>
 					<td>". rp($data['harga']) ."</td>
+					<td>". rp($data['potongan']) ."</td>
+					<td>". rp($data['tax']) ."</td>
 					<td>". rp($data['subtotal']) ."</td>
 
 					</tr>";
@@ -93,6 +97,8 @@ echo "<tr>
             <td class='table1' >-</td>
             <td class='table1' >-</td>
             <td class='table1' >". rp($out_operasi['harga_jual']) ."</td>
+            <td class='table1' >-</td>
+            <td class='table1' >-</td>
             <td class='table1' >". rp($out_operasi['harga_jual']) ."</td>
       </tr>";
 
@@ -116,6 +122,8 @@ echo "<tr>
             <td class='table1'>Radiologi</td>
             <td class='table1'>". $data_hasil['tipe_barang'] ."</td>
             <td class='table1'>". rp($data_hasil['harga']) ."</td>
+            <td class='table1'>". rp($data_hasil['potongan']) ."</td>
+            <td class='table1'>". rp($data_hasil['tax']) ."</td>
             <td class='table1'>". rp($data_hasil['subtotal']) ."</td>
       </tr>";
 

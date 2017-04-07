@@ -1717,16 +1717,7 @@ if (ppn == 'Exclude') {
  {
 alert(" Kode Gudang Harus Diisi ");
  }
-  else if (no_resep_dokter == "")
- {
-alert(" No. Resep Dokter Harus Diisi ");
-$("#no_resep_dokter").focus();
- }
-  else if (resep_dokter == "")
- {
-alert(" Resep Dokter Harus Diisi ");
-$("#resep_dokter").focus();
- }
+
 
 else if (pembayaran == "") 
  {
@@ -1865,17 +1856,7 @@ alert("Anda Belum Melakukan Pemesanan");
        
        var sisa_kredit = total - pembayaran;
       
- if (no_resep_dokter == "")
-         {
-        alert(" No. Resep Dokter Harus Diisi ");
-        $("#no_resep_dokter").focus();
-         }
- else if (resep_dokter == "")
-         {
-        alert(" Resep Dokter Harus Diisi ");
-        $("#resep_dokter").focus();
-         }
-else if (tanggal_jt == "")
+if (tanggal_jt == "")
        {
         alert ("Tanggal Jatuh Tempo Harus Di Isi");
         $("#tanggal_jt").focus(); 

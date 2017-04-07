@@ -86,24 +86,12 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
            $nestedData[] = "";
         }
 
-      $nestedData[] = $row["jumlah_barang"];
-      $nestedData[] = $row["harga"];
-      $nestedData[] = $row["subtotal"];
-      $nestedData[] = $row["potongan"];
-      $nestedData[] = $row["tax"];
+      $nestedData[] = rp($row["jumlah_barang"]);
+      $nestedData[] = rp($row["harga"]);
+      $nestedData[] = rp($row["potongan"]);
+      $nestedData[] = rp($row["tax"]);
+      $nestedData[] = rp($row["subtotal"]);
 
-
-      //
-      if ($otoritas_tombol['edit_tanggal_inap'] > 0)
-      {
-
-      $nestedData[] = "<p style='font-size:15px' align='right' class='edit-tanggal-lab' data-id='".$row['id']."' data-kode='".$row['kode_barang']."'> <span id='text-tanggal-".$row['id']."'> ".$row['tanggal']." ".$row['jam']." </span> <input type='hidden' id='input-tanggal-".$row['id']."' value='".$row['tanggal']."' class='input_tanggal_lab' data-id='".$row['id']."' autofocus='' data-kode='".$row['kode_barang']."' data-jam='".$row['jam']."' > </p>";
-      }
-        else
-      {
-        $nestedData[] = "<p style='font-size:15px' align='right' class='gk_bisa_edit_tanggal'> ".$row['tanggal']." ".$row['jam']." </p>";
-      }
-      //
 
       $nestedData[] = $row["id"];
 

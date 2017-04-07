@@ -335,16 +335,22 @@ $query0 = $db->query("SELECT * FROM tbs_penjualan WHERE kode_barang = '$kode' AN
                   }
 
 
+
+
                 echo"<td style='font-size:15px' align='right' class='edit-jumlah' data-id='".$data1['id']."'><span id='text-jumlah-".$data1['id']."'>". $data1['jumlah_barang'] ."</span> <input type='hidden' id='input-jumlah-".$data1['id']."' value='".$data1['jumlah_barang']."' class='input_jumlah' data-id='".$data1['id']."' autofocus='' data-kode='".$data1['kode_barang']."' data-tipe='".$data1['tipe_barang']."' data-harga='".$data1['harga']."' data-satuan='".$data1['satuan']."' data-tipe='".$data1['tipe_barang']."' > </td>
-                <td style='font-size:15px' align='right'>". rp($data1['harga']) ."</td>
-                <td style='font-size:15px' align='right'><span id='text-subtotal-".$data1['id']."'>". rp($data1['subtotal']) ."</span></td>
-                <td style='font-size:15px' align='right'><span id='text-potongan-".$data1['id']."'>". rp($data1['potongan']) ."</span></td>
-                <td style='font-size:15px' align='right'><span id='text-tax-".$data1['id']."'>". rp($data1['tax']) ."</span></td>";
+
+                <td style='font-size:15px' align='right'><span id='text-harga-".$data1['id']."'>". rp($data1['harga']) ."</span></td>
+
+                <td class='edit-potongan' data-id='".$data1['id']."' style='font-size:15px' align='right'><span id='text-potongan-".$data1['id']."'>". rp($data1['potongan']) ."</span>
+                <input type='hidden' id='input-potongan-".$data1['id']."' value='".$data1['potongan']."' class='input_potongan' data-id='".$data1['id']."' autofocus='' data-kode='".$data1['kode_barang']."'></td>
+
+
+                <td style='font-size:15px' align='right'><span id='text-tax-".$data1['id']."'>". rp($data1['tax']) ."</span></td>
+                <td style='font-size:15px' align='right'><span id='text-subtotal-".$data1['id']."'>". rp($data1['subtotal']) ."</span></td>";
 
                echo "<td style='font-size:15px' align='right'> <button class='btn btn-danger btn-sm btn-hapus-tbs' id='btn-hapus-id-".$data1['id']."' data-id='". $data1['id'] ."' data-kode-barang='". $data1['kode_barang'] ."' data-barang='". $data1['nama_barang'] ."' data-subtotal='". $data1['subtotal'] ."'>Hapus</button> </td> 
 
                 </tr>";
-
 
 //Untuk Memutuskan Koneksi Ke Database
 mysqli_close($db); 
