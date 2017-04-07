@@ -12,9 +12,7 @@ include 'sanitasi.php';
  $query = $db->query("SELECT SUM(subtotal) AS total_penjualan FROM tbs_penjualan WHERE no_reg = '$no_reg' AND no_faktur = '$no_faktur' ");
  $data = mysqli_fetch_array($query);
 
- $total = $data['total_penjualan'];
-
- echo$totallab = $datalab['total_penjualan'];
+  echo$total = $data['total_penjualan'];
 
 
 //Untuk Memutuskan Koneksi Ke Database
