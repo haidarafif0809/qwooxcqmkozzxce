@@ -502,6 +502,8 @@ img:hover {
 
             $('#modal_pasien').modal('hide');
             $('.tampil_col').hide();
+
+    // DESTROY ELEVATEZOOM 
             $.removeData($('.zoom_foto'), 'elevateZoom');
             $('.zoomContainer').remove();
 
@@ -614,6 +616,8 @@ img:hover {
             });
 
             $(".span-hapus").remove();
+
+        // DESTROY ELEVATEZOOM 
             $.removeData($('.zoom_foto'), 'elevateZoom');
             $('.zoomContainer').remove();
 
@@ -632,6 +636,8 @@ img:hover {
             });
 
             $(".span-hapus").remove();
+
+        // DESTROY ELEVATEZOOM 
             $.removeData($('.zoom_foto'), 'elevateZoom');
             $('.zoomContainer').remove();
           }
@@ -759,6 +765,7 @@ $(document).ready(function() {
     var nama = $(this).attr('data-nama');
     var status_periksa = $(this).attr('data-status');
 
+// DESTROY ELEVATEZOOM 
     $.removeData($('.zoom_foto'), 'elevateZoom');
     $('.zoomContainer').remove();
 
@@ -1103,7 +1110,10 @@ $(document).ready(function() {
         $(".tampil_col").hide('fast');
       }
 
-      
+          // DESTROY ELEVATEZOOM 
+            $.removeData($('.zoom_foto'), 'elevateZoom');
+            $('.zoomContainer').remove();
+
     });
 
 });
@@ -1127,6 +1137,10 @@ $(document).ready(function() {
         $("#transaksi_baru").hide('fast');
         $("#cetak_radiologi").hide('fast');
         $("#tampil_col").hide();
+
+    // DESTROY ELEVATEZOOM 
+            $.removeData($('.zoom_foto'), 'elevateZoom');
+            $('.zoomContainer').remove();
 
        $('#tabel_cari_pasien').DataTable().destroy();
         var dataTable = $('#tabel_cari_pasien').DataTable( {
@@ -1160,8 +1174,8 @@ $(document).ready(function() {
 
         }); 
 
-       $('#tabel_cari_pasien'_ugd).DataTable().destroy();
-        var dataTable = $('#tabel_cari_pasien'_ugd).DataTable( {
+       $('#tabel_cari_pasien_ugd').DataTable().destroy();
+        var dataTable = $('#tabel_cari_pasien_ugd').DataTable( {
           "processing": true,
           "serverSide": true,
           "ajax":{
@@ -1169,7 +1183,7 @@ $(document).ready(function() {
             type: "post",  // method  , by default get
             error: function(){  // error handling
               $(".employee-grid-error").html("");
-              $("#tabel_cari_pasien"_ugd).append('<tbody class="employee-grid-error"><tr><th colspan="3">Data Tidak Ditemukan.. !!</th></tr></tbody>');
+              $("#tabel_cari_pasien_ugd").append('<tbody class="employee-grid-error"><tr><th colspan="3">Data Tidak Ditemukan.. !!</th></tr></tbody>');
               $("#employee-grid_processing").css("display","none");
               
             }
