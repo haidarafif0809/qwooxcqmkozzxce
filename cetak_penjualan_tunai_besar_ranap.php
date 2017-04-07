@@ -88,7 +88,7 @@ include 'db.php';
 
       <tr><td  width="25%"><font class="satu"><?php echo $data200['kata_ubah']; ?></font></td> <td> :&nbsp;</td> <td> <font class="satu"><?php echo $data_inner['nama_asli']; ?></font> </td></tr>
       <tr><td  width="25%"><font class="satu">Alamat</font></td> <td> :&nbsp;</td> <td><font class="satu"> <?php echo $data_inner['alamat']; ?> </font></td></tr>
-      <tr><td  width="25%"><font class="satu">Ket.</font></td> <td> :&nbsp;</td> <td><font class="satu"> <?php echo $data_inner['keterangan']; ?> </font></td></tr>
+      <tr><td  width="25%"><font class="satu">Keterangan</font></td> <td> :&nbsp;</td> <td><font class="satu"> <?php echo $data_inner['keterangan']; ?> </font></td></tr>
 
             
 
@@ -133,6 +133,19 @@ include 'db.php';
 
 
 </style>
+<br>
+
+<?php 
+
+    # query untuk ngecek apakh ada  Kamar di detail penjualan
+
+  $query5 = $db->query("SELECT * FROM detail_penjualan WHERE no_faktur = '$no_faktur' AND tipe_produk = 'Bed' ");
+  $cek_kamar = mysqli_num_rows($query5);
+
+  if ($cek_kamar > 0) {# JIKA ADA Kamar maka akan ditampilkan -->
+
+
+  ?>
 
 <h6><b>Kamar</b></h6>
 
@@ -153,7 +166,7 @@ include 'db.php';
         <tbody>
         <?php
 
-            $query5 = $db->query("SELECT * FROM detail_penjualan WHERE no_faktur = '$no_faktur' AND tipe_produk = 'Bed' ");
+            
             //menyimpan data sementara yang ada pada $perintah
             while ($data5 = mysqli_fetch_array($query5))
             {
@@ -220,6 +233,16 @@ $kd = $db->query("SELECT f.nama_petugas, u.nama FROM laporan_fee_produk f INNER 
 
 <h6 align="right"><b>Subtotal Kamar : <?php echo rp($subtotal_bed); ?></b></h6>
 
+  <?php }  # END JIKA ADA Kamar maka akan ditampilkan -->
+
+
+  $query_jasa = $db->query("SELECT dp.lab,dp.kode_barang,dp.tanggal,dp.jam,dp.nama_barang,dp.jumlah_barang,dp.harga,dp.potongan,dp.tax,dp.subtotal FROM detail_penjualan dp LEFT JOIN barang bb ON dp.kode_barang = bb.kode_barang  WHERE dp.no_faktur = '$no_faktur' AND bb.berkaitan_dgn_stok = 'Jasa' AND ( dp.lab = '' OR dp.lab IS NULL )");
+  $cek_jasa = mysqli_num_rows($query_jasa);
+
+  if ($cek_jasa > 0) { #<!-- JIKA ADA Jasa maka akan ditampilkan -->
+
+  ?>
+
 <h6><b>Jasa & Tindakan </b></h6>
 
 <table id="tableuser" class="table table-bordered table-sm">
@@ -239,17 +262,14 @@ $kd = $db->query("SELECT f.nama_petugas, u.nama FROM laporan_fee_produk f INNER 
         <tbody>
         <?php
 
-            $query5 = $db->query("SELECT dp.lab,dp.kode_barang,dp.tanggal,dp.jam,dp.nama_barang,dp.jumlah_barang,dp.harga,dp.potongan,dp.tax,dp.subtotal FROM detail_penjualan dp LEFT JOIN barang bb ON dp.kode_barang = bb.kode_barang  WHERE dp.no_faktur = '$no_faktur' AND bb.berkaitan_dgn_stok = 'Jasa' AND ( dp.lab = '' OR dp.lab IS NULL )");
+
             //menyimpan data sementara yang ada pada $perintah
-            while ($data5 = mysqli_fetch_array($query5))
+            while ($data5 = mysqli_fetch_array($query_jasa))
             {
 
               $kode = $db->query("SELECT dp.satuan, s.nama FROM detail_penjualan dp LEFT JOIN satuan s ON dp.satuan = s.id  WHERE dp.kode_barang = '$data5[kode_barang]' ");
               $satuan_b = mysqli_fetch_array($kode);
               $satuan = $satuan_b['nama'];
-
-
-
 
            echo "<tr>";
 
@@ -307,6 +327,16 @@ $kd = $db->query("SELECT f.nama_petugas, u.nama FROM laporan_fee_produk f INNER 
 
 <h6 align="right"><b>Subtotal Jasa & Tindakan : <?php echo rp($subtotal_jasa); ?></b></h6>
 
+  <?php } # #<!-- JIKA ADA Jasa maka akan ditampilkan -->
+
+
+      $query_obat = $db->query("SELECT dp.kode_barang,dp.tanggal,dp.jam,dp.nama_barang,dp.jumlah_barang,dp.harga,dp.potongan,dp.tax,dp.subtotal FROM detail_penjualan dp LEFT JOIN barang bb ON dp.kode_barang = bb.kode_barang  WHERE dp.no_faktur = '$no_faktur' AND bb.berkaitan_dgn_stok = 'Barang' AND ( dp.lab = '' OR dp.lab IS NULL ) ");
+      $cek_obat = mysqli_num_rows($query_obat);
+
+      if ($cek_obat > 0 ) { #<!-- JIKA ADA OBAT maka akan ditampilkan -->
+      
+   ?>
+
 <h6><b> Obat Obatan / Alkes </b></h6>
 
 <table id="tableuser" class="table table-bordered table-sm">
@@ -326,9 +356,8 @@ $kd = $db->query("SELECT f.nama_petugas, u.nama FROM laporan_fee_produk f INNER 
         <tbody>
         <?php
 
-            $query5 = $db->query("SELECT dp.kode_barang,dp.tanggal,dp.jam,dp.nama_barang,dp.jumlah_barang,dp.harga,dp.potongan,dp.tax,dp.subtotal FROM detail_penjualan dp LEFT JOIN barang bb ON dp.kode_barang = bb.kode_barang  WHERE dp.no_faktur = '$no_faktur' AND bb.berkaitan_dgn_stok = 'Barang' AND ( dp.lab = '' OR dp.lab IS NULL ) ");
             //menyimpan data sementara yang ada pada $perintah
-            while ($data5 = mysqli_fetch_array($query5))
+            while ($data5 = mysqli_fetch_array($query_obat))
             {
 
               $kode = $db->query("SELECT dp.satuan, s.nama FROM detail_penjualan dp LEFT JOIN satuan s ON dp.satuan = s.id  WHERE dp.kode_barang = '$data5[kode_barang]' ");
@@ -392,6 +421,17 @@ $kd = $db->query("SELECT f.nama_petugas, u.nama FROM laporan_fee_produk f INNER 
 
 <h6 align="right"><b>Subtotal Obat Obatan / Alkes : <?php echo rp($subtotal_barang); ?></b></h6>
 
+<?php } #<!-- JIKA ADA OBAT maka akan ditampilkan -->
+  
+
+      $query_lab = $db->query("SELECT * FROM detail_penjualan WHERE no_faktur = '$no_faktur' AND lab = 'Laboratorium' ");
+      $cek_lab = mysqli_num_rows($query_lab);
+
+      if ($cek_lab > 0) {
+        # JIKA ADA Laboratorium maka akan ditampilkan -->...
+ ?>
+
+
 <h6><b>Laboratorium</b></h6>
 
 <table id="tableuser" class="table table-bordered table-sm">
@@ -411,9 +451,8 @@ $kd = $db->query("SELECT f.nama_petugas, u.nama FROM laporan_fee_produk f INNER 
         <tbody>
         <?php
 
-      $query5 = $db->query("SELECT * FROM detail_penjualan WHERE no_faktur = '$no_faktur' AND lab = 'Laboratorium' ");
             //menyimpan data sementara yang ada pada $perintah
-            while ($data5 = mysqli_fetch_array($query5))
+            while ($data5 = mysqli_fetch_array($query_lab))
             {
 
            echo "<tr>";
@@ -470,7 +509,16 @@ $kd = $db->query("SELECT f.nama_petugas, u.nama FROM laporan_fee_produk f INNER 
 </table>
 
 <h6 align="right"><b>Subtotal Laboratorium : <?php echo rp($subtotal_lab); ?></b></h6>
+<?php } #  END JIKA ADA Laboratorium maka akan ditampilkan -->...
 
+    // OPERASI TABLE
+  $query_operasi = $db->query("SELECT DATE(waktu) AS tanggal,id,operasi,no_reg,harga_jual FROM hasil_operasi WHERE no_reg = '$data_inner[no_reg]'");
+  $cek_operasi = mysqli_num_rows($query_operasi);
+
+  if ($cek_operasi > 0) {
+    # START JIKA ADA Operasi maka akan ditampilkan -->...
+
+ ?>
 
 <h6><b>Operasi</b></h6>
 
@@ -491,9 +539,8 @@ $kd = $db->query("SELECT f.nama_petugas, u.nama FROM laporan_fee_produk f INNER 
         <tbody>
 <?php        
 // OPERASI TABLE
- $take_data_or = $db->query("SELECT DATE(waktu) AS tanggal,id,operasi,no_reg,harga_jual FROM hasil_operasi WHERE no_reg = '$data_inner[no_reg]'");
         $no_urut = 0;
-    while($out_operasi = mysqli_fetch_array($take_data_or))
+    while($out_operasi = mysqli_fetch_array($query_operasi))
       {
                    
         $select_or = $db->query("SELECT id_operasi,nama_operasi FROM operasi WHERE id_operasi = '$out_operasi[operasi]'");
@@ -545,7 +592,7 @@ $kd = $db->query("SELECT f.nama_petugas, u.nama FROM laporan_fee_produk f INNER 
 
 <h6 align="right"><b>Subtotal Operasi : <?php echo rp($subtotal_operasi); ?></b></h6>
 
-
+<?php   } ?>
 <br>
         <div class="col-sm-6">
             

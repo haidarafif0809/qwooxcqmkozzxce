@@ -6,7 +6,7 @@ include 'sanitasi.php';
 include 'db.php';
 
 
-  $no_faktur = $_GET['no_faktur'];
+  $no_faktur = stringdoang($_GET['no_faktur']);
 
     $query0 = $db->query("SELECT p.nama AS nama_asli,p.penjamin ,p.no_reg,p.biaya_admin,p.id,p.no_faktur,p.total,p.kode_pelanggan,p.keterangan,p.cara_bayar,p.tanggal,p.tanggal_jt,p.jam,p.user,p.sales,p.kode_meja,p.status,p.potongan,p.tax,p.sisa,p.kredit,p.kode_gudang,p.tunai,pl.nama_pelanggan,pl.wilayah,dp.satuan,dp.jumlah_barang,dp.subtotal,dp.nama_barang,dp.harga, da.nama_daftar_akun, s.nama, pl.alamat_sekarang AS alamat, s.nama AS nama_satuan FROM penjualan p LEFT JOIN detail_penjualan dp ON p.no_faktur = dp.no_faktur LEFT JOIN pelanggan pl ON p.kode_pelanggan = pl.kode_pelanggan LEFT JOIN daftar_akun da ON p.cara_bayar = da.kode_daftar_akun LEFT JOIN satuan s ON dp.satuan = s.id WHERE p.no_faktur = '$no_faktur' ORDER BY p.id DESC");
      $data_inner = mysqli_fetch_array($query0);
@@ -132,7 +132,15 @@ include 'db.php';
 
 </style>
 
+  <?php 
 
+        # query untuk ngecek apakh ada  Obat Obatan / Alkes di detail penjualan
+    $query_obat = $db->query("SELECT dp.nama_barang, dp.no_faktur, dp.kode_barang, dp.jumlah_barang, dp.lab, dp.harga, dp.potongan, dp.tax, dp.subtotal, s.nama FROM detail_penjualan dp LEFT JOIN satuan s ON dp.satuan = s.id WHERE dp.no_reg = '$data_inner[no_reg]' AND dp.tipe_produk = 'Barang' AND (dp.lab IS NULL OR dp.lab = '') ");
+    $cek_obat = mysqli_num_rows($query_obat);
+
+        if ($cek_obat > 0){ #<!-- JIKA ADA Laboratorium maka akan ditampilkan -->
+
+     ?>
 
 <!-- OBAT OBATAN / ALKES (BARANG) -->
 <h5><b><u>Obat Obatan / Alkes</u></b></h5>
@@ -155,9 +163,8 @@ include 'db.php';
 
         $no_urut = 0;
 
-            $query5 = $db->query("SELECT dp.nama_barang, dp.no_faktur, dp.kode_barang, dp.jumlah_barang, dp.lab, dp.harga, dp.potongan, dp.tax, dp.subtotal, s.nama FROM detail_penjualan dp INNER JOIN satuan s ON dp.satuan = s.id WHERE dp.no_reg = '$data_inner[no_reg]' AND dp.tipe_produk = 'Barang' AND (dp.lab IS NULL OR dp.lab = '') ");
             //menyimpan data sementara yang ada pada $perintah
-            while ($data5 = mysqli_fetch_array($query5))
+            while ($data5 = mysqli_fetch_array($query_obat))
             {
 
               $no_urut ++;
@@ -234,6 +241,17 @@ include 'db.php';
     </table>
     <br>
 
+
+  <?php }  # END <!-- JIKA ADA Laboratorium maka akan ditampilkan -->
+
+        # query untuk ngecek apakh ada  Jasa / Tindakan  di detail penjualan
+    $query_jasa = $db->query("SELECT dp.nama_barang, dp.no_faktur, dp.kode_barang, dp.jumlah_barang, dp.lab, dp.harga, dp.potongan, dp.tax, dp.subtotal, s.nama FROM detail_penjualan dp INNER JOIN satuan s ON dp.satuan = s.id WHERE dp.no_reg = '$data_inner[no_reg]' AND dp.tipe_produk = 'Jasa' AND (dp.lab IS NULL OR dp.lab = '') ");
+    $cek_jasa = mysqli_num_rows($query_jasa);
+
+        if ($cek_jasa > 0){ #<!-- JIKA ADA Jasa / Tindakan  maka akan ditampilkan -->
+
+     ?>
+
 <!-- TINDAKAN (JASA) -->
 <h5><b><u>Jasa / Tindakan </u></b></h5>
   <table id="tabel_jasa" class="table table-bordered table-sm">
@@ -255,9 +273,9 @@ include 'db.php';
 
         $no_urut = 0;
 
-            $query5 = $db->query("SELECT dp.nama_barang, dp.no_faktur, dp.kode_barang, dp.jumlah_barang, dp.lab, dp.harga, dp.potongan, dp.tax, dp.subtotal, s.nama FROM detail_penjualan dp INNER JOIN satuan s ON dp.satuan = s.id WHERE dp.no_reg = '$data_inner[no_reg]' AND dp.tipe_produk = 'Jasa' AND (dp.lab IS NULL OR dp.lab = '') ");
+
             //menyimpan data sementara yang ada pada $perintah
-            while ($data5 = mysqli_fetch_array($query5))
+            while ($data5 = mysqli_fetch_array($query_jasa))
             {
 
               $no_urut ++;
@@ -333,8 +351,19 @@ include 'db.php';
     </table>
     <br>
 
+
+  <?php }  # END <!-- JIKA  LABORATORIUM maka akan ditampilkan -->
+
+    $query_lab = $db->query("SELECT nama_barang, no_faktur, kode_barang, jumlah_barang, lab, harga, potongan, tax, subtotal FROM detail_penjualan WHERE no_reg = '$data_inner[no_reg]' AND tipe_produk = 'Jasa' AND lab = 'Laboratorium' ");
+    $cek_lab = mysqli_num_rows($query_lab);
+
+    if ($cek_lab > 0){ #<!-- JIKA LABORATORIUM  maka akan ditampilkan -->
+
+     ?>
+
 <!-- LABORATORIUM -->
 <h5><b><u>Laboratorium </u></b></h5>
+
   <table id="tabel_jasa" class="table table-bordered table-sm">
         <thead>
             <th class="table1" style="width: 3%"> <center> No. </center> </th>
@@ -354,9 +383,9 @@ include 'db.php';
 
         $no_urut = 0;
 
-            $query5 = $db->query("SELECT nama_barang, no_faktur, kode_barang, jumlah_barang, lab, harga, potongan, tax, subtotal FROM detail_penjualan WHERE no_reg = '$data_inner[no_reg]' AND tipe_produk = 'Jasa' AND lab = 'Laboratorium' ");
+
             //menyimpan data sementara yang ada pada $perintah
-            while ($data5 = mysqli_fetch_array($query5))
+            while ($data5 = mysqli_fetch_array($query_lab))
             {
 
               $no_urut ++;
@@ -426,6 +455,15 @@ include 'db.php';
     <br>
 
 <!-- LABORATORIUM -->
+
+  <?php }  # END <!-- JIKA  Radiologi maka akan ditampilkan -->
+
+    $query_radiologi = $db->query("SELECT nama_barang, jumlah_barang, harga, potongan, tax, subtotal FROM hasil_pemeriksaan_radiologi WHERE no_reg = '$data_inner[no_reg]'");
+    $cek_radiologi = mysqli_num_rows($query_radiologi);
+
+    if ($cek_radiologi > 0) { #<!-- JIKA Radiologi  maka akan ditampilkan -->
+
+     ?>
 <h5><b><u>Radiologi </u></b></h5>
   <table id="tabel_jasa" class="table table-bordered table-sm">
         <thead>
@@ -447,9 +485,7 @@ include 'db.php';
 
            $nomor_radiologi = 0;
 
-           $select_hasil_radiologi = $db->query("SELECT nama_barang, jumlah_barang, harga, potongan, tax, subtotal FROM hasil_pemeriksaan_radiologi WHERE no_reg = '$data_inner[no_reg]'");
-
-              while($data_hasil = mysqli_fetch_array($select_hasil_radiologi))
+              while($data_hasil = mysqli_fetch_array($query_radiologi))
                 {
                  
                  $nomor_radiologi++;
@@ -496,7 +532,7 @@ mysqli_close($db);
 
     </table>
 
-
+<?php } ?>
 <br>
         <div class="col-sm-6">
             
