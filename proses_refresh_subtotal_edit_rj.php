@@ -12,6 +12,7 @@ include 'sanitasi.php';
  $query = $db->query("SELECT SUM(subtotal) AS total_penjualan FROM tbs_penjualan WHERE no_reg = '$no_reg' AND no_faktur = '$no_faktur' ");
  $data = mysqli_fetch_array($query);
 
+
 $sum_harga = $db->query("SELECT SUM(subtotal) AS harga_radiologi FROM tbs_penjualan_radiologi WHERE no_reg = '$no_reg' AND status_periksa = '1' AND no_faktur = '$no_faktur'");
  $data_radiologi= mysqli_fetch_array($sum_harga);
  
