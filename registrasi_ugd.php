@@ -563,6 +563,7 @@ tr:nth-child(even){background-color: #f2f2f2}
 
       <th style='background-color: #4CAF50; color: white'>Rujuk Tempat Lain</th>
       <th style='background-color: #4CAF50; color: white'>Rujuk Rawat Inap</th>
+      <th style='background-color: #4CAF50; color: white' >Rujuk Radiologi</th>
 
 <?php endif ?>
 

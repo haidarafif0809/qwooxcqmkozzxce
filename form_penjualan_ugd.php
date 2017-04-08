@@ -318,12 +318,14 @@ $obat = $otoritas_produk['tipe_obat'];
 
 <button type="button" class="btn btn-warning" id="cari_pasien" data-toggle="modal" data-target="#modal_reg"><i class="fa fa-user"></i> Cari Pasien (Alt + P)</button>
 
+<a href="form_pemeriksaan_radiologi.php" id="btnRujukRadiologi" class="btn btn-purple" style="display: none"> <i class="fa fa-universal-access"></i> Rujuk Radiologi</a>
+
 <button type="button" class="btn btn-default" id="btnRefreshsubtotal"> <i class='fa fa-refresh'></i> Refresh Subtotal</button>
 
 
 <!--tampilan modal-->
 <div id="myModal" class="modal fade" role="dialog">
-  <div class="modal-dialog modal-lg">
+  <div class="modal-dialog ">
 
     <!-- isi modal-->
     <div class="modal-content">
@@ -336,7 +338,7 @@ $obat = $otoritas_produk['tipe_obat'];
 
 
 
-<div class="table-resposive">
+<div class="table-responsive">
 <span class="modal_baru">
   <table id="tabel_cari" class="table table-bordered table-sm">
         <thead> <!-- untuk memberikan nama pada kolom tabel -->
@@ -619,26 +621,60 @@ $obat = $otoritas_produk['tipe_obat'];
 <button class="btn btn-primary" id="btnLab" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample"><i class='fa fa-stethoscope'> </i>
 Laboratorium  </button>
 
-<div class="collapse" id="collapseExample">
-    <span id="span_lab">
-          <div class="table-responsive">
-              <table id="tabel_tbs_lab" class="table table-bordered table-sm">
-                    <thead> <!-- untuk memberikan nama pada kolom tabel -->
+<button class="btn btn-primary" id="btnRadiologi" type="button" data-toggle="collapse" data-target="#collapseExampleRadiologi" aria-expanded="false" aria-controls="collapseExample"><i class='fa fa-universal-access'> </i>
+Radiologi  </button>
+
+
+            <div class="collapse" id="collapseExample">
+              <span id="span_lab">
+              <h5><b><u>Laboratorium</u></b></h5>
+                  <div class="table-responsive">
+                    <table id="tabel_tbs_lab" class="table table-bordered table-sm">
+                          <thead> <!-- untuk memberikan nama pada kolom tabel -->
                               
-                        <th> Kode  </th>
-                        <th> Nama </th>
-                        <th> Nama Petugas</th>
-                        <th> Jumlah </th>
-                        <th> Harga </th>
-                        <th> Subtotal </th>
-                        <th> Potongan </th>
-                        <th> Pajak </th>
+                              <th> Kode  </th>
+                              <th> Nama </th>
+                              <th> Nama Petugas</th>
+                              <th> Jumlah </th>
+                              <th> Harga </th>
+                              <th> Subtotal </th>
+                              <th> Potongan </th>
+                              <th> Pajak </th>
                           
-                    </thead> <!-- tag penutup tabel -->
-              </table>
-          </div>
-    </span>
-</div>
+                          </thead> <!-- tag penutup tabel -->
+                    </table>
+                  </div>
+                  <br>
+              </span>
+            </div>
+
+
+
+
+
+            <div class="collapse" id="collapseExampleRadiologi">
+              <span id="span_radiologi">
+              <h5><b><u>Radiologi</u></b></h5>
+                  <div class="table-responsive">
+                    <table id="tabel_tbs_radiologi" class="table table-bordered table-sm">
+                          <thead> <!-- untuk memberikan nama pada kolom tabel -->
+                              
+                              <th> Kode  </th>
+                              <th> Nama </th>
+                              <th> Dokter Pengirim </th>
+                              <th style="text-align: right" > Jumlah </th>
+                              <th style="text-align: right" > Harga </th>
+                              <!--
+                              <th style="text-align: right" > Potongan </th>
+                              <th style="text-align: right" > Pajak </th>
+                              -->
+                              <th style="text-align: right" > Subtotal </th>
+                          
+                          </thead> <!-- tag penutup tabel -->
+                    </table>
+                  </div>
+              </span>
+            </div>
 
 
 </div> <!-- / END COL SM 6 (1)-->
@@ -1225,6 +1261,23 @@ else if (level_harga == "harga_7") {
   </script>
 
 
+<script type="text/javascript">
+    $(document).on('click', '#btnRujukRadiologi', function (e) {
+
+    var no_reg = $("#no_reg").val();
+    var no_rm = $("#no_rm").val();
+    var no_rm = no_rm.substr(0, no_rm.indexOf(' |'));
+    var nama = $("#nama_pasien").val();
+    var dokter = $("#dokter").val();
+    var penjamin = $("#penjamin").val();
+    var jenis_penjualan = 'UGD';
+    var rujukan = 'Rujuk UGD';
+
+        $("#btnRujukRadiologi").attr('href', 'form_pemeriksaan_radiologi.php?no_rm='+no_rm+'&nama='+nama+'&no_reg='+no_reg+'&dokter='+dokter+'&jenis_penjualan='+jenis_penjualan+'&rujukan='+rujukan+'&penjamin='+penjamin+'');
+
+    });
+</script>
+
 
  <script type="text/javascript">
    $(document).on('click', '.pilih-reg', function (e) {                
@@ -1242,6 +1295,7 @@ else if (level_harga == "harga_7") {
             $("#level_harga").trigger('chosen:updated');
 
             $('#modal_reg').modal('hide'); 
+            $("#btnRujukRadiologi").show(); 
 
 // START DATATABLE AJAX START DATATABLE AJAX START DATATABLE AJAX START DATATABLE AJAX START DATATABLE AJAX START DATATABLE AJAX
       $('#tabel_tbs_penjualan').DataTable().destroy();
@@ -1373,6 +1427,31 @@ $('#tabel_tbs_lab').DataTable().destroy();
             } 
           });
 //ENDING Perbaruan TBS LABORATORIUM
+
+//start Perbaruan TBS RADIOLOGI
+$('#tabel_tbs_radiologi').DataTable().destroy();
+          var dataTable = $('#tabel_tbs_radiologi').DataTable( {
+            "processing": true,
+            "serverSide": true,
+            "info":     false,
+            "language": { "emptyTable":     "My Custom Message On Empty Table" },
+            "ajax":{
+              url :"data_tbs_radiologi_ugd.php", // json datasource
+               "data": function ( d ) {
+                  d.no_reg = $("#no_reg").val();
+                  // d.custom = $('#myInput').val();
+                  // etc
+              },
+                  type: "post",  // method  , by default get
+              error: function(){  // error handling
+                $(".tbody").html("");
+                $("#tabel_tbs_radiologi").append('<tbody class="tbody"><tr><th colspan="3"></th></tr></tbody>');
+                $("#tableuser_processing").css("display","none");
+                
+              }
+            } 
+          });
+//ENDING Perbaruan TBS RADIOLOGI
 
 //Start Cek Hasil Laboratorium
 var pasien = $("#no_rm").val();
@@ -2043,6 +2122,7 @@ else
      $("#col_dosis").hide();
      $("#span_tbs").hide();
      $('#span_lab').hide();
+     $('#span_radiologi').hide();
  }    
        
    });
@@ -2057,7 +2137,7 @@ else
  });
 
 $('#tabel_tbs_penjualan').DataTable().clear();
-    $('#tabel_tbs_lab').DataTable().clear();
+$('#tabel_tbs_lab').DataTable().clear();
 
  }
 
@@ -2193,6 +2273,7 @@ else
               $("#col_dosis").hide();
               $("#span_tbs").hide();
               $('#span_lab').hide();
+              $('#span_radiologi').hide();
 }           
        
    });
@@ -3707,9 +3788,10 @@ else
             $("#cetak_tunai_besar").hide();
             $("#cetak_piutang").hide();
             $("#cetak_tunai_kategori").hide(); 
-            $("#btnRujukLab").hide();    
+            $("#btnRujukRadiologi").hide();    
             $('#span_tbs').hide();
             $('#span_lab').hide();
+            $('#span_radiologi').hide();
 
             var url = window.location.href;
              url = getPathFromUrl(url);
@@ -3832,6 +3914,7 @@ else
 
             $('#span_lab').hide();
              $("#span_tbs").hide();
+             $('#span_radiologi').hide();
 
          var win = window.open('cetak_penjualan_tunai.php?no_faktur='+info+'');
       if (win) { 
@@ -4956,9 +5039,10 @@ $(document).ready(function(){
             $("#cetak_tunai_besar").hide();
             $("#cetak_piutang").hide();
             $("#cetak_tunai_kategori").hide(); 
-            $("#btnRujukLab").hide();    
+            $("#btnRujukRadiologi").hide();    
             $('#span_tbs').hide();
             $('#span_lab').hide();
+            $('#span_radiologi').hide();
 
             var url = window.location.href;
              url = getPathFromUrl(url);
@@ -5083,6 +5167,43 @@ $(document).ready(function() {
     $("#span_lab").show()
   });
 });
+
+</script>
+
+
+<script type="text/javascript" language="javascript" >
+
+  $(document).ready(function() {
+    $(document).on('click', '#btnRadiologi', function (e) {
+      $('#tabel_tbs_radiologi').DataTable().destroy();
+            var dataTable = $('#tabel_tbs_radiologi').DataTable( {
+            "processing": true,
+            "serverSide": true,
+            "info":     false,
+            "language": { "emptyTable":     "My Custom Message On Empty Table" },
+            "ajax":{
+              url :"data_tbs_radiologi_ugd.php", // json datasource
+               "data": function ( d ) {
+                  d.no_reg = $("#no_reg").val();
+                  // d.custom = $('#myInput').val();
+                  // etc
+              },
+                  type: "post",  // method  , by default get
+              error: function(){  // error handling
+                $(".tbody").html("");
+                $("#tabel_tbs_radiologi").append('<tbody class="tbody"><tr><th colspan="3"></th></tr></tbody>');
+                $("#tableuser_processing").css("display","none");
+                
+              }
+            }   
+
+      });
+        
+        $("#span_radiologi").show()
+
+    });
+
+  });
 
 </script>
 
