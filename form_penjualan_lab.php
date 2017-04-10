@@ -3485,6 +3485,11 @@ $(document).ready(function(){
         var input_potongan = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($(this).val()))));
         var ppn = $("#ppn").val();
         var data_admin = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#biaya_admin_persen").val()))));
+        var no_reg = $("#no_reg").val();
+
+        if (no_reg != '') {
+        var subtotal_lab = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#sub_lab").val()))));
+        }
                             
             if (data_admin == '') {
             data_admin = 0;
@@ -3548,7 +3553,10 @@ $(document).ready(function(){
                                     var subtotal_baru_setelah_dtambah_tax = parseInt(subtotal_baru_belum_dtambah_tax,10) + parseInt(Math.round(nilai_pajak_exclude),10);
 
                                     var subtotal_penjualan = parseInt(subtotal_penjualan,10) - parseInt(subtotal_lama,10) + parseInt(subtotal_baru_setelah_dtambah_tax,10);
-
+                                  
+                                  if (no_reg != '') {
+                                   var subtotal_lab = parseInt(subtotal_lab,10) - parseInt(subtotal_lama,10) + parseInt(subtotal_baru_setelah_dtambah_tax,10);
+                                      }
                                     // diset ke variabel hasil tax baru
                                     var hasil_tax_baru = Math.round(nilai_pajak_exclude);
                                     // diset ke variabel subtotal tbs
@@ -3571,7 +3579,9 @@ $(document).ready(function(){
                                     var hasil_tax_baru = parseInt(subtotal_baru_belum_dtambah_tax,10) - parseInt(Math.round(hitung_tax_baru));
                                             
                                     var subtotal_penjualan = parseInt(subtotal_penjualan,10) - parseInt(subtotal_lama,10) + parseInt(subtotal_baru_belum_dtambah_tax,10);
-
+                                  if (no_reg != '') {
+                                    var subtotal_lab = parseInt(subtotal_lab,10) - parseInt(subtotal_lama,10) + parseInt(subtotal_baru_belum_dtambah_tax,10);
+                                      }
                                     // diset ke variabel subtotal tbs
                                     var subtotal_tbs = subtotal_baru_belum_dtambah_tax;
 
@@ -3633,10 +3643,14 @@ $(document).ready(function(){
                                       $("#biaya_admin").val(tandaPemisahTitik(biaya_adm));
                                       $("#potongan_penjualan").val(tandaPemisahTitik(potongaaan));                                    
                                       $("#total2").val(tandaPemisahTitik(subtotal_penjualan));
+                                  if (no_reg != '') {
+                                      $("#sub_lab").val(tandaPemisahTitik(subtotal_lab));
+                                       }                                     
                                       $("#total1").val(tandaPemisahTitik(total_akhir));
                                       $("#text-potongan-"+id+"").text(tandaPemisahTitik(input_potongan));
                                       $("#text-tax-"+id).text(tandaPemisahTitik(hasil_tax_baru));  
                                       $("#text-subtotal-"+id+"").text(tandaPemisahTitik(subtotal_tbs));
+
                                       $("#btn-hapus-id-"+id).attr("data-subtotal",subtotal_tbs);
 
                                       $("#text-potongan-"+id+"").show();
@@ -3682,7 +3696,10 @@ $(document).ready(function(){
                         var subtotal_baru_setelah_dtambah_tax = parseInt(subtotal_baru_belum_dtambah_tax,10) + parseInt(Math.round(nilai_pajak_exclude),10);
 
                         var subtotal_penjualan = parseInt(subtotal_penjualan,10) - parseInt(subtotal_lama,10) + parseInt(subtotal_baru_setelah_dtambah_tax,10);
-
+                         if (no_reg != '') {
+                                   
+                        var subtotal_lab = parseInt(subtotal_lab,10) - parseInt(subtotal_lama,10) + parseInt(subtotal_baru_setelah_dtambah_tax,10);
+                           }
                         // diset ke variabel hasil tax baru
                         var hasil_tax_baru = Math.round(nilai_pajak_exclude);
                         // diset ke variabel subtotal tbs
@@ -3705,8 +3722,11 @@ $(document).ready(function(){
                         var hasil_tax_baru = parseInt(subtotal_baru_belum_dtambah_tax,10) - parseInt(Math.round(hitung_tax_baru));
                                 
                         var subtotal_penjualan = parseInt(subtotal_penjualan,10) - parseInt(subtotal_lama,10) + parseInt(subtotal_baru_belum_dtambah_tax,10);
-
+                         if (no_reg != '') {
+                        var subtotal_lab = parseInt(subtotal_lab,10) - parseInt(subtotal_lama,10) + parseInt(subtotal_baru_belum_dtambah_tax,10);
+                          }   
                         // diset ke variabel subtotal tbs
+
                         var subtotal_tbs = subtotal_baru_belum_dtambah_tax;
 
                         }  // JIKA BUKAN EXCLUDE
@@ -3765,6 +3785,9 @@ $(document).ready(function(){
                                       $("#kredit").val('0');                                    
                                       $("#biaya_admin").val(tandaPemisahTitik(biaya_adm));
                                       $("#potongan_penjualan").val(tandaPemisahTitik(potongaaan));
+                                        if (no_reg != '') {
+                                      $("#sub_lab").val(tandaPemisahTitik(subtotal_lab));
+                                                                 }
                                       $("#total2").val(tandaPemisahTitik(subtotal_penjualan));
                                       $("#total1").val(tandaPemisahTitik(total_akhir));
                                       $("#text-potongan-"+id+"").text(tandaPemisahTitik(input_potongan));
