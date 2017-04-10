@@ -38,7 +38,7 @@ $detail = $db->query("SELECT * FROM detail_penjualan WHERE no_faktur = '$no_fakt
 	while ($data1 = mysqli_fetch_array($detail))
 	{
 
-$query = $db->query("SELECT dp.id, dp.no_faktur, dp.kode_barang, dp.nama_barang, dp.jumlah_barang / sk.konversi AS jumlah_produk, dp.jumlah_barang, dp.satuan, dp.harga, dp.potongan, dp.subtotal, dp.tax, dp.sisa, sk.id_satuan, s.nama, sa.nama AS satuan_asal, SUM(hk.sisa_barang) AS sisa_barang, dp.tipe_produk FROM detail_penjualan dp LEFT JOIN satuan_konversi sk ON dp.satuan = sk.id_satuan LEFT JOIN satuan s ON dp.satuan = s.id LEFT JOIN satuan sa ON dp.asal_satuan = sa.id LEFT JOIN hpp_keluar hk ON dp.no_faktur = hk.no_faktur AND dp.kode_barang = hk.kode_barang LEFT JOIN penjualan p ON dp.no_faktur = p.no_faktur WHERE dp.no_faktur = '$no_faktur' AND dp.kode_barang = '$data1[kode_barang]' ");
+$query = $db->query("SELECT dp.id, dp.lab, dp.radiologi, dp.no_faktur, dp.kode_barang, dp.nama_barang, dp.jumlah_barang / sk.konversi AS jumlah_produk, dp.jumlah_barang, dp.satuan, dp.harga, dp.potongan, dp.subtotal, dp.tax, dp.sisa, sk.id_satuan, s.nama, sa.nama AS satuan_asal, SUM(hk.sisa_barang) AS sisa_barang, dp.tipe_produk FROM detail_penjualan dp LEFT JOIN satuan_konversi sk ON dp.satuan = sk.id_satuan LEFT JOIN satuan s ON dp.satuan = s.id LEFT JOIN satuan sa ON dp.asal_satuan = sa.id LEFT JOIN hpp_keluar hk ON dp.no_faktur = hk.no_faktur AND dp.kode_barang = hk.kode_barang LEFT JOIN penjualan p ON dp.no_faktur = p.no_faktur WHERE dp.no_faktur = '$no_faktur' AND dp.kode_barang = '$data1[kode_barang]' ");
 
 $data = mysqli_fetch_array($query);
 //menampilkan data
@@ -54,8 +54,16 @@ echo "<tr>
 					else{
 						echo "<td>". $data['jumlah_barang'] ."</td>";
 					}
-
-					echo"<td>". $data['nama'] ."</td>
+					if ($data['lab'] == 'Laboratorium') {
+						echo"<td>Laboratorium</td>";
+					}
+					else if ($data['radiologi'] == 'Radiologi') {
+						echo"<td>Radiologi</td>";
+					}
+					else{
+						echo "<td>". $data['nama'] ."</td>";
+					}
+					echo"
 					<td>". $data['tipe_produk'] ."</td>
 					<td>". rp($data['harga']) ."</td>
 					<td>". rp($data['potongan']) ."</td>
@@ -106,30 +114,6 @@ echo "<tr>
                   
     }
 
-
-// RADIOLOGI TABLE
- $select_hasil_radiologi = $db->query("SELECT no_faktur, kode_barang, nama_barang, jumlah_barang, harga, tipe_barang, subtotal FROM hasil_pemeriksaan_radiologi WHERE no_reg = '$no_reg'");
-
-    while($data_hasil = mysqli_fetch_array($select_hasil_radiologi))
-      {
-       
-        echo"<tr>
-                    
-            <td class='table1'>".$data_hasil['no_faktur']."</td>   
-            <td class='table1'>".$data_hasil['kode_barang']."</td>  
-            <td class='table1'>".$data_hasil['nama_barang']."</td>  
-            <td class='table1'>".$data_hasil['jumlah_barang']."</td>
-            <td class='table1'>Radiologi</td>
-            <td class='table1'>". $data_hasil['tipe_barang'] ."</td>
-            <td class='table1'>". rp($data_hasil['harga']) ."</td>
-            <td class='table1'>". rp($data_hasil['potongan']) ."</td>
-            <td class='table1'>". rp($data_hasil['tax']) ."</td>
-            <td class='table1'>". rp($data_hasil['subtotal']) ."</td>
-      </tr>";
-
-                    
-                  
-    }
 
 //Untuk Memutuskan Koneksi Ke Database
 mysqli_close($db);   

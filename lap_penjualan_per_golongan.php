@@ -8,14 +8,15 @@ include 'db.php';
 
 <div class="container">
 
-<h3> LAPORAN PENJUALAN REKAP PER GOLONGAN BARANG </h3><hr>
-<br><br><br>
+<h3> LAPORAN PENJUALAN REKAP PER GOLONGAN PRODUK </h3><hr>
+<br>
 <form id="perhari" class="form" role="form">
 
 <div class="col-sm-2"> 
 <select name="golongan" id="golongan" autocomplete="off" class="form-control" placeholder="Golongan" required="">
 <option value="Barang">Barang</option>
 <option value="Jasa">Jasa</option>
+<option value="Bed">Kamar</option>
 </select>
 </div>
 
@@ -44,7 +45,7 @@ tr:nth-child(even){background-color: #f2f2f2}
  
     <thead>
       <tr>
-         <th style="background-color: #4CAF50; color: white;">Nama Produk</th>
+         <th style="background-color: #4CAF50; color: white;"> Nama Produk</th>
          <th style="background-color: #4CAF50; color: white;"> Total Produk</th>        
          <th style="background-color: #4CAF50; color: white;"> Total Nilai </th>
 
@@ -56,11 +57,7 @@ tr:nth-child(even){background-color: #f2f2f2}
   </tbody>
  </table>
 </div> <!--  end table responsive  -->
-<h4>
-<td>Total Seluruh </td><br> 
-<td>Total Produk : <span id="total_produk"></span></td><br> 
-<td>Total Nilai &nbsp;&nbsp;&nbsp;  : <span id="total_nilai"></span></td><br> 
-</h4>
+
 </div>
 
 </span>
@@ -94,40 +91,6 @@ tr:nth-child(even){background-color: #f2f2f2}
         var dari_tanggal = $("#dari_tanggal").val();        
         var sampai_tanggal = $("#sampai_tanggal").val();
 
-
-
-
-    $.getJSON('ambil_total_seluruh.php',{golongan:golongan,dari_tanggal:dari_tanggal,sampai_tanggal:sampai_tanggal},function(json){
-
-      if (golongan == 'Jasa') 
-      {
-
-              $.getJSON('ambil_total_seluruh_lab.php',{golongan:golongan,dari_tanggal:dari_tanggal,sampai_tanggal:sampai_tanggal},function(data){
-
-                if (data.total == null) { 
-                  data.total = 0;
-                }
-
-                if (data.jumlah == null) {
-                  data.jumlah = 0;
-                }
-
-                var total_nilai = parseInt(json.total,10) + parseInt(data.total,10);
-                var total_produk = parseInt(json.jumlah,10) + parseInt(data.jumlah,10);
-
-                $("#total_nilai").html(tandaPemisahTitik(total_nilai));
-                $("#total_produk").html(tandaPemisahTitik(total_produk));
-
-            });
-
-      }
-      else{
-      $("#total_nilai").html(tandaPemisahTitik(json.total));
-      $("#total_produk").html(tandaPemisahTitik(json.jumlah));
-      }
-
-
-  });
 
           if (golongan == '') {
             alert("Silakan Pilih Golongan terlebih dahulu.");

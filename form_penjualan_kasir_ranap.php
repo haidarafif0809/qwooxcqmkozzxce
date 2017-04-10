@@ -1365,12 +1365,7 @@ $(document).ready(function(){
 
                                   var tabel_tbs_penjualan_kamar = $('#tabel_tbs_penjualan_kamar').DataTable();
                                   tabel_tbs_penjualan_kamar.draw();
-                                  
-                                  var tabel_tbs_penjualan_obat = $('#tabel_tbs_penjualan_obat').DataTable();
-                                  tabel_tbs_penjualan_obat.draw();
-                                  
-                                  var tabel_tbs_penjualan_jasa = $('#tabel_tbs_penjualan_jasa').DataTable();
-                                  tabel_tbs_penjualan_jasa.draw();
+
 
                 
       });
@@ -2868,11 +2863,6 @@ else if (a > 0){
 
       });
 
-          var tabel_tbs_penjualan_kamar = $('#tabel_tbs_penjualan_kamar').DataTable();
-              tabel_tbs_penjualan_kamar.draw();
-
-          var tabel_tbs_penjualan_obat = $('#tabel_tbs_penjualan_obat').DataTable();
-              tabel_tbs_penjualan_obat.draw();
 
           var tabel_tbs_penjualan_jasa = $('#tabel_tbs_penjualan_jasa').DataTable();
               tabel_tbs_penjualan_jasa.draw();
@@ -2935,14 +2925,11 @@ else if (a > 0){
 
       });
 
-              var tabel_tbs_penjualan_kamar = $('#tabel_tbs_penjualan_kamar').DataTable();
-              tabel_tbs_penjualan_kamar.draw();
               
               var tabel_tbs_penjualan_obat = $('#tabel_tbs_penjualan_obat').DataTable();
               tabel_tbs_penjualan_obat.draw();
               
-              var tabel_tbs_penjualan_jasa = $('#tabel_tbs_penjualan_jasa').DataTable();
-              tabel_tbs_penjualan_jasa.draw();
+
 
      $("#ppn").attr("disabled", true);
      $("#kode_barang").val('');
@@ -3782,6 +3769,7 @@ $(document).on('click','.btn-hapus-tbs',function(e){
       var id = $(this).attr("data-id");
       var kode_barang = $(this).attr("data-kode-barang");
       var subtotal = $(this).attr("data-subtotal");
+      var data_tipe = $(this).attr("data-tipe");
       var biaya_admin_persen = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#biaya_admin_persen").val()))));
 
     if (biaya_admin_persen == '') {
@@ -3902,16 +3890,20 @@ if (pesan_alert == true) {
 
         $.post("hapustbs_penjualan_ranap.php",{id:id,kode_barang:kode_barang,no_reg:no_reg},function(data){
 
-              var tabel_tbs_penjualan_kamar = $('#tabel_tbs_penjualan_kamar').DataTable();
-              tabel_tbs_penjualan_kamar.draw();
-              
-              var tabel_tbs_penjualan_obat = $('#tabel_tbs_penjualan_obat').DataTable();
+          if (data_tipe == 'Barang') {
+            var tabel_tbs_penjualan_obat = $('#tabel_tbs_penjualan_obat').DataTable();
               tabel_tbs_penjualan_obat.draw();
-              
-              var tabel_tbs_penjualan_jasa = $('#tabel_tbs_penjualan_jasa').DataTable();
+          }
+          else if (data_tipe == 'Jasa') {
+            var tabel_tbs_penjualan_jasa = $('#tabel_tbs_penjualan_jasa').DataTable();
               tabel_tbs_penjualan_jasa.draw();
-
-
+          }
+          else{
+            var tabel_tbs_penjualan_kamar = $('#tabel_tbs_penjualan_kamar').DataTable();
+              tabel_tbs_penjualan_kamar.draw();
+          }
+              
+              
             $("#span_tbs_kamar").show()
             $("#span_tbs_obat").show()
             $("#span_tbs_jasa").show()

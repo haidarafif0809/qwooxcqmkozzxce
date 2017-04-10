@@ -9,8 +9,12 @@ $sampai_tanggal = stringdoang($_POST['sampai_tanggal']);
 $golongan = stringdoang($_POST['golongan']);
 
 
-$jumlah_jual_awal = 0;
-$jumlah_beli_awal = 0;
+$sum_detail_penjualan = $db->query("SELECT SUM(jumlah_barang) AS jumlah, SUM(subtotal) AS total FROM detail_penjualan WHERE tipe_produk = '$golongan' AND tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal'");
+$data_detail_penjualan = mysqli_fetch_array($sum_detail_penjualan);
+
+
+$total_nilai = $data_detail_penjualan['total'];
+$jumlah_produk = $data_detail_penjualan['jumlah'];
 
 
 // storing  request (ie, get/post) global array to a variable  
@@ -27,41 +31,47 @@ $columns = array(
 
  
 // getting total number records without any search
-$sql =" SELECT dp.kode_barang, dp.nama_barang, SUM(dp.jumlah_barang) AS jumlah, SUM(dp.subtotal) AS total ";
-$sql.=" FROM detail_penjualan dp LEFT JOIN barang p ON dp.kode_barang = p.kode_barang  WHERE p.berkaitan_dgn_stok = '$golongan' AND dp.tanggal >= '$dari_tanggal' AND dp.tanggal <= '$sampai_tanggal' GROUP BY dp.kode_barang ORDER BY dp.id  ";
+$sql =" SELECT SUM(jumlah_barang) AS jumlah, SUM(subtotal) AS total, nama_barang ";
+$sql.=" FROM detail_penjualan WHERE tipe_produk = '$golongan' AND tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' GROUP BY kode_barang ";
 
 $query=mysqli_query($conn, $sql) or die("eror 1");
 $totalData = mysqli_num_rows($query);
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
 
-$sql =" SELECT dp.nama_barang, SUM(dp.jumlah_barang) AS jumlah, SUM(dp.subtotal) AS total ";
-$sql.=" FROM detail_penjualan dp LEFT JOIN barang p ON dp.kode_barang = p.kode_barang  WHERE 1=1 AND p.berkaitan_dgn_stok = '$golongan' AND dp.waktu >= '$dari_tanggal' AND dp.tanggal <= '$sampai_tanggal' ";
+$sql =" SELECT SUM(jumlah_barang) AS jumlah, SUM(subtotal) AS total, nama_barang ";
+$sql.=" FROM detail_penjualan WHERE tipe_produk = '$golongan' AND tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' ";
+
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
-$sql.=" AND ( dp.nama_barang LIKE '".$requestData['search']['value']."%' )";
+$sql.=" AND ( nama_barang LIKE '".$requestData['search']['value']."%' )";
 }
+
 $query=mysqli_query($conn, $sql) or die("eror 2");
 $totalFiltered = mysqli_num_rows($query); // when there is a search parameter then we have to modify total number filtered rows as per search result. 
-$sql.=" GROUP BY dp.kode_barang ORDER BY dp.id ".$requestData['order'][0]['dir']."  LIMIT ".$requestData['start']." ,".$requestData['length']." ";
+$sql.=" GROUP BY kode_barang ORDER BY kode_barang ".$requestData['order'][0]['dir']."  LIMIT ".$requestData['start']." ,".$requestData['length']." ";
 /* $requestData['order'][0]['column'] contains colmun index, $requestData['order'][0]['dir'] contains order such as asc/desc  */  
+
 $query=mysqli_query($conn, $sql) or die("eror 3");
+
+
 
 $data = array();
 while( $row=mysqli_fetch_array($query) ) {  // preparing an array
   $nestedData=array(); 
-
-
-
-      $jumlah_jual_awal = $row['jumlah'] + $jumlah_jual_awal;        
-      $jumlah_beli_awal = $row['total'] + $jumlah_beli_awal;
-
       
       $nestedData[] = $row['nama_barang'];
-      $nestedData[] = rp($row['jumlah']);
-      $nestedData[] = rp($row['total']);
+      $nestedData[] = "<p align='right'> ".rp($row['jumlah'])." <p>";
+      $nestedData[] = "<p align='right'> ".rp($row['total'])." <p>";
 
   $data[] = $nestedData;
 }
+  $nestedData=array(); 
+
+      $nestedData[] = "<p style='color:red'> TOTAL <p>";
+      $nestedData[] = "<p style='color:red' align='right'> ".rp($jumlah_produk)." <p>";
+      $nestedData[] = "<p style='color:red' align='right'> ".rp($total_nilai)." <p>";
+
+  $data[] = $nestedData;
 
   
 $json_data = array(

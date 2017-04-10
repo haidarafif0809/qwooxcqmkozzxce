@@ -117,7 +117,7 @@ while( $row = mysqli_fetch_array($query) ) {  // preparing an array
 
 if ($otoritas_tombol['hapus_produk'] > 0) {
 
-      $nestedData[] = "<button class='btn btn-danger btn-sm btn-hapus-tbs' id='hapus-tbs-". $row['id'] ."' data-id='". $row['id'] ."' data-kode-barang='". $row['kode_barang'] ."' data-barang='". $row['nama_barang'] ."' data-subtotal='". $row['subtotal'] ."'>Hapus</button>";
+      $nestedData[] = "<button class='btn btn-danger btn-sm btn-hapus-tbs' id='hapus-tbs-". $row['id'] ."' data-id='". $row['id'] ."' data-kode-barang='". $row['kode_barang'] ."' data-barang='". $row['nama_barang'] ."' data-subtotal='". $row['subtotal'] ."' data-tipe='".$row['tipe_barang']."'>Hapus</button>";
 }
 else{
         $nestedData[] = "<p  style='font-size:15px; color:red'> Tidak Ada Otoritas</p>";

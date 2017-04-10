@@ -2164,9 +2164,7 @@ else if (a > 0){
       });
 
      $("#ppn").attr("disabled", true);
-     
-      var tabel_tbs_penjualan_obat = $('#tabel_tbs_penjualan_obat').DataTable();
-          tabel_tbs_penjualan_obat.draw();
+
      
       var tabel_tbs_penjualan_jasa = $('#tabel_tbs_penjualan_jasa').DataTable();
           tabel_tbs_penjualan_jasa.draw();
@@ -2236,8 +2234,6 @@ if (limit_stok > stok)
          var tabel_tbs_penjualan_obat = $('#tabel_tbs_penjualan_obat').DataTable();
           tabel_tbs_penjualan_obat.draw();
           
-          var tabel_tbs_penjualan_jasa = $('#tabel_tbs_penjualan_jasa').DataTable();
-          tabel_tbs_penjualan_jasa.draw();
         
      $("#span_tbs_obat").show()
      $("#span_tbs_jasa").show()
@@ -3734,6 +3730,7 @@ $(document).on('click','.btn-hapus-tbs',function(e){
       var id = $(this).attr("data-id");
       var kode_barang = $(this).attr("data-kode-barang");
       var subtotal = $(this).attr("data-subtotal");
+      var data_tipe = $(this).attr("data-tipe");
       var biaya_admin_persen = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#biaya_admin_persen").val()))));
 
     if (biaya_admin_persen == '') {
@@ -3855,13 +3852,15 @@ if (pesan_alert == true) {
         $("#kredit").val('');
         $("#sisa_pembayaran_penjualan").val('');
         $.post("hapustbs_penjualan.php",{id:id,kode_barang:kode_barang,no_reg:no_reg},function(data){
-          
-         var tabel_tbs_penjualan_obat = $('#tabel_tbs_penjualan_obat').DataTable();
+        
+        if (data_tipe == 'Barang') {
+          var tabel_tbs_penjualan_obat = $('#tabel_tbs_penjualan_obat').DataTable();
              tabel_tbs_penjualan_obat.draw();
-
-         var tabel_tbs_penjualan_jasa = $('#tabel_tbs_penjualan_jasa').DataTable();
+        }
+        else{
+          var tabel_tbs_penjualan_jasa = $('#tabel_tbs_penjualan_jasa').DataTable();
              tabel_tbs_penjualan_jasa.draw();
-                      
+        }           
 
             if (total_akhir1 == 0) {
               
