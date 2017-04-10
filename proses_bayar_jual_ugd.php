@@ -17,13 +17,17 @@ $potongan = angkadoang($_POST['potongan']);
 $biaya_admin = angkadoang($_POST['biaya_adm']);
 
 
+
 // menampilakn hasil penjumlah subtotal ALIAS total penjualan dari tabel tbs_penjualan berdasarkan data no faktur
- $queryasa = $db->query("SELECT SUM(subtotal) AS total_penjualan FROM tbs_penjualan WHERE  no_reg = '$no_reg'");
- $datas = mysqli_fetch_array($queryasa);
- $total_ss = $datas['total_penjualan'];
+ $query = $db->query("SELECT SUM(subtotal) AS total_penjualan FROM tbs_penjualan WHERE  no_reg = '$no_reg'");
+ $data = mysqli_fetch_array($query);
+ $total_ss = $data['total_penjualan'];
+
+ $sum_harga = $db->query("SELECT SUM(subtotal) AS harga_radiologi FROM tbs_penjualan_radiologi WHERE no_reg = '$no_reg' AND status_periksa = '1' AND no_faktur IS NULL");
+ $data_radiologi= mysqli_fetch_array($sum_harga);
 
 
-$total_tbs = ($total_ss - $potongan) + $biaya_admin;
+ $total_tbs = ($total_ss - $potongan) + $biaya_admin + $data_radiologi['harga_radiologi'];
 
 if ($total != $total_tbs) {
     echo 1;
@@ -298,7 +302,7 @@ $no_jurnal = no_jurnal();
 
 
 
-    $query = $db->query("SELECT * FROM tbs_penjualan WHERE session_id = '$session_id' AND no_reg = '$no_reg'");
+    $query = $db->query("SELECT harga, jumlah_barang, kode_barang, nama_barang, satuan, subtotal, potongan, tax, tipe_barang, dosis, lab FROM tbs_penjualan WHERE no_reg = '$no_reg' ");
     while ($data = mysqli_fetch_array($query))
       {
 
@@ -317,7 +321,7 @@ $no_jurnal = no_jurnal();
       }
         
     
-        $query2 = "INSERT INTO detail_penjualan (no_faktur,no_rm, no_reg, tanggal, jam, kode_barang, nama_barang, jumlah_barang, asal_satuan,satuan, harga, subtotal, potongan, tax, sisa,tipe_produk,dosis) VALUES ('$no_faktur','$no_rm', '$no_reg', '$tanggal_sekarang', '$jam_sekarang', '$data[kode_barang]','$data[nama_barang]','$jumlah_barang','$satuan','$data[satuan]','$harga','$data[subtotal]','$data[potongan]','$data[tax]', '$jumlah_barang','$data[tipe_barang]','$data[dosis]')";
+        $query2 = "INSERT INTO detail_penjualan (no_faktur,no_rm, no_reg, tanggal, jam, kode_barang, nama_barang, jumlah_barang, asal_satuan,satuan, harga, subtotal, potongan, tax, sisa,tipe_produk,dosis, lab) VALUES ('$no_faktur','$no_rm', '$no_reg', '$tanggal_sekarang', '$jam_sekarang', '$data[kode_barang]','$data[nama_barang]','$jumlah_barang','$satuan','$data[satuan]','$harga','$data[subtotal]','$data[potongan]','$data[tax]', '$jumlah_barang','$data[tipe_barang]','$data[dosis]', '$data[lab]')";
 
         if ($db->query($query2) === TRUE) {
         } 
@@ -328,6 +332,19 @@ $no_jurnal = no_jurnal();
 
         
       }
+
+  //INSERT DARI TBS PENJUALAN RADIOLOGI KE HASIL PEMERIKSAAN RADIOLOGI
+        $insert_hasil_radiologi = "INSERT INTO hasil_pemeriksaan_radiologi (no_faktur, no_reg, kode_barang, nama_barang, jumlah_barang, harga, subtotal, potongan, tax, foto, tipe_barang, tanggal, jam, radiologi, kontras, dokter_pengirim, dokter_pelaksana, dokter_periksa, status_periksa, status_simpan, keterangan) SELECT '$no_faktur', no_reg, kode_barang, nama_barang, jumlah_barang, harga, subtotal, potongan, tax, foto, tipe_barang, tanggal, jam, radiologi, kontras, dokter_pengirim, dokter_pelaksana, dokter_periksa, status_periksa, status_simpan, keterangan FROM tbs_penjualan_radiologi WHERE no_reg = '$no_reg' AND status_periksa = '1'";
+
+          if ($db->query($insert_hasil_radiologi) === TRUE) {
+          
+            }
+
+          else {
+              echo "Error: " . $insert_hasil_radiologi . "<br>" . $db->error;
+            }
+
+//INSERT DARI TBS PENJUALAN RADIOLOGI KE HASIL PEMERIKSAAN RADIOLOGI
 
 
 // START INSERT KE HASIL LABORATORIUM
@@ -395,15 +412,14 @@ else
           '$nama_pasien','Unfinish','$no_rm','$no_reg','$out_tbs[kode_barang]',
           '$hasil_pria2','$hasil_wanita2')");
       
-        $delete_tbs_hasil_lab = $db->query("DELETE FROM tbs_hasil_lab WHERE no_reg = '$no_reg'");
+       
 
 
         } 
       }
     }
-  }// end if setting lab
 
-}
+
 //selesai untuk yang tidak memiliki Header / Ibu
 //NOTE* BAGIAN ATAS INSERT DARI TBS , DAN BAGIAN BAWAH INSERT DETAIL YANG INDUX (HEADER)-NYA ADA DI TBS PENJUALAN !!
 
@@ -412,38 +428,34 @@ else
 $perintah = $db->query("SELECT kode_barang FROM tbs_penjualan WHERE no_reg = '$no_reg' AND lab = 'Laboratorium'");
 while($data = mysqli_fetch_array($perintah)){
 
-$kode_barang = $data['kode_barang'];
+  $kode_barang = $data['kode_barang'];
 
-$cek_id_pemeriksaan = $db->query("SELECT id FROM jasa_lab WHERE kode_lab = '$kode_barang'");
-$out = mysqli_fetch_array($cek_id_pemeriksaan);
-$id_jasa_lab = $out['id'];
+  $cek_id_pemeriksaan = $db->query("SELECT id FROM jasa_lab WHERE kode_lab = '$kode_barang'");
+  $out = mysqli_fetch_array($cek_id_pemeriksaan);
+  $id_jasa_lab = $out['id'];
 
-$cek_ibu_header = $db->query("SELECT id FROM setup_hasil WHERE nama_pemeriksaan = '$id_jasa_lab'");
-while($out_mother = mysqli_fetch_array($cek_ibu_header))
-{
-$id_mother = $out_mother['id'];
+  $cek_ibu_header = $db->query("SELECT id FROM setup_hasil WHERE nama_pemeriksaan = '$id_jasa_lab'");
+  while($out_mother = mysqli_fetch_array($cek_ibu_header)){
+  $id_mother = $out_mother['id'];
 
 //DI EDIT YANG WHILE INI QUERY SALAH !!!!!!
-$select_detail_anaknya = $db->query("SELECT * FROM setup_hasil WHERE sub_hasil_lab = '$id_mother'");
-while($drop = mysqli_fetch_array($select_detail_anaknya))
-{
-$ambil_nama_jasa = $db->query("SELECT nama FROM jasa_lab WHERE id = '$drop[nama_pemeriksaan]'");
-$get = mysqli_fetch_array($ambil_nama_jasa);
-$nama_jasa_anak = $get['nama'];
+  $select_detail_anaknya = $db->query("SELECT * FROM setup_hasil WHERE sub_hasil_lab = '$id_mother'");
+  while($drop = mysqli_fetch_array($select_detail_anaknya)){
+  $ambil_nama_jasa = $db->query("SELECT nama FROM jasa_lab WHERE id = '$drop[nama_pemeriksaan]'");
+  $get = mysqli_fetch_array($ambil_nama_jasa);
+  $nama_jasa_anak = $get['nama'];
   
 //Select untuk Data yang sudah di input kan hasilnya tidak di insert dan tidak di DELETE (TIDAK DI DELETE SUDAH ADA DI ATAS)
-$get_data = $db->query("SELECT id_pemeriksaan FROM tbs_hasil_lab WHERE id_pemeriksaan = '$drop[nama_pemeriksaan]' AND hasil_pemeriksaan != '' AND no_reg = '$no_reg'");
-$out_data = mysqli_num_rows($get_data);
-$out_data_id = mysqli_fetch_array($get_data);
+  $get_data = $db->query("SELECT id_pemeriksaan FROM tbs_hasil_lab WHERE id_pemeriksaan = '$drop[nama_pemeriksaan]' AND hasil_pemeriksaan != '' AND no_reg = '$no_reg'");
+  $out_data = mysqli_num_rows($get_data);
+  $out_data_id = mysqli_fetch_array($get_data);
 
-$datanya = $out_data_id['id_pemeriksaan'];
+  $datanya = $out_data_id['id_pemeriksaan'];
 
-if($out_data > 0 AND $datanya != '')
-  {
+  if($out_data > 0 AND $datanya != ''){
 
   }
-else
-    {
+  else{
 
   $insert_anaknya = "INSERT INTO hasil_lab (no_faktur,satuan_nilai_normal,
   model_hitung,no_rm,no_reg,id_pemeriksaan,nilai_normal_lk,nilai_normal_pr,status_pasien,nama_pemeriksaan,id_sub_header,nilai_normal_lk2,nilai_normal_pr2,kode_barang,status,nama_pasien) VALUES ('$no_faktur','$drop[satuan_nilai_normal]','$drop[model_hitung]',
@@ -464,6 +476,10 @@ else
   }
  }
 }
+   $delete_tbs_hasil_lab = $db->query("DELETE FROM tbs_hasil_lab WHERE no_reg = '$no_reg'");
+   
+  }// end if setting lab
+} // else jika setting nya bayar dulu baru input hasil
 //Ending Proses untuk input Header and Detail Jasa Laboratorium
 // ENDING INSERT KE HASIL LABORATORIUM
 
@@ -512,7 +528,7 @@ $ambil = mysqli_fetch_array($select);
 $total_hpp = $ambil['total_hpp'];
 
 
-$sum_tax_tbs = $db->query("SELECT SUM(tax) AS total_tax FROM tbs_penjualan WHERE session_id = '$session_id' AND no_reg = '$no_reg' ");
+$sum_tax_tbs = $db->query("SELECT SUM(tax) AS total_tax FROM tbs_penjualan WHERE no_reg = '$no_reg' ");
 $jumlah_tax = mysqli_fetch_array($sum_tax_tbs);
 $total_tax = $jumlah_tax['total_tax'];
 
@@ -641,7 +657,7 @@ $ambil = mysqli_fetch_array($select);
 $total_hpp = $ambil['total_hpp'];
 
 
-$sum_tax_tbs = $db->query("SELECT SUM(tax) AS total_tax FROM tbs_penjualan WHERE session_id = '$session_id' AND no_reg = '$no_reg' ");
+$sum_tax_tbs = $db->query("SELECT SUM(tax) AS total_tax FROM tbs_penjualan WHERE no_reg = '$no_reg' ");
 $jumlah_tax = mysqli_fetch_array($sum_tax_tbs);
 $total_tax = $jumlah_tax['total_tax'];
 
@@ -752,6 +768,7 @@ else
 
 
     $query3 = $db->query("DELETE  FROM tbs_penjualan WHERE  no_reg = '$no_reg' ");
+    $tbs_penjualan_radiologi_hapus = $db->query("DELETE FROM tbs_penjualan_radiologi WHERE no_reg = '$no_reg' ");
     $query30 = $db->query("DELETE  FROM tbs_fee_produk WHERE  no_reg = '$no_reg' ");
 // end coding untuk memasukan history_tbs dan menghapus tbs
 

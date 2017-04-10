@@ -9,7 +9,7 @@ include 'db.php';
 
 $no_faktur = $_GET['no_faktur'];
 
-    $query0 = $db->query("SELECT * FROM penjualan WHERE no_faktur = '$no_faktur' ");
+    $query0 = $db->query("SELECT kode_pelanggan, nama, no_faktur, jenis_penjualan, potongan, tax, biaya_admin, total, tunai, sisa, tanggal FROM penjualan WHERE no_faktur = '$no_faktur' ");
     $data0 = mysqli_fetch_array($query0);
 
     $query1 = $db->query("SELECT * FROM perusahaan ");

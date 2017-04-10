@@ -51,8 +51,8 @@ $columns = array(
 );
 
 // getting total number records without any search
-$sql = "SELECT reg.no_rm, reg.no_reg, reg.status, reg.nama_pasien, reg.jam, reg.penjamin, reg.poli, reg.dokter_pengirim, reg.dokter, reg.bed, reg.group_bed, reg.tanggal_masuk, reg.penanggung_jawab, reg.umur_pasien, reg.id, rek.tanggal_periksa,rek.id AS id_rek ";
-$sql.=" FROM registrasi reg LEFT JOIN rekam_medik_inap rek ON reg.no_reg = rek.no_reg WHERE reg.jenis_pasien = 'Rawat Inap' AND reg.status = 'menginap' AND reg.status != 'Batal Rawat Inap'";
+$sql = "SELECT r.id as id_ruangan, r.nama_ruangan, reg.ruangan, reg.no_rm, reg.no_reg, reg.status, reg.nama_pasien, reg.jam, reg.penjamin, reg.poli, reg.dokter_pengirim, reg.dokter, reg.bed, reg.group_bed, reg.tanggal_masuk, reg.penanggung_jawab, reg.umur_pasien, reg.id";
+$sql.=" FROM registrasi reg LEFT JOIN ruangan r ON reg.ruangan = r.id WHERE reg.jenis_pasien = 'Rawat Inap' AND reg.status = 'menginap' AND reg.status != 'Batal Rawat Inap'";
 
 
 
@@ -61,8 +61,8 @@ $totalData = mysqli_num_rows($query);
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
 
-$sql = "SELECT reg.no_rm, reg.no_reg, reg.status, reg.nama_pasien, reg.jam, reg.penjamin, reg.poli, reg.dokter_pengirim, reg.dokter, reg.bed, reg.group_bed, reg.tanggal_masuk, reg.penanggung_jawab, reg.umur_pasien, reg.id, rek.tanggal_periksa,rek.id AS id_rek ";
-$sql.=" FROM registrasi reg LEFT JOIN rekam_medik_inap rek ON reg.no_reg = rek.no_reg WHERE reg.jenis_pasien = 'Rawat Inap' AND reg.status = 'menginap' AND reg.status != 'Batal Rawat Inap' ";
+$sql = "SELECT r.id as id_ruangan, r.nama_ruangan, reg.ruangan, reg.no_rm, reg.no_reg, reg.status, reg.nama_pasien, reg.jam, reg.penjamin, reg.poli, reg.dokter_pengirim, reg.dokter, reg.bed, reg.group_bed, reg.tanggal_masuk, reg.penanggung_jawab, reg.umur_pasien, reg.id";
+$sql.=" FROM registrasi reg LEFT JOIN ruangan r ON reg.ruangan = r.id WHERE reg.jenis_pasien = 'Rawat Inap' AND reg.status = 'menginap' AND reg.status != 'Batal Rawat Inap' AND 1 = 1";
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
 	$sql.=" AND ( reg.no_reg LIKE '".$requestData['search']['value']."%' ";    
 	$sql.=" OR reg.no_rm LIKE '".$requestData['search']['value']."%' ";
@@ -79,7 +79,7 @@ if( !empty($requestData['search']['value']) ) {   // if there is a search parame
 $query= mysqli_query($conn, $sql) or die("query 2: get employees");
 $totalFiltered = mysqli_num_rows($query); // when there is a search parameter then we have to modify total number filtered rows as per search result. 
 
-$sql.=" ORDER BY id   ".$requestData['order'][0]['dir']."  LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
+$sql.=" ORDER BY reg.id   ".$requestData['order'][0]['dir']."  LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
 /* $requestData['order'][0]['column'] contains colmun index, $requestData['order'][0]['dir'] contains order such as asc/desc  */	
 $query=mysqli_query($conn, $sql) or die("query 3: get employees");
 
@@ -93,7 +93,7 @@ $penjual = $db->query("SELECT status FROM penjualan WHERE no_reg = '$row[no_reg]
 $sttus = mysqli_num_rows($penjual);
 
 
-  if ($registrasi_ri['registrasi_ri_hapus'])
+  if ($registrasi_ri['registrasi_ri_hapus'] == 1)
   	{
 
 		if ($sttus == 0) {
@@ -105,7 +105,7 @@ $sttus = mysqli_num_rows($penjual);
 	}	
 
 
-if ($registrasi_ri['registrasi_ri_edit'])
+if ($registrasi_ri['registrasi_ri_edit'] == 1)
   	{
 
 		if ($sttus == 0) {
@@ -118,7 +118,7 @@ if ($registrasi_ri['registrasi_ri_edit'])
 
 
 
-$query_z = $db->query("SELECT status,no_faktur,nama,kode_gudang FROM penjualan WHERE no_reg = '$row[no_reg]' ");
+/*$query_z = $db->query("SELECT status,no_faktur,nama,kode_gudang FROM penjualan WHERE no_reg = '$row[no_reg]' ");
 $data_z = mysqli_fetch_array($query_z);
 
         if ($penjualan['penjualan_tambah'] > 0) {                
@@ -144,55 +144,58 @@ $data_z = mysqli_fetch_array($query_z);
                  else {
                  		$nestedData[] =  "";
                  }
-        }
+        }*/
 
-        if ($registrasi_ri['registrasi_ri_lihat']) {
+       if ($registrasi_ri['registrasi_ri_lihat'] == 1) {
 
- $query_z = $db->query("SELECT status,no_faktur,nama,kode_gudang FROM penjualan WHERE no_reg = '$row[no_reg]' ");
-       $data_z = mysqli_fetch_array($query_z);
+				 $query_z = $db->query("SELECT status,no_faktur,nama,kode_gudang FROM penjualan WHERE no_reg = '$row[no_reg]' ");
+				       $data_z = mysqli_fetch_array($query_z);
 
-          $nestedData[] = "<button type='button' data-reg='".$row['no_reg']."' data-bed='".$row['bed']."' data-group-bed='".$row['group_bed']."' data-id='".$row['id']."' data-reg='".$row['no_reg']."'  class='btn btn-floating btn-small btn-info pindah'><i class='fa fa-reply'></i></button>";
+				          $nestedData[] = "<button type='button' data-reg='".$row['no_reg']."' data-bed='".$row['bed']."' data-ruangan='".$row['nama_ruangan']."' data-id-ruangan='".$row['id_ruangan']."' data-group-bed='".$row['group_bed']."' data-id='".$row['id']."' data-reg='".$row['no_reg']."'  class='btn btn-floating btn-small btn-info pindah'><i class='fa fa-reply'></i></button>";
 
-           $nestedData[] = "<a href='registrasi_operasi.php?no_reg=".$row['no_reg']."&no_rm=".$row['no_rm']."&bed=".$row['bed']."&kamar=".$row['group_bed']."' class='btn btn-floating btn-small btn-danger'><i class='fa fa-plus-circle'></i></a>";
-
-
-if ($data_z['status'] == 'Simpan Sementara') {
-
-          $nestedData[] = "<a href='form_simpan_rj_penjualan_lab.php?no_rm=".$row['no_rm']."&nama=".$row['nama_pasien']."&no_reg=".$row['no_reg']."&dokter=".$row['dokter']."&jenis_penjualan=Simpan Rawat Inap' class='btn btn-floating btn-small btn-info'><i class='fa fa-stethoscope'></i></a>
-		   ";
-}
-
-else {
-
-	 $nestedData[] = "<button  class='btn btn-floating btn-small btn-info pemeriksaan_lab_inap' data-kamar=".$row['group_bed']." data-bed=".$row['bed']." data-rm=".$row['no_rm']." data-nama=".$row['nama_pasien']." data-reg=".$row['no_reg']." data-id=".$row['id']." '><i class='fa fa-stethoscope'></i></button>
-		   ";
-		
-}
+				           $nestedData[] = "<a href='registrasi_operasi.php?no_reg=".$row['no_reg']."&no_rm=".$row['no_rm']."&bed=".$row['bed']."&kamar=".$row['group_bed']."' class='btn btn-floating btn-small btn-danger'><i class='fa fa-plus-circle'></i></a>";
 
 
-// untuk input hasil lab
-/*$show = $db->query("SELECT * FROM tbs_penjualan WHERE no_reg = '$row[no_reg]' AND lab = 'Laboratorium' ");
-$take = mysqli_num_rows($show);
-	if ($take > 0)
-	{
-		$nestedData[] = "<a href='cek_input_hasil_lab_inap.php?no_rm=".$row['no_rm']."&nama=".$row['nama_pasien']."&no_reg=".$row['no_reg']."&jenis_penjualan=Rawat Inap' class='btn btn-floating btn-small btn-info'><i class='fa fa-pencil'></i></a>";
-	}
-	else
-	{
-	  $nestedData[] = "<p style='color:red'>Input Laboratorium</p>";
+				/*if ($data_z['status'] == 'Simpan Sementara') {
 
-	}*/
-// end untuk input hasil lab
+				          $nestedData[] = "<a href='form_simpan_rj_penjualan_lab.php?no_rm=".$row['no_rm']."&nama=".$row['nama_pasien']."&no_reg=".$row['no_reg']."&dokter=".$row['dokter']."&jenis_penjualan=Simpan Rawat Inap' class='btn btn-floating btn-small btn-info'><i class='fa fa-stethoscope'></i></a>
+						   ";
+				}*/
+
+				//else {
+
+					 $nestedData[] = "<button  class='btn btn-floating btn-small btn-info pemeriksaan_lab_inap' data-kamar=".$row['group_bed']." data-bed=".$row['bed']." data-rm=".$row['no_rm']." data-nama=".$row['nama_pasien']." data-reg=".$row['no_reg']." data-id=".$row['id']." '><i class='fa fa-stethoscope'></i></button>
+						   ";
+						
+				//} 
 
 
-        }
+				// untuk input hasil lab
+				/*$show = $db->query("SELECT * FROM tbs_penjualan WHERE no_reg = '$row[no_reg]' AND lab = 'Laboratorium' ");
+				$take = mysqli_num_rows($show);
+					if ($take > 0)
+					{
+						$nestedData[] = "<a href='cek_input_hasil_lab_inap.php?no_rm=".$row['no_rm']."&nama=".$row['nama_pasien']."&no_reg=".$row['no_reg']."&jenis_penjualan=Rawat Inap' class='btn btn-floating btn-small btn-info'><i class='fa fa-pencil'></i></a>";
+					}
+					else
+					{
+					  $nestedData[] = "<p style='color:red'>Input Laboratorium</p>";
+
+					}*/
+				// end untuk input hasil lab
+
+
+       }
         
 
         if ($rekam_medik['rekam_medik_ri_lihat']) 
         {
-           $nestedData[] =  "<a href='input_rekam_medik_ranap.php?no_reg=".$row['no_reg']."&tgl=".$row['tanggal_periksa']."&jam=".$row['jam']."&id=".$row['id_rek']."' class='btn-floating btn-info btn-small'><i class='fa fa-medkit '></i></a>";
+           $nestedData[] =  "<a href='input_rekam_medik_ranap.php?no_reg=".$row['no_reg']."&tgl=".$row['tanggal_masuk']."&jam=".$row['jam']."' class='btn-floating btn-info btn-small'><i class='fa fa-medkit '></i></a>";
         }
 
+ //mengambil namaruangan di table ruamgan
+        //$query_ruangan = $db->query("select nama_ruangan from ruangan where id = '$row[ruangan]'");
+        //$data_ruangan = mysqli_fetch_array($query_ruangan);
 
 	$nestedData[] = $row["no_rm"];
 	$nestedData[] = $row["no_reg"];
@@ -205,6 +208,7 @@ $take = mysqli_num_rows($show);
 	$nestedData[] = $row["dokter"];
 	$nestedData[] = $row["bed"];
 	$nestedData[] = $row["group_bed"];
+	$nestedData[] = $row["nama_ruangan"];
 	$nestedData[] = tanggal($row["tanggal_masuk"]);	
 	$nestedData[] = $row["penanggung_jawab"]; 
 	$nestedData[] = $row["umur_pasien"];

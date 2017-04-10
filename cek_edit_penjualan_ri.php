@@ -16,7 +16,7 @@ $dd = mysqli_fetch_array($ambil_penjualan);
 $nama_pasien = $dd['nama'];
 $kode_gudang = $dd['kode_gudang'];
 
-$perintah3 = $db->query("SELECT * FROM tbs_penjualan WHERE no_faktur = '$no_faktur' AND no_reg = '$no_reg' ");
+$perintah3 = $db->query("SELECT no_faktur, no_reg FROM tbs_penjualan WHERE no_faktur = '$no_faktur' AND no_reg = '$no_reg' ");
 $data1 = mysqli_num_rows($perintah3);
 
 if ($data1 > 0){
@@ -26,7 +26,7 @@ $perintah2 = $db->query("DELETE FROM tbs_penjualan WHERE no_faktur = '$no_faktur
 
 
 //menampilkan seluruh data yang ada pada tabel pembelian dalan DB
-$perintah = $db->query("SELECT * FROM detail_penjualan WHERE no_faktur = '$no_faktur' AND no_reg = '$no_reg'");
+$perintah = $db->query("SELECT kode_barang, nama_barang, jumlah_barang, satuan, harga, subtotal, tipe_produk, tanggal, jam, potongan, tax, hpp, lab FROM detail_penjualan WHERE no_faktur = '$no_faktur' AND no_reg = '$no_reg'");
 while ($data = mysqli_fetch_array($perintah)){
 
 
@@ -47,7 +47,7 @@ while ($data = mysqli_fetch_array($perintah)){
 
 
 
-$perintah30 = $db->query("SELECT * FROM tbs_fee_produk WHERE  no_reg = '$no_reg' ");
+$perintah30 = $db->query("SELECT no_reg FROM tbs_fee_produk WHERE  no_reg = '$no_reg' ");
 $data10 = mysqli_num_rows($perintah30);
 
 if ($data10 > 0){
@@ -56,10 +56,10 @@ $perintah2 = $db->query("DELETE FROM tbs_fee_produk WHERE no_reg = '$no_reg' ");
 }
 
 
-$fee_produk = $db->query("SELECT * FROM laporan_fee_produk WHERE no_reg = '$no_reg' ");
+$fee_produk = $db->query("SELECT no_faktur, no_reg, no_rm, nama_petugas, kode_produk, nama_produk, jumlah_fee, tanggal, jam FROM laporan_fee_produk WHERE no_reg = '$no_reg' ");
 while ($data_fee = mysqli_fetch_array($fee_produk)){
 
-	$barang = $db->query("SELECT * FROM barang WHERE kode_barang = '$data_fee[kode_produk]' ");
+	$barang = $db->query("SELECT kode_barang FROM barang WHERE kode_barang = '$data_fee[kode_produk]' ");
 $y = mysqli_num_rows($barang);
 
 if ($y > 0) {
@@ -79,7 +79,7 @@ $insert2 = "INSERT INTO tbs_fee_produk (no_faktur,no_reg,no_rm,nama_petugas,kode
 
 // INSERT OPERASI
 
-$perintah7 = $db->query("SELECT * FROM tbs_operasi WHERE no_reg = '$no_reg' ");
+$perintah7 = $db->query("SELECT no_reg FROM tbs_operasi WHERE no_reg = '$no_reg' ");
 $data17 = mysqli_num_rows($perintah7);
 
 if ($data17 > 0){
@@ -88,7 +88,7 @@ $perintah23 = $db->query("DELETE FROM tbs_operasi WHERE no_reg = '$no_reg' ");
 }
 
 
-$fee_hasil_oprs = $db->query("SELECT * FROM hasil_operasi WHERE no_reg = '$no_reg' ");
+$fee_hasil_oprs = $db->query("SELECT sub_operasi, petugas_input, harga_jual, operasi, waktu FROM hasil_operasi WHERE no_reg = '$no_reg' ");
 
 
 while ($data_fee = mysqli_fetch_array($fee_hasil_oprs)){
@@ -108,7 +108,7 @@ $insert_operasi = "INSERT INTO tbs_operasi (sub_operasi,petugas_input, no_reg, h
 
 // IBSERT HASIL DETAIL OPERASI
 
-$perintah8 = $db->query("SELECT * FROM tbs_detail_operasi WHERE no_reg = '$no_reg' ");
+$perintah8 = $db->query("SELECT no_reg FROM tbs_detail_operasi WHERE no_reg = '$no_reg' ");
 $data100 = mysqli_num_rows($perintah8);
 
 if ($data100 > 0){
@@ -116,7 +116,7 @@ if ($data100 > 0){
 $perintah239 = $db->query("DELETE FROM tbs_detail_operasi WHERE no_reg = '$no_reg' ");
 }
 
-    $detail_ops = $db->query("SELECT * FROM hasil_detail_operasi WHERE no_reg = '$no_reg'");
+    $detail_ops = $db->query("SELECT id_detail_operasi, id_user, id_sub_operasi, id_operasi, petugas_input, waktu, id_tbs_operasi FROM hasil_detail_operasi WHERE no_reg = '$no_reg'");
     while ($data_detail_ops = mysqli_fetch_array($detail_ops))
       {
 

@@ -7,7 +7,7 @@ include 'db.php';
 
   $no_reg = $_GET['no_reg'];
 
-    $select_hasil_radiologi = $db->query("SELECT hp.no_reg, hp.tanggal, hp.jam, hp.dokter_pengirim, hp.dokter_pelaksana, hp.dokter_periksa, hp.keterangan, r.poli, r.alamat_pasien, r.no_rm, r.nama_pasien, r.jenis_pasien FROM tbs_penjualan_radiologi hp INNER JOIN registrasi r ON hp.no_reg = r.no_reg WHERE hp.no_reg = '$no_reg' ORDER BY hp.kontras ASC");
+    $select_hasil_radiologi = $db->query("SELECT hp.no_reg, hp.tanggal, hp.jam, hp.dokter_pengirim, hp.dokter_pelaksana, hp.dokter_periksa, hp.keterangan, r.poli, r.alamat_pasien, r.no_rm, r.nama_pasien, r.jenis_pasien, u.nama AS dokter_sp_radiologi FROM tbs_penjualan_radiologi hp INNER JOIN registrasi r ON hp.no_reg = r.no_reg INNER JOIN user u ON hp.dokter_periksa = u.id WHERE hp.no_reg = '$no_reg' ORDER BY hp.kontras ASC");
     $data_hasil = mysqli_fetch_array($select_hasil_radiologi);
 
     $select_perusahaan = $db->query("SELECT foto, nama_perusahaan, alamat_perusahaan, no_telp FROM perusahaan ");
@@ -74,6 +74,7 @@ include 'db.php';
       <tr><td width="25%">Tanggal</td> <td> :&nbsp;</td> <td><?php echo tanggal($data_hasil['tanggal']); ?> </tr> 
       <tr><td width="25%">Pasien</td> <td> :&nbsp;</td> <td><?php echo $data_hasil['jenis_pasien']; ?> </tr> 
       <tr><td width="25%">Poli</td> <td> :&nbsp;</td> <td><?php echo $data_hasil['poli']; ?> </tr> 
+      <tr><td width="25%">Dokter </td> <td> :&nbsp;</td> <td><?php echo $data_hasil['dokter_sp_radiologi']; ?> </tr> 
 
       </tbody>
 </table>
@@ -112,7 +113,7 @@ include 'db.php';
 
         $no_urut = 0;
 
-        $while_hasil_radiologi = $db->query("SELECT tp.nama_barang, tp.dokter_pengirim, tp.keterangan,u.nama FROM tbs_penjualan_radiologi tp INNER JOIN user u ON tp.dokter_pengirim = u.id WHERE tp.no_reg = '$no_reg' ORDER BY tp.kontras ASC");
+        $while_hasil_radiologi = $db->query("SELECT tp.nama_barang, tp.dokter_pengirim, tp.keterangan,u.nama FROM tbs_penjualan_radiologi tp INNER JOIN user u ON tp.dokter_pengirim = u.id WHERE tp.no_reg = '$no_reg' AND tp.status_periksa = '1' ORDER BY tp.kontras ASC");
         
             //menyimpan data sementara yang ada pada $perintah
             while ($data_while = mysqli_fetch_array($while_hasil_radiologi))

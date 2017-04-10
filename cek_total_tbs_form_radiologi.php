@@ -1,5 +1,4 @@
-<?php 
-include 'session_login.php';
+<?php include 'session_login.php';
 include 'db.php';
 include 'sanitasi.php';
 

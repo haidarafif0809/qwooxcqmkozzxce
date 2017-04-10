@@ -10,43 +10,13 @@ $sampai_tanggal = stringdoang($_GET['sampai_tanggal']);
     $query1 = $db->query("SELECT * FROM perusahaan ");
     $data1 = mysqli_fetch_array($query1);
 
-//menampilkan seluruh data yang ada pada tabel penjualan
-$perintah = $db->query("SELECT * FROM penjualan WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal'");
 
-
-//menampilkan seluruh data yang ada pada tabel penjualan
-$perintah0 = $db->query("SELECT * FROM detail_penjualan WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal'");
-$data0 = mysqli_fetch_array($perintah0);
-
-
-
-$query01 = $db->query("SELECT SUM(potongan) AS total_potongan FROM penjualan WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' AND kredit != 0");
-$cek01 = mysqli_fetch_array($query01);
-$total_potongan = $cek01['total_potongan'];
-
-$query20 = $db->query("SELECT SUM(tax) AS total_tax FROM penjualan WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' AND kredit != 0");
-$cek20 = mysqli_fetch_array($query20);
-$total_tax = $cek20['total_tax'];
-
-$query02 = $db->query("SELECT SUM(total) AS total_akhir FROM penjualan WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' AND kredit != 0");
+$query02 = $db->query("SELECT SUM(pen.tunai) AS tunai_penjualan,SUM(pen.total) AS total_akhir, SUM(pen.kredit) AS total_kredit,SUM(dpp.jumlah_bayar) + SUM(dpp.potongan) AS ambil_total_bayar FROM penjualan pen LEFT JOIN detail_pembayaran_piutang dpp ON pen.no_faktur = dpp.no_faktur_penjualan WHERE pen.tanggal >= '$dari_tanggal' AND pen.tanggal <= '$sampai_tanggal' AND pen.kredit != 0 ");
 $cek02 = mysqli_fetch_array($query02);
 $total_akhir = $cek02['total_akhir'];
+$total_kredit = $cek02['total_kredit'];
 
-
-$query30 = $db->query("SELECT SUM(kredit) AS total_kredit FROM penjualan WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' AND kredit != 0");
-$cek30 = mysqli_fetch_array($query30);
-$total_kredit = $cek30['total_kredit'];
-
-$query15 = $db->query("SELECT SUM(dp.subtotal) AS total_subtotal FROM 
-detail_penjualan dp INNER JOIN penjualan p ON dp.no_faktur = p.no_faktur WHERE dp.tanggal >= '$dari_tanggal' AND dp.tanggal <= '$sampai_tanggal' AND p.kredit != 0");
-$cek15 = mysqli_fetch_array($query15);
-$t_subtotal = $cek15['total_subtotal'];
-
-$query011 = $db->query("SELECT SUM(dp.jumlah_barang) AS total_barang FROM
-detail_penjualan dp INNER JOIN penjualan p ON dp.no_faktur = p.no_faktur WHERE dp.tanggal >= '$dari_tanggal' AND dp.tanggal <= '$sampai_tanggal' AND p.kredit != 0");
-$cek011 = mysqli_fetch_array($query011);
-$t_barang = $cek011['total_barang'];
-
+$total_bayar = $cek02['tunai_penjualan'] +  $cek02['ambil_total_bayar'];
 
 
 
@@ -60,7 +30,7 @@ $t_barang = $cek011['total_barang'];
         </div><!--penutup colsm2-->
 
         <div class="col-sm-6">
-                 <h3> <b> LAPORAN PENJUALAN PIUTANG </b></h3>
+                 <h3> <b> LAPORAN PIUTANG PERIODE </b></h3>
                  <hr>
                  <h4> <b> <?php echo $data1['nama_perusahaan']; ?> </b> </h4> 
                  <p> <?php echo $data1['alamat_perusahaan']; ?> </p> 
@@ -89,55 +59,74 @@ $t_barang = $cek011['total_barang'];
     <br>
 
 
- <table id="tableuser" class="table table-bordered">
+ <table id="tableuser" class="table table-bordered table-sm">
             <thead>
-                  <th> Nomor Faktur </th>                  
-                  <th> Tanggal </th>
-                  <th> Kode Pelanggan</th>
-                  <th> Jumlah Barang </th>
-                  <th> Subtotal </th>
-                  <th> Potongan </th>
-                  <th> Pajak </th>
-                  <th> Total Akhir </th>
-                  <th> Bayar Tunai </th>
-                  <th> Kredit </th>
+      <th style="background-color: #4CAF50; color: white;"> Nomor Faktur </th>
+      <th style="background-color: #4CAF50; color: white;"> Penjamin </th>
+      <th style="background-color: #4CAF50; color: white;"> Nama Pasien</th>
+      <th style="background-color: #4CAF50; color: white;"> Tgl. Transaksi </th>
+      <th style="background-color: #4CAF50; color: white;"> Tgl. Jatuh Tempo </th>
+      <th style="background-color: #4CAF50; color: white;"> Usia Piutang </th>
+      <th style="background-color: #4CAF50; color: white;"> Nilai Faktur </th>
+      <th style="background-color: #4CAF50; color: white;"> Dibayar </th>
+      <th style="background-color: #4CAF50; color: white;"> Piutang </th>
                                     
             </thead>
             
             <tbody>
             <?php
 
-                  $perintah009 = $db->query("SELECT pel.nama_pelanggan,dp.tanggal,dp.no_faktur,dp.kode_pelanggan,dp.total,dp.jam,dp.user,dp.status,dp.potongan,dp.tax,dp.tunai,dp.kredit FROM penjualan dp INNER JOIN pelanggan pel ON dp.kode_pelanggan = pel.kode_pelanggan  WHERE dp.tanggal >= '$dari_tanggal' AND dp.tanggal <= '$sampai_tanggal' AND dp.kredit != 0");
+          $perintah009 = $db->query("SELECT dp.id,pel.nama_pelanggan,dp.tanggal,dp.tanggal_jt, DATEDIFF(DATE(NOW()), dp.tanggal) AS usia_piutang ,dp.no_faktur,dp.kode_pelanggan,dp.total,dp.jam,dp.sales,dp.status,dp.potongan,dp.tax,dp.sisa,dp.kredit FROM penjualan dp LEFT JOIN pelanggan pel ON dp.kode_pelanggan = pel.kode_pelanggan WHERE dp.tanggal >= '$dari_tanggal' AND dp.tanggal <= '$sampai_tanggal' AND dp.kredit != 0 ORDER BY dp.tanggal DESC ");
                   while ($data11 = mysqli_fetch_array($perintah009))
 
                   {
-                        //menampilkan data
-                        $query0 = $db->query("SELECT SUM(jumlah_barang) AS total_barang FROM detail_penjualan WHERE no_faktur = '$data11[no_faktur]'");
-                        $cek0 = mysqli_fetch_array($query0);
-                        $total_barang = $cek0['total_barang'];
-                        
-                        
-                        $query10 = $db->query("SELECT SUM(subtotal) AS total_subtotal FROM detail_penjualan WHERE no_faktur = '$data11[no_faktur]'");
-                        $cek10 = mysqli_fetch_array($query10);
-                        $total_subtotal = $cek10['total_subtotal'];
 
-                        $bayar_tunai = $data11['total'] - $data11['kredit']; 
+$query0232 = $db->query("SELECT SUM(jumlah_bayar) + SUM(potongan) AS total_bayar FROM detail_pembayaran_piutang WHERE no_faktur_penjualan = '$data11[no_faktur]' ");
+$kel_bayar = mysqli_fetch_array($query0232);
+$num_rows = mysqli_num_rows($query0232);
+
+$sum_dp = $db->query("SELECT SUM(tunai) AS tunai_penjualan FROM penjualan WHERE no_faktur = '$data11[no_faktur]' ");
+$data_sum = mysqli_fetch_array($sum_dp);
+$Dp = $data_sum['tunai_penjualan'];
+
+
+$tot_bayar = $kel_bayar['total_bayar'] + $Dp;
+
+
+
                   echo "<tr>
                   <td>". $data11['no_faktur'] ."</td>
+                  <td>". $data11['nama_pelanggan'] ."</td>
+                  <td>". $data11['sales'] ."</td>
                   <td>". $data11['tanggal'] ."</td>
-                  <td>". $data11['kode_pelanggan'] ." ". $data11['nama_pelanggan'] ."</td>
-                  <td>". $total_barang ."</td>
-                  <td>". rp($total_subtotal) ."</td>
-                  <td>". rp($data11['potongan']) ."</td>
-                  <td>". rp($data11['tax']) ."</td>
-                  <td>". rp($data11['total']) ."</td>
-                  <td>". rp($bayar_tunai) ."</td>
-                  <td>". rp($data11['kredit']) ."</td>
-
+                  <td>". $data11['tanggal_jt'] ."</td>
+                  <td  align='right' >". rp($data11['usia_piutang']) ." Hari</td>
+                  <td  align='right' >". rp($data11['total']) ."</td>";
+                  if ($num_rows > 0)
+                  {
+                      echo "<td align='right' >". rp($tot_bayar) ."</td>";
+                  }
+                  else
+                  {
+                    echo 0;
+                  }
+                  echo "<td align='right' >". rp($data11['kredit']) ."</td>
                   </tr>";
 
 
                   }
+
+
+    echo "<td><p style='color:red'> TOTAL </p></td>
+      <td><p style='color:red'> - </p></td>
+      <td><p style='color:red'> - </p></td>
+      <td><p style='color:red'> - </p></td>
+      <td><p style='color:red'> - </p></td>
+      <td><p style='color:red' align='right'> - </p></td>
+      <td><p style='color:red' align='right' > ".rp($total_akhir)." </p></td>
+      <td><p style='color:red' align='right' > ".rp($total_bayar)." </p></td>
+      <td><p style='color:red' align='right' > ".rp($total_kredit)." </p></td>";              
+
 
 //Untuk Memutuskan Koneksi Ke Database
 
@@ -147,36 +136,14 @@ mysqli_close($db);
             </tbody>
 
       </table>
-      <hr>
 </div>
 </div>
 <br>
 
-<div class="col-sm-7">
+<div class="col-sm-6">
 </div>
 
 
-<div class="col-sm-2">
-<h4><b>Total Keseluruhan :</b></h4>
-</div>
-
-
-<div class="col-sm-3">
-        
-  <table>
-  <tbody>
-
-      <tr><td width="70%">Jumlah Item</td> <td> :&nbsp; </td> <td> <?php echo $t_barang; ?> </td></tr>
-      <tr><td  width="70%">Total Subtotal</td> <td> :&nbsp; Rp.</td> <td> <?php echo rp($t_subtotal); ?> </td>
-      </tr>
-      <tr><td  width="70%">Total Potongan</td> <td> :&nbsp; Rp. </td> <td> <?php echo rp($total_potongan); ?></td></tr>
-      <tr><td width="70%">Total Pajak</td> <td> :&nbsp; Rp. </td> <td> <?php echo rp($total_tax); ?> </td></tr>
-      <tr><td  width="70%">Total Akhir</td> <td> :&nbsp; Rp. </td> <td> <?php echo rp($total_akhir); ?> </td>
-      </tr>
-      <tr><td  width="70%">Total Kredit</td> <td> :&nbsp; Rp. </td> <td> <?php echo rp($total_kredit); ?></td></tr>
-            
-  </tbody>
-  </table>
 
 
      </div>

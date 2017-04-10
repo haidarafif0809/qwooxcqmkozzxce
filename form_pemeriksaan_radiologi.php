@@ -110,7 +110,23 @@ $data_reg = mysqli_fetch_array($select_reg);
 <!--untuk membuat agar tampilan form terlihat rapih dalam satu tempat -->
 
  <div style="padding-left: 5%; padding-right: 5%">
+
+ <?php if ($rujukan == 'Rujuk Rawat Inap'): ?>
+  <h3> FORM INPUT PEMERIKSAAN RADIOLOGI - R. INAP</h3><hr>
+ <?php endif ?>
+
+ <?php if ($rujukan == 'Rujuk Rawat Jalan'): ?>
+  <h3> FORM INPUT PEMERIKSAAN RADIOLOGI - R. JALAN</h3><hr>
+ <?php endif ?>
+
+ <?php if ($rujukan == 'Rujuk UGD'): ?>
+  <h3> FORM INPUT PEMERIKSAAN RADIOLOGI - UGD</h3><hr>
+ <?php endif ?>
+
+ <?php if ($rujukan == ''): ?>
   <h3> FORM INPUT PEMERIKSAAN RADIOLOGI</h3><hr>
+ <?php endif ?>
+  
 <div class="row">
 
 <div class="col-xs-8">
@@ -224,7 +240,7 @@ $data_reg = mysqli_fetch_array($select_reg);
       </select>
     </div>
 
-    <div class="col-xs-3">
+    <div class="col-xs-3" style="display: none;">
      <label> Dokter Pemeriksa </label><br>
 
             
@@ -291,7 +307,7 @@ $data_reg = mysqli_fetch_array($select_reg);
   </select>
 </div>
 
-  <div class="col-xs-2">
+  <div class="col-xs-2" style="display: none;">
    <label> Dokter Pemeriksa </label><br>
 
           
@@ -403,7 +419,7 @@ $data_reg = mysqli_fetch_array($select_reg);
                 <h5><b> Pakai Kontras </b></h5><br>
 
                   <input type="checkbox" class="cekcbox1 filled-in" id="checkbox1">
-                  <label for="checkbox1"><b> PILIH SEMUA </b></label><br>
+                  <label for="checkbox1" class="pilih-semua-kontras" data-toogle="0"><b> PILIH SEMUA </b></label><br>
                   
                   <?php 
                     $select_pemriksaan_kontras = $db->query("SELECT id, kode_pemeriksaan, nama_pemeriksaan, kontras, harga_1 FROM pemeriksaan_radiologi WHERE kontras = '1' ORDER BY no_urut ASC");
@@ -430,7 +446,7 @@ $data_reg = mysqli_fetch_array($select_reg);
                 <h5><b> Tidak Pakai Kontras </b></h5><br>
 
                   <input type="checkbox" class="cekcbox2 filled-in" id="checkbox2">
-                  <label for="checkbox2"><b> PILIH SEMUA </b></label><br>
+                  <label for="checkbox2" class="pilih-semua-tanpa-kontras" data-toogle="0"><b> PILIH SEMUA </b></label><br>
 
                   <?php 
                     $select_pemriksaan_tanpa_kontras = $db->query("SELECT id, kode_pemeriksaan, nama_pemeriksaan, kontras, harga_1 FROM pemeriksaan_radiologi WHERE kontras = '0' ORDER BY no_urut ASC");
@@ -646,7 +662,7 @@ $data_reg = mysqli_fetch_array($select_reg);
 
 <?php if ($no_reg != ""): ?>
 
-  <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample" id="rawat"><i class='fa fa-wheelchair-alt'> </i> Rawat Jalan / Inap</button>
+  <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample" id="rawat"><i class='fa fa-wheelchair-alt'> </i> Rawat Jalan / Inap / UGD</button>
 
        <?php if ($jenis_penjualan == 'Rawat Inap'): ?>
 
@@ -713,7 +729,7 @@ $data_reg = mysqli_fetch_array($select_reg);
         </div>
 
                   <?php
-                  $ambil_diskon_tax = $db->query("SELECT * FROM setting_diskon_tax");
+                  $ambil_diskon_tax = $db->query("SELECT diskon_nominal, diskon_persen, tax FROM setting_diskon_tax");
                   $data_diskon = mysqli_fetch_array($ambil_diskon_tax);
 
                   ?>
@@ -723,10 +739,10 @@ $data_reg = mysqli_fetch_array($select_reg);
               <select class="form-control chosen" id="biaya_admin_select" name="biaya_admin_select" >
               <option value="0"> Silahkan Pilih </option>
                 <?php 
-                $get_biaya_admin = $db->query("SELECT * FROM biaya_admin");
-                while ( $take_admin = mysqli_fetch_array($get_biaya_admin))
+                $query_biaya_admin = $db->query("SELECT persentase, nama FROM biaya_admin");
+                while ( $data_biaya_admin = mysqli_fetch_array($query_biaya_admin))
                 {
-                echo "<option value='".$take_admin['persentase']."'>".$take_admin['nama']."</option>";
+                echo "<option value='".$data_biaya_admin['persentase']."'>".$data_biaya_admin['nama']."</option>";
                 }
                 ?>
               </select>
@@ -892,7 +908,7 @@ $data_reg = mysqli_fetch_array($select_reg);
           </div>
 
           <?php
-                  $ambil_diskon_tax = $db->query("SELECT * FROM setting_diskon_tax");
+                  $ambil_diskon_tax = $db->query("SELECT diskon_nominal, diskon_persen, tax FROM setting_diskon_tax");
                   $data_diskon = mysqli_fetch_array($ambil_diskon_tax);
 
                   ?>
@@ -902,10 +918,10 @@ $data_reg = mysqli_fetch_array($select_reg);
               <select class="form-control chosen" id="biaya_admin_select" name="biaya_admin_select" >
               <option value="0"> Silahkan Pilih </option>
                 <?php 
-                $get_biaya_admin = $db->query("SELECT * FROM biaya_admin");
-                while ( $take_admin = mysqli_fetch_array($get_biaya_admin))
+                $query_biaya_admin = $db->query("SELECT persentase, nama FROM biaya_admin");
+                while ( $data_biaya_admin = mysqli_fetch_array($query_biaya_admin))
                 {
-                echo "<option value='".$take_admin['persentase']."'>".$take_admin['nama']."</option>";
+                echo "<option value='".$data_biaya_admin['persentase']."'>".$data_biaya_admin['nama']."</option>";
                 }
                 ?>
               </select>
@@ -1087,6 +1103,10 @@ $data_reg = mysqli_fetch_array($select_reg);
 
               <?php if ($jenis_penjualan == 'Rawat Inap'): ?>
                   <button class="btn btn-warning" id="ranap"> <i class="fa fa-reply-all"></i> Kembali Rawat Inap </button>
+              <?php endif ?>
+
+              <?php if ($jenis_penjualan == 'UGD'): ?>
+                  <button class="btn btn-warning" id="ugd"> <i class="fa fa-reply-all"></i> Kembali UGD </button>
               <?php endif ?>
 
         <?php endif ?>
@@ -3445,6 +3465,8 @@ function myFunction(event) {
             $("#penjamin").trigger("chosen:updated");
             $("#level_harga").val('');
             $("#level_harga").trigger("chosen:updated");
+            $("#dokter_radiologi").val('');
+            $("#dokter_radiologi").trigger("chosen:updated");
             $("#keterangan").val('');
             $("#penjualan").show();
             $("#cetak_langsung").show();
@@ -3830,6 +3852,8 @@ $.get("cek_total_tbs_form_radiologi.php",{no_reg:no_reg},function(data){
 <script type="text/javascript">
   // Rawat jalan
   $(document).on('click','#raja',function(e){
+
+  /*
     var no_reg = $("#no_reg").val();
     var nama_pasien = $("#nama_pelanggan").val();
     var no_rm = $("#kd_pelanggan1").val();
@@ -3853,12 +3877,17 @@ $.get("cek_total_tbs_form_radiologi.php",{no_reg:no_reg},function(data){
 
     window.location.href="form_penjualan_kasir.php?no_reg="+no_reg+"&nama_pasien="+nama_pasien+"&no_rm="+no_rm+"&penjamin="+penjamin+"&dokter="+dokter+"&level_harga="+level_harga+"&poli="+poli+"&petugas_radiologi="+petugas_radiologi+"";
     }
+    */
+   
+    window.location.href="pasien_sudah_masuk.php";
 
 
   });
 
   //Rawat Inap
    $(document).on('click','#ranap',function(e){
+
+    /*
      var no_reg = $("#no_reg").val();
     var nama_pasien = $("#nama_pelanggan").val();
     var no_rm = $("#no_rm").val();
@@ -3873,8 +3902,19 @@ $.get("cek_total_tbs_form_radiologi.php",{no_reg:no_reg},function(data){
 
     window.location.href="form_penjualan_kasir_ranap.php?no_reg="+no_reg+"&nama_pasien="+nama_pasien+"&no_rm="+no_rm+"&penjamin="+penjamin+"&dokter="+dokter+"&level_harga="+level_harga+"&poli="+poli+"&bed="+bed+"&kamar="+kamar+"&petugas_radiologi="+petugas_radiologi+"&petugas_radiologi="+petugas_radiologi+"";
 
+    */
+   
+   window.location.href="rawat_inap.php";
+
   });
 
+  $(document).on('click','#ugd',function(e){
+
+   
+    window.location.href="registrasi_ugd.php";
+
+
+  });
 
 </script>
 
@@ -3896,7 +3936,7 @@ $(function() {
 });
 </script>
 
-
+<!--INSERT SATU SATU -->
 
 <script>
 
@@ -3981,7 +4021,97 @@ $(document).on('click','.insert-tbs',function(e){
 });
 </script>
 
+<!--INSERT SEMUANYA (PILIH SEMUA KONTRAS)-->
 
+<script>
+
+$(document).on('click','.pilih-semua-kontras',function(e){
+
+    var data_toggle = $(this).attr('data-toogle');
+
+    var no_reg = $("#no_reg").val();
+    var petugas_radiologi = $("#petugas_radiologi").val();
+    var dokter_pemeriksa = $("#dokter_pemeriksa").val();
+    var dokter = $("#dokter").val();
+    var jumlah_barang = 1;
+    var tipe_barang ="Jasa";
+
+    $('#kolom_cek_harga').val('1');
+
+    var kolom_cek_harga = $("#kolom_cek_harga").val();
+
+    if (data_toggle == 0) {
+              
+        $(this).attr("data-toogle", 1);
+
+        $.post("proses_insert_tbs_radiologi_semua_kontras.php",{tipe_barang:tipe_barang,no_reg:no_reg,dokter:dokter,dokter_pemeriksa:dokter_pemeriksa,petugas_radiologi:petugas_radiologi},function(data){
+              
+        });
+
+
+    }
+    else{
+                  
+        $(this).attr("data-toogle", 0);
+
+        $.post("hapus_radiologi_semua_kontras.php",{no_reg:no_reg},function(data){
+
+        });
+    }
+    
+
+
+    $("form").submit(function(){
+      return false;    
+    });
+});
+</script>
+
+<!--INSERT SEMUANYA (PILIH SEMUA TANPA KONTRAS)-->
+
+<script>
+
+$(document).on('click','.pilih-semua-tanpa-kontras',function(e){
+
+    var data_toggle = $(this).attr('data-toogle');
+
+    var no_reg = $("#no_reg").val();
+    var petugas_radiologi = $("#petugas_radiologi").val();
+    var dokter_pemeriksa = $("#dokter_pemeriksa").val();
+    var dokter = $("#dokter").val();
+    var jumlah_barang = 1;
+    var tipe_barang ="Jasa";
+
+    $('#kolom_cek_harga').val('1');
+
+    var kolom_cek_harga = $("#kolom_cek_harga").val();
+
+    if (data_toggle == 0) {
+              
+        $(this).attr("data-toogle", 1);
+
+        $.post("proses_insert_tbs_radiologi_semua_tanpa_kontras.php",{tipe_barang:tipe_barang,no_reg:no_reg,dokter:dokter,dokter_pemeriksa:dokter_pemeriksa,petugas_radiologi:petugas_radiologi},function(data){
+              
+        });
+
+
+    }
+    else{
+                  
+        $(this).attr("data-toogle", 0);
+
+        $.post("hapus_radiologi_semua_tanpa_kontras.php",{no_reg:no_reg},function(data){
+
+        });
+    }
+    
+
+
+    $("form").submit(function(){
+      return false;    
+    });
+});
+</script>
 
 <script type="text/javascript">
   $(document).ready(function(){

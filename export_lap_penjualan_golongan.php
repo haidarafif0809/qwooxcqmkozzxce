@@ -14,15 +14,12 @@ $golongan = stringdoang($_GET['golongan']);
 
 
 
-$jumlah_jual_awal = 0;
-$jumlah_beli_awal = 0;
+$sum_detail_penjualan = $db->query("SELECT SUM(jumlah_barang) AS jumlah, SUM(subtotal) AS total FROM detail_penjualan WHERE tipe_produk = '$golongan' AND tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal'");
+$data_detail_penjualan = mysqli_fetch_array($sum_detail_penjualan);
 
 
-
-//menampilkan seluruh data yang ada pada tabel penjualan
-$perintah = $db->query("SELECT dp.nama_barang, SUM(dp.jumlah_barang) AS jumlah, SUM(dp.subtotal) AS total
-FROM detail_penjualan dp INNER JOIN barang p ON dp.kode_barang = p.kode_barang  WHERE p.golongan_barang = '$golongan' AND dp.tanggal >= '$dari_tanggal' AND dp.tanggal <= '$sampai_tanggal' GROUP BY dp.kode_barang ORDER BY dp.id ASC ");
-
+$total_nilai = $data_detail_penjualan['total'];
+$jumlah_produk = $data_detail_penjualan['jumlah'];
 ?>
 <style>
 
@@ -32,31 +29,38 @@ tr:nth-child(even){background-color: #f2f2f2}
  <h3><center>Data Penjualan / Golngan Dari Tanggal <?php echo tanggal_terbalik($dari_tanggal) ?> Sampai Tanggal <?php echo tanggal_terbalik($sampai_tanggal) ?></center></h3>
 
 <center>
- <table id="tableuser" class="table">
-					<thead>
+ 			<table id="tableuser" class="table">				
+				<thead>
 					<th style='background-color: #4CAF50; color:white'> Nama Produk </th>
 					<th style='background-color: #4CAF50; color:white'> Jumlah Produk  </th>
 					<th style='background-color: #4CAF50; color:white'> Total Nilai </th>
-					</thead>
-					
-					<tbody>
-					<?php
-					
-					//menyimpan data sementara yang ada pada $perintah
-					while ($data1 = mysqli_fetch_array($perintah))
-					{
-					//menampilkan data
-					echo "<tr>
-					<td>". $data1['nama_barang'] ."</td>
-					<td>". $data1['jumlah'] ."</td>
-					<td>". $data1['total'] ."</td>";
+				</thead>					
+	            
+	            <tbody>
+	            <?php
+	              $perintah = $db->query("SELECT SUM(jumlah_barang) AS jumlah, SUM(subtotal) AS total, nama_barang FROM detail_penjualan WHERE tipe_produk = '$golongan' AND tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' GROUP BY kode_barang  ORDER BY kode_barang ASC ");
+	                while ($data10 = mysqli_fetch_array($perintah))
+	                {
+	                  
+	                  echo "<tr>
+	                  <td>". $data10['nama_barang'] ."</td>
+	                  <td align='right'>". $data10['jumlah'] ."</td>
+	                  <td align='right'>". $data10['total'] ."</td>
+	                  </tr>";
+	                }
 
-					echo"</tr>";
-					}
+	                  echo "<tr>
+	                  <td style=' color:red'> TOTAL </td>
+	                  <td style=' color:red' align='right'>".rp($jumlah_produk)."</td>
+	                  <td style=' color:red' align='right'>".rp($total_nilai)."</td>
+	                  </tr>";
 
-					//Untuk Memutuskan Koneksi Ke Database
-					mysqli_close($db);   
-					?>
-					</tbody>
-</table>
+	                        //Untuk Memutuskan Koneksi Ke Database
+	                        //mysqli_close($db); 
+	        
+
+	        
+	            ?>
+	            </tbody>
+            </table>
 </center>

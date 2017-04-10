@@ -1,10 +1,11 @@
 <?php
-	//memasukkan file db.php
+    //memasukkan file db.php
     include 'sanitasi.php';
     include 'db.php';
         // mengirim data, menggunakan metode POST
         $id = angkadoang($_POST['id']);
-        $kelas = stringdoang($_POST['kelas']);
+        $kelas = angkadoang($_POST['kelas']);
+        $ruangan = angkadoang($_POST['ruangan']);
         $nama = stringdoang($_POST['nama_kamar']);
         $group_bed = stringdoang($_POST['grup_kamar']);
         $tarif = angkadoang($_POST['tarif']);
@@ -18,10 +19,10 @@
         $fasilitas = stringdoang($_POST['fasilitas']);
 
     // merubah seluruh data yang ada pada tabel user, berdasarkan masing masing kolom
-    $query = $db->prepare("UPDATE bed SET kelas = ? ,nama_kamar = ? ,group_bed = ? ,tarif = ? ,tarif_2 = ? ,tarif_3 = ? ,tarif_4 = ? ,tarif_5 = ? ,tarif_6 = ? ,tarif_7 = ? ,jumlah_bed = ?, sisa_bed = ? , fasilitas = ? WHERE id = ?");
+    $query = $db->prepare("UPDATE bed SET kelas = ? ,ruangan = ? ,nama_kamar = ? ,group_bed = ? ,tarif = ? ,tarif_2 = ? ,tarif_3 = ? ,tarif_4 = ? ,tarif_5 = ? ,tarif_6 = ? ,tarif_7 = ? ,jumlah_bed = ?, sisa_bed = ? , fasilitas = ? WHERE id = ?");
     
-    $query->bind_param("sssiiiiiiiiisi",
-     $kelas ,$nama ,$group_bed ,$tarif ,$tarif_2 ,$tarif_3 ,$tarif_4 ,$tarif_5 ,$tarif_6 ,$tarif_7 ,$jumlah_bed , $jumlah_bed , $fasilitas ,$id);
+    $query->bind_param("iissiiiiiiiiisi",
+     $kelas ,$ruangan ,$nama ,$group_bed ,$tarif ,$tarif_2 ,$tarif_3 ,$tarif_4 ,$tarif_5 ,$tarif_6 ,$tarif_7 ,$jumlah_bed , $jumlah_bed , $fasilitas ,$id);
 
 
     $query->execute();
@@ -33,7 +34,7 @@ if (!$query)
 }
 else 
 {
-    echo '<META HTTP-EQUIV="Refresh" Content="0; URL=kamar.php">';   
+   echo 1;// echo '<META HTTP-EQUIV="Refresh" Content="0; URL=kamar.php">';   
 }
 
 //Untuk Memutuskan Koneksi Ke Database

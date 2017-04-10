@@ -79,12 +79,18 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 $penjual = $db->query("SELECT status FROM penjualan WHERE no_reg = '$row[no_reg]' ");
 $sttus = mysqli_num_rows($penjual);
 
+$query_id_user = $db->query("SELECT id AS id_dokter FROM user WHERE nama = '$row[dokter]' ");
+$data_id_user = mysqli_fetch_array($query_id_user);
+
+
+
+/*
 $query_z = $db->query("SELECT p.status,p.no_faktur,p.nama,p.kode_gudang,g.nama_gudang FROM penjualan p INNER JOIN gudang g ON p.kode_gudang = g.kode_gudang WHERE p.no_reg = '$row[no_reg]' ");
 $data_z = mysqli_fetch_array($query_z);
 
 
 
-/*if ($penjualan['penjualan_tambah'] > 0) {
+if ($penjualan['penjualan_tambah'] > 0) {
 
 
   /*if ($data_z['status'] == 'Simpan Sementara') {
@@ -150,7 +156,7 @@ else
 
 }
 
-$nestedData[] = "<a href='form_pemeriksaan_radiologi.php?no_rm=".$row['no_rm']."&nama=".$row['nama_pasien']."&no_reg=".$row['no_reg']."&dokter=".$row['dokter']."&jenis_penjualan=Rawat Jalan&rujukan=Rujuk Rawat Jalan&penjamin=".$row['penjamin']."' class='btn btn-floating btn-small btn-info'><i class='fa fa-universal-access'></i></a>";
+$nestedData[] = "<a href='form_pemeriksaan_radiologi.php?no_rm=".$row['no_rm']."&nama=".$row['nama_pasien']."&no_reg=".$row['no_reg']."&dokter=".$data_id_user['id_dokter']."&jenis_penjualan=Rawat Jalan&rujukan=Rujuk Rawat Jalan&penjamin=".$row['penjamin']."' class='btn btn-floating btn-small btn-info'><i class='fa fa-universal-access'></i></a>";
 
 // untuk input jasa lab
 if ($input_jasa_lab > 0) {
@@ -164,7 +170,15 @@ if ($input_hasil_lab > 0) {
 	$take = mysqli_fetch_array($show);
 		if ($take['jumlah'] > 0)
 		{
-			$nestedData[] = "<a href='cek_input_hasil_lab.php?no_rm=".$row['no_rm']."&nama=".$row['nama_pasien']."&no_reg=".$row['no_reg']."&jenis_penjualan=Rawat Jalan' class='btn btn-floating btn-small btn-info'><i class='fa fa-pencil'></i></a>";
+			$query_cek_setting = $db->query("SELECT nama FROM setting_laboratorium");
+			$data_cek_setting = mysqli_fetch_array($query_cek_setting);
+			$angka_setting_lab = $data_cek_setting['nama'];
+			if($angka_setting_lab == 0){
+			$nestedData[] = "<p style='color:red'>Cek Setting Laboratorium</p>";
+			}
+			else{
+			$nestedData[] = "<a id='input_hasil' href='cek_input_hasil_lab.php?no_rm=".$row['no_rm']."&nama=".$row['nama_pasien']."&no_reg=".$row['no_reg']."&jenis_penjualan=Rawat Jalan' class='btn btn-floating btn-small btn-info'><i class='fa fa-pencil'></i></a>";
+			}
 		}
 		else
 		{

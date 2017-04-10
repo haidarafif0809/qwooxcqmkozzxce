@@ -19,7 +19,7 @@ $dokter_periksa = stringdoang($_POST['dokter_pemeriksa']);
 $petugas_radiologi = stringdoang($_POST['petugas_radiologi']);
 
 
-$insert_tbs = "INSERT INTO tbs_penjualan_radiologi (session_id, kode_barang, nama_barang, jumlah_barang, harga, subtotal, tipe_barang, tanggal, jam, no_reg, kontras, dokter_pengirim, dokter_periksa, dokter_pelaksana, radiologi) VALUES ('$session_id', '$kode', '$nama', '$jumlah', '$harga', '$subtotal', '$tipe_barang', '$tanggal_sekarang', '$jam_sekarang', '$no_reg', '$kontras', '$dokter_pengirim', '$dokter_periksa', '$petugas_radiologi', 'Radiologi')";
+$insert_tbs = "INSERT INTO tbs_penjualan_radiologi (session_id, kode_barang, nama_barang, jumlah_barang, harga, subtotal, tipe_barang, tanggal, jam, no_reg, kontras, dokter_pengirim, dokter_periksa, dokter_pelaksana, radiologi, status_pilih) VALUES ('$session_id', '$kode', '$nama', '$jumlah', '$harga', '$subtotal', '$tipe_barang', '$tanggal_sekarang', '$jam_sekarang', '$no_reg', '$kontras', '$dokter_pengirim', '$dokter_periksa', '$petugas_radiologi', 'Radiologi', 'Pilih Satu')";
 
     if ($db->query($insert_tbs) === TRUE){                        
     } 

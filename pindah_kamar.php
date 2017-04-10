@@ -22,24 +22,24 @@ $columns = array(
 
  
 );
-$cek = $db->query("SELECT * FROM bed WHERE sisa_bed != 0 ");
+//$cek = $db->query("SELECT * FROM bed WHERE sisa_bed != 0 ");
+
 // getting total number records without any search
-$sql ="SELECT * ";
-$sql.=" FROM bed ";
-$sql.=" WHERE sisa_bed != 0 ";
+$sql ="SELECT b.id,b.kelas, b.nama_kamar, b.group_bed, b.fasilitas, b.jumlah_bed, b.sisa_bed, r.nama_ruangan,r.id as id_ruangan ";
+$sql.=" FROM bed b LEFT JOIN ruangan r ON b.ruangan = r.id WHERE sisa_bed != 0";
 
 $query = mysqli_query($conn, $sql) or die("eror 1");
 $totalData = mysqli_num_rows($query);
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
-$sql ="SELECT * ";
-$sql.=" FROM bed ";
-$sql.=" WHERE sisa_bed != 0 ";
+$sql ="SELECT b.id,b.kelas, b.nama_kamar, b.group_bed, b.fasilitas, b.jumlah_bed, b.sisa_bed, r.nama_ruangan,r.id as id_ruangan ";
+$sql.=" FROM bed b LEFT JOIN ruangan r ON b.ruangan = r.id WHERE sisa_bed != 0  AND 1 = 1";
 
-    $sql.=" AND (nama_kamar LIKE '".$requestData['search']['value']."%'";  
-    $sql.=" OR group_bed LIKE '".$requestData['search']['value']."%' ";
-    $sql.=" OR fasilitas LIKE '".$requestData['search']['value']."%' )";
+    $sql.=" AND (b.nama_kamar LIKE '".$requestData['search']['value']."%'";  
+    $sql.=" OR b.group_bed LIKE '".$requestData['search']['value']."%' "; 
+    $sql.=" OR r.nama_ruangan LIKE '".$requestData['search']['value']."%' ";
+    $sql.=" OR b.fasilitas LIKE '".$requestData['search']['value']."%' )";
 
 }
 
@@ -47,7 +47,7 @@ $sql.=" WHERE sisa_bed != 0 ";
 $query=mysqli_query($conn, $sql) or die("eror 2");
 $totalFiltered = mysqli_num_rows($query); // when there is a search parameter then we have to modify total number filtered rows as per search result. 
         
-$sql.=" ORDER BY id ".$requestData['order'][0]['dir']."  LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
+$sql.=" ORDER BY b.id ".$requestData['order'][0]['dir']."  LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
 
 /* $requestData['order'][0]['column'] contains colmun index, $requestData['order'][0]['dir'] contains order such as asc/desc  */    
 $query=mysqli_query($conn, $sql) or die("eror 3");
@@ -69,9 +69,11 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
       $nestedData[] = $kelas;
       $nestedData[] = $row["nama_kamar"];
       $nestedData[] = $row["group_bed"];
+      $nestedData[] = $row['nama_ruangan'];
       $nestedData[] = $row["fasilitas"];
       $nestedData[] = $row["jumlah_bed"];
       $nestedData[] = $row["sisa_bed"];
+      $nestedData[] = $row["id_ruangan"];
 
   $data[] = $nestedData;
 }

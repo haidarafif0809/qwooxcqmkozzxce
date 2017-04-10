@@ -35,7 +35,7 @@ $columns = array(
 // getting total number records without any search
 $sql =" SELECT tp.jam,tp.id,tp.tipe_barang,tp.kode_barang,tp.satuan,tp.nama_barang,tp.jumlah_barang,tp.harga,tp.subtotal,tp.potongan,tp.tax,tp.dosis,s.nama";
 $sql.=" FROM tbs_penjualan tp LEFT JOIN satuan s ON tp.satuan = s.id";
-$sql.=" WHERE tp.no_reg = '$no_reg'  AND (tp.lab IS NULL OR tp.lab = '') AND (tp.no_faktur IS NULL OR tp.no_faktur = '') ";
+$sql.=" WHERE tp.no_reg = '$no_reg'  AND (tp.lab IS NULL OR tp.lab = '') AND (tp.no_faktur IS NULL OR tp.no_faktur = '') AND tp.tipe_barang = 'Barang' ";
 
 $query = mysqli_query($conn, $sql) or die("eror 1");
 $totalData = mysqli_num_rows($query);
@@ -44,7 +44,7 @@ $totalFiltered = $totalData;  // when there is no search parameter then total nu
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
 $sql =" SELECT tp.jam,tp.id,tp.tipe_barang,tp.kode_barang,tp.satuan,tp.nama_barang,tp.jumlah_barang,tp.harga,tp.subtotal,tp.potongan,tp.tax,tp.dosis,s.nama";
 $sql.=" FROM tbs_penjualan tp LEFT JOIN satuan s ON tp.satuan = s.id";
-$sql.=" WHERE tp.no_reg = '$no_reg'  AND (tp.lab IS NULL OR tp.lab = '') AND (tp.no_faktur IS NULL OR tp.no_faktur = '') ";
+$sql.=" WHERE tp.no_reg = '$no_reg'  AND (tp.lab IS NULL OR tp.lab = '') AND (tp.no_faktur IS NULL OR tp.no_faktur = '') AND tp.tipe_barang = 'Barang' ";
 
     $sql.=" AND (tp.kode_barang LIKE '".$requestData['search']['value']."%'";  
     $sql.=" OR tp.nama_barang LIKE '".$requestData['search']['value']."%' ";
@@ -108,14 +108,18 @@ while( $row = mysqli_fetch_array($query) ) {  // preparing an array
       $nestedData[] = "<p style='font-size:15px' class='edit-dosis' data-id='".$row['id']."'> <span id='text-dosis-".$row['id']."'>".$row["dosis"]."</span> <input type='hidden' id='input-dosis-".$row['id']."' value='".$row['dosis']."' class='input_dosis' data-id='".$row['id']."' autofocus='' data-kode='".$row['kode_barang']."' data-tipe='".$row['tipe_barang']."' data-nama-barang='".$row['nama_barang']."'> </p>";
 
 
-      $nestedData[] = "<p  align='right'>".$row["harga"]."</p>";
-      $nestedData[] = "<p style='font-size:15px' align='right'><span id='text-subtotal-".$row['id']."'> ".$row["subtotal"]." </span> </p>";
-      $nestedData[] = "<p style='font-size:15px' align='right'><span id='text-potongan-".$row['id']."'> ".$row["potongan"]." </span> </p>";
+     $nestedData[] = "<p  align='right'><span id='text-harga-".$row['id']."'> ".rp($row["harga"])."</span> </p>";
+
+    $nestedData[] = "<p class='edit-potongan-obat' style='font-size:15px' align='right' data-id=".$row['id']."><span id='text-potongan-".$row['id']."'> ".rp($row["potongan"])." </span> 
+      <input type='hidden' id='input-potongan-".$row['id']."' value='".$row['potongan']."' class='input_potongan' data-id='".$row['id']."' autofocus='' data-kode='".$row['kode_barang']."'> </p>";
+
       $nestedData[] = "<p style='font-size:15px' align='right'><span id='text-tax-".$row['id']."'> ".$row["tax"]." </span> </p>";
+
+      $nestedData[] = "<p style='font-size:15px' align='right'><span id='text-subtotal-".$row['id']."'> ".rp($row["subtotal"])." </span> </p>";
 
 if ($otoritas_tombol['hapus_produk'] > 0) {
 
-      $nestedData[] = "<button class='btn btn-danger btn-sm btn-hapus-tbs' id='hapus-tbs-". $row['id'] ."' data-id='". $row['id'] ."' data-kode-barang='". $row['kode_barang'] ."' data-barang='". $row['nama_barang'] ."' data-subtotal='". $row['subtotal'] ."'>Hapus</button>";
+      $nestedData[] = "<button class='btn btn-danger btn-sm btn-hapus-tbs' id='hapus-tbs-". $row['id'] ."' data-id='". $row['id'] ."' data-kode-barang='". $row['kode_barang'] ."' data-barang='". $row['nama_barang'] ."' data-subtotal='". $row['subtotal'] ."' data-tipe='".$row['tipe_barang']."'>Hapus</button>";
 }
 else{
         $nestedData[] = "<p  style='font-size:15px; color:red'> Tidak Ada Otoritas</p>";

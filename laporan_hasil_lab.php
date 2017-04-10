@@ -63,7 +63,10 @@ $input_hasil_lab = $take_lab['input_hasil_lab'];
      </div>
      </div>
 
-     
+  <input type="hidden" class="form-control" name="no_faktur_hidden" readonly="" autocomplete="off" id="no_faktur_hidden" placeholder="Faktur">
+
+ <input type="hidden" class="form-control" name="no_reg_hidden" readonly="" autocomplete="off" id="no_reg_hidden" placeholder="Reg">
+
    <center> <a href="detail_laboratorium_inap.php" type="submit" class="btn btn-info" id="show_lab_inap" data-id=""> <i class="fa fa-send" ></i> Yes</a>
 
 
@@ -123,11 +126,24 @@ $input_hasil_lab = $take_lab['input_hasil_lab'];
       <div class="table-responsive">
       <span id="modal-detail"> </span>
       </div>
+  <table id="table_detail" class="table table-bordered table-sm">
+        <thead>
+           <th> Nama Pemeriksaan </th>
+           <th> Hasil Pemeriksaan </th>
+           <th> Nilai Normal </th>
+           <th> Status Rawat </th>
+           
+            
+        </thead>
+        
+        <tbody id="data_detail">
+        </tbody>
 
+        </table>
      </div>
 
       <div class="modal-footer">
-        
+        <h6 style="text-align: left ; color: red"><i>* Edit Hasil Pemeriksaan Click 2x !!</i></h6>
   <center> <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button></center> 
       </div>
     </div>
@@ -143,16 +159,16 @@ $input_hasil_lab = $take_lab['input_hasil_lab'];
     <?php if ($input_hasil_lab): ?> 
 			<th style="background-color: #4CAF50; color: white;"> Input Hasil</th>
     <?php endif?>
-			<th style="background-color: #4CAF50; color: white;"> Cetak</th>
-			<th style="background-color: #4CAF50; color: white;"> No RM</th>
-			<th style="background-color: #4CAF50; color: white;"> No REG</th>
-			<th style="background-color: #4CAF50; color: white;"> No Faktur</th>
-			<th style="background-color: #4CAF50; color: white;"> Pasien</th>
-			<th style="background-color: #4CAF50; color: white;"> Dokter</th>
-			<th style="background-color: #4CAF50; color: white;"> Analis</th>
-			<th style="background-color: #4CAF50; color: white;"> Status Rawat </th>
-			<th style="background-color: #4CAF50; color: white;"> Tanggal </th>
-			<th style="background-color: #4CAF50; color: white;"> Detail </th>
+			<th style="background-color: #4CAF50; color: white;">Cetak</th>
+			<th style="background-color: #4CAF50; color: white;">No RM</th>
+			<th style="background-color: #4CAF50; color: white;">No REG</th>
+			<th style="background-color: #4CAF50; color: white;">No Faktur</th>
+			<th style="background-color: #4CAF50; color: white;">Pasien</th>
+			<th style="background-color: #4CAF50; color: white;">Dokter</th>
+			<th style="background-color: #4CAF50; color: white;">Analis</th>
+			<th style="background-color: #4CAF50; color: white;">Status Rawat </th>
+			<th style="background-color: #4CAF50; color: white;">Tanggal </th>
+			<th style="background-color: #4CAF50; color: white;">Detail / Edit </th>
 		</thead>
 		<tbody>
 			
@@ -196,7 +212,7 @@ $input_hasil_lab = $take_lab['input_hasil_lab'];
 <!--end ajax datatable-->
 
 
-<script type="text/javascript">
+<!--<script type="text/javascript">
 $(document).ready(function () {
 $(document).on('click', '.detail-lab', function (e) {
 
@@ -214,8 +230,52 @@ $(document).on('click', '.detail-lab', function (e) {
 		
 		});
 		});
-</script>
+</script>-->
 
+<!--Script mulai untuk tombol detail-->
+<script type="text/javascript">
+$(document).on('click', '.detail-lab', function (e) {
+
+    var no_faktur = $(this).attr('data-faktur');
+    var no_reg = $(this).attr('data-reg');
+    $("#no_faktur_hidden").val(no_faktur);
+    $("#no_reg_hidden").val(no_reg);
+ //ajax
+      $('#table_detail').DataTable().destroy();
+            var dataTable = $('#table_detail').DataTable( {
+            "processing": true,
+            "serverSide": true,
+            "info":     false,
+            "language": { "emptyTable":     "My Custom Message On Empty Table" },
+            "ajax":{
+              url :"show_hasil_lab.php", // json datasource
+               "data": function ( d ) {
+                  d.no_faktur = $("#no_faktur_hidden").val();
+                  d.no_reg = $("#no_reg_hidden").val();
+                  // d.custom = $('#myInput').val();
+                  // etc
+              },
+                  type: "post",  // method  , by default get
+              error: function(){  // error handling
+                $("#data_detail").html("");
+                $("#table_detail").append('<tbody class="tbody"><tr><th colspan="3"></th></tr></tbody>');
+                $("#table_detail_processing").css("display","none");
+                
+              }
+            },
+              "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+              $(nRow).attr('class','tr-id-'+aData[4]+'');
+            },  
+
+      });
+      // ajax end
+    
+        $("#modal_detail").modal('show');
+    
+    });
+
+</script>
+<!--Script akhir untuk tombol detail-->
 
 <!--SKRIPT DETAIL RAWAT INAP -->
 <script type="text/javascript">
@@ -238,5 +298,50 @@ $(document).on('click', '.detail-lab', function (e) {
      });
 </script>
 <!-- SKRIPT DETAIL RAWAT INAP -->
+
+
+<script type="text/javascript">
+// untuk update hasil pemeriksaaan
+$(document).on('dblclick','.edit-nama',function(e){
+  
+var id = $(this).attr("data-id");
+$("#text-nama-"+id+"").hide();
+ $("#input-nama-"+id+"").attr("type", "text");
+
+ });
+
+$(document).on('blur','.input_nama',function(e){
+var nama_lama = $(this).attr("data-nama");
+var id = $(this).attr("data-id");
+var input_nama = $(this).val();
+
+if (input_nama == '') {
+      alert('Hasil Tidak Boleh Kosong !!');
+
+    $("#input-nama-"+id+"").val(nama_lama);
+    $("#text-nama-"+id+"").text(nama_lama);
+    $("#text-nama-"+id+"").show();
+    $("#input-nama-"+id+"").attr("type", "hidden");
+
+    }
+    else
+    {
+
+// Start Proses
+$.post("update_hasil_laboratorium_registrasi.php",{id:id, input_nama:input_nama},function(data){
+
+$("#text-nama-"+id+"").show();
+$("#text-nama-"+id+"").text(input_nama);
+$("#input-nama-"+id+"").attr("type", "hidden");           
+$("#input-nama-"+id+"").val(input_nama);
+$("#input-nama-"+id+"").attr("data-nama",input_nama);
+
+
+});
+// Finish Proses
+        }
+});
+// ending untuk update hasil pemeriksaaan
+</script>
 
 <?php include 'footer.php'; ?>

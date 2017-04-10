@@ -6,18 +6,15 @@ include 'sanitasi.php';
 include 'db.php';
 
 
-  $no_faktur = $_GET['no_faktur'];
+  $no_faktur = stringdoang($_GET['no_faktur']);
 
     $query0 = $db->query("SELECT p.nama AS nama_asli,p.penjamin ,p.no_reg,p.biaya_admin,p.id,p.no_faktur,p.total,p.kode_pelanggan,p.keterangan,p.cara_bayar,p.tanggal,p.tanggal_jt,p.jam,p.user,p.sales,p.kode_meja,p.status,p.potongan,p.tax,p.sisa,p.kredit,p.kode_gudang,p.tunai,pl.nama_pelanggan,pl.wilayah,dp.satuan,dp.jumlah_barang,dp.subtotal,dp.nama_barang,dp.harga, da.nama_daftar_akun, s.nama, pl.alamat_sekarang AS alamat, s.nama AS nama_satuan FROM penjualan p LEFT JOIN detail_penjualan dp ON p.no_faktur = dp.no_faktur LEFT JOIN pelanggan pl ON p.kode_pelanggan = pl.kode_pelanggan LEFT JOIN daftar_akun da ON p.cara_bayar = da.kode_daftar_akun LEFT JOIN satuan s ON dp.satuan = s.id WHERE p.no_faktur = '$no_faktur' ORDER BY p.id DESC");
      $data_inner = mysqli_fetch_array($query0);
 
 
 
-    $query1 = $db->query("SELECT * FROM perusahaan ");
+    $query1 = $db->query("SELECT foto, nama_perusahaan, alamat_perusahaan, no_telp FROM perusahaan ");
     $data1 = mysqli_fetch_array($query1);
-
-    $query2 = $db->query("SELECT * FROM detail_penjualan WHERE no_faktur = '$no_faktur' ");
-    $data2 = mysqli_fetch_array($query2);
 
     $query3 = $db->query("SELECT SUM(jumlah_barang) as total_item FROM detail_penjualan WHERE no_faktur = '$no_faktur'");
     $data3 = mysqli_fetch_array($query3);
@@ -35,12 +32,15 @@ include 'db.php';
     $data_or = mysqli_fetch_array($query_orp);
     $t_operasi = $data_or['t_operasi'];
 
-    $t_subtotal = $t_awal_subtotal + $t_operasi;
 
-    $setting_bahasa = $db->query("SELECT * FROM setting_bahasa WHERE kata_asal = 'Sales' ");
-    $data20 = mysqli_fetch_array($setting_bahasa);
+    $sum_hasil_radiologi = $db->query("SELECT  SUM(subtotal) as sub_radiologi FROM hasil_pemeriksaan_radiologi WHERE no_reg = '$data_inner[no_reg]' AND no_faktur = '$no_faktur' ");
+    $data_radiologi = mysqli_fetch_array($sum_hasil_radiologi);
+    $t_radiologi = $data_radiologi['sub_radiologi'];
 
-    $setting_bahasa0 = $db->query("SELECT * FROM setting_bahasa WHERE kata_asal = 'Pelanggan' ");
+
+    $t_subtotal = $t_awal_subtotal + $t_operasi + $t_radiologi;
+
+    $setting_bahasa0 = $db->query("SELECT kata_ubah FROM setting_bahasa WHERE kata_asal = 'Pelanggan' ");
     $data200 = mysqli_fetch_array($setting_bahasa0);
 
     
@@ -132,7 +132,19 @@ include 'db.php';
 
 </style>
 
-<table id="tableuser" class="table table-bordered table-sm">
+  <?php 
+
+        # query untuk ngecek apakh ada  Obat Obatan / Alkes di detail penjualan
+    $query_obat = $db->query("SELECT dp.nama_barang, dp.no_faktur, dp.kode_barang, dp.jumlah_barang, dp.lab, dp.harga, dp.potongan, dp.tax, dp.subtotal, s.nama FROM detail_penjualan dp LEFT JOIN satuan s ON dp.satuan = s.id WHERE dp.no_reg = '$data_inner[no_reg]' AND dp.tipe_produk = 'Barang' AND (dp.lab IS NULL OR dp.lab = '') ");
+    $cek_obat = mysqli_num_rows($query_obat);
+
+        if ($cek_obat > 0){ #<!-- JIKA ADA Laboratorium maka akan ditampilkan -->
+
+     ?>
+
+<!-- OBAT OBATAN / ALKES (BARANG) -->
+<h5><b><u>Obat Obatan / Alkes</u></b></h5>
+  <table id="tabel_obat" class="table table-bordered table-sm">
         <thead>
             <th class="table1" style="width: 3%"> <center> No. </center> </th>
             <th class="table1" style="width: 35%"> <center> Nama Produk </center> </th>
@@ -151,16 +163,11 @@ include 'db.php';
 
         $no_urut = 0;
 
-            $query5 = $db->query("SELECT * FROM detail_penjualan WHERE no_faktur = '$no_faktur' ");
             //menyimpan data sementara yang ada pada $perintah
-            while ($data5 = mysqli_fetch_array($query5))
+            while ($data5 = mysqli_fetch_array($query_obat))
             {
 
               $no_urut ++;
-
-              $kode = $db->query("SELECT dp.satuan, s.nama FROM detail_penjualan dp INNER JOIN satuan s ON dp.satuan = s.id  WHERE dp.kode_barang = '$data5[kode_barang]' ");
-              $satuan_b = mysqli_fetch_array($kode);
-              $satuan = $satuan_b['nama'];
 
 
            echo "<tr>";
@@ -199,7 +206,7 @@ include 'db.php';
               echo "<td class='table1'>Lab</td>";
             }
             else{
-              echo "<td class='table1'>". $satuan ."</td>";              
+              echo "<td class='table1'>". $data5['nama'] ."</td>";              
             }
             echo "
             <td class='table1' align='right'>". rp($data5['harga']) ."</td>
@@ -211,71 +218,311 @@ include 'db.php';
             
             }
 
+          $query_total_detail_barang = $db->query("SELECT SUM(subtotal) AS subtotal FROM detail_penjualan WHERE no_faktur = '$no_faktur' AND no_reg = '$data_inner[no_reg]' AND tipe_produk = 'Barang' AND ( lab = '' OR lab IS NULL ) ");
 
-// OPERASI TABLE
- $take_data_or = $db->query("SELECT * FROM hasil_operasi WHERE no_reg = '$data_inner[no_reg]'");
-$nomor_op = $no_urut;
-    while($out_operasi = mysqli_fetch_array($take_data_or))
-      {
-                   
-        $select_or = $db->query("SELECT id_operasi,nama_operasi FROM operasi WHERE id_operasi = '$out_operasi[operasi]'");
-        $outin = mysqli_fetch_array($select_or);
+          $data_total_detail_barang = mysqli_fetch_array($query_total_detail_barang);
+
+          echo "<tr>
+            <td class='table1' align='right'></td>
+            <td class='table1' style='color:red'>TOTAL</td>
+            <td class='table1' align='right'></td>
+            <td class='table1' align='right'></td>
+            <td class='table1' align='right'></td>
+            <td class='table1' align='right'></td>
+            <td class='table1' align='right'></td>
+            <td class='table1' align='right'></td>
+            <td class='table1' align='right' style='color:red'>". rp($data_total_detail_barang['subtotal']) ."</td>
+            </tr>";
+          
+
+        ?>
+        </tbody>
+
+    </table>
+    <br>
+
+
+  <?php }  # END <!-- JIKA ADA Laboratorium maka akan ditampilkan -->
+
+        # query untuk ngecek apakh ada  Jasa / Tindakan  di detail penjualan
+    $query_jasa = $db->query("SELECT dp.nama_barang, dp.no_faktur, dp.kode_barang, dp.jumlah_barang, dp.lab, dp.harga, dp.potongan, dp.tax, dp.subtotal, s.nama FROM detail_penjualan dp INNER JOIN satuan s ON dp.satuan = s.id WHERE dp.no_reg = '$data_inner[no_reg]' AND dp.tipe_produk = 'Jasa' AND (dp.lab IS NULL OR dp.lab = '') ");
+    $cek_jasa = mysqli_num_rows($query_jasa);
+
+        if ($cek_jasa > 0){ #<!-- JIKA ADA Jasa / Tindakan  maka akan ditampilkan -->
+
+     ?>
+
+<!-- TINDAKAN (JASA) -->
+<h5><b><u>Jasa / Tindakan </u></b></h5>
+  <table id="tabel_jasa" class="table table-bordered table-sm">
+        <thead>
+            <th class="table1" style="width: 3%"> <center> No. </center> </th>
+            <th class="table1" style="width: 35%"> <center> Nama Produk </center> </th>
+            <th class="table1" style="width: 40%"> <center> Petugas </center> </th>
+            <th class="table1" style="width: 5%"> <center> Qty </center> </th>
+            <th class="table1" style="width: 5%"> <center> Satuan </center> </th>
+            <th class="table1" style="width: 15%"> <center> Harga </center> </th>
+            <th class="table1" style="width: 5%"> <center> Disc. </center> </th>
+            <th class="table1" style="width: 5%"> <center> Pajak </center> </th>
+            <th class="table1" style="width: 12%"> <center> Subtotal </center> </th>
         
-        $nomor_op++;
+            
+        </thead>
+        <tbody>
+        <?php
 
-        echo"<tr>
-                    
-            <td class='table1' align='center'>".$nomor_op."</td>";
+        $no_urut = 0;
 
-            if($out_operasi['operasi'] == $outin['id_operasi'])
+
+            //menyimpan data sementara yang ada pada $perintah
+            while ($data5 = mysqli_fetch_array($query_jasa))
             {
-              echo"<td class='table1' align='left'>". $outin['nama_operasi'] ."</td>";
+
+              $no_urut ++;
+
+
+           echo "<tr>";
+
+           echo "
+
+           <td class='table1' align='center'>".$no_urut."</td>
+           <td class='table1'>". $data5['nama_barang'] ."</td>";
+
+  
+             $kd = $db->query("SELECT f.nama_petugas, u.nama FROM laporan_fee_produk f INNER JOIN user u ON f.nama_petugas = u.id  WHERE f.kode_produk = '$data5[kode_barang]' AND f.no_faktur = '$data5[no_faktur]' ");
+
+             $kdD = $db->query("SELECT f.nama_petugas, u.nama FROM laporan_fee_produk f INNER JOIN user u ON f.nama_petugas = u.id  WHERE f.kode_produk = '$data5[kode_barang]' AND f.no_faktur = '$data5[no_faktur]' GROUP BY f.nama_petugas");
+             
+             $nu = mysqli_fetch_array($kd);
+             
+             if ($nu['nama_petugas'] != '')
+             {
+             
+             echo "<td>";
+             while($nur = mysqli_fetch_array($kdD))
+             {
+             echo $nur['nama']." ,";
+             }
+             echo "</td>";
+             
+             }
+             else
+             {
+             echo "<td></td>";
+             }
+             
+            echo "<td class='table1' align='center'>". rp($data5['jumlah_barang']) ."</td>";
+
+            if ($data5['lab'] == 'Laboratorium') {
+              echo "<td class='table1'>Lab</td>";
             }
             else{
-              echo "<td> </td>";
+              echo "<td class='table1'>". $data5['nama'] ."</td>";              
             }
+            echo "
+            <td class='table1' align='right'>". rp($data5['harga']) ."</td>
+            <td class='table1' align='right'>". rp($data5['potongan']) ."</td>
+            <td class='table1' align='right'>". rp($data5['tax']) ."</td>
+            <td class='table1' align='right'>". rp($data5['subtotal']) ."</td>
+            </tr>";
+
             
+            }
 
-            echo " 
-            <td class='table1' align='center'>-</td>
-            <td class='table1' align='center'>-</td>
-            <td class='table1' align='right'>". rp($out_operasi['harga_jual']) ."</td>
-            <td class='table1' align='right'>-</td>
-            <td class='table1' align='right'>-</td>
-            <td class='table1' align='right'>". rp($out_operasi['harga_jual']) ."</td>
-      </tr>";
+          $query_total_detail_jasa = $db->query("SELECT SUM(subtotal) AS subtotal_jasa FROM detail_penjualan WHERE no_faktur = '$no_faktur' AND no_reg = '$data_inner[no_reg]' AND tipe_produk = 'Jasa' AND ( lab = '' OR lab IS NULL ) ");
 
-                    
-                  
-    }
+          $data_total_detail_jasa = mysqli_fetch_array($query_total_detail_jasa);
 
-// RADIOLOGI TABLE
 
-   $nomor_radiologi = $nomor_op;
+          echo "<tr>
+            <td class='table1' align='right'></td>
+            <td class='table1' style='color:red'>TOTAL</td>
+            <td class='table1' align='right'></td>
+            <td class='table1' align='right'></td>
+            <td class='table1' align='right'></td>
+            <td class='table1' align='right'></td>
+            <td class='table1' align='right'></td>
+            <td class='table1' align='right'></td>
+            <td class='table1' align='right' style='color:red'>". rp($data_total_detail_jasa['subtotal_jasa']) ."</td>
+            </tr>";
 
- $select_hasil_radiologi = $db->query("SELECT nama_barang, jumlah_barang, harga, potongan, tax, subtotal FROM hasil_pemeriksaan_radiologi WHERE no_faktur = '$no_faktur'");
+        ?>
+        </tbody>
+    </table>
+    <br>
 
-    while($data_hasil = mysqli_fetch_array($select_hasil_radiologi))
-      {
-       
-       $nomor_radiologi++;
 
-        echo"<tr>
-                    
-            <td class='table1' align='center'>".$nomor_radiologi."</td>   
-            <td class='table1'>".$data_hasil['nama_barang']."</td> 
-            <td class='table1' align='center'>-</td>            
-            <td class='table1' align='center'>".$data_hasil['jumlah_barang']."</td>
-            <td class='table1' align='center'>Radiologi</td>
-            <td class='table1' align='right'>". rp($data_hasil['harga']) ."</td>
-            <td class='table1' align='right'>". rp($data_hasil['potongan']) ."</td>
-            <td class='table1' align='right'>". rp($data_hasil['tax']) ."</td>
-            <td class='table1' align='right'>". rp($data_hasil['subtotal']) ."</td>
-      </tr>";
+  <?php }  # END <!-- JIKA  LABORATORIUM maka akan ditampilkan -->
 
-                    
-                  
-    }
+    $query_lab = $db->query("SELECT nama_barang, no_faktur, kode_barang, jumlah_barang, lab, harga, potongan, tax, subtotal FROM detail_penjualan WHERE no_reg = '$data_inner[no_reg]' AND tipe_produk = 'Jasa' AND lab = 'Laboratorium' ");
+    $cek_lab = mysqli_num_rows($query_lab);
+
+    if ($cek_lab > 0){ #<!-- JIKA LABORATORIUM  maka akan ditampilkan -->
+
+     ?>
+
+<!-- LABORATORIUM -->
+<h5><b><u>Laboratorium </u></b></h5>
+
+  <table id="tabel_jasa" class="table table-bordered table-sm">
+        <thead>
+            <th class="table1" style="width: 3%"> <center> No. </center> </th>
+            <th class="table1" style="width: 35%"> <center> Nama Produk </center> </th>
+            <th class="table1" style="width: 40%"> <center> Petugas </center> </th>
+            <th class="table1" style="width: 5%"> <center> Qty </center> </th>
+            <th class="table1" style="width: 5%"> <center> Satuan </center> </th>
+            <th class="table1" style="width: 15%"> <center> Harga </center> </th>
+            <th class="table1" style="width: 5%"> <center> Disc. </center> </th>
+            <th class="table1" style="width: 5%"> <center> Pajak </center> </th>
+            <th class="table1" style="width: 12%"> <center> Subtotal </center> </th>
+        
+            
+        </thead>
+        <tbody>
+        <?php
+
+        $no_urut = 0;
+
+
+            //menyimpan data sementara yang ada pada $perintah
+            while ($data5 = mysqli_fetch_array($query_lab))
+            {
+
+              $no_urut ++;
+
+
+           echo "<tr>";
+
+           echo "
+
+           <td class='table1' align='center'>".$no_urut."</td>
+           <td class='table1'>". $data5['nama_barang'] ."</td>";
+
+  
+             $kd = $db->query("SELECT f.nama_petugas, u.nama FROM laporan_fee_produk f INNER JOIN user u ON f.nama_petugas = u.id  WHERE f.kode_produk = '$data5[kode_barang]' AND f.no_faktur = '$data5[no_faktur]' ");
+
+             $kdD = $db->query("SELECT f.nama_petugas, u.nama FROM laporan_fee_produk f INNER JOIN user u ON f.nama_petugas = u.id  WHERE f.kode_produk = '$data5[kode_barang]' AND f.no_faktur = '$data5[no_faktur]' GROUP BY f.nama_petugas");
+             
+             $nu = mysqli_fetch_array($kd);
+             
+             if ($nu['nama_petugas'] != '')
+             {
+             
+             echo "<td>";
+             while($nur = mysqli_fetch_array($kdD))
+             {
+             echo $nur['nama']." ,";
+             }
+             echo "</td>";
+             
+             }
+             else
+             {
+             echo "<td></td>";
+             }
+             
+            echo "<td class='table1' align='center'>". rp($data5['jumlah_barang']) ."</td>
+            <td class='table1'>Lab</td>
+            <td class='table1' align='right'>". rp($data5['harga']) ."</td>
+            <td class='table1' align='right'>". rp($data5['potongan']) ."</td>
+            <td class='table1' align='right'>". rp($data5['tax']) ."</td>
+            <td class='table1' align='right'>". rp($data5['subtotal']) ."</td>
+            </tr>";
+
+            
+            }
+
+          $query_total_detail_lab = $db->query("SELECT SUM(subtotal) AS subtotal_lab FROM detail_penjualan WHERE no_faktur = '$no_faktur' AND no_reg = '$data_inner[no_reg]' AND tipe_produk = 'Jasa' AND lab = 'Laboratorium' ");
+
+          $data_total_detail_lab = mysqli_fetch_array($query_total_detail_lab);
+
+          echo "<tr>
+            <td class='table1' align='right'></td>
+            <td class='table1' style='color:red'>TOTAL</td>
+            <td class='table1' align='right'></td>
+            <td class='table1' align='right'></td>
+            <td class='table1' align='right'></td>
+            <td class='table1' align='right'></td>
+            <td class='table1' align='right'></td>
+            <td class='table1' align='right'></td>
+            <td class='table1' align='right' style='color:red'>". rp($data_total_detail_lab['subtotal_lab']) ."</td>
+            </tr>";
+
+        ?>
+        </tbody>
+
+    </table>
+    <br>
+
+<!-- LABORATORIUM -->
+
+  <?php }  # END <!-- JIKA  Radiologi maka akan ditampilkan -->
+
+    $query_radiologi = $db->query("SELECT nama_barang, jumlah_barang, harga, potongan, tax, subtotal FROM hasil_pemeriksaan_radiologi WHERE no_reg = '$data_inner[no_reg]'");
+    $cek_radiologi = mysqli_num_rows($query_radiologi);
+
+    if ($cek_radiologi > 0) { #<!-- JIKA Radiologi  maka akan ditampilkan -->
+
+     ?>
+<h5><b><u>Radiologi </u></b></h5>
+  <table id="tabel_jasa" class="table table-bordered table-sm">
+        <thead>
+            <th class="table1" style="width: 3%"> <center> No. </center> </th>
+            <th class="table1" style="width: 35%"> <center> Nama Produk </center> </th>
+            <th class="table1" style="width: 40%"> <center> Petugas </center> </th>
+            <th class="table1" style="width: 5%"> <center> Qty </center> </th>
+            <th class="table1" style="width: 5%"> <center> Satuan </center> </th>
+            <th class="table1" style="width: 15%"> <center> Harga </center> </th>
+            <th class="table1" style="width: 5%"> <center> Disc. </center> </th>
+            <th class="table1" style="width: 5%"> <center> Pajak </center> </th>
+            <th class="table1" style="width: 12%"> <center> Subtotal </center> </th>
+        
+            
+        </thead>
+        <tbody>
+        <?php 
+
+
+           $nomor_radiologi = 0;
+
+              while($data_hasil = mysqli_fetch_array($query_radiologi))
+                {
+                 
+                 $nomor_radiologi++;
+
+                  echo"<tr>
+                              
+                      <td class='table1' align='center'>".$nomor_radiologi."</td>   
+                      <td class='table1'>".$data_hasil['nama_barang']."</td> 
+                      <td class='table1' align='center'>-</td>            
+                      <td class='table1' align='center'>".$data_hasil['jumlah_barang']."</td>
+                      <td class='table1' align='center'>Radiologi</td>
+                      <td class='table1' align='right'>". rp($data_hasil['harga']) ."</td>
+                      <td class='table1' align='right'>". rp($data_hasil['potongan']) ."</td>
+                      <td class='table1' align='right'>". rp($data_hasil['tax']) ."</td>
+                      <td class='table1' align='right'>". rp($data_hasil['subtotal']) ."</td>
+                </tr>";
+
+                              
+                            
+              }
+
+          $query_total_detail_radiologi = $db->query("SELECT SUM(subtotal) AS subtotal_radiologi FROM hasil_pemeriksaan_radiologi WHERE no_faktur = '$no_faktur' AND no_reg = '$data_inner[no_reg]' ");
+
+          $data_total_detail_radiologi = mysqli_fetch_array($query_total_detail_radiologi);
+
+          echo "<tr>
+            <td class='table1' align='right'></td>
+            <td class='table1' style='color:red'>TOTAL</td>
+            <td class='table1' align='right'></td>
+            <td class='table1' align='right'></td>
+            <td class='table1' align='right'></td>
+            <td class='table1' align='right'></td>
+            <td class='table1' align='right'></td>
+            <td class='table1' align='right'></td>
+            <td class='table1' align='right' style='color:red'>". rp($data_total_detail_radiologi['subtotal_radiologi']) ."</td>
+            </tr>";
+
 
 //Untuk Memutuskan Koneksi Ke Database
 mysqli_close($db); 
@@ -285,7 +532,7 @@ mysqli_close($db);
 
     </table>
 
-
+<?php } ?>
 <br>
         <div class="col-sm-6">
             

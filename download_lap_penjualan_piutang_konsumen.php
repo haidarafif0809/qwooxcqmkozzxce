@@ -1,0 +1,176 @@
+<?php 
+// Fungsi header dengan mengirimkan raw data excel
+header("Content-type: application/vnd-ms-excel");
+ 
+// Mendefinisikan nama file ekspor "hasil-export.xls"
+header("Content-Disposition: attachment; filename=laporan_penjualan_piutang.xls");
+
+include 'db.php';
+include 'sanitasi.php';
+
+
+$dari_tanggal = stringdoang($_GET['dari_tanggal']);
+$sampai_tanggal = stringdoang($_GET['sampai_tanggal']);
+$konsumen = stringdoang($_GET['penjamin']);
+
+ $query1 = $db->query("SELECT * FROM perusahaan ");
+    $data1 = mysqli_fetch_array($query1);
+
+// LOGIKA UNTUK AMBIL BERDASARKAN KONSUMEN DAN SALES (QUERY TAMPIL AWAL)
+if ($konsumen == 'semua' ){
+ $query02 = $db->query("SELECT SUM(pen.tunai) AS tunai_penjualan,SUM(pen.total) AS total_akhir, SUM(pen.kredit) AS total_kredit ,SUM(dpp.jumlah_bayar) + SUM(dpp.potongan) AS ambil_total_bayar FROM penjualan pen LEFT JOIN detail_pembayaran_piutang dpp ON pen.no_faktur = dpp.no_faktur_penjualan WHERE pen.tanggal >= '$dari_tanggal' AND pen.tanggal <= '$sampai_tanggal' AND pen.kredit != 0  ");
+}
+else{
+
+  $query02 = $db->query("SELECT SUM(pen.tunai) AS tunai_penjualan,SUM(pen.total) AS total_akhir, SUM(pen.kredit) AS total_kredit,SUM(dpp.jumlah_bayar) + SUM(dpp.potongan) AS ambil_total_bayar ,pl.nama_pelanggan,pen.penjamin FROM penjualan pen LEFT JOIN pelanggan pl ON pen.kode_pelanggan = pl.kode_pelanggan LEFT JOIN detail_pembayaran_piutang dpp ON pen.no_faktur = dpp.no_faktur_penjualan WHERE pen.tanggal >= '$dari_tanggal' AND pen.tanggal <= '$sampai_tanggal' AND pen.kredit != 0 AND pen.penjamin = '$konsumen' ");
+}
+// LOGIKA UNTUK  UNTUK AMBIL  BERDASARKAN KONSUMEN DAN SALES (QUERY TAMPIL AWAL)
+
+
+$cek02 = mysqli_fetch_array($query02);
+
+$total_akhir = $cek02['total_akhir'];
+$total_kredit = $cek02['total_kredit'];
+$total_bayar = $cek02['tunai_penjualan'] +  $cek02['ambil_total_bayar'];
+
+if ($konsumen == 'semua')
+{
+$penjamin = "Semua Konsumen";
+}
+else
+{
+  $penjamin =  $cek02['penjamin'];
+}
+
+
+
+
+ ?>
+<div class="container">
+ <div class="row"><!--row1-->
+        <div class="col-sm-6">
+                 <h3> <b> LAPORAN PIUTANG PERIODE /PENJAMIN </b></h3>
+                 <h4> <b> <?php echo $data1['nama_perusahaan']; ?> </b> </h4> 
+                 <p> <?php echo $data1['alamat_perusahaan']; ?> </p> 
+                 <p> No.Telp:<?php echo $data1['no_telp']; ?> </p> 
+                 
+        </div><!--penutup colsm4-->
+
+        <div class="col-sm-4">
+         <br><br>                 
+<table>
+  <tbody>
+
+      <tr><td  width="20%">PERIODE</td> <td> &nbsp;:&nbsp; </td> <td> <?php echo tanggal($dari_tanggal); ?> s/d <?php echo tanggal($sampai_tanggal); ?></td>
+      </tr>
+       <tr><td  width="20%">KONSUMEN</td> <td> &nbsp;:&nbsp; </td> <td> <?php echo $penjamin; ?></td>
+      </tr>
+      </tr>
+            
+  </tbody>
+</table>           
+                 
+        </div><!--penutup colsm4-->
+
+    </div><!--penutup row1-->
+    <br>
+    <br>
+    <br>
+
+
+ <table id="tableuser" class="table table-bordered table-sm">
+            <thead>
+      <th style="background-color: #4CAF50; color: white;"> Nomor Faktur </th>
+      <th style="background-color: #4CAF50; color: white;"> Penajamin </th>
+      <th style="background-color: #4CAF50; color: white;"> Nama Pasien</th>
+      <th style="background-color: #4CAF50; color: white;"> Tgl. Transaksi </th>
+      <th style="background-color: #4CAF50; color: white;"> Tgl. Jatuh Tempo </th>
+      <th style="background-color: #4CAF50; color: white;"> Usia Piutang </th>
+      <th style="background-color: #4CAF50; color: white;"> Nilai Faktur </th>
+      <th style="background-color: #4CAF50; color: white;"> Dibayar </th>
+      <th style="background-color: #4CAF50; color: white;"> Piutang </th>
+                                    
+            </thead>
+            
+            <tbody>
+            <?php
+
+// LOGIKA UNTUK FILTER BERDASARKAN KONSUMEN DAN SALES (QUERY TAMPIL AWAL)
+if ($konsumen == 'semua'){
+          $perintah009 = $db->query("SELECT dp.id,pel.nama_pelanggan,dp.tanggal,dp.tanggal_jt, DATEDIFF(dp.tanggal_jt,DATE(NOW())) AS usia_piutang ,dp.no_faktur,dp.kode_pelanggan,dp.total,dp.jam,dp.penjamin,dp.status,dp.potongan,dp.tax,dp.sisa,dp.kredit FROM penjualan dp LEFT JOIN pelanggan pel ON dp.kode_pelanggan = pel.kode_pelanggan WHERE dp.tanggal >= '$dari_tanggal' AND dp.tanggal <= '$sampai_tanggal' AND dp.kredit != 0 ORDER BY dp.waktu_input DESC ");
+ }
+
+else{
+          $perintah009 = $db->query("SELECT dp.id,pel.nama_pelanggan,dp.tanggal,dp.tanggal_jt, DATEDIFF(dp.tanggal_jt,DATE(NOW())) AS usia_piutang ,dp.no_faktur,dp.kode_pelanggan,dp.total,dp.jam,dp.penjamin,dp.status,dp.potongan,dp.tax,dp.sisa,dp.kredit FROM penjualan dp LEFT JOIN pelanggan pel ON dp.kode_pelanggan = pel.kode_pelanggan WHERE dp.tanggal >= '$dari_tanggal' AND dp.tanggal <= '$sampai_tanggal' AND dp.kredit != 0 AND dp.penjamin = '$konsumen' ORDER BY dp.waktu_input DESC ");
+
+ }  
+// LOGIKA UNTUK FILTER BERDASARKAN KONSUMEN DAN SALES (QUERY TAMPIL AWAL)
+
+  while ($data11 = mysqli_fetch_array($perintah009))
+        {
+
+
+// MENCARI TOTAL PEMBAYARAN PIUTANG  
+$query0232 = $db->query("SELECT SUM(jumlah_bayar) + SUM(potongan) AS total_bayar FROM detail_pembayaran_piutang WHERE no_faktur_penjualan = '$data11[no_faktur]' ");
+$kel_bayar = mysqli_fetch_array($query0232);
+$num_rows = mysqli_num_rows($query0232);
+
+
+$sum_dp = $db->query("SELECT SUM(tunai) AS tunai_penjualan FROM penjualan WHERE no_faktur = '$data11[no_faktur]' ");
+$data_sum = mysqli_fetch_array($sum_dp);
+$Dp = $data_sum['tunai_penjualan']; 
+
+
+$tot_bayar = $kel_bayar['total_bayar'] + $Dp;
+// MENCARI TOTAL PEMBAYARAN PIUTANG  
+
+
+                  echo "<tr>
+                  <td>". $data11['no_faktur'] ."</td>
+                  <td>". $data11['penjamin'] ."</td>
+                  <td>". $data11['nama_pelanggan'] ."</td>
+                  <td>". $data11['tanggal'] ."</td>
+                  <td>". $data11['tanggal_jt'] ."</td>
+                  <td align='right'>". rp($data11['usia_piutang']) ." Hari</td>
+                  <td align='right'>". rp($data11['total']) ."</td>";
+                  if ($num_rows > 0)
+                  {
+                      echo "<td align='right'>". rp($tot_bayar) ."</td>";
+                  }
+                  else
+                  {
+                    echo 0;
+                  }
+                  echo "<td align='right'>". rp($data11['kredit']) ."</td>
+                  </tr>";
+
+
+                  }
+
+
+
+    echo "<td><p style='color:red'> TOTAL </p></td>
+      <td><p style='color:red'> - </p></td>
+      <td><p style='color:red'> - </p></td>
+      <td><p style='color:red'> - </p></td>
+      <td><p style='color:red'> - </p></td>
+      <td><p style='color:red' align='right'> - </p></td>
+      <td><p style='color:red' align='right'> ".rp($total_akhir)." </p></td>
+      <td><p style='color:red' align='right'> ".rp($total_bayar)." </p></td>
+      <td><p style='color:red' align='right'> ".rp($total_kredit)." </p></td>";  
+
+//Untuk Memutuskan Koneksi Ke Database
+
+mysqli_close($db); 
+
+            ?>
+            </tbody>
+
+      </table>
+      <hr>
+</div>
+</div>
+<br>
+
+
+     </div>

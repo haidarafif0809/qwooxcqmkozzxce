@@ -36,7 +36,9 @@ $columns = array(
 // getting total number records without any search
 $sql =" SELECT tp.no_reg,tp.id,tp.no_faktur,tp.kode_barang,tp.satuan,tp.nama_barang,tp.jumlah_barang,tp.harga,tp.subtotal,tp.potongan,tp.tax,tp.jam,tp.tipe_barang,s.nama ";
 $sql.=" FROM tbs_penjualan tp LEFT JOIN satuan s ON tp.satuan = s.id ";
-$sql.=" WHERE tp.no_faktur = '$no_faktur' AND tp.no_reg = '$no_reg' AND (tp.lab IS NULL OR tp.lab = '') ";
+
+$sql.=" WHERE tp.no_faktur = '$no_faktur' AND tp.no_reg = '$no_reg' AND (tp.lab IS NULL OR tp.lab = '') AND tp.tipe_barang = 'Barang' ";
+
 
 $query = mysqli_query($conn, $sql) or die("eror 1");
 $totalData = mysqli_num_rows($query);
@@ -45,7 +47,8 @@ $totalFiltered = $totalData;  // when there is no search parameter then total nu
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
 $sql ="SELECT tp.no_reg,tp.id,tp.no_faktur,tp.kode_barang,tp.satuan,tp.nama_barang,tp.jumlah_barang,tp.harga,tp.subtotal,tp.potongan,tp.tax,tp.jam,tp.tipe_barang,s.nama ";
 $sql.="  FROM tbs_penjualan tp LEFT JOIN satuan s ON tp.satuan = s.id ";
-$sql.=" WHERE tp.no_faktur = '$no_faktur' AND tp.no_reg = '$no_reg'  AND (tp.lab IS NULL OR tp.lab = '') ";
+$sql.=" WHERE tp.no_faktur = '$no_faktur' AND tp.no_reg = '$no_reg' AND (tp.lab IS NULL OR tp.lab = '') AND tp.tipe_barang = 'Barang' ";
+
 
     $sql.=" AND (tp.kode_barang LIKE '".$requestData['search']['value']."%'";  
     $sql.=" OR tp.nama_barang LIKE '".$requestData['search']['value']."%' ";
@@ -114,17 +117,20 @@ $row_piutang = mysqli_num_rows($pilih);
   }
 else
   {
-  $nestedData[] = "<p style='font-size:15px' align='right' class='tidak_punya_otoritas' data-id='".$row['id']."'><span id='text-jumlah-".$row['id']."'>". $row['jumlah_barang'] ."</span> </p>";
+  $nestedData[] = "<p style='font-size:15px' align='right' class='tidak_punya_otoritas' data-id='".$row['id']."'><span id='text-jumlah-".$row['id']."'>". rp($row['jumlah_barang']) ."</span> </p>";
    }
 
 }
 
     $nestedData[] = $row["nama"];
-    $nestedData[] = "<p  align='right'>".$row["harga"]."</p>";
+    $nestedData[] = "<p  align='right'><span id='text-harga-".$row['id']."'> ".rp($row["harga"])."</span> </p>";
     
-    $nestedData[] = "<p style='font-size:15px' align='right'><span id='text-potongan-".$row['id']."'> ".$row["potongan"]." </span> </p>";
-    $nestedData[] = "<p style='font-size:15px' align='right'><span id='text-tax-".$row['id']."'> ".$row["tax"]." </span> </p>";
-    $nestedData[] = "<p style='font-size:15px' align='right'><span id='text-subtotal-".$row['id']."'> ".$row["subtotal"]." </span> </p>";
+    $nestedData[] = "<p class='edit-potongan' style='font-size:15px' align='right' data-id=".$row['id']."><span id='text-potongan-".$row['id']."'> ".rp($row["potongan"])." </span> 
+      <input type='hidden' id='input-potongan-".$row['id']."' value='".$row['potongan']."' class='input_potongan' data-id='".$row['id']."' autofocus='' data-kode='".$row['kode_barang']."'> </p>";
+
+
+    $nestedData[] = "<p style='font-size:15px' align='right'><span id='text-tax-".$row['id']."'> ".rp($row["tax"])." </span> </p>";
+    $nestedData[] = "<p style='font-size:15px' align='right'><span id='text-subtotal-".$row['id']."'> ".rp($row["subtotal"])." </span> </p>";
 
 if ($row_retur > 0 || $row_piutang > 0) {
 
@@ -136,7 +142,7 @@ else{
 
   if ($otoritas_tombol['hapus_produk'] > 0) {
 
-      $nestedData[] = "<button class='btn btn-danger btn-sm btn-hapus-tbs' id='btn-hapus-".$row['id']."' data-id='". $row['id'] ."' data-subtotal='".$row['subtotal']."' data-kode-barang='". $row['kode_barang'] ."' data-barang='". $row['nama_barang'] ."'><span class='glyphicon glyphicon-trash'> </span> Hapus </button>";
+      $nestedData[] = "<button class='btn btn-danger btn-sm btn-hapus-tbs' id='btn-hapus-".$row['id']."' data-id='". $row['id'] ."' data-subtotal='".$row['subtotal']."' data-kode-barang='". $row['kode_barang'] ."' data-barang='". $row['nama_barang'] ."' data-tipe='".$row['tipe_barang']."'><span class='glyphicon glyphicon-trash'> </span> Hapus </button>";
 
     }
 else

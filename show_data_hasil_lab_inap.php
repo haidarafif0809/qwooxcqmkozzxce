@@ -26,14 +26,9 @@ $columns = array(
 	9 => 'tanggal',
 	10 => 'detail',
 	11 => 'id'
-
-
 );
 
-
 // getting total number records without any search
-
-
 $sql = "SELECT us.nama AS dokter,se.nama AS analis,pi.no_reg,pi.no_rm,pi.nama_pasien,pi.no_periksa,pi.status,pi.waktu,pi.id FROM pemeriksaan_lab_inap pi LEFT JOIN user us ON pi.dokter = us.id LEFT JOIN user se ON pi.analis = se.id WHERE pi.no_reg = '$no_reg' AND pi.no_rm = '$no_rm' ORDER BY pi.no_periksa DESC";
 
 $query=mysqli_query($conn, $sql) or die("1.php: get employees");
@@ -67,9 +62,18 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 if ($input_hasil_lab > 0) {
 	if($row['status'] == '0')
 	{
-	$jenis_penjualan = "Rawat Inap";
 
-	$nestedData[] = "<a href='cek_input_hasil_lab_inap.php?no_reg=". $row['no_reg']."&nama=". $row['nama_pasien']."&no_rm=". $row['no_rm']."&jenis_penjualan=". $jenis_penjualan."&no_periksa=". $row['no_periksa']."' class='btn btn-success'> Input </a>";
+		$query_cek_setting = $db->query("SELECT nama FROM setting_laboratorium");
+		$data_cek_setting = mysqli_fetch_array($query_cek_setting);
+		$angka_setting_lab = $data_cek_setting['nama'];
+		if($angka_setting_lab == 0){
+		$nestedData[] = "<p style='color:red'>Cek Setting Laboratorium</p>";
+		}
+		else{
+		$jenis_penjualan = "Rawat Inap";
+
+		$nestedData[] = "<a href='cek_input_hasil_lab_inap.php?no_reg=". $row['no_reg']."&nama=". $row['nama_pasien']."&no_rm=". $row['no_rm']."&jenis_penjualan=". $jenis_penjualan."&no_periksa=". $row['no_periksa']."' class='btn btn-success'> Input </a>";
+		}
 	}
 	else
 	{
@@ -77,43 +81,37 @@ if ($input_hasil_lab > 0) {
 	}
 }
 
+
+
 if($row['status'] == '0')
 {
 	$nestedData[] = "<p style='color:red'> Belum Ada Hasil </p>";
-}
-else
-{
-
-$nestedData[] = "<a href='cetak_hasil_lab_inap_after_input_hasil.php?no_reg=".$row['no_reg']."&no_periksa=".$row['no_periksa']."' target='blank' class='btn btn-floating btn-primary' data-target='blank'> <i class='fa fa-print'></i> </a>";
-
-}
-	
 	$nestedData[] = $row["no_periksa"];
 	$nestedData[] = $row["no_reg"];
 	$nestedData[] = $row["no_rm"];	
 	$nestedData[] = $row["nama_pasien"];
 	$nestedData[] = $row["dokter"];
 	$nestedData[] = $row["analis"];
-
-	if($row['status'] == '0')
-{
 	$nestedData[] = "<p style='color:red'>Belum</p>";
-}
-else
-{
-	$nestedData[] = "<p style='color:green'>Selesai</p>";
-}
-
 	$nestedData[] = $row["waktu"];
-
-if($row['status'] == '0')
-{
 	$nestedData[] = "<p style='color:red'> Belum Input Hasil</p>";
 }
 else
 {
+
+	$nestedData[] = "<a href='cetak_hasil_lab_inap_after_input_hasil.php?no_reg=".$row['no_reg']."&no_periksa=".$row['no_periksa']."' target='blank' class='btn btn-floating btn-primary' data-target='blank'> <i class='fa fa-print'></i> </a>";
+	$nestedData[] = $row["no_periksa"];
+	$nestedData[] = $row["no_reg"];
+	$nestedData[] = $row["no_rm"];	
+	$nestedData[] = $row["nama_pasien"];
+	$nestedData[] = $row["dokter"];
+	$nestedData[] = $row["analis"];
+	$nestedData[] = "<p style='color:green'>Selesai</p>";
+	$nestedData[] = $row["waktu"];
 	$nestedData[] = "<td><button class='btn btn-floating  btn-info detail-lab-inap' data-reg='".$row['no_reg']."' data-periksa='".$row['no_periksa']."'><i class='fa fa-list'></i></button></td>";
 }
+	
+
 	$nestedData[] = $row["id"];
 
 	$data[] = $nestedData;
