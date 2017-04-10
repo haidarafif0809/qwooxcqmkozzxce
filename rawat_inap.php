@@ -508,8 +508,8 @@ else
  <select class="form-control" id="penjamin" name="penjamin"  autocomplete="off">
  <option value=""> --SILAKAN PILIH--</option>
  <?php 
-  $query_penjamin = $db->query("SELECT nama FROM penjamin WHERE status = 'Aktif' ORDER BY id ASC");
-  while ( $data_penjamin = mysqli_fetch_array($query)) {
+  $query_penjamin = $db->query("SELECT nama FROM penjamin WHERE status = 'Aktif' ORDER BY id");
+  while ( $data_penjamin = mysqli_fetch_array($query_penjamin)) {
   echo "<option value='".$data_penjamin['nama']."'>".$data_penjamin['nama']."</option>";
   }
   ?>
