@@ -11,6 +11,8 @@ $otoritas_tombol = mysqli_fetch_array($pilih_akses_tombol);
 
 ?>
 
+ <script src="shortcut.js"></script>
+
 <div style="padding-left: 5%; padding-right: 5%">
 	<h3> FORM HASIL PEMERIKSAAN RADIOLOGI </h3><hr>
 
@@ -96,9 +98,9 @@ $otoritas_tombol = mysqli_fetch_array($pilih_akses_tombol);
 		</div>
 
 <div class="col-xs-12" >
-      <button type="button" class="btn btn-warning" id="cari_pasien" data-toggle="modal" data-target="#modal_pasien"><i class="fa fa-user"></i> Pasien R. Jalan </button>
+      <button type="button" class="btn btn-warning" id="cari_pasien" data-toggle="modal" data-target="#modal_pasien"><i class="fa fa-user"></i> Pasien R. Jalan (F1) </button>
 
-      <button type="button" class="btn btn-primary" id="cari_pasien_ugd" data-toggle="modal" data-target="#modal_pasien_ugd"><i class="fa fa-user"></i> Pasien UGD </button>
+      <button type="button" class="btn btn-primary" id="cari_pasien_ugd" data-toggle="modal" data-target="#modal_pasien_ugd"><i class="fa fa-user"></i> Pasien UGD (F2) </button>
 
 
 <?php if ($otoritas_tombol['simpan_hasil_radiologi'] > 0): ?>
@@ -170,7 +172,7 @@ $otoritas_tombol = mysqli_fetch_array($pilih_akses_tombol);
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
                
-              <h4 class="modal-title">Pasien Radiologi</h4>
+              <h4 class="modal-title">Pasien Radiologi - R. Jalan</h4>
       </div>
       <div class="modal-body">
 
@@ -209,7 +211,7 @@ $otoritas_tombol = mysqli_fetch_array($pilih_akses_tombol);
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
                
-              <h4 class="modal-title">Pasien Radiologi</h4>
+              <h4 class="modal-title">Pasien Radiologi - UGD</h4>
       </div>
       <div class="modal-body">
 
@@ -501,6 +503,7 @@ img:hover {
             $("#dokter_radiologi").trigger('chosen:updated');
 
             $('#modal_pasien').modal('hide');
+            $('#modal_pasien_ugd').modal('hide');
             $('.tampil_col').hide();
 
     // DESTROY ELEVATEZOOM 
@@ -1339,6 +1342,23 @@ $(document).on('click','#cari_pasien',function(e){
   CKEDITOR.replace('keterangan');
 </script>
 
+
+<script> 
+  
+    shortcut.add("f1", function() {
+        // Do something
+
+        $("#cari_pasien").click();
+
+    });
+  
+    shortcut.add("f2", function() {
+        // Do something
+
+        $("#cari_pasien_ugd").click();
+
+    });
+</script>
 
 
 <?php include 'footer.php'; ?>

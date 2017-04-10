@@ -101,10 +101,14 @@ while( $row=mysqli_fetch_array($query) ) { // preparing an array
       $nestedData[] = $row["nama"];
 
 
-      $nestedData[] = "<p  align='right'>".$row["harga"]."</p>";
-      $nestedData[] = "<p style='font-size:15px' align='right'><span id='text-subtotal-".$row['id']."'> ".$row["subtotal"]." </span> </p>";
-      $nestedData[] = "<p style='font-size:15px' align='right'><span id='text-potongan-".$row['id']."'> ".$row["potongan"]." </span> </p>";
+
+     $nestedData[] = "<p  align='right'><span id='text-harga-".$row['id']."'> ".rp($row["harga"])."</span> </p>";
+
+    $nestedData[] = "<p class='edit-potongan' style='font-size:15px' align='right' data-id=".$row['id']."><span id='text-potongan-".$row['id']."'> ".rp($row["potongan"])." </span> 
+      <input type='hidden' id='input-potongan-".$row['id']."' value='".$row['potongan']."' class='input_potongan' data-id='".$row['id']."' autofocus='' data-kode='".$row['kode_barang']."'> </p>";
+
       $nestedData[] = "<p style='font-size:15px' align='right'><span id='text-tax-".$row['id']."'> ".$row["tax"]." </span> </p>";
+      $nestedData[] = "<p style='font-size:15px' align='right'><span id='text-subtotal-".$row['id']."'> ".rp($row["subtotal"])." </span> </p>";
 
       if ($otoritas_tombol['hapus_produk_apotek'] > 0) {
 

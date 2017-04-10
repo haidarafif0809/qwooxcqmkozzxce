@@ -110,7 +110,23 @@ $data_reg = mysqli_fetch_array($select_reg);
 <!--untuk membuat agar tampilan form terlihat rapih dalam satu tempat -->
 
  <div style="padding-left: 5%; padding-right: 5%">
+
+ <?php if ($rujukan == 'Rujuk Rawat Inap'): ?>
+  <h3> FORM INPUT PEMERIKSAAN RADIOLOGI - R. INAP</h3><hr>
+ <?php endif ?>
+
+ <?php if ($rujukan == 'Rujuk Rawat Jalan'): ?>
+  <h3> FORM INPUT PEMERIKSAAN RADIOLOGI - R. JALAN</h3><hr>
+ <?php endif ?>
+
+ <?php if ($rujukan == 'Rujuk UGD'): ?>
+  <h3> FORM INPUT PEMERIKSAAN RADIOLOGI - UGD</h3><hr>
+ <?php endif ?>
+
+ <?php if ($rujukan == ''): ?>
   <h3> FORM INPUT PEMERIKSAAN RADIOLOGI</h3><hr>
+ <?php endif ?>
+  
 <div class="row">
 
 <div class="col-xs-8">
@@ -646,7 +662,7 @@ $data_reg = mysqli_fetch_array($select_reg);
 
 <?php if ($no_reg != ""): ?>
 
-  <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample" id="rawat"><i class='fa fa-wheelchair-alt'> </i> Rawat Jalan / Inap</button>
+  <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample" id="rawat"><i class='fa fa-wheelchair-alt'> </i> Rawat Jalan / Inap / UGD</button>
 
        <?php if ($jenis_penjualan == 'Rawat Inap'): ?>
 
@@ -1087,6 +1103,10 @@ $data_reg = mysqli_fetch_array($select_reg);
 
               <?php if ($jenis_penjualan == 'Rawat Inap'): ?>
                   <button class="btn btn-warning" id="ranap"> <i class="fa fa-reply-all"></i> Kembali Rawat Inap </button>
+              <?php endif ?>
+
+              <?php if ($jenis_penjualan == 'UGD'): ?>
+                  <button class="btn btn-warning" id="ugd"> <i class="fa fa-reply-all"></i> Kembali UGD </button>
               <?php endif ?>
 
         <?php endif ?>
@@ -3888,6 +3908,13 @@ $.get("cek_total_tbs_form_radiologi.php",{no_reg:no_reg},function(data){
 
   });
 
+  $(document).on('click','#ugd',function(e){
+
+   
+    window.location.href="registrasi_ugd.php";
+
+
+  });
 
 </script>
 

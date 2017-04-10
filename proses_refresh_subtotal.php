@@ -17,11 +17,6 @@ include 'sanitasi.php';
 
 
 
-// menampilakn hasil penjumlah subtotal ALIAS total penjualan dari tabel tbs_penjualan berdasarkan data no faktur
- $querylab = $db->query("SELECT SUM(subtotal) AS total_penjualan FROM tbs_penjualan WHERE no_reg = '$no_reg' AND lab = 'Laboratorium' AND no_faktur IS NULL");
- $datalab = mysqli_fetch_array($querylab);
- $totallab = $datalab['total_penjualan'];
-
  $sql_ops = $db->query("SELECT SUM(harga_jual) AS total_ops FROM tbs_operasi WHERE no_reg = '$no_reg'");
  $data_ops = mysqli_fetch_array($sql_ops);
 
@@ -29,7 +24,7 @@ include 'sanitasi.php';
  $data_sum = mysqli_fetch_array($sum_radiologi);
 
 
-echo $subtotal = $total + $totallab + $data_ops['total_ops'] + $data_sum['total_radiologi'];
+echo $subtotal = $total + $data_ops['total_ops'] + $data_sum['total_radiologi'];
 
  }
  else

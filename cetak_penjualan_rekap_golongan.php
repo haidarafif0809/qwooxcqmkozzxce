@@ -9,14 +9,16 @@ $golongan = stringdoang($_GET['golongan']);
 
 $tanggal_sekarang = date('Y-m-d');
 
-$jumlah_jual_awal = 0;
-$jumlah_beli_awal = 0;
+
+$query_perusahaan = $db->query("SELECT foto, nama_perusahaan, alamat_perusahaan, no_telp FROM perusahaan ");
+$data_perusahaan = mysqli_fetch_array($query_perusahaan);
+
+$sum_detail_penjualan = $db->query("SELECT SUM(jumlah_barang) AS jumlah, SUM(subtotal) AS total FROM detail_penjualan WHERE tipe_produk = '$golongan' AND tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal'");
+$data_detail_penjualan = mysqli_fetch_array($sum_detail_penjualan);
 
 
-    $query1 = $db->query("SELECT * FROM perusahaan ");
-    $data1 = mysqli_fetch_array($query1);
-	$perintah = $db->query("SELECT SUM(dp.jumlah_barang) AS jumlah, SUM(dp.subtotal) AS total FROM detail_penjualan dp LEFT JOIN barang p ON dp.kode_barang = p.kode_barang  WHERE p.berkaitan_dgn_stok = '$golongan' AND dp.tanggal >= '$dari_tanggal' AND dp.tanggal <= '$sampai_tanggal'");
-	$data = mysqli_fetch_array($perintah);
+$total_nilai = $data_detail_penjualan['total'];
+$jumlah_produk = $data_detail_penjualan['jumlah'];
     
  ?>
 
@@ -25,13 +27,13 @@ $jumlah_beli_awal = 0;
                  <h3> <b> <center>LAPORAN PENJUALAN / GOLONGAN </center></b></h3><hr>
     <div class="row"><!--row1-->
         <div class="col-sm-2">
-                <img src='save_picture/<?php echo $data1['foto']; ?>' class='img-rounded' alt='Cinque Terre' width='160' height='140'> 
+                <img src='save_picture/<?php echo $data_perusahaan['foto']; ?>' class='img-rounded' alt='Cinque Terre' width='160' height='140'> 
         </div><!--penutup colsm2-->
 
         <div class="col-sm-4">
-                 <h4> <b> <?php echo $data1['nama_perusahaan']; ?> </b> </h4> 
-                 <p> <?php echo $data1['alamat_perusahaan']; ?> </p> 
-                 <p> No.Telp:<?php echo $data1['no_telp']; ?> </p> 
+                 <h4> <b> <?php echo $data_perusahaan['nama_perusahaan']; ?> </b> </h4> 
+                 <p> <?php echo $data_perusahaan['alamat_perusahaan']; ?> </p> 
+                 <p> No.Telp:<?php echo $data_perusahaan['no_telp']; ?> </p> 
                  
         </div><!--penutup colsm4-->
 <br><br>
@@ -52,34 +54,43 @@ $jumlah_beli_awal = 0;
       
     </div><!--penutup row1-->
 
+<style>
+
+tr:nth-child(even){background-color: #f2f2f2}
+
+</style>
 
 
 <table id="tableuser" class="table table-bordered table-sm">
             <thead>
-                  <th> Nama Produk </th>
-                  <th> Jumlah Produk </th>
-                  <th> Total Nilai </th>>
+                  <th style="background-color: #4CAF50; color: white;"> Nama Produk </th>
+                  <th style="background-color: #4CAF50; color: white;" align='right'> Jumlah Produk </th>
+                  <th style="background-color: #4CAF50; color: white;" align='right'> Total Nilai </th>
 
                   
             </thead>
             
             <tbody>
             <?php
-              $perintah = $db->query("SELECT dp.nama_barang, SUM(dp.jumlah_barang) AS jumlah, SUM(dp.subtotal) AS total
-              	FROM detail_penjualan dp INNER JOIN barang p ON dp.kode_barang = p.kode_barang  WHERE p.golongan_barang = '$golongan' AND dp.tanggal >= '$dari_tanggal' AND dp.tanggal <= '$sampai_tanggal' GROUP BY dp.kode_barang ORDER BY dp.id ASC ");
+              $perintah = $db->query("SELECT SUM(jumlah_barang) AS jumlah, SUM(subtotal) AS total, nama_barang FROM detail_penjualan WHERE tipe_produk = '$golongan' AND tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' GROUP BY kode_barang  ORDER BY kode_barang ASC ");
                 while ($data10 = mysqli_fetch_array($perintah))
                 {
                   
                   echo "<tr>
                   <td>". $data10['nama_barang'] ."</td>
-                  <td>". $data10['jumlah'] ."</td>
-                  <td>". $data10['total'] ."</td>
+                  <td align='right'>". $data10['jumlah'] ."</td>
+                  <td align='right'>". $data10['total'] ."</td>
                   </tr>";
                 }
 
+                  echo "<tr>
+                  <td style=' color:red'> TOTAL </td>
+                  <td style=' color:red' align='right'>".rp($jumlah_produk)."</td>
+                  <td style=' color:red' align='right'>".rp($total_nilai)."</td>
+                  </tr>";
+
                         //Untuk Memutuskan Koneksi Ke Database
-                        
-                        mysqli_close($db); 
+                        //mysqli_close($db); 
         
 
         
@@ -87,20 +98,10 @@ $jumlah_beli_awal = 0;
             </tbody>
 
       </table>
+
       <br>
-      <div class="row">
-
-      <div class="col-sm-4"><i><b>Terbilang : <?php echo kekata($data['total']); ?></b></i></div>
-      <div class="col-sm-2"></div>
-
-      <div class="col-sm-4">
-      	<table>
-      		<tr><td>Jumlah Produk</td><td>:</td><td><?php echo rp($data['jumlah']); ?></td></tr>
-      		<tr><td><b>Total Nilai</td><td>:</td><td></b><b><?php echo rp($data['total']); ?></b></td></tr>
-      	</table>
-      </div>
-      	
-      </div>
+      <div class="col-sm-12"><i><b>Terbilang : <?php echo kekata($total_nilai); ?></b></i></div>
+        	
 
  <div class="row">
      <div class="col-sm-1">
