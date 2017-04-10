@@ -8,14 +8,15 @@ include 'db.php';
 
 <div class="container">
 
-<h3> LAPORAN PENJUALAN REKAP PER GOLONGAN BARANG </h3><hr>
-<br><br><br>
+<h3> LAPORAN PENJUALAN REKAP PER GOLONGAN PRODUK </h3><hr>
+<br>
 <form id="perhari" class="form" role="form">
 
 <div class="col-sm-2"> 
 <select name="golongan" id="golongan" autocomplete="off" class="form-control" placeholder="Golongan" required="">
 <option value="Barang">Barang</option>
 <option value="Jasa">Jasa</option>
+<option value="Bed">Kamar</option>
 </select>
 </div>
 

@@ -302,7 +302,7 @@ $no_jurnal = no_jurnal();
 
 
 
-    $query = $db->query("SELECT * FROM tbs_penjualan WHERE session_id = '$session_id' AND no_reg = '$no_reg' ");
+    $query = $db->query("SELECT harga, jumlah_barang, kode_barang, nama_barang, satuan, subtotal, potongan, tax, tipe_barang, dosis, lab FROM tbs_penjualan WHERE no_reg = '$no_reg' ");
     while ($data = mysqli_fetch_array($query))
       {
 
@@ -528,7 +528,7 @@ $ambil = mysqli_fetch_array($select);
 $total_hpp = $ambil['total_hpp'];
 
 
-$sum_tax_tbs = $db->query("SELECT SUM(tax) AS total_tax FROM tbs_penjualan WHERE session_id = '$session_id' AND no_reg = '$no_reg' ");
+$sum_tax_tbs = $db->query("SELECT SUM(tax) AS total_tax FROM tbs_penjualan WHERE no_reg = '$no_reg' ");
 $jumlah_tax = mysqli_fetch_array($sum_tax_tbs);
 $total_tax = $jumlah_tax['total_tax'];
 
@@ -657,7 +657,7 @@ $ambil = mysqli_fetch_array($select);
 $total_hpp = $ambil['total_hpp'];
 
 
-$sum_tax_tbs = $db->query("SELECT SUM(tax) AS total_tax FROM tbs_penjualan WHERE session_id = '$session_id' AND no_reg = '$no_reg' ");
+$sum_tax_tbs = $db->query("SELECT SUM(tax) AS total_tax FROM tbs_penjualan WHERE no_reg = '$no_reg' ");
 $jumlah_tax = mysqli_fetch_array($sum_tax_tbs);
 $total_tax = $jumlah_tax['total_tax'];
 

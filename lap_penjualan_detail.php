@@ -58,19 +58,9 @@ tr:nth-child(even){background-color: #f2f2f2}
 							<th style="background-color: #4CAF50; color: white;"> Jumlah  </th>
 							<th style="background-color: #4CAF50; color: white;"> Satuan </th>
 							<th style="background-color: #4CAF50; color: white;"> Harga </th>
-							<th style="background-color: #4CAF50; color: white;"> Subtotal </th>
 							<th style="background-color: #4CAF50; color: white;"> Potongan </th>
 							<th style="background-color: #4CAF50; color: white;"> Tax </th>
-
-							
-								<?php 
-								if ($_SESSION['otoritas'] == 'Pimpinan' || $_SESSION['otoritas'] == 'Admin')
-								{						
-								echo "<th style='background-color: #4CAF50; color: white;'> Hpp </th>";
-								}
-								?>							
-							
-							<th style="background-color: #4CAF50; color: white;"> Sisa  </th>						
+              <th style="background-color: #4CAF50; color: white;"> Subtotal </th>			
 						
 						</thead>
 

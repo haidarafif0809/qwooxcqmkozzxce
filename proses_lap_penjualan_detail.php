@@ -82,21 +82,11 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
    }
 
       $nestedData[] = rp($row['harga']);
-      $nestedData[] = rp($row['subtotal']);
       $nestedData[] = rp($row['potongan']);
       $nestedData[] = rp($row['tax']);
+      $nestedData[] = rp($row['subtotal']);
 
-  if ($_SESSION['otoritas'] == 'Pimpinan' || $_SESSION['otoritas'] == 'Admin'){
-      $nestedData[] = $row['hpp'];
-  }
 
-  if ($nilai_sisa != "") {
-  	$nestedData[] = $nilai_sisa;
-  }
-  else{
-      $nestedData[] = "-";
-  }
-	
 	$data[] = $nestedData;
 }
 
@@ -112,11 +102,9 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
       $nestedData[] = "<p style='color:red'> ".rp($total_barang)." </p>";
       $nestedData[] = "<p style='color:red'> - </p>";
       $nestedData[] = "<p style='color:red'> - </p>";
-      $nestedData[] = "<p style='color:red'> ".rp($total_subtotal)." </p>";
       $nestedData[] = "<p style='color:red'> ".rp($total_potongan)." </p>";
       $nestedData[] = "<p style='color:red'> ".rp($total_tax)." </p>";
-      $nestedData[] = "<p style='color:red'> - </p>";
-      $nestedData[] = "<p style='color:red'> - </p>";
+      $nestedData[] = "<p style='color:red'> ".rp($total_subtotal)." </p>";
 	
 	$data[] = $nestedData;
 
