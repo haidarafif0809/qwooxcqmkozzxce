@@ -12,11 +12,11 @@ $bulan_php = date('m');
 $tahun_php = date('Y');
 
 
-$qertu= $db->query("SELECT nama_dokter,nama_paramedik,nama_farmasi FROM penetapan_petugas ");
-$ss = mysqli_fetch_array($qertu);
+$query_penetapan_petugas= $db->query("SELECT nama_dokter,nama_paramedik,nama_farmasi FROM penetapan_petugas ");
+$data_penetapan_petugas = mysqli_fetch_array($query_penetapan_petugas);
 
-$q = $db->query("SELECT * FROM setting_registrasi");
-$dq = mysqli_fetch_array($q);
+$query_setting_registrasi = $db->query("SELECT tampil_data_pasien_umum, tampil_ttv FROM setting_registrasi");
+$jumlah_data_setting_registrasi = mysqli_fetch_array($query_setting_registrasi);
 
 $pilih_akses_registrasi_ri = $db->query("SELECT registrasi_ri_lihat, registrasi_ri_tambah, registrasi_ri_edit, registrasi_ri_hapus FROM otoritas_registrasi WHERE id_otoritas = '$_SESSION[otoritas_id]'");
 $registrasi_ri = mysqli_fetch_array($pilih_akses_registrasi_ri);
@@ -93,7 +93,7 @@ opacity: 0.9;
           },
 
            "fnCreatedRow": function( nRow, aData, iDataIndex ) {
-              $(nRow).attr('class','tr-id-'+aData[21]+'');         
+              $(nRow).attr('class','tr-id-'+aData[22]+'');         
 },
         } );
       } );
@@ -150,6 +150,7 @@ opacity: 0.9;
               <th>Kelas</th>
               <th>Kode Kamar</th>
               <th>Nama Kamar</th>
+              <th>Nama Ruangan</th>
               <th>Fasilitas</th>
               <th>Jumlah Bed</th>
               <th>Sisa Bed</th>    
@@ -165,6 +166,12 @@ opacity: 0.9;
 <div class="row">
 
   <div class="col-sm-6">
+      <div class="form-group" >
+        <label for="bed">Nama Ruangan Lama</label>
+        <input style="height: 20px" type="text" class="form-control" id="ruangan_lama" name="ruangan_lama" readonly="">
+      </div>
+
+      <input style="height: 20px" type="hidden" class="form-control" id="id_ruangan" name="id_ruangan"  readonly="" >
 
      <div class="form-group" >
         <label for="bed">Nama Kamar Lama</label>
@@ -179,6 +186,13 @@ opacity: 0.9;
   </div>
 
   <div class="col-sm-6">
+      <div class="form-group" >
+        <label for="bed">Ruangan Baru:</label>
+        <input style="height: 20px" type="text" class="form-control" id="ruangan2" name="ruangan2"  readonly="" >
+      </div>
+
+        <input style="height: 20px" type="hidden" class="form-control" id="id_ruangan2" name="id_ruangan2"  readonly="" >
+
      <div class="form-group" >
         <label for="bed">Kode Kamar Baru:</label>
         <input style="height: 20px" type="text" class="form-control" id="bed2" name="bed2"  readonly="" >
@@ -565,9 +579,9 @@ else
           <thead>
           <tr>
           <th>Kelas</th>
-          <th>Ruangan</th>
           <th>Kode Kamar</th>
           <th>Nama Kamar</th>
+          <th>Ruangan</th>
           <th> Fasilitas</th>
           <th>Jumlah Bed</th>  
           <th>Sisa Bed</th>                                          
@@ -629,7 +643,7 @@ else
 
   
 
-<?php if ($dq['tampil_data_pasien_umum'] == 1): ?>
+<?php if ($jumlah_data_setting_registrasi['tampil_data_pasien_umum'] == 1): ?>
 <div class="card card-block">
 <div class="form-group" >
   <label for="umur">Penanggung Jawab Pasien:</label>
@@ -695,7 +709,7 @@ else
 <div class="form-group">
           <label for="alamat">Dokter Penanggung Jawab:</label>
           <select class="form-control" id="dokter_pengirim" name="dokter_pengirim"  autocomplete="off">
-           <option value="<?php echo $ss['nama_dokter'];?>"><?php echo $ss['nama_dokter'];?></option>
+           <option value="<?php echo $data_penetapan_petugas['nama_dokter'];?>"><?php echo $data_penetapan_petugas['nama_dokter'];?></option>
                   <?php 
                   $query = $db->query("SELECT nama FROM user WHERE tipe = '1' ");
                   while ( $data = mysqli_fetch_array($query)) {
@@ -722,7 +736,7 @@ else
 <div class="form-group">
     <label for="alamat">Dokter Pelaksana:</label>
     <select class="form-control" id="dokter_penanggung_jawab" name="dokter_penanggung_jawab"  autocomplete="off">
-          <option value="<?php echo $ss['nama_dokter'];?>"><?php echo $ss['nama_dokter'];?></option>
+          <option value="<?php echo $data_penetapan_petugas['nama_dokter'];?>"><?php echo $data_penetapan_petugas['nama_dokter'];?></option>
     <?php 
     $query = $db->query("SELECT nama FROM user WHERE tipe = '1' ");
     while ( $data = mysqli_fetch_array($query)) {
@@ -753,7 +767,7 @@ else
 
 </div>
 
-<?php if ($dq['tampil_ttv'] == 0): ?>
+<?php if ($jumlah_data_setting_registrasi['tampil_ttv'] == 0): ?>
   <button accesskey="d" style="width:100px" class="btn btn-info" id="daftar"><i class="fa fa-plus">
 </i>  <u>D</u>aftar</button>
 <?php endif ?>
@@ -771,7 +785,7 @@ else
 
 
 
-<?php if ($dq['tampil_ttv'] == 1): ?>
+<?php if ($jumlah_data_setting_registrasi['tampil_ttv'] == 1): ?>
 <div class="card card-block">
 
 <center><h4>Tanda Tanda Vital</h4></center>
@@ -845,7 +859,7 @@ tr:nth-child(even){background-color: #f2f2f2}
           <th style='background-color: #4CAF50; color: white' >Edit</th>
    <?php endif ?>
         
-         <th style='background-color: #4CAF50; color: white'>Transaksi Penjualan</th>
+         <!--th style='background-color: #4CAF50; color: white'>Transaksi Penjualan</th-->
 
   <?php if ($registrasi_ri['registrasi_ri_lihat']):?>      
           <th style='background-color: #4CAF50; color: white'>Pindah Kamar</th>
@@ -869,6 +883,7 @@ tr:nth-child(even){background-color: #f2f2f2}
           <th style='background-color: #4CAF50; color: white'>Dokter Pelaksana</th>
           <th style='background-color: #4CAF50; color: white'>Bed</th>
           <th style='background-color: #4CAF50; color: white'>Kamar</th>
+          <th style='background-color: #4CAF50; color: white'>Ruangan</th>
           <th style='background-color: #4CAF50; color: white'>Tanggal Masuk</th>
           <th style='background-color: #4CAF50; color: white'>Penanggung Jawab</th>    
           <th style='background-color: #4CAF50; color: white'>Umur</th>
@@ -1066,62 +1081,51 @@ else
     $("#kembali").hide();
     $("#daftar").show();
 
-if (ruangan == '')
-{
+if (ruangan == ''){
 
 alert("Ruangan Masih Kosong");
-  $("#group_bed").focus();
-
+  $("#ruangan").focus();
 }
 
-else if (group_bed == '')
-{
+else if (group_bed == ''){
 
 alert("Kamar Masih Kosong");
   $("#group_bed").focus();
 
 }
 
-  else if(bed == '')
-{
+  else if(bed == ''){
   alert("Bed Masih Kosong");
   $("#bed").focus();
 }
-  else if(penjamin == '')
-{
+  else if(penjamin == ''){
   alert("Penjamin Masih Kosong");
   $("#penjamin").focus();
 }
-else if (no_rm == '')
-{
+else if (no_rm == ''){
     alert("Pasien Belum Ada!!");
   $("#cari_migrasi").focus();
 }
-else if (penanggung_jawab == '')
-{
+else if (penanggung_jawab == ''){
   alert("Isi Nama Penanggung Jawab Pasien!!");
  $("#penanggung_jawab").focus();
    
 }
-else if (alamat_penanggung == '')
-{
+else if (alamat_penanggung == ''){
     alert("Isi Alamat Penanggung Jawab Pasien!!");
     $("#alamat_penanggung").focus();
 
 }
-else if (no_hp_penanggung == '') 
-{
+else if (no_hp_penanggung == ''){
     alert("Isi No Handphone Penanggung Jawab Pasien!!");
      $("#no_hp_penanggung").focus();
 
 }
-else if (pekerjaan_penanggung == '')
-{
+else if (pekerjaan_penanggung == ''){
       alert("Isi Pekerjaan Penanggung Jawab Pasien!!");
       $("#pekerjaan_penanggung").focus();
 }
-else if (perkiraan_menginap == '')
- {
+else if (perkiraan_menginap == ''){
   alert("Perkiraan Menginap Harus Di isi");
   $("#perkiraan_menginap").focus();
  }
@@ -1156,7 +1160,7 @@ else{
           },
 
            "fnCreatedRow": function( nRow, aData, iDataIndex ) {
-              $(nRow).attr('class','tr-id-'+aData[21]+'');
+              $(nRow).attr('class','tr-id-'+aData[22]+'');
 
 },
         } );
@@ -1316,6 +1320,8 @@ return val;
 
             // jika dipilih, nim akan masuk ke input dan modal di tutup
             $(document).on('click', '.pilih3', function (e) {
+            document.getElementById("ruangan2").value = $(this).attr('data-ruangan');
+            document.getElementById("id_ruangan2").value = $(this).attr('data-id-ruangan');
             document.getElementById("bed2").value = $(this).attr('data-nama');
             document.getElementById("group_bed2").value = $(this).attr('data-group-bed');
                 
@@ -1334,6 +1340,8 @@ return val;
             
             var id = $(this).attr('data-id');
             var reg = $(this).attr('data-reg');
+            var id_ruangan = $(this).attr('data-id-ruangan');
+            var ruangan = $(this).attr('data-ruangan');
             var bed = $(this).attr('data-bed');
             var group_bed = $(this).attr('data-group-bed');
             var no_reg = $(this).attr('data-reg');
@@ -1342,9 +1350,12 @@ return val;
             $("#pindah_kamar").attr("data-regs",reg);
             $("#pindah_kamar").attr("data-beds",bed);
             $("#pindah_kamar").attr("data-group_beds",group_bed);
+            $("#pindah_kamar").attr("data-id-ruangan",id_ruangan);
 
             $("#modal_kamar").modal('show');
             $("#kamar_lama").val(group_bed);
+            $("#ruangan_lama").val(ruangan);
+            $("#id_ruangan").val(id_ruangan);
 
             $('#table-kamar').DataTable().destroy();
                                 var dataTable = $('#table-kamar').DataTable( {
@@ -1363,6 +1374,8 @@ return val;
 
                                      "fnCreatedRow": function( nRow, aData, iDataIndex ) {
                                           $(nRow).attr('class', "pilih3");
+                                         $(nRow).attr('data-id-ruangan',aData[7]);
+                                         $(nRow).attr('data-ruangan',aData[3]);
                                          $(nRow).attr('data-group-bed',aData[2]);
                                         $(nRow).attr('data-nama',aData[1]);
 
@@ -1376,42 +1389,51 @@ return val;
 
   $(document).on('click', '#pindah_kamar', function (e) {
     var reg_before = $(this).attr("data-regs");
+    var ruangan = $(this).attr("data-id-ruangan");
     var bed_before = $(this).attr("data-beds");
     var group_bed_before = $(this).attr("data-group_beds");
     var group_bed2 = $("#group_bed2").val();
+    var id_ruangan2 = $("#id_ruangan2").val();
     var bed2 = $("#bed2").val();
     var lama_inap = $("#lama_inap").val();
     var id = $(this).attr("data-ids");
+    if (id_ruangan2 == '') {
+      alert("Isi kolom ruangan terlebih dahulu.");
+      $("#ruangan2").focus();
+    }
+    else{
+      $.post("update_pindah_kamar.php",{lama_inap:lama_inap,reg_before:reg_before,bed_before:bed_before,group_bed_before:group_bed_before,group_bed2:group_bed2,bed2:bed2,id:id,ruangan:ruangan,id_ruangan2:id_ruangan2},function(data){
+          $("#group_bed2").val('');
+          $("#ruangan2").val('');
+          $("#id_ruangan2").val('');
+          $("#bed2").val('');
+          $("#lama_inap").val('');
+          $("#modal_kamar").modal('hide');
 
-  
+            $('#table_rawat_inap').DataTable().destroy();
 
-      $.post("update_pindah_kamar.php",{lama_inap:lama_inap,reg_before:reg_before,bed_before:bed_before,group_bed_before:group_bed_before,group_bed2:group_bed2,bed2:bed2,id:id},function(data){
-      
-      $("#modal_kamar").modal('hide');
+          var dataTable = $('#table_rawat_inap').DataTable( {
+              "processing": true,
+              "serverSide": true,
+              "ajax":{
+                url :"proses_table_rawat_inap.php", // json datasource
+                type: "post",  // method  , by default get
+                error: function(){  // error handling
+                  $(".tbody").html("");
+                  $("#table_rawat_inap").append('<tbody class="tbody"><tr ><td colspan="3">No data found in the server</td></tr></tbody>');
+                  $("#table_ri_processing").css("display","none");
+                  
+                }
+              },
 
-        $('#table_rawat_inap').DataTable().destroy();
+               "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+                  $(nRow).attr('class','tr-id-'+aData[22]+'');
 
- var dataTable = $('#table_rawat_inap').DataTable( {
-          "processing": true,
-          "serverSide": true,
-          "ajax":{
-            url :"proses_table_rawat_inap.php", // json datasource
-            type: "post",  // method  , by default get
-            error: function(){  // error handling
-              $(".tbody").html("");
-              $("#table_rawat_inap").append('<tbody class="tbody"><tr ><td colspan="3">No data found in the server</td></tr></tbody>');
-              $("#table_ri_processing").css("display","none");
-              
-            }
-          },
+                },
+            });// end var dataTable
 
-           "fnCreatedRow": function( nRow, aData, iDataIndex ) {
-              $(nRow).attr('class','tr-id-'+aData[21]+'');
-
-},
-        });
-
-      });
+      }); // end .post
+    }//end else
   });
 </script>
 
@@ -1422,6 +1444,8 @@ return val;
             // jika dipilih, nim akan masuk ke input dan modal di tutup
             $(document).on('click', '.pilih3', function (e) {
               var no_reg = $("#no_reg").val();
+              var ruangan2 = $(this).attr('data-ruangan');
+              var id_ruangan2 = $(this).attr('data-id-ruangan');
               var bed2 = $(this).attr('data-nama');
               var group_bed2 = $(this).attr('data-group-bed');
 
@@ -1437,6 +1461,8 @@ return val;
 
                       $("#group_bed2").val(group_bed2)
                       $("#bed2").val(bed2)
+                      $("#ruangan2").val(ruangan2)
+                      $("#id_ruangan2").val(id_ruangan2)
 
                           }
              });    

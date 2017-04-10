@@ -10,17 +10,16 @@ $waktu = date("Y-m-d H:i:s");
 $bulan_php = date('m');
 $tahun_php = date('Y');
 
-$query7 = $db->query("SELECT * FROM registrasi WHERE jenis_pasien = 'Rawat Inap' AND status = 'menginap' AND status != 'Batal Rawat Inap' AND tanggal = '$tanggal_sekarang' ");
 
 $qertu= $db->query("SELECT nama_dokter,nama_paramedik,nama_farmasi FROM penetapan_petugas ");
 $ss = mysqli_fetch_array($qertu);
 
-$q_penetapan = $db->query("SELECT * FROM penetapan_petugas");
-$v_penetapan = mysqli_fetch_array($q_penetapan);
-$nama_dokter  = $v_penetapan['nama_dokter'];
+$query_penetapan_petugas = $db->query("SELECT nama_dokter FROM penetapan_petugas");
+$data_penetapan_petugas = mysqli_fetch_array($query_penetapan_petugas);
+$nama_dokter  = $data_penetapan_petugas['nama_dokter'];
 
-$q = $db->query("SELECT tampil_ttv,tampil_data_pasien_umum FROM setting_registrasi");
-$dq = mysqli_fetch_array($q);
+$query_setting_registerasi = $db->query("SELECT tampil_ttv,tampil_data_pasien_umum FROM setting_registrasi");
+$data_setting_registerasi = mysqli_fetch_array($query_setting_registerasi);
 
 ?>
 <style>
@@ -211,7 +210,7 @@ $dq = mysqli_fetch_array($q);
    <option value="Non Rujukan">Non Rujukan</option>
 
  <?php 
-  $query = $db->query("SELECT nama FROM perujuk "); 
+  $query = $db->query("SELECT nama FROM perujuk ORDER BY id "); 
   while ( $data = mysqli_fetch_array($query)) 
   {
   echo "<option value='".$data['nama']."'>".$data['nama']."</option>";
@@ -386,7 +385,7 @@ $dq = mysqli_fetch_array($q);
 </div>
 
 
-<?php if ($dq['tampil_ttv'] == 0 AND $dq['tampil_data_pasien_umum'] == 0 ): ?>
+<?php if ($data_setting_registerasi['tampil_ttv'] == 0 AND $data_setting_registerasi['tampil_data_pasien_umum'] == 0 ): ?>
   
 
 <center><button accesskey="d" type="submit" id="submit_daftar" class="btn btn-info hug"><i class="fa fa-plus"></i> <u>D</u>aftar Rawat Inap</button></center>
@@ -401,7 +400,7 @@ $dq = mysqli_fetch_array($q);
 
 
 
-  <?php if ($dq['tampil_data_pasien_umum'] == 1): ?>
+  <?php if ($data_setting_registerasi['tampil_data_pasien_umum'] == 1): ?>
 
 <div class="col-sm-3">
 
@@ -516,7 +515,7 @@ $dq = mysqli_fetch_array($q);
 
 
 
-<?php if ($dq['tampil_ttv'] == 0 ): ?>
+<?php if ($data_setting_registerasi['tampil_ttv'] == 0 ): ?>
   
 
 <center><button accesskey="d" type="submit" id="submit_daftar" class="btn btn-info hug"><i class="fa fa-plus"></i> <u>D</u>aftar Rawat Inap</button></center>
@@ -535,7 +534,7 @@ $dq = mysqli_fetch_array($q);
 
 <div class="col-sm-3">
 
-<?php if ($dq['tampil_ttv'] == 1): ?>  
+<?php if ($data_setting_registerasi['tampil_ttv'] == 1): ?>  
 
 
 <br><br><br>

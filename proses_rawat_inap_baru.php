@@ -217,6 +217,31 @@ $harga_kamar7 = $data_kamar_bed['tarif_7'];
 
 //end bahan untuk kamar
 
+
+// HARGA KAMAR
+if ($level_harga == 'harga_1') {
+$subtotal = $perkiraan_menginap * $harga_kamar1;
+}
+else if ($level_harga == 'harga_2') {
+$subtotal = $perkiraan_menginap * $harga_kamar2;
+}
+else if ($level_harga == 'harga_3') {
+$subtotal = $perkiraan_menginap * $harga_kamar3;
+}
+else if ($level_harga == 'harga_4') {
+$subtotal = $perkiraan_menginap * $harga_kamar4;
+}
+else if ($level_harga == 'harga_5') {
+$subtotal = $perkiraan_menginap * $harga_kamar5;
+}
+else if ($level_harga == 'harga_6') {
+$subtotal = $perkiraan_menginap * $harga_kamar6;
+}
+else {
+$subtotal = $perkiraan_menginap * $harga_kamar7;
+}
+
+
 $query_set_kamar = $db->query(" SELECT proses_kamar FROM setting_kamar ");
 $data_sett_kamar  = mysqli_fetch_array($query_set_kamar);
 
@@ -225,169 +250,17 @@ if ($data_sett_kamar['proses_kamar'] == 1)
 {
 
 
-// harga_1 (pertama)
-if ($level_harga == 'harga_1')
-  {
 
-$subtotal = $perkiraan_menginap * $harga_kamar1;
-
-
-$query65 = "INSERT INTO tbs_penjualan(session_id,no_reg,kode_barang,nama_barang,jumlah_barang,harga,subtotal,tipe_barang,potongan,tax,satuan,jam,tanggal)
- VALUES ('$session_id','$no_reg','$bed','$group_bed','$perkiraan_menginap','$harga_kamar1','$subtotal','Bed','0','0','$satuan_bed','$jam','$tanggal_sekarang')";
-      if ($db->query($query65) === TRUE) 
+  $query_insert_tbs_penjualan = "INSERT INTO tbs_penjualan(session_id,no_reg,kode_barang,nama_barang,jumlah_barang,harga,subtotal,tipe_barang,potongan,tax,satuan,jam,tanggal,ruangan) VALUES ('$session_id','$no_reg','$bed','$group_bed','$perkiraan_menginap','$harga_kamar1','$subtotal','Bed','0','0','$satuan_bed','$jam','$tanggal_sekarang','$ruangan')";
+      if ($db->query($query_insert_tbs_penjualan) === TRUE) 
       {
   
       } 
         else 
       {
-    echo "Error: " . $query65 . "<br>" . $db->error;
+    echo "Error: " . $query_insert_tbs_penjualan . "<br>" . $db->error;
       }
 
-
-  }
-//end harga_1 (pertama)
-
-// harga_2 (pertama)
-else if ($level_harga == 'harga_2')
-{
-
-$subtotal = $perkiraan_menginap * $harga_kamar2;
-
-
-$query65 = "INSERT INTO tbs_penjualan(session_id,no_reg,kode_barang,nama_barang,jumlah_barang,harga,subtotal,tipe_barang,potongan,tax,satuan,jam,tanggal)
- VALUES ('$session_id','$no_reg','$bed','$group_bed','$perkiraan_menginap','$harga_kamar2','$subtotal','Bed','0','0','$satuan_bed','$jam','$tanggal_sekarang')";
-      if ($db->query($query65) === TRUE) 
-      {
-  
-      } 
-        else 
-      {
-    echo "Error: " . $query65 . "<br>" . $db->error;
-      }
-
-
-}
-//end harga_2 (pertama)
-
-
-// harga_3 (pertama)
-else if ($level_harga == 'harga_3')
-{
-
-$subtotal = $perkiraan_menginap * $harga_kamar3;
-
-
-$query65 = "INSERT INTO tbs_penjualan(session_id,no_reg,kode_barang,nama_barang,jumlah_barang,harga,subtotal,tipe_barang,potongan,tax,satuan,jam,tanggal)
- VALUES ('$session_id','$no_reg','$bed','$group_bed','$perkiraan_menginap','$harga_kamar3','$subtotal','Bed','0','0','$satuan_bed','$jam','$tanggal_sekarang')";
-      if ($db->query($query65) === TRUE) 
-      {
-  
-      } 
-        else 
-      {
-
-    echo "Error: " . $query65 . "<br>" . $db->error;
-
-      }
-
-
-}
-// harga_3 (pertama)
-
-// harga_4 (pertama)
-else if ($level_harga == 'harga_4')
-{
-
-$subtotal = $perkiraan_menginap * $harga_kamar4;
-
-
-$query65 = "INSERT INTO tbs_penjualan(session_id,no_reg,kode_barang,nama_barang,jumlah_barang,harga,subtotal,tipe_barang,potongan,tax,satuan,jam,tanggal)
- VALUES ('$session_id','$no_reg','$bed','$group_bed','$perkiraan_menginap','$harga_kamar4','$subtotal','Bed','0','0','$satuan_bed','$jam','$tanggal_sekarang')";
-      if ($db->query($query65) === TRUE) 
-      {
-  
-      } 
-        else 
-      {
-
-    echo "Error: " . $query65 . "<br>" . $db->error;
-
-      }
-
-
-}
-// harga_ 4(pertama)
-
-// harga_5 (pertama)
-else if ($level_harga == 'harga_5')
-{
-
-$subtotal = $perkiraan_menginap * $harga_kamar5;
-
-
-$query65 = "INSERT INTO tbs_penjualan(session_id,no_reg,kode_barang,nama_barang,jumlah_barang,harga,subtotal,tipe_barang,potongan,tax,satuan,jam,tanggal)
- VALUES ('$session_id','$no_reg','$bed','$group_bed','$perkiraan_menginap','$harga_kamar5','$subtotal','Bed','0','0','$satuan_bed','$jam','$tanggal_sekarang')";
-      if ($db->query($query65) === TRUE) 
-      {
-  
-      } 
-        else 
-      {
-
-    echo "Error: " . $query65 . "<br>" . $db->error;
-
-      }
-
-
-}
-// harga_5 (pertama)
-
-// harga_6 (pertama)
-else if ($level_harga == 'harga_6')
-{
-
-$subtotal = $perkiraan_menginap * $harga_kamar6;
-
-$query65 = "INSERT INTO tbs_penjualan(session_id,no_reg,kode_barang,nama_barang,jumlah_barang,harga,subtotal,tipe_barang,potongan,tax,satuan,jam,tanggal)
- VALUES ('$session_id','$no_reg','$bed','$group_bed','$perkiraan_menginap','$harga_kamar6','$subtotal','Bed','0','0','$satuan_bed','$jam','$tanggal_sekarang')";
-      if ($db->query($query65) === TRUE) 
-      {
-  
-      } 
-        else 
-      {
-
-    echo "Error: " . $query65 . "<br>" . $db->error;
-
-      }
-
-
-}
-// harga_6 (pertama)
-
-// harga_7 (pertama)
-else if ($level_harga == 'harga_7')
-{
-
-$subtotal = $perkiraan_menginap * $harga_kamar7;
-
-
-$query65 = "INSERT INTO tbs_penjualan(session_id,no_reg,kode_barang,nama_barang,jumlah_barang,harga,subtotal,tipe_barang,potongan,tax,satuan,jam,tanggal)
- VALUES ('$session_id','$no_reg','$bed','$group_bed','$perkiraan_menginap','$harga_kamar7','$subtotal','Bed','0','0','$satuan_bed','$jam','$tanggal_sekarang')";
-      if ($db->query($query65) === TRUE) 
-      {
-  
-      } 
-        else 
-      {
-
-    echo "Error: " . $query65 . "<br>" . $db->error;
-
-      }
-
-
-}
-// harga_7 (pertama)
 
 }
 
