@@ -30,8 +30,8 @@ $columns = array(
 );
 
 // getting total number records without any search
-$sql ="SELECT reg.no_rm, reg.no_reg, reg.nama_pasien, reg.penjamin, reg.poli, reg.dokter_pengirim, reg.dokter, reg.bed, reg.group_bed, reg.tanggal, reg.id, reg.jenis_pasien, u.id  AS id_dokter, uu.id  AS id_dokter_pengirim, p.harga AS level_harga ";
-$sql.=" FROM registrasi reg LEFT JOIN user u ON reg.dokter = u.nama LEFT JOIN user uu ON reg.dokter_pengirim = uu.nama LEFT JOIN penjamin p ON reg.penjamin = p.nama LEFT JOIN penjualan penj ON reg.no_reg = penj.no_reg ";
+$sql ="SELECT reg.ruangan, reg.no_rm, reg.no_reg, reg.nama_pasien, reg.penjamin, reg.poli, reg.dokter_pengirim, reg.dokter, reg.bed, reg.group_bed, reg.tanggal, reg.id, reg.jenis_pasien, u.id  AS id_dokter, uu.id  AS id_dokter_pengirim, p.harga AS level_harga, r.nama_ruangan, r.id as id_ruangan ";
+$sql.=" FROM registrasi reg LEFT JOIN user u ON reg.dokter = u.nama LEFT JOIN user uu ON reg.dokter_pengirim = uu.nama LEFT JOIN penjamin p ON reg.penjamin = p.nama LEFT JOIN penjualan penj ON reg.no_reg = penj.no_reg LEFT JOIN ruangan r ON reg.ruangan = r.id ";
 $sql.=" WHERE reg.jenis_pasien = 'Rawat Inap' AND reg.status = 'menginap' AND reg.status != 'Batal Rawat Inap' AND penj.no_faktur IS NULL ";
 
 $query = mysqli_query($conn, $sql) or die("eror 1");
@@ -39,8 +39,8 @@ $totalData = mysqli_num_rows($query);
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
-$sql ="SELECT reg.no_rm, reg.no_reg, reg.nama_pasien, reg.penjamin, reg.poli, reg.dokter_pengirim, reg.dokter, reg.bed, reg.group_bed, reg.tanggal, reg.id, reg.jenis_pasien, u.id  AS id_dokter, p.harga AS level_harga ";
-$sql.=" FROM registrasi reg LEFT JOIN user u ON reg.dokter = u.nama LEFT JOIN user uu ON reg.dokter_pengirim = uu.nama LEFT JOIN penjamin p ON reg.penjamin = p.nama LEFT JOIN penjualan penj ON reg.no_reg = penj.no_reg ";
+$sql ="SELECT reg.ruangan, reg.no_rm, reg.no_reg, reg.nama_pasien, reg.penjamin, reg.poli, reg.dokter_pengirim, reg.dokter, reg.bed, reg.group_bed, reg.tanggal, reg.id, reg.jenis_pasien, u.id  AS id_dokter, uu.id  AS id_dokter_pengirim, p.harga AS level_harga, r.nama_ruangan, r.id as id_ruangan ";
+$sql.=" FROM registrasi reg LEFT JOIN user u ON reg.dokter = u.nama LEFT JOIN user uu ON reg.dokter_pengirim = uu.nama LEFT JOIN penjamin p ON reg.penjamin = p.nama LEFT JOIN penjualan penj ON reg.no_reg = penj.no_reg LEFT JOIN ruangan r ON reg.ruangan = r.id ";
 $sql.=" WHERE reg.jenis_pasien = 'Rawat Inap' AND reg.status = 'menginap' AND reg.status != 'Batal Rawat Inap' AND penj.no_faktur IS NULL ";
 
     $sql.=" AND (reg.no_rm LIKE '".$requestData['search']['value']."%'";  
@@ -54,7 +54,7 @@ $sql.=" WHERE reg.jenis_pasien = 'Rawat Inap' AND reg.status = 'menginap' AND re
 $query=mysqli_query($conn, $sql) or die("eror 2");
 $totalFiltered = mysqli_num_rows($query); // when there is a search parameter then we have to modify total number filtered rows as per search result. 
         
-$sql.=" ORDER BY id ".$requestData['order'][0]['dir']."  LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
+$sql.=" ORDER BY reg.id ".$requestData['order'][0]['dir']."  LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
 
 /* $requestData['order'][0]['column'] contains colmun index, $requestData['order'][0]['dir'] contains order such as asc/desc  */    
 $query=mysqli_query($conn, $sql) or die("eror 3");
@@ -77,6 +77,20 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
       $nestedData[] = $row["group_bed"];
       $nestedData[] = $row["level_harga"];
       $nestedData[] = $row["id"];
+      if ($row['ruangan'] == 0) {
+        # code...
+        $nestedData[] = "-";
+      }
+      else{
+        $nestedData[] = $row["nama_ruangan"];
+      }
+      if ($row['ruangan'] == 0) {
+        # code...
+        $nestedData[] = "-";
+      }
+      else{
+        $nestedData[] = $row["id_ruangan"];
+      }
 
 
 

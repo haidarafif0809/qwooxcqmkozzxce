@@ -25,7 +25,7 @@ $columns = array(
 //$cek = $db->query("SELECT * FROM bed WHERE sisa_bed != 0 ");
 
 // getting total number records without any search
-$sql ="SELECT b.id,b.kelas, b.nama_kamar, b.group_bed, b.fasilitas, b.jumlah_bed, b.sisa_bed, r.nama_ruangan,r.id as id_ruangan ";
+$sql ="SELECT b.id,b.kelas, b.nama_kamar, b.group_bed, b.fasilitas, b.jumlah_bed, b.sisa_bed, b.ruangan, r.nama_ruangan,r.id as id_ruangan ";
 $sql.=" FROM bed b LEFT JOIN ruangan r ON b.ruangan = r.id WHERE sisa_bed != 0";
 
 $query = mysqli_query($conn, $sql) or die("eror 1");
@@ -33,7 +33,7 @@ $totalData = mysqli_num_rows($query);
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
-$sql ="SELECT b.id,b.kelas, b.nama_kamar, b.group_bed, b.fasilitas, b.jumlah_bed, b.sisa_bed, r.nama_ruangan,r.id as id_ruangan ";
+$sql ="SELECT b.id,b.kelas, b.nama_kamar, b.group_bed, b.fasilitas, b.jumlah_bed, b.sisa_bed, b.ruangan, r.nama_ruangan,r.id as id_ruangan ";
 $sql.=" FROM bed b LEFT JOIN ruangan r ON b.ruangan = r.id WHERE sisa_bed != 0  AND 1 = 1";
 
     $sql.=" AND (b.nama_kamar LIKE '".$requestData['search']['value']."%'";  
@@ -69,11 +69,23 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
       $nestedData[] = $kelas;
       $nestedData[] = $row["nama_kamar"];
       $nestedData[] = $row["group_bed"];
-      $nestedData[] = $row['nama_ruangan'];
+      if ($row['ruangan'] == 0) {
+        # code...
+        $nestedData[] = "-";
+      }
+      else{
+        $nestedData[] = $row['nama_ruangan'];
+      }
       $nestedData[] = $row["fasilitas"];
       $nestedData[] = $row["jumlah_bed"];
       $nestedData[] = $row["sisa_bed"];
-      $nestedData[] = $row["id_ruangan"];
+      if ($row['ruangan'] == 0) {
+        # code...
+        $nestedData[] = "-";
+      }
+      else{
+        $nestedData[] = $row["id_ruangan"];
+      }
 
   $data[] = $nestedData;
 }
