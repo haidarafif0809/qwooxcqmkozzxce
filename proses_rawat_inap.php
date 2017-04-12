@@ -154,7 +154,7 @@ $rw_inap = "Rawat Inap";
 
 $query_insert_registrasi->execute();
 
-
+echo "INSERT INTO rekam_medik_inap (group_bed,alergi,no_reg,no_rm,nama,alamat,umur,jenis_kelamin,sistole_distole,suhu,berat_badan,tinggi_badan,nadi,respiratory,poli,tanggal_periksa,jam,dokter,kondisi,rujukan,dokter_penanggung_jawab,bed,ruangan) VALUES ('$group_bed','$alergi','$no_reg','$no_rm','$nama_lengkap','$alamat','$umur','$jenis_kelamin','$sistole_distole','$suhu','$berat_badan','$tinggi_badan','$nadi','$respiratory_rate','$poli','$tanggal_sekarang','$jam','$dokter_pengirim','$kondisi','$perujuk','$dokter_penanggung_jawab','$bed','$ruangan')";
 
 $sql0 = $db->prepare("INSERT INTO rekam_medik_inap (group_bed,alergi,no_reg,no_rm,nama,alamat,umur,jenis_kelamin,sistole_distole,suhu,berat_badan,tinggi_badan,nadi,respiratory,poli,tanggal_periksa,jam,dokter,kondisi,rujukan,dokter_penanggung_jawab,bed,ruangan) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
@@ -162,6 +162,8 @@ $sql0->bind_param("ssssssssssssssssssssssi",$group_bed,$alergi,$no_reg,$no_rm,$n
 
 
 $sql0->execute();
+
+
 
 
 // UPDATE PASIEN NYA

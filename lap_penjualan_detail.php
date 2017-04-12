@@ -31,19 +31,28 @@ tr:nth-child(even){background-color: #f2f2f2}
  <div class="container">
 
 <h3>LAPORAN PENJUALAN DETAIL </h3><hr>
-<form id="perhari" class="form-inline" action="proses_lap_penjualan_detail.php" method="POST" role="form">
+<form id="perhari" class="form" role="form">
 				
-				  <div class="form-group"> 
+  <div class="form-group col-sm-2">
+    <select name="closing" id="closing" autocomplete="off" class="form-control chosen" >
+    <option value="" style="display: none">Status Penjualan</option>
+      <optgroup label="Status Penjualan">
+        <option value="semua">Semua</option>
+        <option value="sudah">Sudah Closing</option>
+        <option value="belum">Belum Closing</option>
+      </optgroup>
+    </select>
+  </div>
 
-                  <input type="text" name="dari_tanggal" id="dari_tanggal" class="form-control" placeholder="Dari Tanggal" required="">
-                  </div>
+  <div class="col-sm-2"> 
+    <input style="height: 17px;" type="text" name="dari_tanggal" id="dari_tanggal" autocomplete="off" class="form-control tanggal_cari" placeholder="Dari Tanggal" >
+  </div>
 
-                  <div class="form-group"> 
+  <div class="col-sm-2"> 
+      <input style="height: 17px" type="text" name="sampai_tanggal" id="sampai_tanggal" autocomplete="off" class="form-control tanggal_cari" placeholder="Sampai Tanggal" value="<?php echo date("Y-m-d"); ?>" >
+  </div>
 
-                  <input type="text" name="sampai_tanggal" id="sampai_tanggal" class="form-control" placeholder="Sampai Tanggal" value="<?php echo date("Y-m-d"); ?>" required="">
-                  </div>
-
-                  <button type="submit" name="submit" id="submit" class="btn btn-primary" ><i class="fa fa-eye"> </i> Tampil </button>
+  <button type="submit" name="submit" id="submit" class="btn btn-primary" ><i class="fa fa-eye"> </i> Tampil </button>
 
 </form>
 <div class="card card-block">
@@ -84,12 +93,18 @@ $(document).on('click','#submit',function(e){
 
      var sampai_tanggal = $("#sampai_tanggal").val();
      var dari_tanggal = $("#dari_tanggal").val();  
-     if (dari_tanggal == '') {
-      alert("silakan isi kolom dari tanggal terlebih dahulu.");
+     var closing = $("#closing").val();  
+
+     if (closing == '') {
+      alert("Silakan Isi Kolom Status Penjualan Terlebih Dahulu");
+      $("#closing").trigger('chosen:open');
+     }
+     else if (dari_tanggal == '') {
+      alert("Silakan Isi Kolom Dari Tanggal Terlebih Dahulu");
       $("#dari_tanggal").focus();
      }
      else if (sampai_tanggal == '') {
-      alert("silakan isi kolom sampai tanggal terlebih dahulu.");
+      alert("Silakan Isi Kolom Sampai Tanggal Terlebih Dahulu");
       $("#sampai_tanggal").focus();
      }
 	else{
@@ -106,6 +121,7 @@ $(document).on('click','#submit',function(e){
              "data": function ( d ) {
                 d.dari_tanggal = $("#dari_tanggal").val();
                 d.sampai_tanggal = $("#sampai_tanggal").val();
+                d.closing = $("#closing").val();
                 // d.custom = $('#myInput').val();
                 // etc
             },
@@ -122,7 +138,7 @@ $(document).on('click','#submit',function(e){
     });
 
   $("#cetak").show();
-  $("#cetak_lap").attr("href", "cetak_lap_penjualan_detail.php?dari_tanggal="+dari_tanggal+"&sampai_tanggal="+sampai_tanggal+"");
+  $("#cetak_lap").attr("href", "cetak_lap_penjualan_detail.php?closing="+closing+"&dari_tanggal="+dari_tanggal+"&sampai_tanggal="+sampai_tanggal+"");
   }
 });
 
@@ -140,6 +156,9 @@ $(document).on('click','#submit',function(e){
 //Ending untuk tampilkan table kas MUTASI MASUK detail
 </script>
 
+<script type="text/javascript">
+  $(".chosen").chosen({no_results_text: "Maaf, Data Tidak Ada!",search_contains:true}); 
+</script>
 
 <?php 
 include 'footer.php';
