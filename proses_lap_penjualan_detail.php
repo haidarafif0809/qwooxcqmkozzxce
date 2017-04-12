@@ -10,7 +10,7 @@ $penjualan_closing = stringdoang($_POST['closing']);
 
 if ($penjualan_closing == "sudah") {
 
-	$query_penjualan = $db->query("SELECT SUM(potongan) AS total_potongan, SUM(tax) AS total_tax, SUM(jumlah_barang) AS total_barang, SUM(subtotal) AS total_subtotal FROM detail_penjualan WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' AND no_faktur != no_reg ");
+	$query_penjualan = $db->query("SELECT SUM(potongan) AS total_potongan, SUM(tax) AS total_tax, SUM(jumlah_barang) AS total_barang, SUM(subtotal) AS total_subtotal FROM detail_penjualan WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' AND ( no_faktur != no_reg  OR no_reg IS NULL) ");
 	$data_penjualan = mysqli_fetch_array($query_penjualan);
 	$total_potongan = $data_penjualan['total_potongan'];
 	$total_tax = $data_penjualan['total_tax'];
