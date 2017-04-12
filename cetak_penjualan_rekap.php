@@ -10,10 +10,12 @@ $sampai_tanggal = stringdoang($_GET['sampai_tanggal']);
 $tanggal_sekarang = date('Y-m-d');
 
 
-    $query1 = $db->query("SELECT * FROM perusahaan ");
-    $data1 = mysqli_fetch_array($query1);
-	$perintah = $db->query("SELECT SUM(total) AS totali FROM penjualan WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal'");
-	$data = mysqli_fetch_array($perintah);
+$query_perusahaan = $db->query("SELECT foto, nama_perusahaan, alamat_perusahaan, no_telp FROM perusahaan ");
+  $data_perusahaan = mysqli_fetch_array($query_perusahaan);
+
+
+$query_total_penjualan = $db->query("SELECT SUM(total) AS total_akhir, SUM(potongan) AS potongan_akhir, SUM(tax) AS tax_akhir, SUM(biaya_admin) AS biaya_admin_akhir, SUM(sisa) AS kembalian_akhir, SUM(kredit) AS kredit_akhir  FROM penjualan WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' ");
+$data_total_penjualan = mysqli_fetch_array($query_total_penjualan);
     
  ?>
 
@@ -22,13 +24,13 @@ $tanggal_sekarang = date('Y-m-d');
                  <h3> <b> <center>LAPORAN PENJUALAN REKAP </center></b></h3><hr>
     <div class="row"><!--row1-->
         <div class="col-sm-2">
-                <img src='save_picture/<?php echo $data1['foto']; ?>' class='img-rounded' alt='Cinque Terre' width='160' height='140'> 
+                <img src='save_picture/<?php echo $data_perusahaan['foto']; ?>' class='img-rounded' alt='Cinque Terre' width='160' height='140'> 
         </div><!--penutup colsm2-->
 
         <div class="col-sm-4">
-                 <h4> <b> <?php echo $data1['nama_perusahaan']; ?> </b> </h4> 
-                 <p> <?php echo $data1['alamat_perusahaan']; ?> </p> 
-                 <p> No.Telp:<?php echo $data1['no_telp']; ?> </p> 
+                 <h4> <b> <?php echo $data_perusahaan['nama_perusahaan']; ?> </b> </h4> 
+                 <p> <?php echo $data_perusahaan['alamat_perusahaan']; ?> </p> 
+                 <p> No.Telp:<?php echo $data_perusahaan['no_telp']; ?> </p> 
                  
         </div><!--penutup colsm4-->
 <br><br>
@@ -49,45 +51,59 @@ $tanggal_sekarang = date('Y-m-d');
       
     </div><!--penutup row1-->
 
-
+<hr>
 
 <table id="tableuser" class="table table-bordered table-sm">
             <thead>
-                  <th>Tanggal</th>
-                  <th>Nomor Faktur</th>
-                  <th>Kode Pelanggan</th>
-                  <th>Total</th>
-                  <th>Jam</th>
-                  <th>User</th>
-                  <th>Status</th>
-                  <th>Potongan</th>
-                  <th>Tax</th>
-                  <th>Kembalian</th>
-                  <th>Kredit</th>
+      <th style="background-color: #4CAF50; color: white;"> Nomor Faktur </th>
+      <th style="background-color: #4CAF50; color: white;"> Kode Pelanggan</th>
+      <th style="background-color: #4CAF50; color: white;"> Tanggal </th>
+      <th style="background-color: #4CAF50; color: white;"> Jam </th>
+      <th style="background-color: #4CAF50; color: white;"> User </th>
+      <th style="background-color: #4CAF50; color: white;"> Status </th>
+      <th style="background-color: #4CAF50; color: white;"> Potongan </th>
+      <th style="background-color: #4CAF50; color: white;"> Tax </th>
+      <th style="background-color: #4CAF50; color: white;"> Biaya Admin </th>
+      <th style="background-color: #4CAF50; color: white;"> Total </th>
+      <th style="background-color: #4CAF50; color: white;"> Kredit </th>
                   
             </thead>
             
             <tbody>
             <?php
 
-    $perintah = $db->query("SELECT dp.id,pel.nama_pelanggan,dp.tanggal,dp.no_faktur,dp.kode_pelanggan,dp.total,dp.jam,dp.user,dp.status,dp.potongan,dp.tax,dp.sisa,dp.kredit FROM penjualan dp LEFT JOIN pelanggan pel ON dp.kode_pelanggan = pel.kode_pelanggan WHERE dp.tanggal >= '$dari_tanggal' AND dp.tanggal <= '$sampai_tanggal' ORDER BY dp.tanggal DESC ");
+    $perintah = $db->query("SELECT dp.id,pel.nama_pelanggan,dp.tanggal,dp.no_faktur,dp.kode_pelanggan,dp.total,dp.jam,dp.user,dp.status,dp.potongan,dp.tax,dp.sisa,dp.kredit,dp.biaya_admin FROM penjualan dp LEFT JOIN pelanggan pel ON dp.kode_pelanggan = pel.kode_pelanggan WHERE dp.tanggal >= '$dari_tanggal' AND dp.tanggal <= '$sampai_tanggal' ORDER BY dp.tanggal DESC ");
                 while ($data10 = mysqli_fetch_array($perintah))
                 {
                   
                   echo "<tr>
-                  <td>". $data10['tanggal'] ."</td>
                   <td>". $data10['no_faktur'] ."</td>
                   <td>". $data10['kode_pelanggan'] ."</td>
-                  <td>". $data10['total'] ."</td>
+                  <td>". $data10['tanggal'] ."</td>
                   <td>". $data10['jam'] ."</td>
                   <td>". $data10['user'] ."</td>
                   <td>". $data10['status'] ."</td>
-                  <td>". $data10['potongan'] ."</td>
-                  <td>". $data10['tax'] ."</td>
-                  <td>". $data10['sisa'] ."</td>
-                  <td>". $data10['kredit'] ."</td>
+                  <td align='right'>". rp($data10['potongan']) ."</td>
+                  <td align='right'>". rp($data10['tax']) ."</td>
+                  <td align='right'>". rp($data10['biaya_admin']) ."</td>
+                  <td align='right'>". rp($data10['total']) ."</td>
+                  <td align='right'>". rp($data10['kredit']) ."</td>
                   </tr>";
                 }
+
+                  echo "<tr>
+                  <td style='color:red'></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td align='right' style='color:red'>".rp($data_total_penjualan['potongan_akhir'])."</td>
+                  <td align='right' style='color:red'>".rp($data_total_penjualan['tax_akhir'])."</td>
+                  <td align='right' style='color:red'>".rp($data_total_penjualan['biaya_admin_akhir'])."</td>
+                  <td align='right' style='color:red'>".rp($data_total_penjualan['total_akhir'])."</td>
+                  <td align='right' style='color:red'>".rp($data_total_penjualan['kredit_akhir'])."</td>
+                  </tr>";
           //Untuk Memutuskan Koneksi Ke Database                    
                mysqli_close($db); 
             ?>
@@ -95,18 +111,8 @@ $tanggal_sekarang = date('Y-m-d');
 
       </table>
       <br>
-      <div class="row">
+      <div class="col-sm-4"><i>Terbilang : <b><?php echo kekata($data_total_penjualan['total_akhir']); ?></b></i></div>
 
-      <div class="col-sm-4"><i><b>Terbilang : <?php echo kekata($data['totali']); ?></b></i></div>
-      <div class="col-sm-2"></div>
-
-      <div class="col-sm-4">
-      	<table>
-      		<tr><td><b>Total Nilai</td><td>:</td><td></b><b><?php echo rp($data['totali']); ?></b></td></tr>
-      	</table>
-      </div>
-      	
-      </div>
 
  <div class="row">
      <div class="col-sm-1">

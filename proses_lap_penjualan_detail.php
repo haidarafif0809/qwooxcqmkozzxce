@@ -5,13 +5,39 @@ include 'sanitasi.php';
 
 $dari_tanggal = stringdoang($_POST['dari_tanggal']);
 $sampai_tanggal = stringdoang($_POST['sampai_tanggal']);
+$penjualan_closing = stringdoang($_POST['closing']);
 
-$query011 = $db->query("SELECT SUM(potongan) AS total_potongan, SUM(tax) AS total_tax, SUM(jumlah_barang) AS total_barang, SUM(subtotal) AS total_subtotal FROM detail_penjualan WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal'");
-$cek011 = mysqli_fetch_array($query011);
-$total_potongan = $cek011['total_potongan'];
-$total_tax = $cek011['total_tax'];
-$total_barang = $cek011['total_barang'];
-$total_subtotal = $cek011['total_subtotal'];
+
+if ($penjualan_closing == "sudah") {
+
+	$query_penjualan = $db->query("SELECT SUM(potongan) AS total_potongan, SUM(tax) AS total_tax, SUM(jumlah_barang) AS total_barang, SUM(subtotal) AS total_subtotal FROM detail_penjualan WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' AND ( no_faktur != no_reg  OR no_reg IS NULL) ");
+	$data_penjualan = mysqli_fetch_array($query_penjualan);
+	$total_potongan = $data_penjualan['total_potongan'];
+	$total_tax = $data_penjualan['total_tax'];
+	$total_barang = $data_penjualan['total_barang'];
+	$total_subtotal = $data_penjualan['total_subtotal'];
+
+}
+elseif ($penjualan_closing == "belum") {
+
+	$query_penjualan = $db->query("SELECT SUM(potongan) AS total_potongan, SUM(tax) AS total_tax, SUM(jumlah_barang) AS total_barang, SUM(subtotal) AS total_subtotal FROM detail_penjualan WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' AND no_faktur = no_reg ");
+	$data_penjualan = mysqli_fetch_array($query_penjualan);
+	$total_potongan = $data_penjualan['total_potongan'];
+	$total_tax = $data_penjualan['total_tax'];
+	$total_barang = $data_penjualan['total_barang'];
+	$total_subtotal = $data_penjualan['total_subtotal'];
+
+}
+else{
+
+	$query_penjualan = $db->query("SELECT SUM(potongan) AS total_potongan, SUM(tax) AS total_tax, SUM(jumlah_barang) AS total_barang, SUM(subtotal) AS total_subtotal FROM detail_penjualan WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal'");
+	$data_penjualan = mysqli_fetch_array($query_penjualan);
+	$total_potongan = $data_penjualan['total_potongan'];
+	$total_tax = $data_penjualan['total_tax'];
+	$total_barang = $data_penjualan['total_barang'];
+	$total_subtotal = $data_penjualan['total_subtotal'];
+
+}
 
 
 // storing  request (ie, get/post) global array to a variable  
@@ -33,17 +59,55 @@ $columns = array(
 );
 
 // getting total number records without any search
-$sql =" SELECT s.nama,dp.no_faktur,dp.kode_barang,dp.nama_barang,dp.jumlah_barang,dp.satuan,dp.harga,dp.subtotal,dp.potongan,dp.tax,dp.hpp,dp.sisa ";
+// 
+if ($penjualan_closing == "sudah") {
+
+	$sql =" SELECT s.nama,dp.no_faktur,dp.kode_barang,dp.nama_barang,dp.jumlah_barang,dp.satuan,dp.harga,dp.subtotal,dp.potongan,dp.tax,dp.hpp,dp.sisa ";
+$sql.=" FROM detail_penjualan dp LEFT JOIN satuan s ON dp.satuan = s.id ";
+$sql.=" WHERE dp.tanggal >= '$dari_tanggal' AND dp.tanggal <= '$sampai_tanggal'  AND no_faktur != no_reg  ";
+
+}
+elseif ($penjualan_closing == "belum") {
+
+	$sql =" SELECT s.nama,dp.no_faktur,dp.kode_barang,dp.nama_barang,dp.jumlah_barang,dp.satuan,dp.harga,dp.subtotal,dp.potongan,dp.tax,dp.hpp,dp.sisa ";
+$sql.=" FROM detail_penjualan dp LEFT JOIN satuan s ON dp.satuan = s.id ";
+$sql.=" WHERE dp.tanggal >= '$dari_tanggal' AND dp.tanggal <= '$sampai_tanggal'  AND no_faktur = no_reg  ";
+
+}
+else{
+
+	$sql =" SELECT s.nama,dp.no_faktur,dp.kode_barang,dp.nama_barang,dp.jumlah_barang,dp.satuan,dp.harga,dp.subtotal,dp.potongan,dp.tax,dp.hpp,dp.sisa ";
 $sql.=" FROM detail_penjualan dp LEFT JOIN satuan s ON dp.satuan = s.id ";
 $sql.=" WHERE dp.tanggal >= '$dari_tanggal' AND dp.tanggal <= '$sampai_tanggal' ";
+
+}
+
 $query=mysqli_query($conn, $sql) or die("eror.php: get employees");
 $totalData = mysqli_num_rows($query);
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
+if ($penjualan_closing == "sudah") {
 
-$sql =" SELECT s.nama,dp.no_faktur,dp.kode_barang,dp.nama_barang,dp.jumlah_barang,dp.satuan,dp.harga,dp.subtotal,dp.potongan,dp.tax,dp.hpp,dp.sisa ";
+	$sql =" SELECT s.nama,dp.no_faktur,dp.kode_barang,dp.nama_barang,dp.jumlah_barang,dp.satuan,dp.harga,dp.subtotal,dp.potongan,dp.tax,dp.hpp,dp.sisa ";
+$sql.=" FROM detail_penjualan dp LEFT JOIN satuan s ON dp.satuan = s.id ";
+$sql.=" WHERE dp.tanggal >= '$dari_tanggal' AND dp.tanggal <= '$sampai_tanggal'  AND no_faktur != no_reg  ";
+
+}
+elseif ($penjualan_closing == "belum") {
+
+	$sql =" SELECT s.nama,dp.no_faktur,dp.kode_barang,dp.nama_barang,dp.jumlah_barang,dp.satuan,dp.harga,dp.subtotal,dp.potongan,dp.tax,dp.hpp,dp.sisa ";
+$sql.=" FROM detail_penjualan dp LEFT JOIN satuan s ON dp.satuan = s.id ";
+$sql.=" WHERE dp.tanggal >= '$dari_tanggal' AND dp.tanggal <= '$sampai_tanggal'  AND no_faktur = no_reg  ";
+
+}
+else{
+
+	$sql =" SELECT s.nama,dp.no_faktur,dp.kode_barang,dp.nama_barang,dp.jumlah_barang,dp.satuan,dp.harga,dp.subtotal,dp.potongan,dp.tax,dp.hpp,dp.sisa ";
 $sql.=" FROM detail_penjualan dp LEFT JOIN satuan s ON dp.satuan = s.id ";
 $sql.=" WHERE dp.tanggal >= '$dari_tanggal' AND dp.tanggal <= '$sampai_tanggal' ";
+
+}
+
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
 
 
@@ -65,9 +129,7 @@ $query=mysqli_query($conn, $sql) or die("employee-grid-data.php: get employees")
 $data = array();
 while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 	$nestedData=array();      
-	$hpp_keluar = $db->query("SELECT SUM(sisa_barang) AS sisa_barang FROM hpp_keluar WHERE kode_barang = '$row[kode_barang]' AND no_faktur = '$row[no_faktur]'");
-    $cek_awal_keluar = mysqli_fetch_array($hpp_keluar);
-    $nilai_sisa = $cek_awal_keluar['sisa_barang'];
+
 
       $nestedData[] = $row['no_faktur'];
       $nestedData[] = $row['kode_barang'];

@@ -27,38 +27,38 @@ $no_jurnal = no_jurnal();
     $delete_detail_penjualan = $db->query("DELETE FROM detail_penjualan WHERE no_faktur = '$no_reg' ");
 
     //ambil data brang-barang yang ada di tbs berdasrakan no_reg
-    $query = $db->query("SELECT * FROM tbs_penjualan WHERE no_reg = '$no_reg' ");
-    while ($data = mysqli_fetch_array($query))
+    $query_tbs_penjualan = $db->query("SELECT jumlah_barang, subtotal, satuan, kode_barang, lab, harga, jumlah_barang, lab, tanggal, kode_barang, nama_barang, potongan, tax, hpp, komentar, jam, tipe_barang, dosis, ruangan FROM tbs_penjualan WHERE no_reg = '$no_reg' ");
+    while ($data_tbs_penjualan = mysqli_fetch_array($query_tbs_penjualan))
     {
         
-        $pilih_konversi = $db->query("SELECT  sk.konversi * $data[jumlah_barang] AS jumlah_konversi, $data[subtotal] / ($data[jumlah_barang] * sk.konversi) AS harga_konversi, sk.id_satuan, b.satuan FROM satuan_konversi sk INNER JOIN barang b ON sk.id_produk = b.id  WHERE sk.id_satuan = '$data[satuan]' AND sk.kode_produk = '$data[kode_barang]'");
-      $data_konversi = mysqli_fetch_array($pilih_konversi);
+        $query_satuan_konversi = $db->query("SELECT  sk.konversi * $data_tbs_penjualan[jumlah_barang] AS jumlah_konversi, $data_tbs_penjualan[subtotal] / ($data_tbs_penjualan[jumlah_barang] * sk.konversi) AS harga_konversi, sk.id_satuan, b.satuan FROM satuan_konversi sk INNER JOIN barang b ON sk.id_produk = b.id  WHERE sk.id_satuan = '$data_tbs_penjualan[satuan]' AND sk.kode_produk = '$data_tbs_penjualan[kode_barang]'");
+      $data_satuan_konversi = mysqli_fetch_array($query_satuan_konversi);
 
-      if ($data_konversi['harga_konversi'] != 0 || $data_konversi['harga_konversi'] != "") {
-        $harga = $data_konversi['harga_konversi'];
-        $jumlah_barang = $data_konversi['jumlah_konversi'];
-          if ($data['lab'] == 'Laboratorium') {          
+      if ($data_satuan_konversi['harga_konversi'] != 0 || $data_satuan_konversi['harga_konversi'] != "") {
+        $harga = $data_satuan_konversi['harga_konversi'];
+        $jumlah_barang = $data_satuan_konversi['jumlah_konversi'];
+          if ($data_tbs_penjualan['lab'] == 'Laboratorium') {          
             $satuan = 'Lab';
           }
           else{
-          $satuan = $data_konversi['satuan'];
+          $satuan = $data_satuan_konversi['satuan'];
           }
       }
       else{
-        $harga = $data['harga'];
-        $jumlah_barang = $data['jumlah_barang'];
-         if ($data['lab'] == 'Laboratorium') {          
+        $harga = $data_tbs_penjualan['harga'];
+        $jumlah_barang = $data_tbs_penjualan['jumlah_barang'];
+         if ($data_tbs_penjualan['lab'] == 'Laboratorium') {          
             $satuan = 'Lab';
           }
           else{
-           $satuan = $data['satuan'];
+           $satuan = $data_tbs_penjualan['satuan'];
          }
       }
 
       
-        $query2 = $db->query("INSERT INTO detail_penjualan (no_faktur, tanggal, kode_barang, nama_barang, jumlah_barang, asal_satuan,satuan,harga, subtotal, potongan, tax, hpp, sisa, no_pesanan, komentar,jam,tipe_produk,dosis,no_reg,no_rm, lab) 
+        $query2 = $db->query("INSERT INTO detail_penjualan (no_faktur, tanggal, kode_barang, nama_barang, jumlah_barang, asal_satuan,satuan,harga, subtotal, potongan, tax, hpp, sisa, no_pesanan, komentar,jam,tipe_produk,dosis,no_reg,no_rm, lab, ruangan) 
           VALUES 
-          ('$no_reg','$data[tanggal]','$data[kode_barang]','$data[nama_barang]','$data[jumlah_barang]','$satuan','$data[satuan]','$data[harga]','$data[subtotal]','$data[potongan]','$data[tax]','$data[hpp]','$data[jumlah_barang]', '1', '$data[komentar]','$data[jam]','$data[tipe_barang]','$data[dosis]','$no_reg','$no_rm','$data[lab]')");
+          ('$no_reg','$data_tbs_penjualan[tanggal]','$data_tbs_penjualan[kode_barang]','$data_tbs_penjualan[nama_barang]','$data_tbs_penjualan[jumlah_barang]','$satuan','$data_tbs_penjualan[satuan]','$data_tbs_penjualan[harga]','$data_tbs_penjualan[subtotal]','$data_tbs_penjualan[potongan]','$data_tbs_penjualan[tax]','$data_tbs_penjualan[hpp]','$data_tbs_penjualan[jumlah_barang]', '1', '$data_tbs_penjualan[komentar]','$data_tbs_penjualan[jam]','$data_tbs_penjualan[tipe_barang]','$data_tbs_penjualan[dosis]','$no_reg','$no_rm','$data_tbs_penjualan[lab]', '$data_tbs_penjualan[ruangan]')");
 
 
     }
@@ -153,7 +153,7 @@ $total_tax = $jumlah_tax['total_tax'];
                 $insert_juranl = $db->query("INSERT INTO jurnal_trans (nomor_jurnal,waktu_jurnal,keterangan_jurnal,kode_akun_jurnal,debit,kredit,jenis_transaksi,no_faktur,approved,user_buat) VALUES ('".no_jurnal()."', '$tanggal_sekarang $jam_sekarang', 'Penjualan R.Inap Simpan Sementara - $ambil_kode_pelanggan[nama_pelanggan]', '$ambil_setting[potongan_jual]', '$potongan', '0', 'Penjualan', '$no_reg','1', '$user')");
         }//if ($potongan != "" || $potongan != 0 ) {
 
-  echo "Success";
+  echo 1;
 
 //Untuk Memutuskan Koneksi Ke Database
 mysqli_close($db);   

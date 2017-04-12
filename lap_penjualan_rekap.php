@@ -54,19 +54,19 @@ tr:nth-child(even){background-color: #f2f2f2}
 
  <div class="table-responsive"><!--membuat agar ada garis pada tabel disetiap kolom-->
 <span id="result">
-<table id="tableuser" class="table table-bordered">
+<table id="tableuser" class="table table-bordered table-sm">
 		<thead>
-			<th style="background-color: #4CAF50; color: white;"> Tanggal </th>
 			<th style="background-color: #4CAF50; color: white;"> Nomor Faktur </th>
 			<th style="background-color: #4CAF50; color: white;"> Kode Pelanggan</th>
-			<th style="background-color: #4CAF50; color: white;"> Total </th>
+			<th style="background-color: #4CAF50; color: white;"> Tanggal </th>
 			<th style="background-color: #4CAF50; color: white;"> Jam </th>
 			<th style="background-color: #4CAF50; color: white;"> User </th>
 			<th style="background-color: #4CAF50; color: white;"> Status </th>
+			<th style="background-color: #4CAF50; color: white;"> Subtotal </th>
 			<th style="background-color: #4CAF50; color: white;"> Potongan </th>
 			<th style="background-color: #4CAF50; color: white;"> Tax </th>
 			<th style="background-color: #4CAF50; color: white;"> Biaya Admin </th>
-			<th style="background-color: #4CAF50; color: white;"> Kembalian </th>
+			<th style="background-color: #4CAF50; color: white;"> Total </th>
 			<th style="background-color: #4CAF50; color: white;"> Kredit </th>
 						
 		</thead>
@@ -79,9 +79,6 @@ tr:nth-child(even){background-color: #f2f2f2}
 </span>
 </div> <!--/ responsive-->
 
-<h4>
-<td>Total Seluruh  &nbsp;&nbsp;&nbsp;  : <span id="total_nilai"></span></td><br> 
-</h4>
 
 
 <span id="cetak" style="display: none;">
@@ -133,11 +130,6 @@ tr:nth-child(even){background-color: #f2f2f2}
           
               });
     
-		  	$.post("cek_total_rekap.php",{dari_tanggal:dari_tanggal,sampai_tanggal:sampai_tanggal},function(data){
-
-		  		$("#total_nilai").html(data);
-
-		  	});
 
           $("#cetak").show();
         $("#cetak_lap").attr("href", "cetak_penjualan_rekap.php?dari_tanggal="+dari_tanggal+"&sampai_tanggal="+sampai_tanggal+"");

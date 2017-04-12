@@ -7,14 +7,37 @@ include 'sanitasi.php';
 $dari_tanggal = stringdoang($_POST['dari_tanggal']);
 $sampai_tanggal = stringdoang($_POST['sampai_tanggal']);
 $golongan = stringdoang($_POST['golongan']);
+$penjualan_closing = stringdoang($_POST['closing']);
 
 
-$sum_detail_penjualan = $db->query("SELECT SUM(jumlah_barang) AS jumlah, SUM(subtotal) AS total FROM detail_penjualan WHERE tipe_produk = '$golongan' AND tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal'");
-$data_detail_penjualan = mysqli_fetch_array($sum_detail_penjualan);
+if ($penjualan_closing == "sudah") {
 
+  $sum_detail_penjualan = $db->query("SELECT SUM(jumlah_barang) AS jumlah, SUM(subtotal) AS total FROM detail_penjualan WHERE tipe_produk = '$golongan' AND tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' AND ( no_faktur != no_reg  OR no_reg IS NULL)");
+  $data_detail_penjualan = mysqli_fetch_array($sum_detail_penjualan);
+  
+  $total_nilai = $data_detail_penjualan['total'];
+  $jumlah_produk = $data_detail_penjualan['jumlah'];
 
-$total_nilai = $data_detail_penjualan['total'];
-$jumlah_produk = $data_detail_penjualan['jumlah'];
+}
+elseif ($penjualan_closing == "belum") {
+
+  $sum_detail_penjualan = $db->query("SELECT SUM(jumlah_barang) AS jumlah, SUM(subtotal) AS total FROM detail_penjualan WHERE tipe_produk = '$golongan' AND tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal'  AND no_faktur = no_reg");
+  $data_detail_penjualan = mysqli_fetch_array($sum_detail_penjualan);
+  
+  $total_nilai = $data_detail_penjualan['total'];
+  $jumlah_produk = $data_detail_penjualan['jumlah'];
+
+}
+else{
+
+  $sum_detail_penjualan = $db->query("SELECT SUM(jumlah_barang) AS jumlah, SUM(subtotal) AS total FROM detail_penjualan WHERE tipe_produk = '$golongan' AND tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal'");
+  $data_detail_penjualan = mysqli_fetch_array($sum_detail_penjualan);
+  
+  $total_nilai = $data_detail_penjualan['total'];
+  $jumlah_produk = $data_detail_penjualan['jumlah'];
+
+}
+
 
 
 // storing  request (ie, get/post) global array to a variable  
@@ -31,16 +54,48 @@ $columns = array(
 
  
 // getting total number records without any search
-$sql =" SELECT SUM(jumlah_barang) AS jumlah, SUM(subtotal) AS total, nama_barang ";
-$sql.=" FROM detail_penjualan WHERE tipe_produk = '$golongan' AND tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' GROUP BY kode_barang ";
+if ($penjualan_closing == "sudah") {
+
+  $sql =" SELECT SUM(jumlah_barang) AS jumlah, SUM(subtotal) AS total, nama_barang ";
+  $sql.=" FROM detail_penjualan WHERE tipe_produk = '$golongan' AND tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' AND ( no_faktur != no_reg  OR no_reg IS NULL) GROUP BY kode_barang ";
+
+}
+elseif ($penjualan_closing == "belum") {
+
+  $sql =" SELECT SUM(jumlah_barang) AS jumlah, SUM(subtotal) AS total, nama_barang ";
+  $sql.=" FROM detail_penjualan WHERE tipe_produk = '$golongan' AND tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' AND no_faktur = no_reg GROUP BY kode_barang ";
+
+}
+else{
+
+  $sql =" SELECT SUM(jumlah_barang) AS jumlah, SUM(subtotal) AS total, nama_barang ";
+  $sql.=" FROM detail_penjualan WHERE tipe_produk = '$golongan' AND tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' GROUP BY kode_barang ";
+
+}
 
 $query=mysqli_query($conn, $sql) or die("eror 1");
 $totalData = mysqli_num_rows($query);
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
 
-$sql =" SELECT SUM(jumlah_barang) AS jumlah, SUM(subtotal) AS total, nama_barang ";
-$sql.=" FROM detail_penjualan WHERE tipe_produk = '$golongan' AND tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' ";
+if ($penjualan_closing == "sudah") {
+
+  $sql =" SELECT SUM(jumlah_barang) AS jumlah, SUM(subtotal) AS total, nama_barang ";
+  $sql.=" FROM detail_penjualan WHERE tipe_produk = '$golongan' AND tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' AND ( no_faktur != no_reg  OR no_reg IS NULL) ";
+
+}
+elseif ($penjualan_closing == "belum") {
+
+  $sql =" SELECT SUM(jumlah_barang) AS jumlah, SUM(subtotal) AS total, nama_barang ";
+  $sql.=" FROM detail_penjualan WHERE tipe_produk = '$golongan' AND tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' AND no_faktur = no_reg ";
+
+}
+else{
+
+  $sql =" SELECT SUM(jumlah_barang) AS jumlah, SUM(subtotal) AS total, nama_barang ";
+  $sql.=" FROM detail_penjualan WHERE tipe_produk = '$golongan' AND tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' ";
+
+}
 
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
 $sql.=" AND ( nama_barang LIKE '".$requestData['search']['value']."%' )";

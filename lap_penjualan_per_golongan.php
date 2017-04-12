@@ -12,16 +12,30 @@ include 'db.php';
 <br>
 <form id="perhari" class="form" role="form">
 
-<div class="col-sm-2"> 
-<select name="golongan" id="golongan" autocomplete="off" class="form-control" placeholder="Golongan" required="">
-<option value="Barang">Barang</option>
-<option value="Jasa">Jasa</option>
-<option value="Bed">Kamar</option>
+<div class="col-sm-2">
+<select name="closing" id="closing" autocomplete="off" class="form-control chosen" required="">
+<option value="" style="display: none">Status Penjualan</option>
+  <optgroup label="Status Penjualan">
+    <option value="semua">Semua</option>
+    <option value="sudah">Sudah Closing</option>
+    <option value="belum">Belum Closing</option>
+  </optgroup>
+</select>
+</div>
+
+<div class="col-sm-2">
+<select name="golongan" id="golongan" autocomplete="off" class="form-control chosen" required="">
+<option value="" style="display: none">Tipe Produk</option>
+  <optgroup label="Tipe Produk">
+    <option value="Barang">Barang</option>
+    <option value="Jasa">Jasa</option>
+    <option value="Bed">Kamar</option>
+  </optgroup>
 </select>
 </div>
 
 <div class="col-sm-2"> 
-    <input style="height: 17px" type="text" name="dari_tanggal" id="dari_tanggal" autocomplete="off" class="form-control tanggal_cari" placeholder="Dari Tanggal" required="">
+    <input style="height: 17px;" type="text" name="dari_tanggal" id="dari_tanggal" autocomplete="off" class="form-control tanggal_cari" placeholder="Dari Tanggal" required="">
 </div>
 
 <div class="col-sm-2"> 
@@ -63,7 +77,7 @@ tr:nth-child(even){background-color: #f2f2f2}
 </span>
 <span id="cetak" style="display: none;">
   <a href='cetak_penjualan_rekap_golongan.php' target="blank" id="cetak_lap" class='btn btn-danger'><i class='fa fa-print'> </i> Cetak Penjualan / Golongan</a>
-  <a href='export_lap_penjualan_golongan.php' target="blank" id="export_lap" class='btn btn-primary'><i class='fa fa-print'> </i> Export Excel</a>
+  <a href='export_lap_penjualan_golongan.php' target="blank" id="export_lap" class='btn btn-primary'><i class='fa fa-download'> </i> Export Excel</a>
 </span>
 
 </div>
@@ -88,13 +102,18 @@ tr:nth-child(even){background-color: #f2f2f2}
 
         $('#table_lap').DataTable().destroy();
         var golongan = $("#golongan").val();
+        var closing = $("#closing").val();
         var dari_tanggal = $("#dari_tanggal").val();        
         var sampai_tanggal = $("#sampai_tanggal").val();
 
 
-          if (golongan == '') {
+          if (closing == '') {
+            alert("Silakan Pilih Status Penjualan terlebih dahulu.");
+            $("#closing").trigger('chosen:open');
+          } 
+          else if (golongan == '') {
             alert("Silakan Pilih Golongan terlebih dahulu.");
-            $("#golongan").focus();
+            $("#golongan").trigger('chosen:open');
           } 
           else if (dari_tanggal == '') {
             alert("Silakan dari tanggal diisi terlebih dahulu.");
@@ -117,6 +136,7 @@ tr:nth-child(even){background-color: #f2f2f2}
                   url :"proses_lap_golongan_barang_rekap.php", // json datasource
                    "data": function ( d ) {
                       d.golongan = $("#golongan").val();
+                      d.closing = $("#closing").val();
                       d.dari_tanggal = $("#dari_tanggal").val();
                       d.sampai_tanggal = $("#sampai_tanggal").val();
                       // d.custom = $('#myInput').val();
@@ -135,9 +155,9 @@ tr:nth-child(even){background-color: #f2f2f2}
     
 
           $("#cetak").show();
-        $("#cetak_lap").attr("href", "cetak_penjualan_rekap_golongan.php?golongan="+golongan+"&dari_tanggal="+dari_tanggal+"&sampai_tanggal="+sampai_tanggal+"");
+        $("#cetak_lap").attr("href", "cetak_penjualan_rekap_golongan.php?golongan="+golongan+"&closing="+closing+"&dari_tanggal="+dari_tanggal+"&sampai_tanggal="+sampai_tanggal+"");
 
-        $("#export_lap").attr("href", "export_lap_penjualan_golongan.php?golongan="+golongan+"&dari_tanggal="+dari_tanggal+"&sampai_tanggal="+sampai_tanggal+"");
+        $("#export_lap").attr("href", "export_lap_penjualan_golongan.php?golongan="+golongan+"&closing="+closing+"&dari_tanggal="+dari_tanggal+"&sampai_tanggal="+sampai_tanggal+"");
       
       }//end else
 
@@ -151,6 +171,10 @@ tr:nth-child(even){background-color: #f2f2f2}
         });  
    });  
    // /FEE PRODUK per PETUGAS DATATABLE MENGGUNAKAN AJAX
+</script>
+
+<script type="text/javascript">
+  $(".chosen").chosen({no_results_text: "Maaf, Data Tidak Ada!",search_contains:true}); 
 </script>
 
 <?php 
