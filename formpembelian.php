@@ -466,7 +466,7 @@ $no_faktur = $nomor."/JL/".$data_bulan_terakhir."/".$tahun_terakhir;
             <div class="col-sm-6">
 
             <label> <b> Subtotal </b></label><br>
-              <input style="height:10px;font-size:15px" type="text" name="total" id="total_pembelian1" class="form-control" readonly=""  >
+              <input style="height:15px;font-size:15px" type="text" name="total" id="total_pembelian1" class="form-control" readonly=""  >
 
             </div>
             
@@ -474,7 +474,7 @@ $no_faktur = $nomor."/JL/".$data_bulan_terakhir."/".$tahun_terakhir;
             <div class="col-sm-6">
 
               <label> Potongan ( Rp ) </label><br>
-              <input style="height:10px;font-size:15px" type="text" name="potongan" id="potongan_pembelian" data-diskon="" class="form-control" autocomplete="off" placeholder="
+              <input style="height:15px;font-size:15px" type="text" name="potongan" id="potongan_pembelian" data-diskon="" class="form-control" autocomplete="off" placeholder="
               ">
 
             </div>
@@ -482,13 +482,13 @@ $no_faktur = $nomor."/JL/".$data_bulan_terakhir."/".$tahun_terakhir;
 
             <div class="col-sm-6">
               <label> Potongan ( % ) </label><br>
-              <input style="height:10px;font-size:15px" type="text" name="potongan_persen" id="potongan_persen" class="form-control" autocomplete="off" placeholder="">
+              <input style="height:15px;font-size:15px" type="text" name="potongan_persen" id="potongan_persen" class="form-control" autocomplete="off" placeholder="">
             </div>
             
 
             <div class="col-sm-6">            
               <label> Tax ( % )</label><br>
-              <input style="height:10px;font-size:15px" type="text" name="tax" id="tax" class="form-control" autocomplete="off" data-pajak="" placeholder="" >
+              <input style="height:15px;font-size:15px" type="text" name="tax" id="tax" class="form-control" autocomplete="off" data-pajak="" placeholder="" >
               <input type="hidden" name="tax_rp" id="tax_rp" class="form-control"  autocomplete="off" >              
             </div>
 
@@ -498,7 +498,7 @@ $no_faktur = $nomor."/JL/".$data_bulan_terakhir."/".$tahun_terakhir;
 
             <div class="col-sm-6">
               <label> Tanggal Jatuh Tempo </label><br>
-              <input style="height:10px;font-size:15px" type="text" name="tanggal_jt" id="tanggal_jt" placeholder="" value="" class="form-control" >
+              <input style="height:15px;font-size:15px" type="text" name="tanggal_jt" id="tanggal_jt" placeholder="" value="" class="form-control" >
             </div>
 
             <div class="col-sm-6">
@@ -552,12 +552,12 @@ $no_faktur = $nomor."/JL/".$data_bulan_terakhir."/".$tahun_terakhir;
             <div class="col-sm-6">
 
               <label> Kembalian </label><br>
-              <b><input style="height:10px;font-size:15px" type="text" name="sisa_pembayaran" id="sisa_pembayaran_pembelian" class="form-control" placeholder=" " readonly="" style="font-size: 20px"></b>
+              <b><input style="height:15px;font-size:15px" type="text" name="sisa_pembayaran" id="sisa_pembayaran_pembelian" class="form-control" placeholder=" " readonly="" style="font-size: 20px"></b>
             </div>
 
             <div class="col-sm-6">
               <label> Kredit </label><br>
-              <b><input style="height:10px;font-size:15px" type="text" name="kredit" id="kredit" class="form-control" placeholder="" readonly=""  style="font-size: 20px" ></b>
+              <b><input style="height:15px;font-size:15px" type="text" name="kredit" id="kredit" class="form-control" placeholder="" readonly=""  style="font-size: 20px" ></b>
             </div>
 
           </div>
@@ -1213,22 +1213,24 @@ alert(" Kode Gudang Harus Diisi ");
       var sisa = pembayaran - total;
       var sisa_kredit = total - pembayaran; 
 
-if (sisa < 0  )
-      {
-
-       $("#kredit").val();
-       $("#sisa_pembayaran_pembelian").val('0');
-       $("#tanggal_jt").attr("disabled", false);
-      }
-
-else  
-      {
        
-       
-        $("#sisa_pembayaran_pembelian").val(sisa);
+        
+
+        if (sisa < 0 )
+        {
+        $("#kredit").val( tandaPemisahTitik(sisa_kredit));
+        $("#sisa_pembayaran_pembelian").val('0');
+        $("#tanggal_jt").attr("disabled", false);
+        
+        }
+        
+        else  
+        {
+        
+        $("#sisa_pembayaran_pembelian").val(tandaPemisahTitik(sisa));
         $("#kredit").val('0');
         $("#tanggal_jt").attr("disabled", true);
-       } 
+        }
 
       
     });
@@ -1867,8 +1869,8 @@ $(document).ready(function(){
     $.get("cek_total_pembelian.php",{session_id:session_id},function(data){
     data = data.replace(/\s+/g, '');
 
-      $("#total_pembelian").val(data);
-      $("#total_pembelian1").val(data);
+      $("#total_pembelian").val(tandaPemisahTitik(data));
+      $("#total_pembelian1").val(tandaPemisahTitik(data));
 
 
     });

@@ -296,11 +296,11 @@ $no_jurnal = no_jurnal();
     // deleet jurnal trans yang khusus simpan sementara
     $delete_jurnal = $db->query("DELETE FROM jurnal_trans WHERE no_faktur = '$no_reg' ");
 
-    $query = $db->query("SELECT * FROM tbs_penjualan WHERE  no_reg = '$no_reg'");
-    while ($data = mysqli_fetch_array($query))
+    $query_tbs_penjualan = $db->query("SELECT * FROM tbs_penjualan WHERE  no_reg = '$no_reg'");
+    while ($data_tbs_penjualan = mysqli_fetch_array($query_tbs_penjualan))
       {
 
-      $pilih_konversi = $db->query("SELECT  sk.konversi * $data[jumlah_barang] AS jumlah_konversi, $data[subtotal] / ($data[jumlah_barang] * sk.konversi) AS harga_konversi, sk.id_satuan, b.satuan FROM satuan_konversi sk INNER JOIN barang b ON sk.id_produk = b.id  WHERE sk.id_satuan = '$data[satuan]' AND sk.kode_produk = '$data[kode_barang]'");
+      $pilih_konversi = $db->query("SELECT  sk.konversi * $data_tbs_penjualan[jumlah_barang] AS jumlah_konversi, $data_tbs_penjualan[subtotal] / ($data_tbs_penjualan[jumlah_barang] * sk.konversi) AS harga_konversi, sk.id_satuan, b.satuan FROM satuan_konversi sk INNER JOIN barang b ON sk.id_produk = b.id  WHERE sk.id_satuan = '$data_tbs_penjualan[satuan]' AND sk.kode_produk = '$data_tbs_penjualan[kode_barang]'");
       $data_konversi = mysqli_fetch_array($pilih_konversi);
 
       if ($data_konversi['harga_konversi'] != 0 || $data_konversi['harga_konversi'] != "") {
@@ -309,19 +309,19 @@ $no_jurnal = no_jurnal();
         $satuan = $data_konversi['satuan'];
       }
       else{
-        $harga = $data['harga'];
-        $jumlah_barang = $data['jumlah_barang'];
-        $satuan = $data['satuan'];
+        $harga = $data_tbs_penjualan['harga'];
+        $jumlah_barang = $data_tbs_penjualan['jumlah_barang'];
+        $satuan = $data_tbs_penjualan['satuan'];
       }
         
     
-        $query2 = "INSERT INTO detail_penjualan (no_faktur,no_rm, no_reg, tanggal, jam, kode_barang, nama_barang, jumlah_barang, asal_satuan,satuan, harga, subtotal, potongan, tax, sisa,tipe_produk,lab, dosis) VALUES ('$no_faktur','$no_rm', '$no_reg', '$data[tanggal]', '$data[jam]', '$data[kode_barang]','$data[nama_barang]','$jumlah_barang','$satuan','$data[satuan]','$harga','$data[subtotal]','$data[potongan]','$data[tax]', '$jumlah_barang','$data[tipe_barang]','$data[lab]','$data[dosis]')";
+        $query_insert_detail_penjualan = "INSERT INTO detail_penjualan (no_faktur,no_rm, no_reg, tanggal, jam, kode_barang, nama_barang, jumlah_barang, asal_satuan,satuan, harga, subtotal, potongan, tax, sisa,tipe_produk,lab, dosis,ruangan) VALUES ('$no_faktur','$no_rm', '$no_reg', '$data_tbs_penjualan[tanggal]', '$data_tbs_penjualan[jam]', '$data_tbs_penjualan[kode_barang]','$data_tbs_penjualan[nama_barang]','$jumlah_barang','$satuan','$data_tbs_penjualan[satuan]','$harga','$data_tbs_penjualan[subtotal]','$data_tbs_penjualan[potongan]','$data_tbs_penjualan[tax]', '$jumlah_barang','$data_tbs_penjualan[tipe_barang]','$data_tbs_penjualan[lab]','$data_tbs_penjualan[dosis]','$data_tbs_penjualan[ruangan]')";
 
-        if ($db->query($query2) === TRUE) {
+        if ($db->query($query_insert_detail_penjualan) === TRUE) {
         } 
 
         else {
-        echo "Error: " . $query2 . "<br>" . $db->error;
+        echo "Error: " . $query_insert_detail_penjualan . "<br>" . $db->error;
         }
 
         
@@ -409,7 +409,7 @@ else
 $perintah = $db->query("SELECT kode_barang FROM tbs_penjualan WHERE no_reg = '$no_reg' AND lab = 'Laboratorium'");
 while($data = mysqli_fetch_array($perintah)){
 
-  $kode_barang = $data['kode_barang'];
+  $kode_barang = $data_tbs_penjualan['kode_barang'];
 
   $cek_id_pemeriksaan = $db->query("SELECT id FROM jasa_lab WHERE kode_lab = '$kode_barang'");
   $out = mysqli_fetch_array($cek_id_pemeriksaan);
@@ -773,7 +773,7 @@ $query = $db->query("UPDATE bed SET sisa_bed = sisa_bed + 1 WHERE nama_kamar = '
 
 // coding untuk memasukan history_tbs dan menghapus tbs
 
-    $tbs_penjualan_masuk = $db->query("INSERT INTO history_tbs_penjualan (no_reg,kode_barang,nama_barang,jumlah_barang,harga,subtotal,tipe_barang,tanggal,jam,potongan,tax,session_id,satuan,dosis) SELECT no_reg,kode_barang,nama_barang,jumlah_barang,harga,subtotal,tipe_barang,tanggal,jam,potongan,tax,session_id,satuan,dosis FROM tbs_penjualan  WHERE no_reg = '$no_reg' ");
+    $tbs_penjualan_masuk = $db->query("INSERT INTO history_tbs_penjualan (no_reg,kode_barang,nama_barang,jumlah_barang,harga,subtotal,tipe_barang,tanggal,jam,potongan,tax,session_id,satuan,dosis,ruangan) SELECT no_reg,kode_barang,nama_barang,jumlah_barang,harga,subtotal,tipe_barang,tanggal,jam,potongan,tax,session_id,satuan,dosis,ruangan FROM tbs_penjualan  WHERE no_reg = '$no_reg' ");
 
     $tbs_fee_masuk = $db->query(" INSERT INTO history_tbs_fee_produk 
       (no_reg,no_rm,nama_petugas,kode_produk,nama_produk,jumlah_fee,tanggal,jam,waktu,session_id) SELECT no_reg,no_rm,nama_petugas,kode_produk,nama_produk,jumlah_fee,tanggal,jam,waktu,session_id FROM tbs_fee_produk WHERE no_reg = '$no_reg'");

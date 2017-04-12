@@ -169,9 +169,12 @@ opacity: 0.9;
       <div class="form-group" >
         <label for="bed">Nama Ruangan Lama</label>
         <input style="height: 20px" type="text" class="form-control" id="ruangan_lama" name="ruangan_lama" readonly="">
+
+        <input style="height: 20px" type="hidden" class="form-control" id="id_ruangan" name="id_ruangan"  readonly="" >
+        <input style="height: 20px" type="hidden" class="form-control" id="no_regnya" name="no_regnya"  readonly="" >
       </div>
 
-      <input style="height: 20px" type="hidden" class="form-control" id="id_ruangan" name="id_ruangan"  readonly="" >
+      
 
      <div class="form-group" >
         <label for="bed">Nama Kamar Lama</label>
@@ -439,7 +442,7 @@ else
 <div class="form-group">
   <label for="sel1">Ruangan:</label>
   <select class="form-control" id="ruangan" name="ruangan"  autocomplete="off">
-   <option value="">Silakan Pilih</option>
+   <option value="-">Silakan Pilih</option>
       <?php 
       $query_ruangan = $db->query("SELECT id,nama_ruangan FROM ruangan ORDER BY id");
       while ( $data_ruangan = mysqli_fetch_array($query_ruangan)) {
@@ -454,16 +457,14 @@ else
 
   <input style="height: 20px;" type="hidden" class="form-control" id="token" name="token" value="Kosasih" autocomplete="off"> 
 
+<div class="form-group" >
+  <label for="bed">Kode Kamar:</label>
+  <input style="height: 20px;" type="text" class="form-control disable" id="bed" name="bed" autocomplete="off" readonly="" >
+</div>
 
 <div class="form-group" >
   <label for="bed">Kamar:</label>
   <input style="height: 20px;" type="text" class="form-control disable" id="group_bed" name="group_bed" autocomplete="off" readonly="" >
-</div>
-
-
-<div class="form-group" >
-  <label for="bed">Bed:</label>
-  <input style="height: 20px;" type="text" class="form-control disable" id="bed" name="bed" autocomplete="off" readonly="" >
 </div>
 
 </div>
@@ -964,13 +965,13 @@ tr:nth-child(even){background-color: #f2f2f2}
   // cari kamar seuai dengan ruangannya
     $(document).on('click','#cari_kamar',function() {
   
-    var ruangan = $("#ruangan").val();
+    /*var ruangan = $("#ruangan").val();
     if (ruangan == '') {  
       alert("Silakan pilih ruangan terlebih dahulu.");
       $("#ruangan").focus();
     }
     else
-    {
+    {*/
         $("#myModal1").modal('show');
         $('#table_kamar').DataTable().destroy();
 
@@ -1008,7 +1009,7 @@ tr:nth-child(even){background-color: #f2f2f2}
 
 
           
-    }
+    //} //end else
    
   
   });
@@ -1353,6 +1354,7 @@ return val;
             $("#pindah_kamar").attr("data-id-ruangan",id_ruangan);
 
             $("#modal_kamar").modal('show');
+            $("#no_regnya").val(reg);
             $("#kamar_lama").val(group_bed);
             $("#ruangan_lama").val(ruangan);
             $("#id_ruangan").val(id_ruangan);
@@ -1443,28 +1445,30 @@ return val;
 
             // jika dipilih, nim akan masuk ke input dan modal di tutup
             $(document).on('click', '.pilih3', function (e) {
-              var no_reg = $("#no_reg").val();
+              var no_reg = $("#no_regnya").val();
               var ruangan2 = $(this).attr('data-ruangan');
               var id_ruangan2 = $(this).attr('data-id-ruangan');
               var bed2 = $(this).attr('data-nama');
               var group_bed2 = $(this).attr('data-group-bed');
 
 
-        $.post("cek_kamar_ranap.php",{bed2:bed2,no_reg:no_reg},function(data){
+        $.post("cek_kamar_ranap.php",{bed2:bed2,no_reg:no_reg,id_ruangan2:id_ruangan2},function(data){
 
-                          if (data == 1) {
+                  if (data == 1) {
                     alert("Kamar yang anda masukan sudah ada,Silahkan pilih kamar lain!");
                       $("#group_bed2").val('')
                       $("#bed2").val('')
-                          }
-                          else{
+                      $("#ruangan2").val('')
+                      $("#id_ruangan2").val('')
+                  }
+                  else{
 
                       $("#group_bed2").val(group_bed2)
                       $("#bed2").val(bed2)
                       $("#ruangan2").val(ruangan2)
                       $("#id_ruangan2").val(id_ruangan2)
 
-                          }
+                  }
              });    
   });
            
@@ -1654,14 +1658,14 @@ else
  $(document).ready(function(){
   $(document).on('click', '.pilih', function (e) {
     var no_rm = $("#no_rm").val();
-    var nama_pasien = $("#nama_pasien").val();
+    var nama_pasien = $("#nama_lengkap").val();
 
  $.post('cek_pasien_ranap.php',{no_rm:no_rm,nama_pasien:nama_pasien}, function(data){
   
   if(data == 1){
     alert("Anda Tidak Bisa Menambahkan Pasien Yang Sudah Ada!");
     $("#no_rm").val('');
-    $("#nama_pasien").val('');
+    $("#nama_lengkap").val('');
     $("#no_hp").val('');
     $("#tanggal_lahir").val('');
     $("#alamat").val('');

@@ -33,8 +33,8 @@ $columns = array(
 );
 
 // getting total number records without any search
-$sql =" SELECT tp.id,tp.kode_barang,tp.satuan,tp.nama_barang,tp.jumlah_barang,tp.harga,tp.subtotal,tp.potongan,tp.tax,tp.tanggal,tp.jam,tp.no_reg,tp.tipe_barang,tp.dosis,s.nama";
-$sql.=" FROM tbs_penjualan tp LEFT JOIN satuan s ON tp.satuan = s.id";
+$sql =" SELECT tp.id,tp.kode_barang,tp.satuan,tp.nama_barang,tp.jumlah_barang,tp.harga,tp.subtotal,tp.potongan,tp.tax,tp.tanggal,tp.jam,tp.no_reg,tp.tipe_barang,tp.dosis,s.nama,r.nama_ruangan";
+$sql.=" FROM tbs_penjualan tp LEFT JOIN satuan s ON tp.satuan = s.id LEFT JOIN ruangan r ON tp.ruangan = r.id";
 $sql.=" WHERE tp.no_reg = '$no_reg'  AND (tp.lab IS NULL OR tp.lab = '') AND (tp.no_faktur IS NULL OR tp.no_faktur = '') AND tp.tipe_barang = 'Bed'";
 
 $query = mysqli_query($conn, $sql) or die("eror 1");
@@ -42,8 +42,8 @@ $totalData = mysqli_num_rows($query);
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
-$sql =" SELECT tp.id,tp.kode_barang,tp.satuan,tp.nama_barang,tp.jumlah_barang,tp.harga,tp.subtotal,tp.potongan,tp.tax,tp.tanggal,tp.jam,tp.no_reg,tp.tipe_barang,tp.dosis,s.nama";
-$sql.=" FROM tbs_penjualan tp LEFT JOIN satuan s ON tp.satuan = s.id";
+$sql =" SELECT tp.id,tp.kode_barang,tp.satuan,tp.nama_barang,tp.jumlah_barang,tp.harga,tp.subtotal,tp.potongan,tp.tax,tp.tanggal,tp.jam,tp.no_reg,tp.tipe_barang,tp.dosis,s.nama,r.nama_ruangan";
+$sql.=" FROM tbs_penjualan tp LEFT JOIN satuan s ON tp.satuan = s.id LEFT JOIN ruangan r ON tp.ruangan = r.id";
 $sql.=" WHERE tp.no_reg = '$no_reg'  AND (tp.lab IS NULL OR tp.lab = '') AND (tp.no_faktur IS NULL OR tp.no_faktur = '') AND tp.tipe_barang = 'Bed'";
 
     $sql.=" AND (tp.kode_barang LIKE '".$requestData['search']['value']."%'";  
@@ -69,6 +69,7 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 
       $nestedData[] = $row["kode_barang"];
       $nestedData[] = $row["nama_barang"];
+      $nestedData[] = $row["nama_ruangan"];
 
       $kdD = $db->query("SELECT f.nama_petugas, u.nama FROM tbs_fee_produk f LEFT JOIN user u ON f.nama_petugas = u.id WHERE f.kode_produk = '$row[kode_barang]' AND f.jam = '$row[jam]' ");
 

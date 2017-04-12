@@ -61,6 +61,7 @@ $data_setting_registerasi = mysqli_fetch_array($query_setting_registerasi);
           <th>Kelas</th>
           <th>Kode Kamar</th>
           <th>Nama Kamar</th>
+          <th>Ruangan</th>
           <th>Fasilitas</th>
           <th>JumlaH Bed </th>
           <th> Sisa Bed </th>                         
@@ -170,7 +171,7 @@ $data_setting_registerasi = mysqli_fetch_array($query_setting_registerasi);
   <label for="sel1">Ruangan </label>
   <select class="form-control ss" id="ruangan" name="ruangan" required=""  autocomplete="off">
    
-   <option value="">Silakan Pilih</option>
+   <option value="-">Silakan Pilih</option>
 
  <?php 
   $query = $db->query("SELECT id,nama_ruangan FROM ruangan ORDER BY id "); 
@@ -187,16 +188,16 @@ $data_setting_registerasi = mysqli_fetch_array($query_setting_registerasi);
 
 <input style="height: 20px;" type="hidden" class="form-control" id="token" name="token" value="Kosasih" autocomplete="off"> 
  
+ <div class="form-group" >
+  <label for="bed">Kode Kamar:</label>
+  <input style="height: 20px;" type="text" class="form-control disable5" id="bed" name="bed" autocomplete="off"  required="" readonly="" >
+</div>
+
 <div class="form-group" >
   <label for="bed">Kamar:</label>
   <input style="height: 20px;" type="text" class="form-control disable5" id="group_bed" name="group_bed" autocomplete="off" required="" readonly="">
 </div>
 
-
-<div class="form-group" >
-  <label for="bed">Bed:</label>
-  <input style="height: 20px;" type="text" class="form-control disable5" id="bed" name="bed" autocomplete="off"  required="" readonly="" >
-</div>
 </div><!--<div card card-block kamar-->
 
 
@@ -833,13 +834,13 @@ else
   // cari kamar seuai dengan ruangannya
     $(document).on('click','#cari_kamar',function() {
   
-    var ruangan = $("#ruangan").val();
+    /*var ruangan = $("#ruangan").val();
     if (ruangan == '') {  
       alert("Silakan pilih ruangan terlebih dahulu.");
       $("#ruangan").focus();
     }
     else
-    {
+    {*/
         $("#myModal1").modal('show');
         $('#table_kamar').DataTable().destroy();
 
@@ -877,7 +878,7 @@ else
 
 
           
-    }
+    //}// end else
    
   
   });
