@@ -57,7 +57,7 @@ $perintah10 = $db->query("DELETE FROM detail_pembayaran_hutang WHERE no_faktur_p
     {
 
 
-        $query2 = $db->query("INSERT INTO detail_pembayaran_hutang (no_faktur_pembayaran, no_faktur_pembelian, tanggal, tanggal_jt, kredit, potongan, total, jumlah_bayar,suplier) VALUES ('$data[no_faktur_pembayaran]', '$data[no_faktur_pembelian]', now(), '$data[tanggal_jt]', '$data[kredit]', '$data[potongan]', '$data[total]', '$data[jumlah_bayar]', '$data[suplier]')");
+        $query2 = $db->query("INSERT INTO detail_pembayaran_hutang (no_faktur_pembayaran, no_faktur_pembelian, tanggal, tanggal_jt, kredit, potongan, total, jumlah_bayar,suplier) VALUES ('$data[no_faktur_pembayaran]', '$data[no_faktur_pembelian]', '$tanggal', '$data[tanggal_jt]', '$data[kredit]', '$data[potongan]', '$data[total]', '$data[jumlah_bayar]', '$data[suplier]')");
     }
 
 
