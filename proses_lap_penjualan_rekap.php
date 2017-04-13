@@ -37,26 +37,26 @@ $columns = array(
 
 
 // getting total number records without any search
-$sql =" SELECT dp.id,pel.nama_pelanggan,dp.tanggal,dp.no_faktur,dp.kode_pelanggan,dp.total,dp.jam,dp.user,dp.status,dp.potongan,dp.tax,dp.biaya_admin,dp.sisa,dp.kredit ";
-$sql.=" FROM penjualan dp LEFT JOIN pelanggan pel ON dp.kode_pelanggan = pel.kode_pelanggan WHERE dp.tanggal >= '$dari_tanggal' AND dp.tanggal <= '$sampai_tanggal' ";
+$sql =" SELECT id,tanggal,no_faktur,kode_pelanggan,total,jam,user,status,potongan,tax,biaya_admin,sisa,kredit ";
+$sql.=" FROM penjualan WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' ";
 
 $query=mysqli_query($conn, $sql) or die("eror 1");
 $totalData = mysqli_num_rows($query);
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
 
-$sql =" SELECT dp.id,pel.nama_pelanggan,dp.tanggal,dp.no_faktur,dp.kode_pelanggan,dp.total,dp.jam,dp.user,dp.status,dp.potongan,dp.tax,dp.biaya_admin,dp.sisa,dp.kredit ";
-$sql.=" FROM penjualan dp LEFT JOIN pelanggan pel ON dp.kode_pelanggan = pel.kode_pelanggan WHERE dp.tanggal >= '$dari_tanggal' AND dp.tanggal <= '$sampai_tanggal' ";
+$sql =" SELECT id,tanggal,no_faktur,kode_pelanggan,total,jam,user,status,potongan,tax,biaya_admin,sisa,kredit ";
+$sql.=" FROM penjualan WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' ";
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
-$sql.=" AND ( dp.no_faktur LIKE '".$requestData['search']['value']."%' ";
-$sql.=" OR dp.tanggal LIKE '".$requestData['search']['value']."%' ";
-$sql.=" OR dp.kode_pelanggan LIKE '".$requestData['search']['value']."%' )";
+$sql.=" AND ( no_faktur LIKE '".$requestData['search']['value']."%' ";
+$sql.=" OR tanggal LIKE '".$requestData['search']['value']."%' ";
+$sql.=" OR kode_pelanggan LIKE '".$requestData['search']['value']."%' )";
 	
 }
 
 $query=mysqli_query($conn, $sql) or die("eror 2");
 $totalFiltered = mysqli_num_rows($query); // when there is a search parameter then we have to modify total number filtered rows as per search result. 
-$sql.="ORDER BY CONCAT(dp.tanggal,' ',dp.jam) DESC  LIMIT ".$requestData['start']." ,".$requestData['length']." ";
+$sql.="ORDER BY CONCAT(tanggal,' ',jam) DESC  LIMIT ".$requestData['start']." ,".$requestData['length']." ";
 /* $requestData['order'][0]['column'] contains colmun index, $requestData['order'][0]['dir'] contains order such as asc/desc  */  
 $query=mysqli_query($conn, $sql) or die("eror 3");
 
@@ -67,8 +67,22 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 $query_subtotal = $db->query("SELECT SUM(subtotal) AS subtotal  FROM detail_penjualan WHERE no_faktur = '$row[no_faktur]' ");
 $data_subtotal = mysqli_fetch_array($query_subtotal);
 
+$query_pelanggan = $db_pasien->query("SELECT nama_pelanggan FROM pelanggan WHERE kode_pelanggan = '$row[kode_pelanggan]' ");
+$data_pelanggan = mysqli_fetch_array($query_pelanggan);
+
       $nestedData[] = $row['no_faktur'];
-      $nestedData[] = "<p>".$row['kode_pelanggan']." || ".$row['nama_pelanggan']." </p>";
+
+      if ($data_pelanggan == '' OR $data_pelanggan == 'NULL') {
+       
+      $nestedData[] = "<p>".$row['kode_pelanggan']." || ".$row['kode_pelanggan']." </p>";
+      }
+      else
+      {
+      $nestedData[] = "<p>".$row['kode_pelanggan']." || ".$data_pelanggan['nama_pelanggan']." </p>";
+      }
+
+
+
       $nestedData[] = $row['tanggal'];
       $nestedData[] = $row['jam'];
       $nestedData[] = $row['user'];

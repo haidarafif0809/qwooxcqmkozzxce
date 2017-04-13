@@ -35,8 +35,8 @@ $columns = array(
 // LOGIKA UNTUK FILTER BERDASARKAN KONSUMEN DAN SALES (QUERY TAMPIL AWAL)
 
 // getting total number records without any search
-$sql =" SELECT dp.id,pel.nama_pelanggan,dp.tanggal,dp.tanggal_jt, DATEDIFF(DATE(NOW()), dp.tanggal) AS usia_piutang ,dp.no_faktur,dp.kode_pelanggan,dp.total,dp.jam,dp.penjamin,dp.status,dp.potongan,dp.tax,dp.sisa,dp.kredit ";
-$sql.=" FROM penjualan dp LEFT JOIN pelanggan pel ON dp.kode_pelanggan = pel.kode_pelanggan WHERE dp.tanggal >= '$dari_tanggal' AND dp.tanggal <= '$sampai_tanggal' AND dp.kredit != 0  ";
+$sql =" SELECT dp.id,dp.tanggal,dp.tanggal_jt, DATEDIFF(DATE(NOW()), dp.tanggal) AS usia_piutang ,dp.no_faktur,dp.kode_pelanggan,dp.total,dp.jam,dp.penjamin,dp.status,dp.potongan,dp.tax,dp.sisa,dp.kredit ";
+$sql.=" FROM penjualan dp WHERE dp.tanggal >= '$dari_tanggal' AND dp.tanggal <= '$sampai_tanggal' AND dp.kredit != 0  ";
 
 // LOGIKA UNTUK FILTER BERDASARKAN KONSUMEN DAN SALES (QUERY TAMPIL AWAL)
 
@@ -45,16 +45,15 @@ $totalData = mysqli_num_rows($query);
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
 // LOGIKA UNTUK FILTER BERDASARKAN KONSUMEN DAN SALES (QUERY PENCARIAN DATATABLE)
-$sql =" SELECT dp.id,pel.nama_pelanggan,dp.tanggal,dp.tanggal_jt, DATEDIFF(DATE(NOW()), dp.tanggal) AS usia_piutang ,dp.no_faktur,dp.kode_pelanggan,dp.total,dp.jam,dp.penjamin,dp.status,dp.potongan,dp.tax,dp.sisa,dp.kredit ";
-$sql.=" FROM penjualan dp LEFT JOIN pelanggan pel ON dp.kode_pelanggan = pel.kode_pelanggan WHERE dp.tanggal >= '$dari_tanggal' AND dp.tanggal <= '$sampai_tanggal' AND dp.kredit != 0  ";
+$sql =" SELECT dp.id,dp.tanggal,dp.tanggal_jt, DATEDIFF(DATE(NOW()), dp.tanggal) AS usia_piutang ,dp.no_faktur,dp.kode_pelanggan,dp.total,dp.jam,dp.penjamin,dp.status,dp.potongan,dp.tax,dp.sisa,dp.kredit ";
+$sql.=" FROM penjualan dp WHERE dp.tanggal >= '$dari_tanggal' AND dp.tanggal <= '$sampai_tanggal' AND dp.kredit != 0  ";
 // LOGIKA UNTUK FILTER BERDASARKAN KONSUMEN DAN SALES (QUERY PENCARIAN DATATABLE)
 
 
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
 $sql.=" AND ( dp.no_faktur LIKE '".$requestData['search']['value']."%' ";
 $sql.=" OR dp.tanggal LIKE '".$requestData['search']['value']."%' ";
-$sql.=" OR dp.penjamin LIKE '".$requestData['search']['value']."%' ";
-$sql.=" OR pel.nama_pelanggan LIKE '".$requestData['search']['value']."%' )";
+$sql.=" OR dp.penjamin LIKE '".$requestData['search']['value']."%' )";
 	
 }
 
@@ -80,9 +79,22 @@ $num_rows = mysqli_num_rows($query0232);
 
 $tot_bayar = $kel_bayar['total_bayar'] + $Dp;
 
+$query_pelanggan = $db_pasien->query("SELECT nama_pelanggan FROM pelanggan WHERE kode_pelanggan = '$row[kode_pelanggan]' ");
+$data_pelanggan = mysqli_fetch_array($query_pelanggan);
+
       $nestedData[] = $row['no_faktur'];
       $nestedData[] = $row['penjamin'];
-      $nestedData[] = $row['nama_pelanggan'];
+
+      if ($data_pelanggan == '' OR $data_pelanggan == 'NULL') {
+       
+      $nestedData[] = $row['kode_pelanggan'];
+      }
+      else
+      {
+        $nestedData[] = $data_pelanggan['nama_pelanggan'];
+      }
+
+      
       $nestedData[] = $row['tanggal'];
       $nestedData[] = $row['tanggal_jt'];
       $nestedData[] =  "<p align='right'>".rp($row['usia_piutang'])." Hari</p>";
