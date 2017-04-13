@@ -55,7 +55,6 @@ $sql = "SELECT r.id as id_ruangan, r.nama_ruangan, reg.ruangan, reg.no_rm, reg.n
 $sql.=" FROM registrasi reg LEFT JOIN ruangan r ON reg.ruangan = r.id WHERE reg.jenis_pasien = 'Rawat Inap' AND reg.status = 'menginap' AND reg.status != 'Batal Rawat Inap'";
 
 
-
 $query = mysqli_query($conn, $sql) or die("query 1: get employees");
 $totalData = mysqli_num_rows($query);
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.

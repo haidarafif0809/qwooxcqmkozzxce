@@ -72,14 +72,26 @@ $data_total_penjualan = mysqli_fetch_array($query_total_penjualan);
             <tbody>
             <?php
 
-    $perintah = $db->query("SELECT dp.id,pel.nama_pelanggan,dp.tanggal,dp.no_faktur,dp.kode_pelanggan,dp.total,dp.jam,dp.user,dp.status,dp.potongan,dp.tax,dp.sisa,dp.kredit,dp.biaya_admin FROM penjualan dp LEFT JOIN pelanggan pel ON dp.kode_pelanggan = pel.kode_pelanggan WHERE dp.tanggal >= '$dari_tanggal' AND dp.tanggal <= '$sampai_tanggal' ORDER BY dp.tanggal DESC ");
+    $perintah = $db->query("SELECT id,tanggal,no_faktur,kode_pelanggan,total,jam,user,status,potongan,tax,sisa,kredit,biaya_admin FROM penjualan dp WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' ORDER BY tanggal DESC ");
                 while ($data10 = mysqli_fetch_array($perintah))
                 {
+
+                  $query_pelanggan = $db_pasien->query("SELECT nama_pelanggan FROM pelanggan WHERE kode_pelanggan = '$data10[kode_pelanggan]' ");
+                  $data_pelanggan = mysqli_fetch_array($query_pelanggan);
                   
                   echo "<tr>
-                  <td>". $data10['no_faktur'] ."</td>
-                  <td>". $data10['kode_pelanggan'] ."</td>
-                  <td>". $data10['tanggal'] ."</td>
+                  <td>". $data10['no_faktur'] ."</td>";
+
+                   if ($data_pelanggan == '' OR $data_pelanggan == 'NULL') {
+                     
+                      echo"<td>". $data10['kode_pelanggan'] ."</td>";
+                    }
+                    else
+                    {
+                      echo"<td>". $data_pelanggan['nama_pelanggan'] ."</td>";
+                    }
+
+                  echo"<td>". $data10['tanggal'] ."</td>
                   <td>". $data10['jam'] ."</td>
                   <td>". $data10['user'] ."</td>
                   <td>". $data10['status'] ."</td>

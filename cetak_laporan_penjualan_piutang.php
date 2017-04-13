@@ -76,7 +76,7 @@ $total_bayar = $cek02['tunai_penjualan'] +  $cek02['ambil_total_bayar'];
             <tbody>
             <?php
 
-          $perintah009 = $db->query("SELECT dp.id,pel.nama_pelanggan,dp.tanggal,dp.tanggal_jt, DATEDIFF(DATE(NOW()), dp.tanggal) AS usia_piutang ,dp.no_faktur,dp.kode_pelanggan,dp.total,dp.jam,dp.sales,dp.status,dp.potongan,dp.tax,dp.sisa,dp.kredit FROM penjualan dp LEFT JOIN pelanggan pel ON dp.kode_pelanggan = pel.kode_pelanggan WHERE dp.tanggal >= '$dari_tanggal' AND dp.tanggal <= '$sampai_tanggal' AND dp.kredit != 0 ORDER BY dp.tanggal DESC ");
+          $perintah009 = $db->query("SELECT penjamin,id,tanggal,tanggal_jt, DATEDIFF(DATE(NOW()), tanggal) AS usia_piutang ,no_faktur,kode_pelanggan,total,jam,sales,status,potongan,tax,sisa,kredit FROM penjualan WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' AND kredit != 0 ORDER BY tanggal DESC ");
                   while ($data11 = mysqli_fetch_array($perintah009))
 
                   {
@@ -92,13 +92,24 @@ $Dp = $data_sum['tunai_penjualan'];
 
 $tot_bayar = $kel_bayar['total_bayar'] + $Dp;
 
+                  $query_pelanggan = $db_pasien->query("SELECT nama_pelanggan FROM pelanggan WHERE kode_pelanggan = '$data11[kode_pelanggan]' ");
+                  $data_pelanggan = mysqli_fetch_array($query_pelanggan);
 
 
                   echo "<tr>
                   <td>". $data11['no_faktur'] ."</td>
-                  <td>". $data11['nama_pelanggan'] ."</td>
-                  <td>". $data11['sales'] ."</td>
-                  <td>". $data11['tanggal'] ."</td>
+                  <td>". $data11['penjamin'] ."</td>";
+                   if ($data_pelanggan == '' OR $data_pelanggan == 'NULL') {
+                     
+                      echo"<td>". $data11['kode_pelanggan'] ."</td>";
+                    }
+                    else
+                    {
+                      echo"<td>". $data_pelanggan['nama_pelanggan'] ."</td>";
+                    }
+
+
+                  echo"<td>". $data11['tanggal'] ."</td>
                   <td>". $data11['tanggal_jt'] ."</td>
                   <td  align='right' >". rp($data11['usia_piutang']) ." Hari</td>
                   <td  align='right' >". rp($data11['total']) ."</td>";
