@@ -27,12 +27,12 @@ $query = $db->query("UPDATE bed SET sisa_bed = sisa_bed - 1 WHERE nama_kamar = '
 
 
 // UPDATE REgistrasi
-$qwer = $db->query("UPDATE registrasi SET ruangan = '$ruangan2, bed = '$bed2' , group_bed = '$group_bed2', menginap = '$lama_inap' WHERE no_reg = '$no_reg' ");
+$qwer = $db->query("UPDATE registrasi SET ruangan = '$ruangan2', bed = '$bed2' , group_bed = '$group_bed2', menginap = '$lama_inap' WHERE no_reg = '$no_reg' ");
 // END UPDATE REgistrasi
 
 
 // UPDATE KAMAR LAMA
-$qwer = $db->query("UPDATE rekam_medik_inap SET ruangan = '$ruangan2, bed = '$bed2' , group_bed = '$group_bed2' WHERE no_reg = '$no_reg' ");
+$qwer = $db->query("UPDATE rekam_medik_inap SET ruangan = '$ruangan2', bed = '$bed2' , group_bed = '$group_bed2' WHERE no_reg = '$no_reg' ");
 // END UPDATE KAMAR LAMA
 
 
@@ -78,7 +78,7 @@ else {
 }
 
 
-$query65 = "INSERT INTO tbs_penjualan (session_id,no_reg,kode_barang,nama_barang,jumlah_barang,harga,subtotal,tipe_barang,potongan,tax,satuan,jam,tanggal,ruangan) VALUES ('$session_id','$no_reg','$bed2','$group_bed2','$lama_inap','$harga_kamar1','$subtotal','Bed','0','0','$satuan_bed','$jam','$tanggal_sekarang',$ruangan2)";
+$query65 = "INSERT INTO tbs_penjualan (session_id,no_reg,kode_barang,nama_barang,jumlah_barang,harga,subtotal,tipe_barang,potongan,tax,satuan,jam,tanggal,ruangan) VALUES ('$session_id','$no_reg','$bed2','$group_bed2','$lama_inap','$harga_kamar1','$subtotal','Bed','0','0','$satuan_bed','$jam','$tanggal_sekarang','$ruangan2')";
       if ($db->query($query65) === TRUE) 
       {
   
