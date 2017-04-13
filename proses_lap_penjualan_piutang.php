@@ -35,8 +35,8 @@ $columns = array(
 // LOGIKA UNTUK FILTER BERDASARKAN KONSUMEN DAN SALES (QUERY TAMPIL AWAL)
 
 // getting total number records without any search
-$sql =" SELECT dp.id,dp.tanggal,dp.tanggal_jt, DATEDIFF(DATE(NOW()), dp.tanggal) AS usia_piutang ,dp.no_faktur,dp.kode_pelanggan,dp.total,dp.jam,dp.penjamin,dp.status,dp.potongan,dp.tax,dp.sisa,dp.kredit ";
-$sql.=" FROM penjualan dp WHERE dp.tanggal >= '$dari_tanggal' AND dp.tanggal <= '$sampai_tanggal' AND dp.kredit != 0  ";
+$sql =" SELECT id,tanggal,tanggal_jt, DATEDIFF(DATE(NOW()), tanggal) AS usia_piutang ,no_faktur,kode_pelanggan,total,jam,penjamin,status,potongan,tax,sisa,kredit ";
+$sql.=" FROM penjualan dp WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' AND kredit != 0  ";
 
 // LOGIKA UNTUK FILTER BERDASARKAN KONSUMEN DAN SALES (QUERY TAMPIL AWAL)
 
@@ -45,21 +45,21 @@ $totalData = mysqli_num_rows($query);
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
 // LOGIKA UNTUK FILTER BERDASARKAN KONSUMEN DAN SALES (QUERY PENCARIAN DATATABLE)
-$sql =" SELECT dp.id,dp.tanggal,dp.tanggal_jt, DATEDIFF(DATE(NOW()), dp.tanggal) AS usia_piutang ,dp.no_faktur,dp.kode_pelanggan,dp.total,dp.jam,dp.penjamin,dp.status,dp.potongan,dp.tax,dp.sisa,dp.kredit ";
-$sql.=" FROM penjualan dp WHERE dp.tanggal >= '$dari_tanggal' AND dp.tanggal <= '$sampai_tanggal' AND dp.kredit != 0  ";
+$sql =" SELECT id,tanggal,tanggal_jt, DATEDIFF(DATE(NOW()), tanggal) AS usia_piutang ,no_faktur,kode_pelanggan,total,jam,penjamin,status,potongan,tax,sisa,kredit ";
+$sql.=" FROM penjualan dp WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' AND kredit != 0  ";
 // LOGIKA UNTUK FILTER BERDASARKAN KONSUMEN DAN SALES (QUERY PENCARIAN DATATABLE)
 
 
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
-$sql.=" AND ( dp.no_faktur LIKE '".$requestData['search']['value']."%' ";
-$sql.=" OR dp.tanggal LIKE '".$requestData['search']['value']."%' ";
-$sql.=" OR dp.penjamin LIKE '".$requestData['search']['value']."%' )";
+$sql.=" AND ( no_faktur LIKE '".$requestData['search']['value']."%' ";
+$sql.=" OR tanggal LIKE '".$requestData['search']['value']."%' ";
+$sql.=" OR penjamin LIKE '".$requestData['search']['value']."%' )";
 	
 }
 
 $query=mysqli_query($conn, $sql) or die("eror 2");
 $totalFiltered = mysqli_num_rows($query); // when there is a search parameter then we have to modify total number filtered rows as per search result. 
-$sql.="ORDER BY dp.waktu_input DESC  LIMIT ".$requestData['start']." ,".$requestData['length']." ";
+$sql.="ORDER BY waktu_input DESC  LIMIT ".$requestData['start']." ,".$requestData['length']." ";
 /* $requestData['order'][0]['column'] contains colmun index, $requestData['order'][0]['dir'] contains order such as asc/desc  */  
 $query=mysqli_query($conn, $sql) or die("eror 3");
 
