@@ -7,7 +7,7 @@ include 'sanitasi.php';
  
     //ambil data barang
 
-$result = $db->query("SELECT * FROM barang WHERE kode_barang = '$kode_barang'");
+$result = $db->query("SELECT nama_barang,satuan FROM barang WHERE kode_barang = '$kode_barang'");
 $row = mysqli_fetch_array($result);
    
     echo json_encode($row);
