@@ -1317,18 +1317,8 @@ $(document).ready(function(){
     var pot_fakt_rp = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#potongan_penjualan").val()))));
 
 
-     //digunakan untuk mengecek sama tidaknya jumlah disc dg total_subtotal di tbs
-  $.getJSON("cek_jumlah_disc_dg_total_sub_tbs.php",{no_reg:no_reg},function(oke){
-       
-          $("#subt_tbs").val(oke.totale);
-        $("#disc_tbs").val(oke.potongane);
-
-      });
 
 
-    $.post("cek_total_seluruh_raja.php",{no_reg:no_reg},function(data1){
-  
-        if (data1 == 1) {
                  $.post("cek_total_seluruh.php",{no_reg:no_reg},function(data){
                 data = data.replace(/\s+/g, '');
                 if (data == "") {
@@ -1379,15 +1369,10 @@ $(document).ready(function(){
       
 
                 });
-        }
-        else
-        {
-          $("#total1").val('0')
-          $("#total2").val('0')
-        }
+       
 
 
-      });
+    
 
     // END CEK TOTAL END CEK TOTAL END CEK TOTAL END CEK TOTAL END CEK TOTAL END CEK TOTAL END CEK TOTAL END CEK TOTAL END CEK TOTAL END CEK TOTAL
 
@@ -2155,13 +2140,7 @@ else if (a > 0){
  $.post("proses_tbs_penjualan_raja.php",{id_user:id_user,penjamin:penjamin,asal_poli:asal_poli,level_harga:level_harga,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,no_reg:no_reg,no_rm:no_rm,dokter:dokter,petugas_kasir:petugas_kasir,kode_barang:kode_barang,nama_barang:nama_barang,jumlah_barang:jumlah_barang,harga:harga,potongan:potongan,tax:tax,satuan:satuan, ber_stok:ber_stok,ppn:ppn},function(data){
      
   
-       //digunakan untuk mengecek sama tidaknya jumlah disc dg total_subtotal di tbs
-  $.getJSON("cek_jumlah_disc_dg_total_sub_tbs.php",{no_reg:no_reg},function(oke){
-       
-          $("#subt_tbs").val(oke.totale);
-        $("#disc_tbs").val(oke.potongane);
 
-      });
 
      $("#ppn").attr("disabled", true);
 
@@ -3667,15 +3646,7 @@ $(document).ready(function(){
       $("#jumlah1").val(data);
       });
 
-  var session_id = $("#session_id").val();
 
-            $.post("cek_total_hpp.php",
-            {
-            session_id: session_id
-            },
-            function(data){
-            $("#total_hpp"). val(data);
-            });
         
     });
 });
@@ -5061,33 +5032,6 @@ $(document).ready(function(){
     $(document).ready(function(){
 
 
-      /*$("#tax").attr("disabled", true);*/
-
-    // cek ppn exclude 
-    var no_reg = $("#no_reg").val();
-    $.get("cek_ppn_ex.php",{no_reg:no_reg},function(data){
-      if (data == 1) {
-          $("#ppn").val('Exclude');
-     $("#ppn").attr("disabled", true);
-     $("#tax1").attr("disabled", false);
-      }
-      else if(data == 2){
-
-      $("#ppn").val('Include');
-     $("#ppn").attr("disabled", true);
-       $("#tax1").attr("disabled", false);
-      }
-      else
-      {
-
-     $("#ppn").val('Non');
-     $("#tax1").attr("disabled", true);
-
-      }
-
-    });
-
-
     $("#ppn").change(function(){
 
     var ppn = $("#ppn").val();
@@ -5424,10 +5368,8 @@ if (no_reg == "") {
     }
     else{
       
-       
-          $.post("cek_total_seluruh_raja.php",{no_reg:no_reg},function(data1){
-        
-              if (data1 == 1) {
+     
+
 
                        $.post("cek_total_seluruh.php",{no_reg:no_reg},function(data){
                       data = data.replace(/\s+/g, '');
@@ -5480,11 +5422,10 @@ if (no_reg == "") {
             
 
                       });
-              }
+             
 
 
-            });
-
+            
           // END CEK TOTAL END CEK TOTAL END CEK TOTAL END CEK TOTAL END CEK TOTAL END CEK TOTAL END CEK TOTAL END CEK TOTAL END CEK TOTAL END CEK TOTAL
 
 }
@@ -5510,16 +5451,7 @@ var penjamin = $("#penjamin").val();
 });
 </script>
 
-<script type="text/javascript">
-  $(document).ready(function(){
-     var no_reg = $("#no_reg").val();
-       //digunakan untuk mengecek sama tidaknya jumlah disc dg total_subtotal di tbs
-  $.getJSON("cek_jumlah_disc_dg_total_sub_tbs.php",{no_reg:no_reg},function(oke){
-        $("#subt_tbs").val(oke.totale);
-        $("#disc_tbs").val(oke.potongane);
-      });
-});
-</script>
+
 
 <script type="text/javascript">
 
