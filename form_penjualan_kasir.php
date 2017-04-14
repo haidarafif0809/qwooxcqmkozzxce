@@ -1979,8 +1979,14 @@ $(document).ready(function(){
             var pos = potongan.search("%");
            if (pos > 0) 
             {
-               var potongan_persen = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#potongan1").val()))));
+              var potongan_persen = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#potongan1").val()))));
+
                potongan_persen = potongan_persen.replace("%","");
+                if(potongan_persen > 100){
+                  alert("Potongan Tidak Boleh Lebih 100%");
+                  $("#potongan1").val(0);
+                  $("#potongan1").focus();
+                }
                potongan = jumlah_barang * harga * potongan_persen / 100 ;
             };
           }
@@ -5479,6 +5485,49 @@ var penjamin = $("#penjamin").val();
     }); 
 </script>
 
+<!--Mulai Script Key Up Potongan Produk-->
+<script type="text/javascript">
+$(document).ready(function(){
+  $("#potongan1").keyup(function(){
 
+    //jumlah barang
+    var jumlah_barang = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#jumlah_barang").val()))));
+    if (jumlahbarang == ''){
+      jumlahbarang = 0;
+    }
+
+    // harga barang
+    var harga = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#harga_produk").val()))));
+    if (harga == ''){
+      harga = 0;
+    }
+
+    //potongan barang
+    var potongan = $("#potongan1").val();
+
+    //Potongan Persen
+    var pos = potongan.search("%");
+    if (pos > 0){
+      var potongan_persen = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#potongan1").val()))));
+
+      potongan_persen = potongan_persen.replace("%","");
+      if(potongan_persen > 100){
+        alert("Potongan Tidak Boleh Lebih 100%");
+          $("#potongan1").val(0);
+          $("#potongan1").focus();
+      }
+    };
+
+    //Hitungan
+    var subtotal = parseInt(jumlah_barang,10) * parseInt(harga,10)
+    if(potongan > subtotal){
+      alert("Potongan Tidak Boleh Melebihi Total Harga Barang !!");
+      $("#potongan1").val(0);
+      $("#potongan1").focus();
+    }
+  });
+});
+</script>
+<!--Akhir Script Key Up Potongan Produk-->
 
 <?php include 'footer.php'; ?>
