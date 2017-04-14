@@ -6,7 +6,7 @@ include 'db.php';
 
 
 
-$no_faktur_pembayaran = $_GET['no_faktur_pembayaran'];
+$no_faktur_pembayaran = stringdoang($_GET['no_faktur_pembayaran']);
 
     $query0 = $db->query("SELECT p.id,p.no_faktur_pembayaran,p.keterangan,p.total,p.nama_suplier,p.tanggal,p.tanggal_edit,p.jam,p.user_buat,p.user_edit,p.dari_kas,da.nama_daftar_akun FROM pembayaran_piutang p INNER JOIN daftar_akun da ON p.dari_kas = da.kode_daftar_akun  WHERE p.no_faktur_pembayaran = '$no_faktur_pembayaran' ");
     $data0 = mysqli_fetch_array($query0);

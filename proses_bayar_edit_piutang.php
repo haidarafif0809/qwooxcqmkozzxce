@@ -70,7 +70,7 @@ $query50 = $db->query("DELETE FROM jurnal_trans WHERE no_faktur = '$no_faktur_pe
     $select_kode_pelanggan = $db->query("SELECT nama_pelanggan FROM pelanggan WHERE kode_pelanggan = '$kode_pelanggan'");
     $ambil_kode_pelanggan = mysqli_fetch_array($select_kode_pelanggan);
 
-    $select_setting_akun = $db->query("SELECT * FROM setting_akun");
+    $select_setting_akun = $db->query("SELECT pembayaran_kredit, potongan_piutang FROM setting_akun");
     $ambil_setting = mysqli_fetch_array($select_setting_akun);
 
 $tbs_piutang = $db->query("SELECT potongan FROM tbs_pembayaran_piutang WHERE no_faktur_pembayaran = '$no_faktur_pembayaran'");
