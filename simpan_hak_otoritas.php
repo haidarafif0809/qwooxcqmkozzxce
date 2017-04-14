@@ -181,6 +181,12 @@ $registrasi_ugd_lihat = angkadoang(isset($_POST['registrasi_ugd_lihat']));
 $registrasi_ugd_tambah = angkadoang(isset($_POST['registrasi_ugd_tambah']));
 $registrasi_ugd_edit = angkadoang(isset($_POST['registrasi_ugd_edit']));
 $registrasi_ugd_hapus = angkadoang(isset($_POST['registrasi_ugd_hapus']));
+//APS
+$registrasi_aps_lihat = angkadoang(isset($_POST['registrasi_aps_lihat']));
+$registrasi_aps_tambah = angkadoang(isset($_POST['registrasi_aps_tambah']));
+$registrasi_aps_edit = angkadoang(isset($_POST['registrasi_aps_edit']));
+$registrasi_aps_hapus = angkadoang(isset($_POST['registrasi_aps_hapus']));
+//END APS
 $rekam_medik_rj_lihat = angkadoang(isset($_POST['rekam_medik_rj_lihat']));
 $rekam_medik_rj_tambah = angkadoang(isset($_POST['rekam_medik_rj_tambah']));
 $rekam_medik_rj_edit = angkadoang(isset($_POST['rekam_medik_rj_edit']));
@@ -479,10 +485,19 @@ $update_otoritas_transaksi_kas->bind_param("ii",
 $update_otoritas_transaksi_kas->execute();
 
 
-$update_otoritas_registrasi = $db->prepare("UPDATE otoritas_registrasi SET registrasi_lihat = ?, registrasi_rj_lihat = ?, registrasi_rj_tambah = ?, registrasi_rj_edit = ?, registrasi_rj_hapus = ?, registrasi_ri_lihat = ?, registrasi_ri_tambah = ?, registrasi_ri_edit = ?, registrasi_ri_hapus = ?, registrasi_ugd_lihat = ?, registrasi_ugd_tambah = ?, registrasi_ugd_edit = ?, registrasi_ugd_hapus = ? WHERE id_otoritas = ?");
+$update_otoritas_registrasi = $db->prepare("UPDATE otoritas_registrasi SET registrasi_lihat = ?, registrasi_rj_lihat = ?, registrasi_rj_tambah = ?, registrasi_rj_edit = ?, registrasi_rj_hapus = ?, registrasi_ri_lihat = ?, registrasi_ri_tambah = ?, registrasi_ri_edit = ?, registrasi_ri_hapus = ?, registrasi_ugd_lihat = ?, registrasi_ugd_tambah = ?, registrasi_ugd_edit = ?, registrasi_ugd_hapus = ?, registrasi_aps_lihat = ?,
+	registrasi_aps_tambah = ?, registrasi_aps_edit = ?,
+	registrasi_aps_hapus = ? WHERE id_otoritas = ?");
 
-$update_otoritas_registrasi->bind_param("iiiiiiiiiiiiii",
-	$registrasi_lihat, $registrasi_rj_lihat, $registrasi_rj_tambah, $registrasi_rj_edit, $registrasi_rj_hapus, $registrasi_ri_lihat, $registrasi_ri_tambah, $registrasi_ri_edit, $registrasi_ri_hapus, $registrasi_ugd_lihat, $registrasi_ugd_tambah, $registrasi_ugd_edit, $registrasi_ugd_hapus, $id);
+
+$update_otoritas_registrasi->bind_param("iiiiiiiiiiiiiiiiii",
+	$registrasi_lihat, $registrasi_rj_lihat, $registrasi_rj_tambah,
+	$registrasi_rj_edit, $registrasi_rj_hapus, $registrasi_ri_lihat,
+	$registrasi_ri_tambah, $registrasi_ri_edit, $registrasi_ri_hapus,
+	$registrasi_ugd_lihat, $registrasi_ugd_tambah,
+	$registrasi_ugd_edit, $registrasi_ugd_hapus,
+	$registrasi_aps_lihat, $registrasi_aps_tambah,
+	$registrasi_aps_edit, $registrasi_aps_hapus, $id);
 
 $update_otoritas_registrasi->execute();
 
