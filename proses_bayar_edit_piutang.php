@@ -11,7 +11,7 @@ $jam_sekarang = date('H:i:sa');
 $tahun_terakhir = substr($tahun_sekarang, 2);
 
 
-    $no_faktur_pembayaran = stringdoang($_POST['no_faktur_pembayaran']);
+$no_faktur_pembayaran = stringdoang($_POST['no_faktur_pembayaran']);
 
 $perintah10 = $db->query("DELETE FROM detail_pembayaran_piutang WHERE no_faktur_pembayaran = '$no_faktur_pembayaran'");
 
@@ -46,7 +46,6 @@ $perintah10 = $db->query("DELETE FROM detail_pembayaran_piutang WHERE no_faktur_
         }
         
 
- $perintah2 = $db->query("UPDATE penjualan SET status = 'Lunas' WHERE kredit = 0");
 
     $query = $db->query("SELECT * FROM tbs_pembayaran_piutang WHERE no_faktur_pembayaran = '$no_faktur_pembayaran'");
     while ($data = mysqli_fetch_array($query))
