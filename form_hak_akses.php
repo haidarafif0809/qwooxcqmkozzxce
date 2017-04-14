@@ -1742,6 +1742,69 @@ else{
 
 
 
+<div class="form-group col-sm-2"> <!-- startregistrasi APS -->
+<label>Registrasi APS</label><br>
+
+<?php 
+
+if ($data_otoritas['registrasi_aps_lihat'] == '1'){
+    echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="checkbox700" name="registrasi_aps_lihat" checked="">
+    <label for="checkbox700">Lihat</label> <br>';
+}
+
+else{
+    echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="checkbox700" name="registrasi_aps_lihat">
+    <label for="checkbox700">Lihat</label> <br>';  
+}
+
+ ?>
+
+<?php 
+
+if ($data_otoritas['registrasi_aps_tambah'] == '1'){
+    echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="checkbox701" name="registrasi_aps_tambah" checked=""> 
+    <label for="checkbox701">Tambah</label><br>';
+}
+
+else{
+    echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="checkbox701" name="registrasi_aps_tambah"> 
+    <label for="checkbox701">Tambah</label><br>';  
+}
+
+ ?>
+
+<?php 
+
+if ($data_otoritas['registrasi_aps_edit'] == '1'){
+    echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="checkbox702" name="registrasi_aps_edit" checked="">
+    <label for="checkbox702">Edit</label> <br>';
+}
+
+else{
+    echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="checkbox702" name="registrasi_aps_edit">
+    <label for="checkbox702">Edit</label> <br>';  
+}
+
+ ?>
+
+<?php 
+
+if ($data_otoritas['registrasi_aps_hapus'] == '1'){
+    echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="checkbox703" name="registrasi_aps_hapus" checked="">
+    <label for="checkbox703">Hapus</label> <br>';
+}
+
+else{
+    echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="checkbox703" name="registrasi_aps_hapus">
+    <label for="checkbox703">Hapus</label> <br>';  
+}
+
+ ?>
+
+</div> <!-- / of otoritas registrasi APS -->
+
+
+
 <div class="form-group col-sm-2"> <!-- start otoritas registrasi rawat jalan -->
 <label>Rekam Medik Rawat Jalan</label><br>
 
