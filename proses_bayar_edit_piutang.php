@@ -54,13 +54,12 @@ $perintah10 = $db->query("DELETE FROM detail_pembayaran_piutang WHERE no_faktur_
         # code...
      
 
-        $query2 = $db->query("INSERT INTO detail_pembayaran_piutang (no_faktur_pembayaran, no_faktur_penjualan, tanggal, tanggal_jt, kredit, potongan, total, jumlah_bayar, kode_pelanggan) VALUES ('$data[no_faktur_pembayaran]', '$data[no_faktur_penjualan]', now(), '$data[tanggal_jt]', '$data[kredit]', '$data[potongan]', '$total_bayar', '$data[jumlah_bayar]', '$data[kode_pelanggan]')");
+        $query2 = $db->query("INSERT INTO detail_pembayaran_piutang (no_faktur_pembayaran, no_faktur_penjualan, tanggal, tanggal_jt, kredit, potongan, total, jumlah_bayar, kode_pelanggan) VALUES ('$data[no_faktur_pembayaran]', '$data[no_faktur_penjualan]', '$tanggal', '$data[tanggal_jt]', '$data[kredit]', '$data[potongan]', '$data[total]', '$data[jumlah_bayar]', '$data[kode_pelanggan]')");
     }
 
 
 
     $no_faktur_pembayaran = stringdoang($_POST['no_faktur_pembayaran']);
-
     $total_bayar = angkadoang($_POST['total_bayar']);
     $user_edit = $_SESSION['user_name'];
     $cara_bayar = stringdoang($_POST['cara_bayar']);
@@ -90,7 +89,7 @@ $piutang = $total_bayar + $potongan;
 
 if ($potongan != "" || $potongan != '0') {
      //POTONGAN PIUTANG    
-        $insert_jurnal = $db->query("INSERT INTO jurnal_trans (nomor_jurnal,waktu_jurnal,keterangan_jurnal,kode_akun_jurnal,debit,kredit,jenis_transaksi,no_faktur,approved,user_buat) VALUES ('".no_jurnal()."', '$tanggal_sekarang $jam_sekarang', 'Pembayaran Piutang - $ambil_kode_pelanggan[nama_pelanggan]', '$ambil_setting[potongan_piutang]', '$potongan', '0', 'Pembayaran Piutang', '$no_faktur_pembayaran','1', '$user_buat')");
+        $insert_jurnal = $db->query("INSERT INTO jurnal_trans (nomor_jurnal,waktu_jurnal,keterangan_jurnal,kode_akun_jurnal,debit,kredit,jenis_transaksi,no_faktur,approved,user_buat) VALUES ('".no_jurnal()."', '$tanggal $jam_sekarang', 'Pembayaran Piutang - $ambil_kode_pelanggan[nama_pelanggan]', '$ambil_setting[potongan_piutang]', '$potongan', '0', 'Pembayaran Piutang', '$no_faktur_pembayaran','1', '$user_buat')");
 }
 
     $query3 = $db->query("DELETE FROM tbs_pembayaran_piutang WHERE no_faktur_pembayaran = '$no_faktur_pembayaran'");
