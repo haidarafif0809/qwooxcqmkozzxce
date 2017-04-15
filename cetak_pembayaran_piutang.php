@@ -6,10 +6,13 @@ include 'db.php';
 
 
 
-$no_faktur_pembayaran = $_SESSION['no_faktur_pembayaran'];
+$no_faktur_pembayaran = stringdoang($_GET['no_faktur_pembayaran']);
 
-    $query0 = $db->query("SELECT p.id,p.no_faktur_pembayaran,p.keterangan,p.total,p.nama_suplier,p.tanggal,p.tanggal_edit,p.jam,p.user_buat,p.user_edit,p.dari_kas,pel.nama_pelanggan,da.nama_daftar_akun FROM pembayaran_piutang p INNER JOIN pelanggan pel ON p.nama_suplier = pel.kode_pelanggan INNER JOIN daftar_akun da ON p.dari_kas = da.kode_daftar_akun  WHERE p.no_faktur_pembayaran = '$no_faktur_pembayaran' ");
+    $query0 = $db->query("SELECT p.id,p.no_faktur_pembayaran,p.keterangan,p.total,p.nama_suplier,p.tanggal,p.tanggal_edit,p.jam,p.user_buat,p.user_edit,p.dari_kas,da.nama_daftar_akun FROM pembayaran_piutang p INNER JOIN daftar_akun da ON p.dari_kas = da.kode_daftar_akun  WHERE p.no_faktur_pembayaran = '$no_faktur_pembayaran' ");
     $data0 = mysqli_fetch_array($query0);
+    
+    $query_pelanggan = $db_pasien->query("SELECT nama_pelanggan FROM pelanggan WHERE kode_pelanggan = '$data0[nama_suplier]' ");
+    $data_pelanggan = mysqli_fetch_array($query_pelanggan);
 
     $query1 = $db->query("SELECT * FROM perusahaan ");
     $data1 = mysqli_fetch_array($query1);
@@ -42,7 +45,7 @@ $no_faktur_pembayaran = $_SESSION['no_faktur_pembayaran'];
        <tr><td>No Faktur <td>:&nbsp;</td><td><?php echo $data0['no_faktur_pembayaran']; ?></td></td></tr>
        <tr><td> Cara Bayar <td>:&nbsp;</td><td><?php echo $data0['nama_daftar_akun']; ?></td></td></tr>
        <tr><td> Tanggal <td>:&nbsp;</td><td><?php echo tanggal($data0['tanggal']);?></td></td></tr>
-       <tr><td> Pelanggan <td>:&nbsp;</td><td><?php echo $data0['nama_pelanggan']; ?></td></td></tr>
+       <tr><td> Pelanggan <td>:&nbsp;</td><td><?php echo $data_pelanggan['nama_pelanggan']; ?></td></td></tr>
        
       </tbody>
     </table>            
