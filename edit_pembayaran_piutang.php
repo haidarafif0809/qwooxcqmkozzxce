@@ -350,7 +350,7 @@ mysqli_close($db);
 
 <!--<a href='batal_piutang.php?no_faktur_penjualan=<?php echo $no_faktur_penjualan; ?>&no_faktur_pembayaran=<?php echo $nomor_faktur_pembayaran; ?>' id='batal_piutang' class='btn btn-danger'><i class='fa fa-close'></i> Batal </a>-->
 
-<a href="form_pembayaran_piutang.php" class="btn btn-primary" id="transaksi_baru" style="display: none"><i class="fa fa-refresh"></i>Transaksi Baru</a>
+<a href="pembayaran_piutang.php" class="btn btn-primary" id="transaksi_baru" style="display: none"><i class="fa fa-refresh"></i>Transaksi Baru</a>
 
 <a href='cetak_pembayaran_piutang.php' id="cetak_piutang" style="display: none;" class="btn btn-success" target="blank"><i class="fa fa-print"> </i> Cetak Pembayaran Piutang </a>
 
@@ -587,6 +587,7 @@ else
 
     $("#alert_berhasil").show();
     $("#tabel_baru").load("tabel-edit-tbs-pembayaran-piutang.php?no_faktur_pembayaran=<?php echo $nomor_faktur_pembayaran; ?>");
+    $("#cetak_piutang").attr('href', 'cetak_pembayaran_piutang.php?no_faktur_pembayaran=<?php echo $nomor_faktur_pembayaran; ?>');
     $("#cetak_piutang").show();
      $("#nama_suplier").val('');
      $("#carabayar1").val('');
