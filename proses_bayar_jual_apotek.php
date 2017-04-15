@@ -165,7 +165,8 @@ $id_kasir = $data_id['id'];
 
     }
               
-  
+    
+    $hapus_detail_penjualan = $db->query("DELETE FROM detail_penjualan WHERE no_faktur = '$no_faktur' ");
 
     $query = $db->query("SELECT * FROM tbs_penjualan WHERE session_id = '$session_id' AND (no_reg = '' OR no_reg IS NULL ) ");
     while ($data = mysqli_fetch_array($query))
