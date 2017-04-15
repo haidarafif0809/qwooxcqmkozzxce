@@ -180,18 +180,7 @@ $query = $db->query("SELECT * FROM pembayaran_hutang ORDER BY id DESC");
 
     <!-- membuat form -->
  <form class="form-inline" action="proses_bayar_hutang.php" role="form" id="formtambahproduk">
-  
-  <?php 
 
-      $perintah0 = $db->query("SELECT p.id FROM pembelian p INNER JOIN suplier s ON p.suplier = s.id ORDER BY p.id DESC");
-
-    //menyimpan data sementara yang ada pada $perintah
-      $data01 = mysqli_fetch_array($perintah0);
-
-   ?>
-
-   <!-- agar tampilan berada pada satu group -->
-  <!-- memasukan teks pada kolom kode barang -->
 <br>
 
 <div class="row">
@@ -248,7 +237,7 @@ $query = $db->query("SELECT * FROM pembayaran_hutang ORDER BY id DESC");
 
     <input type="hidden" name="status" id="status" class="form-control" value="">
 
-    <input value="<?php echo $data01['id']; ?>" type="hidden" name="suplier" id="n_suplier" class="form-control" required="" >
+    <input type="hidden" name="suplier" id="n_suplier" class="form-control" required="" >
   </div>
 
   <div class="form-group col-sm-2">
@@ -285,17 +274,11 @@ $query = $db->query("SELECT * FROM pembayaran_hutang ORDER BY id DESC");
     <?php
 
     //untuk menampilkan semua data yang ada pada tabel tbs pembelian dalam DB
-    $perintah = $db->query("SELECT * FROM tbs_pembayaran_hutang WHERE session_id = '$session_id'");
+    $perintah = $db->query("SELECT tph.id,tph.no_faktur_pembelian,s.nama AS suplier,tph.tanggal,tph.tanggal_jt,tph.kredit,tph.potongan,tph.total,tph.jumlah_bayar FROM tbs_pembayaran_hutang tph LEFT JOIN suplier s ON tph.suplier = s.id WHERE session_id = '$session_id'");
 
     //menyimpan data sementara yang ada pada $perintah
       while ($data1 = mysqli_fetch_array($perintah))
       {
- $suplier = $db->query("SELECT id,nama FROM suplier WHERE id = '$data1[suplier]'");
-        $out = mysqli_fetch_array($suplier);
-        if ($data1['suplier'] == $out['id'])
-        {
-          $out['nama'];
-        }
         // menampilkan data
       echo "<tr class='tr-id-".$data1['id']."'>
       <td>". $data1['no_faktur_pembelian'] ."</td>
@@ -315,11 +298,9 @@ $query = $db->query("SELECT * FROM pembayaran_hutang ORDER BY id DESC");
       }
     ?>
     </tbody>
-
   </table>
- 
-  
-</div>
+
+  </div>
 </span> <!--tag penutup span-->
 
 
@@ -445,9 +426,7 @@ $(document).ready(function(){
 
 <script>
    //perintah javascript yang diambil dari form tbs pembelian dengan id=form tambah produk
-
-  
-   $("#submit_tambah").click(function(){
+  $("#submit_tambah").click(function(){
       
       //var sisa_hutang = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#sisa_hutang").val()))));
       var suplier = $("#nama_suplier").val();
@@ -525,9 +504,7 @@ $(document).ready(function(){
     return false;
 });
   
-
-
-  });
+});
 
 
  $("#submit_tambah").click(function(){
@@ -537,15 +514,8 @@ $(document).ready(function(){
             if (suplier != ""){
             $("#nama_suplier").attr("disabled", true);
             }
-                     
-            
-            });
-
-  
-
-      
-      
-      </script>
+       });
+</script>
 
 <script type="text/javascript">
       $(document).ready(function(){
@@ -599,7 +569,6 @@ $(document).ready(function(){
         $("#nama_suplier").focus();
       }
       else{
-
 
        var table_hutang = $('#table_hutang').DataTable();
        table_hutang.draw();
@@ -668,7 +637,7 @@ $("#batal").hide();
 $("#transaksi_baru").show();
 
 
- $.post("proses_bayar_hutang.php", {no_faktur_pembayaran:no_faktur_pembayaran,no_faktur_pembelian:no_faktur_pembelian,cara_bayar:cara_bayar,suplier:n_suplier,keterangan:keterangan,total:total,user_buat:user_buat,dari_kas:dari_kas,kredit:kredit,status:status,total_bayar:total_bayar,potongan1:potongan1,faktur:faktur},function(info) {
+ $.post("proses_bayar_hutang.php", {no_faktur_pembayaran:no_faktur_pembayaran,no_faktur_pembelian:no_faktur_pembelian,cara_bayar:cara_bayar,suplier:suplier,keterangan:keterangan,total:total,user_buat:user_buat,dari_kas:dari_kas,kredit:kredit,status:status,total_bayar:total_bayar,potongan1:potongan1,faktur:faktur},function(info) {
 
 
       $("#result").html(info);
