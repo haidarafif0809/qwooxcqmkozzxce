@@ -16,6 +16,45 @@ $dokter = $data_petugas_jaga['nama_dokter'];
 <!--Container-->
 <div class="container">
 
+<!--Mulai Modal Batal-->
+<div id="modal_batal_aps" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <!-- Modal content-->
+    <div class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>       
+    </div>
+    <div class="modal-body">
+
+      <span id="tampil_pulang">
+
+        <form method="POST" accept-charset="utf-8">
+  
+<div class="form-group">
+  <label>Keterangan</label>
+  <textarea class="form-control"  id="keterangan_batal" name="keterangan_batal" required="" placeholder="Keterangan Batal Wajib Diisi" autocomplete="off"></textarea> 
+</div>
+<input type="hidden" id="reg2" name="reg2">
+
+
+
+  </form>
+      </span>
+    </div>
+    <div class="modal-footer">
+    <center>
+      <button type="submit" class="btn btn-primary" id="batal_rawat_aps" data-id="" data-reg="" ><i class='fa fa-home'></i> Batal
+      </button>
+      
+      <button type="button" class="btn btn-danger" data-dismiss="modal"><i class='fa fa-close'></i> Closed</button>
+    </center>
+    </div>
+    </div>
+  </div>
+</div>
+<!--Akhir Modal Batal-->
+
+
 <h3>Data Pasien APS Laboratorium / Radiologi</h3><hr>
   <!--Tombol Daftar-->
 	<button type="submit" class="btn btn-info hug" id="daftar_ugd"><i class="fa fa-plus"></i> Daftar </button>
@@ -525,6 +564,40 @@ $(document).on('click', '#registrasi_pasien', function (e) {
 }); //End Function
 </script>
 
+<!--   script untuk detail layanan pulang-->
+<script type="text/javascript">
+$(document).on('click', '.batal_aps', function (e) {
+            var reg = $(this).attr('data-reg');
+            var id = $(this).attr('data-id');
+
+               $("#reg2").val(reg);
+               $("#batal_rawat_aps").attr('data-id',id);
+               $("#modal_batal_aps").modal('show');
+       });
+</script>
+<!--  end script untuk akhir detail pulang-->
+
+<!--Mulai Proses Batal APS-->
+<script type="text/javascript">
+  $("#batal_rawat_aps").click(function() {  
+    
+    var reg = $("#reg2").val();
+    var keterangan = $("#keterangan_batal").val();
+    var id = $(this).attr("data-id");
+
+    var table_aps = $('#table_aps').DataTable();
+    table_aps.draw();
+
+    $("#modal_batal_aps").modal('hide');
+    $("#keterangan_batal").val('');
+
+    $.post("proses_batal_aps.php",{reg:reg,keterangan:keterangan},function(data){
+      
+    });
+                    
+  }); 
+</script>
+<!--Akhir Proses Batal APS-->
 
 <!--footer-->
 <?php include 'footer.php'; ?>

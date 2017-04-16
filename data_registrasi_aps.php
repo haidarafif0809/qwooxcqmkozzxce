@@ -70,12 +70,12 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
     $data_jumlah_status = mysqli_num_rows($query_cek_status);
 
    
-   	if ($sttus > 0 ){
+   	if ($data_jumlah_status > 0 ){
   		$nestedData[] = "";
 	}
 	else{
  		
- 	$nestedData[] = "<button type='button' data-reg='".$row['no_reg']."'  data-id='".$row['id']."'  class='btn btn-floating btn-small btn-info pulang_rumah' ><b> X </b></button>";
+ 	$nestedData[] = "<button type='button' data-reg='".$row['no_reg']."'  data-id='".$row['id']."'  class='btn btn-floating btn-small btn-info batal_aps' ><b> X </b></button>";
 	}
 
 	
@@ -112,7 +112,7 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 	}
 // end untuk input hasil lab
 
-	$nestedData[] = "<a href='edit_registrasi_ugd.php?no_reg=". $row['no_reg']."' class='btn btn-floating btn-small btn-info ' ><i class='fa fa-edit'></i></a> ";
+	$nestedData[] = "<a href='registrasi_edit_aps.php?no_reg=". $row['no_reg']."' class='btn btn-floating btn-small btn-info ' ><i class='fa fa-edit'></i></a> ";
 	
 	$nestedData[] = $row["no_reg"];
 	$nestedData[] = $row["no_rm"];
