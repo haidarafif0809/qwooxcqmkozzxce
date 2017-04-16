@@ -14,21 +14,23 @@ try {
 	}
 	else{
 
-	//data yang di kirim
-	$petugas = stringdoang($_SESSION['nama']);
+
 	$no_rm = stringdoang($_POST['no_rm']);
-	$nama_lengkap =  stringdoang($_POST['nama_lengkap']);
+	$nama_lengkap = stringdoang($_POST['nama_lengkap']);
+	$jenis_kelamin = stringdoang($_POST['jenis_kelamin']);
+	$umur = stringdoang($_POST['umur']);
+	$gol_darah = stringdoang($_POST['gol_darah']);
 	$alamat = stringdoang($_POST['alamat']);
-	$jenis_kelamin = angkadoang($_POST['jenis_kelamin']);
-	$tanggal_lahir = angkadoang($_POST['tanggal_lahir']);
-	$umur = angkadoang($_POST['umur']);
-	$gol_darah = angkadoang($_POST['gol_darah']);
-	$no_telepon = angkadoang($_POST['no_telepon']);
-	$alergi = angkadoang($_POST['alergi']);
-	$kondisi = angkadoang($_POST['kondisi']);
-	$agama = angkadoang($_POST['agama']);
-	$dokter = angkadoang($_POST['dokter']);
+	$no_telepon = stringdoang($_POST['no_telepon']);
+	$kondisi = stringdoang($_POST['kondisi']);
+	$alergi = stringdoang($_POST['alergi']);
+	$dokter = stringdoang($_POST['dokter']);
+	$jenis_pasien = 'APS';
+	$status = 'aps_masuk';
+	$petugas = $_SESSION['nama'];
 	$periksa = stringdoang($_POST['periksa']);
+	$tanggal_lahir = angkadoang($_POST['tanggal_lahir']);
+	$agama = angkadoang($_POST['agama']);
 
 	//times sekarang
 	$jam =  date("H:i:s");
@@ -77,22 +79,6 @@ $query_insert_registrasi = $db->prepare("INSERT INTO registrasi
 	alamat_pasien,hp_pasien,kondisi,alergi,dokter_pengirim,tanggal,jam,
 	jenis_pasien,status,petugas,aps_periksa) 
 	VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
-
-	$nama_lengkap = stringdoang($_POST['nama_lengkap']);
-	$jenis_kelamin = stringdoang($_POST['jenis_kelamin']);
-	$umur = stringdoang($_POST['umur']);
-	$gol_darah = stringdoang($_POST['gol_darah']);
-	$alamat = stringdoang($_POST['alamat']);
-	$no_telepon = stringdoang($_POST['no_telepon']);
-	$kondisi = stringdoang($_POST['kondisi']);
-	$alergi = stringdoang($_POST['alergi']);
-	$dokter = stringdoang($_POST['dokter']);
-	$tanggal_sekarang = date("Y-m-d");
-	$jam =  date("H:i:s");
-	$jenis_pasien = 'APS';
-	$status = 'aps_masuk';
-	$petugas = $_SESSION['nama'];
-	$periksa = stringdoang($_POST['periksa']);
 
 $query_insert_registrasi->bind_param("ssssssssssssssssi",$no_rm,$no_reg,
 	$nama_lengkap,$jenis_kelamin, $umur, $gol_darah, $alamat, $no_telepon,

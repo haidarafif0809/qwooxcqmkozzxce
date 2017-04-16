@@ -481,6 +481,9 @@ $(document).on('click', '#registrasi_pasien', function (e) {
 
   $.post("proses_aps.php",{no_rm:no_rm,token:token,nama_lengkap:nama_lengkap,jenis_kelamin:jenis_kelamin,tanggal_lahir:tanggal_lahir,umur:umur,gol_darah:gol_darah,no_telepon:no_telepon,alamat:alamat,alergi:alergi,kondisi:kondisi,agama:agama,dokter:dokter,periksa:periksa},function(data){
 
+    var table_aps = $('#table_aps').DataTable();
+    table_aps.draw();
+
     $("#no_rm").val('');
     $("#nama_pasien").val('');
     $("#no_hp").val('');
@@ -499,7 +502,7 @@ $(document).on('click', '#registrasi_pasien', function (e) {
       });
 
 //Mulai Aajax table setelah proses
-    $('#table_aps').DataTable().destroy();
+    /*$('#table_aps').DataTable().destroy();
       var dataTable = $('#table_aps').DataTable( {
           "processing": true,
           "serverSide": true,
@@ -516,7 +519,7 @@ $(document).on('click', '#registrasi_pasien', function (e) {
             "fnCreatedRow": function( nRow, aData, iDataIndex ) {
               $(nRow).attr('class','tr-id-'+aData[12]+'');
             },
-        });
+        });*/
       //Ajax table setelah proses
 
 }); //End Function
