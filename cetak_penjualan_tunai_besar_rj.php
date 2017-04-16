@@ -52,11 +52,7 @@ if ($data_row > 0) {
     $data_or = mysqli_fetch_array($query_orp);
     $t_operasi = $data_or['t_operasi'];
 
-    $sum_hasil_radiologi = $db->query("SELECT  SUM(subtotal) as sub_radiologi FROM tbs_penjualan_radiologi WHERE no_reg = '$no_reg' AND status_periksa = '1' ");
-    $data_radiologi = mysqli_fetch_array($sum_hasil_radiologi);
-    $t_radiologi = $data_radiologi['sub_radiologi'];
-
-    $t_subtotal = $t_awal_subtotal + $t_operasi + $t_radiologi;
+    $t_subtotal = $t_awal_subtotal + $t_operasi;
 
     $setting_bahasa0 = $db->query("SELECT kata_ubah FROM setting_bahasa WHERE kata_asal = 'Pelanggan' ");
     $data200 = mysqli_fetch_array($setting_bahasa0); 
@@ -97,12 +93,7 @@ else{
     $data_or = mysqli_fetch_array($query_orp);
     $t_operasi = $data_or['t_operasi'];
 
-    $sum_hasil_radiologi = $db->query("SELECT  SUM(subtotal) as sub_radiologi FROM hasil_pemeriksaan_radiologi WHERE no_reg = '$no_reg' ");
-    $data_radiologi = mysqli_fetch_array($sum_hasil_radiologi);
-    $t_radiologi = $data_radiologi['sub_radiologi'];
-
-
-    $t_subtotal = $t_awal_subtotal + $t_operasi + $t_radiologi;
+    $t_subtotal = $t_awal_subtotal + $t_operasi;
 
     $setting_bahasa0 = $db->query("SELECT kata_ubah FROM setting_bahasa WHERE kata_asal = 'Pelanggan' ");
     $data200 = mysqli_fetch_array($setting_bahasa0);
@@ -552,7 +543,7 @@ mysqli_close($db);
             
             }
 
-          $query_total_detail_jasa = $db->query("SELECT SUM(subtotal) AS subtotal_jasa FROM detail_penjualan WHERE no_faktur = '$data_inner[no_faktur]' AND no_reg = '$no_reg' AND tipe_produk = 'Jasa' AND ( lab = '' OR lab IS NULL ) ");
+          $query_total_detail_jasa = $db->query("SELECT SUM(subtotal) AS subtotal_jasa FROM detail_penjualan WHERE no_faktur = '$data_inner[no_faktur]' AND no_reg = '$no_reg' AND tipe_produk = 'Jasa' AND ( lab = '' OR lab IS NULL ) AND ( radiologi = '' OR radiologi IS NULL ) ");
 
           $data_total_detail_jasa = mysqli_fetch_array($query_total_detail_jasa);
 
@@ -684,8 +675,10 @@ mysqli_close($db);
 
         # query untuk ngecek apakh ada  Jasa / Tindakan di detail penjualan
 
-    $query_radiologi = $db->query("SELECT nama_barang, jumlah_barang, harga, potongan, tax, subtotal FROM hasil_pemeriksaan_radiologi WHERE no_reg = '$no_reg'");
+    $query_radiologi = $db->query("SELECT nama_barang, jumlah_barang, harga, potongan, tax, subtotal FROM hasil_pemeriksaan_radiologi WHERE no_reg = '$no_reg' AND no_faktur = '$data_inner[no_faktur]'");
     $cek_radiologi = mysqli_num_rows($query_radiologi);
+
+
 
     if ($cek_radiologi > 0){ #<!-- JIKA ADA Radiologi maka akan ditampilkan -->
 
@@ -736,6 +729,7 @@ mysqli_close($db);
               }
 
           $query_total_detail_radiologi = $db->query("SELECT SUM(subtotal) AS subtotal_radiologi FROM hasil_pemeriksaan_radiologi WHERE no_faktur = '$data_inner[no_faktur]' AND no_reg = '$no_reg' ");
+
 
           $data_total_detail_radiologi = mysqli_fetch_array($query_total_detail_radiologi);
 

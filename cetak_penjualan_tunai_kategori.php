@@ -27,11 +27,11 @@ $no_faktur = $_GET['no_faktur'];
     $query_lab = $db->query("SELECT SUM(subtotal) AS subtotal_lab FROM detail_penjualan WHERE no_faktur = '$no_faktur' AND tipe_produk = 'Jasa' AND lab = 'Laboratorium' ");
     $data_lab = mysqli_fetch_array($query_lab);
 
+    $query_radiologi = $db->query("SELECT SUM(subtotal) AS subtotal_radiologi FROM detail_penjualan WHERE no_faktur = '$no_faktur' AND tipe_produk = 'Jasa' AND radiologi = 'Radiologi' ");
+    $data_radiologi = mysqli_fetch_array($query_radiologi);
+
     $query_bed = $db->query("SELECT SUM(subtotal) AS subtotal_bed FROM detail_penjualan WHERE no_faktur = '$no_faktur' AND tipe_produk = 'Bed' ");
     $data_bed = mysqli_fetch_array($query_bed);
-
-    $sum_radiologi = $db->query("SELECT SUM(subtotal) AS subtotal_radiologi FROM hasil_pemeriksaan_radiologi WHERE no_faktur = '$no_faktur'");
-    $data_radiologi = mysqli_fetch_array($sum_radiologi);
 
  ?>
 
