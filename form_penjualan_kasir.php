@@ -336,7 +336,7 @@ $obat = $otoritas_produk['tipe_obat'];
 <button type="button" class="btn btn-warning" id="cari_pasien" data-toggle="modal" data-target="#modal_reg"><i class="fa fa-user"></i> Cari Pasien (Alt + P)</button>
 
 <a href="form_penjualan_lab.php" id="btnRujukLab" class="btn btn-purple" style="display: none"> <i class="fa fa-flask"></i> Rujuk Lab</a>  
-<a href="form_pemeriksaan_radiologi.php" id="btnRujukRadiologi" class="btn btn-purple" style="display: none"> <i class="fa fa-universal-access"></i> Rujuk Radiologi</a>  
+<a href="form_pemeriksaan_radiologi.php" id="btnRujukRadiologi" class="btn btn-purple" style="display: none" target=""> <i class="fa fa-universal-access"></i> Rujuk Radiologi</a>  
   
 <button type="button" class="btn btn-default" id="btnRefreshsubtotal"> <i class='fa fa-refresh'></i> Refresh Subtotal</button>
 
@@ -1501,6 +1501,7 @@ var penjamin = $("#penjamin").val();
     var rujukan = 'Rujuk Rawat Jalan';
 
         $("#btnRujukRadiologi").attr('href', 'form_pemeriksaan_radiologi.php?no_rm='+no_rm+'&nama='+nama+'&no_reg='+no_reg+'&dokter='+dokter+'&jenis_penjualan='+jenis_penjualan+'&rujukan='+rujukan+'&penjamin='+penjamin+'');
+        $("#btnRujukRadiologi").attr('target', '_blank');
 
     });
 </script>

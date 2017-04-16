@@ -576,7 +576,7 @@ if (cara_bayar == "")
 else
 
  {
-  $("#transaksi_baru").show();
+
   $("#batal_piutang").hide();
   $("#pembayaran").hide();
   
@@ -588,11 +588,12 @@ else
     $("#alert_berhasil").show();
     $("#tabel_baru").load("tabel-edit-tbs-pembayaran-piutang.php?no_faktur_pembayaran=<?php echo $nomor_faktur_pembayaran; ?>");
     $("#cetak_piutang").attr('href', 'cetak_pembayaran_piutang.php?no_faktur_pembayaran=<?php echo $nomor_faktur_pembayaran; ?>');
+    $("#transaksi_baru").show();
     $("#cetak_piutang").show();
-     $("#nama_suplier").val('');
-     $("#carabayar1").val('');
-     $("#totalbayar").val('');
-     $("#keterangan").val('');
+    $("#nama_suplier").val('');
+    $("#carabayar1").val('');
+    $("#totalbayar").val('');
+    $("#keterangan").val('');
     
   
     
