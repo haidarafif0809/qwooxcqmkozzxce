@@ -300,7 +300,7 @@ $otoritas_tombol = mysqli_fetch_array($pilih_akses_tombol);
               <label for="keterangan">Hasil Baca Radiografer</label><br>
               <textarea class="form-control" style="height: 300px" id="keterangan" name="keterangan" autocomplete="off" ></textarea>
 
-              <input type="text" name="cek_ket">
+              <input type="hidden" name="cek_ket">
 
               <input type="hidden" name="no_reg_ket" id="no_reg_ket" >
               <input type="hidden" name="kode_ket" id="kode_ket" >
@@ -323,7 +323,7 @@ $otoritas_tombol = mysqli_fetch_array($pilih_akses_tombol);
 tr:nth-child(even){background-color: #f2f2f2}
 </style>
 
-<div class="col-sm-5">
+<div class="col-sm-6">
 	            <span id="span_tbs">            
                 
                   <div class="table-responsive">
@@ -373,13 +373,19 @@ img:hover {
 </style>
 <!-- STYLE UNUTK PENUNJANG FOTO -->
 
-<div class="col-sm-7 tampil_col" style="display: none">
-<br><br><br>
-    <div class="row">
-      <span id="span_foto"> </span>
-
-    </div>
+<div class="col-sm-6">
+  <div class="card">
+      <div class="card-header primary-color white-text">
+          Hasil Foto Radiologi
+      </div>
+      <div class="card-block">
+        <div class="row tampil_col">
+          <span id="span_foto"> </span>
+        </div>
+      </div>
+  </div>
 </div>
+
 
 </div><!-- / CONTAINER -->
 
@@ -789,7 +795,7 @@ $(document).ready(function() {
 //MENAMPILKAN FOTO
 
           
-          $("#span_foto").prepend('<span class="span-hapus"> <img src="save_picture/'+nama_foto+'" data-zoom-image="save_picture/'+nama_foto+'" class="zoom_foto" id="id-'+kode+'-'+nama_foto+'" height="300px" width="385px"> </span>');        
+          $("#span_foto").prepend('<span class="span-hapus"> <img src="save_picture/'+nama_foto+'" data-zoom-image="save_picture/'+nama_foto+'" class="zoom_foto" id="id-'+kode+'-'+nama_foto+'" height="300px" width="725px"> </span>');        
 
           }
 

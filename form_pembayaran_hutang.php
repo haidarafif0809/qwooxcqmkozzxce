@@ -7,7 +7,6 @@
 
 $session_id = session_id();
 
-$query = $db->query("SELECT * FROM pembayaran_hutang ORDER BY id DESC");
  
  ?>
 
@@ -144,7 +143,26 @@ $query = $db->query("SELECT * FROM pembayaran_hutang ORDER BY id DESC");
 
       <!--perintah agar modal update-->
   <span class="modal_hutang_baru">
-
+    <div class="table-responsive">
+  <table id="table_hutang" class="table table-bordered table-sm">
+    <thead> <!-- untuk memberikan nama pada kolom tabel -->
+      
+      <th> Nomor Faktur </th>
+      <th> Suplier </th>
+      <th> Total Beli</th>
+      <th> Tanggal </th>
+      <th> Tanggal Jatuh Tempo </th>
+      <th> Jam </th>
+      <th> User </th>
+      <th> Status </th>
+      <th> Potongan </th>
+      <th> Tax </th>
+      <th> Sisa </th>
+      <th> Kredit </th>
+      
+    </thead>
+    </table>
+    </div>
   </span>
           
       </div> <!-- tag penutup modal body -->
@@ -161,18 +179,7 @@ $query = $db->query("SELECT * FROM pembayaran_hutang ORDER BY id DESC");
 
     <!-- membuat form -->
  <form class="form-inline" action="proses_bayar_hutang.php" role="form" id="formtambahproduk">
-  
-  <?php 
 
-      $perintah0 = $db->query("SELECT p.id,p.no_faktur,p.total,p.suplier,p.tanggal,p.tanggal_jt,p.jam,p.user,p.status,p.potongan,p.tax,p.sisa,p.kredit,s.nama,g.nama_gudang FROM pembelian p INNER JOIN suplier s ON p.suplier = s.id INNER JOIN gudang g ON p.kode_gudang = g.kode_gudang ORDER BY p.id DESC");
-
-    //menyimpan data sementara yang ada pada $perintah
-      $data01 = mysqli_fetch_array($perintah0);
-
-   ?>
-
-   <!-- agar tampilan berada pada satu group -->
-  <!-- memasukan teks pada kolom kode barang -->
 <br>
 
 <div class="row">
@@ -229,7 +236,7 @@ $query = $db->query("SELECT * FROM pembayaran_hutang ORDER BY id DESC");
 
     <input type="hidden" name="status" id="status" class="form-control" value="">
 
-    <input value="<?php echo $data01['id']; ?>" type="hidden" name="suplier" id="n_suplier" class="form-control" required="" >
+    <input type="hidden" name="suplier" id="n_suplier" class="form-control" required="" >
   </div>
 
   <div class="form-group col-sm-2">
@@ -266,18 +273,11 @@ $query = $db->query("SELECT * FROM pembayaran_hutang ORDER BY id DESC");
     <?php
 
     //untuk menampilkan semua data yang ada pada tabel tbs pembelian dalam DB
-    $perintah = $db->query("SELECT * FROM tbs_pembayaran_hutang 
-                WHERE session_id = '$session_id'");
+    $perintah = $db->query("SELECT tph.id,tph.no_faktur_pembelian,s.nama AS suplier,tph.tanggal,tph.tanggal_jt,tph.kredit,tph.potongan,tph.total,tph.jumlah_bayar FROM tbs_pembayaran_hutang tph LEFT JOIN suplier s ON tph.suplier = s.id WHERE session_id = '$session_id'");
 
     //menyimpan data sementara yang ada pada $perintah
       while ($data1 = mysqli_fetch_array($perintah))
       {
- $suplier = $db->query("SELECT id,nama FROM suplier WHERE id = '$data1[suplier]'");
-        $out = mysqli_fetch_array($suplier);
-        if ($data1['suplier'] == $out['id'])
-        {
-          $out['nama'];
-        }
         // menampilkan data
       echo "<tr class='tr-id-".$data1['id']."'>
       <td>". $data1['no_faktur_pembelian'] ."</td>
@@ -297,11 +297,9 @@ $query = $db->query("SELECT * FROM pembayaran_hutang ORDER BY id DESC");
       }
     ?>
     </tbody>
-
   </table>
- 
-  
-</div>
+
+  </div>
 </span> <!--tag penutup span-->
 
 
@@ -368,14 +366,6 @@ $query = $db->query("SELECT * FROM pembayaran_hutang ORDER BY id DESC");
 <a href="form_pembayaran_hutang.php" class="btn btn-primary" style="display: none" id="transaksi_baru"><i class="fa fa-refresh"></i> Transaksi Baru</a>
 
 
-<?php 
-$perintah50 = $db->query("SELECT * FROM tbs_pembayaran_hutang WHERE session_id = '$session_id'");
-$data50 = mysqli_fetch_array($perintah50);
-$no_faktur_pembelian = $data50['no_faktur_pembelian']; 
-
-//Untuk Memutuskan Koneksi Ke Database
-mysqli_close($db);   
- ?>
 <a href='batal_hutang.php' id='batal' class='btn btn-danger'><i class="fa fa-close"></i></span> Batal </a>
 
 <a href='cetak_pembayaran_hutang.php' target="blank" id="cetak_hutang" style="display: none;" class="btn btn-success" target="blank"><span class="glyphicon glyphicon-print"> </span> Cetak Pembayaran Hutang </a>
@@ -435,9 +425,7 @@ $(document).ready(function(){
 
 <script>
    //perintah javascript yang diambil dari form tbs pembelian dengan id=form tambah produk
-
-  
-   $("#submit_tambah").click(function(){
+  $("#submit_tambah").click(function(){
       
       //var sisa_hutang = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#sisa_hutang").val()))));
       var suplier = $("#nama_suplier").val();
@@ -515,9 +503,7 @@ $(document).ready(function(){
     return false;
 });
   
-
-
-  });
+});
 
 
  $("#submit_tambah").click(function(){
@@ -527,18 +513,49 @@ $(document).ready(function(){
             if (suplier != ""){
             $("#nama_suplier").attr("disabled", true);
             }
-                     
-            
-            });
+       });
+</script>
 
-  
+<script type="text/javascript">
+      $(document).ready(function(){
+        
+          var dataTable = $('#table_hutang').DataTable( {
+          "processing": true,
+          "serverSide": true,
+          "ajax":{
+            url :"modal_hutang_baru.php", // json datasource
+              "data": function ( d ) {
+                          d.suplier = $("#nama_suplier").val();
+                          // d.custom = $('#myInput').val();
+                          // etc
+              },
+            type: "post",  // method  , by default get
+            error: function(){  // error handling
+              $(".employee-grid-error").html("");
+              $("#tabel_cari_pasien").append('<tbody class="employee-grid-error"><tr><th colspan="3">Data Tidak Ditemukan.. !!</th></tr></tbody>');
+              $("#employee-grid_processing").css("display","none");
+              
+            }
+          },
 
-      
-      
-      </script>
+          "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+
+              $(nRow).attr('class', "pilih");
+              $(nRow).attr('no-faktur', aData[0]);
+              $(nRow).attr('kredit', aData[11]);
+              $(nRow).attr('total', aData[2]);
+              $(nRow).attr('tanggal_jt', aData[4]);
+
+          }
+
+        });   
+
+  });
+</script>
+
 
       <script type="text/javascript">
-     $("#cari_produk_pembelian").click(function() {
+    $(document).on('click','#cari_produk_pembelian',function(e){
 
 //menyembunyikan notif berhasil
      $("#alert_berhasil").hide();
@@ -551,15 +568,15 @@ $(document).ready(function(){
         $("#nama_suplier").focus();
       }
       else{
-        $.post("modal_hutang_baru.php", {suplier:suplier}, function(info) {
-                $(".modal_hutang_baru").html(info);           
-      });
-       
-      }
 
+       var table_hutang = $('#table_hutang').DataTable();
+       table_hutang.draw();
 
-      });
-      </script>
+     }
+
+    }); 
+</script>
+
 
  <script>
    //perintah javascript yang diambil dari form proses_bayar_beli.php dengan id=form_beli
@@ -581,6 +598,7 @@ $(document).ready(function(){
    var potongan = $("#potongan_penjualan").val();
    var potongan1 = $("#potongan1").val();
    var faktur = $("#faktur").val();
+   var tanggal = $("#tanggal").val();
      
     $("#totalbayar").val('');
     $("#potongan1").val(potongan);
@@ -613,7 +631,7 @@ $("#batal").hide();
 $("#transaksi_baru").show();
 
 
- $.post("proses_bayar_hutang.php", {no_faktur_pembayaran:no_faktur_pembayaran,no_faktur_pembelian:no_faktur_pembelian,cara_bayar:cara_bayar,suplier:n_suplier,keterangan:keterangan,total:total,user_buat:user_buat,dari_kas:dari_kas,kredit:kredit,status:status,total_bayar:total_bayar,potongan1:potongan1,faktur:faktur},function(info) {
+ $.post("proses_bayar_hutang.php", {no_faktur_pembayaran:no_faktur_pembayaran,no_faktur_pembelian:no_faktur_pembelian,cara_bayar:cara_bayar,suplier:suplier,keterangan:keterangan,total:total,user_buat:user_buat,dari_kas:dari_kas,kredit:kredit,status:status,total_bayar:total_bayar,potongan1:potongan1,faktur:faktur,tanggal:tanggal},function(info) {
 
 
       $("#result").html(info);

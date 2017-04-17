@@ -1,80 +1,83 @@
-<?php 
-include 'sanitasi.php';
+<?php include 'session_login.php';
+/* Database connection start */
 include 'db.php';
+/* Database connection end */
+include 'sanitasi.php';
 
+
+ $suplier = stringdoang($_POST['suplier']);
+
+// storing  request (ie, get/post) global array to a variable  
+$requestData= $_REQUEST;
+
+
+$columns = array( 
+// datatable column index  => database column name
+  0 =>'no_faktur_pembayaran', 
+  1 => 'tanggal',
+  2 => 'jam',
+  3 => 'keterangan',
+  4 => 'total',
+  5 => 'user_buat',
+  6 => 'user_edit',
+  7 => 'tanggal_edit',
+  8 => 'nama_daftar_akun',
+  9 => 'id'
+);
+
+// getting total number records without any search
+$sql = "SELECT p.id,p.no_faktur,p.total,p.suplier,p.tanggal,p.tanggal_jt,p.jam,p.user,p.status,p.potongan,p.tax,p.sisa,p.kredit,s.nama ";
+$sql.=" FROM pembelian p INNER JOIN suplier s ON p.suplier = s.id  WHERE p.suplier = '$suplier' AND kredit != 0 ";
+$query=mysqli_query($conn, $sql) or die("datatable_pembayaran_hutang.php: get employees");
+$totalData = mysqli_num_rows($query);
+$totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
+
+
+$sql = "SELECT p.id,p.no_faktur,p.total,p.suplier,p.tanggal,p.tanggal_jt,p.jam,p.user,p.status,p.potongan,p.tax,p.sisa,p.kredit,s.nama ";
+$sql.=" FROM pembelian p INNER JOIN suplier s ON p.suplier = s.id  WHERE p.suplier = '$suplier' AND kredit != 0 AND 1=1 "; 
+if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
+  $sql.=" AND ( p.no_faktur LIKE '".$requestData['search']['value']."%' ";    
+  $sql.=" OR p.total LIKE '".$requestData['search']['value']."%' ";
+  $sql.=" OR p.suplier LIKE '".$requestData['search']['value']."%' )";
+}
+$query=mysqli_query($conn, $sql) or die("datatable_pembayaran_hutang.php: get employees");
+$totalFiltered = mysqli_num_rows($query); // when there is a search parameter then we have to modify total number filtered rows as per search result. 
+$sql.=" ORDER BY p.id DESC LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
+/* $requestData['order'][0]['column'] contains colmun index, $requestData['order'][0]['dir'] contains order such as asc/desc  */  
+$query=mysqli_query($conn, $sql) or die("employee-grid-data.php: get employees");
+
+$data = array();
+while( $row=mysqli_fetch_array($query) ) {  // preparing an array
+  $nestedData=array(); 
+
+
+      $nestedData[] = $row['no_faktur'];
+      $nestedData[] = $row['nama'];
+      $nestedData[] = $row['total'];
+      $nestedData[] = $row['tanggal'];
+      $nestedData[] = $row['tanggal_jt'];
+      $nestedData[] = $row['jam'];
+      $nestedData[] = $row['user'];
+      $nestedData[] = $row['status'];
+      $nestedData[] = $row['potongan'];
+      $nestedData[] = $row['tax'];
+      $nestedData[] = $row['sisa'];
+      $nestedData[] = $row['kredit'];
+      $nestedData[] = $row["id"];
+
+  $data[] = $nestedData;
+}
+
+
+
+$json_data = array(
+      "draw"            => intval( $requestData['draw'] ),   // for every request/draw by clientside , they send a number as a parameter, when they recieve a response/data they first check the draw number, so we are sending same number in draw. 
+      "recordsTotal"    => intval( $totalData ),  // total number of records
+      "recordsFiltered" => intval( $totalFiltered ), // total number of records after searching, if there is no searching then totalFiltered = totalData
+      "data"            => $data   // total data array
+      );
+
+echo json_encode($json_data);  // send data as json format
 
 ?>
 
-<div class="table-responsive">
-        <table id="tableuser" class="table table-bordered">
-    <thead> <!-- untuk memberikan nama pada kolom tabel -->
-      
-      <th> Nomor Faktur </th>
-      <th> Suplier </th>
-      <th> Total Beli</th>
-      <th> Tanggal </th>
-      <th> Tanggal Jatuh Tempo </th>
-      <th> Jam </th>
-      <th> User </th>
-      <th> Status </th>
-      <th> Potongan </th>
-      <th> Tax </th>
-      <th> Sisa </th>
-      <th> Kredit </th>
-      
-    </thead> <!-- tag penutup tabel -->
-    
-    <tbody> <!-- tag pembuka tbody, yang digunakan untuk menampilkan data yang ada di database --> 
-    <?php
-
-  
-        $suplier = $_POST['suplier'];
-        
-       
-        $perintah = $db->query("SELECT p.id,p.no_faktur,p.total,p.suplier,p.tanggal,p.tanggal_jt,p.jam,p.user,p.status,p.potongan,p.tax,p.sisa,p.kredit,s.nama,g.nama_gudang FROM pembelian p INNER JOIN suplier s ON p.suplier = s.id INNER JOIN gudang g ON p.kode_gudang = g.kode_gudang WHERE p.suplier = '$suplier' AND kredit != 0 ORDER BY p.id DESC");
-        
-        
-        while ($data1 = mysqli_fetch_array($perintah))
-        {
-
-           $query00 = $db->query("SELECT session_id FROM tbs_pembayaran_hutang WHERE no_faktur_pembelian = '$data1[no_faktur]'");
-          $data00 = mysqli_fetch_array($query00);
-          
-        if ($data00['session_id'] != '')
-        {
-          
-        }
-
-        else{
- 
-       echo "<tr class='pilih' no-faktur='". $data1['no_faktur'] ."' kredit='". rp($data1['kredit']) ."' total='". $data1['total'] ."' tanggal_jt='". $data1['tanggal_jt'] ."'  >
-      
-      <td>". $data1['no_faktur'] ."</td>
-      <td>". $data1['nama'] ."</td>
-      <td>". rp($data1['total']) ."</td>
-      <td>". $data1['tanggal'] ."</td>
-      <td>". $data1['tanggal_jt'] ."</td>
-      <td>". $data1['jam'] ."</td>
-      <td>". $data1['user'] ."</td>
-      <td>". $data1['status'] ."</td>
-      <td>". rp($data1['potongan']) ."</td>
-      <td>". rp($data1['tax']) ."</td>
-      <td>". rp($data1['sisa']) ."</td>
-      <td>". rp($data1['kredit']) ."</td>
-      </tr>";
-      
-       }
-   }
-
-//Untuk Memutuskan Koneksi Ke Database
-mysqli_close($db);   
-    ?>
-    </tbody> <!--tag penutup tbody-->
-
-  </table> 
-  </div>
-<script type="text/javascript">
-  $(function () {
-  $("#tableuser").dataTable();
-  });
-</script>
