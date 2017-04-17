@@ -104,7 +104,7 @@ $no_faktur_pembayaran = $nomor."/PH/".$data_bulan_terakhir."/".$tahun_terakhir;
         $total_bayar = angkadoang($_POST['total_bayar']);
         $user_buat = $_SESSION['user_name'];
 
-$select_setting_akun = $db->query("SELECT * FROM setting_akun");
+$select_setting_akun = $db->query("SELECT hutang, potongan_hutang FROM setting_akun");
 $ambil_setting = mysqli_fetch_array($select_setting_akun);
 
 $select_suplier = $db->query("SELECT id,nama FROM suplier WHERE id = '$suplier'");

@@ -7,7 +7,6 @@
 
 $session_id = session_id();
 
-$query = $db->query("SELECT * FROM pembayaran_hutang ORDER BY id DESC");
  
  ?>
 
@@ -577,13 +576,7 @@ $(document).ready(function(){
 
     }); 
 </script>
- 
-       
-      }
 
-
-      });
-      </script>
 
  <script>
    //perintah javascript yang diambil dari form proses_bayar_beli.php dengan id=form_beli
