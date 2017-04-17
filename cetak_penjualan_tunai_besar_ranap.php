@@ -139,10 +139,10 @@ include 'db.php';
 
     # query untuk ngecek apakh ada  Kamar di detail penjualan
 
-  $query5 = $db->query("SELECT * FROM detail_penjualan WHERE no_faktur = '$no_faktur' AND tipe_produk = 'Bed' ");
-  $cek_kamar = mysqli_num_rows($query5);
+  $query_detail_penjualan = $db->query("SELECT dp.tanggal, dp.nama_barang, dp.ruangan, dp.kode_barang, dp.jumlah_barang, dp.harga, dp.potongan, dp.tax, dp.subtotal, r.nama_ruangan FROM detail_penjualan dp LEFT JOIN ruangan r ON dp.ruangan = r.id WHERE no_faktur = '$no_faktur' AND tipe_produk = 'Bed' ");
+  $jumlah_data_detail_penjualan = mysqli_num_rows($query_detail_penjualan);
 
-  if ($cek_kamar > 0) {# JIKA ADA Kamar maka akan ditampilkan -->
+  if ($jumlah_data_detail_penjualan > 0) {# JIKA ADA Kamar maka akan ditampilkan -->
 
 
   ?>
@@ -151,15 +151,16 @@ include 'db.php';
 
 <table id="tableuser" class="table table-bordered table-sm">
         <thead>
-            <th class="table1" style="width: 15%"> <center> Tanggal  </center> </th>
-            <th class="table1" style="width: 40%"> <center> Nama Produk </center> </th>
-            <th class="table1" style="width: 45%"> <center> Petugas </center> </th>
-            <th class="table1" style="width: 5%"> <center> Qty </center> </th>
-            <th class="table1" style="width: 5%"> <center> Satuan </center> </th>
-            <th class="table1" style="width: 15%"> <center> Harga </center> </th>
-            <th class="table1" style="width: 5%"> <center> Disc. </center> </th>
-            <th class="table1" style="width: 5%"> <center> Pajak </center> </th>
-            <th class="table1" style="width: 12%"> <center> Subtotal </center> </th>
+            <th class="table1" style="width: 15%"> Tanggal Masuk </th>
+            <th class="table1" style="width: 15%"> Nama Kamar </th>
+            <th class="table1" style="width: 15%"> Nama Ruangan </th>
+            <th class="table1" style="width: 15%"> Petugas </th>
+            <th class="table1" style="width: 15%"> Jumlah </th>
+            <th class="table1" style="width: 15%"> Satuan </th>
+            <th class="table1" style="width: 15%"> Harga </th>
+            <th class="table1" style="width: 15%"> Disc. </th>
+            <th class="table1" style="width: 15%"> Pajak </th>
+            <th class="table1" style="width: 15%"> Subtotal </th>
         
             
         </thead>
@@ -168,10 +169,10 @@ include 'db.php';
 
             
             //menyimpan data sementara yang ada pada $perintah
-            while ($data5 = mysqli_fetch_array($query5))
+            while ($data_detail_penjualan = mysqli_fetch_array($query_detail_penjualan))
             {
 
-              $kode = $db->query("SELECT dp.satuan, s.nama FROM detail_penjualan dp LEFT JOIN satuan s ON dp.satuan = s.id  WHERE dp.kode_barang = '$data5[kode_barang]' ");
+              $kode = $db->query("SELECT dp.satuan, s.nama FROM detail_penjualan dp LEFT JOIN satuan s ON dp.satuan = s.id  WHERE dp.kode_barang = '$data_detail_penjualan[kode_barang]' ");
               $satuan_b = mysqli_fetch_array($kode);
               $satuan = $satuan_b['nama'];
 
@@ -182,20 +183,21 @@ include 'db.php';
 
            echo "
 
-           <td class='table1' style='font-size:15px' align='center'>". $data5['tanggal'] ."</td>
-            <td class='table1' style='font-size:15px' >". $data5['nama_barang'] ."</td>";
+           <td class='table1' style='font-size:15px'>". $data_detail_penjualan['tanggal'] ."</td>
+            <td class='table1' style='font-size:15px' >". $data_detail_penjualan['nama_barang'] ."</td>
+            <td class='table1' style='font-size:15px' >". $data_detail_penjualan['nama_ruangan'] ."</td>";
 
-$kd = $db->query("SELECT f.nama_petugas, u.nama FROM laporan_fee_produk f INNER JOIN user u ON f.nama_petugas = u.id  WHERE f.kode_produk = '$data5[kode_barang]' AND f.no_faktur = '$no_faktur' ");
+$query_laporan_fee_produk = $db->query("SELECT f.nama_petugas, u.nama FROM laporan_fee_produk f INNER JOIN user u ON f.nama_petugas = u.id  WHERE f.kode_produk = '$data_detail_penjualan[kode_barang]' AND f.no_faktur = '$no_faktur' ");
 
-             $kdD = $db->query("SELECT f.nama_petugas, u.nama FROM laporan_fee_produk f INNER JOIN user u ON f.nama_petugas = u.id  WHERE f.kode_produk = '$data5[kode_barang]' AND f.no_faktur = '$no_faktur' GROUP BY f.nama_petugas");
+             $query_fee_produk = $db->query("SELECT f.nama_petugas, u.nama FROM laporan_fee_produk f INNER JOIN user u ON f.nama_petugas = u.id  WHERE f.kode_produk = '$data_detail_penjualan[kode_barang]' AND f.no_faktur = '$no_faktur' GROUP BY f.nama_petugas");
              
-             $nu = mysqli_fetch_array($kd);
+             $nu = mysqli_fetch_array($query_laporan_fee_produk);
              
              if ($nu['nama_petugas'] != '')
              {
              
              echo "<td>";
-             while($nur = mysqli_fetch_array($kdD))
+             while($nur = mysqli_fetch_array($query_fee_produk))
              {
              echo $nur['nama']." ,";
              }
@@ -207,16 +209,16 @@ $kd = $db->query("SELECT f.nama_petugas, u.nama FROM laporan_fee_produk f INNER 
              echo "<td></td>";
              }
 
-            echo "<td class='table1' style='font-size:15px' align='center'>". rp($data5['jumlah_barang']) ."</td>";
+            echo "<td class='table1' style='font-size:15px'>". rp($data_detail_penjualan['jumlah_barang']) ."</td>";
 
 
               echo "<td class='table1' style='font-size:15px' >". $satuan ."</td>";              
             
             echo "
-            <td class='table1' style='font-size:15px' align='right'>". rp($data5['harga']) ."</td>
-            <td class='table1' style='font-size:15px' align='right'>". rp($data5['potongan']) ."</td>
-            <td class='table1' style='font-size:15px' align='right'>". rp($data5['tax']) ."</td>
-            <td class='table1' style='font-size:15px' align='right'>". rp($data5['subtotal']) ."</td>
+            <td class='table1' style='font-size:15px' align='right'>". rp($data_detail_penjualan['harga']) ."</td>
+            <td class='table1' style='font-size:15px' align='right'>". rp($data_detail_penjualan['potongan']) ."</td>
+            <td class='table1' style='font-size:15px' align='right'>". rp($data_detail_penjualan['tax']) ."</td>
+            <td class='table1' style='font-size:15px' align='right'>". rp($data_detail_penjualan['subtotal']) ."</td>
             </tr>";
 
             
@@ -264,10 +266,10 @@ $kd = $db->query("SELECT f.nama_petugas, u.nama FROM laporan_fee_produk f INNER 
 
 
             //menyimpan data sementara yang ada pada $perintah
-            while ($data5 = mysqli_fetch_array($query_jasa))
+            while ($data_detail_penjualan = mysqli_fetch_array($query_jasa))
             {
 
-              $kode = $db->query("SELECT dp.satuan, s.nama FROM detail_penjualan dp LEFT JOIN satuan s ON dp.satuan = s.id  WHERE dp.kode_barang = '$data5[kode_barang]' ");
+              $kode = $db->query("SELECT dp.satuan, s.nama FROM detail_penjualan dp LEFT JOIN satuan s ON dp.satuan = s.id  WHERE dp.kode_barang = '$data_detail_penjualan[kode_barang]' ");
               $satuan_b = mysqli_fetch_array($kode);
               $satuan = $satuan_b['nama'];
 
@@ -275,20 +277,20 @@ $kd = $db->query("SELECT f.nama_petugas, u.nama FROM laporan_fee_produk f INNER 
 
            echo "
 
-           <td class='table1' style='font-size:15px' align='center'>". $data5['tanggal'] ." </td>
-            <td class='table1' style='font-size:15px' >". $data5['nama_barang'] ."</td>";
+           <td class='table1' style='font-size:15px' align='center'>". $data_detail_penjualan['tanggal'] ." </td>
+            <td class='table1' style='font-size:15px' >". $data_detail_penjualan['nama_barang'] ."</td>";
 
-$kd = $db->query("SELECT f.nama_petugas, u.nama FROM laporan_fee_produk f INNER JOIN user u ON f.nama_petugas = u.id  WHERE f.kode_produk = '$data5[kode_barang]' AND f.no_faktur = '$no_faktur' ");
+$query_laporan_fee_produk = $db->query("SELECT f.nama_petugas, u.nama FROM laporan_fee_produk f INNER JOIN user u ON f.nama_petugas = u.id  WHERE f.kode_produk = '$data_detail_penjualan[kode_barang]' AND f.no_faktur = '$no_faktur' ");
 
-             $kdD = $db->query("SELECT f.nama_petugas, u.nama FROM laporan_fee_produk f INNER JOIN user u ON f.nama_petugas = u.id  WHERE f.kode_produk = '$data5[kode_barang]' AND f.no_faktur = '$no_faktur' GROUP BY f.nama_petugas");
+             $query_fee_produk = $db->query("SELECT f.nama_petugas, u.nama FROM laporan_fee_produk f INNER JOIN user u ON f.nama_petugas = u.id  WHERE f.kode_produk = '$data_detail_penjualan[kode_barang]' AND f.no_faktur = '$no_faktur' GROUP BY f.nama_petugas");
              
-             $nu = mysqli_fetch_array($kd);
+             $nu = mysqli_fetch_array($query_laporan_fee_produk);
              
              if ($nu['nama_petugas'] != '')
              {
              
              echo "<td>";
-             while($nur = mysqli_fetch_array($kdD))
+             while($nur = mysqli_fetch_array($query_fee_produk))
              {
              echo $nur['nama']." ,";
              }
@@ -300,16 +302,16 @@ $kd = $db->query("SELECT f.nama_petugas, u.nama FROM laporan_fee_produk f INNER 
              echo "<td></td>";
              }
 
-            echo "<td class='table1' style='font-size:15px' align='center'>". rp($data5['jumlah_barang']) ."</td>";
+            echo "<td class='table1' style='font-size:15px' align='center'>". rp($data_detail_penjualan['jumlah_barang']) ."</td>";
 
       
               echo "<td class='table1' style='font-size:15px' >". $satuan ."</td>";              
             
             echo "
-            <td class='table1' style='font-size:15px' align='right'>". rp($data5['harga']) ."</td>
-            <td class='table1' style='font-size:15px' align='right'>". rp($data5['potongan']) ."</td>
-            <td class='table1' style='font-size:15px' align='right'>". rp($data5['tax']) ."</td>
-            <td class='table1' style='font-size:15px' align='right'>". rp($data5['subtotal']) ."</td>
+            <td class='table1' style='font-size:15px' align='right'>". rp($data_detail_penjualan['harga']) ."</td>
+            <td class='table1' style='font-size:15px' align='right'>". rp($data_detail_penjualan['potongan']) ."</td>
+            <td class='table1' style='font-size:15px' align='right'>". rp($data_detail_penjualan['tax']) ."</td>
+            <td class='table1' style='font-size:15px' align='right'>". rp($data_detail_penjualan['subtotal']) ."</td>
             </tr>";
 
             
@@ -357,10 +359,10 @@ $kd = $db->query("SELECT f.nama_petugas, u.nama FROM laporan_fee_produk f INNER 
         <?php
 
             //menyimpan data sementara yang ada pada $perintah
-            while ($data5 = mysqli_fetch_array($query_obat))
+            while ($data_detail_penjualan = mysqli_fetch_array($query_obat))
             {
 
-              $kode = $db->query("SELECT dp.satuan, s.nama FROM detail_penjualan dp LEFT JOIN satuan s ON dp.satuan = s.id  WHERE dp.kode_barang = '$data5[kode_barang]' ");
+              $kode = $db->query("SELECT dp.satuan, s.nama FROM detail_penjualan dp LEFT JOIN satuan s ON dp.satuan = s.id  WHERE dp.kode_barang = '$data_detail_penjualan[kode_barang]' ");
               $satuan_b = mysqli_fetch_array($kode);
               $satuan = $satuan_b['nama'];
 
@@ -371,20 +373,20 @@ $kd = $db->query("SELECT f.nama_petugas, u.nama FROM laporan_fee_produk f INNER 
 
            echo "
 
-           <td class='table1' style='font-size:15px' align='center'>". $data5['tanggal'] ." </td>
-            <td class='table1' style='font-size:15px' >". $data5['nama_barang'] ."</td>";
+           <td class='table1' style='font-size:15px' align='center'>". $data_detail_penjualan['tanggal'] ." </td>
+            <td class='table1' style='font-size:15px' >". $data_detail_penjualan['nama_barang'] ."</td>";
 
-            $kd = $db->query("SELECT f.nama_petugas, u.nama FROM laporan_fee_produk f INNER JOIN user u ON f.nama_petugas = u.id  WHERE f.kode_produk = '$data5[kode_barang]' AND f.no_faktur = '$no_faktur' ");
+            $query_laporan_fee_produk = $db->query("SELECT f.nama_petugas, u.nama FROM laporan_fee_produk f INNER JOIN user u ON f.nama_petugas = u.id  WHERE f.kode_produk = '$data_detail_penjualan[kode_barang]' AND f.no_faktur = '$no_faktur' ");
 
-             $kdD = $db->query("SELECT f.nama_petugas, u.nama FROM laporan_fee_produk f INNER JOIN user u ON f.nama_petugas = u.id  WHERE f.kode_produk = '$data5[kode_barang]' AND f.no_faktur = '$no_faktur' GROUP BY f.nama_petugas");
+             $query_fee_produk = $db->query("SELECT f.nama_petugas, u.nama FROM laporan_fee_produk f INNER JOIN user u ON f.nama_petugas = u.id  WHERE f.kode_produk = '$data_detail_penjualan[kode_barang]' AND f.no_faktur = '$no_faktur' GROUP BY f.nama_petugas");
              
-             $nu = mysqli_fetch_array($kd);
+             $nu = mysqli_fetch_array($query_laporan_fee_produk);
              
              if ($nu['nama_petugas'] != '')
              {
              
              echo "<td>";
-             while($nur = mysqli_fetch_array($kdD))
+             while($nur = mysqli_fetch_array($query_fee_produk))
              {
              echo $nur['nama']." ,";
              }
@@ -396,15 +398,15 @@ $kd = $db->query("SELECT f.nama_petugas, u.nama FROM laporan_fee_produk f INNER 
              echo "<td></td>";
              }
 
-            echo "<td class='table1' style='font-size:15px' align='center'>". rp($data5['jumlah_barang']) ."</td>";
+            echo "<td class='table1' style='font-size:15px' align='center'>". rp($data_detail_penjualan['jumlah_barang']) ."</td>";
 
               echo "<td class='table1' style='font-size:15px' >". $satuan ."</td>";              
           
             echo "
-            <td class='table1' style='font-size:15px' align='right'>". rp($data5['harga']) ."</td>
-            <td class='table1' style='font-size:15px' align='right'>". rp($data5['potongan']) ."</td>
-            <td class='table1' style='font-size:15px' align='right'>". rp($data5['tax']) ."</td>
-            <td class='table1' style='font-size:15px' align='right'>". rp($data5['subtotal']) ."</td>
+            <td class='table1' style='font-size:15px' align='right'>". rp($data_detail_penjualan['harga']) ."</td>
+            <td class='table1' style='font-size:15px' align='right'>". rp($data_detail_penjualan['potongan']) ."</td>
+            <td class='table1' style='font-size:15px' align='right'>". rp($data_detail_penjualan['tax']) ."</td>
+            <td class='table1' style='font-size:15px' align='right'>". rp($data_detail_penjualan['subtotal']) ."</td>
             </tr>";
 
             
@@ -452,27 +454,27 @@ $kd = $db->query("SELECT f.nama_petugas, u.nama FROM laporan_fee_produk f INNER 
         <?php
 
             //menyimpan data sementara yang ada pada $perintah
-            while ($data5 = mysqli_fetch_array($query_lab))
+            while ($data_detail_penjualan = mysqli_fetch_array($query_lab))
             {
 
            echo "<tr>";
 
            echo "
 
-           <td class='table1' style='font-size:15px' align='center' >". $data5['tanggal'] ." </td>
-            <td class='table1' style='font-size:15px' >". $data5['nama_barang'] ."</td>";
+           <td class='table1' style='font-size:15px' align='center' >". $data_detail_penjualan['tanggal'] ." </td>
+            <td class='table1' style='font-size:15px' >". $data_detail_penjualan['nama_barang'] ."</td>";
 
-            $kd = $db->query("SELECT f.nama_petugas, u.nama FROM laporan_fee_produk f INNER JOIN user u ON f.nama_petugas = u.id  WHERE f.kode_produk = '$data5[kode_barang]' AND f.no_faktur = '$no_faktur' ");
+            $query_laporan_fee_produk = $db->query("SELECT f.nama_petugas, u.nama FROM laporan_fee_produk f INNER JOIN user u ON f.nama_petugas = u.id  WHERE f.kode_produk = '$data_detail_penjualan[kode_barang]' AND f.no_faktur = '$no_faktur' ");
 
-             $kdD = $db->query("SELECT f.nama_petugas, u.nama FROM laporan_fee_produk f INNER JOIN user u ON f.nama_petugas = u.id  WHERE f.kode_produk = '$data5[kode_barang]' AND f.no_faktur = '$no_faktur' GROUP BY f.nama_petugas");
+             $query_fee_produk = $db->query("SELECT f.nama_petugas, u.nama FROM laporan_fee_produk f INNER JOIN user u ON f.nama_petugas = u.id  WHERE f.kode_produk = '$data_detail_penjualan[kode_barang]' AND f.no_faktur = '$no_faktur' GROUP BY f.nama_petugas");
              
-             $nu = mysqli_fetch_array($kd);
+             $nu = mysqli_fetch_array($query_laporan_fee_produk);
              
              if ($nu['nama_petugas'] != '')
              {
              
              echo "<td>";
-             while($nur = mysqli_fetch_array($kdD))
+             while($nur = mysqli_fetch_array($query_fee_produk))
              {
              echo $nur['nama']." ,";
              }
@@ -484,16 +486,16 @@ $kd = $db->query("SELECT f.nama_petugas, u.nama FROM laporan_fee_produk f INNER 
              echo "<td></td>";
              }
 
-            echo "<td class='table1' style='font-size:15px' align='center'>". rp($data5['jumlah_barang']) ."</td>";
+            echo "<td class='table1' style='font-size:15px' align='center'>". rp($data_detail_penjualan['jumlah_barang']) ."</td>";
 
 
               echo "<td class='table1' style='font-size:15px' >Lab</td>";              
             
             echo "
-            <td class='table1' style='font-size:15px' align='right'>". rp($data5['harga']) ."</td>
-            <td class='table1' style='font-size:15px' align='right'>". rp($data5['potongan']) ."</td>
-            <td class='table1' style='font-size:15px' align='right'>". rp($data5['tax']) ."</td>
-            <td class='table1' style='font-size:15px' align='right'>". rp($data5['subtotal']) ."</td>
+            <td class='table1' style='font-size:15px' align='right'>". rp($data_detail_penjualan['harga']) ."</td>
+            <td class='table1' style='font-size:15px' align='right'>". rp($data_detail_penjualan['potongan']) ."</td>
+            <td class='table1' style='font-size:15px' align='right'>". rp($data_detail_penjualan['tax']) ."</td>
+            <td class='table1' style='font-size:15px' align='right'>". rp($data_detail_penjualan['subtotal']) ."</td>
             </tr>";
 
             
