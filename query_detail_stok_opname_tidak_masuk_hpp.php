@@ -8,6 +8,7 @@
 		<th>Selisih Fisik</th>
 		<th>Status Hpp Keluar / Masuk</th>
 		<th>Stok Sekarang</th>
+		<th>Link Perbaikan</th>
 	</thead>
 <tbody><?php 
 include 'db.php';
@@ -52,7 +53,10 @@ while ($data_detail_stok_opname = mysqli_fetch_array($query_detail_stok_opname))
 			# code...
 			$status_selisih_hpp = 'Tidak Ada';
 			$sisa_barang = $stok_barang - $data_detail_stok_opname['selisih_fisik'];
-
+			if ($sisa_barang >= 0) {
+				# code...
+				$link_perbaikan = '<a href="perbaikan_detail_stok_opname.php?kode_barang='.$data_detail_stok_opname['kode_barang'].'&no_faktur='.$data_detail_stok_opname['no_faktur'].'">Perbaikan</a>';
+			}
 	
 		
             
@@ -61,6 +65,8 @@ while ($data_detail_stok_opname = mysqli_fetch_array($query_detail_stok_opname))
 		}
 		else {
 			$status_selisih_hpp = 'Ada';
+
+			$link_perbaikan = '';
 		}
 
 
@@ -75,9 +81,13 @@ while ($data_detail_stok_opname = mysqli_fetch_array($query_detail_stok_opname))
 		if ($data_hpp_masuk['jumlah_data'] == 0) {
 
 			$status_selisih_hpp = 'Tidak Ada';
+			$link_perbaikan = '';
+
 		}
 		else {
 			$status_selisih_hpp = 'Ada';
+			$link_perbaikan = '';
+			
 		}
 
 	}
@@ -91,7 +101,12 @@ while ($data_detail_stok_opname = mysqli_fetch_array($query_detail_stok_opname))
 	<td>".$data_detail_stok_opname['selisih_fisik']."</td>
 	<td>".$status_selisih_hpp."</td>
 	<td>".$stok_barang."</td>
-	</tr>";
+	";
+	if (isset($link_perbaikan)) {
+		# code...
+		echo "<td>".$link_perbaikan."</td>";
+	}
+	echo"</tr>";
 
 }  //end while
 
