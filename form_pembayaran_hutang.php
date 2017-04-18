@@ -7,7 +7,6 @@
 
 $session_id = session_id();
 
-$query = $db->query("SELECT * FROM pembayaran_hutang ORDER BY id DESC");
  
  ?>
 
@@ -577,13 +576,7 @@ $(document).ready(function(){
 
     }); 
 </script>
- 
-       
-      }
 
-
-      });
-      </script>
 
  <script>
    //perintah javascript yang diambil dari form proses_bayar_beli.php dengan id=form_beli
@@ -605,6 +598,7 @@ $(document).ready(function(){
    var potongan = $("#potongan_penjualan").val();
    var potongan1 = $("#potongan1").val();
    var faktur = $("#faktur").val();
+   var tanggal = $("#tanggal").val();
      
     $("#totalbayar").val('');
     $("#potongan1").val(potongan);
@@ -637,7 +631,7 @@ $("#batal").hide();
 $("#transaksi_baru").show();
 
 
- $.post("proses_bayar_hutang.php", {no_faktur_pembayaran:no_faktur_pembayaran,no_faktur_pembelian:no_faktur_pembelian,cara_bayar:cara_bayar,suplier:suplier,keterangan:keterangan,total:total,user_buat:user_buat,dari_kas:dari_kas,kredit:kredit,status:status,total_bayar:total_bayar,potongan1:potongan1,faktur:faktur},function(info) {
+ $.post("proses_bayar_hutang.php", {no_faktur_pembayaran:no_faktur_pembayaran,no_faktur_pembelian:no_faktur_pembelian,cara_bayar:cara_bayar,suplier:suplier,keterangan:keterangan,total:total,user_buat:user_buat,dari_kas:dari_kas,kredit:kredit,status:status,total_bayar:total_bayar,potongan1:potongan1,faktur:faktur,tanggal:tanggal},function(info) {
 
 
       $("#result").html(info);

@@ -57,7 +57,7 @@ opacity: 0.9;
 </script>
 
 <!-- Modal Untuk Confirm LAYANAN PERUSAHAAN-->
-<div id="detail" class="modal fade" role="dialog">
+<div id="detail" class="modal" role="dialog">
   <div class="modal-dialog modal-lg">
     <!-- Modal content-->
     <div class="modal-content">
@@ -79,7 +79,7 @@ opacity: 0.9;
 <!--modal end Layanan Perusahaan-->
 
 <!-- Modalkamar -->
-<div id="modal_kamar" class="modal fade" role="dialog">
+<div id="modal_kamar" class="modal" role="dialog">
   <div class="modal-dialog">
 
     <!-- Modal content2 -->
@@ -90,21 +90,22 @@ opacity: 0.9;
       </div>
       <div class="modal-body">
       <div class="table-responsive">
-        <table id="siswa1" class="table table-bordered table-hover table-striped">
+        <table id="table_kamar" class="table table-bordered table-hover table-striped">
           <thead>
           <tr>
           <th>Kelas</th>
           <th>Kode Kamar</th>
           <th>Nama Kamar</th>
+          <th>Ruangan</th>
           <th> Fasilitas</th>
           <th>Jumlah Bed</th>  
-          <th>Sisa Bed</th>                                
+          <th>Sisa Bed</th>                                 
           </tr>
           </thead>
           <tbody>
           <?php
           //Data mentah yang ditampilkan ke tabel    
-          include 'db.php';
+          /*include 'db.php';
           $hasil = $db->query("SELECT * FROM bed WHERE sisa_bed != 0 ");
                                         
           while ($data =  $hasil->fetch_assoc()) {
@@ -121,7 +122,7 @@ opacity: 0.9;
            <td><?php echo $data['sisa_bed']; ?></td>                           
           </tr>
           <?php
-          }
+          }*/
           ?>
           </tbody>
           </table>  
@@ -146,8 +147,20 @@ opacity: 0.9;
 
 
 <form role="form" action="proses_rujuk_rawat_inap.php" method="POST">
+<div class="form-group">
+  <label for="sel1">Ruangan:</label>
+  <select class="form-control" id="ruangan" name="ruangan"  autocomplete="off">
+   <option value="">Silakan Pilih</option>
+      <?php 
+      $query_ruangan = $db->query("SELECT id,nama_ruangan FROM ruangan ORDER BY id");
+      while ( $data_ruangan = mysqli_fetch_array($query_ruangan)) {
+      echo "<option value='".$data_ruangan['id']."'>".$data_ruangan['nama_ruangan']."</option>";
+      }
+      ?>
+  </select>
+</div>
 
-<button type="button" accesskey="c" class="btn btn-success " data-toggle="modal" data-target="#modal_kamar"> <i class="fa fa-search"></i> <u>C</u>ari kamar</button>
+<button type="button"  accesskey="c" class="btn btn-success " data-toggle="modal" id="cari_kamar"> <i class="fa fa-search"></i> <u>C</u>ari kamar</button>
  <br>
  <br>
 <div class="form-group" >
@@ -305,7 +318,7 @@ opacity: 0.9;
 
 <div class="form-group" >
     <label for="umur">Surat Jaminan:</label>
-    <input style="height:20;" type="text" class="form-control" id="surat_jaminan"  name="surat_jaminan" required="" autocomplete="off">
+    <input style="height:20;" type="text" class="form-control" id="surat_jaminan"  name="surat_jaminan" autocomplete="off">
 </div>
 
 
@@ -483,7 +496,60 @@ $(".ss").chosen({no_results_text: "Oops, Tidak Ada !"});
   });
   </script>
 
+<script type="text/javascript">
+  // cari kamar seuai dengan ruangannya
+    $(document).on('click','#cari_kamar',function() {
+  
+    /*var ruangan = $("#ruangan").val();
+    if (ruangan == '') {  
+      alert("Silakan pilih ruangan terlebih dahulu.");
+      $("#ruangan").focus();
+    }
+    else
+    {*/
+        $("#modal_kamar").modal('show');
+        $('#table_kamar').DataTable().destroy();
 
+          var dataTable = $('#table_kamar').DataTable( {
+          "processing": true,
+          "serverSide": true,
+          "info":     false,
+          "language": {
+        "emptyTable":     "My Custom Message On Empty Table"
+    },
+          "ajax":{
+            url :"datatable_cari_kamar_dirawat_inap.php", // json datasource
+             "data": function ( d ) {
+                d.ruangan = $("#ruangan").val();
+                // d.custom = $('#myInput').val();
+                // etc
+            },
+                type: "post",  // method  , by default get
+            error: function(){  // error handling
+              $(".tbody").html("");
+              $("#table_ruangan").append('<tbody class="tbody"><tr><th colspan="3"></th></tr></tbody>');
+              $("#table_ruangan_processing").css("display","none");
+              
+            }
+          },
+              "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+
+              $(nRow).attr('class', "pilih1 tr-id-"+aData[7]+"");
+              $(nRow).attr('data-nama', aData[1]);
+              $(nRow).attr('data-group-bed', aData[2]);
+              $(nRow).attr('data-ruangan', aData[8]);
+
+          } 
+
+        } );
+
+
+          
+    //} //end else
+   
+  
+  });
+  </script>
 
 <script type="text/javascript">
   
@@ -676,13 +742,14 @@ return val;
   $(document).on('click', '.pilih1', function (e) {
             document.getElementById("bed").value = $(this).attr('data-nama');
             document.getElementById("group_bed").value = $(this).attr('data-group-bed');
+            document.getElementById("ruangan").value = $(this).attr('data-ruangan');
                 
   $('#modal_kamar').modal('hide');
   });
       
-  $(function () {
+  /*$(function () {
   $("#siswa1").dataTable();
-  });
+  });*/
 // tabel lookup mahasiswa
   $(function () {
   $("#table_rawat_inap").dataTable();

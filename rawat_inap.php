@@ -442,7 +442,7 @@ else
 <div class="form-group">
   <label for="sel1">Ruangan:</label>
   <select class="form-control" id="ruangan" name="ruangan"  autocomplete="off">
-   <option value="-">Silakan Pilih</option>
+   <option value="">Silakan Pilih</option>
       <?php 
       $query_ruangan = $db->query("SELECT id,nama_ruangan FROM ruangan ORDER BY id");
       while ( $data_ruangan = mysqli_fetch_array($query_ruangan)) {
@@ -999,9 +999,10 @@ tr:nth-child(even){background-color: #f2f2f2}
           },
               "fnCreatedRow": function( nRow, aData, iDataIndex ) {
 
-              $(nRow).attr('class', "pilih2 tr-id-"+aData[8]+"");
+              $(nRow).attr('class', "pilih2 tr-id-"+aData[7]+"");
               $(nRow).attr('data-nama', aData[1]);
               $(nRow).attr('data-group-bed', aData[2]);
+              $(nRow).attr('data-ruangan', aData[8]);
 
           } 
 
@@ -1621,7 +1622,8 @@ else
   $(document).on('click', '.pilih2', function (e) {
             document.getElementById("bed").value = $(this).attr('data-nama');
             document.getElementById("group_bed").value = $(this).attr('data-group-bed');
-                
+            document.getElementById("ruangan").value = $(this).attr('data-ruangan');
+              
   $('#myModal1').modal('hide');
   });
 /*      
