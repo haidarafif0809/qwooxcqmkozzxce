@@ -9,7 +9,7 @@ $sampai_tanggal = stringdoang($_POST['sampai_tanggal']);
 $perintah11 = $db->query("SELECT * FROM penjualan WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal'");
 $total_row = mysqli_num_rows($perintah11);
 
-$perintah210 = $db->query("SELECT SUM(total) AS total_total, SUM(kredit) AS total_kredit FROM penjualan WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal'");
+$perintah210 = $db->query("SELECT SUM(total) AS total_total, SUM(nilai_kredit) AS total_kredit FROM penjualan WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal'");
 $data210 = mysqli_fetch_array($perintah210);
 
 $total_total = $data210['total_total'];
@@ -60,7 +60,7 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
     $perintah1 = $db->query("SELECT * FROM penjualan WHERE tanggal = '$row[tanggal]'");
     $data1 = mysqli_num_rows($perintah1);
             
-    $perintah2 = $db->query("SELECT SUM(total) AS t_total, SUM(kredit) AS t_kredit FROM penjualan WHERE tanggal = '$row[tanggal]'");
+    $perintah2 = $db->query("SELECT SUM(total) AS t_total, SUM(nilai_kredit) AS t_kredit FROM penjualan WHERE tanggal = '$row[tanggal]'");
     $data2 = mysqli_fetch_array($perintah2);
     $t_total = $data2['t_total'];
     $t_kredit = $data2['t_kredit'];

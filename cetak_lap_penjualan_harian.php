@@ -7,42 +7,37 @@ include 'db.php';
 $dari_tanggal = stringdoang($_GET['dari_tanggal']);
 $sampai_tanggal = stringdoang($_GET['sampai_tanggal']);
 
-    $query1 = $db->query("SELECT * FROM perusahaan ");
-    $data1 = mysqli_fetch_array($query1);
+$query_perusahaan = $db->query("SELECT foto, nama_perusahaan, alamat_perusahaan, no_telp FROM perusahaan ");
+$data_perusahaan = mysqli_fetch_array($query_perusahaan);
 
 $perintah = $db->query("SELECT tanggal FROM penjualan WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' GROUP BY tanggal");
 
-$perintah11 = $db->query("SELECT * FROM penjualan WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal'");
-$data11 = mysqli_num_rows($perintah11);
+$query_count_penjualan = $db->query("SELECT no_faktur FROM penjualan WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal'");
+$jumlah_count_penjualan = mysqli_num_rows($query_count_penjualan);
 
-$perintah210 = $db->query("SELECT SUM(total) AS total_total FROM penjualan WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal'");
+$query_sum_total_dan_kredit_penjualan = $db->query("SELECT SUM(nilai_kredit) AS total_kredit, SUM(total) AS total_total FROM penjualan WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal'");
+$data_sum_total_dan_kredit_penjualan = mysqli_fetch_array($query_sum_total_dan_kredit_penjualan);
 
-$data210 = mysqli_fetch_array($perintah210);
-
-$total_total = $data210['total_total'];
-
-$perintah212 = $db->query("SELECT SUM(kredit) AS total_kredit FROM penjualan WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal'");
-$data212 = mysqli_fetch_array($perintah212);
-$total_kredit = $data212['total_kredit'];
+$total_total = $data_sum_total_dan_kredit_penjualan['total_total'];
+$total_kredit = $data_sum_total_dan_kredit_penjualan['total_kredit'];
 
 $total_bayar = $total_total - $total_kredit;
 
  ?>
 
-
 <div class="container">
  <div class="row"><!--row1-->
         <div class="col-sm-2">
         <br><br>
-                <img src='save_picture/<?php echo $data1['foto']; ?>' class='img-rounded' alt='Cinque Terre' width='160' height='140`'> 
+                <img src='save_picture/<?php echo $data_perusahaan['foto']; ?>' class='img-rounded' alt='Cinque Terre' width='160' height='140`'> 
         </div><!--penutup colsm2-->
 
         <div class="col-sm-6">
                  <h3> <b> LAPORAN PENJUALAN HARIAN </b></h3>
                  <hr>
-                 <h4> <b> <?php echo $data1['nama_perusahaan']; ?> </b> </h4> 
-                 <p> <?php echo $data1['alamat_perusahaan']; ?> </p> 
-                 <p> No.Telp:<?php echo $data1['no_telp']; ?> </p> 
+                 <h4> <b> <?php echo $data_perusahaan['nama_perusahaan']; ?> </b> </h4> 
+                 <p> <?php echo $data_perusahaan['alamat_perusahaan']; ?> </p> 
+                 <p> No.Telp:<?php echo $data_perusahaan['no_telp']; ?> </p> 
                  
         </div><!--penutup colsm4-->
 
@@ -83,23 +78,22 @@ $total_bayar = $total_total - $total_kredit;
           //menyimpan data sementara yang ada pada $perintah
           while ($data = mysqli_fetch_array($perintah))
           {
-          //menampilkan data
-            $perintah1 = $db->query("SELECT * FROM penjualan WHERE tanggal = '$data[tanggal]'");
-            $data1 = mysqli_num_rows($perintah1);
+          //menampilkan data           
 
-            $perintah2 = $db->query("SELECT SUM(total) AS t_total FROM penjualan WHERE tanggal = '$data[tanggal]'");
-            $data2 = mysqli_fetch_array($perintah2);
-            $t_total = $data2['t_total'];
-
-            $perintah21 = $db->query("SELECT SUM(kredit) AS t_kredit FROM penjualan WHERE tanggal = '$data[tanggal]'");
-            $data21 = mysqli_fetch_array($perintah21);
-            $t_kredit = $data21['t_kredit'];
-
+            $query_count_penjualan = $db->query("SELECT no_faktur FROM penjualan WHERE tanggal = '$data[tanggal]'");
+            $jumlah_count_penjualan = mysqli_num_rows($query_count_penjualan);
+            
+            $query_sum_total_dan_kredit_penjualan = $db->query("SELECT SUM(nilai_kredit) AS total_kredit, SUM(total) AS total_total FROM penjualan WHERE tanggal = '$data[tanggal]'");
+            $data_sum_total_dan_kredit_penjualan = mysqli_fetch_array($query_sum_total_dan_kredit_penjualan);
+            
+            $t_total = $data_sum_total_dan_kredit_penjualan['total_total'];
+            $t_kredit = $data_sum_total_dan_kredit_penjualan['total_kredit'];
+            
             $t_bayar = $t_total - $t_kredit;
 
           echo "<tr>
           <td>". $data['tanggal'] ."</td>
-          <td>". $data1."</td>
+          <td>". $jumlah_count_penjualan."</td>
           <td>". rp($t_total) ."</td>
           <td>". rp($t_bayar) ."</td>
           <td>". rp($t_kredit) ."</td>
@@ -110,7 +104,7 @@ $total_bayar = $total_total - $total_kredit;
 
     echo "<tr style='color:red'>
           <td>TOTAL</td>
-          <td>". rp($data11)."</td>
+          <td>". rp($jumlah_count_penjualan)."</td>
           <td>". rp($total_total) ."</td>
           <td>". rp($total_bayar) ."</td>
           <td>". rp($total_kredit) ."</td>

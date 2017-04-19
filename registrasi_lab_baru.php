@@ -3,15 +3,7 @@ include 'header.php';
 include 'navbar.php';
 include_once'db.php';
 
-
-$query_no_reg = $db->query("SELECT id FROM registrasi ORDER BY id DESC limit 1");
-$data_query_no_reg= mysqli_fetch_array($query_no_reg);
-$no_reg_terakhir = 1 + $data_query_no_reg['id'];
-
-$query_penetapan_petugas= $db->query("SELECT nama_dokter,nama_paramedik,nama_farmasi FROM penetapan_petugas ");
-$data_penetapan_petugas = mysqli_fetch_array($query_penetapan_petugas);
-
-$query_petugas_jaga= $db->query("SELECT nama_dokter,nama_paramedik,nama_farmasi FROM penetapan_petugas ");
+$query_petugas_jaga= $db->query("SELECT nama_dokter FROM penetapan_petugas ");
 $data_petugas_jaga = mysqli_fetch_array($query_petugas_jaga);
 $dokter = $data_petugas_jaga['nama_dokter'];
 
@@ -157,13 +149,20 @@ $dokter = $data_petugas_jaga['nama_dokter'];
 				<div class="form-group">
 				    <label for="sel1">Dokter </label>
 				    <select class="form-control" id="dokter" name="dokter" required="" autocomplete="off">
-				      <option value="<?php echo $dokter;?>"><?php echo $dokter;?></option>
-				              <option value="Tidak Ada">Tidak Ada</option>
 				        <?php 
 				        $query = $db->query("SELECT nama FROM user WHERE tipe = '1' ");
 				        while ( $data = mysqli_fetch_array($query)) 
 				        {
-				          echo "<option value='".$data['nama']."'>".$data['nama']."</option>";
+							 if ($dokter == $data['nama']) {
+	               
+	                          echo "<option selected value='".$data['id']."'>".$data['nama']."</option>";
+
+		                      }
+		                      else {
+
+		                          echo "<option value='".$data['id']."'>".$data['nama']."</option>";
+
+		                      }
 				        }
 				        ?>
 				    </select>

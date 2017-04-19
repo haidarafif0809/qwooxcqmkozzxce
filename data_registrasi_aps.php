@@ -10,9 +10,6 @@ $input_jasa_lab = $take_lab['input_jasa_lab'];
 $input_hasil_lab = $take_lab['input_hasil_lab'];
 
 
-$qertu= $db->query("SELECT nama_dokter,nama_paramedik,nama_farmasi FROM penetapan_petugas ");
-$ss = mysqli_fetch_array($qertu);
-
 // storing  request (ie, get/post) global array to a variable  
 $requestData= $_REQUEST;
 
@@ -36,16 +33,18 @@ $columns = array(
 );
 
 // getting total number records without any search
-$sql = "SELECT id,no_reg,no_rm,nama_pasien,jenis_kelamin,umur_pasien,dokter_pengirim,tanggal,aps_periksa";
-$sql.=" FROM registrasi WHERE jenis_pasien = 'APS' AND status = 'aps_masuk' AND status != 'Batal APS'";
+$sql = "SELECT r.id,r.no_reg,r.no_rm,r.nama_pasien,r.jenis_kelamin,r.umur_pasien,u.nama AS dokter_pengirim,r.tanggal,r.aps_periksa";
+$sql.=" FROM registrasi r INNER JOIN user u ON r.dokter_pengirim = u.id  WHERE r.jenis_pasien = 'APS' AND r.status = 'aps_masuk' AND r.status != 'Batal APS'";
 
 $query=mysqli_query($conn, $sql) or die("EROR 1");
 $totalData = mysqli_num_rows($query);
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
 
-$sql = "SELECT id,no_reg,no_rm,nama_pasien,jenis_kelamin,umur_pasien,dokter_pengirim,tanggal,aps_periksa";
-$sql.=" FROM registrasi WHERE jenis_pasien = 'APS' AND status = 'aps_masuk' AND status != 'Batal APS'";
+$sql = "SELECT r.id,r.no_reg,r.no_rm,r.nama_pasien,r.jenis_kelamin,r.umur_pasien,u.nama AS dokter_pengirim,r.tanggal,r.aps_periksa";
+$sql.=" FROM registrasi r INNER JOIN user u ON r.dokter_pengirim = u.id  WHERE r.jenis_pasien = 'APS' AND r.status = 'aps_masuk' AND r.status != 'Batal APS'";
+
+
 
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
 	$sql.=" AND ( nama_pasien LIKE '".$requestData['search']['value']."%' "; 
@@ -120,7 +119,7 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 	$nestedData[] = $row["jenis_kelamin"];
 	$nestedData[] = $row["umur_pasien"];
 	$nestedData[] = $row["dokter_pengirim"];
-	$nestedData[] = $row["tanggal"];
+	$nestedData[] = tanggal_terbalik($row["tanggal"]);
 
 	if($row["aps_periksa"] == 1){
 		$aps_periksa = 'Laboratorium';
