@@ -153,13 +153,11 @@ $dokter = $data_petugas['nama_dokter'];
         <div class="form-group">
             <label for="sel1">Dokter </label>
             <select class="form-control" id="dokter" name="dokter" required="" autocomplete="off">
-              <option value="<?php echo $dokter;?>"><?php echo $dokter;?></option>
-                      <option value="Tidak Ada">Tidak Ada</option>
                 <?php 
-                $query = $db->query("SELECT nama FROM user WHERE tipe = '1' ");
+                $query = $db->query("SELECT id,nama FROM user WHERE tipe = '1' ");
                 while ( $data = mysqli_fetch_array($query)) 
                 {
-                  echo "<option value='".$data['nama']."'>".$data['nama']."</option>";
+                  echo "<option value='".$data['id']."'>".$data['nama']."</option>";
                 }
                 ?>
             </select>

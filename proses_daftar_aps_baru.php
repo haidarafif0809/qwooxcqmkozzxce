@@ -43,6 +43,7 @@ try {
 		  echo '<META HTTP-EQUIV="Refresh" Content="0; URL=registrasi_laboratorium.php">';
 		}
 		else{
+
 		// START NO. RM PASIEN
 		$ambil_rm = $db_pasien->query("SELECT kode_pelanggan FROM pelanggan WHERE kode_pelanggan != 0 ORDER BY id DESC LIMIT 1 ");
 		$no_ter = mysqli_fetch_array($ambil_rm);
@@ -98,7 +99,7 @@ $query_insert_registrasi = $db->prepare("INSERT INTO registrasi
 	$petugas = $_SESSION['nama'];
 	$periksa = stringdoang($_POST['periksa']);
 
-$query_insert_registrasi->bind_param("sssssssssssssssi",$no_rm,$no_reg,
+$query_insert_registrasi->bind_param("ssssssssssssssssi",$no_rm,$no_reg,
 	$nama_lengkap,$jenis_kelamin, $umur, $gol_darah, $alamat, $no_telepon,
 	$kondisi, $alergi,$dokter, $tanggal_sekarang,$jam,
 	$jenis_pasien,$status, $petugas, $periksa);
@@ -137,7 +138,7 @@ $query_insert_rm_lama_kosong->execute();
 
 }
 
-echo '<META HTTP-EQUIV="Refresh" Content="0; URL=registrasi_laboratorium.php">';
+ echo '<META HTTP-EQUIV="Refresh" Content="0; URL=registrasi_laboratorium.php">';
 
 		
 	}

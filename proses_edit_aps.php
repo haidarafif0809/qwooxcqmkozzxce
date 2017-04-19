@@ -11,7 +11,7 @@ include 'sanitasi.php';
 	$no_telepon = stringdoang($_POST['no_telepon']);
 	$kondisi = stringdoang($_POST['kondisi']);
 	$alergi = stringdoang($_POST['alergi']);
-	$dokter = stringdoang($_POST['dokter']);
+	$dokter = angkadoang($_POST['dokter']);
 	$petugas = $_SESSION['nama'];
 	$periksa = stringdoang($_POST['periksa']);
 	$tanggal_lahir = angkadoang($_POST['tanggal_lahir']);
@@ -42,8 +42,9 @@ $query_update_registrasi_aps = $db->query("UPDATE registrasi SET
 	nama_pasien = '$nama_lengkap', jenis_kelamin = '$jenis_kelamin',
 	umur_pasien = '$umur', gol_darah = '$gol_darah',
 	alamat_pasien = '$alamat', hp_pasien = '$no_telepon',
-	kondisi = '$kondisi', alergi = '$alergi', dokter = 'dokter',
+	kondisi = '$kondisi', alergi = '$alergi', dokter = '$dokter',dokter_pengirim = '$dokter',
 	aps_periksa = '$periksa'  WHERE no_rm = '$no_rm' ");
+
 
 
 ?>
