@@ -8,7 +8,7 @@ include 'db.php';
 $user = $_SESSION['user_name'];
 
 
-$session_jurnal_manual = stringdoang($_POST['session_id']);
+$session_jurnal_manual = session_id();
 $tahun_sekarang = date('Y');
 $bulan_sekarang = date('m');
 $tanggal_sekarang = date('Y-m-d');
@@ -52,27 +52,22 @@ $tahun_terakhir = substr($tahun_sekarang, 2);
 
               $user =  $_SESSION['user_name'];
 
-
-
-$query60 = $db->query("SELECT * FROM tbs_jurnal");
-while($data0 = mysqli_fetch_array($query60))
-{
-  $select_no_jurnal = $db->query("SELECT * FROM nomor_faktur_jurnal ORDER BY id DESC LIMIT 1");
-  $ambil_no_jurnal = mysqli_fetch_array($select_no_jurnal);
-
-  if ($data0['session_id'] == $session_jurnal_manual) {
-
-     $insert_no_faktur_jurnal = $db->query("INSERT INTO jurnal_trans (nomor_jurnal,waktu_jurnal,keterangan_jurnal,kode_akun_jurnal,debit,kredit,jenis_transaksi,no_faktur,approved,user_buat) VALUES ('".no_jurnal()."','$tanggal $jam_sekarang','Jurnal Manual - ".$keterangan."','$data0[kode_akun_jurnal]','$data0[debit]','$data0[kredit]','$jenis','$ambil_no_jurnal[no_faktur_jurnal]','1','$user')");
-
-  }
-
-}
-
-$select_no_jurnal = $db->query("SELECT * FROM nomor_faktur_jurnal ORDER BY id DESC LIMIT 1");
+$select_no_jurnal = $db->query("SELECT no_faktur_jurnal FROM nomor_faktur_jurnal ORDER BY id DESC LIMIT 1");
 $ambil_no_jurnal = mysqli_fetch_array($select_no_jurnal);
 $no_faktur_jurnal = $ambil_no_jurnal['no_faktur_jurnal'];
 
-     $insert_tbs_jurnal = "INSERT INTO history_input_tbs_jurnal (no_faktur, session_id, kode_akun_jurnal, nama_akun_jurnal, debit, kredit, keterangan, user_input) SELECT '$no_faktur_jurnal', session_id, kode_akun_jurnal, nama_akun_jurnal, debit, kredit, keterangan, '$user' FROM tbs_jurnal WHERE session_id = '$session_jurnal_manual'";
+$query60 = $db->query("SELECT * FROM tbs_jurnal WHERE session_id = '$session_jurnal_manual' ");
+while($data0 = mysqli_fetch_array($query60))
+{
+
+     $insert_no_faktur_jurnal = $db->query("INSERT INTO jurnal_trans (nomor_jurnal,waktu_jurnal,keterangan_jurnal,kode_akun_jurnal,debit,kredit,jenis_transaksi,no_faktur,approved,user_buat) VALUES ('".no_jurnal()."','$tanggal $jam_sekarang','Jurnal Manual - ".$keterangan."','$data0[kode_akun_jurnal]','$data0[debit]','$data0[kredit]','$jenis','$no_faktur_jurnal','1','$user')");
+
+
+}
+
+
+
+     $insert_tbs_jurnal = "INSERT INTO history_input_tbs_jurnal (no_faktur, session_id, kode_akun_jurnal, nama_akun_jurnal, debit, kredit, keterangan, user_input, tanggal, jam) SELECT '$no_faktur_jurnal', session_id, kode_akun_jurnal, nama_akun_jurnal, debit, kredit, keterangan, '$user' , '$tanggal', '$jam_sekarang' FROM tbs_jurnal WHERE session_id = '$session_jurnal_manual'";
 
      if ($db->query($insert_tbs_jurnal) === TRUE) {
         } 
