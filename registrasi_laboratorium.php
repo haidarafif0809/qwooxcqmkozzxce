@@ -203,10 +203,17 @@ $dokter = $data_petugas_jaga['nama_dokter'];
               <option value="<?php echo $dokter;?>"><?php echo $dokter;?></option>
                       <option value="Tidak Ada">Tidak Ada</option>
                 <?php 
-                $query = $db->query("SELECT nama FROM user WHERE tipe = '1' ");
+                $query = $db->query("SELECT id,nama FROM user WHERE tipe = '1' ");
                 while ( $data = mysqli_fetch_array($query)) 
-                {
-                  echo "<option value='".$data['nama']."'>".$data['nama']."</option>";
+                {   
+                      if ($dokter == $data['nama']) {
+                        # code...
+                          echo "<option selected value='".$data['id']."'>".$data['nama']."</option>";
+                      }
+                      else {
+                          echo "<option value='".$data['id']."'>".$data['nama']."</option>";
+                      }
+                  
                 }
                 ?>
             </select>
@@ -518,48 +525,31 @@ $(document).on('click', '#registrasi_pasien', function (e) {
     $("#kembali").hide(); // Tombol Kembali
 
 
-  $.post("proses_aps.php",{no_rm:no_rm,token:token,nama_lengkap:nama_lengkap,jenis_kelamin:jenis_kelamin,tanggal_lahir:tanggal_lahir,umur:umur,gol_darah:gol_darah,no_telepon:no_telepon,alamat:alamat,alergi:alergi,kondisi:kondisi,agama:agama,dokter:dokter,periksa:periksa},function(data){
+    $.post("proses_aps.php",{no_rm:no_rm,token:token,nama_lengkap:nama_lengkap,jenis_kelamin:jenis_kelamin,tanggal_lahir:tanggal_lahir,umur:umur,gol_darah:gol_darah,no_telepon:no_telepon,alamat:alamat,alergi:alergi,kondisi:kondisi,agama:agama,dokter:dokter,periksa:periksa},function(data){
 
-    var table_aps = $('#table_aps').DataTable();
-    table_aps.draw();
+      var table_aps = $('#table_aps').DataTable();
+      table_aps.draw();
 
-    $("#no_rm").val('');
-    $("#nama_pasien").val('');
-    $("#no_hp").val('');
-    $("#tanggal_lahir").val('');
-    $("#alamat").val('');
-    $("#jenis_kelamin").val('');
-    $("#penjamin").val('');
-    $("#gol_darah").val('');
-    $("#umur").val('');
+      $("#no_rm").val('');
+      $("#nama_pasien").val('');
+      $("#no_hp").val('');
+      $("#tanggal_lahir").val('');
+      $("#alamat").val('');
+      $("#jenis_kelamin").val('');
+      $("#penjamin").val('');
+      $("#gol_darah").val('');
+      $("#umur").val('');
+      $("#daftar_ugd").show();
 
-    }); //End Proses
+      }); //End Proses
 
   } //End Else
+      
       $("form").submit(function(){
         return false;
       });
 
-//Mulai Aajax table setelah proses
-    /*$('#table_aps').DataTable().destroy();
-      var dataTable = $('#table_aps').DataTable( {
-          "processing": true,
-          "serverSide": true,
-          "ajax":{
-            url :"data_registrasi_aps.php", // json datasource
-            type: "post",  // method  , by default get
-            error: function(){  // error handling
-              $(".employee-grid-error").html("");
-              $("#table_aps").append('<tbody class="employee-grid-error"><tr><th colspan="3">No data found in the server</th></tr></tbody>');
-              $("#table_aps_processing").css("display","none");
-              
-            }
-          },
-            "fnCreatedRow": function( nRow, aData, iDataIndex ) {
-              $(nRow).attr('class','tr-id-'+aData[12]+'');
-            },
-        });*/
-      //Ajax table setelah proses
+
 
 }); //End Function
 </script>
