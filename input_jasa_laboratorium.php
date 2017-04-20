@@ -17,6 +17,7 @@ $aps_periksa = stringdoang($_GET['aps_periksa']); // jika 1 Laboratorium, jika 2
 
 ?>
 
+
 <!--Mulai Modal Data Laboratorium-->
 <div id="modal_lab" class="modal fade" role="dialog">
   <!--Modal Dialog-->
@@ -27,9 +28,9 @@ $aps_periksa = stringdoang($_GET['aps_periksa']); // jika 1 Laboratorium, jika 2
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
        <center>
-       	<h4 class="modal-title">
-       		<b>Daftar Pemeriksaan Laboratorium</b>
-       	</h4>
+        <h4 class="modal-title">
+          <b>Daftar Pemeriksaan Laboratorium</b>
+        </h4>
        </center>
       </div>
         <!--Awal Modal Body-->
@@ -50,46 +51,46 @@ while($data_jasa = mysqli_fetch_array($query_jasa)){
 
 echo '
 <div class="row">
-	<div class="col-sm-8">';  
+  <div class="col-sm-8">';  
 
-	echo '<input type="checkbox" class="pilih-header-input filled-in" id="pemeriksaan-'.$data_header['id'].'" data-id-kepala="'.$data_header['id'].'" data-kode-jasa="'.$data_jasa['kode_lab'].'" data-toogle="1" name="header" class="pilih-header" value="'.$data_jasa['nama_jasa'].'">
+  echo '<input type="checkbox" class="pilih-header-input filled-in" id="pemeriksaan-'.$data_header['id'].'" data-id-kepala="'.$data_header['id'].'" data-kode-jasa="'.$data_jasa['kode_lab'].'" data-toogle="1" name="header" class="pilih-header" value="'.$data_jasa['nama_jasa'].'">
 
-	<label for="pemeriksaan-'.$data_header['id'].'" data-id="'.$data_header['id'].'" data-kode="'.$data_header['nama_pemeriksaan'].'" data-nama="'.$data_header['nama_sub'].'" data-kode-jasa="'.$data_jasa['kode_lab'].'" class="pilih-header" data-toogle="1" id="label-'.$data_header['id'].'">
-	<b>'.$data_jasa['nama_jasa'].'</b></label> <br>'; //nama yang tampil
+  <label for="pemeriksaan-'.$data_header['id'].'" data-id="'.$data_header['id'].'" data-kode="'.$data_header['nama_pemeriksaan'].'" data-nama="'.$data_header['nama_sub'].'" data-kode-jasa="'.$data_jasa['kode_lab'].'" class="pilih-header" data-toogle="1" id="label-'.$data_header['id'].'">
+  <b>'.$data_jasa['nama_jasa'].'</b></label> <br>'; //nama yang tampil
 
 echo '
-	</div>
+  </div>
 </div>';
 
 
-	//UNDER DETAIL dari HEADER
+  //UNDER DETAIL dari HEADER
 echo '
 <div class="row">
-	<div class="col-sm-1">
-	</div>
+  <div class="col-sm-1">
+  </div>
 
-	<div class="col-sm-11">';
+  <div class="col-sm-11">';
 
-	$query_detail = $db->query("SELECT id,nama_pemeriksaan,nama_sub,sub_hasil_lab FROM setup_hasil WHERE kategori_index = 'Detail' AND sub_hasil_lab = '$data_header[id]' ORDER BY id ASC ");
-	while ($data_detail = mysqli_fetch_array($query_detail)) {
+  $query_detail = $db->query("SELECT id,nama_pemeriksaan,nama_sub,sub_hasil_lab FROM setup_hasil WHERE kategori_index = 'Detail' AND sub_hasil_lab = '$data_header[id]' ORDER BY id ASC ");
+  while ($data_detail = mysqli_fetch_array($query_detail)) {
 
-	$query_jasa = $db->query("SELECT id,kode_lab,nama AS nama_jasa,harga_1 FROM jasa_lab WHERE id = '$data_detail[nama_pemeriksaan]'");
-	while($data_jasa = mysqli_fetch_array($query_jasa)){
+  $query_jasa = $db->query("SELECT id,kode_lab,nama AS nama_jasa,harga_1 FROM jasa_lab WHERE id = '$data_detail[nama_pemeriksaan]'");
+  while($data_jasa = mysqli_fetch_array($query_jasa)){
 
-	echo '<input type="checkbox" class="pilih-detail-dari-kepala-'.$data_header['id'].' filled-in" data-headernya="'.$data_header['id'].'"  id="pemeriksaan-'.$data_detail['id'].'" style="padding-right: 50%;" data-toogle="2" data-id="'.$data_detail['id'].'"  name="detail_header" data-kode-jasa="'.$data_jasa['kode_lab'].'" value="'.$data_jasa['nama_jasa'].'">
+  echo '<input type="checkbox" class="pilih-detail-dari-kepala-'.$data_header['id'].' filled-in" data-headernya="'.$data_header['id'].'"  id="pemeriksaan-'.$data_detail['id'].'" style="padding-right: 50%;" data-toogle="2" data-id="'.$data_detail['id'].'"  name="detail_header" data-kode-jasa="'.$data_jasa['kode_lab'].'" value="'.$data_jasa['nama_jasa'].'">
 
-	<label for="pemeriksaan-'.$data_detail['id'].'" data-id="'.$data_detail['id'].'" data-head="'.$data_header['id'].'" data-kode="'.$data_detail['nama_pemeriksaan'].'" data-nama="'.$data_detail['nama_sub'].'" data-kode-jasa="'.$data_jasa['kode_lab'].'" class="pilih-detail-dari-header head-'.$data_header['id'].'" data-toogle="2">
-	'.$data_jasa['nama_jasa'].'</label> <br>'; //nama yang tampil
+  <label for="pemeriksaan-'.$data_detail['id'].'" data-id="'.$data_detail['id'].'" data-head="'.$data_header['id'].'" data-kode="'.$data_detail['nama_pemeriksaan'].'" data-nama="'.$data_detail['nama_sub'].'" data-kode-jasa="'.$data_jasa['kode_lab'].'" class="pilih-detail-dari-header head-'.$data_header['id'].'" data-toogle="2">
+  '.$data_jasa['nama_jasa'].'</label> <br>'; //nama yang tampil
 
-	}
+  }
    }
 echo '
-	</div>
+  </div>
 </div>';
    // DETAIL dari HEADER END 
 
-	
-	}
+  
+  }
 }                  
 ?>
 <!--AKHIR TAMPILAN DATA HEADER & DETAILNYA-->
@@ -107,20 +108,23 @@ while($data_jasa = mysqli_fetch_array($query_jasa)){
 
 echo '
 <div class="row">
-	<div class="col-sm-8">';  
+  <div class="col-sm-8">';  
 
-	echo '<input type="checkbox" class="cekcbox-3 filled-in" id="pemeriksaan-'.$data_header['id'].'" data-id="'.$data_header['id'].'" data-toogle="3" data-kode-jasa="'.$data_jasa['kode_lab'].'" name="detail_solo" value="'.$data_jasa['nama_jasa'].'">
+  echo '<input type="checkbox" class="cekcbox-3 filled-in" id="pemeriksaan-'.$data_header['id'].'" data-id="'.$data_header['id'].'" data-toogle="3" data-kode-jasa="'.$data_jasa['kode_lab'].'" name="detail_solo" value="'.$data_jasa['nama_jasa'].'">
 
-	<label for="pemeriksaan-'.$data_header['id'].'" data-id="'.$data_header['id'].'" data-kode="'.$data_header['nama_pemeriksaan'].'" data-nama="'.$data_header['nama_sub'].'" data-kode-jasa="'.$data_jasa['kode_lab'].'" class="set-sendirian" data-toogle="3" id="label-'.$data_header['id'].'">
-	<b>'.$data_jasa['nama_jasa'].'</b></label> <br>'; //nama yang tampil
+  <label for="pemeriksaan-'.$data_header['id'].'" data-id="'.$data_header['id'].'" data-kode="'.$data_header['nama_pemeriksaan'].'" data-nama="'.$data_header['nama_sub'].'" data-kode-jasa="'.$data_jasa['kode_lab'].'" class="set-sendirian" data-toogle="3" id="label-'.$data_header['id'].'">
+  <b>'.$data_jasa['nama_jasa'].'</b></label> <br>'; //nama yang tampil
 
 echo '
-	</div>
+  </div>
 </div>';
-	}
-}                  
+  }
+}  
+
 ?>
 <!--AKHIR TAMPILAN DATA SENDIRIAN-->
+
+
 
 </div> <!-- /  -->
 
@@ -150,49 +154,49 @@ echo '
 
 <!--Mulai Padding layar-->
 <div style="padding-left: 5%; padding-right: 5%">
-	<!--Judul-->
-  	<h3><b>FORM INPUT JASA LABORATORIUM / RADIOLOGI</b></h3>
-  	<!--Garis-->
-  	<hr>
+  <!--Judul-->
+    <h3><b>FORM INPUT JASA LABORATORIUM / RADIOLOGI</b></h3>
+    <!--Garis-->
+    <hr>
 
 <!--Mulai Form and Proses-->
 <form role="form" >
-	<!--Mulai Row Pertama-->
-  	<div class="row">
-  		<!--Mulai Col SM Awal-->
-    	<div class="col-sm-8">
+  <!--Mulai Row Pertama-->
+    <div class="row">
+      <!--Mulai Col SM Awal-->
+      <div class="col-sm-10">
 
-	  		<div class="col-xs-2">
-	          <label for="no_rm">No RM</label>
-	          <input style="height: 20px;" value="<?php echo $no_rm ?>" type="text" class="form-control disable1" readonly="" id="no_rm" name="no_rm"    >
-	        </div>
+        <div class="col-xs-1">
+            <label for="no_rm">No RM</label>
+            <input style="height: 20px;" value="<?php echo $no_rm ?>" type="text" class="form-control disable1" readonly="" id="no_rm" name="no_rm"    >
+          </div>
 
-	        <div class="col-xs-2">
-	          <label for="no_rm">No REG</label>
-	          <input style="height: 20px;" value="<?php echo $no_reg ?>" type="text" class="form-control disable1" readonly="" id="no_reg" name="no_reg"    >
-	        </div>
+          <div class="col-xs-2">
+            <label for="no_rm">No REG</label>
+            <input style="height: 20px;" value="<?php echo $no_reg ?>" type="text" class="form-control disable1" readonly="" id="no_reg" name="no_reg"    >
+          </div>
 
-	        <div class="col-xs-2">
-	          <label for="no_rm">Pasien</label>
-	          <input style="height: 20px;" value="<?php echo $nama ?>" type="text" class="form-control disable1" readonly="" id="nama_pasien" name="nama_pasien"    >
-	        </div>
+          <div class="col-xs-3">
+            <label for="no_rm">Pasien</label>
+            <input style="height: 20px;" value="<?php echo $nama ?>" type="text" class="form-control disable1" readonly="" id="nama_pasien" name="nama_pasien"    >
+          </div>
 
-	        <div class="col-xs-3">
-       			<label> Dokter Pengirim </label><br>
-       			<select style="height: 20px;" name="dokter" id="dokter" class="form-control chosen" required="" >
-       			<?php 
-       			$query_dokter = $db->query("SELECT nama,id FROM user WHERE tipe = '1'");
-       			while($data_dokter = mysqli_fetch_array($query_dokter)){
-       				if ($data_dokter['id'] == $dokter) {
-       					echo "<option selected value='".$data_dokter['id'] ."'>".$data_dokter['nama'] ."</option>";
-       				}
-       				else{
-       					echo "<option value='".$data_dokter['id'] ."'>".$data_dokter['nama'] ."</option>";
-       				}
-       			}
-       			?>
-      			</select>
-    		</div>
+          <div class="col-xs-3">
+            <label> Dokter Pengirim </label><br>
+            <select style="height: 20px;" name="dokter" id="dokter" class="form-control chosen" required="" >
+            <?php 
+            $query_dokter = $db->query("SELECT nama,id FROM user WHERE tipe = '1'");
+            while($data_dokter = mysqli_fetch_array($query_dokter)){
+              if ($data_dokter['id'] == $dokter) {
+                echo "<option selected value='".$data_dokter['id'] ."'>".$data_dokter['nama'] ."</option>";
+              }
+              else{
+                echo "<option value='".$data_dokter['id'] ."'>".$data_dokter['nama'] ."</option>";
+              }
+            }
+            ?>
+            </select>
+        </div>
 
         <div class="form-group col-xs-3">
           <label for="penjamin">Petugas Analis</label><br>
@@ -207,33 +211,33 @@ echo '
             </select>
         </div>
 
-  		<!--Mulai Col SM Awal-->	
-    	</div>
+      <!--Mulai Col SM Awal-->  
+      </div>
 
-    	<!--Mulai Col 2 SM Awal (untuk nilai Penjualan)-->
-    	<div class="col-sm-4">
-    		<div class="card card-block">
+      <!--Mulai Col 2 SM Awal (untuk nilai Penjualan)-->
+      <div class="col-sm-2">
+        <div class="card card-block">
 
         <a type="button" class="btn btn-warning" href="registrasi_laboratorium.php"><i class="fa fa-reply-all"></i> Kembali</a>
 
 
-    		</div>
-  		<!--Mulai Col 2 SM Awal (untuk nilai Penjualan)-->
-    	</div>
+        </div>
+      <!--Mulai Col 2 SM Awal (untuk nilai Penjualan)-->
+      </div>
 
-	  	<!--Mulai Col SM Kedua-->
-	    <div class="col-sm-8">
+      <!--Mulai Col SM Kedua-->
+      <div class="col-sm-8">
 
-	    	<?php if($aps_periksa == 1): ?>
-	    	<button type="button" id="cari_jasa_laboratorium" class="btn btn-info " data-toggle="modal" data-target="#modal_lab"><i class='fa fa-search'></i> Cari Laboratorium (F1) </button> 
-        	<?php endif ?>
+        <?php if($aps_periksa == 1): ?>
+        <button type="button" id="cari_jasa_laboratorium" class="btn btn-info " data-toggle="modal" data-target="#modal_lab"><i class='fa fa-search'></i> Cari Laboratorium (F1) </button> 
+          <?php endif ?>
 
-        	<?php if($aps_periksa == 2): ?>
-	    	<button type="button" id="cari_jasa_radiologi" class="btn btn-info " data-toggle="modal" data-target="#myModal"><i class='fa fa-search'></i> Cari Radilogi (F2) </button> 
-        	<?php endif ?>
+          <?php if($aps_periksa == 2): ?>
+        <button type="button" id="cari_jasa_radiologi" class="btn btn-info " data-toggle="modal" data-target="#myModal"><i class='fa fa-search'></i> Cari Radilogi (F2) </button> 
+          <?php endif ?>
 
-	    <!--Akhir Col SM Kedua-->
-	    </div>
+      <!--Akhir Col SM Kedua-->
+      </div>
 
 <br><br>
 
@@ -264,21 +268,21 @@ echo '
 <!--Akhir Col SM Ketiga-->
 </div>
 
-		    <!--Mulai Input Hidden-->
-		    <input style="height: 20px;" value="<?php echo $jenis_penjualan ?>" type="hidden" class="form-control disable1" readonly="" id="jenis_penjualan" name="jenis_penjualan">
+        <!--Mulai Input Hidden-->
+        <input style="height: 20px;" value="<?php echo $jenis_penjualan ?>" type="hidden" class="form-control disable1" readonly="" id="jenis_penjualan" name="jenis_penjualan">
 
-		    <input style="height: 20px;" value="<?php echo $jenis_kelamin ?>" type="hidden" class="form-control disable1" readonly="" id="jenis_kelamin" name="jenis_kelamin">
+        <input style="height: 20px;" value="<?php echo $jenis_kelamin ?>" type="hidden" class="form-control disable1" readonly="" id="jenis_kelamin" name="jenis_kelamin">
 
-		    <input style="height: 20px;" value="<?php echo $aps_periksa ?>" type="hidden" class="form-control disable1" readonly="" id="aps_periksa" name="aps_periksa">
+        <input style="height: 20px;" value="<?php echo $aps_periksa ?>" type="hidden" class="form-control disable1" readonly="" id="aps_periksa" name="aps_periksa">
 
         <input style="height: 20px;" type="hidden" class="form-control disable1" readonly="" id="kolom_cek_harga" name="kolom_cek_harga">
-		    <!--Akhir Input Hidden-->
+        <!--Akhir Input Hidden-->
 
-  	<!--Akhir Row Pertama-->
-  	</div>
+    <!--Akhir Row Pertama-->
+    </div>
 
 
-  		
+      
 
 
 <!--Akhir Form and Proses-->
@@ -301,7 +305,7 @@ shortcut.add("f2", function() {
 <script type="text/javascript">
 //chosen selected
 $(".chosen").chosen({no_results_text: "Maaf, Data Tidak Ada!",
-	search_contains:true});  
+  search_contains:true});  
 </script>
 
 
@@ -508,7 +512,6 @@ $(document).on('click','.set-sendirian',function(e){
   $(document).ready(function(){
     $(document).on('click','#simpan_data',function(e){
 
-
     //TABLE AJAX TBS
     $('#table_tbs_laboratorium').DataTable().destroy();
         var dataTable = $('#table_tbs_laboratorium').DataTable( {
@@ -623,5 +626,35 @@ $(document).on('click','.set-sendirian',function(e){
 </script>
 <!--Mulai Script Proses Hapus TBS-->
 
+<!--<script type="text/javascript">
+$(document).ready(function(){
+var no_reg = $("#no_reg").val();
+    //Ambil Data Togle dari Header, Detail, dan Hasil Sendirian
+  
+  /*$("#pemeriksaan-header-35" ).prop( "checked", true );//Header35
+  $(".pilih-detail-dari-kepala-59" ).prop( "checked", true );//Detail dari Header 59
+  $("#pemeriksaan-sendiri-43" ).prop( "checked", true );
+  $("#pemeriksaan-sendiri-61" ).prop( "checked", true );//sendirian 43+61*/
+    $.getJSON("cek_data_tbs_aps.php",{no_reg:no_reg},function(info){
+ 
+  $.each(info.id_pemeriksaan, function(i, item) {
+
+  var id_pemeriksaan = info.id[i].id_pemeriksaan;
+
+  $("#pemeriksaan-header-"+info.id_pemeriksaan+"" ).prop( "checked", true );//Header35
+  $(".pilih-detail-dari-kepala-"+info.id_pemeriksaan+"" ).prop( "checked", true );//Detail dari Header 59
+  $("#pemeriksaan-sendiri-"+info.id_pemeriksaan+"" ).prop( "checked", true );//sendirian 43+61
+
+  //var tr_barang = 
+  //"<tr><td>"+ result.barang[i].kode_barang+"</td>                      <td>"+ result.barang[i].nama_barang+"</td>                         <td>"+ result.barang[i].jumlah_jual+"</td>                         <td>"+ result.barang[i].stok+"</td></tr>"
+
+    // $("#tbody-barang-jual").prepend(tr_barang);
+
+  });
+
+
+  });
+});
+</script>-->
 <!--footer-->
 <?php include 'footer.php'; ?>

@@ -22,7 +22,8 @@ $dokter = $data_petugas_jaga['nama_dokter'];
     <!-- Modal content-->
     <div class="modal-content">
     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>       
+        <button type="button" class="close" data-dismiss="modal">&times;</button>  
+        <center><h3><b>Batal Registrasi APS Laboratorium / Radiologi</b></h3></center>    
     </div>
     <div class="modal-body">
 
