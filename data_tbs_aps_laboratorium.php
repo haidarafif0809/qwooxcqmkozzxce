@@ -9,8 +9,8 @@ $requestData= $_REQUEST;
 
 $columns = array( 
     
-    0=>'kode_barang',
-    1=>'nama_pemeriksaan',
+    0=>'kode_jasa',
+    1=>'nama_jasa',
     2=>'dokter',
     3=>'analis',
     4=>'tanggal',
@@ -19,23 +19,23 @@ $columns = array(
     7=>'id'
 );
 
-$sql =" SELECT tbs.kode_barang,tbs.nama_pemeriksaan,u.nama AS dokter,us.nama AS analis,tbs.harga,tbs.tanggal,tbs.jam,tbs.id";
-$sql.=" FROM tbs_hasil_lab tbs LEFT JOIN user u ON tbs.dokter = u.id LEFT JOIN user us ON tbs.analis = us.id";
-$sql.=" WHERE tbs.no_reg = '$no_reg' AND tbs.status_pasien = 'APS' AND (tbs.no_faktur IS NULL OR tbs.no_faktur = '')";
+$sql =" SELECT tbs.kode_jasa,tbs.nama_jasa,u.nama AS dokter,us.nama AS analis,tbs.harga,tbs.tanggal,tbs.jam,tbs.id";
+$sql.=" FROM tbs_aps_penjualan tbs LEFT JOIN user u ON tbs.dokter = u.id LEFT JOIN user us ON tbs.analis = us.id";
+$sql.=" WHERE tbs.no_reg = '$no_reg' AND (tbs.no_faktur IS NULL OR tbs.no_faktur = '')";
 
 $query = mysqli_query($conn, $sql) or die("eror 1");
 $totalData = mysqli_num_rows($query);
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
-$sql =" SELECT tbs.kode_barang,tbs.nama_pemeriksaan,u.nama AS dokter,us.nama AS analis,tbs.harga,tbs.tanggal,tbs.jam,tbs.id";
-$sql.=" FROM tbs_hasil_lab tbs LEFT JOIN user u ON tbs.dokter = u.id LEFT JOIN user us ON tbs.analis = us.id";
-$sql.=" WHERE tbs.no_reg = '$no_reg' AND tbs.status_pasien = 'APS' AND (tbs.no_faktur IS NULL OR tbs.no_faktur = '')";
+$sql =" SELECT tbs.kode_jasa,tbs.nama_jasa,u.nama AS dokter,us.nama AS analis,tbs.harga,tbs.tanggal,tbs.jam,tbs.id";
+$sql.=" FROM tbs_aps_penjualan tbs LEFT JOIN user u ON tbs.dokter = u.id LEFT JOIN user us ON tbs.analis = us.id";
+$sql.=" WHERE tbs.no_reg = '$no_reg' AND (tbs.no_faktur IS NULL OR tbs.no_faktur = '')";
 
-  $sql.=" AND (tbs.kode_barang LIKE '".$requestData['search']['value']."%'";  
+  $sql.=" AND (tbs.kode_jasa LIKE '".$requestData['search']['value']."%'";  
   $sql.=" OR dokter LIKE '".$requestData['search']['value']."%' ";
   $sql.=" OR analis LIKE '".$requestData['search']['value']."%' ";
-  $sql.=" OR tbs.nama_pemeriksaan LIKE '".$requestData['search']['value']."%' )";
+  $sql.=" OR tbs.nama_jasa LIKE '".$requestData['search']['value']."%' )";
 
     $query=mysqli_query($conn, $sql) or die("eror 2");
 
@@ -58,14 +58,14 @@ while( $row = mysqli_fetch_array($query) ) {  // preparing an array
   $nestedData = array(); 
 
 
-      $nestedData[] = $row["kode_barang"];
-      $nestedData[] = $row["nama_pemeriksaan"];
+      $nestedData[] = $row["kode_jasa"];
+      $nestedData[] = $row["nama_jasa"];
       $nestedData[] = $row["dokter"];
       $nestedData[] = $row["analis"];
       $nestedData[] = $row["tanggal"];
       $nestedData[] = $row["jam"];
 
-      $nestedData[] = "<button class='btn btn-danger btn-sm btn-hapus-tbs' id='hapus-tbs-". $row['id'] ."' data-id='". $row['id'] ."' data-kode='". $row['kode_barang'] ."' data-barang='". $row['nama_pemeriksaan'] ."'>Hapus</button>";
+      $nestedData[] = "<button class='btn btn-danger btn-sm btn-hapus-tbs' id='hapus-tbs-". $row['id'] ."' data-id='". $row['id'] ."' data-kode='". $row['kode_jasa'] ."' data-barang='". $row['nama_jasa'] ."'>Hapus</button>";
       
       $nestedData[] = $row["id"];
 

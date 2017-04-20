@@ -473,6 +473,8 @@ if ($lihat['akuntansi_lihat'] > 0){
                             <ul>';
 }
 
+echo '<li><a href="laporan_jumlah_pasien.php" class="waves-effect">Lap. Jumlah Pasien</a></li>';
+
 if ($lihat['laporan_laboratorium_lihat'] > 0){
     echo '<li><a href="laporan_hasil_lab.php" class="waves-effect">Lap. Hasil Laboratorium</a></li>';
 }
