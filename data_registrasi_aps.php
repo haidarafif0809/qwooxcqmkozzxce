@@ -87,7 +87,7 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 
 	// untuk input hasil lab
 	if ($input_hasil_lab > 0) {
-	$show = $db->query("SELECT COUNT(*) AS jumlah FROM tbs_penjualan WHERE no_reg = '$row[no_reg]' AND lab = 'Laboratorium' ");
+	$show = $db->query("SELECT COUNT(*) AS jumlah FROM tbs_aps_penjualan WHERE no_reg = '$row[no_reg]' ");
 	$take = mysqli_fetch_array($show);
 
 		if ($take['jumlah'] > 0){
@@ -101,11 +101,11 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 			}
 			else{
 		
-			$nestedData[] = "<a href='cek_input_hasil_lab.php?no_rm=".$row['no_rm']."&nama=".$row['nama_pasien']."&no_reg=".$row['no_reg']."&jenis_penjualan=UGD' class='btn btn-floating btn-small btn-info'><i class='fa fa-pencil'></i></a>";
+			$nestedData[] = "<a href='input_tbs_aps_hasil_lab.php?no_rm=".$row['no_rm']."&nama=".$row['nama_pasien']."&no_reg=".$row['no_reg']."&jenis_penjualan=APS' class='btn btn-floating btn-small btn-info'><i class='fa fa-pencil'></i></a>";
 			}
 		}
 		else{
-	  	$nestedData[] = "<p style='color:red'>Input Laboratorium</p>";
+	  	$nestedData[] = "<p style='color:red'>Input Jasa Laboratorium</p>";
 
 		}
 	}

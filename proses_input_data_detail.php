@@ -40,7 +40,7 @@ while($data_query_select_detail = mysqli_fetch_array($query_select_detail)){
   $harga_jasa = $data_nama_jasa['harga_1'];
   
   //INSERT DATA DETAILNYA
-  $query_insert_tbs_hasil = $db->query("INSERT INTO tbs_hasil_lab
+  /*$query_insert_tbs_hasil = $db->query("INSERT INTO tbs_hasil_lab
     (id_pemeriksaan, no_reg, no_rm, kode_barang, status_pasien,
     nilai_normal_lk,nilai_normal_pr,normal_lk2,normal_pr2,
     nama_pemeriksaan,model_hitung,satuan_nilai_normal,id_sub_header,
@@ -55,7 +55,13 @@ while($data_query_select_detail = mysqli_fetch_array($query_select_detail)){
     '$data_query_select_detail[satuan_nilai_normal]',
     '$data_query_select_detail[sub_hasil_lab]',
     '$data_query_select_detail[id]','$tanggal','$jam','$dokter',
-    '$analis','$harga_jasa')");
+    '$analis','$harga_jasa')");*/
+
+    //INSERT TBS APS PENJUALAN
+    $query_insert_tbs_aps_penjualan = $db->query("INSERT INTO tbs_aps_penjualan (no_reg,kode_jasa,nama_jasa,harga,dokter,
+      analis,tanggal,jam) VALUES ('$no_reg','$kode_jasa_lab',
+      '$nama_jasa','$harga_jasa','$dokter','$analis','$tanggal',
+      '$jam')");
 
   }
 
