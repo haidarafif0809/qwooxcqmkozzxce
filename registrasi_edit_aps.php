@@ -6,18 +6,21 @@ include_once 'sanitasi.php';
 
 $no_reg = stringdoang($_GET['no_reg']);
 
-$select_registrasi = $db->query("SELECT no_rm,nama_pasien,jenis_kelamin,hp_pasien,aps_periksa FROM registrasi WHERE no_reg = '$no_reg' AND jenis_pasien = 'APS' ");
+$select_registrasi = $db->query("SELECT no_rm,nama_pasien,jenis_kelamin,hp_pasien,aps_periksa,gol_darah, dokter_pengirim FROM registrasi WHERE no_reg = '$no_reg' AND jenis_pasien = 'APS' ");
 $data_registrasi = mysqli_fetch_array($select_registrasi);
 $no_rm = $data_registrasi['no_rm'];
 $nama_pasien = $data_registrasi['nama_pasien'];
 $jenis_kelamin = $data_registrasi['jenis_kelamin'];
+$gol_darah = $data_registrasi['gol_darah'];
+$dokter_pengirim = $data_registrasi['dokter_pengirim'];
 $hp_pasien = $data_registrasi['hp_pasien'];
 $aps_periksa = $data_registrasi['aps_periksa'];//1 = Lab, 2 = Radiologi
 
-$select_pelanggan = $db_pasien->query("SELECT tgl_lahir,alamat_sekarang FROM pelanggan WHERE kode_pelanggan = '$no_rm'");
+$select_pelanggan = $db_pasien->query("SELECT tgl_lahir,alamat_sekarang, agama FROM pelanggan WHERE kode_pelanggan = '$no_rm'");
 $data_pelanggan = mysqli_fetch_array($select_pelanggan);
 $tanggal_lahir = $data_pelanggan['tgl_lahir'];
 $alamat = $data_pelanggan['alamat_sekarang'];
+$agama = $data_pelanggan['agama'];
 
 $query_petugas = $db->query("SELECT nama_dokter,nama_paramedik,nama_farmasi FROM penetapan_petugas ");
 $data_petugas = mysqli_fetch_array($query_petugas);
@@ -88,7 +91,7 @@ $dokter = $data_petugas['nama_dokter'];
         <div class="form-group">
           <label for="sel1">Golongan Darah</label>
             <select class="form-control" id="gol_darah" name="gol_darah" autocomplete="off">
-            <option value="-">-</option>
+            <option value="<?php echo $gol_darah ?>"><?php echo $gol_darah; ?></option>
             <option value="A">A</option>
             <option value="B">B</option>
             <option value="O">O</option>
@@ -109,7 +112,7 @@ $dokter = $data_petugas['nama_dokter'];
         <div class="form-group">
           <label for="sel1">Agama</label>
           <select class="form-control" id="agama" name="agama" autocomplete="off">
-          <option value="-">-</option>
+          <option value="<?php echo $agama ?>"> <?php echo $agama; ?></option>
             <option value="islam">Islam</option>
             <option value="khatolik">Khatolik</option>
             <option value="kristen">Kristen</option>
@@ -157,7 +160,13 @@ $dokter = $data_petugas['nama_dokter'];
                 $query = $db->query("SELECT id,nama FROM user WHERE tipe = '1' ");
                 while ( $data = mysqli_fetch_array($query)) 
                 {
-                  echo "<option value='".$data['id']."'>".$data['nama']."</option>";
+                  if ($dokter_pengirim == $data['id']) {
+                    echo "<option selected value='".$data['id']."'>".$data['nama']."</option>";
+                  }
+                  else{
+                    echo "<option value='".$data['id']."'>".$data['nama']."</option>";
+                  }
+                  
                 }
                 ?>
             </select>

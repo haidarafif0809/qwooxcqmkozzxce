@@ -148,9 +148,9 @@ $dokter = $data_petugas_jaga['nama_dokter'];
 
 				<div class="form-group">
 				    <label for="sel1">Dokter </label>
-				    <select class="form-control" id="dokter" name="dokter" required="" autocomplete="off">
+				    <select class="form-control" id="dokter" name="dokter" autocomplete="off">
 				        <?php 
-				        $query = $db->query("SELECT nama FROM user WHERE tipe = '1' ");
+				        $query = $db->query("SELECT id,nama FROM user WHERE tipe = '1' ");
 				        while ( $data = mysqli_fetch_array($query)) 
 				        {
 							 if ($dokter == $data['nama']) {
