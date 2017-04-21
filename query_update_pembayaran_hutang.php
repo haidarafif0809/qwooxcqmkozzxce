@@ -11,13 +11,15 @@ while($data_pembayaranhutang = mysqli_fetch_array($query_pembayaran_hutang)){
 
 $query_jurnal_trans = $db->query("SELECT no_faktur,SUM(kredit) AS kredit, SUM(debit) AS debit FROM jurnal_trans WHERE no_faktur = '$data_pembayaranhutang[no_faktur_pembayaran]'");
 $data_query_jurnal_trans  = mysqli_fetch_array($query_jurnal_trans);
+$jumlah_query_jurnal_trans  = mysqli_num_rows($query_jurnal_trans);
 
-if ($data_query_jurnal_trans['debit'] != $data_query_jurnal_trans['kredit'])
+
+if ($data_query_jurnal_trans['debit'] != $data_query_jurnal_trans['kredit'] OR  $jumlah_query_jurnal_trans < 3)
 {
 
 echo "1";
 
-$delete_jurnal_lama = $db->query(" DELETE FROM jurnal_trans WHERE no_faktur = '$data_pembayaranhutang[no_faktur_pembayaran]' ");
+$delete_jurnal_lama = $db->query(" DELETE FROM jurnal_trans WHERE no_faktur = '$data_query_jurnal_trans[no_faktur]' ");
 
 $select_setting_akun = $db->query("SELECT hutang,potongan_hutang FROM setting_akun");
 $ambil_setting = mysqli_fetch_array($select_setting_akun);
