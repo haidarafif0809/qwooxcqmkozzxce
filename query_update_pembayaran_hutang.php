@@ -5,25 +5,19 @@ include 'sanitasi.php';
 $dari_tanggal = stringdoang($_GET['dari_tanggal']);
 $sampai_tanggal = stringdoang($_GET['sampai_tanggal']);
 
-$query_pembayaran_hutang = $db->query("SELECT no_faktur_pembayaran FROM pembayaran_hutang WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' ");
-$data_pembayaran_hutang = mysqli_fetch_array($query_pembayaran_hutang);
-
-$query_jurnal_trans = $db->query("SELECT no_faktur FROM jurnal_trans WHERE no_faktur = '$data_pembayaran_hutang[no_faktur_pembayaran]'");
-$jumlah_data_query_jurnal_trans  = mysqli_num_rows($query_jurnal_trans);
+$query_pembayaran_hutang = $db->query("SELECT * FROM pembayaran_hutang WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' ");
+while($data_pembayaranhutang = mysqli_fetch_array($query_pembayaran_hutang)){
 
 
+$query_jurnal_trans = $db->query("SELECT no_faktur,SUM(kredit) AS kredit, SUM(debit) AS debit FROM jurnal_trans WHERE no_faktur = '$data_pembayaranhutang[no_faktur_pembayaran]'");
+$data_query_jurnal_trans  = mysqli_fetch_array($query_jurnal_trans);
 
-if ($jumlah_data_query_jurnal_trans < 2)
+if ($data_query_jurnal_trans['debit'] != $data_query_jurnal_trans['kredit'])
 {
 
+echo "1";
 
-$delete_jurnal_lama = $db->query(" DELETE FROM jurnal_trans WHERE jenis_transaksi = 'Pembayaran Hutang' ");
-
-
-$query_pembayaranhutang = $db->query("SELECT * FROM pembayaran_hutang WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal'");
-while($data_pembayaranhutang = mysqli_fetch_array($query_pembayaranhutang)){
-
-
+$delete_jurnal_lama = $db->query(" DELETE FROM jurnal_trans WHERE no_faktur = '$data_pembayaranhutang[no_faktur_pembayaran]' ");
 
 $select_setting_akun = $db->query("SELECT hutang,potongan_hutang FROM setting_akun");
 $ambil_setting = mysqli_fetch_array($select_setting_akun);
@@ -50,9 +44,11 @@ if ($potongan != "" || $potongan != '0') {
 
 
 }//end while 
-echo "success";
+
 
 
 }//end if jika jumlah baris jurnal  kurang dari 2
+echo "success";
+
 
  ?>
