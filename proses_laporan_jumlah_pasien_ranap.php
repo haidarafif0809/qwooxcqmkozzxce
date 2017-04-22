@@ -9,7 +9,11 @@ $sampai_tanggal = stringdoang($_POST['sampai_tanggal']);
 $query_hitung_jumlah_hari = $db->query("SELECT SUM(DATEDIFF(DATE(p.tanggal), r.tanggal_masuk)) AS jumlah_hari FROM registrasi r INNER JOIN penjualan p ON r.no_reg = p.no_reg WHERE r.jenis_pasien = 'Rawat Inap' AND r.tanggal_masuk >= '$dari_tanggal' AND r.tanggal_masuk <= '$sampai_tanggal'");
 $data_hitung_jumlah_hari = mysqli_fetch_array($query_hitung_jumlah_hari);
 
-$total_pasien_ranap = $data_hitung_jumlah_hari['jumlah_hari'];
+$query_hitung_tanggal_sama = $db->query("SELECT COUNT(r.no_reg) AS jumlah_tanggal_sama FROM registrasi r INNER JOIN penjualan p ON r.no_reg = p.no_reg WHERE r.jenis_pasien = 'Rawat Inap' AND r.tanggal_masuk >= '2017-04-01' AND r.tanggal_masuk <= '2017-04-22' AND r.tanggal_masuk = p.tanggal");
+$data_hitung_tanggal_sama = mysqli_fetch_array($query_hitung_tanggal_sama);
+
+
+$total_pasien_ranap = $data_hitung_jumlah_hari['jumlah_hari'] + $data_hitung_tanggal_sama['jumlah_tanggal_sama'];
 
 // storing  request (ie, get/post) global array to a variable  
 $requestData= $_REQUEST;
@@ -65,7 +69,13 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
       $nestedData[] = $row['penjamin'];
       $nestedData[] = $row['tanggal_masuk'];
       $nestedData[] = $row['tanggal'];
-      $nestedData[] = $row['jumlah_hari'];
+
+      if ($row['tanggal_masuk'] == $row['tanggal']) {
+        $nestedData[] = "1";
+      }
+      else{
+        $nestedData[] = $row['jumlah_hari'];
+      }
 
   $data[] = $nestedData;
 

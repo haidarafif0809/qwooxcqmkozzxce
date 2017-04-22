@@ -114,16 +114,24 @@ $data_perusahaan = mysqli_fetch_array($query_perusahaan);
         $totalDataInap = mysqli_num_rows($query_pasien_inap);        
         while ($data_pasien_inap = mysqli_fetch_array($query_pasien_inap)) {
 
+            if ($data_pasien_inap['tanggal_masuk'] == $data_pasien_inap['tanggal']) {
+               $jumlah_psaien = 1;
+            }
+            else{
+              $jumlah_psaien = $data_pasien_inap['jumlah_hari'] ."</td>";
+            }
+
             echo "<tr>
               <td>". $data_pasien_inap['no_faktur'] ."</td>
               <td>". $data_pasien_inap['nama_pasien'] ."</td>
               <td>". $data_pasien_inap['penjamin'] ."</td>
               <td align='right'>". $data_pasien_inap['tanggal_masuk'] ."</td>
               <td align='right'>". $data_pasien_inap['tanggal'] ."</td>
-              <td align='right'>". $data_pasien_inap['jumlah_hari'] ."</td>
-            </tr>";
+              <td align='right'>". $jumlah_psaien ."</td>
+              
+              </tr>";
 
-            $total_pasien_ranap = $total_pasien_ranap + $data_pasien_inap['jumlah_hari'];
+            $total_pasien_ranap = $total_pasien_ranap + $jumlah_psaien;
         }
 
             echo "<tr>
