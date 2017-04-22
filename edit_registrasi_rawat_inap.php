@@ -14,11 +14,11 @@ $no_reg = stringdoang($_GET['no_reg']);
 
 
 
-$query7 = $db->query("SELECT * FROM registrasi WHERE no_reg = '$no_reg' ");
-$regis = mysqli_fetch_array($query7);
+$query_registrasi = $db->query("SELECT reg.ruangan, reg.no_rm, reg.no_reg, reg.bed, reg.group_bed, reg.rujukan, reg.penjamin, reg.nama_pasien, reg.jenis_kelamin, reg.gol_darah, reg.alamat_pasien, reg.hp_pasien, reg.menginap, reg.surat_jaminan, reg.kondisi, reg.poli, reg.dokter, reg.alergi, reg.no_kk, reg.nama_kk, reg.status_nikah, reg.penanggung_jawab, reg.hubungan_dengan_pasien, reg.pekerjaan_penanggung_jawab, reg.hp_penanggung_jawab, reg.alamat_penanggung_jawab, r.nama_ruangan FROM registrasi reg LEFT JOIN ruangan r ON reg.ruangan = r.id WHERE reg.no_reg = '$no_reg' ");
+$data_registrasi = mysqli_fetch_array($query_registrasi);
 
 
-$query8 = $db->query("SELECT * FROM pelanggan WHERE kode_pelanggan = '$regis[no_rm]' ");
+$query8 = $db->query("SELECT * FROM pelanggan WHERE kode_pelanggan = '$data_registrasi[no_rm]' ");
 $pelanggan = mysqli_fetch_array($query8);
 
 
@@ -69,12 +69,13 @@ $dq = mysqli_fetch_array($q);
       </div>
       <div class="modal-body">
       <div class="table-responsive">
-        <table id="siswa1" class="table table-bordered table-hover table-striped">
+        <table id="table_kamar" class="table table-bordered table-hover table-striped">
           <thead>
           <tr>
           <th>Kelas</th>
           <th>Kode Kamar</th>
           <th>Nama Kamar</th>
+          <th>Ruangan</th>
           <th>Fasilitas</th>
           <th>Jumlah Bed </th>
           <th> Sisa Bed </th>                         
@@ -83,7 +84,7 @@ $dq = mysqli_fetch_array($q);
           <tbody>
           <?php
           //Data mentah yang ditampilkan ke tabel    
-          include 'db.php';
+         /* include 'db.php';
           $hasil = $db->query("SELECT * FROM bed WHERE sisa_bed != 0 ");
                                         
           while ($data =  $hasil->fetch_assoc()) {
@@ -95,20 +96,19 @@ $dq = mysqli_fetch_array($q);
             $kelas = $out_kelas['nama'];
           }
         }
-          ?>
+          
           <tr class="pilih2" 
-          data-nama="<?php echo $data['nama_kamar']; ?>" 
-          data-group-bed="<?php echo $data['group_bed']; ?>" >
-          <td><?php echo $kelas; ?></td>
-          <td><?php echo $data['nama_kamar']; ?></td>
-          <td><?php echo $data['group_bed']; ?></td>
-          <td><?php echo $data['fasilitas']; ?></td>
-        <td><?php echo $data['jumlah_bed']; ?></td>         
-          <td><?php echo $data['sisa_bed']; ?></td>
+          data-nama="$data['nama_kamar'];" 
+          data-group-bed="$data['group_bed'];">
+          <td>$kelas;</td>
+          <td>$data['nama_kamar'];</td>
+          <td>$data['group_bed'];</td>
+          <td>$data['fasilitas'];</td>
+        <td>$data['jumlah_bed'];</td>         
+          <td>$data['sisa_bed'];</td>
                                         
           </tr>
-          <?php
-          }
+          }*/
           ?>
           </tbody>
           </table>  
@@ -187,20 +187,30 @@ $dq = mysqli_fetch_array($q);
 
 
 <div class="form-group">
-    <input style="height: 20px;" type="hidden" value="<?php echo $regis['no_rm'];?>"  class="form-control" id="no_rm_lama" name="no_rm_lama" readonly="">
+    <input style="height: 20px;" type="hidden" value="<?php echo $data_registrasi['no_rm'];?>"  class="form-control" id="no_rm_lama" name="no_rm_lama" readonly="">
 </div>
 
 
-  <input style="height: 20px;" type="hidden" class="form-control" value="<?php echo $regis['bed'];?>" id="group_bed_lama" name="group_bed_lama" autocomplete="off">
+  <input style="height: 20px;" type="hidden" class="form-control" value="<?php echo $data_registrasi['bed'];?>" id="group_bed_lama" name="group_bed_lama" autocomplete="off">
 
-  <input style="height: 20px;" type="hidden" class="form-control" id="bed_lama" value="<?php echo $regis['group_bed'];?>" name="bed_lama" autocomplete="off">
-
-
-
-<button type="button" accesskey="c" class="btn btn-warning" data-toggle="modal" data-target="#myModal1"> <i class="fa fa-search"></i> <u>C</u>ari kamar</button> 
+  <input style="height: 20px;" type="hidden" class="form-control" id="bed_lama" value="<?php echo $data_registrasi['group_bed'];?>" name="bed_lama" autocomplete="off">
 
 
- <br><br>
+<div class="form-group">
+  <label for="sel1">Ruangan:</label>
+  <select class="form-control" id="ruangan" name="ruangan"  autocomplete="off">
+   <option value="<?php echo $data_registrasi['ruangan'] ?>"><?php echo $data_registrasi['nama_ruangan'] ?></option>
+   <option value="">Silakan Pilih</option>
+      <?php 
+      $query_ruangan = $db->query("SELECT id,nama_ruangan FROM ruangan ORDER BY id");
+      while ( $data_ruangan = mysqli_fetch_array($query_ruangan)) {
+      echo "<option value='".$data_ruangan['id']."'>".$data_ruangan['nama_ruangan']."</option>";
+      }
+      ?>
+  </select>
+</div>
+
+<button type="button" id="cari_kamar" accesskey="c" class="btn btn-warning" data-toggle="modal"> <i class="fa fa-search"></i> <u>C</u>ari kamar</button> 
 
 <div class="card card-block">
 
@@ -208,13 +218,13 @@ $dq = mysqli_fetch_array($q);
  
 <div class="form-group" >
   <label for="bed">Kamar:</label>
-  <input style="height: 20px;" type="text" class="form-control disable5" value="<?php echo $regis['bed'];?>" id="group_bed" name="group_bed" autocomplete="off" required="" >
+  <input style="height: 20px;" type="text" class="form-control disable5" value="<?php echo $data_registrasi['bed'];?>" id="group_bed" name="group_bed" autocomplete="off" required="" >
 </div>
 
 
 <div class="form-group" >
   <label for="bed">Bed:</label>
-  <input style="height: 20px;" type="text" class="form-control disable5" id="bed" value="<?php echo $regis['group_bed'];?>" name="bed" autocomplete="off"  required=""  >
+  <input style="height: 20px;" type="text" class="form-control disable5" id="bed" value="<?php echo $data_registrasi['group_bed'];?>" name="bed" autocomplete="off"  required=""  >
 </div>
 </div><!--<div card card-block kamar-->
 
@@ -225,7 +235,7 @@ $dq = mysqli_fetch_array($q);
 <div class="form-group">
   <label for="sel1">Perujuk </label>
   <select class="form-control ss" id="rujukan" name="rujukan" required=""  autocomplete="off">
-   <option value="<?php echo $regis['rujukan'];?>"><?php echo $regis['rujukan'];?></option>
+   <option value="<?php echo $data_registrasi['rujukan'];?>"><?php echo $data_registrasi['rujukan'];?></option>
    <option value="Non Rujukan">Non Rujukan</option>
  <?php 
   $query = $db->query("SELECT nama FROM perujuk "); 
@@ -240,7 +250,7 @@ $dq = mysqli_fetch_array($q);
 <div class="form-group">
   <label for="sel1">Penjamin </label>
   <select class="form-control ss" id="penjamin" name="penjamin" required="" autocomplete="off">
-   <option value="<?php echo $regis['penjamin'];?>"><?php echo $regis['penjamin'];?></option>
+   <option value="<?php echo $data_registrasi['penjamin'];?>"><?php echo $data_registrasi['penjamin'];?></option>
  <?php 
   $query = $db->query("SELECT nama FROM penjamin WHERE status = 'Aktif' ORDER BY id ASC");
   while ( $data = mysqli_fetch_array($query)) 
@@ -258,13 +268,13 @@ $dq = mysqli_fetch_array($q);
   <br>
   <div class="form-group">
     <label for="nama_lengkap">Nama Lengkap Pasien:</label>
-    <input style="height: 20px;" type="text" class="form-control" id="nama_lengkap" name="nama_lengkap" value="<?php echo $regis['nama_pasien'];?>" required="" autocomplete="off">
+    <input style="height: 20px;" type="text" class="form-control" id="nama_lengkap" name="nama_lengkap" value="<?php echo $data_registrasi['nama_pasien'];?>" required="" autocomplete="off">
   </div>
 
 
 <div class="form-group">
   <label for="sel1">Jenis Kelamin</label>
-  <select class="form-control ss" name="jenis_kelamin" id="jenis_kelamin" required="" value="<?php echo $regis['jenis_kelamin'];?>" autocomplete="off">
+  <select class="form-control ss" name="jenis_kelamin" id="jenis_kelamin" required="" value="<?php echo $data_registrasi['jenis_kelamin'];?>" autocomplete="off">
     <option value="laki-laki">Laki-Laki</option>
     <option value="perempuan">Perempuan</option> 
   </select>
@@ -289,7 +299,7 @@ $dq = mysqli_fetch_array($q);
 
 <div class="form-group">
   <label for="sel1">Golongan Darah</label>
-  <select class="form-control ss" id="gol_darah" name="gol_darah" value="<?php echo $regis['gol_darah'];?>"autocomplete="off">
+  <select class="form-control ss" id="gol_darah" name="gol_darah" value="<?php echo $data_registrasi['gol_darah'];?>"autocomplete="off">
     <option value="-">-</option>
     <option value="A">A</option>
     <option value="B">B</option>
@@ -302,7 +312,7 @@ $dq = mysqli_fetch_array($q);
 
 <div class="form-group">
     <label for="alamat_sekarang">Alamat Sekarang:</label>
-    <textarea class="form-control" id="alamat_sekarang" name="alamat_sekarang"  required="" autocomplete="off"><?php echo $regis['alamat_pasien'];?></textarea>
+    <textarea class="form-control" id="alamat_sekarang" name="alamat_sekarang"  required="" autocomplete="off"><?php echo $data_registrasi['alamat_pasien'];?></textarea>
 </div>
 
 </div>
@@ -319,19 +329,19 @@ $dq = mysqli_fetch_array($q);
 
 <div class="form-group">
     <label for="no_telepon">No Telpon / HP:</label>
-    <input style="height: 20px;" type="text" required=""  class="form-control" id="no_telepon" value="<?php echo $regis['hp_pasien'];?>" name="no_telepon" autocomplete="off">
+    <input style="height: 20px;" type="text" required=""  class="form-control" id="no_telepon" value="<?php echo $data_registrasi['hp_pasien'];?>" name="no_telepon" autocomplete="off">
 </div>
 
 
 
 <div class="form-group" >
   <label for="umur">Perkiraan Menginap:</label>
-  <input style="height: 20px;" type="text" onkeypress="return isNumberKey(event)" class="form-control" id="perkiraan_menginap" value="<?php echo $regis['menginap'];?>"  name="perkiraan_menginap" required=""  autocomplete="off">
+  <input style="height: 20px;" type="text" onkeypress="return isNumberKey(event)" class="form-control" id="perkiraan_menginap" value="<?php echo $data_registrasi['menginap'];?>"  name="perkiraan_menginap" required=""  autocomplete="off">
 </div>
 
 <div class="form-group" >
     <label for="umur">Surat Jaminan:</label>
-    <input style="height: 20px;" type="text" class="form-control" id="surat_jaminan"  name="surat_jaminan" value="<?php echo $regis['surat_jaminan'];?>"  required="" autocomplete="off">
+    <input style="height: 20px;" type="text" class="form-control" id="surat_jaminan"  name="surat_jaminan" value="<?php echo $data_registrasi['surat_jaminan'];?>" autocomplete="off">
 </div>
 
 
@@ -344,7 +354,7 @@ $dq = mysqli_fetch_array($q);
 
 <div class="form-group">
   <label for="sel1"><u>K</u>eadaan Umum Pasien</label>
-  <select class="form-control" accesskey="k"id="kondisi" name="kondisi" value="<?php echo $regis['kondisi'];?>" required="" autocomplete="off">
+  <select class="form-control" accesskey="k"id="kondisi" name="kondisi" value="<?php echo $data_registrasi['kondisi'];?>" required="" autocomplete="off">
     <option value="Tampak Normal">Tampak Normal</option>
     <option value="Pucat dan Lemas">Pucat dan Lemas</option>
     <option value="Sadar dan Cidera">Sadar dan Cidera</option>
@@ -355,7 +365,7 @@ $dq = mysqli_fetch_array($q);
 
 <div class="form-group">
   <label for="sel1">Poli / Penunjang Medik</label>
-  <select class="form-control ss" id="sel1" name="poli" required="" value="<?php echo $regis['poli'];?>" autocomplete="off">
+  <select class="form-control ss" id="sel1" name="poli" required="" value="<?php echo $data_registrasi['poli'];?>" autocomplete="off">
   
  <?php 
   $query = $db->query("SELECT nama FROM poli ");
@@ -371,7 +381,7 @@ $dq = mysqli_fetch_array($q);
 <div class="form-group">
   <label for="sel1">Dokter Pelaksana</label>
   <select class="form-control ss" id="dokter" name="dokter" required="" autocomplete="off">
-      <option value="<?php echo $regis['dokter']; ?>"><?php echo $regis['dokter']; ?></option>
+      <option value="<?php echo $data_registrasi['dokter']; ?>"><?php echo $data_registrasi['dokter']; ?></option>
     <option value="<?php echo $nama_dokter; ?>"><?php echo $nama_dokter; ?></option>
  <?php 
   $query = $db->query("SELECT nama FROM user WHERE tipe = '1'  "); 
@@ -386,7 +396,7 @@ $dq = mysqli_fetch_array($q);
 <div class="form-group">
     <label for="alamat">Dokter Penanggung Jawab </label>
     <select class="form-control ss" id="dokter_penanggung_jawab" name="dokter_penanggung_jawab" required="" autocomplete="off">
-          <option value="<?php echo $regis['dokter']; ?>"><?php echo $regis['dokter']; ?></option>
+          <option value="<?php echo $data_registrasi['dokter']; ?>"><?php echo $data_registrasi['dokter']; ?></option>
     <option value="<?php echo $nama_dokter; ?>"><?php echo $nama_dokter; ?></option>
     <?php 
     $query = $db->query("SELECT nama FROM user WHERE tipe = '1' ");
@@ -399,7 +409,7 @@ $dq = mysqli_fetch_array($q);
 
 <div class="form-group ">
   <label >Alergi Obat *</label>
-  <input style="height: 20px;" type="text" class="form-control" id="alergi" name="alergi"  required="" value="<?php echo $regis['alergi'];?>" placeholder="Wajib Isi" autocomplete="off"> 
+  <input style="height: 20px;" type="text" class="form-control" id="alergi" name="alergi"  required="" value="<?php echo $data_registrasi['alergi'];?>" placeholder="Wajib Isi" autocomplete="off"> 
 </div>
 
 
@@ -433,12 +443,12 @@ $dq = mysqli_fetch_array($q);
 
 <div class="form-group">
     <label for="no_ktp">No Keluarga:</label>
-    <input style="height: 20px;" type="text" onkeypress="return isNumberKey(event)" class="form-control" id="no_kk" value="<?php echo $regis['no_kk'];?>" name="no_kk" autocomplete="off">
+    <input style="height: 20px;" type="text" onkeypress="return isNumberKey(event)" class="form-control" id="no_kk" value="<?php echo $data_registrasi['no_kk'];?>" name="no_kk" autocomplete="off">
   </div>
 
   <div class="form-group">
     <label for="no_ktp">Nama KK:</label>
-    <input style="height: 20px;" type="text" class="form-control" id="nama_kk" name="nama_kk" value="<?php echo $regis['nama_kk'];?>" autocomplete="off">
+    <input style="height: 20px;" type="text" class="form-control" id="nama_kk" name="nama_kk" value="<?php echo $data_registrasi['nama_kk'];?>" autocomplete="off">
   </div>
 
 
@@ -455,7 +465,7 @@ $dq = mysqli_fetch_array($q);
 </div>
   <div class="form-group">
   <label for="sel1">Status Perkawinan</label>
-  <select class="form-control ss" id="sel1" name="status_kawin" value="<?php echo $regis['status_nikah'];?>" autocomplete="off">
+  <select class="form-control ss" id="sel1" name="status_kawin" value="<?php echo $data_registrasi['status_nikah'];?>" autocomplete="off">
             <option value="-">-</option>
    <option value="belum menikah">Belum Menikah</option>
     <option value="menikah">Menikah</option>
@@ -499,14 +509,14 @@ $dq = mysqli_fetch_array($q);
 
 <div class="form-group">
     <label for="pekerjaan_pasien">Nama Penganggung Jawab :</label>
-    <input style="height: 20px;" value="<?php echo $regis['penanggung_jawab'];?>" type="text" class="form-control" id="nama_penanggungjawab" name="nama_penanggungjawab" autocomplete="off">
+    <input style="height: 20px;" value="<?php echo $data_registrasi['penanggung_jawab'];?>" type="text" class="form-control" id="nama_penanggungjawab" name="nama_penanggungjawab" autocomplete="off">
 </div>
 
 
   <div class="form-group" >
   <label for="umur">Hubungan Dengan Pasien</label>
   <select id="hubungan_dengan_pasien" class="form-control ss"  name="hubungan_dengan_pasien" autocomplete="off">
-    <option value="<?php echo $regis['hubungan_dengan_pasien'];?>"><?php echo $regis['hubungan_dengan_pasien'];?></option>
+    <option value="<?php echo $data_registrasi['hubungan_dengan_pasien'];?>"><?php echo $data_registrasi['hubungan_dengan_pasien'];?></option>
   <option value="Orang Tua">Orang Tua</option>
   <option value="Suami/Istri">Suami/Istri</option>
   <option value="Anak">Anak</option>
@@ -518,17 +528,17 @@ $dq = mysqli_fetch_array($q);
 
 <div class="form-group">
     <label for="pekerjaan_pasien">Pekerjaan Penanggung Jawab :</label>
-    <input style="height: 20px;" type="text" class="form-control" value="<?php echo $regis['pekerjaan_penanggung_jawab'];?>"" id="pekerjaan_penanggung" name="pekerjaan_penanggung" autocomplete="off">
+    <input style="height: 20px;" type="text" class="form-control" value="<?php echo $data_registrasi['pekerjaan_penanggung_jawab'];?>"" id="pekerjaan_penanggung" name="pekerjaan_penanggung" autocomplete="off">
 </div>
 
 <div class="form-group">
     <label for="no_hp_penanggung">No Hp Penganggung Jawab :</label>
-    <input style="height: 20px;" type="text" onkeypress="return isNumberKey(event)" value="<?php echo $regis['hp_penanggung_jawab'];?>" class="form-control" id="no_hp_penanggung" name="no_hp_penanggung" autocomplete="off">
+    <input style="height: 20px;" type="text" onkeypress="return isNumberKey(event)" value="<?php echo $data_registrasi['hp_penanggung_jawab'];?>" class="form-control" id="no_hp_penanggung" name="no_hp_penanggung" autocomplete="off">
 </div>
 
 <div class="form-group">
     <label for="alamat_penanggung">Alamat Penanggung Jawab:</label>
-    <textarea class="form-control" id="alamat_penanggung" name="alamat_penanggung" autocomplete="off"><?php echo $regis['alamat_penanggung_jawab'];?> </textarea>
+    <textarea class="form-control" id="alamat_penanggung" name="alamat_penanggung" autocomplete="off"><?php echo $data_registrasi['alamat_penanggung_jawab'];?> </textarea>
 </div>
 
 
@@ -630,6 +640,49 @@ script end chossen-->
     });
 </script>
 
+<script type="text/javascript">
+  // cari kamar seuai dengan ruangannya
+    $(document).on('click','#cari_kamar',function() {
+  
+        $("#myModal1").modal('show');
+        $('#table_kamar').DataTable().destroy();
+
+          var dataTable = $('#table_kamar').DataTable( {
+          "processing": true,
+          "serverSide": true,
+          "info":     false,
+          "language": {
+        "emptyTable":     "My Custom Message On Empty Table"
+    },
+          "ajax":{
+            url :"datatable_cari_kamar_dirawat_inap.php", // json datasource
+             "data": function ( d ) {
+                d.ruangan = $("#ruangan").val();
+                // d.custom = $('#myInput').val();
+                // etc
+            },
+                type: "post",  // method  , by default get
+            error: function(){  // error handling
+              $(".tbody").html("");
+              $("#table_ruangan").append('<tbody class="tbody"><tr><th colspan="3"></th></tr></tbody>');
+              $("#table_ruangan_processing").css("display","none");
+              
+            }
+          },
+              "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+
+              $(nRow).attr('class', "pilih2 tr-id-"+aData[7]+"");
+              $(nRow).attr('data-nama', aData[1]);
+              $(nRow).attr('data-group-bed', aData[2]);
+              $(nRow).attr('data-ruangan', aData[8]);
+
+          } 
+
+        } );
+
+  });
+  </script>
+
 <!--script ambil data pasien modal-->
 <script type="text/javascript">
 //jika dipilih, nim akan masuk ke input dan modal di tutup
@@ -713,6 +766,7 @@ return val;
   $(document).on('click', '.pilih2', function (e) {
             document.getElementById("bed").value = $(this).attr('data-nama');
             document.getElementById("group_bed").value = $(this).attr('data-group-bed');
+            document.getElementById("ruangan").value = $(this).attr('data-ruangan');
                 
   $('#myModal1').modal('hide');
 
