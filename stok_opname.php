@@ -91,54 +91,13 @@ $perintah = $db->query("SELECT * FROM stok_opname");
   </div>
 </div>
 
-<div id="modal_detail" class="modal fade" role="dialog">
-  <div class="modal-dialog modal-lg">
-
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <center><h4 class="modal-title"><b>Detail Stok Opname</b></h4></center>
-      </div>
-
-      <div class="modal-body">
-      <div class="table-responsive">
-      <span id="modal-detail"> </span>
-      </div>
-
-  <table id="table_modal_detail" class="table table-bordered table-sm">
-  <thead> <!-- untuk memberikan nama pada kolom tabel -->
-
-          <th> No Faktur </th>
-          <th> Kode Barang </th>
-          <th> Nama Barang </th>
-          <th> Stok Komputer </th>
-          <th> Fisik </th>
-          <th> Selisih Fisik </th>
-          <th> HPP </th>
-          <th> Selisih Harga </th>
-
-  </thead> <!-- tag penutup tabel -->
-  </table>
-
-     </div>
-
-      <div class="modal-footer">
-        
-    <center><button type="button" class="btn btn-danger" data-dismiss="modal"><i class='fa fa-close'></i></button></center> 
-      </div>
-    </div>
-
-  </div>
-</div>
-
 
 <!--membuat link-->
 
 <?php
 include 'db.php';
 
-$pilih_akses_stok_opname = $db->query("SELECT * FROM otoritas_stok_opname WHERE id_otoritas = '$_SESSION[otoritas_id]'");
+$pilih_akses_stok_opname = $db->query("SELECT stok_opname_edit,stok_opname_tambah,stok_opname_hapus FROM otoritas_stok_opname WHERE id_otoritas = '$_SESSION[otoritas_id]'");
 $stok_opname = mysqli_fetch_array($pilih_akses_stok_opname);
 
 if ($stok_opname['stok_opname_tambah'] > 0) {
@@ -203,7 +162,7 @@ echo '<button style="display:none" data-toggle="collapse tooltip" accesskey="k" 
 
     <input type="hidden" class="form-control" style="font-size: 25px" name="total_selisih_harga" id="total_selisih_harga" readonly="" placeholder="Total Selisih Harga">
 
-    <button type="submit" id="selesai" class="btn btn-info"> <i class='fa fa-send'> </i> Selesai </button>
+    <button type="submit" id="selesai" style="display:none;" class="btn btn-info"> <i class='fa fa-send'> </i> Selesai </button>
 
 
 </div>
@@ -259,16 +218,21 @@ echo '<button style="display:none" data-toggle="collapse tooltip" accesskey="k" 
 
 <div class="table-responsive">
 <span id="tabel_baru">
-<table id="table_stok_opname" class="table table-bordered">
+<table id="table_stok_opname" class="table table-bordered table-sm">
 		<thead>
 			<th style='background-color: #4CAF50; color:white'> Nomor Faktur </th>
-			<th style='background-color: #4CAF50; color:white'> Tanggal </th>
-			<th style='background-color: #4CAF50; color:white'> Jam </th>
-			<th style='background-color: #4CAF50; color:white'> Status </th>
-			<th style='background-color: #4CAF50; color:white'> Total Selisih</th>
-			<th style='background-color: #4CAF50; color:white'> User </th>
+      <th style='background-color: #4CAF50; color:white'> Kode Barang </th>
+      <th style='background-color: #4CAF50; color:white'> Nama Barang </th>
+      <th style='background-color: #4CAF50; color:white'> Stok Komputer </th>
+      <th style='background-color: #4CAF50; color:white'> Fisik </th>
+      <th style='background-color: #4CAF50; color:white'> Selisih Fisik </th>
+      <th style='background-color: #4CAF50; color:white'> Selisih Harga</th>
+      <th style='background-color: #4CAF50; color:white'> Status </th>
+      <th style='background-color: #4CAF50; color:white'> User </th>
       <th style='background-color: #4CAF50; color:white'> Keterangan </th>
-			<th style='background-color: #4CAF50; color:white'> Detail </th>
+      <th style='background-color: #4CAF50; color:white'> Tanggal </th>
+      <th style='background-color: #4CAF50; color:white'> Jam </th>
+
 			<?php 
 
 				if ($stok_opname['stok_opname_edit'] > 0) {
@@ -366,6 +330,8 @@ echo '<button style="display:none" data-toggle="collapse tooltip" accesskey="k" 
                   $("#jumlah_fisik").hide();
                   $("#satuan").hide();
                   $("#submit_produk").hide();
+                  $("#selesai").click();
+                  
 
                   });
                
@@ -442,7 +408,7 @@ echo '<button style="display:none" data-toggle="collapse tooltip" accesskey="k" 
         },
             
             "fnCreatedRow": function( nRow, aData, iDataIndex ) {
-                $(nRow).attr('class','tr-id-'+aData[10]+'');
+                $(nRow).attr('class','tr-id-'+aData[15]+'');
             },
         });
 //pembaruan datatable data stok opname 
@@ -727,7 +693,7 @@ $(function() {
         },
             
             "fnCreatedRow": function( nRow, aData, iDataIndex ) {
-                $(nRow).attr('class','tr-id-'+aData[10]+'');
+                $(nRow).attr('class','tr-id-'+aData[15]+'');
             },
         });
 //pembaruan datatable data stok opname 
@@ -762,47 +728,6 @@ $(function() {
       } );
     </script>
 <!--/DATA TABLE MENGGUNAKAN AJAX-->
-
-
-<!--Start Ajax Modal DETAIL-->
-<script type="text/javascript" language="javascript" >
-   $(document).ready(function() {
-
-    $(document).on('click', '.detail', function (e) {
-    $("#modal_detail").modal('show');
-
-    var no_faktur = $(this).attr("no_faktur");
-  
-            $('#table_modal_detail').DataTable().destroy();
-
-        var dataTable = $('#table_modal_detail').DataTable( {
-          "processing": true,
-          "serverSide": true,
-          "ajax":{
-            url :"show_detail_stok_opname.php", // json datasource
-             "data": function ( d ) {
-                  d.no_faktur = no_faktur;
-                  // d.custom = $('#myInput').val();
-                  // etc
-              },
-            type: "post",  // method  , by default get
-            error: function(){  // error handling
-              $(".employee-grid-error").html("");
-              $("#table_modal_detail").append('<tbody class="employee-grid-error"><tr><th colspan="3">Data Tidak Ditemukan.. !!</th></tr></tbody>');
-              $("#employee-grid_processing").css("display","none");
-              
-            }
-          },
-
-         
-
-        });  
-  
-     }); 
-  });
- </script>
-<!--Ending Ajax Modal Detail-->
-
 
 
 <script type="text/javascript">
@@ -847,7 +772,7 @@ $(function() {
                       },
                          "fnCreatedRow": function( nRow, aData, iDataIndex ) {
 
-                          $(nRow).attr('class','tr-id-'+aData[10]+'');         
+                          $(nRow).attr('class','tr-id-'+aData[15]+'');         
 
                       }
                     });

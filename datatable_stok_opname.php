@@ -15,37 +15,45 @@ $requestData= $_REQUEST;
 $columns = array( 
 // datatable column index  => database column name
 	0 =>'no_faktur', 
-	1 => 'tanggal',
-	2 => 'jam',
+	1=>'kode_barang',
+    2=>'nama_barang',
+
 	3 => 'status',
-	4 => 'total_selisih',
-  	5 => 'user',
+  	4 => 'user',
   	5 => 'keterangan',
-	6 => 'id'
+  	6=>'stok_komputer',
+    7=>'fisik',
+    8=>'selisih_fisik', 
+
+  	9 => 'total_selisih',
+
+	10 => 'tanggal',
+	11 => 'jam',
+	12 => 'id'
 );
 
 // getting total number records without any search
 $sql = "SELECT COUNT(*) AS jumlah_data ";
-$sql.=" FROM stok_opname";
-$query=mysqli_query($conn, $sql) or die("datatable_stok_opname.php: get employees");
+$sql.=" FROM stok_opname ";
+$query=mysqli_query($conn, $sql) or die("datatable_stok_opname1.php: get employees");
 $query_data = mysqli_fetch_array($query);
 $totalData = $query_data['jumlah_data'];
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
 
-$sql = "SELECT no_faktur,
-tanggal,
-jam,
-status,
-total_selisih,
-user,id,
-keterangan ";
-$sql.=" FROM stok_opname WHERE 1=1";
+$sql = "SELECT so.no_faktur,so.tanggal,so.jam,so.status,so.total_selisih,so.user,so.id,so.keterangan,dso.kode_barang,dso.nama_barang,dso.stok_sekarang,dso.fisik,dso.selisih_fisik  ";
+$sql.=" FROM stok_opname so LEFT JOIN detail_stok_opname dso ON so.no_faktur = dso.no_faktur WHERE 1=1";
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
-	$sql.=" AND ( no_faktur LIKE '".$requestData['search']['value']."%' ";    
-	$sql.=" OR tanggal LIKE '".$requestData['search']['value']."%' )";
+	$sql.=" AND ( so.no_faktur LIKE '".$requestData['search']['value']."%' ";  
+	$sql.=" OR dso.nama_barang LIKE '".$requestData['search']['value']."%' ";
+	$sql.=" OR dso.kode_barang LIKE '".$requestData['search']['value']."%' ";
+	$sql.=" OR so.keterangan LIKE '".$requestData['search']['value']."%' ";  
+	$sql.=" OR so.tanggal LIKE '".$requestData['search']['value']."%' )";
 }
-$query=mysqli_query($conn, $sql) or die("datatable_stok_opname.php: get employees");
+$query=mysqli_query($conn, $sql) or die("datatable_stok_opname2.php: get employees");
+
+
+
 $totalFiltered = mysqli_num_rows($query); // when there is a search parameter then we have to modify total number filtered rows as per search result. 
 $sql.= " ORDER BY tanggal ,jam DESC LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
 /* $requestData['order'][0]['column'] contains colmun index, $requestData['order'][0]['dir'] contains order such as asc/desc  */	
@@ -56,14 +64,28 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 	$nestedData=array(); 
 
 	$nestedData[] = $row["no_faktur"];
-	$nestedData[] = $row["tanggal"];
-	$nestedData[] = $row["jam"];
-	$nestedData[] = $row["status"];
+	
+	$nestedData[] = $row["kode_barang"];
+    $nestedData[] = $row["nama_barang"];
+
+
+
+    $nestedData[] = rp($row["stok_sekarang"]);
+    $nestedData[] = rp($row["fisik"]);
+    $nestedData[] = rp($row["selisih_fisik"]);
+
+
 	$nestedData[] = $row["total_selisih"];
+
+
+	$nestedData[] = $row["status"];
 	$nestedData[] = $row["user"];
 	$nestedData[] = $row["keterangan"];
 
-  $nestedData[] = "<button class='btn btn-info detail' no_faktur='". $row['no_faktur'] ."' ><i class='fa fa-list'></i>  </button>";
+
+	$nestedData[] = $row["tanggal"];
+	$nestedData[] = $row["jam"];
+
 
   if ($stok_opname['stok_opname_edit'] > 0) {
       $nestedData[] = "<a href='proses_edit_stok_opname.php?no_faktur=". $row['no_faktur']."&tanggal=". $row['tanggal']."' class='btn btn-success'> <i class='fa fa-edit'></i>  </a>";
