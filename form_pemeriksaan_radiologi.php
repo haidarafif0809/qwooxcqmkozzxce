@@ -438,7 +438,7 @@ $data_reg = mysqli_fetch_array($select_reg);
                           data-kode="'.$data_kontras['kode_pemeriksaan'].'"
                           data-nama="'.$data_kontras['nama_pemeriksaan'].'"
                           data-kontras="'.$data_kontras['kontras'].'"
-                          data-harga="'.$data_kontras['harga_1'].'" class="insert-tbs" data-toogle="1" id="label-'.$data_kontras['id'].'"
+                          data-harga="'.$data_kontras['harga_1'].'" class="insert-tbs" data-toogle="0" id="label-'.$data_kontras['id'].'"
                            checked="true" disabled="true" >'.$data_kontras['nama_pemeriksaan'].'</label> <br>';
 
                       }
@@ -486,7 +486,7 @@ $data_reg = mysqli_fetch_array($select_reg);
                             data-kode="'.$data_tanpa_kontras['kode_pemeriksaan'].'"
                             data-nama="'.$data_tanpa_kontras['nama_pemeriksaan'].'"
                             data-kontras="'.$data_tanpa_kontras['kontras'].'"
-                            data-harga="'.$data_tanpa_kontras['harga_1'].'" class="insert-tbs" data-toogle="1" id="label-'.$data_tanpa_kontras['id'].'"
+                            data-harga="'.$data_tanpa_kontras['harga_1'].'" class="insert-tbs" data-toogle="0" id="label-'.$data_tanpa_kontras['id'].'"
                              checked="true" disabled="true" >'.$data_tanpa_kontras['nama_pemeriksaan'].'</label> <br>';
                         }
                         else{
