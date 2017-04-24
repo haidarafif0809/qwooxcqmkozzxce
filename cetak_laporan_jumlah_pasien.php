@@ -61,7 +61,7 @@ $data_perusahaan = mysqli_fetch_array($query_perusahaan);
 
     <?php
 
-      $query_pasien = $db->query("SELECT r.no_rm,r.no_reg,r.nama_pasien,r.penjamin,r.tanggal, p.no_faktur FROM registrasi r INNER JOIN penjualan p ON r.no_reg = p.no_reg WHERE r.jenis_pasien = 'Rawat Jalan' AND r.tanggal >= '$dari_tanggal' AND r.tanggal <= '$sampai_tanggal' ORDER BY CONCAT(r.tanggal,' ',r.jam) DESC");
+      $query_pasien = $db->query("SELECT r.no_rm,r.no_reg,r.nama_pasien,r.penjamin,r.tanggal, p.no_faktur FROM registrasi r INNER JOIN penjualan p ON r.no_reg = p.no_reg WHERE p.tanggal >= '$dari_tanggal' AND p.tanggal <= '$sampai_tanggal' AND (r.jenis_pasien = 'Rawat Jalan' OR r.jenis_pasien = 'UGD') ORDER BY CONCAT(r.tanggal,' ',r.jam) DESC");
         
         $totalData = mysqli_num_rows($query_pasien);        
         while ($data_pasien = mysqli_fetch_array($query_pasien)) {
@@ -107,9 +107,9 @@ $data_perusahaan = mysqli_fetch_array($query_perusahaan);
 
     <?php
 
-      $query_pasien_inap = $db->query("SELECT r.no_rm,r.no_reg,r.nama_pasien,r.penjamin,r.tanggal_masuk, p.tanggal, p.no_faktur, DATEDIFF(DATE(p.tanggal), r.tanggal_masuk) AS jumlah_hari FROM registrasi r INNER JOIN penjualan p ON r.no_reg = p.no_reg WHERE r.jenis_pasien = 'Rawat Inap' AND r.tanggal_masuk >= '$dari_tanggal' AND r.tanggal_masuk <= '$sampai_tanggal' ORDER BY CONCAT(r.tanggal,' ',r.jam) DESC");
+      $query_pasien_inap = $db->query("SELECT r.no_rm,r.no_reg,r.nama_pasien,r.penjamin,r.tanggal_masuk, p.tanggal, p.no_faktur, DATEDIFF(DATE(p.tanggal), r.tanggal_masuk) AS jumlah_hari FROM registrasi r INNER JOIN penjualan p ON r.no_reg = p.no_reg WHERE r.jenis_pasien = 'Rawat Inap' AND p.tanggal >= '$dari_tanggal' AND p.tanggal <= '$sampai_tanggal' ORDER BY CONCAT(r.tanggal,' ',r.jam) DESC");
 
-      $query_hitung_tanggal_sama = $db->query("SELECT COUNT(r.no_reg) AS jumlah_tanggal_sama FROM registrasi r INNER JOIN penjualan p ON r.no_reg = p.no_reg WHERE r.jenis_pasien = 'Rawat Inap' AND r.tanggal_masuk >= '2017-04-01' AND r.tanggal_masuk <= '2017-04-22' AND r.tanggal_masuk = p.tanggal");
+      $query_hitung_tanggal_sama = $db->query("SELECT COUNT(r.no_reg) AS jumlah_tanggal_sama FROM registrasi r INNER JOIN penjualan p ON r.no_reg = p.no_reg WHERE r.jenis_pasien = 'Rawat Inap' AND r.tanggal_masuk >= '2017-04-01' AND p.tanggal <= '2017-04-22' AND p.tanggal = p.tanggal");
       $data_hitung_tanggal_sama = mysqli_fetch_array($query_hitung_tanggal_sama);
       
         

@@ -432,14 +432,14 @@ $data_reg = mysqli_fetch_array($select_reg);
 
                       if ($jumlah_pemeriksaan > 0) {
                       
-                          echo '<input type="checkbox" class="cekcbox-1 filled-in" id="pemeriksaan-'.$data_kontras['id'].'" name="pakai_kontras" value="'.$data_kontras['kode_pemeriksaan'].'" checked="true" disabled="true" >
+                          echo '<input type="checkbox" class="cekcbox-1 filled-in" id="pemeriksaan-'.$data_kontras['id'].'" name="pakai_kontras" value="'.$data_kontras['kode_pemeriksaan'].'" checked="true" >
                           <label for="pemeriksaan-'.$data_kontras['id'].'"
                           data-id="'.$data_kontras['id'].'"
                           data-kode="'.$data_kontras['kode_pemeriksaan'].'"
                           data-nama="'.$data_kontras['nama_pemeriksaan'].'"
                           data-kontras="'.$data_kontras['kontras'].'"
                           data-harga="'.$data_kontras['harga_1'].'" class="insert-tbs" data-toogle="0" id="label-'.$data_kontras['id'].'"
-                           checked="true" disabled="true" >'.$data_kontras['nama_pemeriksaan'].'</label> <br>';
+                           checked="true" >'.$data_kontras['nama_pemeriksaan'].'</label> <br>';
 
                       }
                       else{
@@ -450,7 +450,7 @@ $data_reg = mysqli_fetch_array($select_reg);
                           data-kode="'.$data_kontras['kode_pemeriksaan'].'"
                           data-nama="'.$data_kontras['nama_pemeriksaan'].'"
                           data-kontras="'.$data_kontras['kontras'].'"
-                          data-harga="'.$data_kontras['harga_1'].'" class="insert-tbs" data-toogle="0" id="label-'.$data_kontras['id'].'"
+                          data-harga="'.$data_kontras['harga_1'].'" class="insert-tbs pemeriksaan-kontras" data-toogle="0" id="label-'.$data_kontras['id'].'"
                           >'.$data_kontras['nama_pemeriksaan'].'</label> <br>';
 
                       }
@@ -480,14 +480,14 @@ $data_reg = mysqli_fetch_array($select_reg);
                         if ($jumlah_pemeriksaan > 0) {
 
                             echo '<input type="checkbox" class="cekcbox-2 filled-in" name="tanpa_kontras" 
-                            id="pemeriksaan-'.$data_tanpa_kontras['id'].'" value="'.$data_tanpa_kontras['kode_pemeriksaan'].'" checked="true" disabled="true" > 
+                            id="pemeriksaan-'.$data_tanpa_kontras['id'].'" value="'.$data_tanpa_kontras['kode_pemeriksaan'].'" checked="true"  > 
                             <label for="pemeriksaan-'.$data_tanpa_kontras['id'].'"
                             data-id="'.$data_tanpa_kontras['id'].'"
                             data-kode="'.$data_tanpa_kontras['kode_pemeriksaan'].'"
                             data-nama="'.$data_tanpa_kontras['nama_pemeriksaan'].'"
                             data-kontras="'.$data_tanpa_kontras['kontras'].'"
                             data-harga="'.$data_tanpa_kontras['harga_1'].'" class="insert-tbs" data-toogle="0" id="label-'.$data_tanpa_kontras['id'].'"
-                             checked="true" disabled="true" >'.$data_tanpa_kontras['nama_pemeriksaan'].'</label> <br>';
+                             checked="true"  >'.$data_tanpa_kontras['nama_pemeriksaan'].'</label> <br>';
                         }
                         else{
 
@@ -498,7 +498,7 @@ $data_reg = mysqli_fetch_array($select_reg);
                             data-kode="'.$data_tanpa_kontras['kode_pemeriksaan'].'"
                             data-nama="'.$data_tanpa_kontras['nama_pemeriksaan'].'"
                             data-kontras="'.$data_tanpa_kontras['kontras'].'"
-                            data-harga="'.$data_tanpa_kontras['harga_1'].'" class="insert-tbs" data-toogle="0" id="label-'.$data_tanpa_kontras['id'].'"
+                            data-harga="'.$data_tanpa_kontras['harga_1'].'" class="insert-tbs pemeriksaan-tanpa-kontras" data-toogle="0" id="label-'.$data_tanpa_kontras['id'].'"
                             >'.$data_tanpa_kontras['nama_pemeriksaan'].'</label> <br>';
                         }
 
@@ -518,7 +518,7 @@ $data_reg = mysqli_fetch_array($select_reg);
 
       <div class="modal-footer">
         <button type="button" class="btn btn-warning" id="btnSubmit"> <i class='fa fa-plus'></i> Submit</button>
-        <button type="button" accesskey="e" class="btn btn-danger" data-dismiss="modal"><i class='fa fa-close'></i> Cancel</button>
+        <button type="button" class="btn btn-danger" id="btnCancel"><i class='fa fa-close'></i> Cancel</button>
       </div>
     </div>
 
@@ -4024,7 +4024,8 @@ $(document).on('click','.insert-tbs',function(e){
 
               $('#label-'+id+'').attr("data-toogle", 0);
 
-              alert("Pemeriksaan '"+nama_barang+"' Sudah Ada, Silakan Pilih Pemeriksaan Yang Lain !");        
+              alert("Pemeriksaan '"+nama_barang+"' Sudah Ada, Silakan Pilih Pemeriksaan Yang Lain !"); 
+              $('#label-'+id+'').prop('checked', this.checked);       
 
            }
            else{
@@ -4082,6 +4083,7 @@ $(document).on('click','.pilih-semua-kontras',function(e){
     if (data_toggle == 0) {
               
         $(this).attr("data-toogle", 1);
+        $(".pemeriksaan-kontras").attr("data-toogle", 1);
 
         $.post("proses_insert_tbs_radiologi_semua_kontras.php",{tipe_barang:tipe_barang,no_reg:no_reg,dokter:dokter,dokter_pemeriksa:dokter_pemeriksa,petugas_radiologi:petugas_radiologi},function(data){
               
@@ -4092,6 +4094,7 @@ $(document).on('click','.pilih-semua-kontras',function(e){
     else{
                   
         $(this).attr("data-toogle", 0);
+        $(".pemeriksaan-kontras").attr("data-toogle", 0);
 
         $.post("hapus_radiologi_semua_kontras.php",{no_reg:no_reg},function(data){
 
@@ -4128,6 +4131,7 @@ $(document).on('click','.pilih-semua-tanpa-kontras',function(e){
     if (data_toggle == 0) {
               
         $(this).attr("data-toogle", 1);
+        $(".pemeriksaan-tanpa-kontras").attr("data-toogle", 1);
 
         $.post("proses_insert_tbs_radiologi_semua_tanpa_kontras.php",{tipe_barang:tipe_barang,no_reg:no_reg,dokter:dokter,dokter_pemeriksa:dokter_pemeriksa,petugas_radiologi:petugas_radiologi},function(data){
               
@@ -4138,6 +4142,7 @@ $(document).on('click','.pilih-semua-tanpa-kontras',function(e){
     else{
                   
         $(this).attr("data-toogle", 0);
+        $(".pemeriksaan-tanpa-kontras").attr("data-toogle", 0);
 
         $.post("hapus_radiologi_semua_tanpa_kontras.php",{no_reg:no_reg},function(data){
 
@@ -4155,6 +4160,158 @@ $(document).on('click','.pilih-semua-tanpa-kontras',function(e){
 <script type="text/javascript">
   $(document).ready(function(){
     $(document).on('click','#btnSubmit',function(e){
+    // START DATATABLE AJAX START DATATABLE AJAX START DATATABLE AJAX START DATATABLE AJAX START DATATABLE AJAX START DATATABLE AJAX
+      $('#tabel_tbs_radiologi').DataTable().destroy();
+            var dataTable = $('#tabel_tbs_radiologi').DataTable( {
+            "processing": true,
+            "serverSide": true,
+            "info":     true,
+            "language": { "emptyTable":     "Tidak Ada Data" },
+            "ajax":{
+              url :"data_tbs_penjualan_radiologi.php", // json datasource
+                              "data": function ( d ) {
+                                d.no_reg = $("#no_reg").val();
+                                // d.custom = $('#myInput').val();
+                                // etc
+                              },
+                              type: "post",  // method  , by default get
+              error: function(){  // error handling
+                $(".tbody").html("");
+                $("#tabel_tbs_radiologi").append('<tbody class="tbody"><tr><th colspan="3"></th></tr></tbody>');
+                $("#tableuser_processing").css("display","none");
+                
+              }
+            }   
+
+      });
+        
+        $("#span_tbs").show();
+        $("#myModal").modal('hide');
+
+// END DATATABLE AJAX END DATATABLE AJAX END DATATABLE AJAX END DATATABLE AJAX END DATATABLE AJAX END DATATABLE AJAX
+
+
+
+var pot_fakt_per = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#potongan_persen").val()))));
+var pot_fakt_rp = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#potongan_penjualan").val()))));
+var total_rj_ri = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#total_rj_ri").val()))));
+var total_ops = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#total_ops").val()))));
+if (total_ops == '') {
+  total_ops = 0;
+}
+
+if (total_rj_ri == "") {
+  total_rj_ri = 0;
+}
+var no_reg = $("#no_reg").val();
+
+
+if (no_reg == '')
+{
+
+    $.get("cek_total_radiologi.php",{no_reg:no_reg},function(data1){
+
+
+        if (data1 == 1) {
+                 $.get("cek_total_tbs_form_radiologi.php",{no_reg:no_reg},function(data){
+                  data = data.replace(/\s+/g, '');
+                  if (data == "") {
+                    data = 0;
+                  }
+                var sum = parseInt(data,10);
+                
+
+                  $("#total2").val(tandaPemisahTitik(sum));
+
+
+                  if (pot_fakt_per == '0%') {
+                  var potongaaan = pot_fakt_rp;
+                  var potongaaan = parseInt(potongaaan,10) / parseInt(data,10) * 100;
+                  $("#potongan_persen").val(Math.round(potongaaan));
+
+                 var total = parseInt(data,10) - parseInt(pot_fakt_rp,10);
+
+                  $("#total1").val(tandaPemisahTitik(total));
+
+                }
+                    else if(pot_fakt_rp == 0)
+                    {
+                          var potongaaan = pot_fakt_per;
+                          var pos = potongaaan.search("%");
+                          var potongan_persen = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah(potongaaan))));
+                          potongan_persen = potongan_persen.replace("%","");
+                          potongaaan = data * potongan_persen / 100;
+                          $("#potongan_penjualan").val(potongaaan);
+
+                          var total = parseInt(data,10) - parseInt(potongaaan,10);
+
+                          $("#total1").val(tandaPemisahTitik(total))
+
+                    }
+
+                });
+        }
+
+            else
+            {
+
+            }
+});
+
+}
+  else {
+
+
+$.get("cek_total_tbs_form_radiologi.php",{no_reg:no_reg},function(data){
+  data = data.replace(/\s+/g, '');
+                  if (data == "") {
+                    data = 0;
+                  }
+
+                var sum = parseInt(data,10) + parseInt(total_rj_ri,10) + parseInt(total_ops,10);
+
+                  $("#total2").val(tandaPemisahTitik(sum));
+                  $("#sub_radiologi").val(tandaPemisahTitik(data));
+
+
+            if (pot_fakt_per == '0%') {
+              var potongaaan = pot_fakt_rp;
+              var potongaaan = parseInt(potongaaan,10) / parseInt(data,10) * 100;
+              $("#potongan_persen").val(Math.round(potongaaan));
+
+             var total = parseInt(data,10) - parseInt(pot_fakt_rp,10);
+
+              $("#total1").val(tandaPemisahTitik(total));
+
+            }
+            else if(pot_fakt_rp == 0)
+            {
+                  var potongaaan = pot_fakt_per;
+                  var pos = potongaaan.search("%");
+                  var potongan_persen = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah(potongaaan))));
+                  potongan_persen = potongan_persen.replace("%","");
+                  potongaaan = data * potongan_persen / 100;
+                  $("#potongan_penjualan").val(potongaaan);
+
+                  var total = parseInt(data,10) - parseInt(potongaaan,10);
+
+                  $("#total1").val(tandaPemisahTitik(total))
+
+            }
+
+                });
+
+
+
+}
+
+    });
+  });
+</script>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    $(document).on('click','#btnCancel',function(e){
     // START DATATABLE AJAX START DATATABLE AJAX START DATATABLE AJAX START DATATABLE AJAX START DATATABLE AJAX START DATATABLE AJAX
       $('#tabel_tbs_radiologi').DataTable().destroy();
             var dataTable = $('#tabel_tbs_radiologi').DataTable( {
