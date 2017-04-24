@@ -19,7 +19,7 @@ try {
 	$nama_lengkap = stringdoang($_POST['nama_lengkap']);
 	$jenis_kelamin = stringdoang($_POST['jenis_kelamin']);
 	$tempat_lahir = stringdoang($_POST['tempat_lahir']);
-	$tanggal_lahir = stringdoang($_POST['tanggal_lahir']);
+	$tanggal_lahir = stringdoang(tanggal_mysql($_POST['tanggal_lahir']));
 	$umur = stringdoang($_POST['umur']);
 	$gol_darah = stringdoang($_POST['gol_darah']);
 	$alamat = stringdoang($_POST['alamat']);
@@ -27,7 +27,7 @@ try {
 	$agama = stringdoang($_POST['agama']);
 	$alergi = stringdoang($_POST['alergi']);
 	$kondisi = stringdoang($_POST['kondisi']);
-	$dokter = stringdoang($_POST['dokter']);
+	$dokter = angkadoang($_POST['dokter']);
 	$periksa = stringdoang($_POST['periksa']);
 
 	$jam =  date("H:i:s");

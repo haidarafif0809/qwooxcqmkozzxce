@@ -108,11 +108,22 @@ $data_perusahaan = mysqli_fetch_array($query_perusahaan);
     <?php
 
       $query_pasien_inap = $db->query("SELECT r.no_rm,r.no_reg,r.nama_pasien,r.penjamin,r.tanggal_masuk, p.tanggal, p.no_faktur, DATEDIFF(DATE(p.tanggal), r.tanggal_masuk) AS jumlah_hari FROM registrasi r INNER JOIN penjualan p ON r.no_reg = p.no_reg WHERE r.jenis_pasien = 'Rawat Inap' AND r.tanggal_masuk >= '$dari_tanggal' AND r.tanggal_masuk <= '$sampai_tanggal' ORDER BY CONCAT(r.tanggal,' ',r.jam) DESC");
+
+      $query_hitung_tanggal_sama = $db->query("SELECT COUNT(r.no_reg) AS jumlah_tanggal_sama FROM registrasi r INNER JOIN penjualan p ON r.no_reg = p.no_reg WHERE r.jenis_pasien = 'Rawat Inap' AND r.tanggal_masuk >= '2017-04-01' AND r.tanggal_masuk <= '2017-04-22' AND r.tanggal_masuk = p.tanggal");
+      $data_hitung_tanggal_sama = mysqli_fetch_array($query_hitung_tanggal_sama);
+      
         
         $total_pasien_ranap = 0;
 
         $totalDataInap = mysqli_num_rows($query_pasien_inap);        
         while ($data_pasien_inap = mysqli_fetch_array($query_pasien_inap)) {
+
+            if ($data_pasien_inap['tanggal_masuk'] == $data_pasien_inap['tanggal']) {
+               $jumlah_psaien = 1;
+            }
+            else{
+              $jumlah_psaien = $data_pasien_inap['jumlah_hari'] ."</td>";
+            }
 
             echo "<tr>
               <td>". $data_pasien_inap['no_faktur'] ."</td>
@@ -120,10 +131,11 @@ $data_perusahaan = mysqli_fetch_array($query_perusahaan);
               <td>". $data_pasien_inap['penjamin'] ."</td>
               <td align='right'>". $data_pasien_inap['tanggal_masuk'] ."</td>
               <td align='right'>". $data_pasien_inap['tanggal'] ."</td>
-              <td align='right'>". $data_pasien_inap['jumlah_hari'] ."</td>
-            </tr>";
+              <td align='right'>". $jumlah_psaien ."</td>
+              
+              </tr>";
 
-            $total_pasien_ranap = $total_pasien_ranap + $data_pasien_inap['jumlah_hari'];
+            $total_pasien_ranap = $total_pasien_ranap + $jumlah_psaien;
         }
 
             echo "<tr>

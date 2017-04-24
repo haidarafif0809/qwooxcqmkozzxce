@@ -875,6 +875,10 @@ $(".btn-alert-hapus").click(function(){
        var sisa = pembayaran - total;
        var sisa_kredit = total - pembayaran;
 
+       if (jumlah_bayar_lama == "") {
+        jumlah_bayar_lama = 0;
+       }
+
        var jumlah_kredit_baru = parseInt(kredit,10) - parseInt(jumlah_bayar_lama,10);
        var x = parseInt(jumlah_bayar_lama,10) + parseInt(pembayaran,10);
        $("#zxzx").val(x);
