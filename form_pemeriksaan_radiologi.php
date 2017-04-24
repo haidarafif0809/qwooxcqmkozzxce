@@ -450,7 +450,7 @@ $data_reg = mysqli_fetch_array($select_reg);
                           data-kode="'.$data_kontras['kode_pemeriksaan'].'"
                           data-nama="'.$data_kontras['nama_pemeriksaan'].'"
                           data-kontras="'.$data_kontras['kontras'].'"
-                          data-harga="'.$data_kontras['harga_1'].'" class="insert-tbs" data-toogle="0" id="label-'.$data_kontras['id'].'"
+                          data-harga="'.$data_kontras['harga_1'].'" class="insert-tbs pemeriksaan-kontras" data-toogle="0" id="label-'.$data_kontras['id'].'"
                           >'.$data_kontras['nama_pemeriksaan'].'</label> <br>';
 
                       }
@@ -498,7 +498,7 @@ $data_reg = mysqli_fetch_array($select_reg);
                             data-kode="'.$data_tanpa_kontras['kode_pemeriksaan'].'"
                             data-nama="'.$data_tanpa_kontras['nama_pemeriksaan'].'"
                             data-kontras="'.$data_tanpa_kontras['kontras'].'"
-                            data-harga="'.$data_tanpa_kontras['harga_1'].'" class="insert-tbs" data-toogle="0" id="label-'.$data_tanpa_kontras['id'].'"
+                            data-harga="'.$data_tanpa_kontras['harga_1'].'" class="insert-tbs pemeriksaan-tanpa-kontras" data-toogle="0" id="label-'.$data_tanpa_kontras['id'].'"
                             >'.$data_tanpa_kontras['nama_pemeriksaan'].'</label> <br>';
                         }
 
@@ -4082,6 +4082,7 @@ $(document).on('click','.pilih-semua-kontras',function(e){
     if (data_toggle == 0) {
               
         $(this).attr("data-toogle", 1);
+        $(".pemeriksaan-kontras").attr("data-toogle", 1);
 
         $.post("proses_insert_tbs_radiologi_semua_kontras.php",{tipe_barang:tipe_barang,no_reg:no_reg,dokter:dokter,dokter_pemeriksa:dokter_pemeriksa,petugas_radiologi:petugas_radiologi},function(data){
               
@@ -4092,6 +4093,7 @@ $(document).on('click','.pilih-semua-kontras',function(e){
     else{
                   
         $(this).attr("data-toogle", 0);
+        $(".pemeriksaan-kontras").attr("data-toogle", 0);
 
         $.post("hapus_radiologi_semua_kontras.php",{no_reg:no_reg},function(data){
 
@@ -4128,6 +4130,7 @@ $(document).on('click','.pilih-semua-tanpa-kontras',function(e){
     if (data_toggle == 0) {
               
         $(this).attr("data-toogle", 1);
+        $(".pemeriksaan-tanpa-kontras").attr("data-toogle", 1);
 
         $.post("proses_insert_tbs_radiologi_semua_tanpa_kontras.php",{tipe_barang:tipe_barang,no_reg:no_reg,dokter:dokter,dokter_pemeriksa:dokter_pemeriksa,petugas_radiologi:petugas_radiologi},function(data){
               
@@ -4138,6 +4141,7 @@ $(document).on('click','.pilih-semua-tanpa-kontras',function(e){
     else{
                   
         $(this).attr("data-toogle", 0);
+        $(".pemeriksaan-tanpa-kontras").attr("data-toogle", 0);
 
         $.post("hapus_radiologi_semua_tanpa_kontras.php",{no_reg:no_reg},function(data){
 
