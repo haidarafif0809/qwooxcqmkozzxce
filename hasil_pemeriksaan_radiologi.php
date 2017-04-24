@@ -543,6 +543,7 @@ img:hover {
       });
         
         $("#span_tbs").show()
+        $(".card").show()
         $("#simpan_pemeriksaan").show()
 
 // END DATATABLE AJAX END DATATABLE AJAX END DATATABLE AJAX END DATATABLE AJAX END DATATABLE AJAX END DATATABLE AJAX
@@ -1109,6 +1110,7 @@ $(document).ready(function() {
                      $("#transaksi_baru").show()
                      $("#cetak_radiologi").show()
                      $("#simpan_pemeriksaan").hide('fast')
+                     $(".card").hide('fast')
                   });
 
                 }

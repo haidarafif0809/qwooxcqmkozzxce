@@ -6,7 +6,7 @@
 $tahun_sekarang = date('Y');
 $bulan_sekarang = date('m');
 $tanggal_sekarang = date('Y-m-d');
-$jam_sekarang = date('H:i:sa');
+$jam_sekarang = date('H:i:s');
 $tahun_terakhir = substr($tahun_sekarang, 2);
 
 $tanggal = stringdoang($_POST['tanggal']);
@@ -95,7 +95,7 @@ $ambil_suplier = mysqli_fetch_array($select_suplier);
             $kel_hpp_kel = mysqli_fetch_array($select_hpp_masuk);
 
 
-              $select_hpp_keluar2 = $db->query("SELECT COUNT(*) FROM hpp_keluar WHERE no_faktur_hpp_masuk = '$nomor_faktur' AND kode_barang = '$kode_barang'");
+              $select_hpp_keluar2 = $db->query("SELECT COUNT(*) FROM hpp_keluar WHERE no_faktur_hpp_masuk = '$nomor_faktur' AND kode_barang = '$data[kode_barang]'");
                 $cek_hpp_kel2 = mysqli_num_rows($select_hpp_keluar2);
 
 

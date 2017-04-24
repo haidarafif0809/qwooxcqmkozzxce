@@ -5,9 +5,7 @@ include 'db.php';
 $no_faktur_pembayaran = $_POST['no_faktur_pembayaran'];
 
 
-$query = $db->query("SELECT dp.no_faktur_pembayaran, dp.kode_pelanggan, dp.no_faktur_penjualan, dp.tanggal, dp.tanggal_jt, dp.kredit, dp.potongan, dp.total, dp.jumlah_bayar, p.nama_pelanggan FROM detail_pembayaran_piutang dp INNER JOIN pelanggan p ON dp.kode_pelanggan = p.kode_pelanggan WHERE dp.no_faktur_pembayaran = '$no_faktur_pembayaran'");
-
-
+$query_piutang = $db->query("SELECT no_faktur_pembayaran, kode_pelanggan, no_faktur_penjualan, tanggal, tanggal_jt, kredit, potongan, total, jumlah_bayar FROM detail_pembayaran_piutang WHERE no_faktur_pembayaran = '$no_faktur_pembayaran'");
 
 ?>
 					<div class="container">
@@ -32,19 +30,24 @@ $query = $db->query("SELECT dp.no_faktur_pembayaran, dp.kode_pelanggan, dp.no_fa
 					<?php
 					
 					//menyimpan data sementara yang ada pada $perintah
-					while ($data1 = mysqli_fetch_array($query))
+					while ($data_piutang = mysqli_fetch_array($query_piutang))
 					{
+
+					$query_pasien = $db_pasien->query("SELECT nama_pelanggan FROM pelanggan WHERE kode_pelanggan = '$data_piutang[kode_pelanggan]'");
+					$data_pasien = mysqli_fetch_array('$query_pasien');
+
+					echo "SELECT nama_pelanggan FROM pelanggan WHERE kode_pelanggan = '$data_piutang[kode_pelanggan]'";
 					//menampilkan data
 					echo "<tr>
-					<td>". $data1['no_faktur_pembayaran'] ."</td>
-					<td>". $data1['kode_pelanggan'] ." - ". $data1['nama_pelanggan'] ."</td>
-					<td>". $data1['no_faktur_penjualan'] ."</td>
-					<td>". $data1['tanggal'] ."</td>
-					<td>". $data1['tanggal_jt'] ."</td>
-					<td>". $data1['kredit'] ."</td>
-					<td>". rp($data1['potongan']) ."</td>
-					<td>". rp($data1['total']) ."</td>
-					<td>". rp($data1['jumlah_bayar']) ."</td>
+					<td>". $data_piutang['no_faktur_pembayaran'] ."</td>
+					<td>". $data_piutang['kode_pelanggan'] ." - ". $data_pasien['nama_pelanggan'] ."</td>
+					<td>". $data_piutang['no_faktur_penjualan'] ."</td>
+					<td>". $data_piutang['tanggal'] ."</td>
+					<td>". $data_piutang['tanggal_jt'] ."</td>
+					<td>". $data_piutang['kredit'] ."</td>
+					<td>". rp($data_piutang['potongan']) ."</td>
+					<td>". rp($data_piutang['total']) ."</td>
+					<td>". rp($data_piutang['jumlah_bayar']) ."</td>
 					</tr>";
 					}
 //Untuk Memutuskan Koneksi Ke Database

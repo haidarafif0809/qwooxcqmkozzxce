@@ -1002,12 +1002,15 @@ alert(" Kode Gudang Harus Diisi ");
 
  {
 
-  $("#pembayaran").hide();
-  $("#hutang").hide();
-  $("#batal").hide();
-  $("#transaksi_baru").show();  
-    $("#cetak_tunai").show();
-
+  var pesan_alert = confirm("Apakah Anda Yakin Dengan Data Pembelian ? Lanjutkan Pembelian ?");
+  if (pesan_alert == true) {
+    
+     
+     $("#pembayaran").hide();
+     $("#hutang").hide();
+     $("#batal").hide();
+     $("#transaksi_baru").show();  
+     $("#cetak_tunai").show();     
      $("#pembayaran_pembelian").val('');
      $("#sisa_pembayaran_pembelian").val('');
      $("#kredit").val('');
@@ -1030,8 +1033,10 @@ alert(" Kode Gudang Harus Diisi ");
     
        
    });
-
-
+ 
+  }
+  else {
+  }
 
  }
  
