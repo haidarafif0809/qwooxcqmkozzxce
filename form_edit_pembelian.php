@@ -1993,7 +1993,9 @@ $(document).ready(function(){
     $("#ber_stok").val(ber_stok);
     $("#id_produk").val(id_barang);
     $("#harga_produk").val(harga_beli);
-    $("#harga_lama").val(harga_beli);    
+    $("#harga_lama").val(harga_beli);
+    $("#harga_baru").val(harga_beli);
+        
 
 
 if (ber_stok == 'Barang') {
