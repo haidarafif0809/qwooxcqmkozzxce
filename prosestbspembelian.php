@@ -13,9 +13,9 @@
     $harga = angkadoang($_POST['harga']);
     $harga_baru = angkadoang($_POST['harga_baru']);
     $tax = stringdoang($_POST['tax']);
-
     $potongan = stringdoang($_POST['potongan']);
     $a = $harga * $jumlah_barang;
+    $status_update = stringdoang($_POST['status_update']);
 
 
           if(strpos($potongan, "%") !== false)
@@ -41,16 +41,17 @@
        $tax_persen = round($tax_persen);
 
 
-    if ( $harga != $harga_baru) {
-
-      $query00 = $db->query("UPDATE barang SET harga_beli = '$harga_baru' WHERE kode_barang = '$kode_barang'");
+    if ($harga != $harga_baru) {
+      if ($status_update > 0) {
+        $query00 = $db->query("UPDATE barang SET harga_beli = '$harga_baru' WHERE kode_barang = '$kode_barang'");
+      }
+      else{
+        $query00 = $db->query("UPDATE barang SET harga_beli = '$harga' WHERE kode_barang = '$kode_barang'");
+      }
       $harga_beli = $harga_baru;
     }
-
-else {
-
+    else{
       $harga_beli = $harga;
-
     }
 
   
