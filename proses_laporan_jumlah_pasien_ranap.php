@@ -9,7 +9,7 @@ $sampai_tanggal = stringdoang($_POST['sampai_tanggal']);
 $query_hitung_jumlah_hari = $db->query("SELECT SUM(DATEDIFF(DATE(p.tanggal), r.tanggal_masuk)) AS jumlah_hari FROM registrasi r INNER JOIN penjualan p ON r.no_reg = p.no_reg WHERE r.jenis_pasien = 'Rawat Inap' AND p.tanggal >= '$dari_tanggal' AND p.tanggal <= '$sampai_tanggal'");
 $data_hitung_jumlah_hari = mysqli_fetch_array($query_hitung_jumlah_hari);
 
-$query_hitung_tanggal_sama = $db->query("SELECT COUNT(r.no_reg) AS jumlah_tanggal_sama FROM registrasi r INNER JOIN penjualan p ON r.no_reg = p.no_reg WHERE r.jenis_pasien = 'Rawat Inap' AND p.tanggal >= '2017-04-01' AND p.tanggal <= '2017-04-22' AND r.tanggal_masuk = p.tanggal");
+$query_hitung_tanggal_sama = $db->query("SELECT COUNT(r.no_reg) AS jumlah_tanggal_sama FROM registrasi r INNER JOIN penjualan p ON r.no_reg = p.no_reg WHERE r.jenis_pasien = 'Rawat Inap' AND p.tanggal >= '$dari_tanggal' AND p.tanggal <= '$sampai_tanggal' AND r.tanggal_masuk = p.tanggal");
 $data_hitung_tanggal_sama = mysqli_fetch_array($query_hitung_tanggal_sama);
 
 
