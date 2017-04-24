@@ -155,6 +155,8 @@ if ($lihat['menu_laboratorium'] > 0){
         echo '<li><a href="form_penjualan_lab.php"  class="waves-effect"> Laboratorium </a></li>';
     }
 
+    echo '<li><a href="form_penjualan_aps.php"  class="waves-effect"> Aps </a></li>';
+
 if ($lihat['penjualan_lihat'] > 0){           
        echo '</ul>
     </div
