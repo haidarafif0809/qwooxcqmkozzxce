@@ -334,7 +334,16 @@ $(document).on('click','.pilih-header',function(e){
     var no_rm = $("#no_rm").val();
     var no_reg = $("#no_reg").val();
     var analis = $("#analis").val();
+    if(analis == ''){
+      alert("Petugas Analis Harus Ada!!");
+      $("#modal_lab").modal('hide');
+    }
     var dokter = $("#dokter").val();
+
+    if(dokter == ''){
+      alert("Dokter Harus Ada!!");
+      $("#modal_lab").modal('hide');
+    }
     var nama_pasien = $("#nama_pasien").val();
     var tipe_barang = "Jasa";
 
@@ -382,8 +391,16 @@ $(document).on('click','.pilih-detail-dari-header',function(e){
     var no_rm = $("#no_rm").val();
     var no_reg = $("#no_reg").val();
     var analis = $("#analis").val();
+    if(analis == ''){
+      alert("Petugas Analis Harus Ada!!");
+      $("#modal_lab").modal('hide');
+    }
     var dokter = $("#dokter").val();
-    var nama_pasien = $("#nama_pasien").val();
+
+    if(dokter == ''){
+      alert("Dokter Harus Ada!!");
+      $("#modal_lab").modal('hide');
+    }    var nama_pasien = $("#nama_pasien").val();
     var tipe_barang = "Jasa";
 
 //ambil dari form yang hidden
@@ -427,7 +444,16 @@ $(document).on('click','.set-sendirian',function(e){
     var no_rm = $("#no_rm").val();
     var no_reg = $("#no_reg").val();
     var analis = $("#analis").val();
+    if(analis == ''){
+      alert("Petugas Analis Harus Ada!!");
+      $("#modal_lab").modal('hide');
+    }
     var dokter = $("#dokter").val();
+
+    if(dokter == ''){
+      alert("Dokter Harus Ada!!");
+      $("#modal_lab").modal('hide');
+    }
     var nama_pasien = $("#nama_pasien").val();
     var tipe_barang = "Jasa";
 
