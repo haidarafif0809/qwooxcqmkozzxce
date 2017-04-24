@@ -255,7 +255,7 @@ echo '
       <th style='background-color: #4CAF50; color: white'> Analis</th>
       <th style='background-color: #4CAF50; color: white'> Tanggal</th>
       <th style='background-color: #4CAF50; color: white'> Jam</th>
-      <th style='background-color: #4CAF50; color: white'> Hapus </th>
+      <!--<th style='background-color: #4CAF50; color: white'> Hapus </th>-->
                           
     </thead> <!-- tag penutup tabel -->
     <tbody class="tbody">
@@ -546,7 +546,7 @@ $(document).on('click','.set-sendirian',function(e){
 <!--Akhir Script Proses Save Pada Modal-->
 
 <!--Mulai Script Proses Hapus TBS -->
-<script type="text/javascript">
+<!--<script type="text/javascript">
   $(document).on('click','.btn-hapus-tbs',function(e){
 
     var id = $(this).attr("data-id");
@@ -592,38 +592,13 @@ $(document).on('click','.set-sendirian',function(e){
     }
     else{
 
-      //TABLE AJAX TBS
-    $('#table_tbs_laboratorium').DataTable().destroy();
-        var dataTable = $('#table_tbs_laboratorium').DataTable( {
-          "processing": true,
-          "serverSide": true,
-          "info":     true,
-          "language": { "emptyTable":     "Tidak Ada Data" },
-          "ajax":{
-            
-            url :"data_tbs_aps_laboratorium.php", // json datasource
-            
-            "data": function ( d ) {
-              d.no_reg = $("#no_reg").val();
-            
-            },
-
-            type: "post",  // method  , by default get
-            error: function(){  // error handling
-              $(".tbody").html("");
-              $("#table_tbs_laboratorium").append('<tbody class="tbody"><tr><th colspan="3"></th></tr></tbody>');
-              $("#table_tbs_laboratorium_processing").css("display","none"); 
-            }
-          }   
-        });
-    //TABLE AJAX TBS
     }
     $('form').submit(function(){       
       return false;
     });
 
   });
-</script>
+</script>-->
 <!--Mulai Script Proses Hapus TBS-->
 
 <!--<script type="text/javascript">
