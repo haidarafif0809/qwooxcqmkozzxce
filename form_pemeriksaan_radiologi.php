@@ -426,7 +426,7 @@ $data_reg = mysqli_fetch_array($select_reg);
 
                     while ($data_kontras = mysqli_fetch_array($select_pemriksaan_kontras)) {
 
-                    $query_pemeriksaan = $db->query("SELECT kode_barang FROM tbs_penjualan_radiologi WHERE kode_barang = '$data_kontras[kode_pemeriksaan]'");
+                    $query_pemeriksaan = $db->query("SELECT kode_barang FROM tbs_penjualan_radiologi WHERE kode_barang = '$data_kontras[kode_pemeriksaan]' AND no_reg = '$no_reg'");
 
                     $jumlah_pemeriksaan = mysqli_num_rows($query_pemeriksaan);
 
@@ -438,7 +438,7 @@ $data_reg = mysqli_fetch_array($select_reg);
                           data-kode="'.$data_kontras['kode_pemeriksaan'].'"
                           data-nama="'.$data_kontras['nama_pemeriksaan'].'"
                           data-kontras="'.$data_kontras['kontras'].'"
-                          data-harga="'.$data_kontras['harga_1'].'" class="insert-tbs" data-toogle="0" id="label-'.$data_kontras['id'].'"
+                          data-harga="'.$data_kontras['harga_1'].'" class="insert-tbs" data-toogle="1" id="label-'.$data_kontras['id'].'"
                            checked="true" disabled="true" >'.$data_kontras['nama_pemeriksaan'].'</label> <br>';
 
                       }
@@ -473,7 +473,7 @@ $data_reg = mysqli_fetch_array($select_reg);
 
                     while ($data_tanpa_kontras = mysqli_fetch_array($select_pemriksaan_tanpa_kontras)) {
 
-                      $query_pemeriksaan = $db->query("SELECT kode_barang FROM tbs_penjualan_radiologi WHERE kode_barang = '$data_tanpa_kontras[kode_pemeriksaan]'");
+                      $query_pemeriksaan = $db->query("SELECT kode_barang FROM tbs_penjualan_radiologi WHERE kode_barang = '$data_tanpa_kontras[kode_pemeriksaan]' AND no_reg = '$no_reg'");
 
                       $jumlah_pemeriksaan = mysqli_num_rows($query_pemeriksaan);
 
@@ -486,7 +486,7 @@ $data_reg = mysqli_fetch_array($select_reg);
                             data-kode="'.$data_tanpa_kontras['kode_pemeriksaan'].'"
                             data-nama="'.$data_tanpa_kontras['nama_pemeriksaan'].'"
                             data-kontras="'.$data_tanpa_kontras['kontras'].'"
-                            data-harga="'.$data_tanpa_kontras['harga_1'].'" class="insert-tbs" data-toogle="0" id="label-'.$data_kontras['id'].'"
+                            data-harga="'.$data_tanpa_kontras['harga_1'].'" class="insert-tbs" data-toogle="1" id="label-'.$data_tanpa_kontras['id'].'"
                              checked="true" disabled="true" >'.$data_tanpa_kontras['nama_pemeriksaan'].'</label> <br>';
                         }
                         else{
@@ -498,7 +498,7 @@ $data_reg = mysqli_fetch_array($select_reg);
                             data-kode="'.$data_tanpa_kontras['kode_pemeriksaan'].'"
                             data-nama="'.$data_tanpa_kontras['nama_pemeriksaan'].'"
                             data-kontras="'.$data_tanpa_kontras['kontras'].'"
-                            data-harga="'.$data_tanpa_kontras['harga_1'].'" class="insert-tbs" data-toogle="0" id="label-'.$data_kontras['id'].'"
+                            data-harga="'.$data_tanpa_kontras['harga_1'].'" class="insert-tbs" data-toogle="0" id="label-'.$data_tanpa_kontras['id'].'"
                             >'.$data_tanpa_kontras['nama_pemeriksaan'].'</label> <br>';
                         }
 
@@ -4024,7 +4024,7 @@ $(document).on('click','.insert-tbs',function(e){
 
               $('#label-'+id+'').attr("data-toogle", 0);
 
-              alert("Pemeriksaan '"+nama_barang+"' Sudah Ada, Silakan Pilih Pemeriksaan Yang Lain !");            
+              alert("Pemeriksaan '"+nama_barang+"' Sudah Ada, Silakan Pilih Pemeriksaan Yang Lain !");        
 
            }
            else{
