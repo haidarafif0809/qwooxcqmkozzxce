@@ -26,21 +26,21 @@ $columns = array(
 
 
 // getting total number records without any search
-$sql = "SELECT r.no_rm,r.no_reg,r.nama_pasien,r.penjamin,r.tanggal, p.no_faktur ";
+$sql = "SELECT r.no_rm,r.no_reg,r.nama_pasien,r.penjamin, p.no_faktur, p.tanggal ";
 $sql.=" FROM registrasi r INNER JOIN penjualan p ON r.no_reg = p.no_reg ";
-$sql.=" WHERE r.jenis_pasien = 'Rawat Jalan' AND r.tanggal >= '$dari_tanggal' AND r.tanggal <= '$sampai_tanggal'";
+$sql.=" WHERE p.tanggal >= '$dari_tanggal' AND p.tanggal <= '$sampai_tanggal' AND (r.jenis_pasien = 'Rawat Jalan' OR r.jenis_pasien = 'UGD')";
 
 $query=mysqli_query($conn, $sql) or die("eror 1");
 $totalData = mysqli_num_rows($query);
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
-$sql = "SELECT r.no_rm,r.no_reg,r.nama_pasien,r.penjamin,r.tanggal, p.no_faktur ";
+$sql = "SELECT r.no_rm,r.no_reg,r.nama_pasien,r.penjamin, p.no_faktur, p.tanggal ";
 $sql.=" FROM registrasi r INNER JOIN penjualan p ON r.no_reg = p.no_reg ";
-$sql.=" WHERE r.jenis_pasien = 'Rawat Jalan' AND r.tanggal >= '$dari_tanggal' AND r.tanggal <= '$sampai_tanggal'";
+$sql.=" WHERE p.tanggal >= '$dari_tanggal' AND p.tanggal <= '$sampai_tanggal' AND (r.jenis_pasien = 'Rawat Jalan' OR r.jenis_pasien = 'UGD')";
 
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
 $sql.=" AND ( p.no_faktur LIKE '".$requestData['search']['value']."%' ";
-$sql.=" OR r.tanggal LIKE '".$requestData['search']['value']."%' ";
+$sql.=" OR p.tanggal LIKE '".$requestData['search']['value']."%' ";
 $sql.=" OR r.nama_pasien LIKE '".$requestData['search']['value']."%' )";
   
 }
@@ -59,9 +59,8 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
       $nestedData[] = $row['no_faktur'];
       $nestedData[] = $row['nama_pasien'];
       $nestedData[] = $row['penjamin'];
-      $nestedData[] = "<p align='right'>".$row['tanggal']."</p>";
-      $nestedData[] = "<p align='right'>".$row['tanggal']."</p>";
-      $nestedData[] = "<p align='right'> 1 </p>";
+      $nestedData[] = $row['tanggal'];
+      $nestedData[] = 1;
 
   $data[] = $nestedData;
 }
@@ -72,9 +71,8 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
       $nestedData[] = "<p style='color:red'> TOTAL PASIEN </p>";
       $nestedData[] = "<p style='color:red'> </p>";
       $nestedData[] = "<p style='color:red'> </p>";
-      $nestedData[] = "<p style='color:red' align='right'> - </p>";
-      $nestedData[] = "<p style='color:red' align='right'> - </p>";
-      $nestedData[] = "<p style='color:red' align='right'> ".rp($totalData)." </p>";
+      $nestedData[] = "<p style='color:red'> - </p>";
+      $nestedData[] = "<p style='color:red'> ".rp($totalData)." </p>";
 
   $data[] = $nestedData;
 
