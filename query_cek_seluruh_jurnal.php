@@ -50,14 +50,6 @@ while ($data_penjualan = mysqli_fetch_array($query_penjualan)) {
 	$selisih_debit_kredit = $data_jurnal_penjualan['total_debit'] - $data_jurnal_penjualan['total_kredit'];
 	$status_balance = 'Balance';
 
-	// jika debit kredit nya ada selisih maka lakukan update agar menjadi balance
-	if ($selisih_debit_kredit != 0 ) {
-		# code...
-		$status_balance = 'Tidak Balance';
-
-		$db->query("UPDATE penjualan SET keterangan = 'Edit Otomatis Jurnal Karena Tidak Balance' WHERE no_faktur = '$data_penjualan[no_faktur]'");
-
-	}
 
 	//nilai persediaan di jurnal 
 
@@ -71,9 +63,14 @@ while ($data_penjualan = mysqli_fetch_array($query_penjualan)) {
 
 	$status_balance_persediaan = 'Balance';
 	$selisih_persediaan = $data_nilai_persediaan_jurnal['nilai_persediaan'] - $data_nilai_persediaan_hpp_keluar['nilai_persediaan'];
-	if ($selisih_persediaan != 0) {
+
+	// jika debit kredit nya ada selisih maka lakukan update agar menjadi balance
+	if ($selisih_debit_kredit != 0 OR $selisih_persediaan != 0) {
 		# code...
+		$status_balance = 'Tidak Balance';
 		$status_balance_persediaan = 'Tidak Balance';
+
+		$db->query("UPDATE penjualan SET keterangan = 'Edit Otomatis Jurnal Karena Tidak Balance' WHERE no_faktur = '$data_penjualan[no_faktur]'");
 
 	}
 	echo "<tr>
