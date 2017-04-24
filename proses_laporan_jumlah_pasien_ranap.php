@@ -6,10 +6,10 @@ include 'db.php';
 $dari_tanggal = stringdoang($_POST['dari_tanggal']);
 $sampai_tanggal = stringdoang($_POST['sampai_tanggal']);
 
-$query_hitung_jumlah_hari = $db->query("SELECT SUM(DATEDIFF(DATE(p.tanggal), r.tanggal_masuk)) AS jumlah_hari FROM registrasi r INNER JOIN penjualan p ON r.no_reg = p.no_reg WHERE r.jenis_pasien = 'Rawat Inap' AND r.tanggal_masuk >= '$dari_tanggal' AND r.tanggal_masuk <= '$sampai_tanggal'");
+$query_hitung_jumlah_hari = $db->query("SELECT SUM(DATEDIFF(DATE(p.tanggal), r.tanggal_masuk)) AS jumlah_hari FROM registrasi r INNER JOIN penjualan p ON r.no_reg = p.no_reg WHERE r.jenis_pasien = 'Rawat Inap' AND p.tanggal >= '$dari_tanggal' AND p.tanggal <= '$sampai_tanggal'");
 $data_hitung_jumlah_hari = mysqli_fetch_array($query_hitung_jumlah_hari);
 
-$query_hitung_tanggal_sama = $db->query("SELECT COUNT(r.no_reg) AS jumlah_tanggal_sama FROM registrasi r INNER JOIN penjualan p ON r.no_reg = p.no_reg WHERE r.jenis_pasien = 'Rawat Inap' AND r.tanggal_masuk >= '2017-04-01' AND r.tanggal_masuk <= '2017-04-22' AND r.tanggal_masuk = p.tanggal");
+$query_hitung_tanggal_sama = $db->query("SELECT COUNT(r.no_reg) AS jumlah_tanggal_sama FROM registrasi r INNER JOIN penjualan p ON r.no_reg = p.no_reg WHERE r.jenis_pasien = 'Rawat Inap' AND p.tanggal >= '2017-04-01' AND p.tanggal <= '2017-04-22' AND r.tanggal_masuk = p.tanggal");
 $data_hitung_tanggal_sama = mysqli_fetch_array($query_hitung_tanggal_sama);
 
 
@@ -36,7 +36,7 @@ $columns = array(
 // getting total number records without any search
 $sql = "SELECT r.no_rm,r.no_reg,r.nama_pasien,r.penjamin,r.tanggal_masuk, p.tanggal, p.no_faktur, DATEDIFF(DATE(p.tanggal), r.tanggal_masuk) AS jumlah_hari ";
 $sql.=" FROM registrasi r INNER JOIN penjualan p ON r.no_reg = p.no_reg ";
-$sql.=" WHERE r.jenis_pasien = 'Rawat Inap' AND r.tanggal_masuk >= '$dari_tanggal' AND r.tanggal_masuk <= '$sampai_tanggal'";
+$sql.=" WHERE r.jenis_pasien = 'Rawat Inap' AND p.tanggal >= '$dari_tanggal' AND p.tanggal <= '$sampai_tanggal'";
 
 $query=mysqli_query($conn, $sql) or die("eror 1");
 $totalData = mysqli_num_rows($query);
@@ -44,7 +44,7 @@ $totalFiltered = $totalData;  // when there is no search parameter then total nu
 
 $sql = "SELECT r.no_rm,r.no_reg,r.nama_pasien,r.penjamin,r.tanggal_masuk, p.tanggal, p.no_faktur, DATEDIFF(DATE(p.tanggal), r.tanggal_masuk) AS jumlah_hari ";
 $sql.=" FROM registrasi r INNER JOIN penjualan p ON r.no_reg = p.no_reg ";
-$sql.=" WHERE r.jenis_pasien = 'Rawat Inap' AND r.tanggal_masuk >= '$dari_tanggal' AND r.tanggal_masuk <= '$sampai_tanggal'";
+$sql.=" WHERE r.jenis_pasien = 'Rawat Inap' AND p.tanggal >= '$dari_tanggal' AND p.tanggal <= '$sampai_tanggal'";
 
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
 $sql.=" AND ( p.no_faktur LIKE '".$requestData['search']['value']."%' ";
