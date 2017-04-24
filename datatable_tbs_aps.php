@@ -30,7 +30,7 @@ $columns = array(
 
 // getting total number records without any search
 $sql =" SELECT tp.id,u.nama AS nama_dokter, tp.no_reg, tp.no_faktur, tp.kode_jasa, tp.nama_jasa, tp.harga, tp.subtotal, tp.dokter, tp.analis, tp.tanggal, tp.jam, uu.nama AS nama_analis";
-$sql.=" FROM tbs_aps_penjualan tp INNER JOIN user u on tp.dokter = u.id INNER JOIN user uu on tp.analis = uu.id";
+$sql.=" FROM tbs_aps_penjualan tp LEFT JOIN user u on tp.dokter = u.id LEFT JOIN user uu on tp.analis = uu.id";
 $sql.=" WHERE tp.no_reg = '$no_reg' AND (tp.no_faktur IS NULL OR tp.no_faktur = '')";
 
 $query = mysqli_query($conn, $sql) or die("eror 1");
@@ -39,7 +39,7 @@ $totalFiltered = $totalData;  // when there is no search parameter then total nu
 
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
 $sql =" SELECT tp.id,u.nama AS nama_dokter, tp.no_reg, tp.no_faktur, tp.kode_jasa, tp.nama_jasa, tp.harga, tp.subtotal, tp.dokter, tp.analis, tp.tanggal, tp.jam, uu.nama AS nama_analis";
-$sql.=" FROM tbs_aps_penjualan tp INNER JOIN user u on tp.dokter = u.id INNER JOIN user uu on tp.analis = uu.id";
+$sql.=" FROM tbs_aps_penjualan tp LEFT JOIN user u on tp.dokter = u.id LEFT JOIN user uu on tp.analis = uu.id";
 $sql.=" WHERE tp.no_reg = '$no_reg' AND (tp.no_faktur IS NULL OR tp.no_faktur = '')";
 
     $sql.=" AND (kode_jasa LIKE '".$requestData['search']['value']."%'";  
