@@ -245,7 +245,7 @@ $(document).on('click', '.detail-lab', function (e) {
             var dataTable = $('#table_detail').DataTable( {
             "processing": true,
             "serverSide": true,
-            "info":     false,
+            "info":     true,
             "language": { "emptyTable":     "My Custom Message On Empty Table" },
             "ajax":{
               url :"show_hasil_lab.php", // json datasource
