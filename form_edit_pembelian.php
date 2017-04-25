@@ -485,7 +485,7 @@
 
             echo"<td>". $data1['nama'] ."</td>";
 
- echo"<td class='edit-harga' data-id='".$data1['id']."' data-faktur='".$data1['no_faktur']."' data-kode='".$data1['kode_barang']."'><span id='text-harga-".$data1['id']."'>". rp($data1['harga']) ."</span> <input type='hidden' id='input-harga-".$data1['id']."' value='".$data1['harga']."' class='input_harga' data-id='".$data1['id']."' autofocus='' data-kode='".$data1['kode_barang']."' data-jumlah='".$data1['jumlah_barang']."' > </td>";
+ echo"<td class='edit-harga' data-id='".$data1['id']."' data-faktur='".$data1['no_faktur']."' data-kode='".$data1['kode_barang']."'><span id='text-harga-".$data1['id']."'>". rp($data1['harga']) ."</span> <input type='hidden' id='input-harga-".$data1['id']."' value='".$data1['harga']."' class='input_harga' data-id='".$data1['id']."' data-nama='".$data1['nama_barang']."' autofocus='' data-kode='".$data1['kode_barang']."' data-jumlah='".$data1['jumlah_barang']."' > </td>";
 
              echo "<td><span id='text-subtotal-".$data1['id']."'>". rp($data1['subtotal']) ."</span></td>
             <td><span id='text-potongan-".$data1['id']."'>". $data1['potongan'] ."</span></td>
@@ -1810,6 +1810,7 @@ else
                                     var id = $(this).attr("data-id");
                                     var harga_baru = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($(this).val()))));
                                     var kode_barang = $(this).attr("data-kode");
+                                    var nama_barang = $(this).attr("data-nama");
                                     var jumlah = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($(this).attr("data-jumlah")))));
                                     var harga_lama = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#text-harga-"+id+"").text()))));
                                     var no_faktur = $("#nomorfaktur").val();
@@ -1837,23 +1838,34 @@ else
                                     var tax_tbs = tax / subtotal_lama * 100;
                                     var jumlah_tax = Math.round(tax_tbs) * subtotal / 100;
 
-                              $.post("update_pesanan_barang_harga_beli.php",{jumlah:jumlah,harga_lama:harga_lama,jumlah_tax:jumlah_tax,potongan:potongan,id:id,harga_baru:harga_baru,kode_barang:kode_barang},function(info){
+                                    var harga_edit = tandaPemisahTitik(harga_baru);
 
-                                    
-                                    $("#text-harga-"+id+"").show();
-                                    $("#text-harga-"+id+"").text(tandaPemisahTitik(harga_baru));
-                                    $("#text-subtotal-"+id+"").text(tandaPemisahTitik(subtotal));
-                                    $("#hapus-tbs-"+id+"").attr('data-subtotal', subtotal);
+                                    var pesan_alert = confirm("Apakah Anda Yakin Merubah Harga '"+nama_barang+"' Menjadi Rp. '"+harga_edit+"' ?");
+                                    if (pesan_alert == true) {
 
-                                    $("#hapus-tbs-"+id+"").attr('data-subtotal', subtotal);
 
-                                    $("#text-tax-"+id+"").text(Math.round(jumlah_tax));
-                                    $("#input-harga-"+id+"").attr("type", "hidden"); 
-                                    $("#input-jumlah-"+id+"").attr("data-harga", harga_baru); 
-                                    $("#total_pembelian").val(tandaPemisahTitik(total_akhirr));
-                                    $("#total_pembelian1").val(tandaPemisahTitik(subtotal_penjualan));         
+                                      $.post("update_pesanan_barang_harga_beli.php",{jumlah:jumlah,harga_lama:harga_lama,jumlah_tax:jumlah_tax,potongan:potongan,id:id,harga_baru:harga_baru,kode_barang:kode_barang},function(info){
 
-                                           });
+                                      
+                                      $("#text-harga-"+id+"").show();
+                                      $("#text-harga-"+id+"").text(tandaPemisahTitik(harga_baru));
+                                      $("#text-subtotal-"+id+"").text(tandaPemisahTitik(subtotal));
+                                      $("#hapus-tbs-"+id+"").attr('data-subtotal', subtotal);
+
+                                      $("#hapus-tbs-"+id+"").attr('data-subtotal', subtotal);
+
+                                      $("#text-tax-"+id+"").text(Math.round(jumlah_tax));
+                                      $("#input-harga-"+id+"").attr("type", "hidden"); 
+                                      $("#input-jumlah-"+id+"").attr("data-harga", harga_baru); 
+                                      $("#total_pembelian").val(tandaPemisahTitik(total_akhirr));
+                                      $("#total_pembelian1").val(tandaPemisahTitik(subtotal_penjualan));         
+
+                                      });
+
+                                    }
+                                    else {
+
+                                    }
                                   
                                     $("#kode_barang").focus();
                                     $("#pembayaran_pembelian").val("");

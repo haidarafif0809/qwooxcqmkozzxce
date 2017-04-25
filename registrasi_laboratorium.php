@@ -266,11 +266,11 @@ $dokter = $data_petugas_jaga['nama_dokter'];
 		<th style='background-color: #4CAF50; color: white'>Batal</th>
 		
 		<?php if ($input_jasa_lab): ?>  
-		<th style='background-color: #4CAF50; color: white' >Jasa Lab</th>
+		<th style='background-color: #4CAF50; color: white' >Input Jasa</th>
 		<?php endif?>
 
 		<?php if ($input_hasil_lab): ?> 
-    	<th style='background-color: #4CAF50; color: white' >Input Hasil Lab</th> 
+    	<th style='background-color: #4CAF50; color: white' >Input Hasil</th> 
 		<?php endif?>
 
 		<th style='background-color: #4CAF50; color: white'>Edit</th> 
