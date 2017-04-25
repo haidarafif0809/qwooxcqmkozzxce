@@ -23,14 +23,14 @@ $columns = array(
 
 // getting total number records without any search
 $sql = "SELECT username,nama,alamat,jabatan,otoritas,status,id ";
-$sql.=" FROM user WHERE tipe = 1";
+$sql.=" FROM user WHERE 1=1";
 $query = mysqli_query($conn, $sql) or die("eror 1");
 $totalData = mysqli_num_rows($query);
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
 $sql = "SELECT username,nama,alamat,jabatan,otoritas,status,id ";
 $sql.=" FROM user "; 
-$sql.=" WHERE tipe = 1 ";
+$sql.=" WHERE 1=1 ";
 
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
 	$sql.=" AND ( username LIKE '".$requestData['search']['value']."%' "; 
