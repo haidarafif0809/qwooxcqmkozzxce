@@ -22,21 +22,20 @@ $columns = array(
 );
 
 // getting total number records without any search
-$sql = "SELECT u.username,u.nama,u.alamat,u.jabatan,u.otoritas,u.status,u.id,j.nama AS nama_jabatan ";
-$sql.=" FROM user u INNER JOIN jabatan j ON u.jabatan = j.id";
+$sql = "SELECT username,nama,alamat,jabatan,otoritas,status,id ";
+$sql.=" FROM user WHERE tipe = 1";
 $query = mysqli_query($conn, $sql) or die("eror 1");
 $totalData = mysqli_num_rows($query);
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
-$sql = "SELECT u.username,u.nama,u.alamat,u.jabatan,u.otoritas,u.status,u.id,j.nama AS nama_jabatan ";
-$sql.=" FROM user u INNER JOIN jabatan j ON u.jabatan = j.id"; 
-$sql.=" WHERE 1=1 ";
+$sql = "SELECT username,nama,alamat,jabatan,otoritas,status,id ";
+$sql.=" FROM user "; 
+$sql.=" WHERE tipe = 1 ";
 
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
-	$sql.=" AND ( u.username LIKE '".$requestData['search']['value']."%' "; 
-	$sql.=" OR u.nama LIKE '".$requestData['search']['value']."%' ";
-	$sql.=" OR j.nama LIKE '".$requestData['search']['value']."%' ";
-	$sql.=" OR u.otoritas LIKE '".$requestData['search']['value']."%' )";
+	$sql.=" AND ( username LIKE '".$requestData['search']['value']."%' "; 
+	$sql.=" OR nama LIKE '".$requestData['search']['value']."%' ";
+	$sql.=" OR otoritas LIKE '".$requestData['search']['value']."%' )";
 }
 
 $query=mysqli_query($conn, $sql) or die("eror 2");
@@ -44,7 +43,7 @@ $totalFiltered = mysqli_num_rows($query); // when there is a search parameter th
 
 
 
-$sql.=" ORDER BY u.id ".$requestData['order'][0]['dir']." LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
+$sql.=" ORDER BY id ".$requestData['order'][0]['dir']." LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
 
 /* $requestData['order'][0]['column'] contains colmun index, $requestData['order'][0]['dir'] contains order such as asc/desc  */	
 $query=mysqli_query($conn, $sql) or die("eror 3");
@@ -58,10 +57,8 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 			$nestedData[] = $row["username"];
 			$nestedData[] = $row["nama"];
 			$nestedData[] = $row["alamat"];
-			$nestedData[] = $row["nama_jabatan"];
 			$nestedData[] = $row["otoritas"];
 			$nestedData[] = $row["status"];	
-
 			$nestedData[] = $row["id"];	
 	
 

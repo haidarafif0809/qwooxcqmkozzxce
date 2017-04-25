@@ -84,8 +84,21 @@ try {
     $query_pelanggan = $db_pasien->query("SELECT nama_pelanggan FROM pelanggan WHERE kode_pelanggan = '$no_rm'");
     $data_pelanggan = mysqli_fetch_array($query_pelanggan);    
 
-    $query_hapus_detail = $db->query("DELETE FROM detail_penjualan WHERE no_faktur = '$no_faktur' ");
 
+
+    //INSERT DARI TBS FEE KE LAPORAN FEE PRODUK
+            $insert_lap_fee_produk = "INSERT INTO laporan_fee_produk (nama_petugas,no_faktur, kode_produk,nama_produk,
+            jumlah_fee, tanggal, jam, no_rm, no_reg) SELECT nama_petugas, '$no_faktur', kode_produk, nama_produk, jumlah_fee, tanggal, jam, no_rm, no_reg FROM tbs_fee_produk WHERE no_reg = '$no_reg'";
+
+              if ($db->query($insert_lap_fee_produk) === TRUE) {
+              
+              }
+              else{
+                  echo "Error: " . $insert_lap_fee_produk . "<br>" . $db->error;
+              }
+    //INSERT DARI TBS FEE KE LAPORAN FEE PRODUK
+    
+    $query_hapus_detail = $db->query("DELETE FROM detail_penjualan WHERE no_faktur = '$no_faktur' ");
 
     //INSERT DARI TBS APS KE DETAIL PENJUALAN
             $insert_detail_penjualan = "INSERT INTO detail_penjualan (no_faktur,no_rm, no_reg,kode_barang,
@@ -295,6 +308,7 @@ try {
         nama_jasa,harga,subtotal,dokter,analis,tanggal,jam) SELECT no_reg, no_faktur,kode_jasa,nama_jasa,harga, subtotal,dokter,analis,tanggal,jam FROM tbs_aps_penjualan  WHERE no_reg = '$no_reg' ");
 
       $query_hapus_tbs_aps = $db->query("DELETE FROM tbs_aps_penjualan WHERE no_reg = '$no_reg' ");
+      $query_hapus_fee_produk = $db->query("DELETE FROM tbs_fee_produk WHERE no_reg = '$no_reg' ");
 
 
   }// braket if cek subtotal penjualan
