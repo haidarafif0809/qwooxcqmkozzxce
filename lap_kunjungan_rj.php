@@ -28,6 +28,7 @@ include 'db.php';
 </div>
 
 
+
 <span id="show_no_rm"><!--span untuk cari bersarkan No RM-->
 <form class="form-inline" role="form" id="form_tanggal" >
 	<div class="form-group"> 
@@ -450,11 +451,12 @@ $(document).ready(function(){
     $("#show_ex").hide();
     $("#show_penjamin").hide();
     });
-
+    
     $("#nav_tanggal").click(function(){    
     $("#show_tanggal").show();  
     $("#show_no_rm").hide();
     $("#show_ex").hide();
+    $("#show_penjamin").hide();
     });
 
     $("#nav_ex").click(function(){
