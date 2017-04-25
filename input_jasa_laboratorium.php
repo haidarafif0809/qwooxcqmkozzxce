@@ -42,56 +42,114 @@ $aps_periksa = stringdoang($_GET['aps_periksa']); // jika 1 Laboratorium, jika 2
 
 <!--MULAI TAMPILAN DATA HEADER & DETAILNYA-->
 <?php 
-
 $query_header = $db->query("SELECT id,nama_pemeriksaan,nama_sub,sub_hasil_lab FROM setup_hasil WHERE kategori_index = 'Header' ORDER BY id ASC ");
-while ($data_header = mysqli_fetch_array($query_header)) {
+while ($data_header = mysqli_fetch_array($query_header)){ //WHILE SATU
 
-$query_jasa = $db->query("SELECT id,kode_lab,nama AS nama_jasa,harga_1 FROM jasa_lab WHERE id = '$data_header[nama_pemeriksaan]'");
-while($data_jasa = mysqli_fetch_array($query_jasa)){
+  $query_jasa = $db->query("SELECT id,kode_lab,nama AS nama_jasa,harga_1 FROM jasa_lab WHERE id = '$data_header[nama_pemeriksaan]'");
+  while($data_jasa = mysqli_fetch_array($query_jasa)){ // WHILE DUA
 
-echo '
-<div class="row">
-  <div class="col-sm-8">';  
+    $query_tbs_data_periksa = $db->query("SELECT kode_jasa FROM tbs_aps_penjualan WHERE kode_jasa = '$data_jasa[kode_lab]' AND no_reg = '$no_reg'");
 
-  echo '<input type="checkbox" class="pilih-header-input filled-in" id="pemeriksaan-'.$data_header['id'].'" data-id-kepala="'.$data_header['id'].'" data-kode-jasa="'.$data_jasa['kode_lab'].'" data-toogle="1" name="header" class="pilih-header" value="'.$data_jasa['nama_jasa'].'">
+    $jumlah_data_periksa = mysqli_num_rows($query_tbs_data_periksa);
 
-  <label for="pemeriksaan-'.$data_header['id'].'" data-id="'.$data_header['id'].'" data-kode="'.$data_header['nama_pemeriksaan'].'" data-nama="'.$data_header['nama_sub'].'" data-kode-jasa="'.$data_jasa['kode_lab'].'" class="pilih-header" data-toogle="1" id="label-'.$data_header['id'].'">
-  <b>'.$data_jasa['nama_jasa'].'</b></label> <br>'; //nama yang tampil
+    if ($jumlah_data_periksa > 0) {
 
-echo '
-  </div>
-</div>';
+      echo '
+      <div class="row">
+        <div class="col-sm-8">';  
 
+        echo '<input type="checkbox" class="pilih-header-input filled-in" id="pemeriksaan-'.$data_header['id'].'" data-id-kepala="'.$data_header['id'].'" data-kode-jasa="'.$data_jasa['kode_lab'].'" data-toogle="11" name="header" class="pilih-header" value="'.$data_jasa['nama_jasa'].'" checked="true" >
 
-  //UNDER DETAIL dari HEADER
-echo '
-<div class="row">
-  <div class="col-sm-1">
-  </div>
+        <label for="pemeriksaan-'.$data_header['id'].'" data-id="'.$data_header['id'].'" data-kode="'.$data_header['nama_pemeriksaan'].'" data-nama="'.$data_header['nama_sub'].'" data-kode-jasa="'.$data_jasa['kode_lab'].'" class="pilih-header" data-toogle="11" id="label-'.$data_header['id'].'">
+        <b>'.$data_jasa['nama_jasa'].'</b></label> <br>'; //nama yang tampil
 
-  <div class="col-sm-11">';
+      echo '
+        </div>
+      </div>';
+    
+      //UNDER DETAIL dari HEADER
+      echo '
+      <div class="row">
+        <div class="col-sm-1">
+        </div>
 
-  $query_detail = $db->query("SELECT id,nama_pemeriksaan,nama_sub,sub_hasil_lab FROM setup_hasil WHERE kategori_index = 'Detail' AND sub_hasil_lab = '$data_header[id]' ORDER BY id ASC ");
-  while ($data_detail = mysqli_fetch_array($query_detail)) {
+        <div class="col-sm-11">';
 
-  $query_jasa = $db->query("SELECT id,kode_lab,nama AS nama_jasa,harga_1 FROM jasa_lab WHERE id = '$data_detail[nama_pemeriksaan]'");
-  while($data_jasa = mysqli_fetch_array($query_jasa)){
+        $query_detail = $db->query("SELECT id,nama_pemeriksaan,nama_sub,sub_hasil_lab FROM setup_hasil WHERE kategori_index = 'Detail' AND sub_hasil_lab = '$data_header[id]' ORDER BY id ASC ");
+        while ($data_detail = mysqli_fetch_array($query_detail)) {
 
-  echo '<input type="checkbox" class="pilih-detail-dari-kepala-'.$data_header['id'].' filled-in" data-headernya="'.$data_header['id'].'"  id="pemeriksaan-'.$data_detail['id'].'" style="padding-right: 50%;" data-toogle="2" data-id="'.$data_detail['id'].'"  name="detail_header" data-kode-jasa="'.$data_jasa['kode_lab'].'" value="'.$data_jasa['nama_jasa'].'">
+          $query_jasa = $db->query("SELECT id,kode_lab,nama AS nama_jasa,harga_1 FROM jasa_lab WHERE id = '$data_detail[nama_pemeriksaan]'");
+          while($data_jasa = mysqli_fetch_array($query_jasa)){
 
-  <label for="pemeriksaan-'.$data_detail['id'].'" data-id="'.$data_detail['id'].'" data-head="'.$data_header['id'].'" data-kode="'.$data_detail['nama_pemeriksaan'].'" data-nama="'.$data_detail['nama_sub'].'" data-kode-jasa="'.$data_jasa['kode_lab'].'" class="pilih-detail-dari-header head-'.$data_header['id'].'" data-toogle="2">
-  '.$data_jasa['nama_jasa'].'</label> <br>'; //nama yang tampil
+       echo '<input type="checkbox" class="pilih-detail-dari-kepala-'.$data_header['id'].' filled-in" data-headernya="'.$data_header['id'].'"  id="pemeriksaan-'.$data_detail['id'].'" style="padding-right: 50%;" data-toogle="22" data-id="'.$data_detail['id'].'"  name="detail_header" data-kode-jasa="'.$data_jasa['kode_lab'].'" value="'.$data_jasa['nama_jasa'].'" checked="true">
 
-  }
-   }
-echo '
-  </div>
-</div>';
-   // DETAIL dari HEADER END 
+              <label for="pemeriksaan-'.$data_detail['id'].'" data-id="'.$data_detail['id'].'" data-head="'.$data_header['id'].'" data-kode="'.$data_detail['nama_pemeriksaan'].'" data-nama="'.$data_detail['nama_sub'].'" data-kode-jasa="'.$data_jasa['kode_lab'].'" class="pilih-detail-dari-header head-'.$data_header['id'].'" data-toogle="22">
+              '.$data_jasa['nama_jasa'].'</label> <br>'; //nama yang tampil
+            
+          }
+        }
 
-  
-  }
-}                  
+      echo '
+        </div>
+      </div>';
+         // DETAIL dari HEADER END
+    }
+    else{
+      echo '
+      <div class="row">
+        <div class="col-sm-8">';  
+
+          echo '
+          <input type="checkbox" class="pilih-header-input filled-in" id="pemeriksaan-'.$data_header['id'].'" data-id-kepala="'.$data_header['id'].'" data-kode-jasa="'.$data_jasa['kode_lab'].'" data-toogle="1" name="header" class="pilih-header" value="'.$data_jasa['nama_jasa'].'">
+
+          <label for="pemeriksaan-'.$data_header['id'].'" data-id="'.$data_header['id'].'" data-kode="'.$data_header['nama_pemeriksaan'].'" data-nama="'.$data_header['nama_sub'].'" data-kode-jasa="'.$data_jasa['kode_lab'].'" class="pilih-header" data-toogle="1" id="label-'.$data_header['id'].'">
+          <b>'.$data_jasa['nama_jasa'].'</b></label> <br>'; //nama yang tampil
+
+      echo '
+        </div>
+      </div>';
+      
+    
+      //UNDER DETAIL dari HEADER
+      echo '
+      <div class="row">
+        <div class="col-sm-1">
+        </div>
+
+        <div class="col-sm-11">';
+
+        $query_detail = $db->query("SELECT id,nama_pemeriksaan,nama_sub,sub_hasil_lab FROM setup_hasil WHERE kategori_index = 'Detail' AND sub_hasil_lab = '$data_header[id]' ORDER BY id ASC ");
+        while ($data_detail = mysqli_fetch_array($query_detail)) {
+
+        $query_jasa = $db->query("SELECT id,kode_lab,nama AS nama_jasa,harga_1 FROM jasa_lab WHERE id = '$data_detail[nama_pemeriksaan]'");
+        while($data_jasa = mysqli_fetch_array($query_jasa)){
+
+          $query_tbs_data_periksa = $db->query("SELECT kode_jasa FROM tbs_aps_penjualan WHERE kode_jasa = '$data_jasa[kode_lab]' AND no_reg = '$no_reg'");
+
+          $jumlah_data_periksa = mysqli_num_rows($query_tbs_data_periksa);
+
+            if ($jumlah_data_periksa > 0) {
+
+            echo '<input type="checkbox" class="pilih-detail-dari-kepala-'.$data_header['id'].' filled-in" data-headernya="'.$data_header['id'].'"  id="pemeriksaan-'.$data_detail['id'].'" style="padding-right: 50%;" data-toogle="22" data-id="'.$data_detail['id'].'"  name="detail_header" data-kode-jasa="'.$data_jasa['kode_lab'].'" value="'.$data_jasa['nama_jasa'].'" checked="true">
+
+            <label for="pemeriksaan-'.$data_detail['id'].'" data-id="'.$data_detail['id'].'" data-head="'.$data_header['id'].'" data-kode="'.$data_detail['nama_pemeriksaan'].'" data-nama="'.$data_detail['nama_sub'].'" data-kode-jasa="'.$data_jasa['kode_lab'].'" class="pilih-detail-dari-header head-'.$data_header['id'].'" data-toogle="22">'.$data_jasa['nama_jasa'].'</label> <br>'; //nama yang tampil
+            }
+            else{
+              echo '<input type="checkbox" class="pilih-detail-dari-kepala-'.$data_header['id'].' filled-in" data-headernya="'.$data_header['id'].'"  id="pemeriksaan-'.$data_detail['id'].'" style="padding-right: 50%;" data-toogle="2" data-id="'.$data_detail['id'].'"  name="detail_header" data-kode-jasa="'.$data_jasa['kode_lab'].'" value="'.$data_jasa['nama_jasa'].'">
+
+              <label for="pemeriksaan-'.$data_detail['id'].'" data-id="'.$data_detail['id'].'" data-head="'.$data_header['id'].'" data-kode="'.$data_detail['nama_pemeriksaan'].'" data-nama="'.$data_detail['nama_sub'].'" data-kode-jasa="'.$data_jasa['kode_lab'].'" class="pilih-detail-dari-header head-'.$data_header['id'].'" data-toogle="2">'.$data_jasa['nama_jasa'].'</label> <br>'; //nama yang tampil
+
+            }
+      }
+      }
+      //ENDING UNDER DETAIL dari HEADER
+    echo '
+      </div>
+    </div>';
+     // DETAIL dari HEADER END 
+    }
+  } // END WHILE AWAL
+} // END WHILE AKHIR                
 ?>
 <!--AKHIR TAMPILAN DATA HEADER & DETAILNYA-->
  </div> <!-- /  -->
@@ -106,6 +164,28 @@ while ($data_header = mysqli_fetch_array($query_header)) {
 $query_jasa = $db->query("SELECT id,kode_lab,nama AS nama_jasa,harga_1 FROM jasa_lab WHERE id = '$data_header[nama_pemeriksaan]'");
 while($data_jasa = mysqli_fetch_array($query_jasa)){
 
+ $query_tbs_data_periksa = $db->query("SELECT kode_jasa FROM tbs_aps_penjualan WHERE kode_jasa = '$data_jasa[kode_lab]' AND no_reg = '$no_reg'");
+
+  $jumlah_data_periksa = mysqli_num_rows($query_tbs_data_periksa);
+
+  if ($jumlah_data_periksa > 0) {
+
+echo '
+<div class="row">
+  <div class="col-sm-8">';  
+
+  echo '<input type="checkbox" class="cekcbox-3 filled-in" id="pemeriksaan-'.$data_header['id'].'" data-id="'.$data_header['id'].'" data-toogle="33" data-kode-jasa="'.$data_jasa['kode_lab'].'" name="detail_solo" value="'.$data_jasa['nama_jasa'].'" checked="true">
+
+  <label for="pemeriksaan-'.$data_header['id'].'" data-id="'.$data_header['id'].'" data-kode="'.$data_header['nama_pemeriksaan'].'" data-nama="'.$data_header['nama_sub'].'" data-kode-jasa="'.$data_jasa['kode_lab'].'" class="set-sendirian" data-toogle="33" id="label-'.$data_header['id'].'">
+  <b>'.$data_jasa['nama_jasa'].'</b></label> <br>'; //nama yang tampil
+
+echo '
+  </div>
+</div>';
+
+}
+else{
+
 echo '
 <div class="row">
   <div class="col-sm-8">';  
@@ -118,7 +198,9 @@ echo '
 echo '
   </div>
 </div>';
+
   }
+}
 }  
 
 ?>
