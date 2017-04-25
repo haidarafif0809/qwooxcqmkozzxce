@@ -247,6 +247,34 @@ else
 }
 
 
+else if ($row['jenis_penjualan'] == 'APS')
+{
+  // Cetak Tunai
+if ($row['status'] == 'Lunas') {
+$nestedData[] ='<td>
+<div class="dropdown">
+
+    <button class="btn btn-success btn-floating dropdown-toggle" type="button" id="dropdownMenu4" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <i class="fa fa-print"> </i>
+    </button>
+
+    <div class="dropdown-menu dropdown-primary" aria-labelledby="dropdownMenu4" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
+
+        <a class="dropdown-item" href="cetak_penjualan_tunai.php?no_faktur='.$row["no_faktur"].'">Print Penjualan Kecil</a>
+
+       <a class="dropdown-item" href="cetak_besar_aps.php?no_faktur='.$row["no_faktur"].'">Print Penjualan Besar</a>
+    </div>
+</div>
+ </td>';
+}
+else
+{
+  $nestedData[] ="<td></td>";
+}
+// End Cetak Tunai
+}
+
+
 else
 {
   // Cetak Tunai

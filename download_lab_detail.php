@@ -1,27 +1,30 @@
 <?php session_start();
-include 'header.php';
-include 'sanitasi.php';
-include 'db.php';
+// Fungsi header dengan mengirimkan raw data excel
+header("Content-type: application/vnd-ms-excel");
+ 
+// Mendefinisikan nama file ekspor "hasil-export.xls"
+header("Content-Disposition: attachment; filename=laboratorium_rekap.xls");
 
+include 'db.php';
+include 'sanitasi.php';
 
 $dari_tanggal = stringdoang($_GET['dari_tanggal']);
 $sampai_tanggal = stringdoang($_GET['sampai_tanggal']);
 
-$query1 = $db->query("SELECT * FROM perusahaan ");
-$data1 = mysqli_fetch_array($query1);
+$queryperusahaan = $db->query("SELECT nama_perusahaan,alamat_perusahaan,no_telp FROM perusahaan ");
+$data_perusahaan = mysqli_fetch_array($queryperusahaan);
+
 
  ?>
+
 <div class="container">
-<center><h3> <b> LAPORAN LABORATORIUM REKAP </b></h3><hr></center>
+<center><h3> <b> LAPORAN LABORATORIUM DETAIL </b></h3><hr></center>
  <div class="row"><!--row1-->
-        <div class="col-sm-2">
-                <img src='save_picture/<?php echo $data1['foto']; ?>' class='img-rounded' alt='Cinque Terre' width='160' height='140`'> 
-        </div><!--penutup colsm2-->
 
         <div class="col-sm-6">
-                 <h4> <b> <?php echo $data1['nama_perusahaan']; ?> </b> </h4> 
-                 <p> <?php echo $data1['alamat_perusahaan']; ?> </p> 
-                 <p> No.Telp:<?php echo $data1['no_telp']; ?> </p> 
+            <h4> <b> <?php echo $data_perusahaan['nama_perusahaan']; ?> </b> </h4> 
+            <p> <?php echo $data_perusahaan['alamat_perusahaan']; ?> </p> 
+            <p> No.Telp:<?php echo $data_perusahaan['no_telp']; ?> </p> 
                  
         </div><!--penutup colsm4-->
 
@@ -118,7 +121,8 @@ $data1 = mysqli_fetch_array($query1);
       </table>
       <hr>
 </div>
-
+</div>
+<br>
 
 <div class="col-sm-7">
 </div>
@@ -130,15 +134,16 @@ $data1 = mysqli_fetch_array($query1);
 
 <div class="col-sm-3">
         
-   <table>
-    <tbody>
+ <table>
+  <tbody>
 
-       <font class="satu"><b>Petugas <br><br><br> <font class="satu"><?php echo $_SESSION['nama']; ?></font></b></font>
-              
-    </tbody>
-    </table>
+     <font class="satu"><b>Petugas <br><br><br> <br><br><br> <font class="satu"><?php echo $_SESSION['nama']; ?></font></b></font>
+            
+  </tbody>
+  </table>
 
-</div>
+
+     </div>
 
  <script>
 $(document).ready(function(){

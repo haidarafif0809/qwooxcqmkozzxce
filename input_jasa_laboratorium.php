@@ -216,18 +216,15 @@ echo '
 
       <!--Mulai Col 2 SM Awal (untuk nilai Penjualan)-->
       <div class="col-sm-2">
-        <div class="card card-block">
 
-        <a type="button" class="btn btn-warning" href="registrasi_laboratorium.php"><i class="fa fa-reply-all"></i> Kembali</a>
-
-
-        </div>
       <!--Mulai Col 2 SM Awal (untuk nilai Penjualan)-->
       </div>
 
       <!--Mulai Col SM Kedua-->
       <div class="col-sm-8">
 
+          <a type="button" class="btn btn-warning" href="registrasi_laboratorium.php"><i class="fa fa-reply-all"></i> Kembali</a>
+          
         <?php if($aps_periksa == 1): ?>
         <button type="button" id="cari_jasa_laboratorium" class="btn btn-info " data-toggle="modal" data-target="#modal_lab"><i class='fa fa-search'></i> Cari Laboratorium (F1) </button> 
           <?php endif ?>
@@ -235,6 +232,7 @@ echo '
           <?php if($aps_periksa == 2): ?>
         <button type="button" id="cari_jasa_radiologi" class="btn btn-info " data-toggle="modal" data-target="#myModal"><i class='fa fa-search'></i> Cari Radilogi (F2) </button> 
           <?php endif ?>
+
 
       <!--Akhir Col SM Kedua-->
       </div>
