@@ -7,6 +7,9 @@ include 'db.php';
 
 $no_reg = stringdoang($_POST['no_reg']);
 
+$pilih_akses_tombol = $db->query("SELECT hapus_produk FROM otoritas_penjualan_rj WHERE id_otoritas = '$_SESSION[otoritas_id]' ");
+$otoritas_tombol = mysqli_fetch_array($pilih_akses_tombol);
+
 // storing  request (ie, get/post) global array to a variable  
 $requestData= $_REQUEST;
 
@@ -74,7 +77,10 @@ while( $row = mysqli_fetch_array($query) ) {  // preparing an array
       $nestedData[] = $row["tanggal"];
       $nestedData[] = $row["jam"];
 
+      if ($otoritas_tombol['hapus_produk'] > 0) {
+
       $nestedData[] = "<button class='btn btn-danger btn-sm btn-hapus-tbs' id='hapus-tbs-". $row['id'] ."' data-id='". $row['id'] ."' data-kode='". $row['kode_jasa'] ."' data-barang='". $row['nama_jasa'] ."'>Hapus</button>";
+      }
 
       $nestedData[] = $row["id"];
 

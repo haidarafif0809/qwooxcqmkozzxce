@@ -609,7 +609,7 @@ if ($lihat['laboratorium_lihat'] > 0)
        <ul>
 <li><a href="lab_bidang.php" class="waves-effect" >Kelompok Bidang</a></li>
 <li><a href="jasa_lab.php" class="waves-effect" >Nama Pemeriksaan</a></li>
-<li><a href="setup_hasil.php" class="waves-effect" >Setup Hasil</a></li>
+<li><a href="setup_hasil.php" class="waves-effect" >Parameter Laboratorium</a></li>
 </ul>
     </div>
 </li>

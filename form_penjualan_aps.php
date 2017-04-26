@@ -9,7 +9,7 @@ $session_id = session_id();
 $user = $_SESSION['nama'];
 $id_user = $_SESSION['id'];
 
-$pilih_akses_tombol = $db->query("SELECT tombol_submit, tombol_bayar, tombol_piutang, tombol_simpan, tombol_batal FROM otoritas_penjualan_rj WHERE id_otoritas = '$_SESSION[otoritas_id]' ");
+$pilih_akses_tombol = $db->query("SELECT tombol_submit, tombol_bayar, tombol_piutang, tombol_simpan, tombol_batal, hapus_produk FROM otoritas_penjualan_rj WHERE id_otoritas = '$_SESSION[otoritas_id]' ");
 $otoritas_tombol = mysqli_fetch_array($pilih_akses_tombol);
 
 ?>
@@ -73,7 +73,10 @@ $otoritas_tombol = mysqli_fetch_array($pilih_akses_tombol);
 							      <th style='background-color: #4CAF50; color: white'> Petugas</th>
 							      <th style='background-color: #4CAF50; color: white'> Tanggal</th>
 							      <th style='background-color: #4CAF50; color: white'> Jam</th>
-							      <th style='background-color: #4CAF50; color: white'> Hapus </th>
+
+              <?php if ($otoritas_tombol['hapus_produk'] > 0): ?>
+                    <th style='background-color: #4CAF50; color: white'> Hapus </th>                
+              <?php endif ?>
 							                          
 							    </thead> <!-- tag penutup tabel -->
 							    <tbody class="tbody">
