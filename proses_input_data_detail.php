@@ -63,6 +63,82 @@ while($data_query_select_detail = mysqli_fetch_array($query_select_detail)){
       '$nama_jasa','$harga_jasa','$dokter','$analis','$tanggal',
       '$jam')");
 
+
+      // INSERT FEE DOKTER JASA LAB
+    $query_fee_jasa_lab = $db->query("SELECT jumlah_prosentase, jumlah_uang FROM fee_produk WHERE nama_petugas = '$dokter' AND kode_produk = '$kode_jasa_lab'");
+    $jumlah__fee_jasa_lab = mysqli_num_rows($query_fee_jasa_lab);
+    $data_fee_jasa_lab = mysqli_fetch_array($query_fee_jasa_lab);
+
+    if ($jumlah__fee_jasa_lab > 0){
+
+        if ($data_fee_jasa_lab['jumlah_prosentase'] != 0 AND $data_fee_jasa_lab['jumlah_uang'] == 0 ){
+
+            $hasil_hitung_fee_persen_dokter = $harga_jasa * $data_fee_jasa_lab['jumlah_prosentase'] / 100;
+            $insert_dokter = "INSERT INTO tbs_fee_produk (no_reg,session_id,no_rm,nama_petugas,kode_produk,nama_produk,jumlah_fee,tanggal,jam) VALUES ('$no_reg','$session_id','$no_rm','$dokter','$kode_jasa_lab','$nama_jasa','$hasil_hitung_fee_persen_dokter','$tanggal','$jam')";
+                  
+                  if ($db->query($insert_dokter) === TRUE) {
+                  
+                  } 
+                  else 
+                  {
+                  echo "Error: " . $insert_dokter . "<br>" . $db->error;
+                  }
+
+          }
+        else{
+
+            $hasil_hitung_fee_nominal_dokter = $data_fee_jasa_lab['jumlah_uang'] * 1;
+            $insert_dokter = "INSERT INTO tbs_fee_produk (no_reg,session_id,no_rm,nama_petugas,kode_produk,nama_produk,jumlah_fee,tanggal,jam) VALUES ('$no_reg','$session_id','$no_rm','$dokter','$kode_jasa_lab','$nama_jasa','$hasil_hitung_fee_nominal_dokter','$tanggal','$jam')";
+              
+              if ($db->query($insert_dokter) === TRUE) {          
+              } 
+              else
+              {
+              echo "Error: " . $insert_dokter . "<br>" . $db->error;
+              }
+          }
+
+    }
+   // END INSERT FEE DOKTER JASA LAB
+
+
+  // INSERT FEE ANALIS JASA LAB
+    $query_fee_jasa_lab = $db->query("SELECT jumlah_prosentase, jumlah_uang FROM fee_produk WHERE nama_petugas = '$analis' AND kode_produk = '$kode_jasa_lab'");
+    $jumlah__fee_jasa_lab = mysqli_num_rows($query_fee_jasa_lab);
+    $data_fee_jasa_lab = mysqli_fetch_array($query_fee_jasa_lab);
+
+    if ($jumlah__fee_jasa_lab > 0){
+
+        if ($data_fee_jasa_lab['jumlah_prosentase'] != 0 AND $data_fee_jasa_lab['jumlah_uang'] == 0 ){
+
+            $hasil_hitung_fee_persen_dokter = $harga_jasa * $data_fee_jasa_lab['jumlah_prosentase'] / 100;
+            $insert_dokter = "INSERT INTO tbs_fee_produk (no_reg,session_id,no_rm,nama_petugas,kode_produk,nama_produk,jumlah_fee,tanggal,jam) VALUES ('$no_reg','$session_id','$no_rm','$analis','$kode_jasa_lab','$nama_jasa','$hasil_hitung_fee_persen_dokter','$tanggal','$jam')";
+                  
+                  if ($db->query($insert_dokter) === TRUE) {
+                  
+                  } 
+                  else 
+                  {
+                  echo "Error: " . $insert_dokter . "<br>" . $db->error;
+                  }
+
+          }
+        else{
+
+            $hasil_hitung_fee_nominal_dokter = $data_fee_jasa_lab['jumlah_uang'] * 1;
+            $insert_dokter = "INSERT INTO tbs_fee_produk (no_reg,session_id,no_rm,nama_petugas,kode_produk,nama_produk,jumlah_fee,tanggal,jam) VALUES ('$no_reg','$session_id','$no_rm','$analis','$kode_jasa_lab','$nama_jasa','$hasil_hitung_fee_nominal_dokter','$tanggal','$jam')";
+              
+              if ($db->query($insert_dokter) === TRUE) {          
+              } 
+              else
+              {
+              echo "Error: " . $insert_dokter . "<br>" . $db->error;
+              }
+          }
+
+    }
+   // END INSERT FEE ANALIS JASA LAB
+
   }
 
 }

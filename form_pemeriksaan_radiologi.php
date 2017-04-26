@@ -4024,9 +4024,8 @@ $(document).on('click','.insert-tbs',function(e){
 
               $('#label-'+id+'').attr("data-toogle", 0);
 
-              alert("Pemeriksaan '"+nama_barang+"' Sudah Ada, Silakan Pilih Pemeriksaan Yang Lain !"); 
-              $('#label-'+id+'').prop('checked', this.checked);       
-
+              alert("Pemeriksaan '"+nama_barang+"' Sudah Ada, Silakan Pilih Pemeriksaan Yang Lain !");
+              
            }
            else{
               
@@ -4041,6 +4040,8 @@ $(document).on('click','.insert-tbs',function(e){
            }
 
         });
+
+
 
 
     }
