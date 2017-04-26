@@ -704,8 +704,8 @@ else{
 
 </div> <!-- / of otoritas MENU Apotek -->
 
-
-<div class="form-group col-sm-2"> <!-- start otoritas MENU Apotek -->
+<!-- start otoritas MENU LAB -->
+<div class="form-group col-sm-2"> 
 <label>Penjualan Laboratorium</label><br>
 
 <?php 
@@ -722,7 +722,27 @@ else{
 
  ?>
 
-</div> <!-- / of otoritas MENU Apotek -->
+</div> <!-- / of otoritas MENU LAB -->
+
+<!-- start otoritas MENU APS -->
+<div class="form-group col-sm-2"> 
+<label>Penjualan APS</label><br>
+
+<?php 
+
+if ($data_otoritas['menu_aps'] == '1'){
+    echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="checkbox_aps" name="menu_aps" checked="">
+    <label for="checkbox_aps">Lihat</label> <br>';
+}
+
+else{
+    echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="checkbox_aps" name="menu_aps">
+    <label for="checkbox_aps">Lihat</label> <br>';  
+}
+
+ ?>
+
+</div> <!-- / of otoritas MENU APS -->
 
 
 <div class="form-group col-sm-12">

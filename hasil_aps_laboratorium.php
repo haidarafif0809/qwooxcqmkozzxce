@@ -110,11 +110,7 @@ $jenis_kelamin = $out_gander['jenis_kelamin'];
     <tbody id="tbody">
     
    <?php 
-  $query = $db->query("SELECT th.dokter AS id_dokter,
-    th.analis AS id_analis,th.id,th.nama_pemeriksaan,
-    th.hasil_pemeriksaan,th.model_hitung,th.nilai_normal_lk,
-    th.satuan_nilai_normal,th.nilai_normal_pr,u.nama AS dokter, 
-    us.nama AS analis FROM tbs_hasil_lab th LEFT JOIN user u ON 
+  $query = $db->query("SELECT th.id_sub_header AS nama_header,th.no_rm,th.harga,th.no_reg,th.kode_barang,th.dokter AS id_dokter,th.analis AS id_analis,th.id,th.nama_pemeriksaan,th.hasil_pemeriksaan,th.model_hitung,th.nilai_normal_lk,th.satuan_nilai_normal,th.nilai_normal_pr,u.nama AS dokter,us.nama AS analis FROM tbs_hasil_lab th LEFT JOIN user u ON 
     th.dokter = u.id LEFT JOIN user us ON th.analis = us.id WHERE 
     no_reg = '$no_reg' AND no_rm = '$no_rm' ORDER BY id ASC");
    while($data = mysqli_fetch_array($query)){
@@ -210,9 +206,12 @@ else{
 }
        
     //Start Dokter
+    /*
     echo "<td class='edit-dokter' data-id='".$data['id']."'>
     <span id='text-dokter-".$data['id']."'>". $data['dokter'] ."</span>
     <select style='display:none' id='input-dokter-".$data['id']."' value='".$data['dokter']."' class='input_dokter' data-id='".$data['id']."' data-nama='".$data['dokter']."' autofocus=''>";
+
+
 
     $query01 = $db->query("SELECT nama,id FROM user WHERE tipe = '1'");
     while($data01 = mysqli_fetch_array($query01)){
@@ -226,12 +225,17 @@ else{
         
     echo  '
     </select>
-    </td>';//End Dokter
+    </td>';
+        */
+    //End Dokter
+    
+    
+    echo "<td>". $data['dokter'] ."</td>";
 
     //Start Analis
     echo "<td class='edit-analis' data-id='".$data['id']."'>
     <span id='text-analis-".$data['id']."'>". $data['analis'] ."</span>
-    <select style='display:none' id='input-analis-".$data['id']."' value='".$data['analis']."' class='input_analis' data-id='".$data['id']."' data-nama='".$data['analis']."' autofocus=''>";
+    <select style='display:none' id='input-analis-".$data['id']."' value='".$data['analis']."' class='input_analis' data-id='".$data['id']."' data-nama='".$data['analis']."' data-rm='".$data['no_rm']."' data-reg='".$data['no_reg']."' data-kode='".$data['kode_barang']."' data-harga='".$data['harga']."' data-nama-pemeriksaan='".$data['nama_pemeriksaan']."' data-nama-header='".$data['nama_header']."' data-analis='".$data['id_analis']."' data- autofocus=''>";
 
     $query01 = $db->query("SELECT nama,id FROM user WHERE tipe = '6'");
     while($data01 = mysqli_fetch_array($query01)){
@@ -468,10 +472,16 @@ $(document).on('dblclick','.edit-analis',function(e){
 
 $(document).on('blur','.input_analis',function(e){
   var nama_lama = $(this).attr("data-analis");
+  var reg = $(this).attr("data-reg");
+  var kode = $(this).attr("data-kode");
+  var harga = $(this).attr("data-harga");
+  var nama_pemeriksaan = $(this).attr("data-nama-pemeriksaan");
+  var nama_header = $(this).attr("data-nama-header");
+  var rm = $(this).attr("data-rm");
   var id = $(this).attr("data-id");
   var input_nama = $(this).val();
 
-  $.post("update_analis_tbs_hasil.php",{id:id,input_nama:input_nama},function(data){
+  $.post("update_analis_tbs_hasil.php",{nama_lama:nama_lama,id:id,input_nama:input_nama,reg:reg,rm:rm,kode:kode,harga:harga,nama_pemeriksaan:nama_pemeriksaan,nama_header:nama_header},function(data){
 
     var nama = data;
     $("#input-analis-"+id+"").hide();

@@ -36,7 +36,6 @@ include 'db.php';
       <th> Username </th></th>
       <th> Nama Lengkap </th>
       <th> Alamat </th>
-      <th> Jabatan </th>
       <th> Otoritas </th>
       <th> Status </th>
     </thead>
@@ -179,10 +178,9 @@ Note : <br>
               $(nRow).attr('username', aData[0]);
               $(nRow).attr('data-petugas', aData[1]);
               $(nRow).attr('alamat', aData[2]);
-              $(nRow).attr('jabatan', aData[3]);
-              $(nRow).attr('otoritas', aData[4]);
-              $(nRow).attr('status', aData[5]);
-              $(nRow).attr('data-petugas-value', aData[6]);
+              $(nRow).attr('otoritas', aData[3]);
+              $(nRow).attr('status', aData[4]);
+              $(nRow).attr('data-petugas-value', aData[5]);
           },
 
         });    

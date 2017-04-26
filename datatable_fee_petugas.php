@@ -20,18 +20,18 @@ $columns = array(
 );
 
 // getting total number records without any search
-$sql = "SELECT u.username,u.nama,u.alamat,u.otoritas,u.status,u.id,j.nama AS jabtan  ";
-$sql.=" FROM user u INNER JOIN jabatan j ON u.jabatan = j.id ";
+$sql = "SELECT username,nama,alamat,otoritas,status,id ";
+$sql.=" FROM user WHERE 1=1";
 $query=mysqli_query($conn, $sql) or die("datatable_petugas_fee.php: get employees");
 $totalData = mysqli_num_rows($query);
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
 
-$sql = "SELECT u.username,u.nama,u.alamat,u.otoritas,u.status,u.id,j.nama AS jabtan ";
-$sql.=" FROM user u INNER JOIN jabatan j ON u.jabatan = j.id WHERE 1=1";
+$sql = "SELECT username,nama,alamat,otoritas,status,id";
+$sql.=" FROM user WHERE 1=1";
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
-	$sql.=" AND ( u.username LIKE '".$requestData['search']['value']."%' ";    
-	$sql.=" OR u.nama  LIKE '".$requestData['search']['value']."%' )";
+	$sql.=" AND ( username LIKE '".$requestData['search']['value']."%' ";    
+	$sql.=" OR nama  LIKE '".$requestData['search']['value']."%' )";
 }
 $query=mysqli_query($conn, $sql) or die("datatablee_petugas_fee.php: get employees");
 $totalFiltered = mysqli_num_rows($query); // when there is a search parameter then we have to modify total number filtered rows as per search result. 
@@ -44,12 +44,11 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 	$nestedData=array(); 
 
 	  $nestedData[] = $row['username'];
-    $nestedData[] = $row['nama'];
-    $nestedData[] = $row['alamat'];
-    $nestedData[] = $row['jabtan'];
-    $nestedData[] = $row['otoritas'];
-    $nestedData[] = $row['status'];
-	  $nestedData[] = $row['id'];
+	    $nestedData[] = $row['nama'];
+	    $nestedData[] = $row['alamat'];
+	    $nestedData[] = $row['otoritas'];
+	    $nestedData[] = $row['status'];
+		  $nestedData[] = $row['id'];
 	  $data[] = $nestedData;
 }
 
