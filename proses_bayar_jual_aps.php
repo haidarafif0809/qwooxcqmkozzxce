@@ -286,7 +286,7 @@ try {
         $stmt->bind_param("sssissssiisisssissii",
         $no_faktur, $no_reg, $no_rm, $total, $tanggal_sekarang, $jam_sekarang, $petugas_kasir,
         $petugas_kasir,$diskon_rupiah, $sisa, $cara_bayar, $pembayaran_penjualan, $keterangan,$jenis_penjualan,
-        $nama_pasien,$biaya_admin,$no_jurnal,$ket_jurnal,$kredit,$total);
+        $nama_pasien,$biaya_admin,$no_jurnal,$ket_jurnal,$kredit,$kredit);
      
         $_SESSION['no_faktur']=$no_faktur;
                   
