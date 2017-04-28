@@ -67,6 +67,21 @@ $total_tbs = ($total_harga_tbs - $diskon_rupiah) + $biaya_admin;
               }
           //INSERT DARI TBS APS KE DETAIL PENJUALAN
 
+          //INSERT DARI TBS FEE KE LAPORAN FEE PRODUK
+          $insert_lap_fee_produk = "INSERT INTO laporan_fee_produk (nama_petugas,no_faktur,
+          kode_produk,nama_produk, jumlah_fee, tanggal, jam, no_rm, no_reg) SELECT nama_petugas,
+          '$no_faktur', kode_produk, nama_produk, jumlah_fee, tanggal, jam, no_rm, no_reg 
+          FROM tbs_fee_produk WHERE no_reg = '$no_reg'";
+
+              if ($db->query($insert_lap_fee_produk) === TRUE) {
+              
+              }
+              else{
+                  echo "Error: " . $insert_lap_fee_produk . "<br>" . $db->error;
+              }
+          //INSERT DARI TBS FEE KE LAPORAN FEE PRODUK
+
+
             //MULAI Penjualan Lunas!!
           $nilai_penjualan = $pembayaran_penjualan - $total;
           if ($nilai_penjualan >= 0){

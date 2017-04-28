@@ -63,6 +63,17 @@ $query_masuk_tbs_fee = "INSERT INTO tbs_fee_produk (no_faktur,no_reg,no_rm,nama_
 
 //AKHIR DATA FEE LABORATORIUM
   
+//INSERT DARI LAPORAN FEE PRODUK KE TBS FEE 
+$insert_lap_fee_produk = "INSERT INTO tbs_fee_produk (nama_petugas,
+'$no_faktur', kode_produk, nama_produk, jumlah_fee, tanggal, jam, no_rm, no_reg) SELECT
+nama_petugas,no_faktur,kode_produk,nama_produk, jumlah_fee, tanggal, jam, no_rm, no_reg FROM
+laporan_fee_produk WHERE no_faktur = '$no_faktur'";
+      if ($db->query($insert_lap_fee_produk) === TRUE) {
+      }
+      else{
+            echo "Error: " . $insert_lap_fee_produk . "<br>" . $db->error;
+      }
+//INSERT DARI LAPORAN FEE PRODUK KE TBS FEE 
 
 header ('location:form_edit_penjualan_aps.php?no_faktur='.$no_faktur.'&no_rm='.$no_rm.'&nama_pasien='.$nama_pasien.'&no_reg='.$no_reg.'');
 
