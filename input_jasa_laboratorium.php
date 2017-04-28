@@ -332,6 +332,7 @@ echo '
                               
       <th style='background-color: #4CAF50; color: white'> Kode </th>
       <th style='background-color: #4CAF50; color: white'> Nama </th>
+      <th style='background-color: #4CAF50; color: white'> Komisi </th>
       <th style='background-color: #4CAF50; color: white'> Dokter</th>
       <th style='background-color: #4CAF50; color: white'> Analis</th>
       <th style='background-color: #4CAF50; color: white'> Tanggal</th>
