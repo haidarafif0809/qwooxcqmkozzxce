@@ -69,6 +69,7 @@ echo $no_faktur = $nomor."/BL/".$data_bulan_terakhir."/".$tahun_terakhir;
            $ppn_input = stringdoang($_POST['ppn_input']);
            $cara_bayar = stringdoang($_POST['cara_bayar']);
            $kode_gudang = stringdoang($_POST['kode_gudang']);
+           $tanggal_jt = stringdoang($_POST['tanggal_jt']);
            $pembayaran = angkadoang($_POST['pembayaran']);
            $t_total = $total_1 - $potongan;
 
