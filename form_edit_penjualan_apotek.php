@@ -548,7 +548,7 @@ $level_harga = $data_level['harga'];
   <button type="submit" id="submit_produk" class="btn btn-success" style="font-size:15px" >Submit (F3)</button>
 
 </div>
-
+    <input type="hidden" class="form-control" name="disc_tbs" id="disc_tbs" placeholder="DISKON TBS" >
     <input type="hidden" class="form-control" name="limit_stok" autocomplete="off" id="limit_stok" placeholder="Limit Stok" >
     <input type="hidden" class="form-control" name="ber_stok" id="ber_stok" placeholder="Ber Stok" >
     <input type="hidden" class="form-control" name="harga_lama" id="harga_lama">
@@ -1016,6 +1016,15 @@ $(document).ready(function(){
 
 </script>
 
+<script type="text/javascript">
+$(document).ready(function(){
+  var no_faktur = $("#no_faktur").val();
+//digunakan untuk mengecek sama tidaknya jumlah disc dg total_subtotal di tbs
+  $.getJSON("cek_jumlah_disc_ditbs_penjualan_apotek.php",{no_faktur:no_faktur},function(oke){
+        $("#disc_tbs").val(oke.potongannya);
+      });
+});
+</script>
 
 <script type="text/javascript">
  
@@ -1664,6 +1673,7 @@ if (ppn == 'Exclude') {
    //perintah javascript yang diambil dari form proses_bayar_beli.php dengan id=form_beli
   $("#penjualan").click(function(){
         var id_kasir = $("#id_kasir").val()
+        var disc_tbs = $("#disc_tbs").val()
         var no_faktur = $("#no_faktur").val()
         var apoteker = $("#apoteker").val()
         var no_resep_dokter = $("#no_resep_dokter").val()
@@ -1700,38 +1710,36 @@ if (ppn == 'Exclude') {
         
         var sisa_kredit = total - pembayaran;
 
-
- if (sisa_pembayaran < 0)
- {
+if (sisa_pembayaran < 0) {
 
   alert("Jumlah Pembayaran Tidak Mencukupi");
 
  }
-  else if (kode_pelanggan == ''){
+else if (kode_pelanggan == ''){
   alert("Kode Pelanggan Harus Dipilih");
   $("#kd_pelanggan").val(kode_pelanggan);
 
   }
-
-   else if (kode_gudang == "")
- {
+else if (kode_gudang == "") {
 alert(" Kode Gudang Harus Diisi ");
- }
+ } 
+else if ((total2 ==  0 || total2 ==  "") && potongan_persen != 100 && (pembayaran == 0 || pembayaran == "") && (total == "" || total == 0) && disc_tbs == "") {
+        
+      alert("Anda Belum Melakukan Pemesanan");
+        
+}
+else if ((pembayaran == "" || pembayaran == 0) && (total2 != 0 || total2 != '') && potongan_persen != '100' && (disc_tbs == 0))  {
 
-
-else if (pembayaran == "") 
- {
 alert("Pembayaran Harus Di Isi");
+$("#pembayaran_penjualan").focus()
+
+ }
+ else if (sisa < 0 && (total2 != 0 || total2 != "")) {
+
+alert("Silakan Bayar Piutang");
+
  }
 
- else if ( sisa < 0) 
- {
-alert("Silakan Bayar Piutang");
- }
-  else if (total ==  0 || total == "") 
- {     
-alert("Anda Belum Melakukan Pemesanan");    
- }
 
  else
  {
@@ -2912,7 +2920,6 @@ $(document).ready(function(){
       });
 
       $(document).on('blur','.input_potongan',function(){
-
         var id = $(this).attr("data-id");
         var potongan_lama =  bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#text-potongan-"+id).text()))));
         var input_potongan = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($(this).val()))));
