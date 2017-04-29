@@ -1600,6 +1600,10 @@ if (ppn == 'Exclude') {
 
  $.post("proses_tbs_edit_apotek.php",{no_faktur:no_faktur,kode_barang:kode_barang,nama_barang:nama_barang,jumlah_barang:jumlah_barang,harga:harga,potongan:potongan,satuan:satuan,tipe_barang:ber_stok,no_rm:no_rm,apoteker:apoteker,penjamin:penjamin,tax:tax,hargaa:hargaa, id_kasir:id_kasir,ppn:ppn},function(data){ 
      
+     //digunakan untuk mengecek sama tidaknya jumlah disc dg total_subtotal di tbs
+     $.getJSON("cek_jumlah_disc_ditbs_penjualan_apotek.php",{no_faktur:no_faktur},function(oke){
+       $("#disc_tbs").val(oke.potongannya);
+      });
   
 
      $("#ppn").attr("disabled", true);
@@ -2921,6 +2925,7 @@ $(document).ready(function(){
 
       $(document).on('blur','.input_potongan',function(){
         var id = $(this).attr("data-id");
+        var no_faktur = $("#no_faktur").val();
         var potongan_lama =  bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#text-potongan-"+id).text()))));
         var input_potongan = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($(this).val()))));
         var ppn = $("#ppn").val();
@@ -3077,6 +3082,11 @@ $(document).ready(function(){
                                       $("#input-potongan-"+id).attr("type", "hidden");
 
                                       $.post("update_potongan_produk.php",{id:id, input_potongan:input_potongan,hasil_tax_baru:hasil_tax_baru,subtotal_tbs:subtotal_tbs},function(data){
+
+                                        //digunakan untuk mengecek sama tidaknya jumlah disc dg total_subtotal di tbs
+                                          $.getJSON("cek_jumlah_disc_ditbs_penjualan_apotek.php",{no_faktur:no_faktur},function(oke){
+                                                $("#disc_tbs").val(oke.potongannya);
+                                              });
                                       });
 
 
