@@ -5,8 +5,6 @@ include 'db.php';
 
 /* Database connection end */
 
-
-
 // storing  request (ie, get/post) global array to a variable  
 $requestData= $_REQUEST;
 
@@ -15,35 +13,35 @@ $requestData= $_REQUEST;
 $columns = array( 
 // datatable column index  => database column name
 
+        
     0=>'kode_barang', 
     1=>'nama_barang',
-    2=>'jumlah_barang',
-    3=>'satuan',
-    4=>'kategori',
-    5=>'status',
-    6=>'id'
+    2=>'kategori',
+    3=>'status',
+    4=>'id',
 
 
-); 
+);
+
 
 // getting total number records without any search
-$sql = "SELECT s.nama,b.kode_barang,b.nama_barang,b.harga_beli,b.harga_jual,b.harga_jual2,b.harga_jual3,b.kategori,b.status,b.suplier,b.limit_stok,b.satuan,b.id,b.berkaitan_dgn_stok";
-$sql.=" FROM barang b INNER JOIN satuan s ON b.satuan = s.id ";
+$sql = "SELECT s.nama,b.kode_barang,b.nama_barang,b.harga_beli,b.harga_jual,b.harga_jual2,b.harga_jual3,b.kategori,b.status,b.suplier,b.limit_stok,b.satuan,b.id,b.berkaitan_dgn_stok ";
+$sql.="FROM barang b INNER JOIN satuan s ON b.satuan = s.id WHERE b.berkaitan_dgn_stok = 'Barang'";
+
 
 $query = mysqli_query($conn, $sql) or die("eror 1");
 $totalData = mysqli_num_rows($query);
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
-$sql = "SELECT s.nama,b.kode_barang,b.nama_barang,b.harga_beli,b.harga_jual,b.harga_jual2,b.harga_jual3,b.kategori,b.status,b.suplier,b.limit_stok,b.satuan,b.id,b.berkaitan_dgn_stok";
-$sql.=" FROM barang b INNER JOIN satuan s ON b.satuan = s.id ";
-$sql.=" WHERE ";
+$sql = "SELECT s.nama,b.kode_barang,b.nama_barang,b.harga_beli,b.harga_jual,b.harga_jual2,b.harga_jual3,b.kategori,b.status,b.suplier,b.limit_stok,b.satuan,b.id,b.berkaitan_dgn_stok ";
+$sql.="FROM barang b INNER JOIN satuan s ON b.satuan = s.id ";
+$sql.=" WHERE 1=1 AND b.berkaitan_dgn_stok = 'Barang'";
 
-    $sql.=" b.kode_barang LIKE '".$requestData['search']['value']."%'";  
+    $sql.=" AND (b.kode_barang LIKE '".$requestData['search']['value']."%'";  
     $sql.=" OR b.nama_barang LIKE '".$requestData['search']['value']."%' ";
-    $sql.=" OR s.nama LIKE '".$requestData['search']['value']."%'";   
-    $sql.=" OR b.kategori LIKE '".$requestData['search']['value']."%'"; 
-    $sql.=" OR b.status LIKE '".$requestData['search']['value']."%'"; 
+    $sql.=" OR b.kategori LIKE '".$requestData['search']['value']."%'";   
+    $sql.=" OR b.status LIKE '".$requestData['search']['value']."%' ) ";
 
 }
 
@@ -61,6 +59,8 @@ $data = array();
 
 while( $row=mysqli_fetch_array($query) ) {
 
+    $nestedData=array(); 
+
         $select1 = $db->query("SELECT SUM(jumlah_kuantitas) AS jumlah_masuk FROM hpp_masuk WHERE kode_barang = '$row[kode_barang]'");
         $masuk = mysqli_fetch_array($select1);
 
@@ -70,16 +70,21 @@ while( $row=mysqli_fetch_array($query) ) {
         $stok_barang = $masuk['jumlah_masuk'] - $keluar['jumlah_keluar'];
 
 
-    $nestedData=array(); 
+            $nestedData[] =  $row["kode_barang"];
+            $nestedData[] =  $row["nama_barang"];
 
-    $nestedData[] = $row["kode_barang"];
-    $nestedData[] = $row["nama_barang"];
-    $nestedData[] = $stok_barang;
-    $nestedData[] = $row["nama"];
-    $nestedData[] = $row["kategori"];
-    $nestedData[] = $row["status"];
-    $nestedData[] = $row["id"];
-        
+            if ($row['berkaitan_dgn_stok'] == 'Jasa') {
+                 $nestedData[] =  "0";
+             }      
+             else{
+                $nestedData[] =  $stok_barang;
+             }  
+
+            $nestedData[] =  $row["nama"];
+            $nestedData[] =  $row["kategori"];
+            $nestedData[] =  $row["status"];
+            $nestedData[] =  $row["id"];
+
     
     $data[] = $nestedData;
         
@@ -97,5 +102,3 @@ $json_data = array(
 echo json_encode($json_data);  // send data as json format
 
  ?>
-
-      

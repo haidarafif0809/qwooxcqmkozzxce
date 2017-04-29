@@ -30,24 +30,21 @@ include 'db.php';
         <h4 class="modal-title"><center><b>Data Barang</b></center></h4>
       </div>
       <div class="modal-body">
-
-        <div class="table-resposive">
-            <span class="modal_baru">
-              <table id="table-modal" class="table table-bordered">
-                  <thead> <!-- untuk memberikan nama pada kolom tabel -->
-          
-                        <th> Kode Barang </th>
-                        <th> Nama Barang </th>
-                        <th> Jumlah Barang </th>
-                        <th> Satuan </th>
-                        <th> Kategori </th>
-                        <th> Status </th>
-          
-                  </thead> <!-- tag penutup tabel -->
-                </table> <!-- tag penutup table-->
-              </span>
+      <center>
+          <div class="table-responsive">    
+            <table id="table-modal" class="table table-bordered table-sm">
+              <thead>
+                <th> Kode Barang </th>
+                <th> Nama Barang </th>
+                <th> Jumlah Barang </th>
+                <th> Satuan </th>
+                <th> Kategori </th>
+                <th> Status </th>
+              </thead>
+            </table>
           </div>
-</div> <!-- tag penutup modal-body-->
+      </center>
+      </div> <!-- tag penutup modal-body-->
       <div class="modal-footer">
         <center><b><button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
       </div></b></center>
@@ -59,14 +56,28 @@ include 'db.php';
 
 
 
-<h1>KARTU STOK</h1> <hr>
+<h3>LAPORAN KARTU STOK PERIODE</h3> <hr>
 
 <button type="button" id="cari_produk_penjualan" class="btn btn-info " data-toggle="modal" data-target="#myModal"><i class='fa  fa-search'> Cari (F1)</i>  </button> 
 <br><br>
 <form class="form-inline" role="form" id="form_tanggal">
 
 <div class="form-group">
-    <input type="text" style="width:225px" name="kode_barang" id="kode_barang"  placeholder="Kode Barang/Nama Barang" autocomplete="off" class="form-control" >
+           <select style="font-size:15px; height:20px" type="text" name="kode_barang" id="kode_barang" class="form-control chosen" data-placeholder="SILAKAN PILIH...">
+          <option value="">SILAKAN PILIH...</option>
+             <?php 
+
+              include 'cache.class.php';
+                $c = new Cache();
+                $c->setCache('produk');
+                $data_c = $c->retrieveAll();
+
+                foreach ($data_c as $key) {
+                  echo '<option id="opt-produk-'.$key['kode_barang'].'" value="'.$key['kode_barang'].'" data-kode="'.$key['kode_barang'].'" nama-barang="'.$key['nama_barang'].'" harga="'.$key['harga_jual'].'" harga_jual_2="'.$key['harga_jual2'].'" harga_jual_3="'.$key['harga_jual3'].'"  satuan="'.$key['satuan'].'" kategori="'.$key['kategori'].'" status="'.$key['status'].'" suplier="'.$key['suplier'].'" limit_stok="'.$key['limit_stok'].'" ber-stok="'.$key['berkaitan_dgn_stok'].'"  id-barang="'.$key['id'].'" > '. $key['kode_barang'].' ( '.$key['nama_barang'].' ) </option>';
+                }
+
+              ?>
+      </select>
 </div>
 
 <!-- Start Input Hidden-->
@@ -116,6 +127,7 @@ include 'db.php';
 
       <th style='background-color: #4CAF50; color:white'> No Faktur </th>
       <th style='background-color: #4CAF50; color:white'> Jenis Transaksi </th>
+      <th style='background-color: #4CAF50; color:white'> Harga</th>
       <th style='background-color: #4CAF50; color:white'> Tanggal </th>
       <th style='background-color: #4CAF50; color:white'> Jumlah Masuk</th>
       <th style='background-color: #4CAF50; color:white'> Jumlah Keluar</th>
@@ -126,15 +138,11 @@ include 'db.php';
      </table>
 
 </div>
-	<div class="row">
-        <div class="col-sm-2"><br>
+  <div class="row">
           <a id="trx" href='' class='btn btn-success' target='blank'><i class='fa fa-print'> </i> Cetak</a>
-        </div>  
-
-         <div class="col-sm-2">
-         <br>
+        
         <a href='' style="width: 170px;" type='submit' id="btn-export" class='btn btn-default'><i class='fa fa-download'> </i> Download Excel</a>
-        </div>
+
     </div>
 </div>
 
@@ -153,7 +161,6 @@ include 'db.php';
 $(document).on('click','#lihat_kartu_stok',function(e) {
 
         var kode_barang = $("#kode_barang").val();
-        var kode_barang = kode_barang.substr(0, kode_barang.indexOf('('));       
         var nama_barang = $("#nama_barang").val();   
         var id_produk = $("#id_produk").val();        
         var daritgl = $("#daritgl").val();        
@@ -179,7 +186,6 @@ $(document).on('click','#lihat_kartu_stok',function(e) {
           var dataTable = $('#table-kartustok').DataTable( {
           "processing": true,
           "serverSide": true,
-          "info":     false,
           "language": {
         "emptyTable":     "My Custom Message On Empty Table"
     },
@@ -190,7 +196,6 @@ $(document).on('click','#lihat_kartu_stok',function(e) {
                 d.sampai_tanggal = $("#sampaitgl").val();
                 d.kode_barang = $("#kode_barang").val();  
 
-        		    d.kode_barang =  d.kode_barang.substr(0,  d.kode_barang.indexOf('('));     
                 d.id_produk = $("#id_produk").val();   
                 // d.custom = $('#myInput').val();
                 // etc
@@ -207,10 +212,10 @@ $(document).on('click','#lihat_kartu_stok',function(e) {
 
 
         } );
-				$("#result").show()
+        $("#result").show()
 
 
-  		 function ambil_tgl(tanggal_input1){
+       function ambil_tgl(tanggal_input1){
         var birthday1 = tanggal_input1;
         birthday1=birthday1.split("-");   
         var hari_ini = birthday1[2];
@@ -244,7 +249,7 @@ $(document).on('click','#lihat_kartu_stok',function(e) {
           $("#judul").show();
           $("#judul").text(judul);
  
-          $("#btn-export").attr('href','export_kartu_stok.php?daritgl='+daritgl+'&sampaitgl='+sampaitgl+'&kode_barang='+kode_barang+'&nama_barang='+nama_barang);
+          $("#btn-export").attr('href','export_kartu_stok_periode.php?daritgl='+daritgl+'&sampaitgl='+sampaitgl+'&kode_barang='+kode_barang+'&nama_barang='+nama_barang);
 
 
           $("#trx").attr("href",'cetak_kartu_stok.php?daritgl='+daritgl+'&sampaitgl='+sampaitgl+'&kode_barang='+kode_barang+'&nama_barang='+nama_barang);
@@ -350,7 +355,7 @@ $(document).on('click','#lihat_kartu_stok',function(e) {
           "fnCreatedRow": function( nRow, aData, iDataIndex ) {
 
               $(nRow).attr('class', "pilih");
-              $(nRow).attr('data-kode', aData[0]+"("+aData[1]+")");
+              $(nRow).attr('data-kode', aData[0]);
               $(nRow).attr('nama-barang', aData[1]);
               $(nRow).attr('id-barang', aData[6]);
 
@@ -364,22 +369,19 @@ $(document).on('click','#lihat_kartu_stok',function(e) {
  </script>
 
 
-
-<script type="text/javascript">
-   shortcut.add("f1", function() {
+<script> 
+    shortcut.add("f1", function() {
         // Do something
 
         $("#cari_produk_penjualan").click();
 
     });
-</script>
+         shortcut.add("f2", function() {
+        // Do something
 
-<script>
-$(function() {
-    $( "#kode_barang" ).autocomplete({
-        source: 'kode_barang_autocomplete.php'
+          $("#kode_barang").trigger('chosen:open');
+
     });
-});
 </script>
 
 
@@ -388,7 +390,9 @@ $(function() {
 // jika dipilih, nim akan masuk ke input dan modal di tutup
   $(document).on('click', '.pilih', function (e) {
 
+
   document.getElementById("kode_barang").value = $(this).attr('data-kode');
+  $("#kode_barang").trigger('chosen:updated');
   document.getElementById("nama_barang").value = $(this).attr('nama-barang');
   document.getElementById("id_produk").value = $(this).attr('id-barang');
 
@@ -400,22 +404,35 @@ $(function() {
 
 
 <script type="text/javascript">
-	
-	 $(document).on('blur', '#kode_barang', function (e) {
-
-	 	 var kode_barang = $(this).val();
-         var kode_barang = kode_barang.substr(0, kode_barang.indexOf('('));   
-
-         $.getJSON("cek_barang_kartu_stok.php",{kode_barang:kode_barang},function(info){
-
-         	$("#nama_barang").val(info.nama_barang);
-         	$("#id_produk").val(info.id);
-
-
-         });  
-
-	 });
-
+  //SELECT CHOSSESN    
+$(".chosen").chosen({no_results_text: "Maaf, Data Tidak Ada!",search_contains:true});   
 </script>
+
+<script>
+//Choosen Open select
+$(document).ready(function(){
+    $("#kode_barang").trigger('chosen:open');
+
+});
+</script>
+
+<script type="text/javascript">
+  
+  $(document).ready(function(){
+  $(document).on('change','#kode_barang',function(e){
+
+    var kode_barang = $(this).val();
+    var nama_barang = $('#opt-produk-'+kode_barang).attr("nama-barang");
+    var id_barang = $('#opt-produk-'+kode_barang).attr("id-barang");
+
+
+          $("#nama_barang").val(nama_barang);
+          $("#id_produk").val(id_barang);
+
+  });
+      
+    });    
+</script>
+
 
 <?php include 'footer.php'; ?>

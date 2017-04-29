@@ -1,164 +1,98 @@
-<?php session_start();
+<?php 
+// Fungsi header dengan mengirimkan raw data excel
+header("Content-type: application/vnd-ms-excel");
+ 
+// Mendefinisikan nama file ekspor "hasil-export.xls"
+header("Content-Disposition: attachment; filename=data_kartu_stok_perperiode.xls");
 
-
-include 'header.php';
-include 'sanitasi.php';
 include 'db.php';
+include 'sanitasi.php';
 
-
-$daritgl = stringdoang($_GET['daritgl']);
-$sampaitgl = stringdoang($_GET['sampaitgl']);
 $kode_barang = stringdoang($_GET['kode_barang']);
 $nama_barang = stringdoang($_GET['nama_barang']);
+$dari_tanggal = stringdoang($_GET['daritgl']);
+$sampai_tanggal = stringdoang($_GET['sampaitgl']);
 
-
-// awal Select untuk hitung Saldo Awal
-$hpp_masuk = $db->query("SELECT SUM(jumlah_kuantitas) AS jumlah FROM hpp_masuk WHERE kode_barang = '$kode_barang' AND tanggal < '$daritgl' ");
+$hpp_masuk = $db->query("SELECT SUM(jumlah_kuantitas) AS jumlah FROM hpp_masuk WHERE kode_barang = '$kode_barang' AND tanggal < '$dari_tanggal' ");
 $out_masuk = mysqli_fetch_array($hpp_masuk);
 $jumlah_masuk = $out_masuk['jumlah'];
 
-
-$hpp_keluar = $db->query("SELECT SUM(jumlah_kuantitas) AS jumlah FROM hpp_keluar WHERE kode_barang = '$kode_barang' AND tanggal < '$daritgl' ");
+$hpp_keluar = $db->query("SELECT SUM(jumlah_kuantitas) AS jumlah FROM hpp_keluar WHERE kode_barang = '$kode_barang' AND tanggal < '$dari_tanggal' ");
 $out_keluar = mysqli_fetch_array($hpp_keluar);
 $jumlah_keluar = $out_keluar['jumlah'];
 
 $total_saldo = $jumlah_masuk - $jumlah_keluar;
 
-    $query1 = $db->query("SELECT * FROM perusahaan ");
-    $data1 = mysqli_fetch_array($query1);
-    
-
-
  ?>
 
 <style type="text/css">
-/*unTUK mengatur ukuran font*/
-   .satu {
-   font-size: 15px;
-   font: verdana;
-   }
-   .rata-kanan{
-    text-align: right;
-   }
+  .rata-kanan{
+    text-align:right;
+  }
 </style>
-
 
 <div class="container">
-    
-    <div class="row"><!--row1-->
-        <div class="col-sm-2">
-                <img src='save_picture/<?php echo $data1['foto']; ?>' class='img-rounded' alt='Cinque Terre' width='80' height='80`'> 
-        </div><!--penutup colsm2-->
 
-        <div class="col-sm-8">
-                 <center> <h4> <b> <?php echo $data1['nama_perusahaan']; ?> </b> </h4> 
-                 <p> <?php echo $data1['alamat_perusahaan']; ?><br>
-                  No.Telp:<?php echo $data1['no_telp']; ?> </p> </center>
-                 
-        </div><!--penutup colsm5-->
-        
-    </div><!--penutup row1-->
-
-
-
-    <center> <h4> <b> DATA STOK </b> </h4> </center>
-    <center> <h4> <b> PERIODE <?php echo tanggal($daritgl); ?> Sampai <?php echo tanggal($sampaitgl); ?></b> </h4> </center><hr>
-
-
-
-  <div class="row">
-    <div class="col-sm-9">
-        
-
- <table>
-  <tbody>
-      <tr><td width="25%"><font class="satu">Nama Barang</font></td> <td> :&nbsp;</td> <td><font class="satu"><?php echo $nama_barang; ?></font> </tr>
-      <tr><td  width="25%"><font class="satu">Kode Barang</font></td> <td> :&nbsp;</td> <td><font class="satu"> <?php echo $kode_barang; ?> </font></td></tr>
-
-            
-
-  </tbody>
+<table style="color:blue;">
+	<tbody>
+		<tr><center><h3><b>Laporan Data Stok Perperiode</b></h3></center>
+			<br>
+			<center><h3><b>Dari <?php echo $dari_tanggal ?> S/d <?php echo $sampai_tanggal; ?></b></h3>
+		</tr>
+		<tr><td><b>Kode Barang</b></td> <td>=</td> <td><b><?php echo $kode_barang ?></b></td> </tr>
+		<tr><td><b>Nama Barang</b></td> <td>=</td> <td><b><?php echo $nama_barang ?></b></td> </tr>
+	
+	</tbody>
 </table>
+</b>
+</h3>
+    <table id="kartu_stok" class="table table-bordered table-sm">
 
-
-    </div>
-
-   <!---- <div class="col-sm-3">
-       <table>
-        <tbody>
-
-             <tr><td width="50%"><font class="satu"> Tanggal</td> <td> :&nbsp;&nbsp;</td> <td><?php echo tanggal($data_inner['tanggal']);?></font> </td></tr> 
-             <tr><td width="50%"><font class="satu"> Tanggal JT</td> <td> :&nbsp;&nbsp;</td> <td>-</font> </td></tr> 
-             <tr><td width="50%"><font class="satu"> Kasir</td> <td> :&nbsp;&nbsp;</td> <td><?php echo $_SESSION['nama']; ?></font></td></tr> 
-             <tr><td width="50%"><font class="satu"> Status </td> <td> :&nbsp;&nbsp;</td> <td><?php echo $data_inner['status']; ?></font></td></tr> 
-
-            </tbody>
-      </table>
-
-    </div> ----end col-sm-2-->
-   </div> <!--end row-->  
-
-
-
-
-<style type="text/css">
-  th,td{
-    padding: 1px;
-  }
-
-
-.table1, .th, .td {
-    border: 1px solid black;
-    font-size: 15px;
-    font: verdana;
-}
-
-
-</style>
-<br><br>
-<table id="tableuser" class="table table-bordered table-sm">
+        <!-- membuat nama kolom tabel -->
         <thead>
-            <th class="table1" style="width: 3%"> No Faktur</th>
-            <th class="table1" style="width: 50%"> Jenis Transaksi </th>
-            <th class="table1" style="width: 10%"> Harga</th>
-            <th class="table1" style="width: 10%"> Tanggal</th>
-            <th class="table1" style="width: 5%"> Jumlah Masuk</th>
-            <th class="table1" style="width: 5%"> Jumlah Keluar</th>
-            <th class="table1" style="width: 5%"> Saldo</th>
 
-    
-        
-            
-        </thead>
-        <tbody>
-     <tr style="color:red;">
+      <th style='background-color: #4CAF50; color:white'> No Faktur </th>
+      <th style='background-color: #4CAF50; color:white'> Jenis Transkasi </th>
+      <th style='background-color: #4CAF50; color:white'> Harga</th>
+      <th style='background-color: #4CAF50; color:white'> Tanggal </th>
+      <th style='background-color: #4CAF50; color:white'> Jumlah Masuk </th>
+      <th style='background-color: #4CAF50; color:white'> Jumlah Keluar </th>
+      <th style='background-color: #4CAF50; color:white'> Saldo</th>
+
+</thead>
+<tbody>
+<tr style="color:red;">
 <td></td>
-<td><b style='color:red ;'>Saldo Awal</b></td>
+<td style='background-color:gold;'>Saldo Awal</td>
 <td></td>
 <td></td>
 <td></td>
 <td></td>
-<td class="rata-kanan"><b style='color:red ;'><?php echo rp($total_saldo) ?></b></td>
+<td style='background-color:gold;' class='rata-kanan'><?php echo rp($total_saldo) ?></td>
 </tr>
 
 <?php 
 
-$select = $db->query("SELECT no_faktur,jumlah_kuantitas,jenis_transaksi,tanggal,jenis_hpp,waktu,tanggal, jam  FROM hpp_masuk 
-  WHERE kode_barang = '$kode_barang' AND tanggal >= '$daritgl' AND tanggal <= '$sampaitgl' 
-  UNION SELECT no_faktur, jumlah_kuantitas,jenis_transaksi, tanggal, jenis_hpp,waktu ,tanggal, jam FROM hpp_keluar 
-  WHERE kode_barang = '$kode_barang' AND tanggal >= '$daritgl' AND tanggal <= '$sampaitgl' ORDER BY CONCAT(tanggal,' ',jam)");
-
-
+$select = $db->query("SELECT no_faktur,jumlah_kuantitas,jenis_transaksi,tanggal,jenis_hpp,waktu, id, jam FROM hpp_masuk 
+	WHERE kode_barang = '$kode_barang' AND tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' 
+	UNION SELECT no_faktur, jumlah_kuantitas,jenis_transaksi, tanggal, jenis_hpp,waktu, id, jam 
+	FROM hpp_keluar WHERE kode_barang = '$kode_barang' AND tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' ORDER BY CONCAT(tanggal,' ',jam)  ");
 while($data = mysqli_fetch_array($select))
-  {
+	{
+
+
+
+	echo "<tr>";
+
+	
 
 if ($data['jenis_hpp'] == '1')
-{
-  $masuk = $data['jumlah_kuantitas'];
-  $total_saldo = ($total_saldo + $masuk);
+{		
 
-      echo "<tr>
-      <td>". $data['no_faktur'] ."</td>";
+		$masuk = $data['jumlah_kuantitas'];
+		$total_saldo = ($total_saldo + $masuk);
+
+		echo "<td>".$data['no_faktur']."</td>";
       
 //LOGIKA UNTUK MENAMPILKAN JENIS TRANSAKSI DARI MASING" TRANSAKSI (JUMLAH PRODUK BERTAMBAH)
       
@@ -185,7 +119,7 @@ if ($data['jenis_hpp'] == '1')
       }
 
 //LOGIKA UNTUK MENAMPILKAN JENIS TRANSAKSI DARI MASING" TRANSAKSI (JUMLAH PRODUK BERTAMBAH)
-
+//
 //LOGIKA UNTUK MENAMPILKAN HARGA DARI MASING" TRANSAKSI (JUMLAH PRODUK BERTAMBAH)
       if ($data['jenis_transaksi'] == 'Pembelian') {
 
@@ -234,20 +168,20 @@ if ($data['jenis_hpp'] == '1')
       }
 
 //LOGIKA UNTUK MENAMPILKAN HARGA DARI MASING" TRANSAKSI (JUMLAH PRODUK BERTAMBAH)
+
   echo "<td>". tanggal($data['tanggal']) ."</td>
       <td class='rata-kanan'>". rp($masuk) ."</td>
       <td class='rata-kanan'>0</td>
-      <td class='rata-kanan'>". rp($total_saldo) ."</td>
-      ";
+      <td class='rata-kanan'>".rp($total_saldo)."</td>";
+	
 }
 else
 {
 
-$keluar = $data['jumlah_kuantitas'];
-$total_saldo = $total_saldo - $keluar;
-
-      echo "<tr>
-      <td>". $data['no_faktur'] ."</td>";
+		$keluar = $data['jumlah_kuantitas'];
+		$total_saldo = $total_saldo - $keluar;
+		
+		echo "<td>".$data['no_faktur']."</td>";
 
       //LOGIKA UNTUK MENAMPILKAN JENIS TRANSAKSI DARI MASING" TRANSAKSI (JUMLAH PRODUK BERKURANG)
 
@@ -274,7 +208,7 @@ $total_saldo = $total_saldo - $keluar;
       }
 
 //LOGIKA UNTUK MENAMPILKAN JENIS TRANSAKSI DARI MASING" TRANSAKSI (JUMLAH PRODUK BERKURANG)
-
+//
 //LOGIKA UNTUK MENAMPILKAN HARGA DARI MASING" TRANSAKSI (JUMLAH PRODUK BERKURANG)
 
       if ($data['jenis_transaksi'] == 'Penjualan') {
@@ -319,11 +253,11 @@ $total_saldo = $total_saldo - $keluar;
       echo "<td>". tanggal($data['tanggal']) ."</td>
       <td class='rata-kanan'>0</td>
       <td class='rata-kanan'>".rp($keluar)."</td>
-      <td class='rata-kanan'>". rp($total_saldo) ."</td>
-      ";
+      <td class='rata-kanan'>".rp($total_saldo)."</td>";		
+
 }
 
-    echo "</tr>";
+	echo"</tr>";
 
 
 } // and while
@@ -332,89 +266,9 @@ $total_saldo = $total_saldo - $keluar;
 mysqli_close($db); 
 ?>
         </tbody>
+    </table>      
 
-    </table>
-
-
-<br>
-
-<!--        <div class="col-sm-6">
-            
-            <i><b><font class="satu">Terbilang :</font></b> <?php echo kekata($data_inner['total']); ?> </i> <br>
-            <!DOCTYPE html>
-
-<style>
-div.dotted {border-style: dotted;}
-div.dashed {border-style: dashed;}
-div.solid {border-style: solid;}
-div.double {border-style: double;}
-div.groove {border-style: groove;}
-div.ridge {border-style: ridge;}
-div.inset {border-style: inset;}
-div.outset {border-style: outset;}
-div.none {border-style: none;}
-div.hidden {border-style: hidden;}
-div.mix {border-style: dotted dashed solid double;}
-</style>
+</div> <!--Closed Container-->
 
 
 
-</div>
- <div class="col-sm-3">
-
- <table>
-  <tbody>
-
-      <tr><td width="50%"><font class="satu">Sub Total</font></td> <td> :&nbsp;</td> <td><font class="satu"> <?php echo rp($t_subtotal); ?> </font></tr>
-      <tr><td width="50%"><font class="satu">Diskon</font></td> <td> :&nbsp;</td> <td><font class="satu"> <?php echo rp($data_inner['potongan']); ?></font> </tr>
-      <tr><td width="50%"><font class="satu">Biaya Admin</font></td> <td> :&nbsp;</td> <td><font class="satu"> <?php echo rp($data_inner['biaya_admin']); ?></font> </tr>
-      <tr><td  width="50%"><font class="satu">Tax</font></td> <td> :&nbsp;</td> <td><font class="satu"> <?php echo rp($data_inner['tax']); ?> </font></td></tr>
-      <tr><td  width="50%"><font class="satu">Total Akhir</font></td> <td> :&nbsp;</td> <td><font class="satu"> <?php echo rp($data_inner['total']); ?></font>  </td></tr>
-
-  </tbody>
-</table>
-
-        </div>
-
-        <div class="col-sm-3">
-
- <table>
-  <tbody>
-
-      <tr><td  width="40%"><font class="satu">Bayar</font></td> <td> :&nbsp;</td> <td><font class="satu"> <?php echo rp($data_inner['tunai']); ?></font> </td></tr>
-      <tr><td  width="40%"><font class="satu">Kembali</font></td> <td> :&nbsp;</td> <td><font class="satu"> <?php echo rp($data_inner['sisa']); ?></font> </td></tr>
-      <tr><td  width="40%"><font class="satu">Jenis Bayar</font></td> <td> :&nbsp;</td> <td><font class="satu"> <?php echo $data_inner['nama_daftar_akun']; ?></font> </td></tr>   
-
-  </tbody>
-</table>
-
-        </div>
-
--->
-    <div class="col-sm-9">
-    
-    <!--<font class="satu"><b>Nama <?php echo $data200['kata_ubah']; ?> <br><br><br> <font class="satu"><?php echo $data_inner['nama_pelanggan']; ?></font> </b></font>-->
-    
-    </div> <!--/ col-sm-6-->
-    
-    <div class="col-sm-3">
-    
-    <font class="satu"><b>Petugas <br><br><br> <font class="satu"><?php echo $_SESSION['nama']; ?></font></b></font>
-
-    </div> <!--/ col-sm-6-->
-
-
-
-
-</div> <!--/container-->
-
-
- <script>
-$(document).ready(function(){
-  window.print();
-});
-</script>
-
-
-
-<?php include 'footer.php'; ?>

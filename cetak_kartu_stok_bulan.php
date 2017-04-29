@@ -6,25 +6,25 @@ include 'sanitasi.php';
 include 'db.php';
 
 
-$daritgl = stringdoang($_GET['daritgl']);
-$sampaitgl = stringdoang($_GET['sampaitgl']);
 $kode_barang = stringdoang($_GET['kode_barang']);
 $nama_barang = stringdoang($_GET['nama_barang']);
-
+$bulan = stringdoang($_GET['bulan']);
+$tahun = stringdoang($_GET['tahun']);
+$moon = stringdoang($_GET['moon']);
 
 // awal Select untuk hitung Saldo Awal
-$hpp_masuk = $db->query("SELECT SUM(jumlah_kuantitas) AS jumlah FROM hpp_masuk WHERE kode_barang = '$kode_barang' AND tanggal < '$daritgl' ");
+$hpp_masuk = $db->query("SELECT SUM(jumlah_kuantitas) AS jumlah FROM hpp_masuk WHERE kode_barang = '$kode_barang' AND MONTH(tanggal) < '$bulan' AND YEAR(tanggal) <= '$tahun'");
 $out_masuk = mysqli_fetch_array($hpp_masuk);
 $jumlah_masuk = $out_masuk['jumlah'];
 
 
-$hpp_keluar = $db->query("SELECT SUM(jumlah_kuantitas) AS jumlah FROM hpp_keluar WHERE kode_barang = '$kode_barang' AND tanggal < '$daritgl' ");
+$hpp_keluar = $db->query("SELECT SUM(jumlah_kuantitas) AS jumlah FROM hpp_keluar WHERE kode_barang = '$kode_barang' AND MONTH(tanggal) < '$bulan' AND YEAR(tanggal) <= '$tahun'");
 $out_keluar = mysqli_fetch_array($hpp_keluar);
 $jumlah_keluar = $out_keluar['jumlah'];
 
 $total_saldo = $jumlah_masuk - $jumlah_keluar;
 
-    $query1 = $db->query("SELECT * FROM perusahaan ");
+    $query1 = $db->query("SELECT foto, nama_perusahaan, alamat_perusahaan, no_telp FROM perusahaan ");
     $data1 = mysqli_fetch_array($query1);
     
 
@@ -36,9 +36,6 @@ $total_saldo = $jumlah_masuk - $jumlah_keluar;
    .satu {
    font-size: 15px;
    font: verdana;
-   }
-   .rata-kanan{
-    text-align: right;
    }
 </style>
 
@@ -62,7 +59,7 @@ $total_saldo = $jumlah_masuk - $jumlah_keluar;
 
 
     <center> <h4> <b> DATA STOK </b> </h4> </center>
-    <center> <h4> <b> PERIODE <?php echo tanggal($daritgl); ?> Sampai <?php echo tanggal($sampaitgl); ?></b> </h4> </center><hr>
+    <center> <h4> <b> PERIODE <?php echo $moon; ?>   <?php echo $tahun; ?></b> </h4> </center><hr>
 
 
 
@@ -83,7 +80,8 @@ $total_saldo = $jumlah_masuk - $jumlah_keluar;
 
     </div>
 
-   <!---- <div class="col-sm-3">
+   <!--
+   <div class="col-sm-3">
        <table>
         <tbody>
 
@@ -95,7 +93,7 @@ $total_saldo = $jumlah_masuk - $jumlah_keluar;
             </tbody>
       </table>
 
-    </div> ----end col-sm-2-->
+    </div>  end col-sm-2-->
    </div> <!--end row-->  
 
 
@@ -111,6 +109,9 @@ $total_saldo = $jumlah_masuk - $jumlah_keluar;
     border: 1px solid black;
     font-size: 15px;
     font: verdana;
+}
+.rata-kanan {
+  text-align: right
 }
 
 
@@ -138,15 +139,16 @@ $total_saldo = $jumlah_masuk - $jumlah_keluar;
 <td></td>
 <td></td>
 <td></td>
-<td class="rata-kanan"><b style='color:red ;'><?php echo rp($total_saldo) ?></b></td>
+<td class='rata-kanan'><b style='color:red;'><?php echo rp($total_saldo) ?></b></td>
 </tr>
 
 <?php 
 
-$select = $db->query("SELECT no_faktur,jumlah_kuantitas,jenis_transaksi,tanggal,jenis_hpp,waktu,tanggal, jam  FROM hpp_masuk 
-  WHERE kode_barang = '$kode_barang' AND tanggal >= '$daritgl' AND tanggal <= '$sampaitgl' 
-  UNION SELECT no_faktur, jumlah_kuantitas,jenis_transaksi, tanggal, jenis_hpp,waktu ,tanggal, jam FROM hpp_keluar 
-  WHERE kode_barang = '$kode_barang' AND tanggal >= '$daritgl' AND tanggal <= '$sampaitgl' ORDER BY CONCAT(tanggal,' ',jam)");
+$select = $db->query("SELECT no_faktur,jumlah_kuantitas,jenis_transaksi,tanggal,jenis_hpp, tanggal, jam FROM hpp_masuk 
+      WHERE kode_barang = '$kode_barang' AND MONTH(tanggal) = '$bulan' AND YEAR(tanggal) = '$tahun' 
+      UNION SELECT no_faktur, jumlah_kuantitas,jenis_transaksi, tanggal, jenis_hpp, tanggal, jam FROM hpp_keluar 
+      WHERE kode_barang = '$kode_barang' AND MONTH(tanggal) = '$bulan' AND YEAR(tanggal) = '$tahun' 
+      ORDER BY CONCAT(tanggal,' ',jam) ");
 
 
 while($data = mysqli_fetch_array($select))
@@ -185,7 +187,7 @@ if ($data['jenis_hpp'] == '1')
       }
 
 //LOGIKA UNTUK MENAMPILKAN JENIS TRANSAKSI DARI MASING" TRANSAKSI (JUMLAH PRODUK BERTAMBAH)
-
+//
 //LOGIKA UNTUK MENAMPILKAN HARGA DARI MASING" TRANSAKSI (JUMLAH PRODUK BERTAMBAH)
       if ($data['jenis_transaksi'] == 'Pembelian') {
 
@@ -234,7 +236,8 @@ if ($data['jenis_hpp'] == '1')
       }
 
 //LOGIKA UNTUK MENAMPILKAN HARGA DARI MASING" TRANSAKSI (JUMLAH PRODUK BERTAMBAH)
-  echo "<td>". tanggal($data['tanggal']) ."</td>
+
+  echo "<td>". tanggal($data['tanggal'])."</td>
       <td class='rata-kanan'>". rp($masuk) ."</td>
       <td class='rata-kanan'>0</td>
       <td class='rata-kanan'>". rp($total_saldo) ."</td>
@@ -274,7 +277,7 @@ $total_saldo = $total_saldo - $keluar;
       }
 
 //LOGIKA UNTUK MENAMPILKAN JENIS TRANSAKSI DARI MASING" TRANSAKSI (JUMLAH PRODUK BERKURANG)
-
+//
 //LOGIKA UNTUK MENAMPILKAN HARGA DARI MASING" TRANSAKSI (JUMLAH PRODUK BERKURANG)
 
       if ($data['jenis_transaksi'] == 'Penjualan') {
@@ -316,7 +319,8 @@ $total_saldo = $total_saldo - $keluar;
 
 //LOGIKA UNTUK MENAMPILKAN HARGA DARI MASING" TRANSAKSI (JUMLAH PRODUK BERKURANG)
 
-      echo "<td>". tanggal($data['tanggal']) ."</td>
+
+      echo "<td>". tanggal($data['tanggal'])."</td>
       <td class='rata-kanan'>0</td>
       <td class='rata-kanan'>".rp($keluar)."</td>
       <td class='rata-kanan'>". rp($total_saldo) ."</td>
