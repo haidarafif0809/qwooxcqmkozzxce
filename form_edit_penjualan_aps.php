@@ -361,6 +361,7 @@ echo '
                                   <th style='background-color: #4CAF50; color: white'> Kode </th>
                                   <th style='background-color: #4CAF50; color: white'> Nama </th>
                                   <th style='background-color: #4CAF50; color: white'> Harga</th>
+                                  <th style='background-color: #4CAF50; color: white'> Komisi</th>
                                   <th style='background-color: #4CAF50; color: white'> Dokter</th>
                                   <th style='background-color: #4CAF50; color: white'> Analis</th>
                                   <th style='background-color: #4CAF50; color: white'> Tanggal</th>
@@ -658,6 +659,11 @@ $(document).ready(function(){
     $("#btnRefreshsubtotal").show();
     $("#batal_penjualan").show();
 
+
+//TAMPILAN TOMBOL BAYAR DAN PIUTANG
+//TAMPILAN TOMBOL BAYAR DAN PIUTANG
+
+
     //START SUBTOTAL DAN TOTAL
 var no_reg = $("#no_reg").val();
 var no_faktur = $("#no_faktur").val();
@@ -771,12 +777,18 @@ $.post("cek_subtotal_edit_aps.php",{no_reg:no_reg,no_faktur:no_faktur},function(
                 if (sisa < 0 ){
                     $("#kredit").val( tandaPemisahTitik(sisa_kredit));
                     $("#sisa_pembayaran_penjualan").val('0');
-                    $("#tanggal_jt").attr("disabled", false);       
+                    $("#tanggal_jt").attr("disabled", false);
+                    $("#penjualan").hide();
+                    $("#cetak_langsung").hide();
+                    $("#piutang").show();       
                 }
                 else{
                     $("#sisa_pembayaran_penjualan").val(tandaPemisahTitik(sisa));
                     $("#kredit").val('0');
                     $("#tanggal_jt").attr("disabled", true);
+                    $("#penjualan").show();
+                    $("#cetak_langsung").show();
+                    $("#piutang").hide();
                       
                 }
             
@@ -784,8 +796,8 @@ $.post("cek_subtotal_edit_aps.php",{no_reg:no_reg,no_faktur:no_faktur},function(
             $("#diskon_persen").val(Math.round(diskon_persen));
         }//Akhir Proses Diskon Rupiah
 
-});
-//CEK SUBTOTAL + TOTAL
+      });
+      //CEK SUBTOTAL + TOTAL
 });
 </script>
 
@@ -795,30 +807,31 @@ $(document).ready(function(){
     $(document).on('click','#btnRefreshsubtotal',function(e){
         var no_faktur = $("#no_faktur").val();
         var no_reg = $("#no_reg").val();
-        if (no_reg == '') {
-            alert("Anda belum memilih pasien!");
+        if (no_faktur == '') {
+            alert("Data Yang di Edit Tidak Ada!");
         }
         else{
 
-            $.post("refresh_subtotal_edit_aps.php",{no_reg:no_reg,no_faktur:no_faktur},function(data){
-                if (data == '') {
-                    data = 0;
-                }
+          $.post("refresh_subtotal_edit_aps.php",{no_reg:no_reg,no_faktur:no_faktur},function(data){
+          if (data == '') {
+            data = 0;
+          }
+          var hasil_data = data;
+          var biaya_admin = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#biaya_adm").val()))));
+          if(biaya_admin == ''){
+             biaya_admin = 0
+          }
 
-            var biaya_admin = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#biaya_admin_rupiah").val()))));
-            var hitung_biaya = parseInt(biaya_admin,10) * parseInt(data,10) / 100;
+          var diskon = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#diskon_rupiah").val()))));
+          if(diskon == ''){
+             diskon = 0
+          }
+          var hasilnya = parseInt(hasil_data,10) + parseInt(Math.round(biaya_admin),10) - parseInt(diskon,10);
 
-            $("#biaya_adm").val(tandaPemisahTitik(Math.round(hitung_biaya)));
-            var diskon = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#diskon_rupiah").val()))));
-                if(diskon == ''){
-                    diskon = 0
-                }
-            var hasilnya = parseInt(data,10) + parseInt(Math.round(hitung_biaya),10) - parseInt(diskon,10);
+          $("#total").val(tandaPemisahTitik(hasilnya));
+          $("#subtotal").val(tandaPemisahTitik(hasil_data));
 
-            $("#total").val(tandaPemisahTitik(hasilnya));
-            $("#subtotal").val(tandaPemisahTitik(data));
-
-            });
+          });
         }
     });
 });
@@ -1152,7 +1165,162 @@ $(document).ready(function(){
 
                 $("#span_tbs_aps").show('fast');
 
+        //TAMPILAN TOMBOL BAYAR DAN PIUTANG
+        var pembayaran = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah( $("#pembayaran_penjualan").val() ))));
+        var total =  bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#total").val()))));
+        var sisa_kredit = parseInt(total, 10) - parseInt(pembayaran,10);
+        var sisa = parseInt(pembayaran, 10) - parseInt(total,10);
+        if (sisa < 0 ){
+            $("#kredit").val( tandaPemisahTitik(sisa_kredit));
+            $("#sisa_pembayaran_penjualan").val('0');
+            $("#tanggal_jt").attr("disabled", false);
+
+            $("#penjualan").hide();
+            $("#cetak_langsung").hide();
+            $("#piutang").show();
+        }
+        else{
+            $("#sisa_pembayaran_penjualan").val(tandaPemisahTitik(sisa));
+            $("#kredit").val('0');
+            $("#tanggal_jt").attr("disabled", true);
+
+            $("#penjualan").show();
+            $("#cetak_langsung").show();
+            $("#piutang").hide();
+        } 
+        //TAMPILAN TOMBOL BAYAR DAN PIUTANG
+
+      //START SUBTOTAL DAN TOTAL
+      var no_reg = $("#no_reg").val();
+      var no_faktur = $("#no_faktur").val();
+      var diskon_persen = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#diskon_persen").val()))));
+      var diskon_rupiah = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#diskon_rupiah").val()))));
+
+      $.post("cek_subtotal_edit_aps.php",{no_reg:no_reg,no_faktur:no_faktur},function(data){
+      data = data.replace(/\s+/g, '');
+      if (data == ""){
+        data = 0;
+      }
+
+      var sum = parseInt(data,10);
+      //Input Subtotal
+      $("#subtotal").val(tandaPemisahTitik(sum))
+
+      //Mulai Proses Cek Biaya Admin
+      var biaya_adm = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#biaya_adm").val()))));
+        if (biaya_adm == '') {
+          biaya_adm = 0;
+        }
+
+      var biaya_admin_sebenarnya = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#biaya_admin_sebenarnya").val()))));
+        if (biaya_admin_sebenarnya == '') {
+          biaya_admin_sebenarnya = 0;
+        }
+
+      var subtotal = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#subtotal").val()))));
+        if (subtotal == '') {
+          subtotal = 0;
+        }
+
+      var potongan = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#diskon_rupiah").val()))));
+        if (potongan == '') {
+          potongan = 0;
+        }
+
+      var pembayaran = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#pembayaran_penjualan").val()))));
+        if (pembayaran == '') {
+          pembayaran = 0;
+        }  
+
+      var t_total = parseInt(subtotal,10) - parseInt(potongan,10);
+      var biaya_admin_persen = parseInt(biaya_adm,10) / parseInt(subtotal,10) * 100;
+
+      var total_akhir = parseInt(t_total,10) + parseInt(Math.round(biaya_adm,10));
+
+
+      var adm_persen = parseInt(biaya_admin_sebenarnya,10) / parseInt(subtotal,10) * 100;
+
+      $("#total").val(tandaPemisahTitik(total_akhir));
+      $("#biaya_admin_persen").val(Math.round(biaya_admin_persen));
+
+        if (biaya_admin_persen > 100) {
+            
+            var total_akhir = parseInt(subtotal,10) - parseInt(potongan,10);
+            alert ("Biaya Amin %, Tidak Boleh Lebih Dari 100%");
+            $("#biaya_admin_persen").val(adm_persen);
+            $("#biaya_admin_select").val('0');            
+            $("#biaya_admin_select").trigger('chosen:updated');
+            $("#biaya_adm").val(biaya_admin_sebenarnya);
+            $("#total").val(tandaPemisahTitik(total_akhir));
+        }
+        else{
+        }
+    //Akhir Proses Cek Biaya Admin
+
+        //Start Proses Diskon Rupiah
+          var diskon_rupiah =  bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah( $("#diskon_rupiah").val()))));
+          var biaya_adm = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#biaya_adm").val()))));
+          if (biaya_adm == ''){
+              biaya_adm = 0;
+          }
+            
+          var pembayaran = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#pembayaran_penjualan").val()))));
+          if (pembayaran == '') {
+              pembayaran = 0;
+          }
+          var total = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah( $("#total").val() ))));
+          var subtotal = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#subtotal").val()))));
+          var diskon_persen = ((diskon_rupiah / subtotal) * 100);
+          var sisa_potongan = subtotal - Math.round(diskon_rupiah);
+          var hasil_akhir = parseInt(sisa_potongan, 10) + parseInt(biaya_adm,10);
+
+        if (diskon_persen > 100) {
+            var sisa = pembayaran - Math.round(hasil_akhir);
+            var sisa_kredit = Math.round(hasil_akhir) - pembayaran; 
+                
+            if (sisa < 0 ){
+              $("#kredit").val(tandaPemisahTitik(sisa_kredit));
+              $("#sisa_pembayaran_penjualan").val('0');
+              $("#tanggal_jt").attr("disabled", false);
+                      
+            }
+            else{
+              $("#sisa_pembayaran_penjualan").val(tandaPemisahTitik(sisa));
+              $("#kredit").val('0');
+              $("#tanggal_jt").attr("disabled", true);
+                      
+            } 
+                alert ("Potongan %, Tidak Boleh Lebih Dari 100%");
+                    $("#diskon_persen").val('');
+                    $("#diskon_rupiah").val('');
+                    $("#total").val(tandaPemisahTitik(hasil_akhir));
+                    
+        }
+        else{
+                var sisa = pembayaran - Math.round(hasil_akhir);
+                var sisa_kredit = Math.round(hasil_akhir) - pembayaran; 
+                
+                if (sisa < 0 ){
+                    $("#kredit").val( tandaPemisahTitik(sisa_kredit));
+                    $("#sisa_pembayaran_penjualan").val('0');
+                    $("#tanggal_jt").attr("disabled", false);       
+                }
+                else{
+                    $("#sisa_pembayaran_penjualan").val(tandaPemisahTitik(sisa));
+                    $("#kredit").val('0');
+                    $("#tanggal_jt").attr("disabled", true);
+                      
+                }
+            
+            $("#total").val(tandaPemisahTitik(Math.round(hasil_akhir)));
+            $("#diskon_persen").val(Math.round(diskon_persen));
+        }//Akhir Proses Diskon Rupiah
+
+      });
+      //CEK SUBTOTAL + TOTAL
+
         });
+
 
     }
     else{
@@ -1162,6 +1330,7 @@ $(document).ready(function(){
       return false;
     });
 
+    
   });
 </script>
 <!--Mulai Script Proses Hapus TBS-->
@@ -1650,6 +1819,8 @@ $(document).ready(function(){
 
       $("#span_tbs_aps").show();
       $("#modal_lab").modal('hide');
+
+
              //START SUBTOTAL DAN TOTAL
 var no_reg = $("#no_reg").val();
 var no_faktur = $("#no_faktur").val();
@@ -1742,12 +1913,20 @@ $.post("cek_subtotal_edit_aps.php",{no_reg:no_reg,no_faktur:no_faktur},function(
               $("#kredit").val(tandaPemisahTitik(sisa_kredit));
               $("#sisa_pembayaran_penjualan").val('0');
               $("#tanggal_jt").attr("disabled", false);
+
+                    $("#penjualan").hide();
+                    $("#cetak_langsung").hide();
+                    $("#piutang").show();   
                       
             }
             else{
               $("#sisa_pembayaran_penjualan").val(tandaPemisahTitik(sisa));
               $("#kredit").val('0');
               $("#tanggal_jt").attr("disabled", true);
+
+                    $("#penjualan").show();
+                    $("#cetak_langsung").show();
+                    $("#piutang").hide();   
                       
             } 
                 alert ("Potongan %, Tidak Boleh Lebih Dari 100%");
@@ -1763,12 +1942,22 @@ $.post("cek_subtotal_edit_aps.php",{no_reg:no_reg,no_faktur:no_faktur},function(
                 if (sisa < 0 ){
                     $("#kredit").val( tandaPemisahTitik(sisa_kredit));
                     $("#sisa_pembayaran_penjualan").val('0');
-                    $("#tanggal_jt").attr("disabled", false);       
+                    $("#tanggal_jt").attr("disabled", false); 
+
+                    $("#penjualan").hide();
+                    $("#cetak_langsung").hide();
+                    $("#piutang").show();         
                 }
                 else{
+
                     $("#sisa_pembayaran_penjualan").val(tandaPemisahTitik(sisa));
                     $("#kredit").val('0');
                     $("#tanggal_jt").attr("disabled", true);
+
+                    $("#penjualan").show();
+                    $("#cetak_langsung").show();
+                    $("#piutang").hide();   
+                      
                       
                 }
             
@@ -1808,6 +1997,7 @@ $(document).on('click','.pilih-header',function(e){
 
 // ambil dari form yang tampil
     var no_rm = $("#no_rm").val();
+    var no_rm = no_rm.substr(0, no_rm.indexOf(' |'));
     var no_reg = $("#no_reg").val();
     var analis = $("#analis").val();
     var dokter = $("#dokter").val();
@@ -1857,6 +2047,7 @@ $(document).on('click','.pilih-detail-dari-header',function(e){
 
 // ambil dari form yang tampil
     var no_rm = $("#no_rm").val();
+    var no_rm = no_rm.substr(0, no_rm.indexOf(' |'));
     var no_reg = $("#no_reg").val();
     var analis = $("#analis").val();
     var dokter = $("#dokter").val();
@@ -1903,6 +2094,7 @@ $(document).on('click','.set-sendirian',function(e){
 
 // ambil dari form yang tampil
     var no_rm = $("#no_rm").val();
+    var no_rm = no_rm.substr(0, no_rm.indexOf(' |'));
     var no_reg = $("#no_reg").val();
     var analis = $("#analis").val();
     var dokter = $("#dokter").val();
@@ -1940,7 +2132,15 @@ $(document).on('click','.set-sendirian',function(e){
 </script>
 <!--Akhir Script Proses untuk SENDIRIAN-->
 
-
+<script type="text/javascript">
+//Batal Penjualan
+$(document).ready(function(){
+  $("#batal_penjualan").click(function(){
+    var no_faktur = $("#no_faktur").val()
+      window.location.href="batal_edit_penjualan_aps.php?no_faktur="+no_faktur+"";
+  })
+});
+</script>
 
 <!--Footer-->
 <?php include 'footer.php'; ?>

@@ -15,12 +15,13 @@ $columns = array(
     
     0=>'kode_jasa',
     1=>'nama_jasa',
-    2=>'dokter',
-    3=>'analis',
-    4=>'tanggal',
-    5=>'jam',
-    6=>'hapus',
-    7=>'id'
+    2=>'komisi',
+    3=>'dokter',
+    4=>'analis',
+    5=>'tanggal',
+    6=>'jam',
+    7=>'hapus',
+    8=>'id'
 );
 
 $sql =" SELECT tbs.kode_jasa,tbs.nama_jasa,u.nama AS dokter,us.nama AS analis,tbs.harga,tbs.tanggal,tbs.jam,tbs.id";
@@ -64,6 +65,18 @@ while( $row = mysqli_fetch_array($query) ) {  // preparing an array
 
       $nestedData[] = $row["kode_jasa"];
       $nestedData[] = $row["nama_jasa"];
+
+      //TBS FEE
+      $query_tbs_fee = $db->query("SELECT f.nama_petugas, u.nama FROM tbs_fee_produk f LEFT JOIN user u ON f.nama_petugas = u.id WHERE f.kode_produk = '$row[kode_jasa]' AND f.jam = '$row[jam]' ");
+
+      $nama_fee = "<p style='font-size:15px;'> ";
+      while($data_fee = mysqli_fetch_array($query_tbs_fee))
+        {
+          $nama_fee .= "".$data_fee["nama"].", ";
+        }
+        $nama_fee .= "</p>";
+      //END TBS FEE
+      $nestedData[] = $nama_fee; //Tampilan TBS FEE
       $nestedData[] = $row["dokter"];
       $nestedData[] = $row["analis"];
       $nestedData[] = $row["tanggal"];

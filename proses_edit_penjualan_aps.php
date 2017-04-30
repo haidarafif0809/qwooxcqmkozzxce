@@ -10,8 +10,8 @@ $id_user_edit = $_SESSION['id'];
     $no_faktur = stringdoang($_POST['no_faktur']);
     $no_reg = stringdoang($_POST['no_reg']);
     $no_rm = stringdoang($_POST['no_rm']);
-    $biaya_admin = stringdoang($_POST['biaya_adm']);
-    $diskon_rupiah = stringdoang($_POST['diskon_rupiah']);
+    $biaya_admin = angkadoang($_POST['biaya_adm']);
+    $diskon_rupiah = angkadoang($_POST['diskon_rupiah']);
     $cara_bayar = angkadoang($_POST['cara_bayar']);
     $subtotal = angkadoang($_POST['subtotal']);
     $total = angkadoang($_POST['total']);
@@ -48,7 +48,7 @@ $total_tbs = ($total_harga_tbs - $diskon_rupiah) + $biaya_admin;
     $query_hapus_jurnal = $db->query("DELETE FROM jurnal_trans WHERE no_faktur = '$no_faktur'");
 
     //Hapus Laporan Fee
-    $query_hapus_fee = $db->query("DELETE FROM laporan_fee_faktur WHERE no_reg = '$no_reg' AND no_faktur = '$no_faktur'");
+    $query_hapus_fee = $db->query("DELETE FROM laporan_fee_produk WHERE no_reg = '$no_reg' AND no_faktur = '$no_faktur'");
 
     //Hapus Detail Penjualan
     $query_hapus_fee = $db->query("DELETE FROM detail_penjualan WHERE no_reg = '$no_reg' AND no_faktur = '$no_faktur'");
@@ -150,6 +150,13 @@ $total_tbs = ($total_harga_tbs - $diskon_rupiah) + $biaya_admin;
 
     //Hapus TBS APS Penjualan
     $query_hapus_tbs_aps = $db->query("DELETE FROM tbs_aps_penjualan WHERE no_reg = '$no_reg' AND no_faktur = '$no_faktur'");
+
+    //Hapus TBS FEE PRODUK
+    $query_hapus_tbs_aps = $db->query("DELETE FROM tbs_fee_produk WHERE no_reg = '$no_reg' AND no_faktur = '$no_faktur'");
+
+    //Hapus TBS Hasil Laboratorium
+    $query_hapus_tbs_aps = $db->query("DELETE FROM tbs_hasil_lab WHERE no_reg = '$no_reg' AND no_faktur = '$no_faktur'");
+
 
   }//Breket Else dari Cek Subtotal
 

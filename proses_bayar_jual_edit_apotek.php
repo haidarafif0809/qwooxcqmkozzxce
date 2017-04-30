@@ -24,7 +24,7 @@ $db->begin_transaction();
 $total = angkadoang($_POST['total']);
 $potongan = angkadoang($_POST['potongan']);
 $biaya_admin = angkadoang($_POST['biaya_admin']);
-$no_faktur = stringdoang($_POST['no_faktur']);
+echo $no_faktur = stringdoang($_POST['no_faktur']);
 
 
 // menampilakn hasil penjumlah subtotal ALIAS total penjualan dari tabel tbs_penjualan berdasarkan data no faktur
