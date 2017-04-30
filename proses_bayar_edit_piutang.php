@@ -9,6 +9,7 @@ $bulan_sekarang = date('m');
 $tanggal_sekarang = date('Y-m-d');
 $jam_sekarang = date('H:i:sa');
 $tahun_terakhir = substr($tahun_sekarang, 2);
+$waktu = $tanggal_sekarang." ".$jam_sekarang;
 
 
 $no_faktur_pembayaran = stringdoang($_POST['no_faktur_pembayaran']);
@@ -17,11 +18,11 @@ $perintah10 = $db->query("DELETE FROM detail_pembayaran_piutang WHERE no_faktur_
 
 
   // buat prepared statements
-        $stmt = $db->prepare("UPDATE pembayaran_piutang SET no_faktur_pembayaran = ?, tanggal = ?, jam = ?, tanggal_edit = ?, nama_suplier = ?, keterangan = ?, total = ?, user_edit = ?, dari_kas = ? WHERE no_faktur_pembayaran = ?");
+        $stmt = $db->prepare("UPDATE pembayaran_piutang SET no_faktur_pembayaran = ?, tanggal = ?, jam = ?, tanggal_edit = ?, nama_suplier = ?, keterangan = ?, total = ?, user_edit = ?, dari_kas = ?, waktu = ? WHERE no_faktur_pembayaran = ?");
 
   // hubungkan "data" dengan prepared statements
-        $stmt->bind_param("ssssssisss", 
-        $no_faktur_pembayaran, $tanggal, $jam_sekarang, $tanggal_sekarang, $kode_pelanggan , $keterangan, $total_bayar, $user_edit, $cara_bayar, $no_faktur_pembayaran);        
+        $stmt->bind_param("ssssssissss", 
+        $no_faktur_pembayaran, $tanggal, $jam_sekarang, $tanggal_sekarang, $kode_pelanggan , $keterangan, $total_bayar, $user_edit, $cara_bayar, $waktu, $no_faktur_pembayaran);        
 
   // siapkan "data" query
     $no_faktur_pembayaran = stringdoang($_POST['no_faktur_pembayaran']);

@@ -5,8 +5,10 @@ include 'db.php';
 
 $dari_tanggal = stringdoang($_POST['dari_tanggal']);
 $sampai_tanggal = stringdoang($_POST['sampai_tanggal']);
+$suplier = stringdoang($_POST['suplier']);
 $jumlah_bayar_hutang = 0;
 
+if ($suplier == "semua") {
 
 // LOGIKA UNTUK AMBIL BERDASARKAN KONSUMEN DAN SALES (QUERY TAMPIL AWAL)
   $query_sum_dari_pembelian = $db->query("SELECT SUM(tunai) AS tunai_pembelian,SUM(total) AS total_akhir, SUM(kredit) AS total_kredit FROM pembelian WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' AND kredit != 0 ");
@@ -20,6 +22,23 @@ $jumlah_bayar_hutang = 0;
   }
 // LOGIKA UNTUK  UNTUK AMBIL  BERDASARKAN KONSUMEN DAN SALES (QUERY TAMPIL AWAL)
 
+}
+else{
+
+// LOGIKA UNTUK AMBIL BERDASARKAN KONSUMEN DAN SALES (QUERY TAMPIL AWAL)
+  $query_sum_dari_pembelian = $db->query("SELECT SUM(tunai) AS tunai_pembelian,SUM(total) AS total_akhir, SUM(kredit) AS total_kredit FROM pembelian WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' AND kredit != 0 AND suplier = '$suplier' ");
+  $data_sum_dari_pembelian = mysqli_fetch_array($query_sum_dari_pembelian);
+
+  $query_faktur_pembelian = $db->query("SELECT no_faktur FROM pembelian WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' AND kredit != 0 AND suplier = '$suplier' ");
+  while ($data_faktur_pembelian = mysqli_fetch_array($query_faktur_pembelian)) {
+    $query_sum_dari_detail_pembayaran_hutang = $db->query("SELECT SUM(jumlah_bayar) + SUM(potongan) AS ambil_total_bayar FROM detail_pembayaran_hutang WHERE no_faktur_pembelian = '$data_faktur_pembelian[no_faktur]' ");
+    $data_sum_dari_detail_pembayaran_hutang = mysqli_fetch_array($query_sum_dari_detail_pembayaran_hutang);
+    $jumlah_bayar_hutang = $jumlah_bayar_hutang + $data_sum_dari_detail_pembayaran_hutang['ambil_total_bayar'];
+  }
+// LOGIKA UNTUK  UNTUK AMBIL  BERDASARKAN KONSUMEN DAN SALES (QUERY TAMPIL AWAL)
+
+}
+
 $total_akhir = $data_sum_dari_pembelian['total_akhir'];
 $total_kredit = $data_sum_dari_pembelian['total_kredit'];
 $total_bayar = $data_sum_dari_pembelian['tunai_pembelian'] +  $jumlah_bayar_hutang;
@@ -27,7 +46,7 @@ $total_bayar = $data_sum_dari_pembelian['tunai_pembelian'] +  $jumlah_bayar_huta
 // storing  request (ie, get/post) global array to a variable  
 $requestData= $_REQUEST;
 
-$columns = array( 
+$columns = array(
 // datatable column index  => database column name
 
   0 => 'Tanggal', 
@@ -40,18 +59,32 @@ $columns = array(
 
 );
 
-
-// getting total number records without any search
-$sql =" SELECT p.id,s.nama,p.tanggal,p.tanggal_jt, DATEDIFF(DATE(NOW()), p.tanggal) AS usia_hutang ,p.no_faktur,p.suplier,p.total,p.jam,p.status,p.potongan,p.tax,p.sisa,p.kredit ,p.nilai_kredit";
-$sql.=" FROM pembelian p INNER JOIN suplier s ON p.suplier = s.id WHERE p.tanggal >= '$dari_tanggal' AND p.tanggal <= '$sampai_tanggal' AND p.kredit != 0 ";
+if ($suplier == "semua") {
+  // getting total number records without any search
+  $sql =" SELECT p.id,s.nama,p.tanggal,p.tanggal_jt, DATEDIFF(DATE(NOW()), p.tanggal) AS usia_hutang ,p.no_faktur,p.suplier,p.total,p.jam,p.status,p.potongan,p.tax,p.sisa,p.kredit ,p.nilai_kredit";
+  $sql.=" FROM pembelian p INNER JOIN suplier s ON p.suplier = s.id WHERE p.tanggal >= '$dari_tanggal' AND p.tanggal <= '$sampai_tanggal' AND p.kredit != 0 ";
+}
+else{
+  // getting total number records without any search
+  $sql =" SELECT p.id,s.nama,p.tanggal,p.tanggal_jt, DATEDIFF(DATE(NOW()), p.tanggal) AS usia_hutang ,p.no_faktur,p.suplier,p.total,p.jam,p.status,p.potongan,p.tax,p.sisa,p.kredit ,p.nilai_kredit";
+  $sql.=" FROM pembelian p INNER JOIN suplier s ON p.suplier = s.id WHERE p.tanggal >= '$dari_tanggal' AND p.tanggal <= '$sampai_tanggal' AND p.kredit != 0 AND p.suplier = '$suplier'";
+}
 
 $query=mysqli_query($conn, $sql) or die("eror 1");
 $totalData = mysqli_num_rows($query);
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
+if ($suplier == "semua") {
+  // getting total number records without any search
+  $sql =" SELECT p.id,s.nama,p.tanggal,p.tanggal_jt, DATEDIFF(DATE(NOW()), p.tanggal) AS usia_hutang ,p.no_faktur,p.suplier,p.total,p.jam,p.status,p.potongan,p.tax,p.sisa,p.kredit ,p.nilai_kredit";
+  $sql.=" FROM pembelian p INNER JOIN suplier s ON p.suplier = s.id WHERE p.tanggal >= '$dari_tanggal' AND p.tanggal <= '$sampai_tanggal' AND p.kredit != 0 ";
+}
+else{
+  // getting total number records without any search
+  $sql =" SELECT p.id,s.nama,p.tanggal,p.tanggal_jt, DATEDIFF(DATE(NOW()), p.tanggal) AS usia_hutang ,p.no_faktur,p.suplier,p.total,p.jam,p.status,p.potongan,p.tax,p.sisa,p.kredit ,p.nilai_kredit";
+  $sql.=" FROM pembelian p INNER JOIN suplier s ON p.suplier = s.id WHERE p.tanggal >= '$dari_tanggal' AND p.tanggal <= '$sampai_tanggal' AND p.kredit != 0 AND p.suplier = '$suplier'";
+}
 
-$sql =" SELECT p.id,s.nama,p.tanggal,p.tanggal_jt, DATEDIFF(DATE(NOW()), p.tanggal) AS usia_hutang ,p.no_faktur,p.suplier,p.total,p.jam,p.status,p.potongan,p.tax,p.sisa,p.kredit ,p.nilai_kredit";
-$sql.=" FROM pembelian p INNER JOIN suplier s ON p.suplier = s.id WHERE p.tanggal >= '$dari_tanggal' AND p.tanggal <= '$sampai_tanggal' AND p.kredit != 0 ";
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
 $sql.=" AND ( p.no_faktur LIKE '".$requestData['search']['value']."%' ";
 $sql.=" OR p.tanggal LIKE '".$requestData['search']['value']."%' ";

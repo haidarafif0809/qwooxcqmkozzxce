@@ -9,7 +9,7 @@ $session_id = session_id();
 $user = $_SESSION['nama'];
 $id_user = $_SESSION['id'];
 
-$pilih_akses_tombol = $db->query("SELECT tombol_submit, tombol_bayar, tombol_piutang, tombol_simpan, tombol_batal FROM otoritas_penjualan_rj WHERE id_otoritas = '$_SESSION[otoritas_id]' ");
+$pilih_akses_tombol = $db->query("SELECT tombol_submit, tombol_bayar, tombol_piutang, tombol_simpan, tombol_batal, hapus_produk FROM otoritas_penjualan_rj WHERE id_otoritas = '$_SESSION[otoritas_id]' ");
 $otoritas_tombol = mysqli_fetch_array($pilih_akses_tombol);
 
 ?>
@@ -69,11 +69,15 @@ $otoritas_tombol = mysqli_fetch_array($pilih_akses_tombol);
 							      <th style='background-color: #4CAF50; color: white'> Kode </th>
 							      <th style='background-color: #4CAF50; color: white'> Nama </th>
 							      <th style='background-color: #4CAF50; color: white'> Harga</th>
+                    <th style='background-color: #4CAF50; color: white'> Komisi</th>
 							      <th style='background-color: #4CAF50; color: white'> Dokter</th>
-							      <th style='background-color: #4CAF50; color: white'> Petugas</th>
+							      <th style='background-color: #4CAF50; color: white'> Analis</th>
 							      <th style='background-color: #4CAF50; color: white'> Tanggal</th>
 							      <th style='background-color: #4CAF50; color: white'> Jam</th>
-							      <th style='background-color: #4CAF50; color: white'> Hapus </th>
+
+              <?php if ($otoritas_tombol['hapus_produk'] > 0): ?>
+                    <th style='background-color: #4CAF50; color: white'> Hapus </th>                
+              <?php endif ?>
 							                          
 							    </thead> <!-- tag penutup tabel -->
 							    <tbody class="tbody">
@@ -390,7 +394,6 @@ $(document).ready(function(){
 
 
 $("#batal_penjualan").show();
-
 $("#btnRefreshsubtotal").show();
 $("#span_tbs_aps").show('fast');
  // DATATABE AJAX TABLE_APS
@@ -465,10 +468,10 @@ $.post("cek_subtotal_aps.php",{no_reg:no_reg},function(data){
               }
               else
               {
-                 $("#penjualan").show();
-                 $("#batal_penjualan").show(); 
-                 $("#cetak_langsung").show();
-                 $("#piutang").show();
+                 //$("#penjualan").show();
+                 //$("#batal_penjualan").show(); 
+                 //$("#cetak_langsung").show();
+                 //$("#piutang").show();
               }
             });
       //End Cek Hasil Laboratorium

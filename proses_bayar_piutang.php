@@ -11,6 +11,7 @@
     $tanggal_sekarang = date('Y-m-d');
     $jam_sekarang = date('H:i:sa');
     $tahun_terakhir = substr($tahun_sekarang, 2);
+    $waktu = $tanggal_sekarang." ".$jam_sekarang;
     
     
     //mengecek jumlah karakter dari bulan sekarang
@@ -59,17 +60,18 @@
 
 
         // buat prepared statements
-        $stmt = $db->prepare("INSERT INTO pembayaran_piutang (no_faktur_pembayaran, tanggal, jam, nama_suplier,keterangan, total, user_buat, dari_kas) VALUES (?,?,?,?,?,?,?,?)");
+        $stmt = $db->prepare("INSERT INTO pembayaran_piutang (no_faktur_pembayaran, tanggal, jam, nama_suplier,keterangan, total, user_buat, dari_kas,waktu) VALUES (?,?,?,?,?,?,?,?,?)");
         
         // hubungkan "data" dengan prepared statements
-        $stmt->bind_param("sssssiss", 
-        $no_faktur_pembayaran, $tanggal_sekarang, $jam_sekarang, $kode_pelanggan , $keterangan, $total_bayar, $user_buat, $cara_bayar);        
+        $stmt->bind_param("sssssisss", 
+        $no_faktur_pembayaran, $tanggal, $jam_sekarang, $kode_pelanggan , $keterangan, $total_bayar, $user_buat, $cara_bayar, $waktu);        
         
         // siapkan "data" query
         $kode_pelanggan = stringdoang($_POST['kode_pelanggan']);
         $keterangan = stringdoang($_POST['keterangan']);
         $total_bayar = angkadoang($_POST['total_bayar']);
         $user_buat = $_SESSION['user_name'];
+        $tanggal = stringdoang($_POST['tanggal']);
         $cara_bayar = stringdoang($_POST['cara_bayar']);
         
         $_SESSION['no_faktur_pembayaran'] = $no_faktur_pembayaran;
@@ -84,7 +86,7 @@
     while ($data = mysqli_fetch_array($query))
     {
 
-       $query2 ="INSERT INTO detail_pembayaran_piutang (no_faktur_pembayaran, no_faktur_penjualan,tanggal, tanggal_jt, kredit, potongan, total, jumlah_bayar, kode_pelanggan) VALUES ('$no_faktur_pembayaran','$data[no_faktur_penjualan]', '$tanggal_sekarang','$data[tanggal_jt]','$data[kredit]','$data[potongan]','$data[total]','$data[jumlah_bayar]','$data[kode_pelanggan]')";
+       $query2 ="INSERT INTO detail_pembayaran_piutang (no_faktur_pembayaran, no_faktur_penjualan,tanggal, tanggal_jt, kredit, potongan, total, jumlah_bayar, kode_pelanggan) VALUES ('$no_faktur_pembayaran','$data[no_faktur_penjualan]', '$tanggal','$data[tanggal_jt]','$data[kredit]','$data[potongan]','$data[total]','$data[jumlah_bayar]','$data[kode_pelanggan]')";
 
        if ($db->query($query2) === TRUE) {
        } else {
@@ -113,16 +115,16 @@ $piutang = $total_bayar + $potongan;
 
 
  //KAS
-        $insert_jurnal = $db->query("INSERT INTO jurnal_trans (nomor_jurnal,waktu_jurnal,keterangan_jurnal,kode_akun_jurnal,debit,kredit,jenis_transaksi,no_faktur,approved,user_buat) VALUES ('".no_jurnal()."', '$tanggal_sekarang $jam_sekarang', 'Pembayaran Piutang - $ambil_kode_pelanggan[nama_pelanggan]', '$cara_bayar', '$total_bayar', '0', 'Pembayaran Piutang', '$no_faktur_pembayaran','1', '$user_buat')");
+        $insert_jurnal = $db->query("INSERT INTO jurnal_trans (nomor_jurnal,waktu_jurnal,keterangan_jurnal,kode_akun_jurnal,debit,kredit,jenis_transaksi,no_faktur,approved,user_buat) VALUES ('".no_jurnal()."', '$tanggal $jam_sekarang', 'Pembayaran Piutang - $ambil_kode_pelanggan[nama_pelanggan]', '$cara_bayar', '$total_bayar', '0', 'Pembayaran Piutang', '$no_faktur_pembayaran','1', '$user_buat')");
 
 
  //PIUTANG
-        $insert_juranl = $db->query("INSERT INTO jurnal_trans (nomor_jurnal,waktu_jurnal,keterangan_jurnal,kode_akun_jurnal,debit,kredit,jenis_transaksi,no_faktur,approved,user_buat) VALUES ('".no_jurnal()."', '$tanggal_sekarang $jam_sekarang', 'Pembayaran Piutang - $ambil_kode_pelanggan[nama_pelanggan]', '$ambil_setting[pembayaran_kredit]', '0', '$piutang', 'Pembayaran Piutang', '$no_faktur_pembayaran','1', '$user_buat')");
+        $insert_juranl = $db->query("INSERT INTO jurnal_trans (nomor_jurnal,waktu_jurnal,keterangan_jurnal,kode_akun_jurnal,debit,kredit,jenis_transaksi,no_faktur,approved,user_buat) VALUES ('".no_jurnal()."', '$tanggal $jam_sekarang', 'Pembayaran Piutang - $ambil_kode_pelanggan[nama_pelanggan]', '$ambil_setting[pembayaran_kredit]', '0', '$piutang', 'Pembayaran Piutang', '$no_faktur_pembayaran','1', '$user_buat')");
 
 
 if ($potongan != "" || $potongan != '0') {
      //POTONGAN PIUTANG    
-        $insert_jurnal = $db->query("INSERT INTO jurnal_trans (nomor_jurnal,waktu_jurnal,keterangan_jurnal,kode_akun_jurnal,debit,kredit,jenis_transaksi,no_faktur,approved,user_buat) VALUES ('".no_jurnal()."', '$tanggal_sekarang $jam_sekarang', 'Pembayaran Piutang - $ambil_kode_pelanggan[nama_pelanggan]', '$ambil_setting[potongan_piutang]', '$potongan', '0', 'Pembayaran Piutang', '$no_faktur_pembayaran','1', '$user_buat')");
+        $insert_jurnal = $db->query("INSERT INTO jurnal_trans (nomor_jurnal,waktu_jurnal,keterangan_jurnal,kode_akun_jurnal,debit,kredit,jenis_transaksi,no_faktur,approved,user_buat) VALUES ('".no_jurnal()."', '$tanggal $jam_sekarang', 'Pembayaran Piutang - $ambil_kode_pelanggan[nama_pelanggan]', '$ambil_setting[potongan_piutang]', '$potongan', '0', 'Pembayaran Piutang', '$no_faktur_pembayaran','1', '$user_buat')");
 }
 
     $query3 = $db->query("DELETE FROM tbs_pembayaran_piutang WHERE session_id = '$session_id'");

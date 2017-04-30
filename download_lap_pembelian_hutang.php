@@ -1,8 +1,12 @@
 <?php session_start();
-include 'header.php';
-include 'sanitasi.php';
-include 'db.php';
+// Fungsi header dengan mengirimkan raw data excel
+header("Content-type: application/vnd-ms-excel");
+ 
+// Mendefinisikan nama file ekspor "hasil-export.xls"
+header("Content-Disposition: attachment; filename=laporan_pembelian_hutang.xls");
 
+include 'db.php';
+include 'sanitasi.php';
 
 $dari_tanggal = stringdoang($_GET['dari_tanggal']);
 $sampai_tanggal = stringdoang($_GET['sampai_tanggal']);
@@ -30,12 +34,10 @@ $data_perusahaan = mysqli_fetch_array($query_perusahaan);
 
 ?>
 
+
+
 <div class="container">
  <div class="row"><!--row1-->
-        <div class="col-sm-2">
-        <br><br>
-                <img src='save_picture/<?php echo $data_perusahaan['foto']; ?>' class='img-rounded' alt='Cinque Terre' width='160' height='140`'> 
-        </div><!--penutup colsm2-->
 
         <div class="col-sm-6">
                  <h3> <b> LAPORAN PEMBELIAN HUTANG </b></h3>
@@ -147,13 +149,5 @@ $data_perusahaan = mysqli_fetch_array($query_perusahaan);
 </div>
 
 </div> <!-- / CONTAINER -->
-
-
-<script>
-$(document).ready(function(){
-  window.print();
-});
-</script>
-
 
 <?php include 'footer.php'; ?>

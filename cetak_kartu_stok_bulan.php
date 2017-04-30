@@ -1,12 +1,10 @@
-<?php 
-// Fungsi header dengan mengirimkan raw data excel
-header("Content-type: application/vnd-ms-excel");
- 
-// Mendefinisikan nama file ekspor "hasil-export.xls"
-header("Content-Disposition: attachment; filename=data_kartu_stok.xls");
+<?php session_start();
 
-include 'db.php';
+
+include 'header.php';
 include 'sanitasi.php';
+include 'db.php';
+
 
 $kode_barang = stringdoang($_GET['kode_barang']);
 $nama_barang = stringdoang($_GET['nama_barang']);
@@ -25,71 +23,144 @@ $out_keluar = mysqli_fetch_array($hpp_keluar);
 $jumlah_keluar = $out_keluar['jumlah'];
 
 $total_saldo = $jumlah_masuk - $jumlah_keluar;
+
+    $query1 = $db->query("SELECT foto, nama_perusahaan, alamat_perusahaan, no_telp FROM perusahaan ");
+    $data1 = mysqli_fetch_array($query1);
+    
+
+
  ?>
 
 <style type="text/css">
-  .rata-kanan{
-    text-align: right;
-  }
+/*unTUK mengatur ukuran font*/
+   .satu {
+   font-size: 15px;
+   font: verdana;
+   }
 </style>
 
+
 <div class="container">
+    
+    <div class="row"><!--row1-->
+        <div class="col-sm-2">
+                <img src='save_picture/<?php echo $data1['foto']; ?>' class='img-rounded' alt='Cinque Terre' width='80' height='80`'> 
+        </div><!--penutup colsm2-->
 
-<table style="color:blue;">
-	<tbody>
-		<tr><center><h3><b>Laporan Data Stok</b></h3></center></tr>
-		<tr><td><b>Kode Barang</b></td> <td>=</td> <td><b><?php echo $kode_barang ?></b></td> </tr>
-		<tr><td><b>Nama Barang</b></td> <td>=</td> <td><b><?php echo $nama_barang ?></b></td> </tr>
-		<tr><td><b>Bulan</b></td> <td>=</td> <td><b><?php echo $moon ?></b></td> </tr>
-		<tr><td><b>Tahun</b></td> <td>=</td> <td><b><?php echo $tahun ?></b></td> </tr>
-	</tbody>
+        <div class="col-sm-8">
+                 <center> <h4> <b> <?php echo $data1['nama_perusahaan']; ?> </b> </h4> 
+                 <p> <?php echo $data1['alamat_perusahaan']; ?><br>
+                  No.Telp:<?php echo $data1['no_telp']; ?> </p> </center>
+                 
+        </div><!--penutup colsm5-->
+        
+    </div><!--penutup row1-->
+
+
+
+    <center> <h4> <b> DATA STOK </b> </h4> </center>
+    <center> <h4> <b> PERIODE <?php echo $moon; ?>   <?php echo $tahun; ?></b> </h4> </center><hr>
+
+
+
+  <div class="row">
+    <div class="col-sm-9">
+        
+
+ <table>
+  <tbody>
+      <tr><td width="25%"><font class="satu">Nama Barang</font></td> <td> :&nbsp;</td> <td><font class="satu"><?php echo $nama_barang; ?></font> </tr>
+      <tr><td  width="25%"><font class="satu">Kode Barang</font></td> <td> :&nbsp;</td> <td><font class="satu"> <?php echo $kode_barang; ?> </font></td></tr>
+
+            
+
+  </tbody>
 </table>
-</b>
-</h3>
-    <table id="kartu_stok" class="table table-bordered">
 
-        <!-- membuat nama kolom tabel -->
+
+    </div>
+
+   <!--
+   <div class="col-sm-3">
+       <table>
+        <tbody>
+
+             <tr><td width="50%"><font class="satu"> Tanggal</td> <td> :&nbsp;&nbsp;</td> <td><?php echo tanggal($data_inner['tanggal']);?></font> </td></tr> 
+             <tr><td width="50%"><font class="satu"> Tanggal JT</td> <td> :&nbsp;&nbsp;</td> <td>-</font> </td></tr> 
+             <tr><td width="50%"><font class="satu"> Kasir</td> <td> :&nbsp;&nbsp;</td> <td><?php echo $_SESSION['nama']; ?></font></td></tr> 
+             <tr><td width="50%"><font class="satu"> Status </td> <td> :&nbsp;&nbsp;</td> <td><?php echo $data_inner['status']; ?></font></td></tr> 
+
+            </tbody>
+      </table>
+
+    </div>  end col-sm-2-->
+   </div> <!--end row-->  
+
+
+
+
+<style type="text/css">
+  th,td{
+    padding: 1px;
+  }
+
+
+.table1, .th, .td {
+    border: 1px solid black;
+    font-size: 15px;
+    font: verdana;
+}
+.rata-kanan {
+  text-align: right
+}
+
+
+</style>
+<br><br>
+<table id="tableuser" class="table table-bordered table-sm">
         <thead>
+            <th class="table1" style="width: 3%"> No Faktur</th>
+            <th class="table1" style="width: 50%"> Jenis Transaksi </th>
+            <th class="table1" style="width: 10%"> Harga</th>
+            <th class="table1" style="width: 10%"> Tanggal</th>
+            <th class="table1" style="width: 5%"> Jumlah Masuk</th>
+            <th class="table1" style="width: 5%"> Jumlah Keluar</th>
+            <th class="table1" style="width: 5%"> Saldo</th>
 
-      <th style='background-color: #4CAF50; color:white'> No Faktur </th>
-      <th style='background-color: #4CAF50; color:white'> Jenis Transaksi </th>
-      <th style='background-color: #4CAF50; color:white'> Harga </th>
-      <th style='background-color: #4CAF50; color:white'> Tanggal </th>
-      <th style='background-color: #4CAF50; color:white'> Jumlah Masuk </th>
-      <th style='background-color: #4CAF50; color:white'> Jumlah Keluar </th>
-      <th style='background-color: #4CAF50; color:white'> Saldo</th>
-
-</thead>
-<tbody>
-<tr style="color:red;">
+    
+        
+            
+        </thead>
+        <tbody>
+     <tr style="color:red;">
 <td></td>
-<td style='background-color:gold;'>Saldo Awal</td>
+<td><b style='color:red ;'>Saldo Awal</b></td>
 <td></td>
 <td></td>
 <td></td>
 <td></td>
-<td style='background-color:gold;' class='rata-kanan'><?php echo rp($total_saldo) ?></td>
+<td class='rata-kanan'><b style='color:red;'><?php echo rp($total_saldo) ?></b></td>
 </tr>
 
 <?php 
 
-
 $select = $db->query("SELECT no_faktur,jumlah_kuantitas,jenis_transaksi,tanggal,jenis_hpp, tanggal, jam FROM hpp_masuk 
-			WHERE kode_barang = '$kode_barang' AND MONTH(tanggal) = '$bulan' AND YEAR(tanggal) = '$tahun' 
-			UNION SELECT no_faktur, jumlah_kuantitas,jenis_transaksi, tanggal, jenis_hpp, tanggal, jam FROM hpp_keluar 
-			WHERE kode_barang = '$kode_barang' AND MONTH(tanggal) = '$bulan' AND YEAR(tanggal) = '$tahun' 
-			ORDER BY CONCAT(tanggal,' ',jam)  ");
+      WHERE kode_barang = '$kode_barang' AND MONTH(tanggal) = '$bulan' AND YEAR(tanggal) = '$tahun' 
+      UNION SELECT no_faktur, jumlah_kuantitas,jenis_transaksi, tanggal, jenis_hpp, tanggal, jam FROM hpp_keluar 
+      WHERE kode_barang = '$kode_barang' AND MONTH(tanggal) = '$bulan' AND YEAR(tanggal) = '$tahun' 
+      ORDER BY CONCAT(tanggal,' ',jam) ");
+
 
 while($data = mysqli_fetch_array($select))
-	{
+  {
 
 if ($data['jenis_hpp'] == '1')
 {
-	$masuk = $data['jumlah_kuantitas'];
-	$total_saldo = ($total_saldo + $masuk);
+  $masuk = $data['jumlah_kuantitas'];
+  $total_saldo = ($total_saldo + $masuk);
 
-			echo "<tr>
-			<td>". $data['no_faktur'] ."</td>";
+      echo "<tr>
+      <td>". $data['no_faktur'] ."</td>";
       
 //LOGIKA UNTUK MENAMPILKAN JENIS TRANSAKSI DARI MASING" TRANSAKSI (JUMLAH PRODUK BERTAMBAH)
       
@@ -110,15 +181,14 @@ if ($data['jenis_hpp'] == '1')
         $data_pelanggan = mysqli_fetch_array($ambil_pelanggan);
 
         $nama_pelanggan = $data_pelanggan['nama_pelanggan'];
-        $nama_pelanggan = $data_pelanggan['nama_pelanggan'];
-        
+
         if ($data_kode['kode_pelanggan'] == 'Umum') {
           echo "<td> ".$data['jenis_transaksi']." (Umum) </td>";
         }
         else{
           echo "<td> ".$data['jenis_transaksi']." (".$nama_pelanggan.") </td>";
         }
-
+        
       }
       else if ($data['jenis_transaksi'] == 'Stok Opname') {
         echo "<td> ".$data['jenis_transaksi']." ( + )</td>";
@@ -178,11 +248,11 @@ if ($data['jenis_hpp'] == '1')
 
 //LOGIKA UNTUK MENAMPILKAN HARGA DARI MASING" TRANSAKSI (JUMLAH PRODUK BERTAMBAH)
 
-  echo "<td>". tanggal($data['tanggal']) ."</td>
+  echo "<td>". tanggal($data['tanggal'])."</td>
       <td class='rata-kanan'>". rp($masuk) ."</td>
       <td class='rata-kanan'>0</td>
       <td class='rata-kanan'>". rp($total_saldo) ."</td>
-			";
+      ";
 }
 else
 {
@@ -190,8 +260,8 @@ else
 $keluar = $data['jumlah_kuantitas'];
 $total_saldo = $total_saldo - $keluar;
 
-			echo "<tr>
-			<td>". $data['no_faktur'] ."</td>";
+      echo "<tr>
+      <td>". $data['no_faktur'] ."</td>";
 
       //LOGIKA UNTUK MENAMPILKAN JENIS TRANSAKSI DARI MASING" TRANSAKSI (JUMLAH PRODUK BERKURANG)
 
@@ -212,7 +282,6 @@ $total_saldo = $total_saldo - $keluar;
         $data_pelanggan = mysqli_fetch_array($ambil_pelanggan);
 
         $nama_pelanggan = $data_pelanggan['nama_pelanggan'];
-        $nama_pelanggan = $data_pelanggan['nama_pelanggan'];
 
         if ($data_kode['kode_pelanggan'] == 'Umum') {
           echo "<td> ".$data['jenis_transaksi']." (Umum) </td>";
@@ -220,6 +289,7 @@ $total_saldo = $total_saldo - $keluar;
         else{
           echo "<td> ".$data['jenis_transaksi']." (".$nama_pelanggan.") </td>";
         }
+
       }
       else if ($data['jenis_transaksi'] == 'Stok Opname') {
         echo "<td> ".$data['jenis_transaksi']." ( - ) </td>";
@@ -271,14 +341,15 @@ $total_saldo = $total_saldo - $keluar;
 
 //LOGIKA UNTUK MENAMPILKAN HARGA DARI MASING" TRANSAKSI (JUMLAH PRODUK BERKURANG)
 
-      echo "<td>". tanggal($data['tanggal']) ."</td>
+
+      echo "<td>". tanggal($data['tanggal'])."</td>
       <td class='rata-kanan'>0</td>
       <td class='rata-kanan'>".rp($keluar)."</td>
       <td class='rata-kanan'>". rp($total_saldo) ."</td>
-			";
+      ";
 }
 
-		echo "</tr>";
+    echo "</tr>";
 
 
 } // and while
@@ -287,9 +358,89 @@ $total_saldo = $total_saldo - $keluar;
 mysqli_close($db); 
 ?>
         </tbody>
-    </table>      
 
-</div> <!--Closed Container-->
-
+    </table>
 
 
+<br>
+
+<!--        <div class="col-sm-6">
+            
+            <i><b><font class="satu">Terbilang :</font></b> <?php echo kekata($data_inner['total']); ?> </i> <br>
+            <!DOCTYPE html>
+
+<style>
+div.dotted {border-style: dotted;}
+div.dashed {border-style: dashed;}
+div.solid {border-style: solid;}
+div.double {border-style: double;}
+div.groove {border-style: groove;}
+div.ridge {border-style: ridge;}
+div.inset {border-style: inset;}
+div.outset {border-style: outset;}
+div.none {border-style: none;}
+div.hidden {border-style: hidden;}
+div.mix {border-style: dotted dashed solid double;}
+</style>
+
+
+
+</div>
+ <div class="col-sm-3">
+
+ <table>
+  <tbody>
+
+      <tr><td width="50%"><font class="satu">Sub Total</font></td> <td> :&nbsp;</td> <td><font class="satu"> <?php echo rp($t_subtotal); ?> </font></tr>
+      <tr><td width="50%"><font class="satu">Diskon</font></td> <td> :&nbsp;</td> <td><font class="satu"> <?php echo rp($data_inner['potongan']); ?></font> </tr>
+      <tr><td width="50%"><font class="satu">Biaya Admin</font></td> <td> :&nbsp;</td> <td><font class="satu"> <?php echo rp($data_inner['biaya_admin']); ?></font> </tr>
+      <tr><td  width="50%"><font class="satu">Tax</font></td> <td> :&nbsp;</td> <td><font class="satu"> <?php echo rp($data_inner['tax']); ?> </font></td></tr>
+      <tr><td  width="50%"><font class="satu">Total Akhir</font></td> <td> :&nbsp;</td> <td><font class="satu"> <?php echo rp($data_inner['total']); ?></font>  </td></tr>
+
+  </tbody>
+</table>
+
+        </div>
+
+        <div class="col-sm-3">
+
+ <table>
+  <tbody>
+
+      <tr><td  width="40%"><font class="satu">Bayar</font></td> <td> :&nbsp;</td> <td><font class="satu"> <?php echo rp($data_inner['tunai']); ?></font> </td></tr>
+      <tr><td  width="40%"><font class="satu">Kembali</font></td> <td> :&nbsp;</td> <td><font class="satu"> <?php echo rp($data_inner['sisa']); ?></font> </td></tr>
+      <tr><td  width="40%"><font class="satu">Jenis Bayar</font></td> <td> :&nbsp;</td> <td><font class="satu"> <?php echo $data_inner['nama_daftar_akun']; ?></font> </td></tr>   
+
+  </tbody>
+</table>
+
+        </div>
+
+-->
+    <div class="col-sm-9">
+    
+    <!--<font class="satu"><b>Nama <?php echo $data200['kata_ubah']; ?> <br><br><br> <font class="satu"><?php echo $data_inner['nama_pelanggan']; ?></font> </b></font>-->
+    
+    </div> <!--/ col-sm-6-->
+    
+    <div class="col-sm-3">
+    
+    <font class="satu"><b>Petugas <br><br><br> <font class="satu"><?php echo $_SESSION['nama']; ?></font></b></font>
+
+    </div> <!--/ col-sm-6-->
+
+
+
+
+</div> <!--/container-->
+
+
+ <script>
+$(document).ready(function(){
+  window.print();
+});
+</script>
+
+
+
+<?php include 'footer.php'; ?>

@@ -15,6 +15,7 @@ $jenis_kelamin = stringdoang($_GET['jenis_kelamin']);
 $aps_periksa = stringdoang($_GET['aps_periksa']); // jika 1 Laboratorium, jika 2 Radiologi
 
 
+
 ?>
 
 
@@ -331,11 +332,12 @@ echo '
                               
       <th style='background-color: #4CAF50; color: white'> Kode </th>
       <th style='background-color: #4CAF50; color: white'> Nama </th>
+      <th style='background-color: #4CAF50; color: white'> Komisi </th>
       <th style='background-color: #4CAF50; color: white'> Dokter</th>
       <th style='background-color: #4CAF50; color: white'> Analis</th>
       <th style='background-color: #4CAF50; color: white'> Tanggal</th>
       <th style='background-color: #4CAF50; color: white'> Jam</th>
-      <!--<th style='background-color: #4CAF50; color: white'> Hapus </th>-->
+      <th style='background-color: #4CAF50; color: white'> Hapus </th>
                           
     </thead> <!-- tag penutup tabel -->
     <tbody class="tbody">
@@ -626,7 +628,7 @@ $(document).on('click','.set-sendirian',function(e){
 <!--Akhir Script Proses Save Pada Modal-->
 
 <!--Mulai Script Proses Hapus TBS -->
-<!--<script type="text/javascript">
+<script type="text/javascript">
   $(document).on('click','.btn-hapus-tbs',function(e){
 
     var id = $(this).attr("data-id");
@@ -637,7 +639,6 @@ $(document).on('click','.set-sendirian',function(e){
     var pesan_alert = confirm("Apakah Anda Yakin Ingin Menghapus "+nama_jasa+""+ "?");
 
     if (pesan_alert == true) {
-      $(".tr-id-"+id+"").remove();
 
         $.post("hapus_data_tbs_aps.php",{kode_jasa:kode_jasa,no_reg:no_reg,id:id},function(data){
 
@@ -678,7 +679,7 @@ $(document).on('click','.set-sendirian',function(e){
     });
 
   });
-</script>-->
+</script>
 <!--Mulai Script Proses Hapus TBS-->
 
 <!--<script type="text/javascript">

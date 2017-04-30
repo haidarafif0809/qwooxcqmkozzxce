@@ -1,13 +1,20 @@
 <?php session_start();
-include 'header.php';
-include 'sanitasi.php';
-include 'db.php';
+// Fungsi header dengan mengirimkan raw data excel
+header("Content-type: application/vnd-ms-excel");
+ 
+// Mendefinisikan nama file ekspor "hasil-export.xls"
+header("Content-Disposition: attachment; filename=laporan_pembelian_hutang_persuplier.xls");
 
+include 'db.php';
+include 'sanitasi.php';
 
 $dari_tanggal = stringdoang($_GET['dari_tanggal']);
 $sampai_tanggal = stringdoang($_GET['sampai_tanggal']);
+$suplier = stringdoang($_GET['suplier']);
 $jumlah_bayar_hutang = 0;
 
+
+if ($suplier == "semua") {
 
 // LOGIKA UNTUK AMBIL BERDASARKAN KONSUMEN DAN SALES (QUERY TAMPIL AWAL)
   $query_sum_dari_pembelian = $db->query("SELECT SUM(tunai) AS tunai_pembelian,SUM(total) AS total_akhir, SUM(kredit) AS total_kredit FROM pembelian WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' AND kredit != 0 ");
@@ -21,6 +28,23 @@ $jumlah_bayar_hutang = 0;
   }
 // LOGIKA UNTUK  UNTUK AMBIL  BERDASARKAN KONSUMEN DAN SALES (QUERY TAMPIL AWAL)
 
+}
+else{
+
+// LOGIKA UNTUK AMBIL BERDASARKAN KONSUMEN DAN SALES (QUERY TAMPIL AWAL)
+  $query_sum_dari_pembelian = $db->query("SELECT SUM(tunai) AS tunai_pembelian,SUM(total) AS total_akhir, SUM(kredit) AS total_kredit FROM pembelian WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' AND kredit != 0 AND suplier = '$suplier' ");
+  $data_sum_dari_pembelian = mysqli_fetch_array($query_sum_dari_pembelian);
+
+  $query_faktur_pembelian = $db->query("SELECT no_faktur FROM pembelian WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' AND kredit != 0 AND suplier = '$suplier' ");
+  while ($data_faktur_pembelian = mysqli_fetch_array($query_faktur_pembelian)) {
+    $query_sum_dari_detail_pembayaran_hutang = $db->query("SELECT SUM(jumlah_bayar) + SUM(potongan) AS ambil_total_bayar FROM detail_pembayaran_hutang WHERE no_faktur_pembelian = '$data_faktur_pembelian[no_faktur]' ");
+    $data_sum_dari_detail_pembayaran_hutang = mysqli_fetch_array($query_sum_dari_detail_pembayaran_hutang);
+    $jumlah_bayar_hutang = $jumlah_bayar_hutang + $data_sum_dari_detail_pembayaran_hutang['ambil_total_bayar'];
+  }
+// LOGIKA UNTUK  UNTUK AMBIL  BERDASARKAN KONSUMEN DAN SALES (QUERY TAMPIL AWAL)
+
+}
+
 $total_akhir = $data_sum_dari_pembelian['total_akhir'];
 $total_kredit = $data_sum_dari_pembelian['total_kredit'];
 $total_bayar = $data_sum_dari_pembelian['tunai_pembelian'] +  $jumlah_bayar_hutang;
@@ -30,15 +54,13 @@ $data_perusahaan = mysqli_fetch_array($query_perusahaan);
 
 ?>
 
+
+
 <div class="container">
  <div class="row"><!--row1-->
-        <div class="col-sm-2">
-        <br><br>
-                <img src='save_picture/<?php echo $data_perusahaan['foto']; ?>' class='img-rounded' alt='Cinque Terre' width='160' height='140`'> 
-        </div><!--penutup colsm2-->
 
         <div class="col-sm-6">
-                 <h3> <b> LAPORAN PEMBELIAN HUTANG </b></h3>
+                 <h3> <b> LAPORAN PEMBELIAN HUTANG /SUPLIER </b></h3>
                  <hr>
                  <h4> <b> <?php echo $data_perusahaan['nama_perusahaan']; ?> </b> </h4> 
                  <p> <?php echo $data_perusahaan['alamat_perusahaan']; ?> </p> 
@@ -76,7 +98,18 @@ $data_perusahaan = mysqli_fetch_array($query_perusahaan);
   <tbody>
 
   <?php
+
+  if ($suplier == "semua") {
+
     $query_pembelian = $db->query("SELECT p.id,s.nama,p.tanggal,p.tanggal_jt, DATEDIFF(DATE(NOW()), p.tanggal) AS usia_hutang ,p.no_faktur,p.suplier,p.total,p.jam,p.status,p.potongan,p.tax,p.sisa,p.kredit ,p.nilai_kredit FROM pembelian p INNER JOIN suplier s ON p.suplier = s.id WHERE p.tanggal >= '$dari_tanggal' AND p.tanggal <= '$sampai_tanggal' AND p.kredit != 0 ORDER BY p.waktu_input DESC");
+
+  }
+  else{
+
+    $query_pembelian = $db->query("SELECT p.id,s.nama,p.tanggal,p.tanggal_jt, DATEDIFF(DATE(NOW()), p.tanggal) AS usia_hutang ,p.no_faktur,p.suplier,p.total,p.jam,p.status,p.potongan,p.tax,p.sisa,p.kredit ,p.nilai_kredit FROM pembelian p INNER JOIN suplier s ON p.suplier = s.id WHERE p.tanggal >= '$dari_tanggal' AND p.tanggal <= '$sampai_tanggal' AND p.kredit != 0 AND p.suplier = '$suplier' ORDER BY p.waktu_input DESC");
+
+  }
+
     while ($data_pembelian = mysqli_fetch_array($query_pembelian)){
       
       $query_nilai_bayar_hutang = $db->query("SELECT SUM(jumlah_bayar) + SUM(potongan) AS total_bayar FROM detail_pembayaran_hutang WHERE no_faktur_pembelian = '$data_pembelian[no_faktur]' ");
@@ -147,13 +180,5 @@ $data_perusahaan = mysqli_fetch_array($query_perusahaan);
 </div>
 
 </div> <!-- / CONTAINER -->
-
-
-<script>
-$(document).ready(function(){
-  window.print();
-});
-</script>
-
 
 <?php include 'footer.php'; ?>

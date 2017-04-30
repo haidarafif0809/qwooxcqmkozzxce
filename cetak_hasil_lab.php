@@ -74,7 +74,7 @@ $dokter = $out_dokter['nama'];
       <tr><td>Petugas </td> <td> :</td> <td> <?php echo $_SESSION['nama']; ?> </td></tr>
 
       <tr><td>Dokter </td> <td> :</td> <td><?php echo $dokter;?> </td></tr>
-      <tr><td>Analis </td> <td> :</td> <td> <?php echo $analis;?> </td></tr>
+      <tr><td>Petugas </td> <td> :</td> <td> <?php echo $analis;?> </td></tr>
       
   </tbody>
   </table>       

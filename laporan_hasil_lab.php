@@ -123,24 +123,12 @@ $input_hasil_lab = $take_lab['input_hasil_lab'];
       </div>
 
       <div class="modal-body">
-      <div class="table-responsive">
-      <span id="modal-detail"> </span>
-      </div>
-  <table id="table_detail" class="table table-bordered table-sm">
-        <thead>
-           <th> Nama Pemeriksaan </th>
-           <th> Hasil Pemeriksaan </th>
-           <th> Nilai Normal </th>
-           <th> Status Rawat </th>
-           
+        <div class="table-responsive">
+          <span id="span-detail">
             
-        </thead>
-        
-        <tbody id="data_detail">
-        </tbody>
-
-        </table>
-     </div>
+          </span>
+        </div>
+       </div>
 
       <div class="modal-footer">
         <h6 style="text-align: left ; color: red"><i>* Edit Hasil Pemeriksaan Click 2x !!</i></h6>
@@ -232,7 +220,7 @@ $(document).on('click', '.detail-lab', function (e) {
 		});
 </script>-->
 
-<!--Script mulai untuk tombol detail-->
+<!--Script mulai untuk tombol detail
 <script type="text/javascript">
 $(document).on('click', '.detail-lab', function (e) {
 
@@ -275,7 +263,24 @@ $(document).on('click', '.detail-lab', function (e) {
     });
 
 </script>
-<!--Script akhir untuk tombol detail-->
+Script akhir untuk tombol detail-->
+
+<script type="text/javascript">
+
+$(document).on('click', '.detail-lab', function (e) {
+
+  var no_faktur = $(this).attr('data-faktur');
+  var no_reg = $(this).attr('data-reg');
+
+  $("#modal_detail").modal('show');
+
+  $.post("detail_hasil_lab.php",{no_faktur:no_faktur, no_reg:no_reg},function(data){
+    $("#span-detail").html(data);
+  });
+
+});
+
+</script>
 
 <!--SKRIPT DETAIL RAWAT INAP -->
 <script type="text/javascript">
@@ -343,5 +348,7 @@ $("#input-nama-"+id+"").attr("data-nama",input_nama);
 });
 // ending untuk update hasil pemeriksaaan
 </script>
+
+
 
 <?php include 'footer.php'; ?>

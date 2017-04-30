@@ -3,33 +3,31 @@
 header("Content-type: application/vnd-ms-excel");
  
 // Mendefinisikan nama file ekspor "hasil-export.xls"
-header("Content-Disposition: attachment; filename=data_kartu_stok.xls");
+header("Content-Disposition: attachment; filename=data_kartu_stok_perperiode.xls");
 
 include 'db.php';
 include 'sanitasi.php';
 
 $kode_barang = stringdoang($_GET['kode_barang']);
 $nama_barang = stringdoang($_GET['nama_barang']);
-$bulan = stringdoang($_GET['bulan']);
-$tahun = stringdoang($_GET['tahun']);
-$moon = stringdoang($_GET['moon']);
+$dari_tanggal = stringdoang($_GET['daritgl']);
+$sampai_tanggal = stringdoang($_GET['sampaitgl']);
 
-// awal Select untuk hitung Saldo Awal
-$hpp_masuk = $db->query("SELECT SUM(jumlah_kuantitas) AS jumlah FROM hpp_masuk WHERE kode_barang = '$kode_barang' AND MONTH(tanggal) < '$bulan' AND YEAR(tanggal) <= '$tahun'");
+$hpp_masuk = $db->query("SELECT SUM(jumlah_kuantitas) AS jumlah FROM hpp_masuk WHERE kode_barang = '$kode_barang' AND tanggal < '$dari_tanggal' ");
 $out_masuk = mysqli_fetch_array($hpp_masuk);
 $jumlah_masuk = $out_masuk['jumlah'];
 
-
-$hpp_keluar = $db->query("SELECT SUM(jumlah_kuantitas) AS jumlah FROM hpp_keluar WHERE kode_barang = '$kode_barang' AND MONTH(tanggal) < '$bulan' AND YEAR(tanggal) <= '$tahun'");
+$hpp_keluar = $db->query("SELECT SUM(jumlah_kuantitas) AS jumlah FROM hpp_keluar WHERE kode_barang = '$kode_barang' AND tanggal < '$dari_tanggal' ");
 $out_keluar = mysqli_fetch_array($hpp_keluar);
 $jumlah_keluar = $out_keluar['jumlah'];
 
 $total_saldo = $jumlah_masuk - $jumlah_keluar;
+
  ?>
 
 <style type="text/css">
   .rata-kanan{
-    text-align: right;
+    text-align:right;
   }
 </style>
 
@@ -37,23 +35,25 @@ $total_saldo = $jumlah_masuk - $jumlah_keluar;
 
 <table style="color:blue;">
 	<tbody>
-		<tr><center><h3><b>Laporan Data Stok</b></h3></center></tr>
+		<tr><center><h3><b>Laporan Data Stok Perperiode</b></h3></center>
+			<br>
+			<center><h3><b>Dari <?php echo $dari_tanggal ?> S/d <?php echo $sampai_tanggal; ?></b></h3>
+		</tr>
 		<tr><td><b>Kode Barang</b></td> <td>=</td> <td><b><?php echo $kode_barang ?></b></td> </tr>
 		<tr><td><b>Nama Barang</b></td> <td>=</td> <td><b><?php echo $nama_barang ?></b></td> </tr>
-		<tr><td><b>Bulan</b></td> <td>=</td> <td><b><?php echo $moon ?></b></td> </tr>
-		<tr><td><b>Tahun</b></td> <td>=</td> <td><b><?php echo $tahun ?></b></td> </tr>
+	
 	</tbody>
 </table>
 </b>
 </h3>
-    <table id="kartu_stok" class="table table-bordered">
+    <table id="kartu_stok" class="table table-bordered table-sm">
 
         <!-- membuat nama kolom tabel -->
         <thead>
 
       <th style='background-color: #4CAF50; color:white'> No Faktur </th>
-      <th style='background-color: #4CAF50; color:white'> Jenis Transaksi </th>
-      <th style='background-color: #4CAF50; color:white'> Harga </th>
+      <th style='background-color: #4CAF50; color:white'> Jenis Transkasi </th>
+      <th style='background-color: #4CAF50; color:white'> Harga</th>
       <th style='background-color: #4CAF50; color:white'> Tanggal </th>
       <th style='background-color: #4CAF50; color:white'> Jumlah Masuk </th>
       <th style='background-color: #4CAF50; color:white'> Jumlah Keluar </th>
@@ -73,23 +73,26 @@ $total_saldo = $jumlah_masuk - $jumlah_keluar;
 
 <?php 
 
-
-$select = $db->query("SELECT no_faktur,jumlah_kuantitas,jenis_transaksi,tanggal,jenis_hpp, tanggal, jam FROM hpp_masuk 
-			WHERE kode_barang = '$kode_barang' AND MONTH(tanggal) = '$bulan' AND YEAR(tanggal) = '$tahun' 
-			UNION SELECT no_faktur, jumlah_kuantitas,jenis_transaksi, tanggal, jenis_hpp, tanggal, jam FROM hpp_keluar 
-			WHERE kode_barang = '$kode_barang' AND MONTH(tanggal) = '$bulan' AND YEAR(tanggal) = '$tahun' 
-			ORDER BY CONCAT(tanggal,' ',jam)  ");
-
+$select = $db->query("SELECT no_faktur,jumlah_kuantitas,jenis_transaksi,tanggal,jenis_hpp,waktu, id, jam FROM hpp_masuk 
+	WHERE kode_barang = '$kode_barang' AND tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' 
+	UNION SELECT no_faktur, jumlah_kuantitas,jenis_transaksi, tanggal, jenis_hpp,waktu, id, jam 
+	FROM hpp_keluar WHERE kode_barang = '$kode_barang' AND tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' ORDER BY CONCAT(tanggal,' ',jam)  ");
 while($data = mysqli_fetch_array($select))
 	{
 
-if ($data['jenis_hpp'] == '1')
-{
-	$masuk = $data['jumlah_kuantitas'];
-	$total_saldo = ($total_saldo + $masuk);
 
-			echo "<tr>
-			<td>". $data['no_faktur'] ."</td>";
+
+	echo "<tr>";
+
+	
+
+if ($data['jenis_hpp'] == '1')
+{		
+
+		$masuk = $data['jumlah_kuantitas'];
+		$total_saldo = ($total_saldo + $masuk);
+
+		echo "<td>".$data['no_faktur']."</td>";
       
 //LOGIKA UNTUK MENAMPILKAN JENIS TRANSAKSI DARI MASING" TRANSAKSI (JUMLAH PRODUK BERTAMBAH)
       
@@ -103,22 +106,10 @@ if ($data['jenis_hpp'] == '1')
         
       }
       else if ($data['jenis_transaksi'] == 'Retur Penjualan') {
-        $ambil_kode = $db->query("SELECT kode_pelanggan FROM retur_penjualan WHERE no_faktur_retur = '$data[no_faktur]' ");
-        $data_kode = mysqli_fetch_array($ambil_kode);
-
-        $ambil_pelanggan = $db_pasien->query("SELECT nama_pelanggan FROM pelanggan WHERE kode_pelanggan = '$data_kode[kode_pelanggan]' ");
+        $ambil_pelanggan = $db->query("SELECT rp.kode_pelanggan, p.nama_pelanggan FROM retur_penjualan rp INNER JOIN  pelanggan p ON rp.kode_pelanggan = p.kode_pelanggan WHERE rp.no_faktur_retur = '$data[no_faktur]' ");
         $data_pelanggan = mysqli_fetch_array($ambil_pelanggan);
-
         $nama_pelanggan = $data_pelanggan['nama_pelanggan'];
-        $nama_pelanggan = $data_pelanggan['nama_pelanggan'];
-        
-        if ($data_kode['kode_pelanggan'] == 'Umum') {
-          echo "<td> ".$data['jenis_transaksi']." (Umum) </td>";
-        }
-        else{
-          echo "<td> ".$data['jenis_transaksi']." (".$nama_pelanggan.") </td>";
-        }
-
+        echo "<td> ".$data['jenis_transaksi']." (".$nama_pelanggan.") </td>";
       }
       else if ($data['jenis_transaksi'] == 'Stok Opname') {
         echo "<td> ".$data['jenis_transaksi']." ( + )</td>";
@@ -181,17 +172,16 @@ if ($data['jenis_hpp'] == '1')
   echo "<td>". tanggal($data['tanggal']) ."</td>
       <td class='rata-kanan'>". rp($masuk) ."</td>
       <td class='rata-kanan'>0</td>
-      <td class='rata-kanan'>". rp($total_saldo) ."</td>
-			";
+      <td class='rata-kanan'>".rp($total_saldo)."</td>";
+	
 }
 else
 {
 
-$keluar = $data['jumlah_kuantitas'];
-$total_saldo = $total_saldo - $keluar;
-
-			echo "<tr>
-			<td>". $data['no_faktur'] ."</td>";
+		$keluar = $data['jumlah_kuantitas'];
+		$total_saldo = $total_saldo - $keluar;
+		
+		echo "<td>".$data['no_faktur']."</td>";
 
       //LOGIKA UNTUK MENAMPILKAN JENIS TRANSAKSI DARI MASING" TRANSAKSI (JUMLAH PRODUK BERKURANG)
 
@@ -205,21 +195,10 @@ $total_saldo = $total_saldo - $keluar;
         
       }
       else if ($data['jenis_transaksi'] == 'Penjualan') {
-        $ambil_kode = $db->query("SELECT kode_pelanggan FROM penjualan WHERE no_faktur = '$data[no_faktur]' ");
-        $data_kode = mysqli_fetch_array($ambil_kode);
-
-        $ambil_pelanggan = $db_pasien->query("SELECT nama_pelanggan FROM pelanggan WHERE kode_pelanggan = '$data_kode[kode_pelanggan]' ");
+        $ambil_pelanggan = $db->query("SELECT p.kode_pelanggan, pl.nama_pelanggan FROM penjualan p INNER JOIN  pelanggan pl ON p.kode_pelanggan = pl.kode_pelanggan WHERE p.no_faktur = '$data[no_faktur]' ");
         $data_pelanggan = mysqli_fetch_array($ambil_pelanggan);
-
         $nama_pelanggan = $data_pelanggan['nama_pelanggan'];
-        $nama_pelanggan = $data_pelanggan['nama_pelanggan'];
-
-        if ($data_kode['kode_pelanggan'] == 'Umum') {
-          echo "<td> ".$data['jenis_transaksi']." (Umum) </td>";
-        }
-        else{
-          echo "<td> ".$data['jenis_transaksi']." (".$nama_pelanggan.") </td>";
-        }
+        echo "<td> ".$data['jenis_transaksi']." (".$nama_pelanggan.") </td>";
       }
       else if ($data['jenis_transaksi'] == 'Stok Opname') {
         echo "<td> ".$data['jenis_transaksi']." ( - ) </td>";
@@ -274,11 +253,11 @@ $total_saldo = $total_saldo - $keluar;
       echo "<td>". tanggal($data['tanggal']) ."</td>
       <td class='rata-kanan'>0</td>
       <td class='rata-kanan'>".rp($keluar)."</td>
-      <td class='rata-kanan'>". rp($total_saldo) ."</td>
-			";
+      <td class='rata-kanan'>".rp($total_saldo)."</td>";		
+
 }
 
-		echo "</tr>";
+	echo"</tr>";
 
 
 } // and while

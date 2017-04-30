@@ -13,6 +13,7 @@ $bulan_sekarang = date('m');
 $tanggal_sekarang = date('Y-m-d');
 $jam_sekarang = date('H:i:sa');
 $tahun_terakhir = substr($tahun_sekarang, 2);
+$waktu = $tanggal_sekarang." ".$jam_sekarang;
 
 
 //mengecek jumlah karakter dari bulan sekarang
@@ -64,11 +65,11 @@ $no_faktur_pembayaran = $nomor."/PH/".$data_bulan_terakhir."/".$tahun_terakhir;
 
 
         // buat prepared statements
-        $stmt = $db->prepare("INSERT INTO pembayaran_hutang (no_faktur_pembayaran,tanggal,jam,nama_suplier,keterangan, total, user_buat,dari_kas) VALUES (?,?,?,?,?,?,?,?)");
+        $stmt = $db->prepare("INSERT INTO pembayaran_hutang (no_faktur_pembayaran,tanggal,jam,nama_suplier,keterangan, total, user_buat,dari_kas, waktu) VALUES (?,?,?,?,?,?,?,?,?)");
         
         // hubungkan "data" dengan prepared statements
-        $stmt->bind_param("sssssiss", 
-        $no_faktur_pembayaran, $tanggal, $jam_sekarang, $suplier,$keterangan,$total_bayar,$user_buat,$cara_bayar);        
+        $stmt->bind_param("sssssisss", 
+        $no_faktur_pembayaran, $tanggal, $jam_sekarang, $suplier,$keterangan,$total_bayar,$user_buat,$cara_bayar,$waktu);        
         
         // siapkan "data" query
         $suplier = stringdoang($_POST['suplier']);

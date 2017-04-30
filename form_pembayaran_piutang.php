@@ -280,7 +280,7 @@ $no_faktur_penjualan = $data50['no_faktur_penjualan'];
         
                 <div class="form-group col-sm-6">
                 <label> Tanggal </label><br>
-                <input type="text" name="tanggal" id="tanggal" placeholder="Tanggal" style="height: 20px" value="<?php echo date("Y/m/d"); ?>" class="form-control" required="" >
+                <input type="text" name="tanggal" id="tanggal" placeholder="Tanggal" style="height: 20px" value="<?php echo date("Y-m-d"); ?>" class="form-control" required="" >
 
                 <input type="hidden" name="session_id" id="session_id" class="form-control" readonly="" value="<?php echo $session_id; ?>" required="" >
                 </div>
@@ -553,6 +553,7 @@ $(document).ready(function(){
    var jumlah_bayar = $("#jumlah_bayar").val();
    var potongan1 = $("#potongan1").val();
    var faktur = $("#faktur").val();
+   var tanggal = $("#tanggal").val();
 
    
      $("#carabayar1").val('');
@@ -582,7 +583,7 @@ else
   $("#pembayaran").hide();
   $("#batal").hide();
 
- $.post("proses_bayar_piutang.php", {no_faktur_pembayaran:no_faktur_pembayaran,no_faktur_penjualan:no_faktur_penjualan,cara_bayar:cara_bayar,kode_pelanggan:kode_pelanggan,keterangan:keterangan,total:total,user_buat:user_buat,dari_kas:dari_kas,kredit:kredit,status:status,total_bayar:total_bayar,potongan:potongan,jumlah_bayar:jumlah_bayar,potongan1:potongan1,faktur:faktur},function(info) {
+ $.post("proses_bayar_piutang.php", {no_faktur_pembayaran:no_faktur_pembayaran,no_faktur_penjualan:no_faktur_penjualan,cara_bayar:cara_bayar,kode_pelanggan:kode_pelanggan,keterangan:keterangan,total:total,user_buat:user_buat,dari_kas:dari_kas,kredit:kredit,status:status,total_bayar:total_bayar,potongan:potongan,jumlah_bayar:jumlah_bayar,potongan1:potongan1,faktur:faktur,tanggal:tanggal},function(info) {
 
      
      $("#tabel_baru").html(info);
