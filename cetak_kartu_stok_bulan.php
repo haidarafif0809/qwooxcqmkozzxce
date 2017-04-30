@@ -174,10 +174,21 @@ if ($data['jenis_hpp'] == '1')
         
       }
       else if ($data['jenis_transaksi'] == 'Retur Penjualan') {
-        $ambil_pelanggan = $db->query("SELECT rp.kode_pelanggan, p.nama_pelanggan FROM retur_penjualan rp INNER JOIN  pelanggan p ON rp.kode_pelanggan = p.kode_pelanggan WHERE rp.no_faktur_retur = '$data[no_faktur]' ");
+        $ambil_kode = $db->query("SELECT kode_pelanggan FROM retur_penjualan WHERE no_faktur_retur = '$data[no_faktur]' ");
+        $data_kode = mysqli_fetch_array($ambil_kode);
+
+        $ambil_pelanggan = $db_pasien->query("SELECT nama_pelanggan FROM pelanggan WHERE kode_pelanggan = '$data_kode[kode_pelanggan]' ");
         $data_pelanggan = mysqli_fetch_array($ambil_pelanggan);
+
         $nama_pelanggan = $data_pelanggan['nama_pelanggan'];
-        echo "<td> ".$data['jenis_transaksi']." (".$nama_pelanggan.") </td>";
+
+        if ($data_kode['kode_pelanggan'] == 'Umum') {
+          echo "<td> ".$data['jenis_transaksi']." (Umum) </td>";
+        }
+        else{
+          echo "<td> ".$data['jenis_transaksi']." (".$nama_pelanggan.") </td>";
+        }
+        
       }
       else if ($data['jenis_transaksi'] == 'Stok Opname') {
         echo "<td> ".$data['jenis_transaksi']." ( + )</td>";
@@ -264,10 +275,21 @@ $total_saldo = $total_saldo - $keluar;
         
       }
       else if ($data['jenis_transaksi'] == 'Penjualan') {
-        $ambil_pelanggan = $db->query("SELECT p.kode_pelanggan, pl.nama_pelanggan FROM penjualan p INNER JOIN  pelanggan pl ON p.kode_pelanggan = pl.kode_pelanggan WHERE p.no_faktur = '$data[no_faktur]' ");
+        $ambil_kode = $db->query("SELECT kode_pelanggan FROM penjualan WHERE no_faktur = '$data[no_faktur]' ");
+        $data_kode = mysqli_fetch_array($ambil_kode);
+
+        $ambil_pelanggan = $db_pasien->query("SELECT nama_pelanggan FROM pelanggan WHERE kode_pelanggan = '$data_kode[kode_pelanggan]' ");
         $data_pelanggan = mysqli_fetch_array($ambil_pelanggan);
+
         $nama_pelanggan = $data_pelanggan['nama_pelanggan'];
-        echo "<td> ".$data['jenis_transaksi']." (".$nama_pelanggan.") </td>";
+
+        if ($data_kode['kode_pelanggan'] == 'Umum') {
+          echo "<td> ".$data['jenis_transaksi']." (Umum) </td>";
+        }
+        else{
+          echo "<td> ".$data['jenis_transaksi']." (".$nama_pelanggan.") </td>";
+        }
+
       }
       else if ($data['jenis_transaksi'] == 'Stok Opname') {
         echo "<td> ".$data['jenis_transaksi']." ( - ) </td>";
