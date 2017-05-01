@@ -219,7 +219,7 @@ else
 				
 			}
 			else if ($row['jenis_transaksi'] == 'Penjualan') {
-				$ambil_kode = $db->query("SELECT kode_pelanggan FROM penjualan WHERE no_faktur = '$data[no_faktur]' ");
+				$ambil_kode = $db->query("SELECT kode_pelanggan FROM penjualan WHERE no_faktur = '$row[no_faktur]' ");
 				$data_kode = mysqli_fetch_array($ambil_kode);
 
 				$ambil_pelanggan = $db_pasien->query("SELECT nama_pelanggan FROM pelanggan WHERE kode_pelanggan = '$data_kode[kode_pelanggan]' ");
@@ -228,10 +228,10 @@ else
 				$nama_pelanggan = $data_pelanggan['nama_pelanggan'];
 
 				if ($data_kode['kode_pelanggan'] == 'Umum') {
-					$nestedData[] = "<td> ".$data['jenis_transaksi']." (Umum) </td>";
+					$nestedData[] = "<td> ".$row['jenis_transaksi']." (Umum) </td>";
 				}
 				else{
-					$nestedData[] = "<td> ".$data['jenis_transaksi']." (".$nama_pelanggan.") </td>";
+					$nestedData[] = "<td> ".$row['jenis_transaksi']." (".$nama_pelanggan.") </td>";
 				}
 			}
 			else if ($row['jenis_transaksi'] == 'Stok Opname') {
