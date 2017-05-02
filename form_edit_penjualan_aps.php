@@ -272,8 +272,10 @@ echo '
 
           <div class="col-xs-2">
             <label> No. RM | Pasien </label><br>
-            <input style="height:20px" type="text" class="form-control"  id="no_rm" name="no_rm"  value="<?php echo $no_rm; ?>(<?php echo $nama_pasien; ?>)" readonly="" >
-            <input type="hidden" class="form-control"  id="nama_pasien" name="nama_pasien" value="" readonly="" > 
+            <input style="height:20px" type="text" class="form-control"  id="no_rm_tampil" name="no_rm_tampil"  value="<?php echo $no_rm; ?>(<?php echo $nama_pasien; ?>)" readonly="" >
+            <!--HIDDEN RM DAN NAMA PASIEN-->
+            <input type="hidden" class="form-control"  id="nama_pasien" name="nama_pasien" value="" readonly="" >
+            <input type="hidden" class="form-control" value="<?php echo $no_rm; ?>" id="no_rm" name="no_rm" value="" readonly="" > 
           </div>
 
           <div class="col-xs-2">
@@ -857,7 +859,6 @@ $(document).ready(function(){
       var no_faktur = $("#no_faktur").val();
       var no_reg = $("#no_reg").val();
       var no_rm = $("#no_rm").val();
-      var no_rm = no_rm.substr(0, no_rm.indexOf(' |'));
       var biaya_adm = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#biaya_adm").val()))));
       if(biaya_adm == ''){
         biaya_adm = 0;
@@ -946,7 +947,6 @@ $(document).ready(function(){
       var no_faktur = $("#no_faktur").val();
       var no_reg = $("#no_reg").val();
       var no_rm = $("#no_rm").val();
-      var no_rm = no_rm.substr(0, no_rm.indexOf(' |'));
       var biaya_adm = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#biaya_adm").val()))));
       if(biaya_adm == ''){
         biaya_adm = 0;
@@ -1031,7 +1031,6 @@ $(document).ready(function(){
       var no_faktur = $("#no_faktur").val();
       var no_reg = $("#no_reg").val();
       var no_rm = $("#no_rm").val();
-      var no_rm = no_rm.substr(0, no_rm.indexOf(' |'));
       var biaya_adm = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#biaya_adm").val()))));
       if(biaya_adm == ''){
         biaya_adm = 0;
@@ -1997,7 +1996,6 @@ $(document).on('click','.pilih-header',function(e){
 
 // ambil dari form yang tampil
     var no_rm = $("#no_rm").val();
-    var no_rm = no_rm.substr(0, no_rm.indexOf(' |'));
     var no_reg = $("#no_reg").val();
     var analis = $("#analis").val();
     var dokter = $("#dokter").val();
@@ -2047,7 +2045,6 @@ $(document).on('click','.pilih-detail-dari-header',function(e){
 
 // ambil dari form yang tampil
     var no_rm = $("#no_rm").val();
-    var no_rm = no_rm.substr(0, no_rm.indexOf(' |'));
     var no_reg = $("#no_reg").val();
     var analis = $("#analis").val();
     var dokter = $("#dokter").val();
@@ -2094,7 +2091,6 @@ $(document).on('click','.set-sendirian',function(e){
 
 // ambil dari form yang tampil
     var no_rm = $("#no_rm").val();
-    var no_rm = no_rm.substr(0, no_rm.indexOf(' |'));
     var no_reg = $("#no_reg").val();
     var analis = $("#analis").val();
     var dokter = $("#dokter").val();

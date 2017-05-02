@@ -44,16 +44,19 @@ $total_tbs = ($total_harga_tbs - $diskon_rupiah) + $biaya_admin;
   }
   else{
 
-    //Hapus Jurnal
-    $query_hapus_jurnal = $db->query("DELETE FROM jurnal_trans WHERE no_faktur = '$no_faktur'");
+  //Hapus Jurnal
+  $query_hapus_jurnal = $db->query("DELETE FROM jurnal_trans WHERE no_faktur = '$no_faktur'");
 
-    //Hapus Laporan Fee
-    $query_hapus_fee = $db->query("DELETE FROM laporan_fee_produk WHERE no_reg = '$no_reg' AND no_faktur = '$no_faktur'");
+  //Hapus Laporan Fee
+  $query_hapus_fee = $db->query("DELETE FROM laporan_fee_produk WHERE no_reg = '$no_reg' AND no_faktur = '$no_faktur'");
 
-    //Hapus Detail Penjualan
-    $query_hapus_fee = $db->query("DELETE FROM detail_penjualan WHERE no_reg = '$no_reg' AND no_faktur = '$no_faktur'");
+  //Hapus Detail Penjualan
+  $query_hapus_fee = $db->query("DELETE FROM detail_penjualan WHERE no_reg = '$no_reg' AND no_faktur = '$no_faktur'");
 
-          //INSERT DARI TBS APS KE DETAIL PENJUALAN
+  //Hapus TBS Hasil Laboratorium
+  $query_hapus_hasil_lab = $db->query("DELETE FROM hasil_lab WHERE no_reg = '$no_reg' AND no_faktur = '$no_faktur'");
+
+          //MULAI INSERT DARI TBS APS KE DETAIL PENJUALAN
           $query_insert_detail_penjualan = "INSERT INTO detail_penjualan (no_faktur,no_rm,no_reg,
           kode_barang,nama_barang,jumlah_barang,harga,subtotal,sisa,tipe_produk,tanggal,jam)
           SELECT '$no_faktur','$no_rm',no_reg, kode_jasa, nama_jasa, '1', harga, harga, '1',
@@ -65,9 +68,9 @@ $total_tbs = ($total_harga_tbs - $diskon_rupiah) + $biaya_admin;
               else{
               echo "Error: " . $query_insert_detail_penjualan . "<br>" . $db->error;
               }
-          //INSERT DARI TBS APS KE DETAIL PENJUALAN
+          //AKHIR INSERT DARI TBS APS KE DETAIL PENJUALAN
 
-          //INSERT DARI TBS FEE KE LAPORAN FEE PRODUK
+          //MULAI INSERT DARI TBS FEE KE LAPORAN FEE PRODUK
           $insert_lap_fee_produk = "INSERT INTO laporan_fee_produk (nama_petugas,no_faktur,
           kode_produk,nama_produk, jumlah_fee, tanggal, jam, no_rm, no_reg) SELECT nama_petugas,
           '$no_faktur', kode_produk, nama_produk, jumlah_fee, tanggal, jam, no_rm, no_reg 
@@ -79,7 +82,19 @@ $total_tbs = ($total_harga_tbs - $diskon_rupiah) + $biaya_admin;
               else{
                   echo "Error: " . $insert_lap_fee_produk . "<br>" . $db->error;
               }
-          //INSERT DARI TBS FEE KE LAPORAN FEE PRODUK
+          //AKHIR INSERT DARI TBS FEE KE LAPORAN FEE PRODUK
+
+          //MULAI INSERT KE HASIL LAB DARI TBS HASIL LAB
+          $query_insert_hasil_lab = "INSERT INTO hasil_lab (id_pemeriksaan, nama_pemeriksaan, hasil_pemeriksaan, nilai_normal_lk, nilai_normal_pr, status_pasien, no_rm, no_reg, no_faktur, nama_pasien, tanggal, jam, dokter, petugas_analis, model_hitung, satuan_nilai_normal, id_sub_header, nilai_normal_lk2, nilai_normal_pr2, kode_barang, id_setup_hasil) SELECT id_pemeriksaan, nama_pemeriksaan, hasil_pemeriksaan, nilai_normal_lk, nilai_normal_pr, status_pasien, no_rm, no_reg,'$no_faktur', '$data_pelanggan[nama_pelanggan]', tanggal, jam, dokter, analis, model_hitung, satuan_nilai_normal, id_sub_header, normal_lk2, normal_pr2, kode_barang, id_setup_hasil FROM tbs_hasil_lab 
+            WHERE no_reg = '$no_reg' AND no_faktur = '$no_faktur'";
+
+              if ($db->query($query_insert_hasil_lab) === TRUE) {
+              
+              }
+              else{
+                  echo "Error: " . $query_insert_hasil_lab . "<br>" . $db->error;
+              }
+          //MULAI INSERT KE HASIL LAB DARI TBS HASIL LAB 
 
 
             //MULAI Penjualan Lunas!!

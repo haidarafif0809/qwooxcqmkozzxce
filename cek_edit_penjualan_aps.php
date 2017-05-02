@@ -13,13 +13,22 @@ $no_reg = $data_nama_pasien['no_reg'];
 
 
 //MULAI DATA JASA LABORATORIUM
-$query_tbs_aps = $db->query("SELECT * FROM tbs_aps_penjualan WHERE no_faktur = '$no_faktur'");
+$query_tbs_aps = $db->query("SELECT no_faktur FROM tbs_aps_penjualan WHERE no_faktur = '$no_faktur'");
 $data_tbs_aps = mysqli_num_rows($query_tbs_aps);
 
 if ($data_tbs_aps > 0){
       $query_hapus_tbs_aps = $db->query("DELETE FROM tbs_aps_penjualan WHERE no_faktur = '$no_faktur'");
 }
+//AKHIR DATA JASA LABORATORIUM
 
+//Mulai Hapus TBS Hasil Laboratorium
+$query_cek_tbs_hasil = $db->query("SELECT no_faktur FROM tbs_hasil_lab WHERE no_faktur = '$no_faktur'");
+$data_tbs_hasil = mysqli_num_rows($query_cek_tbs_hasil);
+
+if ($data_tbs_hasil > 0){
+   $query_hapus_tbs_hasil = $db->query("DELETE FROM tbs_hasil_lab WHERE no_faktur = '$no_faktur'");
+}
+//Akhir Hapus TBS Hasil Laboratorium
 
 $query_ambil_kode_jasa = $db->query("SELECT kode_barang FROM detail_penjualan WHERE no_faktur = '$no_faktur'");
 while($data_kode_jasa = mysqli_fetch_array($query_ambil_kode_jasa)){
@@ -64,22 +73,31 @@ $query_masuk_tbs_fee = "INSERT INTO tbs_fee_produk (no_faktur,no_reg,no_rm,nama_
 //AKHIR DATA FEE LABORATORIUM
   
 //INSERT DARI LAPORAN FEE PRODUK KE TBS FEE 
-$insert_lap_fee_produk = "INSERT INTO tbs_fee_produk (nama_petugas,
-'$no_faktur', kode_produk, nama_produk, jumlah_fee, tanggal, jam, no_rm, no_reg) SELECT
-nama_petugas,no_faktur,kode_produk,nama_produk, jumlah_fee, tanggal, jam, no_rm, no_reg FROM
-laporan_fee_produk WHERE no_faktur = '$no_faktur'";
-      if ($db->query($insert_lap_fee_produk) === TRUE) {
+$query_fee = "INSERT INTO tbs_fee_produk (nama_petugas,no_faktur,kode_produk,nama_produk,
+jumlah_fee, tanggal, jam, no_rm, no_reg) SELECT nama_petugas,no_faktur,kode_produk,nama_produk,
+jumlah_fee, tanggal, jam, no_rm, no_reg FROM laporan_fee_produk WHERE no_faktur = '$no_faktur'";
+      if ($db->query($query_fee) === TRUE) {
       }
       else{
-            echo "Error: " . $insert_lap_fee_produk . "<br>" . $db->error;
+            echo "Error: " . $query_fee . "<br>" . $db->error;
       }
 //INSERT DARI LAPORAN FEE PRODUK KE TBS FEE 
+
+//INSERT DARI LAPORAN HASIL -> TBS HASIL 
+$query_hasil_lab = "INSERT INTO tbs_hasil_lab (id_pemeriksaan, hasil_pemeriksaan, no_faktur,
+no_reg, no_rm, status_pasien, nilai_normal_lk, nilai_normal_pr, normal_lk2, normal_pr2, nama_pemeriksaan,
+model_hitung, satuan_nilai_normal, id_sub_header, kode_barang, id_setup_hasil, tanggal, jam, dokter,
+analis) SELECT id_pemeriksaan,hasil_pemeriksaan, no_faktur, no_reg, no_rm, status_pasien, nilai_normal_lk, nilai_normal_pr, nilai_normal_lk2, nilai_normal_pr2, nama_pemeriksaan, model_hitung, satuan_nilai_normal, id_sub_header, kode_barang, id_setup_hasil, tanggal, jam, dokter, petugas_analis FROM hasil_lab WHERE no_faktur = '$no_faktur'";
+      if ($db->query($query_hasil_lab) === TRUE) {
+      }
+      else{
+            echo "Error: " . $query_hasil_lab . "<br>" . $db->error;
+      }
+//INSERT DARI LAPORAN HASIL -> TBS HASIL
 
 header ('location:form_edit_penjualan_aps.php?no_faktur='.$no_faktur.'&no_rm='.$no_rm.'&nama_pasien='.$nama_pasien.'&no_reg='.$no_reg.'');
 
 //Untuk Memutuskan Koneksi Ke Database
 mysqli_close($db);   
 
- ?>
-
-
+?>

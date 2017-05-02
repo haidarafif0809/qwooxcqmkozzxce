@@ -20,7 +20,7 @@ $jenis_kelamin = stringdoang($_POST['jenis_kelamin']);
 $tanggal = stringdoang($_POST['tanggal']);
 
  
-  //Hapus Jika id sama dengan yang sudah ada di TBS
+//Hapus Jika id sama dengan yang sudah ada di TBS
 $query_hapus = $db->query("DELETE FROM tbs_hasil_lab WHERE kode_barang = '$kode_jasa_lab'");
 
 //Select Detail dari ID Headernya
@@ -31,19 +31,18 @@ $query_select_detail = $db->query("SELECT id,nama_pemeriksaan,
   '$id_pemeriksaan' AND kategori_index = 'Detail'");
 while($data_query_select_detail = mysqli_fetch_array($query_select_detail)){
 
-
   //Ambil Nama Jasa
   $query_ambil_nama_jasa = $db->query("SELECT nama,harga_1 FROM jasa_lab WHERE id = '$data_query_select_detail[nama_pemeriksaan]'");
   while($data_nama_jasa = mysqli_fetch_array($query_ambil_nama_jasa)){
   $nama_jasa = $data_nama_jasa['nama'];
   $harga_jasa = $data_nama_jasa['harga_1'];
   
-  //INSERT DATA DETAILNYA
-  /*$query_insert_tbs_hasil = $db->query("INSERT INTO tbs_hasil_lab
+  //INSERT DATA DETAILNYA KE TBS HASIL LAB 
+  $query_insert_tbs_hasil = $db->query("INSERT INTO tbs_hasil_lab
     (id_pemeriksaan, no_reg, no_rm, kode_barang, status_pasien,
     nilai_normal_lk,nilai_normal_pr,normal_lk2,normal_pr2,
     nama_pemeriksaan,model_hitung,satuan_nilai_normal,id_sub_header,
-    id_setup_hasil,tanggal,jam,dokter,analis,harga) VALUES 
+    id_setup_hasil,tanggal,jam,dokter,analis,harga,hasil_pemeriksaan,no_faktur) VALUES 
     ('$data_query_select_detail[nama_pemeriksaan]',
     '$no_reg','$no_rm','$kode_jasa_lab','APS',
     '$data_query_select_detail[normal_lk]',
@@ -54,13 +53,12 @@ while($data_query_select_detail = mysqli_fetch_array($query_select_detail)){
     '$data_query_select_detail[satuan_nilai_normal]',
     '$data_query_select_detail[sub_hasil_lab]',
     '$data_query_select_detail[id]','$tanggal','$jam','$dokter',
-    '$analis','$harga_jasa')");*/
+    '$analis','$harga_jasa','Edit Penjualan APS','$no_faktur')");
 
     //INSERT TBS APS PENJUALAN
     $query_insert_tbs_aps_penjualan = $db->query("INSERT INTO tbs_aps_penjualan (no_faktur,no_reg,kode_jasa,nama_jasa,
       harga,dokter,analis,tanggal,jam) VALUES ('$no_faktur','$no_reg','$kode_jasa_lab',
       '$nama_jasa','$harga_jasa','$dokter','$analis','$tanggal','$jam')");
-
 
       // INSERT FEE DOKTER JASA LAB
     $query_fee_jasa_lab = $db->query("SELECT jumlah_prosentase, jumlah_uang FROM fee_produk WHERE nama_petugas = '$dokter' AND kode_produk = '$kode_jasa_lab'");
