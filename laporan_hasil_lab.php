@@ -267,6 +267,7 @@ Script akhir untuk tombol detail-->
 
 <script type="text/javascript">
 
+    $(document).ready(function () {
 $(document).on('click', '.detail-lab', function (e) {
 
   var no_faktur = $(this).attr('data-faktur');
@@ -274,12 +275,12 @@ $(document).on('click', '.detail-lab', function (e) {
 
   $("#modal_detail").modal('show');
 
-  $.post("detail_hasil_lab.php",{no_faktur:no_faktur, no_reg:no_reg},function(data){
+  $.post("detail_hasil_lab.php",{no_faktur:no_faktur,no_reg:no_reg},function(data){
     $("#span-detail").html(data);
   });
 
 });
-
+});
 </script>
 
 <!--SKRIPT DETAIL RAWAT INAP -->
