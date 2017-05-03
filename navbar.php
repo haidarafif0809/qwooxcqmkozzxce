@@ -437,11 +437,11 @@ if ($lihat['buku_besar_lihat'] > 0){
 
 
 
-if ($lihat['buku_besar_lihat'] > 0){
+if ($lihat['cash_flow_tanggal_lihat'] > 0){
                             echo '<li><a href="cashflow_tanggal.php" class="waves-effect">Cashflow Per Tanggal</a></li>';
 }
 
- if ($lihat['cash_flow_tanggal_lihat'] > 0){
+ if ($lihat['cash_flow_periode_lihat'] > 0){
                             echo '<li><a href="cashflow_periode.php" class="waves-effect">Cashflow Per Periode</a></li>';
 }
 
