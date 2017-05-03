@@ -73,7 +73,7 @@ $total_tbs = ($total_harga_tbs - $diskon_rupiah) + $biaya_admin;
           //MULAI INSERT DARI TBS FEE KE LAPORAN FEE PRODUK
           $insert_lap_fee_produk = "INSERT INTO laporan_fee_produk (nama_petugas,no_faktur,
           kode_produk,nama_produk, jumlah_fee, tanggal, jam, no_rm, no_reg) SELECT nama_petugas,
-          '$no_faktur', kode_produk, nama_produk, jumlah_fee, tanggal, jam, no_rm, no_reg 
+          '$no_faktur', kode_produk, nama_produk, jumlah_fee,'$tanggal', jam, no_rm, no_reg 
           FROM tbs_fee_produk WHERE no_reg = '$no_reg'";
 
               if ($db->query($insert_lap_fee_produk) === TRUE) {
