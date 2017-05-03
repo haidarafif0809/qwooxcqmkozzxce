@@ -272,8 +272,10 @@ echo '
 
           <div class="col-xs-2">
             <label> No. RM | Pasien </label><br>
-            <input style="height:20px" type="text" class="form-control"  id="no_rm" name="no_rm"  value="<?php echo $no_rm; ?>(<?php echo $nama_pasien; ?>)" readonly="" >
-            <input type="hidden" class="form-control"  id="nama_pasien" name="nama_pasien" value="" readonly="" > 
+            <input style="height:20px" type="text" class="form-control"  id="no_rm_tampil" name="no_rm_tampil"  value="<?php echo $no_rm; ?>(<?php echo $nama_pasien; ?>)" readonly="" >
+            <!--HIDDEN RM DAN NAMA PASIEN-->
+            <input type="hidden" class="form-control"  id="nama_pasien" name="nama_pasien" value="" readonly="" >
+            <input type="hidden" class="form-control" value="<?php echo $no_rm; ?>" id="no_rm" name="no_rm" value="" readonly="" > 
           </div>
 
           <div class="col-xs-2">
@@ -364,8 +366,8 @@ echo '
                                   <th style='background-color: #4CAF50; color: white'> Komisi</th>
                                   <th style='background-color: #4CAF50; color: white'> Dokter</th>
                                   <th style='background-color: #4CAF50; color: white'> Analis</th>
-                                  <th style='background-color: #4CAF50; color: white'> Tanggal</th>
-                                  <th style='background-color: #4CAF50; color: white'> Jam</th>
+                                  <!--<th style='background-color: #4CAF50; color: white'> Tanggal</th>
+                                  <th style='background-color: #4CAF50; color: white'> Jam</th>-->
                                   <th style='background-color: #4CAF50; color: white'> Hapus </th>
                                                       
                                 </thead> <!-- tag penutup tabel -->
@@ -857,7 +859,6 @@ $(document).ready(function(){
       var no_faktur = $("#no_faktur").val();
       var no_reg = $("#no_reg").val();
       var no_rm = $("#no_rm").val();
-      var no_rm = no_rm.substr(0, no_rm.indexOf(' |'));
       var biaya_adm = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#biaya_adm").val()))));
       if(biaya_adm == ''){
         biaya_adm = 0;
@@ -946,7 +947,6 @@ $(document).ready(function(){
       var no_faktur = $("#no_faktur").val();
       var no_reg = $("#no_reg").val();
       var no_rm = $("#no_rm").val();
-      var no_rm = no_rm.substr(0, no_rm.indexOf(' |'));
       var biaya_adm = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#biaya_adm").val()))));
       if(biaya_adm == ''){
         biaya_adm = 0;
@@ -1031,7 +1031,6 @@ $(document).ready(function(){
       var no_faktur = $("#no_faktur").val();
       var no_reg = $("#no_reg").val();
       var no_rm = $("#no_rm").val();
-      var no_rm = no_rm.substr(0, no_rm.indexOf(' |'));
       var biaya_adm = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#biaya_adm").val()))));
       if(biaya_adm == ''){
         biaya_adm = 0;
@@ -1429,9 +1428,8 @@ $(document).ready(function(){
             var total_akhir = parseInt(subtotal,10) - parseInt(potongan,10);
             alert ("Biaya Amin %, Tidak Boleh Lebih Dari 100%");
 
-            var adm_persen = parseInt(biaya_admin_sebenarnya,10) / parseInt(subtotal,10) * 100;
-            $("#biaya_admin_persen").val(adm_persen);
-            $("#biaya_admin_select").val('0');            
+            var adm_persen = parseInt(biaya_admin_sebenarnya,10) / parseInt(Math.round(subtotal,10)) * 100;
+            $("#biaya_admin_persen").val(Math.round(adm_persen));          
             $("#biaya_admin_select").trigger('chosen:updated');
             $("#biaya_adm").val(tandaPemisahTitik(biaya_admin_sebenarnya));
 
@@ -1440,11 +1438,10 @@ $(document).ready(function(){
             $("#total").val(tandaPemisahTitik(akhir_hitungan));
 
                 
-          }
+        }
           
-        else
-          {
-          }
+        else{
+        }
 
     });
 
@@ -1497,10 +1494,10 @@ $(document).ready(function(){
             
             var perhitungan_satu = parseInt(subtotal,10) - parseInt(potongan,10);
             var hasil_perhitungan_total = parseInt(perhitungan_satu,10) + parseInt(Math.round(biaya_admin_sebenarnya,10));
-            var hasil_persen = parseInt(biaya_admin_sebenarnya,10) / parseInt(subtotal,10) * 100;
+            var hasil_persen = parseInt(Math.round(biaya_admin_sebenarnya,10)) / parseInt(subtotal,10) * 100;
 
             alert ("Biaya Amin %, Tidak Boleh Lebih Dari 100%1");
-            $("#biaya_admin_persen").val(hasil_persen);           
+            $("#biaya_admin_persen").val(Math.round(hasil_persen));           
             $("#biaya_admin_select").trigger('chosen:updated');
             $("#biaya_adm").val(tandaPemisahTitik(biaya_admin_sebenarnya));
             $("#total").val(tandaPemisahTitik(hasil_perhitungan_total));
@@ -1549,7 +1546,7 @@ $(document).ready(function(){
         var akhir_total = parseInt(hitung_total, 10) - parseInt(diskon_sebenarnya,10) 
 
         alert ("Potongan Tidak Boleh Lebih Dari 100%");
-        $("#diskon_persen").val(hitungan_persen_disk);
+        $("#diskon_persen").val(Math.round(hitungan_persen_disk));
         $("#diskon_rupiah").val(diskon_sebenarnya);
         $("#total").val(tandaPemisahTitik(Math.round(akhir_total)));
 
@@ -1635,7 +1632,7 @@ $(document).ready(function(){
         } 
         alert ("Potongan Tidak Boleh Lebih Dari 100%");
             var disk_persen = ((diskon_sebenarnya / subtotal) * 100);
-            $("#diskon_persen").val(disk_persen);
+            $("#diskon_persen").val(Math.round(disk_persen));
             $("#diskon_rupiah").val(tandaPemisahTitik(diskon_sebenarnya));
             //Perhitungan kembali untuk ambil total sebenarnya
             var sisa_disk = parseInt(subtotal,10) - Math.round(diskon_sebenarnya);
@@ -1997,7 +1994,6 @@ $(document).on('click','.pilih-header',function(e){
 
 // ambil dari form yang tampil
     var no_rm = $("#no_rm").val();
-    var no_rm = no_rm.substr(0, no_rm.indexOf(' |'));
     var no_reg = $("#no_reg").val();
     var analis = $("#analis").val();
     var dokter = $("#dokter").val();
@@ -2047,7 +2043,6 @@ $(document).on('click','.pilih-detail-dari-header',function(e){
 
 // ambil dari form yang tampil
     var no_rm = $("#no_rm").val();
-    var no_rm = no_rm.substr(0, no_rm.indexOf(' |'));
     var no_reg = $("#no_reg").val();
     var analis = $("#analis").val();
     var dokter = $("#dokter").val();
@@ -2094,7 +2089,6 @@ $(document).on('click','.set-sendirian',function(e){
 
 // ambil dari form yang tampil
     var no_rm = $("#no_rm").val();
-    var no_rm = no_rm.substr(0, no_rm.indexOf(' |'));
     var no_reg = $("#no_reg").val();
     var analis = $("#analis").val();
     var dokter = $("#dokter").val();

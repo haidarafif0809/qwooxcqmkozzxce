@@ -22,10 +22,10 @@ $columns = array(
     3=>'komisi',
     4=>'dokter',
     5=>'analis',
-    6=>'tanggal',
-    7=>'jam',
-    8=>'hapus',
-    9=>'id'
+    //6=>'tanggal',
+    //7=>'jam',
+    6=>'hapus',
+    7=>'id'
 
 
 );
@@ -84,8 +84,8 @@ while( $row = mysqli_fetch_array($query) ) {  // preparing an array
       $nestedData[] = $nama_fee; //Tampilan TBS FEE
       $nestedData[] = $row["nama_dokter"];
       $nestedData[] = $row["nama_analis"];
-      $nestedData[] = $row["tanggal"];
-      $nestedData[] = $row["jam"];
+      //$nestedData[] = $row["tanggal"];
+      //$nestedData[] = $row["jam"];
 
       $nestedData[] = "<button class='btn btn-danger btn-sm btn-hapus-tbs' id='hapus-tbs-". $row['id'] ."' data-id='". $row['id'] ."' data-kode='". $row['kode_jasa'] ."' data-barang='". $row['nama_jasa'] ."'>Hapus</button>";
 

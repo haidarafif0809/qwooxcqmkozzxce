@@ -202,7 +202,6 @@ try {
       while($out_mother = mysqli_fetch_array($cek_ibu_header)){
       $id_mother = $out_mother['id'];
 
-    //DI EDIT YANG WHILE INI QUERY SALAH !!!!!!
       $select_detail_anaknya = $db->query("SELECT * FROM setup_hasil WHERE sub_hasil_lab = '$id_mother'");
       while($drop = mysqli_fetch_array($select_detail_anaknya)){
       $ambil_nama_jasa = $db->query("SELECT nama FROM jasa_lab WHERE id = '$drop[nama_pemeriksaan]'");

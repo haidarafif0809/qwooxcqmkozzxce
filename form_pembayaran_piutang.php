@@ -121,7 +121,7 @@ $no_faktur_penjualan = $data50['no_faktur_penjualan'];
 
 <form action="proses_tbs_pembayaran_piutang.php" role="form" method="post" id="formtambahproduk">
 
-<button type="button" class="btn btn-info" id="cari_produk_penjualan" data-placement="top" data-toggle="modal" data-target="#myModal" title="Pastikan anda mengisi NO RM terlebih dahulu sebelum klik tombol cari."> <i class='fa fa-search'> </i> Cari</button>
+<button type="button" class="btn btn-info" id="cari_produk_penjualan" data-placement="top" data-toggle="modal" title="Pastikan anda mengisi NO RM terlebih dahulu sebelum klik tombol cari."> <i class='fa fa-search'> </i> Cari</button>
 <br>
 
 <!-- Tampilan Modal -->
@@ -159,42 +159,44 @@ $no_faktur_penjualan = $data50['no_faktur_penjualan'];
 
   
 <div class="col-sm-8">
-  <div class="form-group col-sm-2">
-                <label>No RM</label>
-                <br>
-                <select type="text" name="kode_pelanggan" id="kd_pelanggan" class="form-control chosen" required="">
-                <option value="">-Silahkan Pilih-</option>
-                <?php 
-                include 'db.php';
-                
-                // menampilkan data yang ada pada tabel suplier
-                $query = $db->query("SELECT kode_pelanggan,nama FROM penjualan WHERE status = 'Piutang' GROUP BY kode_pelanggan");
-                
-                // menyimpan data sementara yang ada pada $query
-                while($data = mysqli_fetch_array($query))
-                {
-                
-                echo "<option value='".$data['kode_pelanggan'] ."'> ".$data['kode_pelanggan'] ." - ".$data['nama'] ." </option>";
-                }
-                
-                
-                ?>
-                </select>
+  <div class="form-group col-sm-3">
+    <label>Penjamin</label><br>
+      <select type="text" name="penjamin" id="penjamin" class="form-control chosen" required="">
+        <option value="">--SILAKAN PILIH--</option>
+          <?php 
+            $query_penjamin = $db->query("SELECT nama FROM penjamin ");
+              while($data_penjamin = mysqli_fetch_array($query_penjamin)){                
+                  echo "<option value='".$data_penjamin['nama'] ."'> ".$data_penjamin['nama'] ."</option>";
+              }
+          ?>
+      </select>
   </div>
 
-<div class="form-group col-sm-2">
-  <input type="text" class="form-control" name="no_faktur_penjualan" id="nomorfakturbeli" placeholder="No Faktur Jual" readonly="">
+  <div class="form-group col-sm-3">
+    <label>No RM</label><br>
+      <span id="span-option" style="display: none">
+
+      </span>
+
+      <span class="span-hapus-option">
+
+      <select type="text" name="kode_pelanggan" id="kd_pelanggan" class="form-control chosen" required="">
+        <option value="">--SILAKAN PILIH--</option>                
+      </select>  
+
+      </span>
   </div>
-  
+
   <div class="form-group col-sm-2">
+    <input type="text" class="form-control" name="no_faktur_penjualan" id="nomorfakturbeli" placeholder="No Faktur" readonly="">
+  </div>
+    
+  <div class="form-group col-sm-1">
     <input type="text" class="form-control" name="kredit" id="kredit" placeholder="Kredit" readonly="">
   </div>
 
-
-
-
-  <div class="form-group col-sm-2">
-          <input type="text" name="potongan" id="potongan_penjualan" class="form-control" placeholder="Potongan" autocomplete="off">
+  <div class="form-group col-sm-1">
+    <input type="text" name="potongan" id="potongan_penjualan" class="form-control" placeholder="Disc." autocomplete="off">
   </div>
 
   <div class="form-group col-sm-2">
@@ -202,17 +204,18 @@ $no_faktur_penjualan = $data50['no_faktur_penjualan'];
   </div>
 
   <div class="form-group col-sm-2"><br>
-      <button type="submit" id="submit_tambah" class="btn btn-success"> <i class='fa fa-plus'> </i> Tambah </button>
+    <button type="submit" id="submit_tambah" class="btn btn-success"> <i class='fa fa-plus'> </i> Tambah </button>
   </div>
 
-<div class="form-group">
-  <input type="hidden" name="total" id="total" class="form-control" value="" required="">
-</div>
+  <div class="form-group">
+    <input type="hidden" name="total" id="total" class="form-control" value="" required="">
+  </div>
 
-<div class="form-group">
-  <input type="hidden" name="tanggal_jt" id="tanggal_jt" class="form-control" value="" required="">
-</div>
-<input type="hidden" name="status" id="status" class="form-control" value="">
+  <div class="form-group">
+    <input type="hidden" name="tanggal_jt" id="tanggal_jt" class="form-control" value="" required="">
+  </div>
+
+  <input type="hidden" name="status" id="status" class="form-control" value="">
 
 
 </form>
@@ -492,27 +495,21 @@ $no_faktur_penjualan = $data50['no_faktur_penjualan'];
   
   $("#cari_produk_penjualan").click(function() {
 
-      var kode_pelanggan = $("#kd_pelanggan").val();
-      if (kode_pelanggan == "")
-      {
-        alert("Pilih dahulu kode pelanggan");
-
+    var kode_pelanggan = $("#kd_pelanggan").val();
+      if (kode_pelanggan == ""){
+        alert("Silakan Pilih Penjamin dan No. RM Dahulu");
+        $("#myModal").modal('hide');
+        $("#penjamin").trigger('chosen:open');
       }
-    else
-    {
-      
-      $.post("modal_piutang_baru.php", {kode_pelanggan:kode_pelanggan}, function(info) {
-
-      $(".modal_piutang_baru").html(info);
-      
-      
-      });
-
+      else{      
+        $.post("modal_piutang_baru.php", {kode_pelanggan:kode_pelanggan}, function(info) {
+          $(".modal_piutang_baru").html(info);
+          $("#myModal").modal('show');
+        });
       }
-      });
-      
-      
-      </script>
+  });
+
+</script>
 
 
 
@@ -640,6 +637,27 @@ $.post("cek_total_pembayaran_piutang.php",
 
 </script>
 
+<script>
+
+$(document).ready(function(){
+    $("#penjamin").change(function(){
+      var penjamin = $("#penjamin").val();
+
+      $.post('daftar_pelanggan_piutang.php', {penjamin:penjamin}, function(data) {
+        $(".span-hapus-option").remove();
+
+        $("#span-option").prepend(data);
+        $("#span-option").show();
+        $("#kode_barang").trigger('chosen:updated');
+        $("#kode_barang").trigger('chosen:open');
+        $(".chosen").chosen({no_results_text: "Maaf, Data Tidak Ada!",search_contains:true}); 
+
+      });
+        
+    });
+});
+</script>
+
 
 
 <!--membuat menampilkan no faktur dan suplier pada tax-->
@@ -687,10 +705,7 @@ $(document).ready(function(){
 
 
 <script type="text/javascript">
-  
-$(".chosen").chosen({no_results_text: "Maaf, Data Tidak Ada!"});
-
-
+  $(".chosen").chosen({no_results_text: "Maaf, Data Tidak Ada!",search_contains:true}); 
 </script>
 
 

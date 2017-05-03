@@ -233,44 +233,47 @@ else
 
 <script type="text/javascript">
 // untuk update hasil pemeriksaaan
-$(document).on('dblclick','.edit-nama',function(e){
-  
-var id = $(this).attr("data-id");
-$("#text-nama-"+id+"").hide();
- $("#input-nama-"+id+"").attr("type", "text");
+$(document).on('dblclick','.edit-nama',function(e){  
+  var id = $(this).attr("data-id");
+  var nama_lama = $(this).attr("data-nama");
 
- });
-
-$(document).on('blur','.input_nama',function(e){
-var nama_lama = $(this).attr("data-nama");
-var id = $(this).attr("data-id");
-var input_nama = $(this).val();
-
-if (input_nama == '') {
-      alert('Hasil Tidak Boleh Kosong !!');
-
-    $("#input-nama-"+id+"").val(nama_lama);
-    $("#text-nama-"+id+"").text(nama_lama);
-    $("#text-nama-"+id+"").show();
-    $("#input-nama-"+id+"").attr("type", "hidden");
-
+    if (nama_lama == 'Edit Penjualan APS'){
+      $("#input-nama-"+id+"").val("");
+      $("#text-nama-"+id+"").text("");
     }
-    else
-    {
 
-// Start Proses
-$.post("update_hasil_lab_laporan.php",{id:id, input_nama:input_nama},function(data){
-
-$("#text-nama-"+id+"").show();
-$("#text-nama-"+id+"").text(input_nama);
-$("#input-nama-"+id+"").attr("type", "hidden");           
-$("#input-nama-"+id+"").val(input_nama);
-$("#input-nama-"+id+"").attr("data-nama",input_nama);
-
+  $("#text-nama-"+id+"").hide();
+  $("#input-nama-"+id+"").attr("type", "text");
 
 });
-// Finish Proses
-        }
+
+$(document).on('blur','.input_nama',function(e){
+  var nama_lama = $(this).attr("data-nama");
+  var id = $(this).attr("data-id");
+  var input_nama = $(this).val();
+
+    if (input_nama == ''){
+      alert('Hasil Tidak Boleh Kosong !!');
+
+      $("#input-nama-"+id+"").val(nama_lama);
+      $("#text-nama-"+id+"").text(nama_lama);
+      $("#text-nama-"+id+"").show();
+      $("#input-nama-"+id+"").attr("type", "hidden");
+
+    }
+    else{
+      // Start Proses
+      $.post("update_hasil_lab_laporan.php",{id:id, input_nama:input_nama},function(data){
+
+        $("#text-nama-"+id+"").show();
+        $("#text-nama-"+id+"").text(input_nama);
+        $("#input-nama-"+id+"").attr("type", "hidden");           
+        $("#input-nama-"+id+"").val(input_nama);
+        $("#input-nama-"+id+"").attr("data-nama",input_nama);
+
+      });
+      // Finish Proses
+    }
 });
 // ending untuk update hasil pemeriksaaan
 </script>

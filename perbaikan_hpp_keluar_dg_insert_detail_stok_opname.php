@@ -4,7 +4,7 @@ include 'sanitasi.php';
 $dari_tanggal = stringdoang($_GET['dari_tanggal']);
 $sampai_tanggal = stringdoang($_GET['sampai_tanggal']);
 
-$query_detail_stok_opname = $db->query("SELECT id,no_faktur,tanggal,jam,kode_barang,nama_barang,awal,masuk,keluar,stok_sekarang,fisik,selisih_fisik,selisih_harga,harga,hpp FROM detail_stok_opname WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal'");
+$query_detail_stok_opname = $db->query("SELECT id,no_faktur,tanggal,jam,kode_barang,nama_barang,awal,masuk,keluar,stok_sekarang,fisik,selisih_fisik,selisih_harga,harga,hpp FROM detail_stok_opname WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' and selisih_fisik < '0' ");
 while($data_detail_stok_opname = mysqli_fetch_array($query_detail_stok_opname)){
 	
 
