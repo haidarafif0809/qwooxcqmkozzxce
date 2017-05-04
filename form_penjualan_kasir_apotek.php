@@ -1578,7 +1578,19 @@ $("#penjualan").click(function(){
   var penjamin = $("#penjamin").val();
   var sisa_pembayaran = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#sisa_pembayaran_penjualan").val()))));
   var kredit = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#kredit").val())))); 
+
   var kode_pelanggan = $("#kd_pelanggan").val();
+  var no_rm = kode_pelanggan.substr(0,kode_pelanggan.indexOf('('));
+
+  if (no_rm == ''){
+
+    var kode_pelanggan = kode_pelanggan;
+
+  }
+  else{
+      var kode_pelanggan = no_rm;
+  }
+  
 
         var tanggal_jt = $("#tanggal_jt").val();
         var total = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#total1").val())))); 
@@ -1609,22 +1621,6 @@ $("#penjualan").click(function(){
 
   if (sisa_pembayaran < 0){
   alert("Jumlah Pembayaran Tidak Mencukupi");
-  }
-
-  else if (kode_pelanggan == ''){
-
-    if (kode_pelanggan != 'Umum'){
-
-    var kode_pelanggan = kode_pelanggan.substr(0,kode_pelanggan.indexOf('('));
-
-    }
-    else{
-      var kode_pelanggan = $("#kd_pelanggan").val();
-    }
-
-    //alert("Kode Pelanggan Harus Dipilih");
-    //$("#kd_pelanggan").val(kode_pelanggan);
-
   }
 
   else if (kode_gudang == ""){
@@ -1875,21 +1871,18 @@ else if(total == 0 && potongan_persen == '100'){
         var resep_dokter = $("#resep_dokter").val();
         var penjamin = $("#penjamin").val();
         var sisa_pembayaran = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#sisa_pembayaran_penjualan").val()))));
-        var kredit = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#kredit").val() )))); 
-        var kode_pelanggan = $("#kd_pelanggan").val();
+        var kredit = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#kredit").val() ))));
 
+  var kode_pelanggan = $("#kd_pelanggan").val();
+  var no_rm = kode_pelanggan.substr(0,kode_pelanggan.indexOf('('));
 
-if (kode_pelanggan == ''){
+  if (no_rm == ''){
 
-    if (kode_pelanggan != 'Umum'){
+    var kode_pelanggan = kode_pelanggan;
 
-    var kode_pelanggan = kode_pelanggan.substr(0,kode_pelanggan.indexOf('('));
-    
-    }
-    else{
-      var kode_pelanggan = $("#kd_pelanggan").val();
-      
-    }
+  }
+  else{
+      var kode_pelanggan = no_rm;
   }
         var tanggal_jt = $("#tanggal_jt").val();
         var total = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#total1").val())))); 
