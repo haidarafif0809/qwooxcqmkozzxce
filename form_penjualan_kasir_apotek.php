@@ -1203,14 +1203,13 @@ $(document).ready(function(){
 
     var no_rm = $("#kd_pelanggan").val();
     if (no_rm != 'Umum') {
-      var no_rm = no_rm.substr(0,no_rm.indexOf('||'));
+      var no_rm = no_rm.substr(0, no_rm.indexOf('('));
     }
-    else{
-      var no_rm = $("#kd_pelanggan").val();
-      var no_rm = no_rm.substr(0,no_rm.indexOf('||'));
+    else
+    {
+        var no_rm = $("#kd_pelanggan").val();
     }
     
-
     var kode_barang = $("#kode_barang").val();
     var nama_barang = $("#nama_barang").val();
 
@@ -1580,7 +1579,6 @@ $("#penjualan").click(function(){
   var sisa_pembayaran = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#sisa_pembayaran_penjualan").val()))));
   var kredit = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#kredit").val())))); 
   var kode_pelanggan = $("#kd_pelanggan").val();
-    var kode_pelanggan = kode_pelanggan.substr(0,kode_pelanggan.indexOf('||'));
 
         var tanggal_jt = $("#tanggal_jt").val();
         var total = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#total1").val())))); 
@@ -1617,13 +1615,11 @@ $("#penjualan").click(function(){
 
     if (kode_pelanggan != 'Umum'){
 
-    var kode_pelanggan = kode_pelanggan.substr(0,kode_pelanggan.indexOf('||'));
-    
+    var kode_pelanggan = kode_pelanggan.substr(0,kode_pelanggan.indexOf('('));
+
     }
     else{
       var kode_pelanggan = $("#kd_pelanggan").val();
-
-      var kode_pelanggan = kode_pelanggan.substr(0,kode_pelanggan.indexOf('||'));
     }
 
     //alert("Kode Pelanggan Harus Dipilih");
@@ -1693,7 +1689,7 @@ else if(total == 0 && potongan_persen == '100'){
                                               info = info.replace(/\s/g, '');
                                                  var no_faktur = info;
                                                  var kode_pelanggan = $('#kd_pelanggan').val();
-      var kode_pelanggan = kode_pelanggan.substr(0,kode_pelanggan.indexOf('||'));
+                                                 var kode_pelanggan = kode_pelanggan.substr(0, kode_pelanggan.indexOf('('));
                                                  $("#cetak_tunai").attr('href', 'cetak_penjualan_tunai.php?no_faktur='+no_faktur+'');
                                                  $("#cetak_tunai_besar").attr('href', 'cetak_besar_apotek.php?no_faktur='+no_faktur+'');
                                                  
@@ -1789,7 +1785,7 @@ else if(total == 0 && potongan_persen == '100'){
                                              
                                              var no_faktur = info;
                                              var kode_pelanggan = $('#kd_pelanggan').val();
-      var kode_pelanggan = kode_pelanggan.substr(0,kode_pelanggan.indexOf('||'));
+                                             var kode_pelanggan = kode_pelanggan.substr(0, kode_pelanggan.indexOf('('));
                                              $("#cetak_tunai").attr('href', 'cetak_penjualan_tunai.php?no_faktur='+no_faktur+'');
                                              $("#cetak_tunai_besar").attr('href', 'cetak_besar_apotek.php?no_faktur='+no_faktur+'');
                                              $("#alert_berhasil").show();
@@ -1882,17 +1878,19 @@ else if(total == 0 && potongan_persen == '100'){
         var kredit = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#kredit").val() )))); 
         var kode_pelanggan = $("#kd_pelanggan").val();
 
-    var kode_pelanggan = kode_pelanggan.substr(0,kode_pelanggan.indexOf('||'));
-    
+
 if (kode_pelanggan == ''){
-    if (kode_pelanggan != 'Umum') {
-      var kode_pelanggan = kode_pelanggan.substr(0,kode_pelanggan.indexOf('||'));
+
+    if (kode_pelanggan != 'Umum'){
+
+    var kode_pelanggan = kode_pelanggan.substr(0,kode_pelanggan.indexOf('('));
+    
     }
     else{
-        var kode_pelanggan = $("#kd_pelanggan").val();
-      var kode_pelanggan = kode_pelanggan.substr(0,kode_pelanggan.indexOf('||'));
+      var kode_pelanggan = $("#kd_pelanggan").val();
+      
     }
-}
+  }
         var tanggal_jt = $("#tanggal_jt").val();
         var total = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#total1").val())))); 
         var total2 = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#total2").val())))); 
