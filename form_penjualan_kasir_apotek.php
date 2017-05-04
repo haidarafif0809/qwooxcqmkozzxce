@@ -1569,25 +1569,28 @@ else{
 
 
 <script>
-   //perintah javascript yang diambil dari form proses_bayar_beli.php dengan id=form_beli
-  $("#penjualan").click(function(){
+//perintah javascript yang diambil dari form proses_bayar_beli.php dengan id=form_beli
+$("#penjualan").click(function(){
+  var apoteker = $("#apoteker").val();
+  var analis = $("#analis").val();
+  var no_resep_dokter = $("#no_resep_dokter").val();
+  var resep_dokter = $("#resep_dokter").val();
+  var penjamin = $("#penjamin").val();
+  var sisa_pembayaran = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#sisa_pembayaran_penjualan").val()))));
+  var kredit = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#kredit").val())))); 
 
-        var apoteker = $("#apoteker").val()
-        var analis = $("#analis").val()
-        var no_resep_dokter = $("#no_resep_dokter").val()
-        var resep_dokter = $("#resep_dokter").val()
-        var penjamin = $("#penjamin").val()
-        var sisa_pembayaran = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#sisa_pembayaran_penjualan").val()))));
-        var kredit = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#kredit").val())))); 
-        var kode_pelanggan = $("#kd_pelanggan").val();
+  var kode_pelanggan = $("#kd_pelanggan").val();
+  var no_rm = kode_pelanggan.substr(0,kode_pelanggan.indexOf('('));
 
-    if (kode_pelanggan != 'Umum') {
-      var kode_pelanggan = kode_pelanggan.substr(0, kode_pelanggan.indexOf('('));
-    }
-    else
-    {
-        var kode_pelanggan = $("#kd_pelanggan").val();
-    }
+  if (no_rm == ''){
+
+    var kode_pelanggan = kode_pelanggan;
+
+  }
+  else{
+      var kode_pelanggan = no_rm;
+  }
+  
 
         var tanggal_jt = $("#tanggal_jt").val();
         var total = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#total1").val())))); 
@@ -1600,7 +1603,7 @@ else{
 
         if (pembayaran == '') {
           pembayaran = 0;
-            }
+        }
 
         var total_hpp = $("#total_hpp").val();
         var harga = $("#harga_produk").val();
@@ -1611,41 +1614,27 @@ else{
         var ppn = $("#ppn").val();
         var biaya_admin = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#biaya_admin").val()))));
 
-
-        
         var sisa = pembayaran - total;
         
         var sisa_kredit = total - pembayaran;
 
- if (sisa_pembayaran < 0)
- {
 
+  if (sisa_pembayaran < 0){
   alert("Jumlah Pembayaran Tidak Mencukupi");
+  }
 
- }
-  else if (kode_pelanggan == ''){
-  alert("Kode Pelanggan Harus Dipilih");
-         $("#kd_pelanggan").val(kode_pelanggan);
+  else if (kode_gudang == ""){
+
+  alert(" Kode Gudang Harus Diisi ");
 
   }
 
-   else if (kode_gudang == "")
- {
-
-alert(" Kode Gudang Harus Diisi ");
-
+ else if (sisa < 0) {
+  alert("Silakan Bayar Piutang");
+  $("#tanggal_jt").focus();
  }
 
- else if (sisa < 0) 
- {
-
-alert("Silakan Bayar Piutang");
-$("#tanggal_jt").focus();
-
- }
-
-   else if (pembayaran == "") 
- {
+  else if (pembayaran == ""){
 
   alert("Pembayaran Harus Di Isi");
   $("#pembayaran_penjualan").focus()
@@ -1704,10 +1693,11 @@ else if(total == 0 && potongan_persen == '100'){
 
                                                 }
 
-                  var dataTable = $('#tabel_tbs_penjualan_apotek').DataTable();
-                  dataTable.draw();
+                 // var dataTable = $('#tabel_tbs_penjualan_apotek').DataTable();
+                  //dataTable.draw();
     
-       
+                    $("#span_tbs").hide();
+
                         }); // end post proses_bayar_jual_apotek
                     } 
                     else {
@@ -1842,8 +1832,9 @@ else if(total == 0 && potongan_persen == '100'){
               });
 
 
-      $('#tabel_tbs_penjualan_apotek').DataTable().clear();
-                
+      //$('#tabel_tbs_penjualan_apotek').DataTable().clear();
+          
+                    $("#span_tbs").hide();      
     
  }
 
@@ -1880,17 +1871,19 @@ else if(total == 0 && potongan_persen == '100'){
         var resep_dokter = $("#resep_dokter").val();
         var penjamin = $("#penjamin").val();
         var sisa_pembayaran = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#sisa_pembayaran_penjualan").val()))));
-        var kredit = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#kredit").val() )))); 
-        var kode_pelanggan = $("#kd_pelanggan").val();
+        var kredit = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#kredit").val() ))));
 
-    if (kode_pelanggan != 'Umum') {
-      var kode_pelanggan = kode_pelanggan.substr(0, kode_pelanggan.indexOf('('));
-    }
-    else
-    {
-        var kode_pelanggan = $("#kd_pelanggan").val();
-    }
+  var kode_pelanggan = $("#kd_pelanggan").val();
+  var no_rm = kode_pelanggan.substr(0,kode_pelanggan.indexOf('('));
 
+  if (no_rm == ''){
+
+    var kode_pelanggan = kode_pelanggan;
+
+  }
+  else{
+      var kode_pelanggan = no_rm;
+  }
         var tanggal_jt = $("#tanggal_jt").val();
         var total = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#total1").val())))); 
         var total2 = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#total2").val())))); 
@@ -1993,8 +1986,9 @@ else if(total == 0 && potongan_persen == '100'){
     });
 
          
-      $('#tabel_tbs_penjualan_apotek').DataTable().clear();
+      //$('#tabel_tbs_penjualan_apotek').DataTable().clear();
     
+                    $("#span_tbs").hide();
 
   }
   else{
