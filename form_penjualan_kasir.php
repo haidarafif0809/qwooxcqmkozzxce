@@ -307,13 +307,10 @@ $obat = $otoritas_produk['tipe_obat'];
 <select style="font-size:15px; height:35px" name="petugas_lain" id="petugas_lain" class="form-control chosen" >
 <option value="">Cari Petugas</option>
   <?php 
-    
     //untuk menampilkan semua data pada tabel pelanggan dalam DB
     $query01 = $db->query("SELECT nama,id FROM user WHERE tipe != '5'");
-
     //untuk menyimpan data sementara yang ada pada $query
-    while($data01 = mysqli_fetch_array($query01))
-    {
+    while($data01 = mysqli_fetch_array($query01)){
 
     echo "<option value='".$data01['id'] ."'>".$data01['nama'] ."</option>"; 
 

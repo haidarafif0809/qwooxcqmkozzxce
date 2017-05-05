@@ -100,7 +100,7 @@ $sql0->execute();
 
 
 // UPDATE PASIEN NYA
-$update_pasien = "UPDATE pelanggan SET umur = '$umur',no_telp = '$no_telepon', alamat_sekarang = '$alamat_sekarang', penjamin = '$penjamin' , nama_pelanggan = '$nama_lengkap' , tempat_lahir = '$tempat_lahir' WHERE kode_pelanggan = '$no_rm'";
+$update_pasien = "UPDATE pelanggan SET umur = '$umur',no_telp = '$no_telepon', alamat_sekarang = '$alamat_sekarang', penjamin = '$penjamin' , nama_pelanggan = '$nama_lengkap' , tempat_lahir = '$tempat_lahir', alamat_ktp = '$alamat_ktp', no_ktp = '$no_ktp', status_kawin = '$status_kawin', agama = '$agama' WHERE kode_pelanggan = '$no_rm'";
 if ($db_pasien->query($update_pasien) === TRUE) 
   {
 } 

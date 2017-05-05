@@ -348,11 +348,10 @@ padding-right: 5%;
   <?php 
     
     //untuk menampilkan semua data pada tabel pelanggan dalam DB
-    $query_user = $db->query("SELECT nama,id FROM user WHERE otoritas = 'Petugas Lain'");
+    $query_user = $db->query("SELECT nama,id FROM user WHERE tipe != '5'");
 
     //untuk menyimpan data sementara yang ada pada $query
-    while($data_user = mysqli_fetch_array($query_user))
-    {
+    while($data_user = mysqli_fetch_array($query_user)){
 
     echo "<option value='".$data_user['id'] ."'>".$data_user['nama'] ."</option>"; 
 
