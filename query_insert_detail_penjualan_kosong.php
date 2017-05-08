@@ -4,7 +4,8 @@ include_once 'sanitasi.php';
 include 'persediaan.function.php';
 $no = 1;
 //Jika ingin menjalankan ini , di cek dahulu tanggalnya
-$query_penjualan = $db->query("SELECT no_faktur,no_reg FROM penjualan WHERE tanggal = '2017-04-01' AND no_reg != '' ");
+$query_penjualan = $db->query("SELECT no_faktur,no_reg FROM penjualan WHERE tanggal = '2017-04-01' AND jam >= '00:01' AND jam <= '15:00' AND no_reg != '' ");
+//jam di atas di ubah setengah hari agar tida TIME OUT !
 while($data_penjualan = mysqli_fetch_array($query_penjualan)){
 	$no_faktur = $data_penjualan['no_faktur'];
 	$no_reg = $data_penjualan['no_reg'];
