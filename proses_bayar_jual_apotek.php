@@ -452,10 +452,11 @@ else
 
 
 // coding untuk memasukan history_tbs dan menghapus tbs
-    $tbs_penjualan_masuk = $db->query("INSERT INTO history_tbs_penjualan (no_reg,kode_barang,nama_barang,jumlah_barang,harga,subtotal,tipe_barang,tanggal,jam,potongan,tax,session_id,satuan,dosis) SELECT no_reg,kode_barang,nama_barang,jumlah_barang,harga,subtotal,tipe_barang,tanggal,jam,potongan,tax,session_id,satuan,dosis FROM tbs_penjualan  WHERE session_id = '$session_id' AND (no_reg = '' OR no_reg IS NULL) ");
+    $tbs_penjualan_masuk = $db->query("INSERT INTO history_tbs_penjualan (no_reg,no_faktur,kode_barang,nama_barang,jumlah_barang,harga,subtotal,tipe_barang,tanggal,jam,potongan,tax,session_id,satuan,dosis) SELECT no_reg,'$no_faktur',kode_barang,nama_barang,jumlah_barang,harga,subtotal,tipe_barang,tanggal,jam,potongan,tax,session_id,satuan,dosis FROM tbs_penjualan  WHERE session_id = '$session_id' AND (no_reg = '' OR no_reg IS NULL) ");
 
     $tbs_fee_masuk = $db->query(" INSERT INTO history_tbs_fee_produk 
-      (no_reg,no_rm,nama_petugas,kode_produk,nama_produk,jumlah_fee,tanggal,jam,waktu,session_id) SELECT no_reg,no_rm,nama_petugas,kode_produk,nama_produk,jumlah_fee,tanggal,jam,waktu,session_id FROM tbs_fee_produk WHERE session_id = '$session_id' AND (no_reg = '' OR no_reg IS NULL) ");
+      (no_reg,no_faktur,no_rm,nama_petugas,kode_produk,nama_produk,jumlah_fee,tanggal,jam,waktu,session_id) SELECT no_reg,'$no_faktur'no_rm,nama_petugas,kode_produk,nama_produk,
+      jumlah_fee,tanggal,jam,waktu,session_id FROM tbs_fee_produk WHERE session_id = '$session_id' AND (no_reg = '' OR no_reg IS NULL) ");
 
 
 

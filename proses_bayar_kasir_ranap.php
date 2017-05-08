@@ -773,10 +773,11 @@ $query = $db->query("UPDATE bed SET sisa_bed = sisa_bed + 1 WHERE nama_kamar = '
 
 // coding untuk memasukan history_tbs dan menghapus tbs
 
-    $tbs_penjualan_masuk = $db->query("INSERT INTO history_tbs_penjualan (no_reg,kode_barang,nama_barang,jumlah_barang,harga,subtotal,tipe_barang,tanggal,jam,potongan,tax,session_id,satuan,dosis,ruangan) SELECT no_reg,kode_barang,nama_barang,jumlah_barang,harga,subtotal,tipe_barang,tanggal,jam,potongan,tax,session_id,satuan,dosis,ruangan FROM tbs_penjualan  WHERE no_reg = '$no_reg' ");
+    $tbs_penjualan_masuk = $db->query("INSERT INTO history_tbs_penjualan (no_reg,no_faktur,kode_barang,nama_barang,jumlah_barang,harga,subtotal,tipe_barang,tanggal,jam,potongan,tax,session_id,satuan,dosis,ruangan) SELECT no_reg,'$no_faktur',kode_barang,nama_barang,jumlah_barang,harga,subtotal,tipe_barang,tanggal,jam,potongan,tax,session_id,satuan,dosis,ruangan FROM tbs_penjualan  WHERE no_reg = '$no_reg' ");
 
     $tbs_fee_masuk = $db->query(" INSERT INTO history_tbs_fee_produk 
-      (no_reg,no_rm,nama_petugas,kode_produk,nama_produk,jumlah_fee,tanggal,jam,waktu,session_id) SELECT no_reg,no_rm,nama_petugas,kode_produk,nama_produk,jumlah_fee,tanggal,jam,waktu,session_id FROM tbs_fee_produk WHERE no_reg = '$no_reg'");
+      (no_reg,no_faktur,no_rm,nama_petugas,kode_produk,nama_produk,jumlah_fee,tanggal,jam,waktu,session_id) SELECT no_reg,'$no_faktur',no_rm,nama_petugas,kode_produk,
+      nama_produk,jumlah_fee,tanggal,jam,waktu,session_id FROM tbs_fee_produk WHERE no_reg = '$no_reg'");
 
     $tbs_detail_operasi_masuk = $db->query(" INSERT INTO history_tbs_detail_operasi (id_detail_operasi,id_user, id_sub_operasi, id_operasi, petugas_input, no_reg, waktu, id_tbs_operasi) SELECT id_detail_operasi,id_user, id_sub_operasi, id_operasi, petugas_input, no_reg, waktu, id_tbs_operasi FROM tbs_detail_operasi WHERE no_reg = '$no_reg'");
 
