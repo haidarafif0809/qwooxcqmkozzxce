@@ -118,6 +118,7 @@ $jenis_penjualan = stringdoang($_POST['jenis_penjualan']);
 $no_jurnal = no_jurnal();
 
 
+
     $select_kode_pelanggan = $db_pasien->query("SELECT nama_pelanggan FROM pelanggan WHERE kode_pelanggan = '$no_rm'");
     $ambil_kode_pelanggan = mysqli_fetch_array($select_kode_pelanggan);
 
@@ -583,17 +584,31 @@ $biaya_admin = angkadoang($_POST['biaya_adm']);
 }
 
 
-    // cek query
+
+// coding untuk memasukan history_tbs dan menghapus tbs
+    $tbs_penjualan_masuk = "INSERT INTO history_tbs_penjualan (no_reg,no_faktur,kode_barang,nama_barang,jumlah_barang,harga,subtotal,tipe_barang,tanggal,jam,potongan,tax,session_id,satuan,dosis) SELECT no_reg,'$no_faktur',kode_barang,nama_barang,jumlah_barang,harga,subtotal,tipe_barang,tanggal,jam,potongan,tax,session_id,satuan,dosis FROM tbs_penjualan WHERE no_reg = '$no_reg' ";
+        if ($db->query($tbs_penjualan_masuk) === TRUE) {
+              
+        }
+        else{
+            echo "Error: " . $tbs_penjualan_masuk . "<br>" . $db->error;
+        }
+
+    $tbs_fee_masuk = " INSERT INTO history_tbs_fee_produk 
+      (no_reg,no_faktur,no_rm,nama_petugas,kode_produk,nama_produk,jumlah_fee,tanggal,jam,waktu,session_id) SELECT no_reg,'$no_faktur',no_rm,nama_petugas,kode_produk,
+      nama_produk,jumlah_fee,tanggal,jam,waktu,session_id FROM tbs_fee_produk WHERE no_reg = '$no_reg'";
+        if ($db->query($tbs_fee_masuk) === TRUE) {
+              
+        }
+        else{
+            echo "Error: " . $tbs_fee_masuk . "<br>" . $db->error;
+        }
+
 
 
     $update_registrasi = $db->query("UPDATE registrasi SET status = 'Sudah Pulang' WHERE no_reg ='$no_reg'");
 
-// coding untuk memasukan history_tbs dan menghapus tbs
-    $tbs_penjualan_masuk = $db->query("INSERT INTO history_tbs_penjualan (no_reg,no_faktur,kode_barang,nama_barang,jumlah_barang,harga,subtotal,tipe_barang,tanggal,jam,potongan,tax,session_id,satuan,dosis) SELECT no_reg,'$no_faktur',kode_barang,nama_barang,jumlah_barang,harga,subtotal,tipe_barang,tanggal,jam,potongan,tax,session_id,satuan,dosis FROM tbs_penjualan  WHERE no_reg = '$no_reg' ");
 
-    $tbs_fee_masuk = $db->query(" INSERT INTO history_tbs_fee_produk 
-      (no_reg,no_faktur,no_rm,nama_petugas,kode_produk,nama_produk,jumlah_fee,tanggal,jam,waktu,session_id) SELECT no_reg,'$no_faktur',no_rm,nama_petugas,kode_produk,
-      nama_produk,jumlah_fee,tanggal,jam,waktu,session_id FROM tbs_fee_produk WHERE no_reg = '$no_reg'");
 
 
     $tbs_penjualan_hapus = $db->query("DELETE FROM tbs_penjualan WHERE no_reg = '$no_reg' ");
