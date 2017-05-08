@@ -461,7 +461,7 @@ else
         }
 
     $tbs_fee_masuk = " INSERT INTO history_tbs_fee_produk 
-      (no_reg,no_faktur,no_rm,nama_petugas,kode_produk,nama_produk,jumlah_fee,tanggal,jam,waktu,session_id) SELECT no_reg,'$no_faktur'no_rm,nama_petugas,kode_produk,nama_produk,
+      (no_reg,no_faktur,no_rm,nama_petugas,kode_produk,nama_produk,jumlah_fee,tanggal,jam,waktu,session_id) SELECT no_reg,'$no_faktur',no_rm,nama_petugas,kode_produk,nama_produk,
       jumlah_fee,tanggal,jam,waktu,session_id FROM tbs_fee_produk WHERE session_id = '$session_id' AND (no_reg = '' OR no_reg IS NULL) ";
         if ($db->query($tbs_fee_masuk) === TRUE) {
               

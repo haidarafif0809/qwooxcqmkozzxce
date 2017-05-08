@@ -781,7 +781,7 @@ $query = $db->query("UPDATE bed SET sisa_bed = sisa_bed + 1 WHERE nama_kamar = '
             echo "Error: " . $tbs_penjualan_masuk . "<br>" . $db->error;
         }
 
-    $tbs_fee_masuk = " INSERT INTO history_tbs_fee_produk 
+    $tbs_fee_masuk = "INSERT INTO history_tbs_fee_produk 
       (no_reg,no_faktur,no_rm,nama_petugas,kode_produk,nama_produk,jumlah_fee,tanggal,jam,waktu,session_id) SELECT no_reg,'$no_faktur',no_rm,nama_petugas,kode_produk,
       nama_produk,jumlah_fee,tanggal,jam,waktu,session_id FROM tbs_fee_produk WHERE no_reg = '$no_reg'";
         if ($db->query($tbs_fee_masuk) === TRUE) {
