@@ -121,7 +121,7 @@ $no_faktur_penjualan = $data50['no_faktur_penjualan'];
 
 <form action="proses_tbs_pembayaran_piutang.php" role="form" method="post" id="formtambahproduk">
 
-<button type="button" class="btn btn-info" id="cari_produk_penjualan" data-placement="top" data-toggle="modal" title="Pastikan anda mengisi NO RM terlebih dahulu sebelum klik tombol cari."> <i class='fa fa-search'> </i> Cari</button>
+<button type="button" class="btn btn-info" id="cari_produk_penjualan" data-placement="top" data-target="#myModal" data-toggle="modal" title="Cari Penjualan Piutang"> <i class='fa fa-search'> </i> Cari Piutang</button>
 <br>
 
 <!-- Tampilan Modal -->
@@ -132,13 +132,46 @@ $no_faktur_penjualan = $data50['no_faktur_penjualan'];
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Data Penjualan</h4>
+        <h4 class="modal-title">Data Penjualan Piutang</h4>
       </div>
       <div class="modal-body"> <!--membuat kerangka untuk tempat tabel -->
 
+  <div class="form-group col-sm-3">
+    <label>Penjamin</label><br>
+      <select type="text" name="penjamin" id="penjamin" class="form-control chosen" required="">
+        <option value="">Semua Penjamin</option>
+          <?php 
+            $query_penjamin = $db->query("SELECT nama FROM penjamin ");
+              while($data_penjamin = mysqli_fetch_array($query_penjamin)){                
+                  echo "<option value='".$data_penjamin['nama'] ."'> ".$data_penjamin['nama'] ."</option>";
+              }
+          ?>
+      </select>
+  </div>
+
       <!--perintah agar modal update-->
 <span class="modal_piutang_baru">
-
+    <div class="table-responsive">
+      <table id="table_piutang" class="table table-bordered table-sm">
+        <thead> <!-- untuk memberikan nama pada kolom tabel -->
+          
+            <th> Nomor Faktur </th>
+            <th> Kode Pelanggan</th>
+            <th> Nama Pelanggan</th>
+            <th> Total </th>
+            <th> Tanggal </th>
+            <th> Tanggal Jatuh Tempo </th>
+            <th> Jam </th>
+            <th> User </th>
+            <th> Status </th>
+            <th> Potongan </th>
+            <th> Tax </th>
+            <th> Sisa </th>
+            <th> Kredit </th>
+          
+        </thead>
+      </table>
+    </div>
 </span>
           
       </div> <!-- tag penutup modal body -->
@@ -159,33 +192,7 @@ $no_faktur_penjualan = $data50['no_faktur_penjualan'];
 
   
 <div class="col-sm-8">
-  <div class="form-group col-sm-3">
-    <label>Penjamin</label><br>
-      <select type="text" name="penjamin" id="penjamin" class="form-control chosen" required="">
-        <option value="">--SILAKAN PILIH--</option>
-          <?php 
-            $query_penjamin = $db->query("SELECT nama FROM penjamin ");
-              while($data_penjamin = mysqli_fetch_array($query_penjamin)){                
-                  echo "<option value='".$data_penjamin['nama'] ."'> ".$data_penjamin['nama'] ."</option>";
-              }
-          ?>
-      </select>
-  </div>
 
-  <div class="form-group col-sm-3">
-    <label>No RM</label><br>
-      <span id="span-option" style="display: none">
-
-      </span>
-
-      <span class="span-hapus-option">
-
-      <select type="text" name="kode_pelanggan" id="kd_pelanggan" class="form-control chosen" required="">
-        <option value="">--SILAKAN PILIH--</option>                
-      </select>  
-
-      </span>
-  </div>
 
   <div class="form-group col-sm-2">
     <input type="text" class="form-control" name="no_faktur_penjualan" id="nomorfakturbeli" placeholder="No Faktur" readonly="">
@@ -208,6 +215,10 @@ $no_faktur_penjualan = $data50['no_faktur_penjualan'];
   </div>
 
   <div class="form-group">
+    <input type="hidden" name="kode_pelanggan" id="kode_pelanggan" class="form-control" value="" required="">
+  </div>
+
+  <div class="form-group">
     <input type="hidden" name="total" id="total" class="form-control" value="" required="">
   </div>
 
@@ -220,177 +231,159 @@ $no_faktur_penjualan = $data50['no_faktur_penjualan'];
 
 </form>
 
-<br>
-  
-  
-  <div class="table-responsive">
-<span id="tabel_baru"> 
-  <!--tag untuk membuat garis pada tabel-->       
-  <table id="tableuser" class="table table-bordered ">
-    <thead>
-      <th> Nomor Faktur Penjualan</th>
-      <th> Tanggal </th>
-      <th> Tanggal Jatuh Tempo </th>
-      <th> Kredit </th>
-      <th> Potongan </th>
-      <th> Total</th>
-      <th> Jumlah Bayar </th>
-      <th> Hapus </th>
-      <th> Edit </th>
-      
-    </thead>
-    
-    <tbody id="tbody">
-    <?php
 
-    //untuk menampilkan semua data yang ada pada tabel tbs pembelian dalam DB
-    $perintah = $db->query("SELECT * FROM tbs_pembayaran_piutang 
-                WHERE session_id = '$session_id'");
+                <span id="span_piutang" style="display:none">            
+                  <div class="table-responsive">
+                    <table id="tabel_daftar_piutang" class="table table-bordered table-sm">
+                          <thead> <!-- untuk memberikan nama pada kolom tabel -->
+                              
+                            <th> Faktur Penjualan</th>
+                            <th> Tanggal </th>
+                            <th> Tanggal JT </th>
+                            <th> Kredit </th>
+                            <th> Potongan </th>
+                            <th> Total</th>
+                            <th> Jumlah Bayar </th>
+                            <th> Hapus </th>
+                            <th> Edit </th>
+                          
+                          </thead> <!-- tag penutup tabel -->
+                    </table>
+                  </div>
+                  <br>
 
-    //menyimpan data sementara yang ada pada $perintah
-      while ($data1 = mysqli_fetch_array($perintah))
-      {
-
-        // menampilkan data
-      echo "<tr class='tr-id-".$data1['id']."'>
-      <td>". $data1['no_faktur_penjualan'] ."</td>
-      <td>". $data1['tanggal'] ."</td>
-      <td>". $data1['tanggal_jt'] ."</td>
-      <td>". rp($data1['kredit']) ."</td>
-      <td>". rp($data1['potongan']) ."</td>
-      <td>". rp($data1['total']) ."</td>
-      <td>". rp($data1['jumlah_bayar']) ."</td>
-      
-
-      <td> <button class='btn btn-danger btn-hapus' data-id='". $data1['id'] ."' data-faktur='". $data1['no_faktur_penjualan'] ."' data-piutang='". $data1['kredit'] ."' data-jumlah-bayar='". $data1['jumlah_bayar'] ."'> <span class='glyphicon glyphicon-trash'> </span> Hapus </button> </td> 
-
-      <td> <button class='btn btn-success btn-edit-tbs' data-id='". $data1['id'] ."' data-kredit='". $data1['kredit'] ."' data-jumlah-bayar='". $data1['jumlah_bayar'] ."' data-no-faktur-penjualan='". $data1['no_faktur_penjualan'] ."' data-potongan='". $data1['potongan'] ."'> <span class='glyphicon glyphicon-edit'> </span> Edit </button> </td>
-      </tr>";
-      }
-
-    ?>
-    </tbody>
-
-  </table>
-  </span> <!--tag penutup span-->
-  </div>
+                </span>
 
   </div>
   
   <div class="col-sm-4">
-<div class="card card-block">
-    <div class="row 1">
-        
-                <div class="form-group col-sm-6">
-                <label> Tanggal </label><br>
-                <input type="text" name="tanggal" id="tanggal" placeholder="Tanggal" style="height: 20px" value="<?php echo date("Y-m-d"); ?>" class="form-control" required="" >
+    <div class="card card-block">
+        <div class="row 1">
+            
+                    <div class="form-group col-sm-6">
+                    <label> Tanggal </label><br>
+                    <input type="text" name="tanggal" id="tanggal" placeholder="Tanggal" style="height: 20px" value="<?php echo date("Y-m-d"); ?>" class="form-control" required="" >
 
-                <input type="hidden" name="session_id" id="session_id" class="form-control" readonly="" value="<?php echo $session_id; ?>" required="" >
-                </div>
-                
-          
+                    <input type="hidden" name="session_id" id="session_id" class="form-control" readonly="" value="<?php echo $session_id; ?>" required="" >
+                    </div>
+                    
+              
 
-                <input type="hidden" class="form-control" id="jumlah1" name="jumlah0" placeholder="jumlah">
-      </div><!--end div class="row 1"-->
+                    <input type="hidden" class="form-control" id="jumlah1" name="jumlah0" placeholder="jumlah">
+          </div><!--end div class="row 1"-->
 
-      <div class="row 2">
-        <div class="col-sm-6">
-          <label> Cara Bayar </label><br>
-          <select type="text" name="cara_bayar" id="carabayar1" class="form-control" >
-          
-             <?php 
-             
-             $sett_akun = $db->query("SELECT sa.kas, da.nama_daftar_akun FROM setting_akun sa INNER JOIN daftar_akun da ON sa.kas = da.kode_daftar_akun");
-             $data_sett = mysqli_fetch_array($sett_akun);
-             
-             echo "<option selected value='".$data_sett['kas']."'>".$data_sett['nama_daftar_akun'] ."</option>";
-             
-             $query = $db->query("SELECT nama_daftar_akun, kode_daftar_akun FROM daftar_akun WHERE tipe_akun = 'Kas & Bank'");
-             while($data = mysqli_fetch_array($query))
-             {
-             echo "<option value='".$data['kode_daftar_akun']."'>".$data['nama_daftar_akun'] ."</option>";
-             }
-             
-             ?>
-          </select>
-        </div>
+          <div class="row 2">
+            <div class="col-sm-6">
+              <label> Cara Bayar </label><br>
+              <select type="text" name="cara_bayar" id="carabayar1" class="form-control" >
+              
+                 <?php 
+                 
+                 $sett_akun = $db->query("SELECT sa.kas, da.nama_daftar_akun FROM setting_akun sa INNER JOIN daftar_akun da ON sa.kas = da.kode_daftar_akun");
+                 $data_sett = mysqli_fetch_array($sett_akun);
+                 
+                 echo "<option selected value='".$data_sett['kas']."'>".$data_sett['nama_daftar_akun'] ."</option>";
+                 
+                 $query = $db->query("SELECT nama_daftar_akun, kode_daftar_akun FROM daftar_akun WHERE tipe_akun = 'Kas & Bank'");
+                 while($data = mysqli_fetch_array($query))
+                 {
+                 echo "<option value='".$data['kode_daftar_akun']."'>".$data['nama_daftar_akun'] ."</option>";
+                 }
+                 
+                 ?>
+              </select>
+            </div>
 
-        <div class="col-sm-6">
-          <div class="form-group">
-            <label> <b> Total Bayar </b> </label><br>
-           <b> <input type="text" name="total_bayar" style="font-size:25px" id="totalbayar" placeholder="Total Bayar" class="form-control" readonly="" required=""></b>
-          </div>
-        </div>
-      </div><!--div class="row 2"-->
-          
-
-    
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label> <b> Total Bayar </b> </label><br>
+               <b> <input type="text" name="total_bayar" style="font-size:25px" id="totalbayar" placeholder="Total Bayar" class="form-control" readonly="" required=""></b>
+              </div>
+            </div>
+          </div><!--div class="row 2"-->
 
           <input type="hidden" name="potongan1" id="potongan1" placeholder="Total Bayar" class="form-control" readonly="" required="">
-
           <input type="hidden" name="faktur" id="faktur" placeholder="Total Bayar" class="form-control" readonly="" required="">
 
 
+      <div class="form-group">
+        <label> Keterangan </label><br>
+        <textarea name="keterangan" id="keterangan" class="form-control" ></textarea> 
+        <br>
 
-<div class="form-group">
-          <label> Keterangan </label><br>
-          <textarea name="keterangan" id="keterangan" class="form-control" ></textarea> 
-          <br>
+        <button type="submit" id="pembayaran" class="btn btn-info"><i class="fa fa-send"></i> Bayar</button>
+        <a href="form_pembayaran_piutang.php" class="btn btn-primary" id="transaksi_baru" style="display: none"><i class="fa fa-refresh"></i> Transaksi Baru</a>
+        <a href='batal_piutang.php?no_faktur_penjualan=<?php echo $no_faktur_penjualan; ?>' id='batal' class='btn btn-danger'><i class='fa fa-close'></i> Batal </a>
+        <a href='cetak_pembayaran_piutang.php' id="cetak_piutang" style="display: none;" class="btn btn-success" target="blank"><i class="fa fa-print"> </i> Cetak Pembayaran Piutang </a>
+        <br>
+    
+        <div class="alert alert-success" id="alert_berhasil" style="display:none">
+          <strong>Success!</strong> Pembayaran Berhasil
+        </div>
 
+      </div>
 
+    </div> <!-- / card-block -->
 
-<button type="submit" id="pembayaran" class="btn btn-info"><i class="fa fa-send"></i> Bayar</button>
-<a href="form_pembayaran_piutang.php" class="btn btn-primary" id="transaksi_baru" style="display: none"><i class="fa fa-refresh"></i> Transaksi Baru</a>
-
-<a href='batal_piutang.php?no_faktur_penjualan=<?php echo $no_faktur_penjualan; ?>' id='batal' class='btn btn-danger'><i class='fa fa-close'></i> Batal </a>
-
-<a href='cetak_pembayaran_piutang.php' id="cetak_piutang" style="display: none;" class="btn btn-success" target="blank"><i class="fa fa-print"> </i> Cetak Pembayaran Piutang </a>
-          
-<br>
-<div class="alert alert-success" id="alert_berhasil" style="display:none">
-  <strong>Success!</strong> Pembayaran Berhasil
-</div>
-
-  </div>
-</div>
-
-</div>
+  </div> <!-- / col-sm-4 -->
  
 
 <span id="demo"> </span>
 </div>
 </div><!-- end of container -->
-<script>
-    
-    // untk menampilkan datatable atau filter seacrh
-    $(document).ready(function(){
-    $('#tableuser').DataTable({"ordering":false});
-    });
-</script>
+
+<!-- DOCUMENT READY -->
+
+<script type="text/javascript" language="javascript" >
+   $(document).ready(function() {
+      $('#tabel_daftar_piutang').DataTable().destroy();
+            var dataTable = $('#tabel_daftar_piutang').DataTable( {
+            "processing": true,
+            "serverSide": true,
+            "info":     false,
+            "language": { "emptyTable":     "Tidak Ada Data Piutang" },
+            "ajax":{
+              url :"data_tbs_piutang.php", // json datasource
+               "data": function ( d ) {
+                  d.session_id = $("#session_id").val();
+                  // d.custom = $('#myInput').val();
+                  // etc
+              },
+                  type: "post",  // method  , by default get
+              error: function(){  // error handling
+                $(".tbody").html("");
+                $("#tabel_daftar_piutang").append('<tbody class="tbody"><tr><th colspan="3"></th></tr></tbody>');
+                $("#tableuser_processing").css("display","none");
+                
+              }
+            }   
+
+      });
+
+    $("#span_piutang").show();
+       
+  });
+ 
+ </script>
+
+<!-- DOCUMENT READY -->
 
 <!-- untuk memasukan perintah javascript -->
 <script type="text/javascript">
 
 // jika dipilih, nim akan masuk ke input dan modal di tutup
-  $(document).on('click', '.pilih', function (e) {
+  $(document).on('click', '.pilih-piutang', function (e) {
   document.getElementById("nomorfakturbeli").value = $(this).attr('no-faktur');
   document.getElementById("kredit").value = $(this).attr('kredit');
   document.getElementById("total").value = $(this).attr('total');
   document.getElementById("tanggal_jt").value = $(this).attr('tanggal_jt');
+  document.getElementById("kode_pelanggan").value = $(this).attr('kode-pelanggan');
   
   $('#myModal').modal('hide');
   });
    
-  </script> <!--tag penutup perintah java script-->
+</script> <!--tag penutup perintah java script-->
 
-<script type="text/javascript">
-    $(document).ready(function(){
-    // Tooltips Initialization
-    $(function () {
-    $('[data-toggle="tooltip"]').tooltip()
-    });
-    });
-</script>
 
 <script type="text/javascript">
    //perintah javascript yang diambil dari form tbs pembelian dengan id=form tambah produk
@@ -398,8 +391,8 @@ $no_faktur_penjualan = $data50['no_faktur_penjualan'];
   
    $("#submit_tambah").click(function(){
       
-      var kredit = $("#kredit").val();
-      var kode_pelanggan = $("#kd_pelanggan").val();
+      var kredit = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#kredit").val()))));
+      var kode_pelanggan = $("#kode_pelanggan").val();
       var no_faktur_penjualan = $("#nomorfakturbeli").val();
       var total = $("#total").val();
       var tanggal_jt = $("#tanggal_jt").val();
@@ -407,7 +400,12 @@ $no_faktur_penjualan = $data50['no_faktur_penjualan'];
       var tanggal = $("#tanggal").val();
       var cara_bayar = $("#carabayar1").val();
       var potongan = $("#potongan_penjualan").val();
-      var total_kredit = kredit - potongan;
+
+      if (potongan == "") {
+        potongan = 0;
+      }
+
+      var total_kredit = parseInt(kredit) - parseInt(potongan);
       var potongan1 = $("#potongan1").val();
       var faktur = $("#faktur").val();
 
@@ -415,7 +413,8 @@ $no_faktur_penjualan = $data50['no_faktur_penjualan'];
       var jumlah_bayar = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#jumlah_bayar").val()))));
 
 
-      var hasil = jumlah_bayar - total_kredit;
+      var hasil = parseInt(jumlah_bayar) - parseInt(total_kredit);
+
         
         if (total == '') 
         {
@@ -466,7 +465,8 @@ $no_faktur_penjualan = $data50['no_faktur_penjualan'];
      $("#jumlah_bayar").val('');
      $("#potongan_penjualan").val('');
      
-
+     var tabel_daftar_piutang = $('#tabel_daftar_piutang').DataTable();
+          tabel_daftar_piutang.draw();
 
        
    });
@@ -480,42 +480,76 @@ $no_faktur_penjualan = $data50['no_faktur_penjualan'];
 
   });
 
-
- $("#submit_tambah").click(function(){
-
-            var kode_pelanggan = $("#kd_pelanggan").val();
-            
-            if (kode_pelanggan != ""){
-            $("#kd_pelanggan").attr("disabled", true);
-            }
-                     
-            
-            });
-
-  
-  $("#cari_produk_penjualan").click(function() {
-
-    var kode_pelanggan = $("#kd_pelanggan").val();
-      if (kode_pelanggan == ""){
-        alert("Silakan Pilih Penjamin dan No. RM Dahulu");
-        $("#myModal").modal('hide');
-        $("#penjamin").trigger('chosen:open');
-      }
-      else{      
-        $.post("modal_piutang_baru.php", {kode_pelanggan:kode_pelanggan}, function(info) {
-          $(".modal_piutang_baru").html(info);
-          $("#myModal").modal('show');
-        });
-      }
-  });
-
 </script>
 
 
+<!-- DOCUMENT READY -->
+
+<script type="text/javascript" language="javascript" >
+   $(document).ready(function() {
+        var dataTable = $('#table_piutang').DataTable( {
+          "processing": true,
+          "serverSide": true,
+          "ajax":{
+            url :"modal_piutang_baru.php", // json datasource
+            "data": function ( d ) {
+                      d.penjamin = $("#penjamin").val();
+                      // d.custom = $('#myInput').val();
+                      // etc
+            },
+            type: "post",  // method  , by default get
+            error: function(){  // error handling
+              $(".employee-grid-error").html("");
+              $("#table_piutang").append('<tbody class="employee-grid-error"><tr><th colspan="3">Data Tidak Ditemukan.. !!</th></tr></tbody>');
+              $("#employee-grid_processing").css("display","none");
+              
+            }
+          },
+
+          "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+
+              $(nRow).attr('class', "pilih-piutang");
+              $(nRow).attr('no-faktur', aData[0]);
+              $(nRow).attr('kredit', aData[12]);
+              $(nRow).attr('total', aData[3]);
+              $(nRow).attr('tanggal_jt', aData[5]);
+              $(nRow).attr('kode-pelanggan', aData[1]);
+
+
+          }
+
+        });
+       
+  });
+ 
+ </script>
+
+<!-- DOCUMENT READY -->
+
+
+<!-- KETIKA MEILIH PENJAMIN -->
+
+<script type="text/javascript" language="javascript" >
+   $(document).ready(function() {
+      $(document).on('change','#penjamin',function(){
+
+        var modal_piutang = $('#table_piutang').DataTable();
+        modal_piutang.draw();
+
+        $(".chosen").chosen({no_results_text: "Maaf, Data Tidak Ada!",search_contains:true});
+
+
+    });
+  });
+ 
+ </script>
+
+<!-- KETIKA MEILIH PENJAMIN -->
 
 
 
-  <script>
+
+<script>
 
 $(document).ready(function(){
 
@@ -538,7 +572,7 @@ $(document).ready(function(){
    var no_faktur_pembayaran = $("#no_faktur_pembayaran").val();
    var no_faktur_penjualan = $("#nomorfakturbeli").val();
    var cara_bayar = $("#carabayar1").val();
-   var kode_pelanggan = $("#kd_pelanggan").val();
+   var kode_pelanggan = $("#kode_pelanggan").val();
    var keterangan = $("#keterangan").val();
    var total = $("#total").val();
    var user_buat = $("#user_buat").val();
@@ -558,24 +592,13 @@ $(document).ready(function(){
      $("#potongan1").val(potongan);
      $("#faktur").val(no_faktur_penjualan); 
 
-if (cara_bayar == "")
-  {
-  
-  alert("Cara Bayar Harus Di Isi");
-  
+if (cara_bayar == ""){
+  alert("Cara Bayar Harus Di Isi");  
   }
-  
-  else if (kode_pelanggan == "")
-  {
-  alert("Kode Pelangan Harus Di Isi");
-  }
-
-
-
-
-else
-
- {
+else if (total_bayar == 0 || total_bayar == ""){
+  alert("Anda Belum Melakukan Input Data Piutang");
+}  
+else{
   $("#transaksi_baru").show();
   $("#pembayaran").hide();
   $("#batal").hide();
@@ -584,17 +607,20 @@ else
 
      
      $("#tabel_baru").html(info);
+     $("#cetak_piutang").show();
+     var no_faktur_pembayaran = info;
+     $("#cetak_piutang").attr('href', 'cetak_pembayaran_piutang.php?no_faktur_pembayaran='+no_faktur_pembayaran+'');
      $("#tabel_baru").load('tabel-tbs-pembayaran-piutang.php');
      $("#pembayaran").hide();
      $("#transaksi_baru").show();
      $("#alert_berhasil").show();
-     $("#cetak_piutang").show();
      $("#nama_suplier").val('');
      $("#carabayar1").val('');
      $("#totalbayar").val('');
      $("#keterangan").val('');
      
-     
+     var tabel_daftar_piutang = $('#tabel_daftar_piutang').DataTable();
+          tabel_daftar_piutang.draw();
     
        
    });
@@ -637,40 +663,6 @@ $.post("cek_total_pembayaran_piutang.php",
 
 </script>
 
-<script>
-
-$(document).ready(function(){
-    $("#penjamin").change(function(){
-      var penjamin = $("#penjamin").val();
-
-      $.post('daftar_pelanggan_piutang.php', {penjamin:penjamin}, function(data) {
-        $(".span-hapus-option").remove();
-
-        $("#span-option").prepend(data);
-        $("#span-option").show();
-        $("#kode_barang").trigger('chosen:updated');
-        $("#kode_barang").trigger('chosen:open');
-        $(".chosen").chosen({no_results_text: "Maaf, Data Tidak Ada!",search_contains:true}); 
-
-      });
-        
-    });
-});
-</script>
-
-
-
-<!--membuat menampilkan no faktur dan suplier pada tax-->
-<script>
-
-$(document).ready(function(){
-    $("#kd_pelanggan").change(function(){
-      var suplier = $("#kd_pelanggan").val();
-      $("#kode_pelanggan").val(suplier);
-        
-    });
-});
-</script>
 
 <script>
 
@@ -702,11 +694,6 @@ $(document).ready(function(){
 </script>
 
 
-
-
-<script type="text/javascript">
-  $(".chosen").chosen({no_results_text: "Maaf, Data Tidak Ada!",search_contains:true}); 
-</script>
 
 
 
@@ -743,51 +730,46 @@ $(document).ready(function(){
 
 <script type="text/javascript">
                                
-//fungsi hapus data 
-    $(".btn-hapus").click(function(){
+//fungsi hapus data
+  $(document).on("click", ".btn-hapus", function(){
+
     var jumlah_bayar = $(this).attr("data-jumlah-bayar");
+    var faktur = $(this).attr("data-faktur");
     var id = $(this).attr("data-id");
     var total = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#totalbayar").val()))));
 
-   if (total == '') 
-      
-      {
-        
-        $("#kd_pelanggan").attr("disabled", false);
-        total = 0;
-      }
+      if (total == ''){
+            total = 0;
+          };
+      if(jumlah_bayar   == ''){
+            jumlah_bayar   = 0;
+          };
 
-    
-    else if(jumlah_bayar   == '')
-      {
-        jumlah_bayar   = 0;
-      };
-       
-       var subtotal = parseInt(total,10) - parseInt(jumlah_bayar  ,10);
-                                  
-                                  
-    if (subtotal == 0) 
-      {
-        subtotal = 0;
-        $("#kd_pelanggan").attr("disabled", false);
-      }
+      var subtotal = parseInt(total,10) - parseInt(jumlah_bayar  ,10);
 
-      $("#totalbayar").val(tandaPemisahTitik(subtotal));
+      if (subtotal == 0){
+            subtotal = 0;
+          }
 
+        var pesan_alert = confirm("Apakah Anda Yakin Ingin Menghapus Faktur "+faktur+""+ "?");
+        if (pesan_alert == true) {
+              $("#totalbayar").val(tandaPemisahTitik(subtotal));
+              $.post("hapus_tbs_pembayaran_piutang.php",{id:id},function(data){
 
-    $.post("hapus_tbs_pembayaran_piutang.php",{id:id},function(data){
-    
-    $(".tr-id-"+id).remove();
-        
-    
-    });
-    
-    
-    });
+                var tabel_daftar_piutang = $('#tabel_daftar_piutang').DataTable();
+                tabel_daftar_piutang.draw();
+
+              });
+        }
+        else {
+
+        }
+
+  });
     
   
  //fungsi edit data 
-        $(".btn-edit-tbs").click(function(){
+        $(document).on("click", ".btn-edit-tbs", function(){
         
         $("#modal_edit").modal('show');
         var jumlah_lama = $(this).attr("data-jumlah-bayar");
@@ -806,7 +788,7 @@ $(document).ready(function(){
         
         });
         
-        $("#submit_edit").click(function(){
+        $(document).on("click", "#submit_edit", function(){
         var jumlah_lama = $("#bayar_lama").val();
         var jumlah_baru = $("#bayar_edit").val();
         var potongan_lama = $("#potongan_lama").val();
@@ -849,7 +831,8 @@ $(document).ready(function(){
         setTimeout(tutupmodal, 2000);
         setTimeout(tutupalert, 2000);
         
-      
+        var tabel_daftar_piutang = $('#tabel_daftar_piutang').DataTable();
+          tabel_daftar_piutang.draw();
         });
         });
 //end function edit data

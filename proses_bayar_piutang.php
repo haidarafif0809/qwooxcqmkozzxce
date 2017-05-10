@@ -44,7 +44,7 @@
     */
     if ($v_bulan_terakhir['bulan'] != $bulan_sekarang) {
     # code...
-    $no_faktur_pembayaran = "1/PP/".$data_bulan_terakhir."/".$tahun_terakhir;
+    echo $no_faktur_pembayaran = "1/PP/".$data_bulan_terakhir."/".$tahun_terakhir;
     
     }
     
@@ -53,7 +53,7 @@
     
     $nomor = 1 + $ambil_nomor ;
     
-    $no_faktur_pembayaran = $nomor."/PP/".$data_bulan_terakhir."/".$tahun_terakhir;
+    echo $no_faktur_pembayaran = $nomor."/PP/".$data_bulan_terakhir."/".$tahun_terakhir;
     
     
     }
@@ -104,7 +104,7 @@
     $select_kode_pelanggan = $db->query("SELECT nama_pelanggan FROM pelanggan WHERE kode_pelanggan = '$kode_pelanggan'");
     $ambil_kode_pelanggan = mysqli_fetch_array($select_kode_pelanggan);
 
-    $select_setting_akun = $db->query("SELECT * FROM setting_akun");
+    $select_setting_akun = $db->query("SELECT pembayaran_kredit, potongan_piutang FROM setting_akun");
     $ambil_setting = mysqli_fetch_array($select_setting_akun);
 
 $tbs_piutang = $db->query("SELECT potongan FROM tbs_pembayaran_piutang WHERE session_id = '$session_id'");
@@ -128,8 +128,6 @@ if ($potongan != "" || $potongan != '0') {
 }
 
     $query3 = $db->query("DELETE FROM tbs_pembayaran_piutang WHERE session_id = '$session_id'");
-    echo "Berhasil";
-
 
 //Untuk Memutuskan Koneksi Ke Database
 mysqli_close($db);       
