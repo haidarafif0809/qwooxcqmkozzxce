@@ -38,17 +38,6 @@ $grup_akun = mysqli_fetch_array($pilih_akses_akun);
 <h3><b>DATA DAFTAR AKUN</b></h3><hr>
 
 
-<?php 
-
-if ($daftar_akun['daftar_akun_tambah'] > 0){
-  echo '<a href="form_tambah_daftar_akun.php" class="btn btn-info"><i class="fa fa-plus"> </i> DAFTAR AKUN</a>';
-}
-
-if ($grup_akun['grup_akun_tambah'] > 0){
-  echo '<a href="form_tambah_grup_akun.php" class="btn btn-info"><i class="fa fa-plus"> </i> DAFTAR AKUN</a>';
-}
-
-?>
 
 <input type="hidden" name="kategori" id="kategori" class="form-control" value="<?php echo $kategori; ?>" readonly="">
 
@@ -166,6 +155,18 @@ if ($grup_akun['grup_akun_tambah'] > 0){
        <?php endif ?>
     </ul>
 
+<br><br>
+<?php 
+
+if ($daftar_akun['daftar_akun_tambah'] > 0){
+  echo '<a href="form_tambah_daftar_akun.php" class="btn btn-info"><i class="fa fa-plus"> </i> DAFTAR AKUN</a>';
+}
+
+if ($grup_akun['grup_akun_tambah'] > 0){
+  echo '<a href="form_tambah_grup_akun.php" class="btn btn-primary"><i class="fa fa-plus"> </i> GROUP AKUN</a>';
+}
+
+?>
 
                 <br><br>
                 <span id="span_daftar_akun">            
