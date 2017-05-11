@@ -725,6 +725,34 @@ $.post('cek_kode_barang_tbs_pembelian.php',{kode_barang:kode_barang,session_id:s
 
 </script>
 
+<script type="text/javascript">
+  $(document).on('blur', '#harga_baru', function () {
+
+    var harga_baru = $("#harga_baru").val();
+    var harga_produk = $("#harga_produk").val();
+    var kode_barang = $("#kode_barang").val();
+    var nama_barang = $("#nama_barang").val();
+
+    $.post('cek_harga_hpp.php',{harga_baru:harga_baru, kode_barang:kode_barang}, function(data){
+      
+      if (data < 0) {
+        var pesan_alert = confirm("Total Harga '"+nama_barang+"' Lebih Besar Dari Harga Jual. Tetap Lanjutkan ?");
+          if (pesan_alert == true) {
+            $("#harga_baru").val(harga_baru);
+          }
+          else{
+            $("#harga_baru").val(harga_produk);
+          }
+      }
+      else{
+            $("#harga_baru").val(harga_baru);
+      }
+    });
+
+
+  });
+</script>
+
 <script>
 //untuk menampilkan data tabel
 $(document).ready(function(){
