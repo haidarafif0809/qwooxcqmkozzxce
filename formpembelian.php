@@ -726,7 +726,7 @@ $.post('cek_kode_barang_tbs_pembelian.php',{kode_barang:kode_barang,session_id:s
 </script>
 
 <script type="text/javascript">
-  $(document).on('blur', '#harga_baru', function () {
+  $(document).on('keyup', '#harga_baru', function () {
 
     var harga_baru = $("#harga_baru").val();
     var harga_produk = $("#harga_produk").val();
