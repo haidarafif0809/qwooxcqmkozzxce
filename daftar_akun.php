@@ -186,7 +186,7 @@ if ($grup_akun['grup_akun_tambah'] > 0){
                     </table>
                   </div>
                 </span>
-
+                <h6 style="text-align: left ; color: red"><i><b> * Klik 2x Pada Kolom Jika Ingin Mengedit. </b></i></h6>
 
 <script type="text/javascript">
   $(document).ready(function(){
