@@ -4,15 +4,12 @@
  include 'navbar.php';
  include 'db.php';
  include 'sanitasi.php';
-
-$query = $db->query("SELECT * FROM pembayaran_piutang");
  
- $session_id = session_id();
-
-
-$perintah50 = $db->query("SELECT * FROM tbs_pembayaran_piutang WHERE session_id = '$session_id'");
-$data50 = mysqli_fetch_array($perintah50);
-$no_faktur_penjualan = $data50['no_faktur_penjualan']; 
+ $session_id = session_id(); 
+ 
+ $perintah50 = $db->query("SELECT * FROM tbs_pembayaran_piutang WHERE session_id = '$session_id'");
+ $data50 = mysqli_fetch_array($perintah50);
+ $no_faktur_penjualan = $data50['no_faktur_penjualan']; 
 
  ?>
 
