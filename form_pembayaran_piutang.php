@@ -195,7 +195,7 @@
     <input type="text" class="form-control" name="no_faktur_penjualan" id="nomorfakturbeli" placeholder="No Faktur" readonly="">
   </div>
     
-  <div class="form-group col-sm-1">
+  <div class="form-group col-sm-2">
     <input type="text" class="form-control" name="kredit" id="kredit" placeholder="Kredit" readonly="">
   </div>
 
@@ -372,6 +372,7 @@
   $(document).on('click', '.pilih-piutang', function (e) {
   document.getElementById("nomorfakturbeli").value = $(this).attr('no-faktur');
   document.getElementById("kredit").value = $(this).attr('kredit');
+  document.getElementById("jumlah_bayar").value = $(this).attr('kredit');
   document.getElementById("total").value = $(this).attr('total');
   document.getElementById("tanggal_jt").value = $(this).attr('tanggal_jt');
   document.getElementById("kode_pelanggan").value = $(this).attr('kode-pelanggan');
