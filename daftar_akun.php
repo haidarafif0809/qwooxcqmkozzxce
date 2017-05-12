@@ -174,9 +174,9 @@ if ($grup_akun['grup_akun_tambah'] > 0){
                     <table id="tabel_daftar_akun" class="table table-bordered table-sm">
                           <thead> <!-- untuk memberikan nama pada kolom tabel -->
                               
-                              <th style="background-color: #4CAF50; color:white"> No. Akun  </th>
+                              <th style="background-color: #4CAF50; color:white"> Kode Akun  </th>
                               <th style="background-color: #4CAF50; color:white"> Nama AKun </th>
-                              <th style="background-color: #4CAF50; color:white"> Klasifikasi </th>
+                              <th style="background-color: #4CAF50; color:white"> Kategori Akun </th>
                               <th style="background-color: #4CAF50; color:white"> Sub Akun </th>
                               <th style="background-color: #4CAF50; color:white"> Tipe Akun </th>
 
@@ -265,7 +265,7 @@ if ($grup_akun['grup_akun_tambah'] > 0){
       });
 
 
-      $(document).on("blur",".select-parent-parent",function(){
+      $(document).on("blur",".select-parent-akun",function(){
 
           var id = $(this).attr("data-id");
 
