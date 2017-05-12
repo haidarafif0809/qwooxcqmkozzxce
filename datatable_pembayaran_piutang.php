@@ -37,13 +37,13 @@ $totalFiltered = $totalData;  // when there is no search parameter then total nu
 $sql = "SELECT p.id, p.no_faktur_pembayaran, p.tanggal, p.jam, p.nama_suplier, p.keterangan, p.total, p.user_buat, p.user_edit, p.tanggal_edit, p.dari_kas,da.nama_daftar_akun ";
 $sql.=" FROM pembayaran_piutang p INNER JOIN daftar_akun da ON p.dari_kas = da.kode_daftar_akun WHERE 1=1";
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
-	$sql.=" AND ( no_faktur_pembayaran LIKE '".$requestData['search']['value']."%' ";    
-	$sql.=" OR nama_suplier LIKE '".$requestData['search']['value']."%' ";
-  $sql.=" OR tanggal LIKE '".$requestData['search']['value']."%' )";
+	$sql.=" AND ( p.no_faktur_pembayaran LIKE '".$requestData['search']['value']."%' ";    
+	$sql.=" OR p.nama_suplier LIKE '".$requestData['search']['value']."%' ";
+  $sql.=" OR p.tanggal LIKE '".$requestData['search']['value']."%' )";
 }
 $query=mysqli_query($conn, $sql) or die("datatable_pembayaran_hutang.php: get employees");
 $totalFiltered = mysqli_num_rows($query); // when there is a search parameter then we have to modify total number filtered rows as per search result. 
-$sql.=" ORDER BY CONCAT(waktu) ".$requestData['order'][0]['dir']."  LIMIT ".$requestData['start']." ,".$requestData['length']."  ";
+$sql.=" ORDER BY p.waktu ".$requestData['order'][0]['dir']."  LIMIT ".$requestData['start']." ,".$requestData['length']."  ";
 /* $requestData['order'][0]['column'] contains colmun index, $requestData['order'][0]['dir'] contains order such as asc/desc  */	
 $query=mysqli_query($conn, $sql) or die("employee-grid-data.php: get employees");
 
