@@ -29,28 +29,28 @@
 
 					<div class="form-group">
 					<label> Sub Dari </label><br>
-					<select type="text" name="sub_dari" id="sub_dari" class="form-control">
+					<select type="text" name="sub_dari" id="sub_dari" class="form-control chosen">
 					<option value="-"> - </option>
 
-<?php 
-$select = $db->query("SELECT * FROM grup_akun ");
-while ($ambil = mysqli_fetch_array($select))
-{
+						<?php 
+						$select = $db->query("SELECT * FROM grup_akun ");
+						while ($ambil = mysqli_fetch_array($select))
+						{
 
-echo"<option value='".$ambil['kode_grup_akun']."'>".$ambil['kode_grup_akun']." -- ".$ambil['nama_grup_akun']."</option>";
-}
+						echo"<option value='".$ambil['kode_grup_akun']."'>".$ambil['kode_grup_akun']." -- ".$ambil['nama_grup_akun']."</option>";
+						}
 
 
-//Untuk Memutuskan Koneksi Ke Database
-mysqli_close($db);   
- ?>
+						//Untuk Memutuskan Koneksi Ke Database
+						mysqli_close($db);   
+						 ?>
 					
 					</select>
 					</div>
 
 					<div class="form-group">
 					<label> Kategori Akun </label><br>
-					<select type="text" name="kategori_akun" id="kategori_akun" class="form-control">
+					<select type="text" name="kategori_akun" id="kategori_akun" class="form-control chosen">
 
 					<option value="">--Kategori Akun--</option>	
 
@@ -120,7 +120,7 @@ mysqli_close($db);
 
       <script type="text/javascript">
       
-      $(".chosen").chosen({no_results_text: "Maaf, Data Tidak Ada!"});  
+      $(".chosen").chosen({no_results_text: "Maaf, Data Tidak Ada!",search_contains:true});     
       
       </script>
 
