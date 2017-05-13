@@ -35,7 +35,7 @@ if( !empty($requestData['search']['value']) ) {   // if there is a search parame
 
 $sql =" SELECT SUM(js.debit) AS masuk,js.jenis_transaksi,js.id,da.nama_daftar_akun,DATE(js.waktu_jurnal) AS tanggal,js.no_faktur";
 $sql.=" FROM jurnal_trans js LEFT JOIN daftar_akun da ON js.kode_akun_jurnal = da.kode_daftar_akun ";
-$sql.=" WHERE DATE(js.waktu_jurnal) = '2017-02-08' AND js.kode_akun_jurnal = '1-1119' AND js.debit != '0' AND js.jenis_transaksi != 'Kas Mutasi' GROUP BY DATE(js.waktu_jurnal)";
+$sql.=" WHERE DATE(js.waktu_jurnal) = '$tanggal' AND js.kode_akun_jurnal = '$kas' AND js.debit != '0' AND js.jenis_transaksi != 'Kas Mutasi' GROUP BY DATE(js.waktu_jurnal)";
 
   $sql.=" AND ( js.jenis_transaksi LIKE '".$requestData['search']['value']."%'";
   $sql.=" OR da.nama_daftar_akun LIKE '".$requestData['search']['value']."%' ) GROUP BY DATE(js.waktu_jurnal)";
