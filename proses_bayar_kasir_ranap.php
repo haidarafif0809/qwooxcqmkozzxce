@@ -19,20 +19,17 @@ $biaya_admin = angkadoang($_POST['biaya_adm']);
 
 
 // menampilakn hasil penjumlah subtotal ALIAS total penjualan dari tabel tbs_penjualan berdasarkan data no faktur
- $query121 = $db->query("SELECT SUM(subtotal) AS total_penjualan FROM tbs_penjualan WHERE no_reg = '$no_reg'");
- $data43 = mysqli_fetch_array($query121);
- $total_ss = $data43['total_penjualan'];
+ $query_tbs_penjualan = $db->query("SELECT SUM(subtotal) AS total_penjualan FROM tbs_penjualan WHERE no_reg = '$no_reg'");
+ $data_tbs_penjualan = mysqli_fetch_array($query_tbs_penjualan);
+ $total_penjualan = $data_tbs_penjualan['total_penjualan'];
 
+ $query_operasi = $db->query("SELECT SUM(harga_jual) AS harga_jual FROM tbs_operasi WHERE no_reg = '$no_reg'");
+ $data_operasi = mysqli_fetch_array($query_operasi);
 
-// menampilakn hasil penjumlah subtotal ALIAS total penjualan dari tabel tbs_penjualan berdasarkan data no faktur
- $query212 = $db->query("SELECT SUM(harga_jual) AS harga_jual FROM tbs_operasi WHERE no_reg = '$no_reg'");
- $data2 = mysqli_fetch_array($query212);
- $total_operasi = $data2['harga_jual'];
+ $sum_harga = $db->query("SELECT SUM(subtotal) AS harga_radiologi FROM tbs_penjualan_radiologi WHERE no_reg = '$no_reg' AND status_periksa = '1' AND no_faktur IS NULL");
+ $data_radiologi= mysqli_fetch_array($sum_harga);
 
- $total_sum = ($total_ss + $total_operasi);
-
-
-$total_tbs = ($total_sum - $potongan) + $biaya_admin;
+ $total_tbs = ($total_penjualan - $potongan) + $biaya_admin + $data_operasi['harga_jual'] + $data_radiologi['harga_radiologi'];
 
 if ($total != $total_tbs) {
     echo 1;
@@ -326,6 +323,19 @@ $no_jurnal = no_jurnal();
 
         
       }
+
+//INSERT DARI TBS PENJUALAN RADIOLOGI KE HASIL PEMERIKSAAN RADIOLOGI
+        $insert_hasil_radiologi = "INSERT INTO hasil_pemeriksaan_radiologi (no_faktur, no_reg, kode_barang, nama_barang, jumlah_barang, harga, subtotal, potongan, tax, foto, tipe_barang, tanggal, jam, radiologi, kontras, dokter_pengirim, dokter_pelaksana, dokter_periksa, status_periksa, status_simpan, keterangan) SELECT '$no_faktur', no_reg, kode_barang, nama_barang, jumlah_barang, harga, subtotal, potongan, tax, foto, tipe_barang, tanggal, jam, radiologi, kontras, dokter_pengirim, dokter_pelaksana, dokter_periksa, status_periksa, status_simpan, keterangan FROM tbs_penjualan_radiologi WHERE no_reg = '$no_reg'";
+
+          if ($db->query($insert_hasil_radiologi) === TRUE) {
+          
+            }
+
+          else {
+              echo "Error: " . $insert_hasil_radiologi . "<br>" . $db->error;
+            }
+
+//INSERT DARI TBS PENJUALAN RADIOLOGI KE HASIL PEMERIKSAAN RADIOLOGI
 
 
 // START INSERT KE HASIL LABORATORIUM
@@ -798,7 +808,7 @@ $query = $db->query("UPDATE bed SET sisa_bed = sisa_bed + 1 WHERE nama_kamar = '
 
     $tbs_penjualan_hapus = $db->query("DELETE  FROM tbs_penjualan WHERE no_reg = '$no_reg' ");
     $tbs_fee_hapus = $db->query("DELETE  FROM tbs_fee_produk WHERE no_reg = '$no_reg' ");
-
+    $tbs_penjualan_radiologi_hapus = $db->query("DELETE FROM tbs_penjualan_radiologi WHERE no_reg = '$no_reg' ");
     $tbs_detail_operasi_hapuss = $db->query("DELETE  FROM tbs_operasi WHERE no_reg = '$no_reg'");
     $tbs_operasi_hapuss = $db->query("DELETE  FROM tbs_detail_operasi WHERE no_reg = '$no_reg'");
 

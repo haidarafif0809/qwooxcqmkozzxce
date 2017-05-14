@@ -43,6 +43,7 @@ $sql.=" WHERE r.jenis_pasien = 'UGD' AND  (r.status != 'Batal UGD' AND r.status 
     $sql.=" AND (r.no_reg = '".$requestData['search']['value']."'";  
     $sql.=" OR r.no_rm = '".$requestData['search']['value']."' ";
     $sql.=" OR r.nama_pasien LIKE '".$requestData['search']['value']."%' )";
+    $sql.=" GROUP BY r.no_reg ";
 
 }
 

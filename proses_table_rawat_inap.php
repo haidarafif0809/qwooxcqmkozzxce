@@ -91,6 +91,9 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 $penjual = $db->query("SELECT status FROM penjualan WHERE no_reg = '$row[no_reg]' ");
 $sttus = mysqli_num_rows($penjual);
 
+$query_id_user = $db->query("SELECT id AS id_dokter FROM user WHERE nama = '$row[dokter]' ");
+$data_id_user = mysqli_fetch_array($query_id_user);
+
 
   if ($registrasi_ri['registrasi_ri_hapus'] == 1)
   	{
@@ -162,6 +165,7 @@ $data_z = mysqli_fetch_array($query_z);
 				}*/
 
 				//else {
+					 $nestedData[] = "<a href='form_pemeriksaan_radiologi.php?no_rm=".$row['no_rm']."&nama=".$row['nama_pasien']."&no_reg=".$row['no_reg']."&dokter=".$data_id_user['id_dokter']."&jenis_penjualan=Rawat Inap&rujukan=Rujuk Rawat Inap&penjamin=".$row['penjamin']."' class='btn btn-floating btn-small btn-info'><i class='fa fa-universal-access'></i></a>";
 
 					 $nestedData[] = "<button  class='btn btn-floating btn-small btn-info pemeriksaan_lab_inap' data-kamar=".$row['group_bed']." data-bed=".$row['bed']." data-rm=".$row['no_rm']." data-nama=".$row['nama_pasien']." data-reg=".$row['no_reg']." data-id=".$row['id']." '><i class='fa fa-stethoscope'></i></button>
 						   ";

@@ -16,8 +16,12 @@ $no_reg = $_POST['no_reg'];
  $query_op = $db->query("SELECT SUM(harga_jual) AS total_operasi FROM tbs_operasi WHERE  no_reg = '$no_reg'");
  $data_op = mysqli_fetch_array($query_op);
 
-$total_penjualan = $data['total_penjualan'];
-$total_operasi = $data_op['total_operasi'];
+ $sum_harga = $db->query("SELECT SUM(subtotal) AS harga_radiologi FROM tbs_penjualan_radiologi WHERE no_reg = '$no_reg' AND status_periksa = '1' AND no_faktur IS NULL");
+ $data_radiologi= mysqli_fetch_array($sum_harga);
+
+ $total_penjualan = $data['total_penjualan'];
+ $total_operasi = $data_op['total_operasi'];
+ $total_radiologi = $data_radiologi['harga_radiologi'];
 
 if ($data['total_penjualan'] == "") {
 	$total_penjualan = 0;
@@ -27,7 +31,11 @@ if ($data_op['total_operasi'] == "") {
 	$total_operasi = 0;
 }
 
-echo $total = $total_penjualan + $total_operasi;
+if ($data_radiologi['harga_radiologi'] == "") {
+	$total_radiologi = 0;
+}
+
+echo $total = $total_penjualan + $total_operasi + $total_radiologi;
 
 
 
