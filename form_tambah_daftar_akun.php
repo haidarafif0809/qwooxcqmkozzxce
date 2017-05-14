@@ -56,14 +56,14 @@
 
 					<option value="">--Kategori Akun--</option>	
 
-					<option value="Aktiva">Aktiva</option>	
-					<option value="Kewajiban">Kewajiban</option>	
-					<option value="Modal">Modal</option>	
-					<option value="Pendapatan">Pendapatan</option>	
-					<option value="HPP">HPP</option>	
-					<option value="Biaya">Biaya</option>
-					<option value="HPP">Pendapatan Lain</option>	
-					<option value="Biaya">Biaya Lain</option>	
+					<option>Aktiva</option>	
+					<option>Kewajiban</option>	
+					<option>Modal</option>	
+					<option>Pendapatan</option>	
+					<option>HPP</option>	
+					<option>Biaya</option>
+					<option>Pendapatan Lain</option>	
+					<option>Biaya Lain</option>	
 
 					</select>
 					</div>
