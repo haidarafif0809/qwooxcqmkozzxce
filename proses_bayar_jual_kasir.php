@@ -385,7 +385,7 @@ else
         else{
         $insert_on = $db->query("INSERT INTO hasil_lab (satuan_nilai_normal,model_hitung,no_faktur, id_pemeriksaan, nilai_normal_lk, nilai_normal_pr, status_pasien,nama_pemeriksaan, nama_pasien, status,no_rm,no_reg,kode_barang,nilai_normal_lk2,nilai_normal_pr2) VALUES 
           ('$satuan_nilai_normal','$model_hitung','$no_faktur','$id_pemeriksaan',
-          '$hasil_pria','$hasil_wanita','UGD','$out_tbs[nama_barang]',
+          '$hasil_pria','$hasil_wanita','Rawat Jalan','$out_tbs[nama_barang]',
           '$nama_pasien','Unfinish','$no_rm','$no_reg','$out_tbs[kode_barang]',
           '$hasil_pria2','$hasil_wanita2')");
       
