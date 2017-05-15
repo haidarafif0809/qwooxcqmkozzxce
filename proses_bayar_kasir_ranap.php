@@ -19,20 +19,17 @@ $biaya_admin = angkadoang($_POST['biaya_adm']);
 
 
 // menampilakn hasil penjumlah subtotal ALIAS total penjualan dari tabel tbs_penjualan berdasarkan data no faktur
- $query121 = $db->query("SELECT SUM(subtotal) AS total_penjualan FROM tbs_penjualan WHERE no_reg = '$no_reg'");
- $data43 = mysqli_fetch_array($query121);
- $total_ss = $data43['total_penjualan'];
+ $query_tbs_penjualan = $db->query("SELECT SUM(subtotal) AS total_penjualan FROM tbs_penjualan WHERE no_reg = '$no_reg'");
+ $data_tbs_penjualan = mysqli_fetch_array($query_tbs_penjualan);
+ $total_penjualan = $data_tbs_penjualan['total_penjualan'];
 
+ $query_operasi = $db->query("SELECT SUM(harga_jual) AS harga_jual FROM tbs_operasi WHERE no_reg = '$no_reg'");
+ $data_operasi = mysqli_fetch_array($query_operasi);
 
-// menampilakn hasil penjumlah subtotal ALIAS total penjualan dari tabel tbs_penjualan berdasarkan data no faktur
- $query212 = $db->query("SELECT SUM(harga_jual) AS harga_jual FROM tbs_operasi WHERE no_reg = '$no_reg'");
- $data2 = mysqli_fetch_array($query212);
- $total_operasi = $data2['harga_jual'];
+ $sum_harga = $db->query("SELECT SUM(subtotal) AS harga_radiologi FROM tbs_penjualan_radiologi WHERE no_reg = '$no_reg' AND status_periksa = '1' AND no_faktur IS NULL");
+ $data_radiologi= mysqli_fetch_array($sum_harga);
 
- $total_sum = ($total_ss + $total_operasi);
-
-
-$total_tbs = ($total_sum - $potongan) + $biaya_admin;
+ $total_tbs = ($total_penjualan - $potongan) + $biaya_admin + $data_operasi['harga_jual'] + $data_radiologi['harga_radiologi'];
 
 if ($total != $total_tbs) {
     echo 1;
@@ -327,6 +324,19 @@ $no_jurnal = no_jurnal();
         
       }
 
+//INSERT DARI TBS PENJUALAN RADIOLOGI KE HASIL PEMERIKSAAN RADIOLOGI
+        $insert_hasil_radiologi = "INSERT INTO hasil_pemeriksaan_radiologi (no_faktur, no_reg, kode_barang, nama_barang, jumlah_barang, harga, subtotal, potongan, tax, foto, tipe_barang, tanggal, jam, radiologi, kontras, dokter_pengirim, dokter_pelaksana, dokter_periksa, status_periksa, status_simpan, keterangan) SELECT '$no_faktur', no_reg, kode_barang, nama_barang, jumlah_barang, harga, subtotal, potongan, tax, foto, tipe_barang, tanggal, jam, radiologi, kontras, dokter_pengirim, dokter_pelaksana, dokter_periksa, status_periksa, status_simpan, keterangan FROM tbs_penjualan_radiologi WHERE no_reg = '$no_reg'";
+
+          if ($db->query($insert_hasil_radiologi) === TRUE) {
+          
+            }
+
+          else {
+              echo "Error: " . $insert_hasil_radiologi . "<br>" . $db->error;
+            }
+
+//INSERT DARI TBS PENJUALAN RADIOLOGI KE HASIL PEMERIKSAAN RADIOLOGI
+
 
 // START INSERT KE HASIL LABORATORIUM
 // update no_faktur di hasil_lab and insert ke hasil lab
@@ -336,8 +346,7 @@ if($out_lab > 0 ){
 
   $update_hasilnya = $db->query("UPDATE hasil_lab SET no_faktur = '$no_faktur' WHERE no_reg = '$no_reg'");
 }
-else
-{
+else{
   // Cek dulu setting, jika tidak di hubungkan akan jalankan ini
   $cek_setting = $db->query("SELECT nama FROM setting_laboratorium");
   $get = mysqli_fetch_array($cek_setting);
@@ -345,7 +354,7 @@ else
   if($hasil == 0){
 
     //ambil di tbs penjualan jasa labnya
-    $taked_tbs = $db->query("SELECT kode_barang,nama_barang FROM tbs_penjualan WHERE no_reg = '$no_reg' AND lab = 'Laboratorium'");
+    $taked_tbs = $db->query("SELECT kode_barang,nama_barang,lab_ke_berapa FROM tbs_penjualan WHERE no_reg = '$no_reg' AND lab = 'Laboratorium'");
     while ($out_tbs = mysqli_fetch_array($taked_tbs))
     {
       //cek ID jasa laboratoriumnya
@@ -361,8 +370,7 @@ else
         if($id_indux == $id_pemeriksaan){
 
         }
-        else
-        {
+        else{
         
         $cek_hasil = $db->query("SELECT id,normal_lk2,normal_pr2,normal_lk,
         normal_pr,model_hitung,satuan_nilai_normal FROM setup_hasil 
@@ -387,29 +395,26 @@ else
 
         }
         else{
-        $insert_on = $db->query("INSERT INTO hasil_lab (satuan_nilai_normal,model_hitung,no_faktur, id_pemeriksaan, nilai_normal_lk, nilai_normal_pr, status_pasien,nama_pemeriksaan, nama_pasien, status,no_rm,no_reg,kode_barang,nilai_normal_lk2,nilai_normal_pr2) VALUES 
+        $insert_on = $db->query("INSERT INTO hasil_lab (satuan_nilai_normal,model_hitung,no_faktur, id_pemeriksaan, nilai_normal_lk, nilai_normal_pr, status_pasien,nama_pemeriksaan, nama_pasien, status,no_rm,no_reg,kode_barang,nilai_normal_lk2,nilai_normal_pr2,lab_ke_berapa,tanggal,jam) VALUES 
           ('$satuan_nilai_normal','$model_hitung','$no_faktur','$id_pemeriksaan',
-          '$hasil_pria','$hasil_wanita','UGD','$out_tbs[nama_barang]',
+          '$hasil_pria','$hasil_wanita','Rawat Jalan','$out_tbs[nama_barang]',
           '$nama_pasien','Unfinish','$no_rm','$no_reg','$out_tbs[kode_barang]',
-          '$hasil_pria2','$hasil_wanita2')");
-      
-       
-
+          '$hasil_pria2','$hasil_wanita2','$out_tbs[lab_ke_berapa]','$tanggal_sekarang','$jam_sekarang')");
 
         } 
       }
     }
-
 
 //selesai untuk yang tidak memiliki Header / Ibu
 //NOTE* BAGIAN ATAS INSERT DARI TBS , DAN BAGIAN BAWAH INSERT DETAIL YANG INDUX (HEADER)-NYA ADA DI TBS PENJUALAN !!
 
 //START Proses untuk input Header and Detail Jasa Laboratorium
 //Ambil setup hasil yang nama pemeriksaaannya (id) sama dengan id di jasa_lab dan di setup hasilnya Header (Indux)
-$perintah = $db->query("SELECT kode_barang FROM tbs_penjualan WHERE no_reg = '$no_reg' AND lab = 'Laboratorium'");
+$perintah = $db->query("SELECT kode_barang,lab_ke_berapa FROM tbs_penjualan WHERE no_reg = '$no_reg' AND lab = 'Laboratorium'");
 while($data = mysqli_fetch_array($perintah)){
 
-  $kode_barang = $data_tbs_penjualan['kode_barang'];
+  $kode_barang = $data['kode_barang'];
+  $lab_ke_berapa = $data['lab_ke_berapa'];
 
   $cek_id_pemeriksaan = $db->query("SELECT id FROM jasa_lab WHERE kode_lab = '$kode_barang'");
   $out = mysqli_fetch_array($cek_id_pemeriksaan);
@@ -439,10 +444,11 @@ while($data = mysqli_fetch_array($perintah)){
   else{
 
   $insert_anaknya = "INSERT INTO hasil_lab (no_faktur,satuan_nilai_normal,
-  model_hitung,no_rm,no_reg,id_pemeriksaan,nilai_normal_lk,nilai_normal_pr,status_pasien,nama_pemeriksaan,id_sub_header,nilai_normal_lk2,nilai_normal_pr2,kode_barang,status,nama_pasien) VALUES ('$no_faktur','$drop[satuan_nilai_normal]','$drop[model_hitung]',
+  model_hitung,no_rm,no_reg,id_pemeriksaan,nilai_normal_lk,nilai_normal_pr,status_pasien,nama_pemeriksaan,id_sub_header,nilai_normal_lk2,nilai_normal_pr2,kode_barang,status,nama_pasien,lab_ke_berapa,tanggal,jam) VALUES ('$no_faktur','$drop[satuan_nilai_normal]','$drop[model_hitung]',
   '$no_rm','$no_reg','$drop[nama_pemeriksaan]','$drop[normal_lk]',
   '$drop[normal_pr]','$jenis_penjualan','$nama_jasa_anak','$id_mother',
-  '$drop[normal_lk2]','$drop[normal_pr2]','$kode_barang','Unfinish','$nama_pasien')";
+  '$drop[normal_lk2]','$drop[normal_pr2]','$kode_barang','Unfinish','$nama_pasien','$lab_ke_berapa',
+  '$tanggal_sekarang','$jam_sekarang')";
 
       if ($db->query($insert_anaknya) === TRUE)
       {
@@ -463,7 +469,6 @@ while($data = mysqli_fetch_array($perintah)){
 } // else jika setting nya bayar dulu baru input hasil
 //Ending Proses untuk input Header and Detail Jasa Laboratorium
 // ENDING INSERT KE HASIL LABORATORIUM
-
 
             $pembayaran = stringdoang($_POST['pembayaran']);
             $total = stringdoang($_POST['total']);
@@ -798,7 +803,7 @@ $query = $db->query("UPDATE bed SET sisa_bed = sisa_bed + 1 WHERE nama_kamar = '
 
     $tbs_penjualan_hapus = $db->query("DELETE  FROM tbs_penjualan WHERE no_reg = '$no_reg' ");
     $tbs_fee_hapus = $db->query("DELETE  FROM tbs_fee_produk WHERE no_reg = '$no_reg' ");
-
+    $tbs_penjualan_radiologi_hapus = $db->query("DELETE FROM tbs_penjualan_radiologi WHERE no_reg = '$no_reg' ");
     $tbs_detail_operasi_hapuss = $db->query("DELETE  FROM tbs_operasi WHERE no_reg = '$no_reg'");
     $tbs_operasi_hapuss = $db->query("DELETE  FROM tbs_detail_operasi WHERE no_reg = '$no_reg'");
 

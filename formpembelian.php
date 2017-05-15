@@ -382,6 +382,9 @@ $no_faktur = $nomor."/JL/".$data_bulan_terakhir."/".$tahun_terakhir;
 
           <input type="hidden" id="id_produk" name="id_produk" class="form-control" value="" placeholder="Id Produk" required="">
 
+<!-- UNTUK PERINGTAN AJIKA HARGA BELI YANG DIUBAH LEBI BESAR DARI HARGA JUAL -->
+          <input type="hidden" id="harga_jual" name="harga_jual" class="form-control" placeholder="Harga Jual" required="">
+
  
   </form>
       
@@ -628,6 +631,7 @@ $no_faktur = $nomor."/JL/".$data_bulan_terakhir."/".$tahun_terakhir;
   document.getElementById("id_produk").value = $(this).attr('id-barang');
   document.getElementById("harga_baru").value = $(this).attr('harga');
   document.getElementById("jumlahbarang").value = $(this).attr('jumlah-barang');
+  document.getElementById("harga_jual").value = $(this).attr('harga_jual');
 
 
     var session_id = $("#session_id").val();
@@ -691,6 +695,7 @@ $no_faktur = $nomor."/JL/".$data_bulan_terakhir."/".$tahun_terakhir;
     $("#limit_stok").val(limit_stok);
     $("#ber_stok").val(ber_stok);
     $("#id_produk").val(id_barang);
+    $("#harga_jual").val(harga_jual);
 
 if (ber_stok == 'Barang') {
 
@@ -723,6 +728,34 @@ $.post('cek_kode_barang_tbs_pembelian.php',{kode_barang:kode_barang,session_id:s
   });
   });
 
+</script>
+
+<script type="text/javascript">
+  $(document).on('keyup', '#harga_baru', function () {
+
+    var harga_baru = $("#harga_baru").val();
+    var harga_produk = $("#harga_produk").val();
+    var harga_jual = $("#harga_jual").val();
+    var kode_barang = $("#kode_barang").val();
+    var nama_barang = $("#nama_barang").val();
+    if (harga_jual == "") {
+      harga_jual = 0;
+    }
+
+    var selisih_harga = parseInt(harga_jual,10) - parseInt(harga_baru,10);
+
+    if (selisih_harga < 0) {
+        var pesan_alert = confirm("Total Harga '"+nama_barang+"' Lebih Besar Dari Harga Jual. Tetap Lanjutkan ?");
+          
+          if (pesan_alert == true) {
+            $("#harga_baru").val(harga_baru);
+          }
+          else{
+            $("#harga_baru").val(harga_produk);
+          }            
+      }
+
+  });
 </script>
 
 <script>
@@ -2087,6 +2120,7 @@ $.post('cek_jumlah_kas1.php', {cara_bayar : cara_bayar}, function(data) {
               $(nRow).attr('jumlah-barang', aData[3]);
               $(nRow).attr('kategori', aData[5]);
               $(nRow).attr('suplier', aData[6]);
+              $(nRow).attr('harga_jual', aData[10]);
 
 
             }

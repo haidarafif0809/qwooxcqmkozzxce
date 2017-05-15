@@ -29,7 +29,7 @@ if (!$perintah)
 }
 else 
 {
- echo '<META HTTP-EQUIV="Refresh" Content="0; URL=daftar_akun.php?kategori=semua">';
+ echo '<META HTTP-EQUIV="Refresh" Content="0; URL=daftar_akun.php?kategori='.$kategori_akun.'">';
 }
 
 //Untuk Memutuskan Koneksi Ke Database

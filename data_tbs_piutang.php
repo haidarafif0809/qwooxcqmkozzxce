@@ -5,7 +5,7 @@ include 'db.php';
 
 /* Database connection end */
 
-$penjamin = stringdoang($_POST['penjamin']);
+$session_id = stringdoang($_POST['session_id']);
 
 // storing  request (ie, get/post) global array to a variable  
 $requestData= $_REQUEST;
@@ -15,46 +15,32 @@ $requestData= $_REQUEST;
 $columns = array( 
 // datatable column index  => database column name
 
-    0=>'no_faktur', 
-    1=>'kode_pelanggan',
-    2=>'total',
-    3=>'tanggal',
-    4=>'tanggal_jt',
-    5=>'jam',
-    6=>'user',
-    7=>'status', 
-    8=>'potongan',
-    9=>'tax',
-    10=>'sisa',
-    11=>'kredit' 
+    0=>'id', 
+    1=>'no_faktur_penjualan',
+    2=>'tanggal',
+    3=>'tanggal_jt',
+    4=>'kredit',
+    5=>'potongan',
+    6=>'total',
+    7=>'jumlah_bayar'   
+
 );
 
 // getting total number records without any search
-if ($penjamin == "") {
-  $sql =" SELECT id, no_faktur, kode_pelanggan, total, tanggal, tanggal_jt, jam, user, status, potongan, tax, sisa, kredit ";
-  $sql.=" FROM penjualan WHERE kredit != 0";
-}
-else{  
-  $sql =" SELECT id, no_faktur, kode_pelanggan, total, tanggal, tanggal_jt, jam, user, status, potongan, tax, sisa, kredit ";
-  $sql.=" FROM penjualan WHERE penjamin = '$penjamin' AND kredit != 0";
-}
+$sql =" SELECT id, no_faktur_penjualan, tanggal, tanggal_jt, kredit, potongan, total, jumlah_bayar ";
+$sql.=" FROM tbs_pembayaran_piutang WHERE session_id = '$session_id'";
 
 $query = mysqli_query($conn, $sql) or die("eror 1");
 $totalData = mysqli_num_rows($query);
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
-if ($penjamin == "") {
-  $sql =" SELECT id, no_faktur, kode_pelanggan, total, tanggal, tanggal_jt, jam, user, status, potongan, tax, sisa, kredit ";
-  $sql.=" FROM penjualan WHERE kredit != 0";
-}
-else{  
-  $sql =" SELECT id, no_faktur, kode_pelanggan, total, tanggal, tanggal_jt, jam, user, status, potongan, tax, sisa, kredit ";
-  $sql.=" FROM penjualan WHERE penjamin = '$penjamin' AND kredit != 0";
-}
+$sql =" SELECT id, no_faktur_penjualan, tanggal, tanggal_jt, kredit, potongan, total, jumlah_bayar ";
+$sql.=" FROM tbs_pembayaran_piutang WHERE session_id = '$session_id'";
 
-    $sql.=" AND (no_faktur LIKE '".$requestData['search']['value']."%'";  
-    $sql.=" OR kode_pelanggan LIKE '".$requestData['search']['value']."%' )";
+    $sql.=" AND (no_faktur_penjualan LIKE '".$requestData['search']['value']."%'";  
+    $sql.=" OR tanggal LIKE '".$requestData['search']['value']."%' ";
+    $sql.=" OR tanggal_jt LIKE '".$requestData['search']['value']."%' )";
 
 
     $query=mysqli_query($conn, $sql) or die("eror 2");
@@ -77,22 +63,17 @@ $data = array();
 while( $row = mysqli_fetch_array($query) ) {  // preparing an array
   $nestedData = array();
 
-  $query_pelanggan = $db_pasien->query("SELECT nama_pelanggan FROM pelanggan WHERE kode_pelanggan = '$row[kode_pelanggan]'");
-  $data_pelanggan = mysqli_fetch_array($query_pelanggan);
-
-      $nestedData[] = $row["no_faktur"];
-      $nestedData[] = $row["kode_pelanggan"];
-      $nestedData[] = $data_pelanggan["nama_pelanggan"];
-      $nestedData[] = $row["total"];
+      $nestedData[] = $row["no_faktur_penjualan"];
       $nestedData[] = $row["tanggal"];
       $nestedData[] = $row["tanggal_jt"];
-      $nestedData[] = $row["jam"];
-      $nestedData[] = $row["user"];
-      $nestedData[] = $row["status"];
-      $nestedData[] = rp($row["potongan"]);
-      $nestedData[] = rp($row["tax"]);
-      $nestedData[] = rp($row["sisa"]);
       $nestedData[] = rp($row["kredit"]);
+      $nestedData[] = rp($row["potongan"]);
+      $nestedData[] = rp($row["total"]);
+      $nestedData[] = rp($row["jumlah_bayar"]);
+
+      $nestedData[] = "<p> <button class='btn btn-sm btn-danger btn-hapus' data-id='". $row['id'] ."' data-faktur='". $row['no_faktur_penjualan'] ."' data-piutang='". $row['kredit'] ."' data-jumlah-bayar='". $row['jumlah_bayar'] ."'> <span class='glyphicon glyphicon-trash'> </span> Hapus </button> </p>";
+      $nestedData[] = "<p> <button class='btn btn-sm btn-success btn-edit-tbs' data-id='". $row['id'] ."' data-kredit='". $row['kredit'] ."' data-jumlah-bayar='". $row['jumlah_bayar'] ."' data-no-faktur-penjualan='". $row['no_faktur_penjualan'] ."' data-potongan='". $row['potongan'] ."'> <span class='glyphicon glyphicon-edit'> </span> Edit </button> </p>";
+
       $nestedData[] = $row["id"];
 
   $data[] = $nestedData;

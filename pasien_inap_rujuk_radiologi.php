@@ -28,7 +28,7 @@ $columns = array(
 // getting total number records without any search
 $sql = "SELECT r.no_reg, r.no_rm, r.nama_pasien, r.jenis_pasien, r.tanggal, r.penjamin, r.poli, r.dokter, r.id, u.id  AS id_dokter, tpr.dokter_periksa";
 $sql.=" FROM registrasi r LEFT JOIN user u ON r.dokter = u.nama INNER JOIN tbs_penjualan_radiologi tpr ON r.no_reg = tpr.no_reg LEFT JOIN penjualan penj ON r.no_reg = penj.no_reg ";
-$sql.=" WHERE (r.status = 'Proses' OR r.status = 'Rujuk Keluar Ditangani') AND penj.no_faktur IS NULL GROUP BY r.no_reg";
+$sql.=" WHERE r.jenis_pasien = 'Rawat Inap' AND r.status = 'menginap' AND r.status != 'Batal Rawat Inap' AND penj.no_faktur IS NULL GROUP BY r.no_reg";
 
 $query = mysqli_query($conn, $sql) or die("eror 1");
 $totalData = mysqli_num_rows($query);
@@ -36,16 +36,16 @@ $totalData = mysqli_num_rows($query);
 
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
-
 $sql = "SELECT r.no_reg, r.no_rm, r.nama_pasien, r.jenis_pasien, r.tanggal, r.penjamin, r.poli, r.dokter, r.id, u.id  AS id_dokter, tpr.dokter_periksa";
 $sql.=" FROM registrasi r LEFT JOIN user u ON r.dokter = u.nama INNER JOIN tbs_penjualan_radiologi tpr ON r.no_reg = tpr.no_reg LEFT JOIN penjualan penj ON r.no_reg = penj.no_reg ";
-$sql.=" WHERE (r.status = 'Proses' OR r.status = 'Rujuk Keluar Ditangani') AND penj.no_faktur IS NULL";
+$sql.=" WHERE r.jenis_pasien = 'Rawat Inap' AND r.status = 'menginap' AND r.status != 'Batal Rawat Inap' AND penj.no_faktur IS NULL ";
     $sql.=" AND (r.no_reg = '".$requestData['search']['value']."'";  
     $sql.=" OR r.no_rm = '".$requestData['search']['value']."' ";
     $sql.=" OR r.nama_pasien LIKE '".$requestData['search']['value']."%' )";
     $sql.=" GROUP BY r.no_reg ";
 
 }
+
 
 
 $query=mysqli_query($conn, $sql) or die("eror 2");

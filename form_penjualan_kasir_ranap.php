@@ -154,7 +154,7 @@ padding-right: 5%;
 
 <input type="hidden" readonly="" style="font-size:15px; height:15px" name="total_operasi" id="total_operasi" value="" class="form-control" >
 
-<div class="col-xs-2">
+<div class="col-xs-1">
 <label>Bed  </label>
 <input type="text" readonly="" style="font-size:15px; height:15px" name="bed" id="bed"  value="" class="form-control" >
 </div>
@@ -167,7 +167,7 @@ padding-right: 5%;
 
 </div> 
 
-<div class="col-xs-2">
+<div class="col-xs-3">
 <label>Dokter Pelaksana</label>
 <select style="font-size:15px; height:35px" name="dokter" id="dokter" class="form-control chosen" >
 
@@ -192,7 +192,7 @@ padding-right: 5%;
 
 
 
-<div class="col-xs-2">
+<div class="col-xs-3">
 <label>Petugas Paramedik</label>
 <select style="font-size:15px; height:35px" name="petugas_paramedik" id="petugas_paramedik" class="form-control chosen" >
 <option value="">Cari Petugas</option>
@@ -379,7 +379,8 @@ padding-right: 5%;
 <button type="button" class="btn btn-warning" id="cari_pasien" data-toggle="modal" data-target="#modal_reg"><i class="fa fa-user"></i> Cari Pasien (Alt + P)</button>
 
 
-<a href="form_penjualan_lab.php" id="btnRujukLab" class="btn btn-default" style="display: none"> <i class="fa fa-flask"></i> Rujuk Lab</a>  
+<a href="form_penjualan_lab.php" id="btnRujukLab" class="btn btn-default" style="display: none"> <i class="fa fa-flask"></i> Rujuk Lab</a>
+<a href="form_pemeriksaan_radiologi.php" id="btnRujukRadiologi" class="btn btn-purple" style="display: none" target=""> <i class="fa fa-universal-access"></i> Rujuk Radiologi</a>  
 <button type="button" class="btn btn-danger" id="btnRefreshsubtotal"> <i class='fa fa-refresh'></i> Refresh Subtotal</button>
 <button type="button" class="btn btn-success" id="btn-kamar" data-toggle="modal" ><i class="fa fa-search"></i> Cari Kamar (Alt + O)</button>
 
@@ -858,10 +859,13 @@ Operasi  </button>
 <button class="btn btn-primary" type="button" id="btnLab" data-toggle="collapse" data-target="#collapseExampleLab" aria-expanded="false" aria-controls="collapseExampleLab"><i class='fa fa-stethoscope'> </i>
 Laboratorium  </button>
 
+<button class="btn btn-primary" id="btnRadiologi" type="button" data-toggle="collapse" data-target="#collapseExampleRadiologi" aria-expanded="false" aria-controls="collapseExample"><i class='fa fa-universal-access'> </i>
+Radiologi  </button>
 
 
              <div class="collapse" id="collapseExample">
               <span id="span_operasi">
+              <h5><b><u>Operasi</u></b></h5>
                   <div class="table-responsive">
                     <table id="tabel_tbs_operasi" class="table table-bordered table-sm">
                           <thead> <!-- untuk memberikan nama pada kolom tabel -->
@@ -880,12 +884,11 @@ Laboratorium  </button>
               </span>
             </div>
 
-<hr>
-<hr>
 
 
             <div class="collapse" id="collapseExampleLab">
               <span id="span_lab">
+              <h5><b><u>Laboratorium</u></b></h5>
                   <div class="table-responsive">
                     <table id="tabel_tbs_lab" class="table table-bordered table-sm">
                           <thead> <!-- untuk memberikan nama pada kolom tabel -->
@@ -899,6 +902,31 @@ Laboratorium  </button>
                               <th> Potongan </th>
                               <th> Pajak </th>
                               <th> Tanggal </th>
+                          </thead> <!-- tag penutup tabel -->
+                    </table>
+                  </div>
+              </span>
+            </div>
+
+
+            <div class="collapse" id="collapseExampleRadiologi">
+              <span id="span_radiologi">
+              <h5><b><u>Radiologi</u></b></h5>
+                  <div class="table-responsive">
+                    <table id="tabel_tbs_radiologi" class="table table-bordered table-sm">
+                          <thead> <!-- untuk memberikan nama pada kolom tabel -->
+                              
+                              <th> Kode  </th>
+                              <th> Nama </th>
+                              <th> Dokter Pengirim </th>
+                              <th style="text-align: right" > Jumlah </th>
+                              <th style="text-align: right" > Harga </th>
+                              <!--
+                              <th style="text-align: right" > Potongan </th>
+                              <th style="text-align: right" > Pajak </th>
+                              -->
+                              <th style="text-align: right" > Subtotal </th>
+                          
                           </thead> <!-- tag penutup tabel -->
                     </table>
                   </div>
@@ -1630,6 +1658,7 @@ $(document).ready(function(){
         $("#span_tbs_obat").show()
         $("#span_tbs_jasa").show()
         $("#btnRujukLab").show()
+        $("#btnRujukRadiologi").show()
         $('#pembayaran_penjualan').val('');
         $('#biaya_adm').val('');
         $('#biaya_admin_select').val('0');
@@ -2329,6 +2358,7 @@ alert("Silakan Bayar Piutang");
                           $('#span_lab').hide();
                           $("#disc_tbs").val('');
                           $('#span_operasi').hide();
+                          $('#span_radiologi').hide();
                           $("#dosis_obat").val('');
                           $("#col_dosis").hide();
          
@@ -2495,7 +2525,7 @@ alert("Silakan Isi Kolom Pembayaran  atau lakukan Bayar Piutang");
 
              if (result.status == 0) {// if (result.status == 0) {
 
-                            $.post("proses_bayar_kasir_ranap.php",{total2:total2,sisa_pembayaran:sisa_pembayaran,kredit:kredit,no_rm:no_rm,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,cara_bayar:cara_bayar,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,total_hpp:total_hpp,harga:harga,sales:sales,kode_gudang:kode_gudang,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,nama_pasien:nama_pasien,no_reg:no_reg,dokter:dokter,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugass_lain:petugas_lain,penjamin:penjamin,bed:bed,group_bed:group_bed,biaya_adm:biaya_adm,analis:analis},function(info) {//  $.post("proses_bayar_kasir_ranap.php
+                            $.post("proses_bayar_kasir_ranap.php",{total2:total2,sisa_pembayaran:sisa_pembayaran,kredit:kredit,no_rm:no_rm,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,cara_bayar:cara_bayar,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,total_hpp:total_hpp,harga:harga,sales:sales,kode_gudang:kode_gudang,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,nama_pasien:nama_pasien,no_reg:no_reg,dokter:dokter,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,penjamin:penjamin,bed:bed,group_bed:group_bed,biaya_adm:biaya_adm,analis:analis},function(info) {//  $.post("proses_bayar_kasir_ranap.php
 
                                     if (info == 1)
                                     {//   if (info == 1)
@@ -2533,6 +2563,7 @@ alert("Silakan Isi Kolom Pembayaran  atau lakukan Bayar Piutang");
                                     $("#span_tbs_jasa").hide();
                                     $('#span_lab').hide();
                                     $('#span_operasi').hide();
+                                    $('#span_radiologi').hide();
                                     $("#dosis_obat").val('');
                                     $("#col_dosis").hide();
 
@@ -3177,6 +3208,7 @@ else
                                     $("#span_tbs_jasa").hide();
                                     $('#span_lab').hide();
                                     $('#span_operasi').hide();
+                                    $('#span_radiologi').hide();
                                     $("#dosis_obat").val('');
                                     $("#disc_tbs").val('');
                                     $("#col_dosis").hide();
@@ -4633,12 +4665,14 @@ else
                           $("#cetak_tunai_besar").hide();
                           $("#cetak_piutang").hide();
                           $("#cetak_tunai_kategori").hide(); 
-                          $("#btnRujukLab").hide();    
+                          $("#btnRujukLab").hide();   
+                          $("#btnRujukRadiologi").hide() 
                           $('#span_tbs_kamar').hide(); 
                           $('#span_tbs_obat').hide(); 
                           $('#span_tbs_jasa').hide();
                           $('#span_lab').hide();            
-                          $('#span_operasi').hide();
+                          $('#span_operasi').hide();        
+                          $('#span_radiologi').hide();
 
                           var url = window.location.href;
                            url = getPathFromUrl(url);
@@ -4699,40 +4733,9 @@ else
   $(document).ready(function(){
     $(document).on('click','#transaksi_baru',function(e){
 
-       $('#tabel_cari_pasien').DataTable().destroy();
-        var dataTable = $('#tabel_cari_pasien').DataTable( {
-          "processing": true,
-          "serverSide": true,
-          "ajax":{
-            url :"modal_pasien_penjualan_inap.php", // json datasource
-            type: "post",  // method  , by default get
-            error: function(){  // error handling
-              $(".employee-grid-error").html("");
-              $("#tabel_cari_pasien").append('<tbody class="employee-grid-error"><tr><th colspan="3">Data Tidak Ditemukan.. !!</th></tr></tbody>');
-              $("#employee-grid_processing").css("display","none");
-              
-            }
-          },
-
-          "fnCreatedRow": function( nRow, aData, iDataIndex ) {
-
-              $(nRow).attr('class', "pilih-reg");
-              $(nRow).attr('no_reg', aData[0]);
-              $(nRow).attr('no_rm', aData[1]+" | "+aData[2]+"");
-              $(nRow).attr('nama_pasien', aData[2]);
-              $(nRow).attr('penjamin', aData[5]);
-              $(nRow).attr('poli', aData[6]);
-              $(nRow).attr('dokter', aData[7]);
-              $(nRow).attr('dokter_pj', aData[8]);
-              $(nRow).attr('bed', aData[9]);
-              $(nRow).attr('kamar', aData[10]);
-              $(nRow).attr('id_ruangan', aData[14]);
-              $(nRow).attr('ruangan', aData[13]);
-              $(nRow).attr('level_harga', aData[11]);
-
-          }
-
-        });  
+      var tabel_cari_pasien = $('#tabel_cari_pasien').DataTable();
+          tabel_cari_pasien.draw();
+         
 
             $("#bed").val('');
             $("#kamar").val('');
@@ -4766,12 +4769,14 @@ else
             $("#cetak_tunai_besar").hide();
             $("#cetak_piutang").hide();
             $("#cetak_tunai_kategori").hide(); 
-            $("#btnRujukLab").hide();    
+            $("#btnRujukLab").hide();  
+            $("#btnRujukRadiologi").hide()  
             $('#span_tbs_kamar').hide(); 
             $('#span_tbs_obat').hide(); 
             $('#span_tbs_jasa').hide();
             $('#span_lab').hide();            
             $('#span_operasi').hide();
+            $('#span_radiologi').hide();
 
             var url = window.location.href;
              url = getPathFromUrl(url);
@@ -5119,83 +5124,16 @@ $(document).ready(function(){
         $.get("batal_penjualan_ranap.php",{no_reg:no_reg},function(data){
 
           //KAMAR
-              $('#tabel_tbs_penjualan_kamar').DataTable().destroy();
-                          var dataTable = $('#tabel_tbs_penjualan_kamar').DataTable( {
-                            "processing": true,
-                            "serverSide": true,
-                            "ajax":{
-                              url :"data_tbs_penjualan_inap.php", // json datasource
-                               "data": function ( d ) {
-                                  d.no_reg = $("#no_reg").val();
-                                  // d.custom = $('#myInput').val();
-                                  // etc
-                              },
-                               
-                                type: "post",  // method  , by default get
-                              error: function(){  // error handling
-                                $(".employee-grid-error").html("");
-                                $("#tabel_tbs_penjualan_kamar").append('<tbody class="employee-grid-error"><tr><th colspan="3">No data found in the server</th></tr></tbody>');
-                                $("#employee-grid_processing").css("display","none");
-                                }
-                            },
-                               "fnCreatedRow": function( nRow, aData, iDataIndex ) {
-
-                                $(nRow).attr('class','tr-id-'+aData[11]+'');         
-
-                            }
-                          });
+              var tabel_tbs_penjualan_kamar = $('#tabel_tbs_penjualan_kamar').DataTable();
+                  tabel_tbs_penjualan_kamar.draw();
 
           // OBAT
-
-                $('#tabel_tbs_penjualan_obat').DataTable().destroy();
-                      var dataTable = $('#tabel_tbs_penjualan_obat').DataTable( {
-                      "processing": true,
-                      "serverSide": true,
-                      "info":     false,
-                      "language": { "emptyTable":     "My Custom Message On Empty Table" },
-                      "ajax":{
-                        url :"data_tbs_penjualan_inap_obat.php", // json datasource
-                         "data": function ( d ) {
-                            d.no_reg = $("#no_reg").val();
-                            // d.custom = $('#myInput').val();
-                            // etc
-                        },
-                            type: "post",  // method  , by default get
-                        error: function(){  // error handling
-                          $(".tbody").html("");
-                          $("#tabel_tbs_penjualan_obat").append('<tbody class="tbody"><tr><th colspan="3"></th></tr></tbody>');
-                          $("#tableuser_processing").css("display","none");
-                          
-                        }
-                      }   
-
-                });
+                var tabel_tbs_penjualan_obat = $('#tabel_tbs_penjualan_obat').DataTable();
+                    tabel_tbs_penjualan_obat.draw();
 
           // JASA
-
-                $('#tabel_tbs_penjualan_jasa').DataTable().destroy();
-                      var dataTable = $('#tabel_tbs_penjualan_jasa').DataTable( {
-                      "processing": true,
-                      "serverSide": true,
-                      "info":     false,
-                      "language": { "emptyTable":     "My Custom Message On Empty Table" },
-                      "ajax":{
-                        url :"data_tbs_penjualan_inap_jasa.php", // json datasource
-                         "data": function ( d ) {
-                            d.no_reg = $("#no_reg").val();
-                            // d.custom = $('#myInput').val();
-                            // etc
-                        },
-                            type: "post",  // method  , by default get
-                        error: function(){  // error handling
-                          $(".tbody").html("");
-                          $("#tabel_tbs_penjualan_jasa").append('<tbody class="tbody"><tr><th colspan="3"></th></tr></tbody>');
-                          $("#tableuser_processing").css("display","none");
-                          
-                        }
-                      }   
-
-                });
+                var tabel_tbs_penjualan_jasa = $('#tabel_tbs_penjualan_jasa').DataTable();
+                    tabel_tbs_penjualan_jasa.draw();
 
               
               $("#span_tbs_kamar").show()
@@ -5702,6 +5640,43 @@ $(document).on('dblclick','.edit-waktu-or',function(){
 
 </script>
 
+<script type="text/javascript" language="javascript" >
+
+  $(document).ready(function() {
+    $(document).on('click', '#btnRadiologi', function (e) {
+      $('#tabel_tbs_radiologi').DataTable().destroy();
+            var dataTable = $('#tabel_tbs_radiologi').DataTable( {
+            "processing": true,
+            "serverSide": true,
+            "info":     false,
+            "language": { "emptyTable":     "My Custom Message On Empty Table" },
+            "ajax":{
+              url :"data_tbs_radiologi.php", // json datasource
+               "data": function ( d ) {
+                  d.no_reg = $("#no_reg").val();
+                  // d.custom = $('#myInput').val();
+                  // etc
+              },
+                  type: "post",  // method  , by default get
+              error: function(){  // error handling
+                $(".tbody").html("");
+                $("#tabel_tbs_radiologi").append('<tbody class="tbody"><tr><th colspan="3"></th></tr></tbody>');
+                $("#tableuser_processing").css("display","none");
+                
+              }
+            }   
+
+      });
+        
+        $("#span_radiologi").show()
+
+    });
+
+  });
+
+</script>
+
+
 
 <script type="text/javascript">
     $(document).on('click', '#btnRujukLab', function (e) {
@@ -5715,6 +5690,24 @@ $(document).on('dblclick','.edit-waktu-or',function(){
     var rujukan = 'Rujuk Rawat Inap';
 
         $("#btnRujukLab").attr('href', 'form_penjualan_lab.php?no_rm='+no_rm+'&nama='+nama+'&no_reg='+no_reg+'&dokter='+dokter+'&jenis_penjualan='+jenis_penjualan+'&rujukan='+rujukan+'');
+
+    });
+</script>
+
+<script type="text/javascript">
+    $(document).on('click', '#btnRujukRadiologi', function (e) {
+
+    var no_reg = $("#no_reg").val();
+    var no_rm = $("#no_rm").val();
+    var no_rm = no_rm.substr(0, no_rm.indexOf(' |'));
+    var nama = $("#nama_pasien").val();
+    var dokter = $("#dokter").val();
+    var penjamin = $("#penjamin").val();
+    var jenis_penjualan = 'Rawat Inap';
+    var rujukan = 'Rujuk Rawat Inap';
+
+        $("#btnRujukRadiologi").attr('href', 'form_pemeriksaan_radiologi.php?no_rm='+no_rm+'&nama='+nama+'&no_reg='+no_reg+'&dokter='+dokter+'&jenis_penjualan='+jenis_penjualan+'&rujukan='+rujukan+'&penjamin='+penjamin+'');
+        $("#btnRujukRadiologi").attr('target', '_blank');
 
     });
 </script>
@@ -5896,88 +5889,23 @@ else{
 
 // START DATATABLE AJAX START DATATABLE AJAX START DATATABLE AJAX START DATATABLE AJAX START DATATABLE AJAX START DATATABLE AJAX
 
-//KAMAR
+          //KAMAR
+              var tabel_tbs_penjualan_kamar = $('#tabel_tbs_penjualan_kamar').DataTable();
+                  tabel_tbs_penjualan_kamar.draw();
 
-      $('#tabel_tbs_penjualan_kamar').DataTable().destroy();
-            var dataTable = $('#tabel_tbs_penjualan_kamar').DataTable( {
-            "processing": true,
-            "serverSide": true,
-            "info":     false,
-            "language": { "emptyTable":     "My Custom Message On Empty Table" },
-            "ajax":{
-              url :"data_tbs_penjualan_inap.php", // json datasource
-               "data": function ( d ) {
-                  d.no_reg = $("#no_reg").val();
-                  // d.custom = $('#myInput').val();
-                  // etc
-              },
-                  type: "post",  // method  , by default get
-              error: function(){  // error handling
-                $(".tbody").html("");
-                $("#tabel_tbs_penjualan_kamar").append('<tbody class="tbody"><tr><th colspan="3"></th></tr></tbody>');
-                $("#tableuser_processing").css("display","none");
-                
-              }
-            }   
-
-      });
-
-// OBAT
-
-                $('#tabel_tbs_penjualan_obat').DataTable().destroy();
-                      var dataTable = $('#tabel_tbs_penjualan_obat').DataTable( {
-                      "processing": true,
-                      "serverSide": true,
-                      "info":     false,
-                      "language": { "emptyTable":     "My Custom Message On Empty Table" },
-                      "ajax":{
-                        url :"data_tbs_penjualan_inap_obat.php", // json datasource
-                         "data": function ( d ) {
-                            d.no_reg = $("#no_reg").val();
-                            // d.custom = $('#myInput').val();
-                            // etc
-                        },
-                            type: "post",  // method  , by default get
-                        error: function(){  // error handling
-                          $(".tbody").html("");
-                          $("#tabel_tbs_penjualan_obat").append('<tbody class="tbody"><tr><th colspan="3"></th></tr></tbody>');
-                          $("#tableuser_processing").css("display","none");
-                          
-                        }
-                      }   
-
-                });
+          // OBAT
+                var tabel_tbs_penjualan_obat = $('#tabel_tbs_penjualan_obat').DataTable();
+                    tabel_tbs_penjualan_obat.draw();
 
           // JASA
-
-                $('#tabel_tbs_penjualan_jasa').DataTable().destroy();
-                      var dataTable = $('#tabel_tbs_penjualan_jasa').DataTable( {
-                      "processing": true,
-                      "serverSide": true,
-                      "info":     false,
-                      "language": { "emptyTable":     "My Custom Message On Empty Table" },
-                      "ajax":{
-                        url :"data_tbs_penjualan_inap_jasa.php", // json datasource
-                         "data": function ( d ) {
-                            d.no_reg = $("#no_reg").val();
-                            // d.custom = $('#myInput').val();
-                            // etc
-                        },
-                            type: "post",  // method  , by default get
-                        error: function(){  // error handling
-                          $(".tbody").html("");
-                          $("#tabel_tbs_penjualan_jasa").append('<tbody class="tbody"><tr><th colspan="3"></th></tr></tbody>');
-                          $("#tableuser_processing").css("display","none");
-                          
-                        }
-                      }   
-
-                });
+                var tabel_tbs_penjualan_jasa = $('#tabel_tbs_penjualan_jasa').DataTable();
+                    tabel_tbs_penjualan_jasa.draw();
         
         $("#span_tbs_kamar").show()
         $("#span_tbs_obat").show()
         $("#span_tbs_jasa").show()
         $("#btnRujukLab").show()
+        $("#btnRujukRadiologi").show()
         $('#pembayaran_penjualan').val('');
         $('#biaya_adm').val('');
         $('#biaya_admin_select').val('0');
@@ -6096,40 +6024,8 @@ var penjamin = $("#penjamin").val();
 <script type="text/javascript">
     $(document).on('click','#btnRefreshPasien',function(e){
 
-       $('#tabel_cari_pasien').DataTable().destroy();
-        var dataTable = $('#tabel_cari_pasien').DataTable( {
-          "processing": true,
-          "serverSide": true,
-          "ajax":{
-            url :"modal_pasien_penjualan_inap.php", // json datasource
-            type: "post",  // method  , by default get
-            error: function(){  // error handling
-              $(".employee-grid-error").html("");
-              $("#tabel_cari_pasien").append('<tbody class="employee-grid-error"><tr><th colspan="3">Data Tidak Ditemukan.. !!</th></tr></tbody>');
-              $("#employee-grid_processing").css("display","none");
-              
-            }
-          },
-
-          "fnCreatedRow": function( nRow, aData, iDataIndex ) {
-
-              $(nRow).attr('class', "pilih-reg");
-              $(nRow).attr('no_reg', aData[0]);
-              $(nRow).attr('no_rm', aData[1]+" | "+aData[2]+"");
-              $(nRow).attr('nama_pasien', aData[2]);
-              $(nRow).attr('penjamin', aData[5]);
-              $(nRow).attr('poli', aData[6]);
-              $(nRow).attr('dokter', aData[7]);
-              $(nRow).attr('dokter_pj', aData[8]);
-              $(nRow).attr('bed', aData[9]);
-              $(nRow).attr('kamar', aData[10]);
-              $(nRow).attr('id_ruangan', aData[14]);
-              $(nRow).attr('ruangan', aData[13]);
-              $(nRow).attr('level_harga', aData[11]);
-
-          }
-
-       }); 
+        var tabel_cari_pasien = $('#tabel_cari_pasien').DataTable();
+            tabel_cari_pasien.draw();
 
     }); 
 </script>
