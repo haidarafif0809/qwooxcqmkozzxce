@@ -20,8 +20,8 @@ $columns = array(
 	3 => 'nama_pasien',
 	4 => 'dokter',
 	5 => 'analis',
-	6 => 'status_rawat',
-	7 => 'tanggal',
+	6 => 'status_pasien',
+	7 => 'waktu',
 	8 => 'id'
 
 
@@ -30,21 +30,17 @@ $columns = array(
 
 // getting total number records without any search
 
-$sql = "SELECT us.nama AS dokter, se.nama AS analis,hl.nama_pasien,hl.no_rm,hl.no_faktur,hl.no_reg,hl.nama_pemeriksaan,hl.status,
-	hl.hasil_pemeriksaan,hl.id,hl.status_pasien,hl.tanggal ";
-$sql.= "FROM hasil_lab hl LEFT JOIN user us ON hl.dokter = us.id  LEFT JOIN user se ON hl.petugas_analis = se.id";
-$sql.=" WHERE hl.tanggal >= '$dari_tanggal' AND hl.tanggal <= '$sampai_tanggal'";
-$sql.=" GROUP BY hl.no_reg";
+$sql = " SELECT us.nama AS dokter, se.nama AS analis, hl.nama_pasien, hl.no_rm, hl.no_faktur, hl.no_reg, hl.status, hl.id, hl.status_pasien, 
+	DATE(hl.waktu) AS tanggal FROM pemeriksaan_laboratorium hl LEFT JOIN user us ON hl.dokter = us.id LEFT JOIN user se ON hl.analis = se.id 
+	WHERE DATE(hl.waktu) >= '$dari_tanggal' AND DATE(hl.waktu) <= '$sampai_tanggal' AND hl.status = '1'";
 
 $query=mysqli_query($conn, $sql) or die("1.php: get employees");
 $totalData = mysqli_num_rows($query);
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
-$sql = "SELECT us.nama AS dokter, se.nama AS analis,hl.nama_pasien,hl.no_rm,hl.no_faktur,hl.no_reg,hl.nama_pemeriksaan,hl.status,
-	hl.hasil_pemeriksaan,hl.id,hl.status_pasien,hl.tanggal ";
-$sql.= "FROM hasil_lab hl LEFT JOIN user us ON hl.dokter = us.id LEFT JOIN user se ON hl.petugas_analis = se.id";
-$sql.=" WHERE hl.tanggal >= '$dari_tanggal' AND hl.tanggal <= '$sampai_tanggal'";
-
+$sql = " SELECT us.nama AS dokter, se.nama AS analis, hl.nama_pasien, hl.no_rm, hl.no_faktur, hl.no_reg, hl.status, hl.id, hl.status_pasien,
+	DATE(hl.waktu) AS tanggal  FROM pemeriksaan_laboratorium hl LEFT JOIN user us ON hl.dokter = us.id LEFT JOIN user se ON hl.analis = se.id
+	WHERE DATE(hl.waktu) >= '$dari_tanggal' AND DATE(hl.waktu) <= '$sampai_tanggal' AND hl.status = '1'";
 
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
 	$sql.=" AND ( hl.nama_pasien LIKE '".$requestData['search']['value']."%' ";    
@@ -52,15 +48,14 @@ if( !empty($requestData['search']['value']) ) {   // if there is a search parame
 	$sql.=" OR hl.no_reg LIKE '".$requestData['search']['value']."%' ";    
 	$sql.=" OR hl.no_faktur LIKE '".$requestData['search']['value']."%' ";    
 	$sql.=" OR hl.no_rm LIKE '".$requestData['search']['value']."%' ";    
-	$sql.=" OR hl.tanggal LIKE '".$requestData['search']['value']."%' ";  
-	$sql.=" OR hl.status_pasien LIKE '".$requestData['search']['value']."%' ";
+	$sql.=" OR hl.waktu LIKE '".$requestData['search']['value']."%' "; 
 	$sql.=" OR us.nama LIKE '".$requestData['search']['value']."%' ";    
 	$sql.=" OR se.nama LIKE '".$requestData['search']['value']."%' ";  
-	$sql.=" OR hl.nama_pemeriksaan LIKE '".$requestData['search']['value']."%' )";
+	$sql.=" OR hl.status_pasien LIKE '".$requestData['search']['value']."%' )";
 }
 
 
-$sql.=" GROUP BY hl.no_reg";
+$sql.="ORDER BY hl.waktu DESC";
 
 $query=mysqli_query($conn, $sql) or die("2.php: get employees");
 $totalFiltered = mysqli_num_rows($query); // when there is a search parameter then we have to modify total number filtered rows as per search result. 

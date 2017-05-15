@@ -87,6 +87,18 @@ $query_insert_registrasi->bind_param("ssssssssssssssssi",$no_rm,$no_reg,
 
 $query_insert_registrasi->execute();
 
+//INSERT PEMERIKSAAN
+if($periksa == '1'){	
+	$query_insert_data_periksa = "INSERT INTO pemeriksaan_laboratorium 
+	(no_reg,no_rm,waktu,status,nama_pasien,status_pasien) VALUES 
+	('$no_reg','$no_rm','$waktu','0','$nama_lengkap','APS')";
+		if ($db->query($query_insert_data_periksa) === TRUE){
+
+		}
+		else{
+			echo "Error: " . $query_insert_data_periksa . "<br>" . $db->error;
+	    }
+}
 
 // UPDATE PASIEN NYA
 $query_update_pasien = "UPDATE pelanggan SET 
