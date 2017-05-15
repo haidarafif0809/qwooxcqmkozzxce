@@ -607,6 +607,8 @@ if ($lihat['laboratorium_lihat'] > 0)
 <li ><a class="collapsible-header waves-effect arrow-r"><i class="fa fa-flask"></i>Laboratorium <i class="fa fa-angle-down rotate-icon"></i></a>
     <div class="collapsible-body">
        <ul>
+
+<li><a href="form_input_hasil_lab.php" class="waves-effect" >Input Hasil Laboratorium</a></li>
 <li><a href="lab_bidang.php" class="waves-effect" >Kelompok Bidang</a></li>
 <li><a href="jasa_lab.php" class="waves-effect" >Nama Pemeriksaan</a></li>
 <li><a href="setup_hasil.php" class="waves-effect" >Parameter Laboratorium</a></li>

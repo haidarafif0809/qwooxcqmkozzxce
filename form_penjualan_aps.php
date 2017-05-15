@@ -457,14 +457,20 @@ $.post("cek_subtotal_aps.php",{no_reg:no_reg},function(data){
             var no_reg = $("#no_reg").val();
             $.post("setting_laboratorium_aps.php",{no_reg:no_reg},function(data){
               if(data == 1){
-                $("#penjualan").hide();
-                 $("#simpan_sementara").hide();
-                 $("#batal_penjualan").hide(); 
-                 $("#cetak_langsung").hide();
                  $("#batal_penjualan").show(); 
-                 $("#piutang").hide();
                 alert("Pasien atas nama ("+pasien+") Hasil laboratorium belum di isi!");
 
+                $("#span_tbs_aps").hide();
+                $("#biaya_adm").val('');
+                $("#diskon_rupiah").val('');
+                $("#subtotal").val('');
+                $("#total").val('');
+                $("#no_reg").val('');
+                $("#no_rm").val('');
+                $("#penjualan").hide();
+                $("#simpan_sementara").hide();
+                $("#cetak_langsung").hide();
+                $("#piutang").hide();
               }
               else
               {
