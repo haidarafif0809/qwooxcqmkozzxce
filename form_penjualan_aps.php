@@ -42,6 +42,11 @@ $otoritas_tombol = mysqli_fetch_array($pilih_akses_tombol);
           </div>
 
           <div class="col-xs-2">
+            <label>Jenis Pasien </label>
+            <input style="height:15px" type="text" class="form-control"  id="aps_periksa" name="aps_periksa" value="" readonly="">
+          </div>
+
+          <div class="col-xs-3">
           	<label>Kasir</label>
           	<input style="height:15px;" type="text" class="form-control"  id="petugas_kasir" name="petugas_kasir" value="<?php echo $user; ?>" readonly="">  
           </div>
@@ -75,9 +80,9 @@ $otoritas_tombol = mysqli_fetch_array($pilih_akses_tombol);
 							      <th style='background-color: #4CAF50; color: white'> Tanggal</th>
 							      <th style='background-color: #4CAF50; color: white'> Jam</th>
 
-              <?php if ($otoritas_tombol['hapus_produk'] > 0): ?>
+                    <?php if ($otoritas_tombol['hapus_produk'] > 0): ?>
                     <th style='background-color: #4CAF50; color: white'> Hapus </th>                
-              <?php endif ?>
+                    <?php endif ?>
 							                          
 							    </thead> <!-- tag penutup tabel -->
 							    <tbody class="tbody">
@@ -86,6 +91,7 @@ $otoritas_tombol = mysqli_fetch_array($pilih_akses_tombol);
 							    </table>
 							  </div>
 							</span>  
+
 						<!--Akhir Col SM Ketiga-->
 						</div>
 					<!--(MULAI TOMBOL DAN TABLE TBS APS PENJUALAN)-->
@@ -284,7 +290,7 @@ $otoritas_tombol = mysqli_fetch_array($pilih_akses_tombol);
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
                
-              <h4 class="modal-title">Cari Pasien</h4>
+        <center><h4 class="modal-title"><b>Cari Pasien</b></h4></center>
       </div>
       <div class="modal-body">
 
@@ -292,9 +298,9 @@ $otoritas_tombol = mysqli_fetch_array($pilih_akses_tombol);
             <table id="tabel_cari_pasien" class="table table-bordered table-sm">
                   <thead> <!-- untuk memberikan nama pada kolom tabel -->
                   
-                      <th>No. REG</th>
-                      <th>No. RM</th>
-                      <th>Nama Pasien</th>
+                      <th style="width:50">No. REG</th>
+                      <th style="width:70">No. RM</th>
+                      <th style="width:150">Nama Pasien</th>
                       <th>Jenis Pasien</th>
                       <th>Tanggal</th>
                   
@@ -361,6 +367,7 @@ $(document).ready(function(){
             document.getElementById("no_reg").value = $(this).attr('no_reg');
             document.getElementById("no_rm").value = $(this).attr('no_rm');
             document.getElementById("nama_pasien").value = $(this).attr('nama_pasien');
+            document.getElementById("aps_periksa").value = $(this).attr('aps_periksa');
 
             $('#modal_reg').modal('hide'); 
 
@@ -452,36 +459,76 @@ $.post("cek_subtotal_aps.php",{no_reg:no_reg},function(data){
 });
 //CEK SUBTOTAL + TOTAL
 
-	 //START Cek Hasil Laboratorium
-            var pasien = $("#nama_pasien").val();
-            var no_reg = $("#no_reg").val();
-            $.post("setting_laboratorium_aps.php",{no_reg:no_reg},function(data){
-              if(data == 1){
-                 $("#batal_penjualan").show(); 
-                alert("Pasien atas nama ("+pasien+") Hasil laboratorium belum di isi!");
+	 	//START Cek Hasil Laboratorium
+        var pasien = $("#nama_pasien").val();
+        var no_reg = $("#no_reg").val();
+        var aps_periksa = $("#aps_periksa").val();
 
-                $("#span_tbs_aps").hide();
-                $("#biaya_adm").val('');
-                $("#diskon_rupiah").val('');
-                $("#subtotal").val('');
-                $("#total").val('');
-                $("#no_reg").val('');
-                $("#no_rm").val('');
-                $("#penjualan").hide();
-                $("#simpan_sementara").hide();
-                $("#cetak_langsung").hide();
-                $("#piutang").hide();
-              }
-              else
-              {
+        if(aps_periksa == 'Laboratorium'){
+        //Start Setting Laboratorium
+        $.post("setting_laboratorium_aps.php",{no_reg:no_reg},function(data){
+	        if(data == 1){
+	                
+	        $("#batal_penjualan").show(); 
+	        alert("Pasien atas nama ("+pasien+") Hasil laboratorium belum di isi!");
+
+	                $("#span_tbs_aps").hide();
+	                $("#biaya_adm").val('');
+	                $("#diskon_rupiah").val('');
+	                $("#subtotal").val('');
+	                $("#total").val('');
+	                $("#no_reg").val('');
+	                $("#no_rm").val('');
+	                $("#penjualan").hide();
+	                $("#simpan_sementara").hide();
+	                $("#cetak_langsung").hide();
+	                $("#piutang").hide();
+	        }
+            else
+            {
                  //$("#penjualan").show();
                  //$("#batal_penjualan").show(); 
                  //$("#cetak_langsung").show();
                  //$("#piutang").show();
-              }
-            });
-      //End Cek Hasil Laboratorium
-});
+            }
+        });
+        //Akhir Setting Laboratorium
+
+    	}
+        else{
+        //Start Hasil Radiologi
+        $.post("cek_status_aps_hasil_radiologi.php",{no_reg:no_reg},function(data){
+	        if(data == 1){
+	                
+	        $("#batal_penjualan").show(); 
+	        alert("Pasien atas nama ("+pasien+") Hasil Radiologi belum ada!");
+
+	                $("#span_tbs_aps").hide();
+	                $("#biaya_adm").val('');
+	                $("#diskon_rupiah").val('');
+	                $("#subtotal").val('');
+	                $("#total").val('');
+	                $("#no_reg").val('');
+	                $("#no_rm").val('');
+	                $("#penjualan").hide();
+	                $("#simpan_sementara").hide();
+	                $("#cetak_langsung").hide();
+	                $("#piutang").hide();
+	        }
+            else
+            {
+                 //$("#penjualan").show();
+                 //$("#batal_penjualan").show(); 
+                 //$("#cetak_langsung").show();
+                 //$("#piutang").show();
+            }
+        });
+        //Akhir Hasil Radiologi
+        }
+
+      	//End Cek Hasil Laboratorium
+
+        });
 
 </script>
 
@@ -508,8 +555,8 @@ $.post("cek_subtotal_aps.php",{no_reg:no_reg},function(data){
               $(nRow).attr('no_reg', aData[0]);
               $(nRow).attr('no_rm', aData[1]+" | "+aData[2]+"");
               $(nRow).attr('nama_pasien', aData[2]);
-              $(nRow).attr('penjamin', aData[5]);
-              $(nRow).attr('poli', aData[6]);
+              //$(nRow).attr('penjamin', aData[5]);
+              $(nRow).attr('aps_periksa', aData[3]);
               $(nRow).attr('dokter', aData[7]);
               $(nRow).attr('level_harga', aData[8]);
 
@@ -1281,7 +1328,7 @@ $(document).ready(function(){
           "processing": true,
           "serverSide": true,
           "ajax":{
-            url :"modal_pasien_penjualan.php", // json datasource
+            url :"modal_pasien_penjualan_aps.php", // json datasource
             type: "post",  // method  , by default get
             error: function(){  // error handling
               $(".employee-grid-error").html("");
@@ -1298,7 +1345,7 @@ $(document).ready(function(){
               $(nRow).attr('no_rm', aData[1]+" | "+aData[2]+"");
               $(nRow).attr('nama_pasien', aData[2]);
               $(nRow).attr('penjamin', aData[5]);
-              $(nRow).attr('poli', aData[6]);
+              $(nRow).attr('aps_periksa', aData[6]);
               $(nRow).attr('dokter', aData[7]);
               $(nRow).attr('level_harga', aData[8]);
 

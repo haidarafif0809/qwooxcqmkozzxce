@@ -114,6 +114,17 @@ try {
               }
     //INSERT DARI TBS APS KE DETAIL PENJUALAN
 
+//INSERT DARI TBS PENJUALAN RADIOLOGI KE HASIL PEMERIKSAAN RADIOLOGI
+      $insert_hasil_radiologi = "INSERT INTO hasil_pemeriksaan_radiologi (no_faktur, no_reg, kode_barang, nama_barang, jumlah_barang, harga, subtotal, potongan, tax, foto, tipe_barang, tanggal, jam, radiologi, kontras, dokter_pengirim, dokter_pelaksana, dokter_periksa, status_periksa, status_simpan, keterangan) SELECT '$no_faktur', no_reg, kode_barang, nama_barang, jumlah_barang, harga, subtotal, potongan, tax, foto, tipe_barang, tanggal, jam, radiologi, kontras, dokter_pengirim, dokter_pelaksana, dokter_periksa, status_periksa, status_simpan, keterangan FROM tbs_penjualan_radiologi WHERE no_reg = '$no_reg' ";
+
+        if ($db->query($insert_hasil_radiologi) === TRUE) {
+          
+        }
+        else{
+          echo "Error: " . $insert_hasil_radiologi . "<br>" . $db->error;
+        }
+
+//INSERT DARI TBS PENJUALAN RADIOLOGI KE HASIL PEMERIKSAAN RADIOLOGI
 
     // START INSERT KE HASIL LABORATORIUM
     // update no_faktur di hasil_lab and insert ke hasil lab

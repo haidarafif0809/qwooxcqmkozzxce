@@ -14,9 +14,145 @@ $jenis_penjualan = stringdoang($_GET['jenis_penjualan']);
 $jenis_kelamin = stringdoang($_GET['jenis_kelamin']);
 $aps_periksa = stringdoang($_GET['aps_periksa']); // jika 1 Laboratorium, jika 2 Radiologi
 
-
+if($aps_periksa == 1){
+  $tema = 'LABORATORIUM';
+}
+else{
+  $tema = 'RADIOLOGI';
+}
 
 ?>
+<!--MODAL JASA RADIOLOGI-->
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+               
+              <h4 class="modal-title">Daftar Pemeriksaan Radiologi</h4>
+      </div>
+      <div class="modal-body">
+
+        <form class="form"  role="form" id="formtambahprodukcari">
+            <div class="table-responsive">
+              
+              <div class="form-group col-xs-6"> <!-- /  -->
+
+                <h5><b> Pakai Kontras </b></h5><br>
+
+                  <input type="checkbox" class="cekcbox1 filled-in" id="checkbox1">
+                  <label for="checkbox1" class="pilih-semua-kontras" data-toogle="0"><b> PILIH SEMUA </b></label><br>
+                  
+                  <?php 
+                    $select_pemriksaan_kontras = $db->query("SELECT id, kode_pemeriksaan, nama_pemeriksaan, kontras, harga_1 FROM pemeriksaan_radiologi WHERE kontras = '1' ORDER BY no_urut ASC");
+
+                    while ($data_kontras = mysqli_fetch_array($select_pemriksaan_kontras)) {
+
+                    $query_pemeriksaan = $db->query("SELECT kode_barang FROM tbs_penjualan_radiologi WHERE kode_barang = '$data_kontras[kode_pemeriksaan]' AND no_reg = '$no_reg'");
+
+                    $jumlah_pemeriksaan = mysqli_num_rows($query_pemeriksaan);
+
+                      if ($jumlah_pemeriksaan > 0) {
+                      
+                          echo '<input type="checkbox" class="cekcbox-1 filled-in" id="pemeriksaan-'.$data_kontras['id'].'" name="pakai_kontras" value="'.$data_kontras['kode_pemeriksaan'].'" checked="true" >
+                          <label for="pemeriksaan-'.$data_kontras['id'].'"
+                          data-id="'.$data_kontras['id'].'"
+                          data-kode="'.$data_kontras['kode_pemeriksaan'].'"
+                          data-nama="'.$data_kontras['nama_pemeriksaan'].'"
+                          data-kontras="'.$data_kontras['kontras'].'"
+                          data-harga="'.$data_kontras['harga_1'].'" class="insert-tbs" data-toogle="1" id="label-'.$data_kontras['id'].'"
+                           checked="true" >'.$data_kontras['nama_pemeriksaan'].'</label> <br>';
+
+                      }
+                      else{
+                      
+                          echo '<input type="checkbox" class="cekcbox-1 filled-in" id="pemeriksaan-'.$data_kontras['id'].'" name="pakai_kontras" value="'.$data_kontras['kode_pemeriksaan'].'">
+                          <label for="pemeriksaan-'.$data_kontras['id'].'"
+                          data-id="'.$data_kontras['id'].'"
+                          data-kode="'.$data_kontras['kode_pemeriksaan'].'"
+                          data-nama="'.$data_kontras['nama_pemeriksaan'].'"
+                          data-kontras="'.$data_kontras['kontras'].'"
+                          data-harga="'.$data_kontras['harga_1'].'" class="insert-tbs pemeriksaan-kontras" data-toogle="0" id="label-'.$data_kontras['id'].'"
+                          >'.$data_kontras['nama_pemeriksaan'].'</label> <br>';
+
+                      }
+
+                    }
+                    
+                  ?>
+
+              </div> <!-- /  -->
+
+              <div class="form-group col-xs-6"> <!-- /  -->
+
+                <h5><b> Tidak Pakai Kontras </b></h5><br>
+
+                  <input type="checkbox" class="cekcbox2 filled-in" id="checkbox2">
+                  <label for="checkbox2" class="pilih-semua-tanpa-kontras" data-toogle="0"><b> PILIH SEMUA </b></label><br>
+
+                  <?php 
+                    $select_pemriksaan_tanpa_kontras = $db->query("SELECT id, kode_pemeriksaan, nama_pemeriksaan, kontras, harga_1 FROM pemeriksaan_radiologi WHERE kontras = '0' ORDER BY no_urut ASC");
+
+                    while ($data_tanpa_kontras = mysqli_fetch_array($select_pemriksaan_tanpa_kontras)) {
+
+                      $query_pemeriksaan = $db->query("SELECT kode_barang FROM tbs_penjualan_radiologi WHERE kode_barang = '$data_tanpa_kontras[kode_pemeriksaan]' AND no_reg = '$no_reg'");
+
+                      $jumlah_pemeriksaan = mysqli_num_rows($query_pemeriksaan);
+
+                        if ($jumlah_pemeriksaan > 0) {
+
+                            echo '<input type="checkbox" class="cekcbox-2 filled-in" name="tanpa_kontras" 
+                            id="pemeriksaan-'.$data_tanpa_kontras['id'].'" value="'.$data_tanpa_kontras['kode_pemeriksaan'].'" checked="true"  > 
+                            <label for="pemeriksaan-'.$data_tanpa_kontras['id'].'"
+                            data-id="'.$data_tanpa_kontras['id'].'"
+                            data-kode="'.$data_tanpa_kontras['kode_pemeriksaan'].'"
+                            data-nama="'.$data_tanpa_kontras['nama_pemeriksaan'].'"
+                            data-kontras="'.$data_tanpa_kontras['kontras'].'"
+                            data-harga="'.$data_tanpa_kontras['harga_1'].'" class="insert-tbs" data-toogle="1" id="label-'.$data_tanpa_kontras['id'].'"
+                             checked="true"  >'.$data_tanpa_kontras['nama_pemeriksaan'].'</label> <br>';
+                        }
+                        else{
+
+                            echo '<input type="checkbox" class="cekcbox-2 filled-in" name="tanpa_kontras" 
+                            id="pemeriksaan-'.$data_tanpa_kontras['id'].'" value="'.$data_tanpa_kontras['kode_pemeriksaan'].'"> 
+                            <label for="pemeriksaan-'.$data_tanpa_kontras['id'].'"
+                            data-id="'.$data_tanpa_kontras['id'].'"
+                            data-kode="'.$data_tanpa_kontras['kode_pemeriksaan'].'"
+                            data-nama="'.$data_tanpa_kontras['nama_pemeriksaan'].'"
+                            data-kontras="'.$data_tanpa_kontras['kontras'].'"
+                            data-harga="'.$data_tanpa_kontras['harga_1'].'" class="insert-tbs pemeriksaan-tanpa-kontras" data-toogle="0" id="label-'.$data_tanpa_kontras['id'].'"
+                            >'.$data_tanpa_kontras['nama_pemeriksaan'].'</label> <br>';
+                        }
+
+
+                    }
+                    
+                  ?>
+
+              </div> <!-- /  -->
+
+            </div>
+        </form>
+      
+      </div>
+
+      <div class="modal-footer">
+      <center>
+        <button type="button" class="btn btn-warning" id="btnSubmit"> <i class='fa fa-save'></i> Save</button>
+        <!--<button type="button" class="btn btn-danger" id="btnCancel"><i class='fa fa-close'></i> Cancel</button>-->
+
+        <button type="button" accesskey="e" class="btn btn-danger" data-dismiss="modal"><i class='fa fa-close'></i> Close</button>
+
+      </center>
+      </div>
+    </div>
+
+  </div>
+</div>
+<!--MODAL JASA RADIOLOGI-->
+
 
 
 <!--Mulai Modal Data Laboratorium-->
@@ -238,7 +374,7 @@ echo '
 <!--Mulai Padding layar-->
 <div style="padding-left: 5%; padding-right: 5%">
   <!--Judul-->
-    <h3><b>FORM INPUT JASA LABORATORIUM / RADIOLOGI</b></h3>
+    <h3><b>FORM INPUT JASA <?php echo $tema ?></b></h3>
     <!--Garis-->
     <hr>
 
@@ -282,14 +418,33 @@ echo '
         </div>
 
         <div class="form-group col-xs-3">
-          <label for="penjamin">Petugas Analis</label><br>
+          <label for="penjamin">Petugas 
+            <?php if($aps_periksa == 1){
+            echo "Analis";
+            }
+            else{
+            echo "Radilogi";
+            }
+            ?>
+            </label><br>
             <select type="text" class="form-control chosen" id="analis" autocomplete="off">
             <?php
-            $query_analis = $db->query("SELECT nama,id FROM user WHERE tipe = '6' ");
-            while ( $data_analis = mysqli_fetch_array($query_analis)) {
+            if($aps_periksa == 1){
+
+              $query_analis = $db->query("SELECT nama,id FROM user WHERE tipe = '6' ");
+              while ( $data_analis = mysqli_fetch_array($query_analis)) {
               echo "<option value='".$data_analis['id'] ."'>
               ".$data_analis['nama'] ."</option>";
               }
+
+            }
+            else{
+              $query_petugas_radiologi = $db->query("SELECT nama,id FROM user WHERE tipe = '5' ");
+              while ( $data_analis = mysqli_fetch_array($query_petugas_radiologi)) {
+              echo "<option value='".$data_analis['id'] ."'>
+              ".$data_analis['nama'] ."</option>";
+              }
+            }
             ?>
             </select>
         </div>
@@ -325,6 +480,9 @@ echo '
 <!--Mulai Col SM Ketiga-->
 <div class="col-sm-12">
 
+<?php 
+if($aps_periksa == 1){?>
+<!--TABLE LABORATORIUM-->
 <span id="span_tbs_laboratorium">            
   <div class="table-responsive">
     <table id="table_tbs_laboratorium" class="table table-bordered table-sm">
@@ -345,7 +503,28 @@ echo '
     </tbody>
     </table>
   </div>
-</span>  
+</span> 
+
+<?php 
+}
+else{
+?>
+<!--TABLE RADIOLOGI-->
+<span id="span_tbs">            
+    <div class="table-responsive">
+      <table id="tabel_tbs_radiologi" class="table table-bordered table-sm">
+        <thead> <!-- untuk memberikan nama pada kolom tabel -->
+                            
+          <th style='background-color: #4CAF50; color: white'> Kode  </th>
+          <th style='background-color: #4CAF50; color: white'> Nama Pemeriksaan</th>
+          <th style='background-color: #4CAF50; color: white'> Dokter Pengirim </th>
+          <th style='background-color: #4CAF50; color: white'> Hapus </th>
+                          
+        </thead> <!-- tag penutup tabel -->
+      </table>
+    </div>
+</span> 
+<?php } ?>
 
 <!--Akhir Col SM Ketiga-->
 </div>
@@ -359,6 +538,12 @@ echo '
 
         <input style="height: 20px;" type="hidden" class="form-control disable1" readonly="" id="kolom_cek_harga" name="kolom_cek_harga">
         <!--Akhir Input Hidden-->
+
+    <!--Mulai Input Hidden RADIOLOGI-->
+    <input type="hidden" id="id_radiologi" name="id_radiologi" class="form-control" placeholder="Id Radiologi"> 
+    <input type="hidden" id="nama_barang" name="nama_barang" class="form-control" placeholder="Nama Barang"> 
+    <input type="hidden" id="kontras" name="kontras" class="form-control" placeholder="Kontras"> 
+    <input type="hidden" id="harga_produk" name="harga_produk" class="form-control" placeholder="Harga Produk"> 
 
     <!--Akhir Row Pertama-->
     </div>
@@ -680,6 +865,7 @@ $(document).on('click','.set-sendirian',function(e){
 
   });
 </script>
+
 <!--Mulai Script Proses Hapus TBS-->
 
 <!--<script type="text/javascript">
@@ -712,5 +898,292 @@ var no_reg = $("#no_reg").val();
   });
 });
 </script>-->
+
+<!--SCRIPT BAWAH TENTANG RADIOLOGI-->
+<script type="text/javascript">
+$(function() {
+    $('.cekcbox1').click(function() {
+        $('.cekcbox-1').prop('checked', this.checked);
+    });
+});
+</script>
+  
+
+<script type="text/javascript">
+$(function() {
+    $('.cekcbox2').click(function() {
+        $('.cekcbox-2').prop('checked', this.checked);
+    });
+});
+</script>
+
+
+<!--AWAL UNTUK SCRIPT DATA RADIOLOGI-->
+<script type="text/javascript">
+//SCRIPT UNTUK PILIH SEMUA KONTRAS
+$(document).on('click','.pilih-semua-kontras',function(e){
+
+    var data_toggle = $(this).attr('data-toogle');
+
+    var no_reg = $("#no_reg").val();
+    var petugas_radiologi = $("#analis").val();
+    var dokter = $("#dokter").val();
+    var jumlah_barang = 1;
+    var tipe_barang ="Jasa";
+
+    if (data_toggle == 0) {
+              
+        $(this).attr("data-toogle", 1);
+        $(".pemeriksaan-kontras").attr("data-toogle", 1);
+
+        $.post("proses_insert_tbs_aps_semua_kontras.php",{tipe_barang:tipe_barang,no_reg:no_reg,dokter:dokter,petugas_radiologi:petugas_radiologi},function(data){
+              
+        });
+
+
+    }
+    else{
+                  
+        $(this).attr("data-toogle", 0);
+        $(".pemeriksaan-kontras").attr("data-toogle", 0);
+
+        $.post("hapus_tbs_aps_semua_kontras.php",{no_reg:no_reg},function(data){
+
+        });
+    }
+    
+
+
+    $("form").submit(function(){
+      return false;    
+    });
+});
+</script>
+
+<!--INSERT SEMUANYA (PILIH SEMUA TANPA KONTRAS)-->
+
+<script>
+$(document).on('click','.pilih-semua-tanpa-kontras',function(e){
+
+    var data_toggle = $(this).attr('data-toogle');
+    var no_reg = $("#no_reg").val();
+    var petugas_radiologi = $("#analis").val();
+    var dokter = $("#dokter").val();
+    var jumlah_barang = 1;
+    var tipe_barang ="Jasa";
+
+    if (data_toggle == 0) {
+              
+        $(this).attr("data-toogle", 1);
+        $(".pemeriksaan-tanpa-kontras").attr("data-toogle", 1);
+
+        $.post("proses_insert_tbs_aps_semua_tanpa_kontras.php",{tipe_barang:tipe_barang,no_reg:no_reg,dokter:dokter,petugas_radiologi:petugas_radiologi},function(data){
+              
+        });
+    }
+    else{
+                  
+        $(this).attr("data-toogle", 0);
+        $(".pemeriksaan-tanpa-kontras").attr("data-toogle", 0);
+
+        $.post("hapus_tbs_aps_semua_tanpa_kontras.php",{no_reg:no_reg},function(data){
+
+        });
+    }
+
+    $("form").submit(function(){
+      return false;    
+    });
+});
+</script>
+
+<!--SCRIPT JASA RADILOGI (SOLO) -->
+<script type="text/javascript">
+$(document).on('click','.insert-tbs',function(e){
+    var data_toggle = $(this).attr('data-toogle');
+
+    var kode_barang = $(this).attr('data-kode');
+    var nama_barang = $(this).attr('data-nama');
+    var kontras = $(this).attr('data-kontras');
+    var harga = $(this).attr('data-harga');
+    var id = $(this).attr('data-id');
+
+    var no_reg = $("#no_reg").val();
+    var petugas_radiologi = $("#analis").val();
+    var dokter = $("#dokter").val();
+    var jumlah_barang = 1;
+    var tipe_barang ="Jasa";
+
+
+    $('#nama_barang').val(nama_barang);
+    $('#id_radiologi').val(id);
+    $('#kontras').val(kontras);
+    $('#harga_produk').val(harga);
+
+    var nama_barang = $("#nama_barang").val();
+    var id = $("#id_radiologi").val();
+    var kontras = $("#kontras").val();
+    var harga = $("#harga_produk").val();
+
+    if (data_toggle == 0) {
+
+        $.post('cek_tbs_penjualan_radiologi.php',{kode_barang:kode_barang,no_reg:no_reg}, function(data){
+
+
+          if(data == 1){
+
+              $('#label-'+id+'').attr("data-toogle", 0);
+
+              alert("Pemeriksaan '"+nama_barang+"' Sudah Ada, Silakan Pilih Pemeriksaan Yang Lain !");
+              
+           }
+           else{
+              
+              $('#label-'+id+'').attr("data-toogle", 1);
+              console.log(data_toggle);
+
+              $.post("proses_insert_tbs_aps_radiologi_detail.php",{nama_barang:nama_barang,jumlah_barang:jumlah_barang,harga:harga,tipe_barang:tipe_barang,kode_barang:kode_barang,no_reg:no_reg,dokter:dokter,kontras:kontras,petugas_radiologi:petugas_radiologi},function(data){
+
+
+            });
+
+           }
+
+        });
+    }
+    else{
+                  
+        $('#label-'+id+'').attr("data-toogle", 0);
+
+        $.post("hapus_tbs_aps_radiologi.php",{no_reg:no_reg, kode_barang:kode_barang},function(data){
+
+        });
+    }
+
+    $("form").submit(function(){
+    return false;    
+    });
+});
+</script>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    $(document).on('click','#btnSubmit',function(e){
+    // START DATATABLE AJAX START DATATABLE AJAX START DATATABLE AJAX START DATATABLE AJAX START DATATABLE AJAX START DATATABLE AJAX
+      $('#tabel_tbs_radiologi').DataTable().destroy();
+            var dataTable = $('#tabel_tbs_radiologi').DataTable( {
+            "processing": true,
+            "serverSide": true,
+            "info":     true,
+            "language": { "emptyTable":     "Tidak Ada Data" },
+            "ajax":{
+              url :"data_tbs_aps_radiologi.php", // json datasource
+                              "data": function ( d ) {
+                                d.no_reg = $("#no_reg").val();
+                                // d.custom = $('#myInput').val();
+                                // etc
+                              },
+                              type: "post",  // method  , by default get
+              error: function(){  // error handling
+                $(".tbody").html("");
+                $("#tabel_tbs_radiologi").append('<tbody class="tbody"><tr><th colspan="3"></th></tr></tbody>');
+                $("#tableuser_processing").css("display","none");
+                
+              }
+            }   
+
+      });
+        
+        $("#span_tbs").show();
+        $("#myModal").modal('hide');
+    });   
+  });
+</script>
+
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    // START DATATABLE AJAX START DATATABLE AJAX START DATATABLE AJAX START DATATABLE AJAX START DATATABLE AJAX START DATATABLE AJAX
+      $('#tabel_tbs_radiologi').DataTable().destroy();
+            var dataTable = $('#tabel_tbs_radiologi').DataTable( {
+            "processing": true,
+            "serverSide": true,
+            "info":     true,
+            "language": { "emptyTable":     "Tidak Ada Data" },
+            "ajax":{
+              url :"data_tbs_aps_radiologi.php", // json datasource
+                              "data": function ( d ) {
+                                d.no_reg = $("#no_reg").val();
+                                // d.custom = $('#myInput').val();
+                                // etc
+                              },
+                              type: "post",  // method  , by default get
+              error: function(){  // error handling
+                $(".tbody").html("");
+                $("#tabel_tbs_radiologi").append('<tbody class="tbody"><tr><th colspan="3"></th></tr></tbody>');
+                $("#tableuser_processing").css("display","none");
+                
+            }
+          }   
+      });  
+    $("#span_tbs").show()
+  });
+</script>
+<!--AKHIR SCRIPT TENTANG RADIOLOGI-->
+
+<!--Mulai Script Proses Hapus TBS -->
+<script type="text/javascript">
+  $(document).on('click','.btn-hapus-tbs-radiologi',function(e){
+
+    var id = $(this).attr("data-id");
+    var kode_jasa = $(this).attr("data-kode");
+    var nama_jasa = $(this).attr("data-barang");
+    var no_reg = $("#no_reg").val();
+
+    var pesan_alert = confirm("Apakah Anda Yakin Ingin Menghapus "+nama_jasa+""+ "?");
+
+    if (pesan_alert == true) {
+
+        $.post("hapus_data_tbs_aps_radiologi.php",{kode_jasa:kode_jasa,no_reg:no_reg,id:id},function(data){
+
+          //TABLE AJAX TBS
+            $('#tabel_tbs_radiologi').DataTable().destroy();
+            var dataTable = $('#tabel_tbs_radiologi').DataTable( {
+            "processing": true,
+            "serverSide": true,
+            "info":     true,
+            "language": { "emptyTable":     "Tidak Ada Data" },
+            "ajax":{
+              url :"data_tbs_aps_radiologi.php", // json datasource
+                              "data": function ( d ) {
+                                d.no_reg = $("#no_reg").val();
+                                // d.custom = $('#myInput').val();
+                                // etc
+                              },
+                              type: "post",  // method  , by default get
+              error: function(){  // error handling
+                $(".tbody").html("");
+                $("#tabel_tbs_radiologi").append('<tbody class="tbody"><tr><th colspan="3"></th></tr></tbody>');
+                $("#tableuser_processing").css("display","none");
+                
+            }
+          }   
+      });  
+          //TABLE AJAX TBS
+
+        });
+
+    }
+    else{
+
+    }
+    $('form').submit(function(){       
+      return false;
+    });
+
+  });
+</script>
+<!--Akhir Script Proses Hapus TBS -->
+
 <!--footer-->
 <?php include 'footer.php'; ?>
