@@ -18,7 +18,7 @@ $tipe = stringdoang($_GET['tipe']);
 
 
 <div class="row">
-    <div class="col-sm-4">
+    <div class="col-sm-6">
         
 <?php  
 
@@ -38,7 +38,7 @@ echo '<br><button type="button" class="btn btn-info" data-toggle="modal" data-ta
 ?>
     </div>
 
-    <div class="col-sm-8">
+    <div class="col-sm-6">
        
 
 <?php  
@@ -466,12 +466,14 @@ th {
           <li class="nav-item"><a class="nav-link" href='barang_2.php?kategori=semua&tipe=barang' > Lain - lain </a></li>
           <li class="nav-item"><a class="nav-link" href='persediaan_filter.php?kategori=semua&tipe=barang'>Filter Limit Stok</a></li>
           <li class="nav-item"><a class="nav-link" href='persediaan_filter_over.php?kategori=semua&tipe=barang'>Filter Over Stok</a></li>
+          <li class="nav-item"><a class="nav-link" href='menu_filter_stok_produk.php'> Filter Stok Produk </a></li>
           <?php else: ?>
 
           <li class="nav-item"><a class="nav-link active" href='barang.php?kategori=semua&tipe=barang_jasa'> Umum </a></li>
           <li class="nav-item"><a class="nav-link" href='barang_2.php?kategori=semua&tipe=barang_jasa' > Lain - lain </a></li>
           <li class="nav-item"><a class="nav-link" href='persediaan_filter.php?kategori=semua&tipe=barang_jasa'>Filter Limit Stok</a></li>
-          <li class="nav-item"><a class="nav-link" href='persediaan_filter_over.php?kategori=semua&tipe=barang_jasa'>Filter Over Stok</a></li>   
+          <li class="nav-item"><a class="nav-link" href='persediaan_filter_over.php?kategori=semua&tipe=barang_jasa'>Filter Over Stok</a></li>  
+          <li class="nav-item"><a class="nav-link" href='menu_filter_stok_produk.php' > Filter Stok Produk </a></li> 
           <?php endif ?>
           
           
