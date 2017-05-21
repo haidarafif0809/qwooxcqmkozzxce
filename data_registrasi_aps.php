@@ -86,7 +86,7 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 	
 	
 	//cek periksaan apa
-	$data_periksa = $row["aps_periksa"];
+	/*$data_periksa = $row["aps_periksa"];
 	if($data_periksa == 1){
 		// untuk input hasil lab
 		if ($input_hasil_lab > 0) {
@@ -121,7 +121,7 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 		//Untuk Input Hasil Radiologiny
 		$nestedData[] = "<p style='color:red'>Input Radiologi</p>";
 
-	}
+	}*/
 
 	$nestedData[] = "<a href='registrasi_edit_aps.php?no_reg=". $row['no_reg']."' class='btn btn-floating btn-small btn-info ' ><i class='fa fa-edit'></i></a> ";
 	

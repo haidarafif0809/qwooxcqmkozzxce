@@ -4,6 +4,7 @@ include 'sanitasi.php';
 
 $nama = stringdoang($_POST['nama']);
 $no_rm = stringdoang($_POST['no_rm']);
+$no_faktur = stringdoang($_POST['no_faktur']);
 echo $no_reg = stringdoang($_POST['no_reg']);
 $jenis_penjualan = stringdoang($_POST['jenis_penjualan']);
 
@@ -23,10 +24,10 @@ $query_update_status = $db->query("UPDATE pemeriksaan_laboratorium SET status = 
 $query_select_tbs_hasil = $db->query("SELECT * FROM tbs_hasil_lab WHERE no_reg = '$no_reg' AND no_rm = '$no_rm'");
 while($data_tbs = mysqli_fetch_array($query_select_tbs_hasil)){
 
-	$input = "INSERT INTO hasil_lab (id_pemeriksaan, nama_pemeriksaan, hasil_pemeriksaan, nilai_normal_lk, nilai_normal_pr, status_abnormal, status_pasien, status, no_rm, no_reg,nama_pasien,tanggal,jam,model_hitung,
+	$input = "INSERT INTO hasil_lab (no_faktur,id_pemeriksaan, nama_pemeriksaan, hasil_pemeriksaan, nilai_normal_lk, nilai_normal_pr, status_abnormal, status_pasien, status, no_rm, no_reg,nama_pasien,tanggal,jam,model_hitung,
 		satuan_nilai_normal,id_sub_header,nilai_normal_lk2,
 		nilai_normal_pr2,kode_barang,dokter,petugas_analis,
-		id_setup_hasil) VALUES ('$data_tbs[id_pemeriksaan]',
+		id_setup_hasil) VALUES ('$no_faktur','$data_tbs[id_pemeriksaan]',
 		'$data_tbs[nama_pemeriksaan]','$data_tbs[hasil_pemeriksaan]',
 		'$data_tbs[nilai_normal_lk]','$data_tbs[nilai_normal_pr]',
 		'$data_tbs[status_abnormal]','$jenis_penjualan','Selesai',
