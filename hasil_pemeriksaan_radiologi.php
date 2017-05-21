@@ -104,6 +104,7 @@ $otoritas_tombol = mysqli_fetch_array($pilih_akses_tombol);
 
       <button type="button" class="btn btn-default" id="cari_pasien_inap" data-toggle="modal" data-target="#modal_pasien_inap"><i class="fa fa-user"></i> Pasien R. Inap (F3) </button>
 
+      <button type="button" class="btn btn-purple" id="cari_pasien_aps" data-toggle="modal" data-target="#modal_pasien_aps"><i class="fa fa-user"></i> Pasien APS (F4) </button>
 
 <?php if ($otoritas_tombol['simpan_hasil_radiologi'] > 0): ?>
         <button type="button" class="btn btn-success" id="simpan_pemeriksaan" style="display: none"><i class="fa fa-save"></i> Simpan Pemeriksaan</button>
@@ -282,6 +283,45 @@ $otoritas_tombol = mysqli_fetch_array($pilih_akses_tombol);
 
 <!-- Modal cari registrasi pasien INAP-->
 
+
+<!-- Modal cari registrasi pasien APS-->
+<div id="modal_pasien_aps" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+               
+              <h4 class="modal-title">Pasien Radiologi APS</h4>
+      </div>
+      <div class="modal-body">
+
+            <center>
+            <table id="tabel_cari_pasien_aps" class="table table-bordered table-sm">
+                  <thead> <!-- untuk memberikan nama pada kolom tabel -->
+                  
+                      <th>No. REG</th>
+                      <th>No. RM</th>
+                      <th>Nama Pasien</th>
+                      <th>Jenis Pasien</th>
+                      <th>Tanggal</th>
+                      <th>Keterangan</th>
+                  
+                  </thead> <!-- tag penutup tabel -->                
+            </table>
+            </center>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-warning" id="btnRefreshPasien"> <i class='fa fa-refresh'></i> Refresh Pasien</button>
+        <button type="button" accesskey="e" class="btn btn-danger" data-dismiss="modal"><i class='fa fa-close'></i> Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Modal cari registrasi pasien APS-->
 
 <!-- Modal nput Data Hasil Expertise Dokter Spesialis Radiologi -->
 <div id="modal_tampil_ket" class="modal fade" role="dialog">
@@ -527,7 +567,39 @@ img:hover {
 
           }
 
-        });    
+        });   
+
+        //TABLE PASIEN APS RADIOLOGI
+        var dataTable = $('#tabel_cari_pasien_aps').DataTable( {
+          "processing": true,
+          "serverSide": true,
+          "ajax":{
+            url :"pasien_aps_radiologi.php", // json datasource
+            type: "post",  // method  , by default get
+            error: function(){  // error handling
+              $(".employee-grid-error").html("");
+              $("#tabel_cari_pasien_aps").append('<tbody class="employee-grid-error"><tr><th colspan="3">Data Tidak Ditemukan.. !!</th></tr></tbody>');
+              $("#employee-grid_processing").css("display","none");
+              
+            }
+          },
+
+          "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+
+              $(nRow).attr('class', "pilih-reg");
+              $(nRow).attr('no_reg', aData[0]);
+              $(nRow).attr('no_rm', aData[1]+" | "+aData[2]+"");
+              $(nRow).attr('nama_pasien', aData[2]);
+              $(nRow).attr('penjamin', aData[6]);
+              $(nRow).attr('dokter', aData[7]);
+              $(nRow).attr('jenis_pasien', aData[3]);
+              $(nRow).attr('dokter_radiologi', aData[8]);
+
+
+
+          }
+
+        });  
      
   });
  
@@ -583,6 +655,7 @@ img:hover {
             $('#modal_pasien').modal('hide');
             $('#modal_pasien_ugd').modal('hide');
             $('#modal_pasien_inap').modal('hide');
+            $('#modal_pasien_aps').modal('hide');
             $('.tampil_col').hide();
 
     // DESTROY ELEVATEZOOM 
@@ -1206,6 +1279,11 @@ $(document).on('click','#cari_pasien',function(e){
 
         $("#cari_pasien_inap").click();
 
+    });
+
+    shortcut.add("f4", function() {
+    // Do something
+      $("#cari_pasien_aps").click();
     });
 </script>
 

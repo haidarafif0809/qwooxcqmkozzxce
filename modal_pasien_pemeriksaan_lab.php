@@ -69,7 +69,7 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
   $nestedData=array(); 
 
       if ($row["no_faktur"] == ''){
-        $nestedData[] = "<p style='color:red'>Belum Penjualan</p>";
+        $nestedData[] = "";
 
       }
       else{
