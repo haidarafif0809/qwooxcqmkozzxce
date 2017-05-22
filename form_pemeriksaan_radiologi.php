@@ -4313,32 +4313,19 @@ $.get("cek_total_tbs_form_radiologi.php",{no_reg:no_reg},function(data){
 <script type="text/javascript">
   $(document).ready(function(){
     $(document).on('click','#btnCancel',function(e){
-    // START DATATABLE AJAX START DATATABLE AJAX START DATATABLE AJAX START DATATABLE AJAX START DATATABLE AJAX START DATATABLE AJAX
-      $('#tabel_tbs_radiologi').DataTable().destroy();
-            var dataTable = $('#tabel_tbs_radiologi').DataTable( {
-            "processing": true,
-            "serverSide": true,
-            "info":     true,
-            "language": { "emptyTable":     "Tidak Ada Data" },
-            "ajax":{
-              url :"data_tbs_penjualan_radiologi.php", // json datasource
-                              "data": function ( d ) {
-                                d.no_reg = $("#no_reg").val();
-                                // d.custom = $('#myInput').val();
-                                // etc
-                              },
-                              type: "post",  // method  , by default get
-              error: function(){  // error handling
-                $(".tbody").html("");
-                $("#tabel_tbs_radiologi").append('<tbody class="tbody"><tr><th colspan="3"></th></tr></tbody>');
-                $("#tableuser_processing").css("display","none");
-                
-              }
-            }   
 
-      });
+      var session_id = $("#session_id").val();
+
+      $.post("batal_radiologi.php",{session_id:session_id},function(data){
+
+          var tabel_tbs_radiologi = $('#tabel_tbs_radiologi').DataTable();
+              tabel_tbs_radiologi.draw();
+
+              
+          $("#span_tbs").show();
+
+        });
         
-        $("#span_tbs").show();
         $("#myModal").modal('hide');
 
 // END DATATABLE AJAX END DATATABLE AJAX END DATATABLE AJAX END DATATABLE AJAX END DATATABLE AJAX END DATATABLE AJAX
