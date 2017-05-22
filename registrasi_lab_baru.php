@@ -170,7 +170,8 @@ $dokter = $data_petugas_jaga['nama_dokter'];
 
 				<div class="form-group">
 					<label for="sel1">Pemeriksaan</label>
-				  	<select class="form-control" id="periksa" name="periksa" autocomplete="off">
+				  	<select class="form-control" id="periksa" name="periksa" autocomplete="off" required="">
+            		<option value="">-- PILIH PEMERIKSAAN --</option>
 				    <option value="1">Laboratorium</option>
 				    <option value="2">Radiologi</option>
 				  </select>

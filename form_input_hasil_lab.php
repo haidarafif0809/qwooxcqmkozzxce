@@ -289,6 +289,7 @@ $(document).on('blur','.input_nama',function(e){
 $("#selesai").click(function(){
   var no_rm = $("#no_rm_hidden").val();
   var no_reg = $("#no_reg").val();
+  var no_faktur = $("#no_faktur").val();
   var nama = $("#nama_pasien").val();
   var jenis_penjualan = $("#status_pasien").val();
 
@@ -298,7 +299,7 @@ $("#selesai").click(function(){
       }
       else{
 
-      $.post("proses_selesai_input_hasil_lab.php",{no_rm:no_rm,no_reg:no_reg,nama:nama,jenis_penjualan:jenis_penjualan},function(info){
+      $.post("proses_selesai_input_hasil_lab.php",{no_faktur:no_faktur,no_rm:no_rm,no_reg:no_reg,nama:nama,jenis_penjualan:jenis_penjualan},function(info){
 
        //$("#table-baru").html(info);
       
