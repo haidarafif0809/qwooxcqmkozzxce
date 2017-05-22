@@ -46,7 +46,7 @@ $dokter = $out_dokter['nama'];
                  
         </div><!--penutup colsm4-->
 
-        <div class="col-sm-4">
+        <div class="col-sm-5">
                          
 
    <table>
@@ -55,7 +55,6 @@ $dokter = $out_dokter['nama'];
   <tr><td>No RM</td>  <td> :&nbsp;<?php echo $out['no_rm']; ?> </td></tr>
   <tr><td>No REG</td>  <td> :&nbsp;<?php echo $out['no_reg'];?> </td></tr>
   <tr><td>Nama </td>  <td> :&nbsp;<?php echo $out['nama_pasien'];?> </td></tr>
-  <tr><td>Jenis Kelamin </td>  <td> :&nbsp;<?php echo $jenis_kelamin;?> </td></tr>
   <tr><td>Jenis Kelamin </td>  <td> :&nbsp;<?php echo $jenis_kelamin;?> </td></tr>
   <tr><td>Umur </td><td> :&nbsp;<?php echo $umur;?> </td></tr>
   <tr><td>Alamat Pasien</td>  <td>:&nbsp; <?php echo $alamat;?> </td></tr>  
@@ -66,7 +65,7 @@ $dokter = $out_dokter['nama'];
                  
         </div><!--penutup colsm4-->
 
-        <div class="col-sm-4">
+        <div class="col-sm-3">
         
    <table>
   <tbody> 
@@ -75,7 +74,7 @@ $dokter = $out_dokter['nama'];
       <tr><td>Petugas </td> <td> :</td> <td> <?php echo $_SESSION['nama']; ?> </td></tr>
 
       <tr><td>Dokter </td> <td> :</td> <td><?php echo $dokter;?> </td></tr>
-      <tr><td>Analis </td> <td> :</td> <td> <?php echo $analis;?> </td></tr>
+      <tr><td>Petugas </td> <td> :</td> <td> <?php echo $analis;?> </td></tr>
       
   </tbody>
   </table>       

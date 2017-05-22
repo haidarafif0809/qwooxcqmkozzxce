@@ -114,6 +114,12 @@ if ($penjualan['penjualan_edit'] > 0) {
         $nestedData[] ='<td> <a href="cek_edit_penjualan_laboratorium.php?id='.$row["id"].'&no_faktur='.$row["no_faktur"].'&no_rm='.$row["kode_pelanggan"].'" class="btn btn-success btn-floating"> <i class="fa fa-edit"> </i></a></td>';
         
         }
+        elseif ($row['jenis_penjualan'] == 'APS')
+        {
+        
+        $nestedData[] ='<td> <a href="cek_edit_penjualan_aps.php?id='.$row["id"].'&no_faktur='.$row["no_faktur"].'&no_rm='.$row["kode_pelanggan"].'" class="btn btn-success btn-floating"> <i class="fa fa-edit"> </i></a></td>';
+        
+        }
         elseif ($row['jenis_penjualan'] == 'Radiologi')
         {
         
@@ -229,6 +235,34 @@ $nestedData[] ='<td>
         <a class="dropdown-item" href="cetak_penjualan_tunai.php?no_faktur='.$row["no_faktur"].'">Print Penjualan Post</a>
 
        <a class="dropdown-item" href="cetak_besar_apotek.php?no_faktur='.$row["no_faktur"].'">Print Penjualan Besar</a>
+    </div>
+</div>
+ </td>';
+}
+else
+{
+  $nestedData[] ="<td></td>";
+}
+// End Cetak Tunai
+}
+
+
+else if ($row['jenis_penjualan'] == 'APS')
+{
+  // Cetak Tunai
+if ($row['status'] == 'Lunas') {
+$nestedData[] ='<td>
+<div class="dropdown">
+
+    <button class="btn btn-success btn-floating dropdown-toggle" type="button" id="dropdownMenu4" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <i class="fa fa-print"> </i>
+    </button>
+
+    <div class="dropdown-menu dropdown-primary" aria-labelledby="dropdownMenu4" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
+
+        <a class="dropdown-item" href="cetak_penjualan_tunai.php?no_faktur='.$row["no_faktur"].'">Print Penjualan Kecil</a>
+
+       <a class="dropdown-item" href="cetak_besar_aps.php?no_faktur='.$row["no_faktur"].'">Print Penjualan Besar</a>
     </div>
 </div>
  </td>';

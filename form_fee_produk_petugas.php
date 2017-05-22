@@ -41,22 +41,20 @@
         
         <!--perintah agar modal update-->
 <span class="modal_baru">
- <div class="table-responsive">       
-<table id="tableuser" class="table table-bordered">
-    <thead>
-      <th> Username </th></th>
-      <th> Nama Lengkap </th>
-      <th> Alamat </th>
-      <th> Jabatan </th>
-      <th> Otoritas </th>
-      <th> Status </th>
+ <div class="table-responsive">  
+ <center>   
+    <table id="tableuser" class="table table-bordered">
+        <thead>
+          <th> Username </th>
+          <th> Nama Lengkap </th>
+          <th> Alamat </th>
+          <th> Otoritas </th>
+          <th> Status </th>
 
-      
-    </thead>
-    
-  
-
-  </table>
+          
+        </thead>
+      </table>
+    </center>  
 </div>
 </span>
           
@@ -309,7 +307,7 @@
               "fnCreatedRow": function( nRow, aData, iDataIndex ) {
               $(nRow).attr('class','pilih');
               $(nRow).attr('data-petugas',aData[1]);
-              $(nRow).attr('data-id_petugas',aData[6]);
+              $(nRow).attr('data-id_petugas',aData[5]);
     },
  } );
 

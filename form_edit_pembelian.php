@@ -35,6 +35,7 @@
 
     $data_potongan = $db->query("SELECT total, potongan, tax, ppn FROM pembelian WHERE no_faktur = '$nomor_faktur'");
     $ambil_potongan = mysqli_fetch_array($data_potongan);
+
     $potongan = $ambil_potongan['potongan'];
     $tax = $ambil_potongan['tax'];
     $ppn = $ambil_potongan['ppn'];
@@ -45,14 +46,28 @@
     $ambil_potongan_persen = mysqli_fetch_array($data_potongan_persen);
     $subtotal_persen = $ambil_potongan_persen['subtotal'];
 
-    $potongan_persen = $potongan / $subtotal_persen * 100;
-    $hasil_persen = intval($potongan_persen);
+    if ($potongan == 0) {
+     $hasil_persen = 0;
+    }
+    else
+    {
+           $potongan_persen = $potongan / $subtotal_persen * 100;
+           $hasil_persen = intval($potongan_persen);
+    }
 
+
+
+    if ($tax == 0) {
+    $hasil_tax = 0;
+    }
+    else
+    {
     $subtotal_tax = $subtotal_persen - $potongan;
     $hasil_sub = intval($subtotal_tax);
-
     $potongan_tax = $tax / $hasil_sub * 100;
     $hasil_tax = intval($potongan_tax);
+    }
+
 
     ?>
 
@@ -470,7 +485,7 @@
 
             echo"<td>". $data1['nama'] ."</td>";
 
- echo"<td class='edit-harga' data-id='".$data1['id']."' data-faktur='".$data1['no_faktur']."' data-kode='".$data1['kode_barang']."'><span id='text-harga-".$data1['id']."'>". rp($data1['harga']) ."</span> <input type='hidden' id='input-harga-".$data1['id']."' value='".$data1['harga']."' class='input_harga' data-id='".$data1['id']."' autofocus='' data-kode='".$data1['kode_barang']."' data-jumlah='".$data1['jumlah_barang']."' > </td>";
+ echo"<td class='edit-harga' data-id='".$data1['id']."' data-faktur='".$data1['no_faktur']."' data-kode='".$data1['kode_barang']."'><span id='text-harga-".$data1['id']."'>". rp($data1['harga']) ."</span> <input type='hidden' id='input-harga-".$data1['id']."' value='".$data1['harga']."' class='input_harga' data-id='".$data1['id']."' data-nama='".$data1['nama_barang']."' autofocus='' data-kode='".$data1['kode_barang']."' data-jumlah='".$data1['jumlah_barang']."' > </td>";
 
              echo "<td><span id='text-subtotal-".$data1['id']."'>". rp($data1['subtotal']) ."</span></td>
             <td><span id='text-potongan-".$data1['id']."'>". $data1['potongan'] ."</span></td>
@@ -594,7 +609,7 @@
               <div class="col-sm-6">
                 <label style="font-size:15px"> <b> Total Akhir </b></label><br>
                 <!--readonly = agar tek yang ada kolom total tidak bisa diubah hanya bisa dibaca-->
-                <b><input type="text" style="height: 20px; width:90%; font-size:20px;" name="total" id="total_pembelian" class="form-control" value="<?php echo rp($total); ?>" placeholder="" readonly="" style="font-size: 20px" ></b>
+                <b><input type="text" style="height: 20px; width:90%; font-size:20px;" name="total" id="total_pembelian" class="form-control"  placeholder="" readonly="" style="font-size: 20px" ></b>
               </div>
                 
 
@@ -1124,7 +1139,7 @@ var no_faktur = $("#nomorfaktur").val();
   
   var potongan_pembelian = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#potongan_pembelian").val()))));
    
-   var tax = $("#tax").val();
+   var tax = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#tax").val()))));
         
 
 
@@ -1134,15 +1149,25 @@ $.post("cek_total_coba.php",
     },
     function(data){
       data = data.replace(/\s+/g, '');
-      
-      var t_tax =  parseInt(data,10) * parseInt(tax,10) / 100; 
+          
+          if (tax == 0) {
+            var t_tax =  0; 
+          }
+          else
+          {
+            var t_tax =  parseInt(data,10) * parseInt(tax,10) / 100; 
+          }
+            
+            if (data == '') {
+              data = 0;
+            }
 
-          var total_akhirr = data - potongan_pembelian + t_tax;
+          var total_akhirr = parseInt(data,10) - parseInt(potongan_pembelian,10) + parseInt(t_tax,10);
 
-        $("#total_pembelian1"). val(tandaPemisahTitik(data));
+        $("#total_pembelian1").val(tandaPemisahTitik(data));
 
 
-        $("#total_pembelian"). val(tandaPemisahTitik(total_akhirr));
+        $("#total_pembelian").val(tandaPemisahTitik(total_akhirr));
 
     });
 
@@ -1785,6 +1810,7 @@ else
                                     var id = $(this).attr("data-id");
                                     var harga_baru = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($(this).val()))));
                                     var kode_barang = $(this).attr("data-kode");
+                                    var nama_barang = $(this).attr("data-nama");
                                     var jumlah = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($(this).attr("data-jumlah")))));
                                     var harga_lama = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#text-harga-"+id+"").text()))));
                                     var no_faktur = $("#nomorfaktur").val();
@@ -1812,23 +1838,34 @@ else
                                     var tax_tbs = tax / subtotal_lama * 100;
                                     var jumlah_tax = Math.round(tax_tbs) * subtotal / 100;
 
-                              $.post("update_pesanan_barang_harga_beli.php",{jumlah:jumlah,harga_lama:harga_lama,jumlah_tax:jumlah_tax,potongan:potongan,id:id,harga_baru:harga_baru,kode_barang:kode_barang},function(info){
+                                    var harga_edit = tandaPemisahTitik(harga_baru);
 
-                                    
-                                    $("#text-harga-"+id+"").show();
-                                    $("#text-harga-"+id+"").text(tandaPemisahTitik(harga_baru));
-                                    $("#text-subtotal-"+id+"").text(tandaPemisahTitik(subtotal));
-                                    $("#hapus-tbs-"+id+"").attr('data-subtotal', subtotal);
+                                    var pesan_alert = confirm("Apakah Anda Yakin Merubah Harga '"+nama_barang+"' Menjadi Rp. '"+harga_edit+"' ?");
+                                    if (pesan_alert == true) {
 
-                                    $("#hapus-tbs-"+id+"").attr('data-subtotal', subtotal);
 
-                                    $("#text-tax-"+id+"").text(Math.round(jumlah_tax));
-                                    $("#input-harga-"+id+"").attr("type", "hidden"); 
-                                    $("#input-jumlah-"+id+"").attr("data-harga", harga_baru); 
-                                    $("#total_pembelian").val(tandaPemisahTitik(total_akhirr));
-                                    $("#total_pembelian1").val(tandaPemisahTitik(subtotal_penjualan));         
+                                      $.post("update_pesanan_barang_harga_beli.php",{jumlah:jumlah,harga_lama:harga_lama,jumlah_tax:jumlah_tax,potongan:potongan,id:id,harga_baru:harga_baru,kode_barang:kode_barang},function(info){
 
-                                           });
+                                      
+                                      $("#text-harga-"+id+"").show();
+                                      $("#text-harga-"+id+"").text(tandaPemisahTitik(harga_baru));
+                                      $("#text-subtotal-"+id+"").text(tandaPemisahTitik(subtotal));
+                                      $("#hapus-tbs-"+id+"").attr('data-subtotal', subtotal);
+
+                                      $("#hapus-tbs-"+id+"").attr('data-subtotal', subtotal);
+
+                                      $("#text-tax-"+id+"").text(Math.round(jumlah_tax));
+                                      $("#input-harga-"+id+"").attr("type", "hidden"); 
+                                      $("#input-jumlah-"+id+"").attr("data-harga", harga_baru); 
+                                      $("#total_pembelian").val(tandaPemisahTitik(total_akhirr));
+                                      $("#total_pembelian1").val(tandaPemisahTitik(subtotal_penjualan));         
+
+                                      });
+
+                                    }
+                                    else {
+
+                                    }
                                   
                                     $("#kode_barang").focus();
                                     $("#pembayaran_pembelian").val("");
@@ -1968,7 +2005,9 @@ $(document).ready(function(){
     $("#ber_stok").val(ber_stok);
     $("#id_produk").val(id_barang);
     $("#harga_produk").val(harga_beli);
-    $("#harga_lama").val(harga_beli);    
+    $("#harga_lama").val(harga_beli);
+    $("#harga_baru").val(harga_beli);
+        
 
 
 if (ber_stok == 'Barang') {

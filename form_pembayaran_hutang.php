@@ -311,7 +311,7 @@ $session_id = session_id();
   <div class="row 1">          
           <div class="form-group col-sm-6">
           <label> Tanggal </label><br>
-          <input type="text" name="tanggal" id="tanggal" placeholder="Tanggal" style="height: 20px" value="<?php echo date("Y/m/d"); ?>" class="form-control" required="" >
+          <input type="text" name="tanggal" id="tanggal" placeholder="Tanggal" style="height: 20px" value="<?php echo date("Y-m-d"); ?>" class="form-control" required="" >
           
           <input type="hidden" name="session_id" id="session_id" class="form-control" readonly="" value="<?php echo $session_id; ?>" required="" >
           </div>

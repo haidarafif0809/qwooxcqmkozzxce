@@ -8,13 +8,13 @@
 
 
    
-$cek = $db->query("SELECT * FROM tbs_pembayaran_piutang WHERE no_faktur_penjualan = '$no_faktur_penjualan'");
+$cek = $db->query("SELECT no_faktur_penjualan FROM tbs_pembayaran_piutang WHERE no_faktur_penjualan = '$no_faktur_penjualan'");
 
 $jumlah = mysqli_num_rows($cek);
     
     if ($jumlah > 0){
         
-      $query1 = $db->prepare("UPDATE tbs_pembayaran_piutang SET jumlah_bayar = jumlah_bayar + ?, potongan = potongan + ?, total = total + ? WHERE no_faktur_penjualan = ?");
+      $query1 = $db->prepare("UPDATE tbs_pembayaran_piutang SET jumlah_bayar = jumlah_bayar + ?, potongan = ?, total = ? WHERE no_faktur_penjualan = ?");
 
       $query1->bind_param("iiis",
           $jumlah_bayar, $potongan, $total_kredit, $no_faktur_penjualan);

@@ -83,7 +83,6 @@ echo $no_faktur = $nomor."/JL/".$data_bulan_terakhir."/".$tahun_terakhir;
 
  }
 
-$no_rm = stringdoang($_POST['kode_pelanggan']);
 $apoteker = stringdoang($_POST['apoteker']);
 $analis = stringdoang($_POST['analis']);
 $nama_petugas = stringdoang($_SESSION['nama']);
@@ -103,13 +102,21 @@ $tanggal_jt = stringdoang($_POST['tanggal_jt']);
 $tanggal_jt = tanggal_mysql($tanggal_jt);
 $no_jurnal = no_jurnal();
 
+$no_rm = stringdoang($_POST['kode_pelanggan']);
+
 $id_userr = $db->query("SELECT id FROM user WHERE nama = '$user'");
 $data_id = mysqli_fetch_array($id_userr);
 $id_kasir = $data_id['id'];
 
-    $select_kode_pelanggan = $db->query("SELECT nama_pelanggan FROM pelanggan WHERE kode_pelanggan = '$no_rm'");
+    $select_kode_pelanggan = $db_pasien->query("SELECT nama_pelanggan FROM pelanggan WHERE kode_pelanggan = '$no_rm'");
     $ambil_kode_pelanggan = mysqli_fetch_array($select_kode_pelanggan);
 
+    if($ambil_kode_pelanggan['nama_pelanggan'] == ''){
+      $nama_pasien = $no_rm;
+    }
+    else{
+      $nama_pasien = $ambil_kode_pelanggan['nama_pelanggan'];
+    }
     
     $perintah0 = $db->query("SELECT * FROM fee_faktur WHERE nama_petugas = '$id_kasir'");
     $cek = mysqli_fetch_array($perintah0);
@@ -207,13 +214,13 @@ $id_kasir = $data_id['id'];
 
           if ($tunai_i >= 0) 
 {
-              $ket_jurnal = "Penjualan Apotek Lunas ".$ambil_kode_pelanggan['nama_pelanggan']." ";
+              $ket_jurnal = "Penjualan Apotek Lunas ".$nama_pasien." ";
 
-              $stmt = $db->prepare("INSERT INTO penjualan (no_faktur,penjamin,no_resep,resep_dokter,apoteker, kode_gudang, kode_pelanggan, total, tanggal, jam, user, sales, status, potongan, /*tax,*/ sisa, cara_bayar, tunai, status_jual_awal, keterangan, ppn,jenis_penjualan,biaya_admin, no_faktur_jurnal, keterangan_jurnal,perawat) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,'Lunas',?,/*?,*/?,?,?,'Tunai',?,?,'Apotek',?,?,?,?)");
+              $stmt = $db->prepare("INSERT INTO penjualan (no_faktur,penjamin,no_resep,resep_dokter,apoteker, kode_gudang, kode_pelanggan, total, tanggal, jam, user, sales, status, potongan, /*tax,*/ sisa, cara_bayar, tunai, status_jual_awal, keterangan, ppn,jenis_penjualan,biaya_admin, no_faktur_jurnal, keterangan_jurnal,perawat,nama) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,'Lunas',?,/*?,*/?,?,?,'Tunai',?,?,'Apotek',?,?,?,?,?)");
               
     // hubungkan "data" dengan prepared statements
-              $stmt->bind_param("sssssssissssiisississs",
-              $no_faktur,$penjamin,$no_resep,$resep_dokter, $apoteker,$kode_gudang, $no_rm, $total, $tanggal_sekarang, $jam_sekarang, $user, $id_kasir, $potongan, /*$tax,*/ $sisa, $cara_bayar, $pembayaran, $keterangan, $ppn_input,$biaya_admin,$no_jurnal,$ket_jurnal,$analis);
+              $stmt->bind_param("sssssssissssiisississss",
+              $no_faktur,$penjamin,$no_resep,$resep_dokter, $apoteker,$kode_gudang, $no_rm, $total, $tanggal_sekarang, $jam_sekarang, $user, $id_kasir, $potongan, /*$tax,*/ $sisa, $cara_bayar, $pembayaran, $keterangan, $ppn_input,$biaya_admin,$no_jurnal,$ket_jurnal,$analis,$nama_pasien);
 
 
               $_SESSION['no_faktur']=$no_faktur;
@@ -221,6 +228,12 @@ $id_kasir = $data_id['id'];
     // jalankan query
               $stmt->execute();
               
+              if (!$stmt){
+                die('Query Error : '.$db->errno.' - '.$db->error);
+              }
+              else{
+                            
+              }
               
 
 
@@ -317,14 +330,14 @@ if ($potongan != "" || $potongan != 0 ) {
               
             {
               $kredit_s = $total - $pembayaran;
-              $ket_jurnal = "Penjualan Apotek Piutang ".$ambil_kode_pelanggan['nama_pelanggan']." ";
+              $ket_jurnal = "Penjualan Apotek Piutang ".$nama_pasien." ";
               
               
-              $stmt = $db->prepare("INSERT INTO penjualan (no_faktur,penjamin,no_resep,resep_dokter,apoteker, kode_gudang, kode_pelanggan, total, tanggal, tanggal_jt, jam, user, sales, status, potongan, /*tax,*/ kredit, nilai_kredit, cara_bayar, tunai, status_jual_awal, keterangan, ppn,jenis_penjualan,biaya_admin, no_faktur_jurnal, keterangan_jurnal,perawat) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,'Piutang',?,/*?,*/?,?,?,?,'Kredit',?,?,'Apotek',?,?,?,?)");
+              $stmt = $db->prepare("INSERT INTO penjualan (no_faktur,penjamin,no_resep,resep_dokter,apoteker, kode_gudang, kode_pelanggan, total, tanggal, tanggal_jt, jam, user, sales, status, potongan, /*tax,*/ kredit, nilai_kredit, cara_bayar, tunai, status_jual_awal, keterangan, ppn,jenis_penjualan,biaya_admin, no_faktur_jurnal, keterangan_jurnal,perawat,nama) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,'Piutang',?,/*?,*/?,?,?,?,'Kredit',?,?,'Apotek',?,?,?,?,?)");
               
 
-              $stmt->bind_param("sssssssisssssiiisississs",
-              $no_faktur,$penjamin,$no_resep,$resep_dokter, $apoteker, $kode_gudang, $no_rm, $total , $tanggal_sekarang, $tanggal_jt, $jam_sekarang, $user, $id_kasir, $potongan, /*$tax,*/ $kredit_s, $kredit_s, $cara_bayar, $pembayaran, $keterangan, $ppn_input,$biaya_admin,$no_jurnal,$ket_jurnal,$analis);
+              $stmt->bind_param("sssssssisssssiiisississss",
+              $no_faktur,$penjamin,$no_resep,$resep_dokter, $apoteker, $kode_gudang, $no_rm, $total , $tanggal_sekarang, $tanggal_jt, $jam_sekarang, $user, $id_kasir, $potongan, /*$tax,*/ $kredit_s, $kredit_s, $cara_bayar, $pembayaran, $keterangan, $ppn_input,$biaya_admin,$no_jurnal,$ket_jurnal,$analis,$nama_pasien);
 
               
 
@@ -439,10 +452,24 @@ else
 
 
 // coding untuk memasukan history_tbs dan menghapus tbs
-    $tbs_penjualan_masuk = $db->query("INSERT INTO history_tbs_penjualan (no_reg,kode_barang,nama_barang,jumlah_barang,harga,subtotal,tipe_barang,tanggal,jam,potongan,tax,session_id,satuan,dosis) SELECT no_reg,kode_barang,nama_barang,jumlah_barang,harga,subtotal,tipe_barang,tanggal,jam,potongan,tax,session_id,satuan,dosis FROM tbs_penjualan  WHERE session_id = '$session_id' AND (no_reg = '' OR no_reg IS NULL) ");
+    $tbs_penjualan_masuk = "INSERT INTO history_tbs_penjualan (no_reg,no_faktur,kode_barang,nama_barang,jumlah_barang,harga,subtotal,tipe_barang,tanggal,jam,potongan,tax,session_id,satuan,dosis) SELECT no_reg,'$no_faktur',kode_barang,nama_barang,jumlah_barang,harga,subtotal,tipe_barang,tanggal,jam,potongan,tax,session_id,satuan,dosis FROM tbs_penjualan  WHERE session_id = '$session_id' AND (no_reg = '' OR no_reg IS NULL)";
+        if ($db->query($tbs_penjualan_masuk) === TRUE) {
+              
+        }
+        else{
+            echo "Error: " . $tbs_penjualan_masuk . "<br>" . $db->error;
+        }
 
-    $tbs_fee_masuk = $db->query(" INSERT INTO history_tbs_fee_produk 
-      (no_reg,no_rm,nama_petugas,kode_produk,nama_produk,jumlah_fee,tanggal,jam,waktu,session_id) SELECT no_reg,no_rm,nama_petugas,kode_produk,nama_produk,jumlah_fee,tanggal,jam,waktu,session_id FROM tbs_fee_produk WHERE session_id = '$session_id' AND (no_reg = '' OR no_reg IS NULL) ");
+    $tbs_fee_masuk = " INSERT INTO history_tbs_fee_produk 
+      (no_reg,no_faktur,no_rm,nama_petugas,kode_produk,nama_produk,jumlah_fee,tanggal,jam,waktu,session_id) SELECT no_reg,'$no_faktur',no_rm,nama_petugas,kode_produk,nama_produk,
+      jumlah_fee,tanggal,jam,waktu,session_id FROM tbs_fee_produk WHERE session_id = '$session_id' AND (no_reg = '' OR no_reg IS NULL) ";
+        if ($db->query($tbs_fee_masuk) === TRUE) {
+              
+        }
+        else{
+            echo "Error: " . $tbs_fee_masuk . "<br>" . $db->error;
+        }
+
 
 
 

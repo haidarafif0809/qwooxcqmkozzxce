@@ -453,7 +453,7 @@ include 'db.php';
 
   <?php }  # END <!-- JIKA  Radiologi maka akan ditampilkan -->
 
-    $query_radiologi = $db->query("SELECT nama_barang, jumlah_barang, harga, potongan, tax, subtotal FROM hasil_pemeriksaan_radiologi WHERE no_reg = '$data_inner[no_reg]' AND no_faktur = '$no_faktur'");
+    $query_radiologi = $db->query("SELECT nama_barang, jumlah_barang, harga, potongan, tax, subtotal FROM hasil_pemeriksaan_radiologi WHERE no_reg = '$data_inner[no_reg]' AND no_faktur = '$no_faktur' AND status_periksa = '1'");
     $cek_radiologi = mysqli_num_rows($query_radiologi);
 
     if ($cek_radiologi > 0) { #<!-- JIKA Radiologi  maka akan ditampilkan -->
@@ -502,7 +502,7 @@ include 'db.php';
                             
               }
 
-          $query_total_detail_radiologi = $db->query("SELECT SUM(subtotal) AS subtotal_radiologi FROM hasil_pemeriksaan_radiologi WHERE no_faktur = '$no_faktur' AND no_reg = '$data_inner[no_reg]' ");
+          $query_total_detail_radiologi = $db->query("SELECT SUM(subtotal) AS subtotal_radiologi FROM hasil_pemeriksaan_radiologi WHERE no_faktur = '$no_faktur' AND no_reg = '$data_inner[no_reg]' AND status_periksa = '1' ");
 
           $data_total_detail_radiologi = mysqli_fetch_array($query_total_detail_radiologi);
 

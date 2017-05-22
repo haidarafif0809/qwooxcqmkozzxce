@@ -223,6 +223,7 @@ $dokter = $data_petugas_jaga['nama_dokter'];
         <div class="form-group">
           <label for="sel1">Pemeriksaan</label>
             <select class="form-control" id="periksa" name="periksa" autocomplete="off">
+            <option value="">-- PILIH PEMERIKSAAN --</option>
             <option value="1">Laboratorium</option>
             <option value="2">Radiologi</option>
           </select>
@@ -266,12 +267,12 @@ $dokter = $data_petugas_jaga['nama_dokter'];
 		<th style='background-color: #4CAF50; color: white'>Batal</th>
 		
 		<?php if ($input_jasa_lab): ?>  
-		<th style='background-color: #4CAF50; color: white' >Jasa Lab</th>
+		<th style='background-color: #4CAF50; color: white' >Input Jasa</th>
 		<?php endif?>
 
-		<?php if ($input_hasil_lab): ?> 
-    	<th style='background-color: #4CAF50; color: white' >Input Hasil Lab</th> 
-		<?php endif?>
+		<!--<?php //if ($input_hasil_lab): ?> 
+    	<th style='background-color: #4CAF50; color: white' >Input Hasil</th> 
+		<?php //endif?>-->
 
 		<th style='background-color: #4CAF50; color: white'>Edit</th> 
       	<th style='background-color: #4CAF50; color: white'>No REG</th>
@@ -517,6 +518,10 @@ $(document).on('click', '#registrasi_pasien', function (e) {
   else if (dokter == ""){
     alert("Kolom Dokter Jaga Harus Disi");
     $("#dokter").focus();
+  }
+  else if (periksa == ""){
+    alert("Pilih dahulu Pemeriksaan");
+    $("#periksa").focus();
   }
   else{
 

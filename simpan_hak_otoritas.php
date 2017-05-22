@@ -37,6 +37,7 @@ $menu_rawat_inap = angkadoang(isset($_POST['menu_rawat_inap']));
 $menu_ugd = angkadoang(isset($_POST['menu_ugd']));
 $menu_apotek = angkadoang(isset($_POST['menu_apotek']));
 $menu_laboratorium = angkadoang(isset($_POST['menu_laboratorium']));
+$menu_aps = angkadoang(isset($_POST['menu_aps']));
 
 // empat pilihan
 $biaya_admin_lihat = angkadoang(isset($_POST['biaya_admin_lihat']));
@@ -443,11 +444,11 @@ $update_otoritas_pembelian->execute();
 
 
 $update_otoritas_penjualan = $db->prepare("UPDATE otoritas_penjualan SET penjualan_lihat = ?, penjualan_tambah = ?, penjualan_edit = ?, penjualan_hapus = ?, retur_lihat = ?, retur_penjualan_lihat = ?, retur_penjualan_tambah = ?, retur_penjualan_edit = ?, retur_penjualan_hapus = ?, menu_rawat_jalan = ?, 
-	menu_rawat_inap = ?, menu_ugd = ?, menu_apotek = ?, menu_laboratorium = ? WHERE id_otoritas = ? ");
+	menu_rawat_inap = ?, menu_ugd = ?, menu_apotek = ?, menu_laboratorium = ?, menu_aps = ? WHERE id_otoritas = ? ");
 
-$update_otoritas_penjualan->bind_param("iiiiiiiiiiiiiii",
+$update_otoritas_penjualan->bind_param("iiiiiiiiiiiiiiii",
     $penjualan_lihat, $penjualan_tambah, $penjualan_edit, $penjualan_hapus, $retur_lihat, $retur_penjualan_lihat, $retur_penjualan_tambah, $retur_penjualan_edit, $retur_penjualan_hapus, $menu_rawat_jalan, 
-    $menu_rawat_inap, $menu_ugd, $menu_apotek, $menu_laboratorium, $id);
+    $menu_rawat_inap, $menu_ugd, $menu_apotek, $menu_laboratorium, $menu_aps, $id);
 
 $update_otoritas_penjualan->execute();
 

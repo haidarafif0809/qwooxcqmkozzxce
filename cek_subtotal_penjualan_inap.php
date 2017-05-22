@@ -21,14 +21,15 @@ include 'sanitasi.php';
 
 
 // menampilakn hasil penjumlah subtotal ALIAS total penjualan dari tabel tbs_penjualan berdasarkan data no faktur
- $query2 = $db->query("SELECT SUM(harga_jual) AS harga_jual FROM tbs_operasi WHERE no_reg = '$no_reg'");
- $data2 = mysqli_fetch_array($query2);
- $total2 = $data2['harga_jual'];
+ $query_operasi = $db->query("SELECT SUM(harga_jual) AS harga_jual FROM tbs_operasi WHERE no_reg = '$no_reg'");
+ $data_operasi = mysqli_fetch_array($query_operasi);
 
- $total_sum = ($total + $total2);
+ $sum_harga = $db->query("SELECT SUM(subtotal) AS harga_radiologi FROM tbs_penjualan_radiologi WHERE no_reg = '$no_reg' AND status_periksa = '1' AND no_faktur IS NULL");
+ $data_radiologi= mysqli_fetch_array($sum_harga);
+ 
 
 
-$total_tbs = ($total_sum - $diskon) + $biaya_admin;
+$total_tbs = ($total - $diskon) + $biaya_admin + $data_operasi['harga_jual'] + $data_radiologi['harga_radiologi'];
 
 if ($total_akhir == $total_tbs) {
 		echo 1;

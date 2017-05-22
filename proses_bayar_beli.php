@@ -69,6 +69,7 @@ echo $no_faktur = $nomor."/BL/".$data_bulan_terakhir."/".$tahun_terakhir;
            $ppn_input = stringdoang($_POST['ppn_input']);
            $cara_bayar = stringdoang($_POST['cara_bayar']);
            $kode_gudang = stringdoang($_POST['kode_gudang']);
+           $tanggal_jt = stringdoang($_POST['tanggal_jt']);
            $pembayaran = angkadoang($_POST['pembayaran']);
            $t_total = $total_1 - $potongan;
 
@@ -328,12 +329,6 @@ if ($potongan != "" || $potongan != 0 ) {
 
 // memasukan history edit tbs pembelian   
     $history_tbs_pembelian = $db->query("INSERT INTO history_tbs_pembelian (no_faktur,waktu,session_id,kode_barang,nama_barang,jumlah_barang,satuan,harga,subtotal,potongan,tax) SELECT '$no_faktur','$tanggal_sekarang $jam_sekarang',session_id,kode_barang,nama_barang,jumlah_barang,satuan,harga,subtotal,potongan,tax FROM tbs_pembelian  WHERE session_id = '$session_id' ");
-    if ($db->query($history_tbs_pembelian) === TRUE) {
-        } 
-
-        else {
-        echo "Error: " . $history_tbs_pembelian . "<br>" . $db->error;
-        }
 //end memasukan history edit tbs pembelian   
 
 // delete tsb pembelian yang sudah di di pindahkan ke detail pemebelian

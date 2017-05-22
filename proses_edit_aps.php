@@ -11,11 +11,11 @@ include 'sanitasi.php';
 	$no_telepon = stringdoang($_POST['no_telepon']);
 	$kondisi = stringdoang($_POST['kondisi']);
 	$alergi = stringdoang($_POST['alergi']);
-	$dokter = angkadoang($_POST['dokter']);
+	$dokter = stringdoang($_POST['dokter']);
 	$petugas = $_SESSION['nama'];
 	$periksa = stringdoang($_POST['periksa']);
-	$tanggal_lahir = angkadoang($_POST['tanggal_lahir']);
-	$agama = angkadoang($_POST['agama']);
+	$tanggal_lahir = stringdoang(tanggal_mysql($_POST['tanggal_lahir']));
+	$agama = stringdoang($_POST['agama']);
 
 	//times sekarang
 	$jam =  date("H:i:s");
@@ -31,7 +31,11 @@ $query_update_pasien = "UPDATE pelanggan SET
 	alamat_sekarang = '$alamat', agama = '$agama' 
 	WHERE kode_pelanggan = '$no_rm'";
 	if ($db_pasien->query($query_update_pasien) === TRUE){
-			
+	echo "UPDATE pelanggan SET 
+	nama_pelanggan = '$nama_lengkap', tgl_lahir = '$tanggal_lahir',
+	gol_darah = '$gol_darah', umur = '$umur', no_telp = '$no_telepon', 
+	alamat_sekarang = '$alamat', agama = '$agama' 
+	WHERE kode_pelanggan = '$no_rm'";
 	} 
 	else{
 		echo "Error: " . $query_update_pasien . "<br>" . $db_pasien->error;

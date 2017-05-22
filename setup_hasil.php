@@ -82,7 +82,7 @@ include 'db.php';
 
 
 <div class="container">
-<h3>SETUP HASIL</h3><hr>
+<h3>PARAMETER LABORATORIUM</h3><hr>
 
 <button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#demo"><i class="fa fa-level-down"></i> Input</button>
 

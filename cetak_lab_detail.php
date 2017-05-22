@@ -45,21 +45,21 @@ $data1 = mysqli_fetch_array($query1);
     <br>
 
 
-<table id="tableuser" class="table table-bordered">
+<table id="tableuser" class="table table-bordered table-sm">
 <thead>
-
-  <th style="background-color: #4CAF50; color: white;"> No RM</th>
-      <th style="background-color: #4CAF50; color: white;"> No REG</th>
-       <th style="background-color: #4CAF50; color: white;"> No Faktur</th>
-         <th style="background-color: #4CAF50; color: white;"> Pasien</th>
+          
+          <th style="background-color: #4CAF50; color: white;"> No RM</th>
+          <th style="background-color: #4CAF50; color: white;"> No REG</th>
+          <th style="background-color: #4CAF50; color: white;"> No Faktur</th>
+          <th style="background-color: #4CAF50; color: white;"> Pasien</th>
           <th style="background-color: #4CAF50; color: white;">Pemeriksaan</th>
-        <th style="background-color: #4CAF50; color: white;">Hasil Pemeriksaan</th>
-      <th style="background-color: #4CAF50; color: white;">Nilai Normal Pria</th>
-    <th style="background-color: #4CAF50; color: white;">Nilai Normal Wanita</th>
-      <th style="background-color: #4CAF50; color: white;"> Dokter</th>
-         <th style="background-color: #4CAF50; color: white;"> Analis</th>
-       <th style="background-color: #4CAF50; color: white;"> Status Rawat </th>
-    <th style="background-color: #4CAF50; color: white;"> Tanggal </th>
+          <th style="background-color: #4CAF50; color: white;">Hasil Pemeriksaan</th>
+          <th style="background-color: #4CAF50; color: white;">Nilai Normal Pria</th>
+          <th style="background-color: #4CAF50; color: white;">Nilai Normal Wanita</th>
+          <th style="background-color: #4CAF50; color: white;"> Dokter</th>
+          <th style="background-color: #4CAF50; color: white;"> Analis</th>
+          <th style="background-color: #4CAF50; color: white;"> Status Rawat </th>
+          <th style="background-color: #4CAF50; color: white;"> Tanggal </th>
                                     
 </thead>
             
@@ -67,10 +67,7 @@ $data1 = mysqli_fetch_array($query1);
     <?php
 
     $perintah009 = $db->query("SELECT us.nama AS dokter, se.nama AS analis,hl.nama_pasien,hl.no_rm,hl.no_faktur,hl.no_reg,hl.nama_pemeriksaan,
-      hl.status,hl.hasil_pemeriksaan,hl.id,hl.status_pasien,hl.tanggal,
-      hl.nama_pemeriksaan,hl.hasil_pemeriksaan,hl.nilai_normal_lk,
-      hl.nilai_normal_pr,hl.model_hitung,hl.satuan_nilai_normal,
-      hl.nilai_normal_lk2,hl.nilai_normal_pr2 FROM hasil_lab hl LEFT JOIN user us ON hl.dokter = us.id  LEFT JOIN user se ON hl.petugas_analis = se.id 
+      hl.status,hl.hasil_pemeriksaan,hl.id,hl.status_pasien,hl.tanggal,hl.nama_pemeriksaan,hl.hasil_pemeriksaan,hl.nilai_normal_lk,hl.nilai_normal_pr,hl.model_hitung,hl.satuan_nilai_normal,hl.nilai_normal_lk2,hl.nilai_normal_pr2 FROM hasil_lab hl LEFT JOIN user us ON hl.dokter = us.id  LEFT JOIN user se ON hl.petugas_analis = se.id 
       WHERE hl.tanggal >= '$dari_tanggal' AND hl.tanggal <= '$sampai_tanggal'");
 
 
@@ -96,6 +93,10 @@ $data1 = mysqli_fetch_array($query1);
                   }
 
             echo "<td>". $data11['nama_pasien'] ."</td>
+                  <td>". $data11['nama_pemeriksaan'] ."</td>
+                  <td>". $data11['hasil_pemeriksaan'] ."</td>
+                  <td>". $data11['nilai_normal_lk'] ."</td>
+                  <td>". $data11['nilai_normal_pr'] ."</td>
                   <td>". $data11['dokter'] ."</td>
                   <td>". $data11['analis'] ."</td>
                   <td>". $data11['status_pasien'] ."</td>
@@ -117,8 +118,7 @@ $data1 = mysqli_fetch_array($query1);
       </table>
       <hr>
 </div>
-</div>
-<br>
+
 
 <div class="col-sm-7">
 </div>
@@ -130,16 +130,15 @@ $data1 = mysqli_fetch_array($query1);
 
 <div class="col-sm-3">
         
- <table>
-  <tbody>
+   <table>
+    <tbody>
 
-     <font class="satu"><b>Petugas <br><br><br> <font class="satu"><?php echo $_SESSION['nama']; ?></font></b></font>
-            
-  </tbody>
-  </table>
+       <font class="satu"><b>Petugas <br><br><br> <font class="satu"><?php echo $_SESSION['nama']; ?></font></b></font>
+              
+    </tbody>
+    </table>
 
-
-     </div>
+</div>
 
  <script>
 $(document).ready(function(){

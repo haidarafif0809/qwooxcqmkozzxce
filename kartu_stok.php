@@ -9,8 +9,6 @@ include 'db.php';
 
 
  ?>
-
-
 <!-- js untuk tombol shortcut -->
  <script src="shortcut.js"></script>
 <!-- js untuk tombol shortcut -->
@@ -20,7 +18,7 @@ include 'db.php';
 
 <!--tampilan modal-->
 <div id="myModal" class="modal fade" role="dialog">
-  <div class="modal-dialog">
+  <div class="modal-dialog" role="document">
 
     <!-- isi modal-->
     <div class="modal-content">
@@ -31,10 +29,10 @@ include 'db.php';
       </div>
       <div class="modal-body">
 
+      <center>
+      <div class="table-responsive">
+           <table id="table_modal_kartu_stok" class="table table-bordered table-sm">
 
-<center>
-      <div class="table-resposive">
-           <table id="table_kartu_stok" class="table table-bordered table-sm">
            <thead> <!-- untuk memberikan nama pada kolom tabel -->
                               
             <th> Kode Barang </th>
@@ -48,11 +46,10 @@ include 'db.php';
            </table>
       </div>
 </center>
-
 </div> <!-- tag penutup modal-body-->
       <div class="modal-footer">
-        <center><b><button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-      </div></b></center>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
     </div>
 
   </div>
@@ -61,15 +58,30 @@ include 'db.php';
 
 
 
-<h1>Kartu Stok</h1> 
+<h3>LAPORAN KARTU STOK</h3> <hr>
 
-<button type="button" id="cari_produk_penjualan" class="btn btn-info " data-toggle="modal" data-target="#myModal"><i class='fa  fa-search'> Cari (F1)</i>  </button> 
+
+<button type="button" id="cari_produk_penjualan" class="btn btn-info " data-toggle="modal" data-target="#myModal"><i class='fa  fa-search'> Cari (F1) </i>  </button> 
 <br><br>
 <form class="form-inline" role="form" id="form_tanggal">
 
-<div class="form-group">
-    <label> Kode Barang </label><br>
-    <input type="text" style="width:225px" name="kode_barang" id="kode_barang" required="" placeholder="Ketikkan Kode / Nama (Barang)" autocomplete="off" class="form-control" >
+<div class="form-group">          
+  <label> Kode Barang </label><br>
+      <select style="font-size:15px; height:20px" type="text" name="kode_barang" id="kode_barang" class="form-control chosen" data-placeholder="SILAKAN PILIH...">
+          <option value="">SILAKAN PILIH...</option>
+             <?php 
+
+              include 'cache.class.php';
+                $c = new Cache();
+                $c->setCache('produk');
+                $data_c = $c->retrieveAll();
+
+                foreach ($data_c as $key) {
+                  echo '<option id="opt-produk-'.$key['kode_barang'].'" value="'.$key['kode_barang'].'" data-kode="'.$key['kode_barang'].'" nama-barang="'.$key['nama_barang'].'" harga="'.$key['harga_jual'].'" harga_jual_2="'.$key['harga_jual2'].'" harga_jual_3="'.$key['harga_jual3'].'" satuan="'.$key['satuan'].'" kategori="'.$key['kategori'].'" status="'.$key['status'].'" suplier="'.$key['suplier'].'" limit_stok="'.$key['limit_stok'].'" ber-stok="'.$key['berkaitan_dgn_stok'].'" id-barang="'.$key['id'].'" > '. $key['kode_barang'].' ( '.$key['nama_barang'].' ) </option>';
+                }
+
+              ?>
+      </select>
 </div>
 
 <!-- Start Input Hidden-->
@@ -83,7 +95,7 @@ include 'db.php';
 <div class="form-group">
           <label> Bulan </label><br>
           <select type="text" name="bulan" id="bulan" class="form-control" required="">
-            <option value=""> --SILAKAN PILIH-- </option>
+            <option value=""> Pilih Bulan</option>
             <option value="1"> Januari </option>
             <option value="2"> Februari </option>
             <option value="3"> Maret </option>
@@ -103,7 +115,7 @@ include 'db.php';
 <div class="form-group">
           <label> Tahun </label><br>
           <select type="text" name="tahun" id="tahun" class="form-control" required="">
-          <option value=""> --SILAKAN PILIH-- </option>
+          <option value=""> Pilih Tahun </option>
             <option value="2016"> 2016 </option>
             <option value="2017"> 2017 </option>
             <option value="2018"> 2018 </option>
@@ -117,95 +129,54 @@ include 'db.php';
 </form>
 
 
-<div class="table-responsive">
-    
-    <table id="table-kartustok" class="table table-bordered table-sm">
 
+<span style="display: none" id="result">
+<div class="card card-block" >  <center><h2 style="display: none;" id="judul"></h2></center>
+  <br>  
+ <table id="table-data">
+  <tbody>
+      <tr><td width="25%"><font class="satu">Nama Barang</font></td> <td> :&nbsp;</td> <td><font class="satu" id="nama"></font> </tr>
+
+      <tr><td  width="25%"><font class="satu">Kode Barang</font></td> <td> :&nbsp;</td> <td><font class="satu" id="kode"></font></td></tr>
+         
+
+  </tbody>
+</table><br>
+   <div class="table-responsive">
+    <table id="table_kartu_stoknya" class="table table-sm">
+
+        <!-- membuat nama kolom tabel -->
         <thead>
 
       <th style='background-color: #4CAF50; color:white'> No Faktur </th>
       <th style='background-color: #4CAF50; color:white'> Jenis Transaksi </th>
+      <th style='background-color: #4CAF50; color:white'> Harga </th>
       <th style='background-color: #4CAF50; color:white'> Tanggal </th>
-      <th style='background-color: #4CAF50; color:white'> Jumlah Masuk</th>
-      <th style='background-color: #4CAF50; color:white'> Jumlah Keluar</th>
+      <th style='background-color: #4CAF50; color:white'> Jumlah Masuk </th>
+      <th style='background-color: #4CAF50; color:white'> Jumlah Keluar </th>
       <th style='background-color: #4CAF50; color:white'> Saldo</th>
-            
-           </thead>
 
-     </table>
+        </thead>
+    </table>
+  </div>
 
+  <div class="row">
+          <a id="trx" href='' class='btn btn-success' target='blank'><i class='fa fa-print'> </i> Cetak</a>
+
+        <a href='' style="width: 170px;" type='submit' id="btn-export" class='btn btn-default'><i class='fa fa-download'> </i> Download Excel</a>
+
+    </div>
 </div>
-<a href='export_kartu_stok.php' type='submit' id="btn-export" class='btn btn-default' style="display: none;"><i class="fa fa-download"> Download Excel</i></a>
 
+  </span>
 </div><!--Div Container-->
 
 
- <script type="text/javascript" language="javascript" >
-      $(document).ready(function() {
-$(document).on('click','#lihat_kartu_stok',function(e) {
-
-        var kode_barang = $("#kode_barang").val();
-        var kode_barang = kode_barang.substr(0, kode_barang.indexOf('('));       
-        var nama_barang = $("#nama_barang").val();   
-        var id_produk = $("#id_produk").val();        
-        var bulan = $("#bulan").val();        
-        var tahun = $("#tahun").val();
-
-        $("#btn-export").attr('href','export_kartu_stok.php?id_produk='+id_produk+'&kode_barang='+kode_barang+'&nama_barang='+nama_barang+'&bulan='+bulan+'&tahun='+tahun+'');
-$("#btn-export").show();
-
-     $('#table-kartustok').DataTable().destroy();
-
-          var dataTable = $('#table-kartustok').DataTable( {
-          "processing": true,
-          "serverSide": true,
-          "info":     false,
-          "language": {
-        "emptyTable":     "My Custom Message On Empty Table"
-    },
-          "ajax":{
-            url :"show_kartu_stok.php", // json datasource
-             "data": function ( d ) {
-                var kode_barang = $("#kode_barang").val();
-                d.kode_barang = kode_barang.substr(0, kode_barang.indexOf('('));       
-                d.nama_barang = $("#nama_barang").val();   
-                d.id_produk = $("#id_produk").val();        
-                d.bulan = $("#bulan").val();        
-                d.tahun = $("#tahun").val();
-                // d.custom = $('#myInput').val();
-                // etc
-            },
-                type: "post",  // method  , by default get
-            error: function(){  // error handling
-              $(".tbody").html("");
-              $("#table-kartustok").append('<tbody class="tbody"><tr><th colspan="3"></th></tr></tbody>');
-              $("#table-kartustok_processing").css("display","none");
-              
-            }
-          }
-    
-
-
-        } );
-          $("#result").show()
-
-   } );  
-
-  $("form").submit(function(){
-      return false;
-  });
-
-  } );
-    </script>
-
-<!--
-
 <script type="text/javascript">
 //berdasarkan rm dan tanggal
-        $("#lihat_kartu_stok").click(function(){
+        $(document).on('click','#lihat_kartu_stok',function(){
 
         var kode_barang = $("#kode_barang").val();
-        var kode_barang = kode_barang.substr(0, kode_barang.indexOf('('));       
         var nama_barang = $("#nama_barang").val();   
         var id_produk = $("#id_produk").val();        
         var bulan = $("#bulan").val();        
@@ -229,13 +200,107 @@ $("#btn-export").show();
         }
         else
         {
+            $("#result").show();
+            $('#table_kartu_stoknya').DataTable().destroy();
+          
+              var dataTable = $('#table_kartu_stoknya').DataTable( {
+              "processing": true,
+              "serverSide": true,
+              "ajax":{
+                url :"datatable_kartu_stok.php", // json datasource
+                "data": function ( d ) {
+                d.kode_barang = $("#kode_barang").val();
+                d.nama_barang = $("#nama_barang").val();   
+                d.id_produk = $("#id_produk").val();        
+                d.bulan = $("#bulan").val();        
+                d.tahun = $("#tahun").val();
+                // d.custom = $('#myInput').
+                      // d.custom = $('#myInput').val();
+                      // etc
+                  },
+                type: "post",  // method  , by default get
+                error: function(){  // error handling
+                  $(".employee-grid-error").html("");
+                  $("#table_kartu_stoknya").append('<tbody class="employee-grid-error"><tr><th colspan="3">No data found in the server</th></tr></tbody>');
+                  $("#employee-grid_processing").css("display","none");
+                }
+            },
+                
+                "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+                    $(nRow).attr('class','tr-id-'+aData[10]+'');
+                },
 
-        $.post("show_kartu_stok.php", {kode_barang:kode_barang,nama_barang:nama_barang,id_produk:id_produk,bulan:bulan,tahun:tahun},function(info){
-        
-        $("#result").html(info);
+            });
 
-        });
-            }  
+
+      
+          if (bulan == '1')
+          {
+          moon = 'Januari';
+          }
+          else if (bulan == '2')
+          {
+          moon = 'Febuari';
+          }
+          else if (bulan == '3')
+          {
+          moon = 'Maret';
+          }
+          else if (bulan == '4')
+          {
+          moon = 'April';
+          }
+          else if (bulan == '5')
+          {
+          moon = 'Mei';
+          }
+          else if (bulan == '6')
+          {
+          moon = 'Juni';
+          }
+          else if (bulan == '7')
+          {
+          moon = 'Juli';
+          }
+          else if (bulan == '8')
+          {
+          moon = 'Agustus';
+          }
+          else if (bulan == '9')
+          {
+          moon = 'September';
+          }
+          else if (bulan == '10')
+          {
+          moon = 'Oktober';
+          }
+          else if (bulan == '11')
+          {
+          moon = 'November';
+          }
+          else if (bulan == '12')
+          {
+          moon = 'Desember';
+          }
+
+
+          var judul = "Periode" + " " + moon + " " + " " + tahun;
+
+          $("#judul").show();
+          $("#judul").text(judul);
+ 
+          $("#btn-export").attr('href','export_kartu_stok.php?bulan='+bulan+'&tahun='+tahun+'&kode_barang='+kode_barang+'&nama_barang='+nama_barang+'&moon='+moon);
+          $("#trx").attr("href",'cetak_kartu_stok_bulan.php?bulan='+bulan+'&tahun='+tahun+'&kode_barang='+kode_barang+'&nama_barang='+nama_barang+'&moon='+moon);
+         
+
+            $("#nama").text(nama_barang)
+            $("#kode").text(kode_barang)
+
+                        $("form").submit(function(){
+            return false;
+            });
+
+          }// /else 
         });
            
         $("form").submit(function(){
@@ -247,39 +312,66 @@ $("#btn-export").show();
 </script>
 
 
--->
-<script>
-// untuk memunculkan data tabel 
-$(document).ready(function() {
-        $('#table-kartustok').DataTable({"ordering":false});
-    });
-
-</script>
-
-<script type="text/javascript">
+<!--<script type="text/javascript">
   $("#cari_produk_penjualan").click(function() {
 
       //menyembunyikan notif berhasil
       $("#alert_berhasil").hide();
       
+      var kode_pelanggan = $("#kd_pelanggan").val();
+      //coding update jumlah barang baru "rabu,(9-3-2016)"
+      $.post('modal_kartu_stok_baru.php',{kode_pelanggan:kode_pelanggan},function(data) {
+      
+      $(".modal_baru").html(data);
+     
+      });
       /* Act on the event */
       });
 
+</script>-->
+
+<script> 
+    shortcut.add("f1", function() {
+        // Do something
+
+        $("#cari_produk_penjualan").click();
+
+    });
+         shortcut.add("f2", function() {
+        // Do something
+
+          $("#kode_barang").trigger('chosen:open');
+
+    });
 </script>
 
 <script type="text/javascript">
-  $(document).ready(function(){
+  //SELECT CHOSSESN    
+$(".chosen").chosen({no_results_text: "Maaf, Data Tidak Ada!",search_contains:true});    
+</script>
+
+<script>
+//Choosen Open select
+$(document).ready(function(){
+    $("#kode_barang").trigger('chosen:open');
+
+});
+</script>
+
+<script type="text/javascript">
+  $("#cari_produk_penjualan").click(function() {
     var kode_pelanggan = $("#kd_pelanggan").val();
-    $("#table_kartu_stok").DataTable().destroy();
-          var dataTable = $('#table_kartu_stok').DataTable( {
+    $("#alert_berhasil").hide();
+    $("#table_modal_kartu_stok").DataTable().destroy();
+          var dataTable = $('#table_modal_kartu_stok').DataTable( {
           "processing": true,
           "serverSide": true,
           "ajax":{
-            url :"modal_kartu_stok_baru.php", // json datasource
+            url :"datatable_modal_kartu_stok_baru.php", // json datasource
             type: "post",  // method  , by default get
             error: function(){  // error handling
               $(".employee-grid-error").html("");
-              $("#table_kartu_stok").append('<tbody class="employee-grid-error"><tr><th colspan="3">Data Tidak Ditemukan.. !!</th></tr></tbody>');
+              $("#table_modal_kartu_stok").append('<tbody class="employee-grid-error"><tr><th colspan="3">Data Tidak Ditemukan.. !!</th></tr></tbody>');
               $("#employee-grid_processing").css("display","none");
               
             }
@@ -288,7 +380,7 @@ $(document).ready(function() {
           "fnCreatedRow": function( nRow, aData, iDataIndex ) {
 
               $(nRow).attr('class', "pilih");
-              $(nRow).attr('data-kode', aData[0]+"("+aData[1]+")");
+              $(nRow).attr('data-kode', aData[0]);
               $(nRow).attr('nama-barang', aData[1]);
               $(nRow).attr('id-barang', aData[6]);
 
@@ -299,32 +391,13 @@ $(document).ready(function() {
 });
 </script>
 
-
-
-<script type="text/javascript">
-   shortcut.add("f1", function() {
-        // Do something
-
-        $("#cari_produk_penjualan").click();
-
-    });
-</script>
-
-<script>
-$(function() {
-    $( "#kode_barang" ).autocomplete({
-        source: 'kode_barang_autocomplete.php'
-    });
-});
-</script>
-
-
 <!--untuk memasukkan perintah java script-->
 <script type="text/javascript">
 // jika dipilih, nim akan masuk ke input dan modal di tutup
   $(document).on('click', '.pilih', function (e) {
 
   document.getElementById("kode_barang").value = $(this).attr('data-kode');
+  $("#kode_barang").trigger('chosen:updated');
   document.getElementById("nama_barang").value = $(this).attr('nama-barang');
   document.getElementById("id_produk").value = $(this).attr('id-barang');
 
@@ -336,5 +409,22 @@ $(function() {
 
 
 
+<script type="text/javascript">
+  
+  $(document).ready(function(){
+  $(document).on('change','#kode_barang',function(e){
+
+    var kode_barang = $(this).val();
+    var nama_barang = $('#opt-produk-'+kode_barang).attr("nama-barang");
+    var id_barang = $('#opt-produk-'+kode_barang).attr("id-barang");
+
+
+          $("#nama_barang").val(nama_barang);
+          $("#id_produk").val(id_barang);
+
+  });
+      
+    });    
+</script>
 
 <?php include 'footer.php'; ?>

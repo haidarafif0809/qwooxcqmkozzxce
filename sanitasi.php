@@ -40,6 +40,12 @@ $angka1 = filter_var($angka,
  return $angka1;
 }
 
+function koma($rupiah,$angka){
+$rp = number_format($rupiah,$angka,",",".");
+$rpp = $rp;
+return $rpp;
+}
+
 
 function emaildoang($email){
 

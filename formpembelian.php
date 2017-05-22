@@ -382,6 +382,9 @@ $no_faktur = $nomor."/JL/".$data_bulan_terakhir."/".$tahun_terakhir;
 
           <input type="hidden" id="id_produk" name="id_produk" class="form-control" value="" placeholder="Id Produk" required="">
 
+<!-- UNTUK PERINGTAN AJIKA HARGA BELI YANG DIUBAH LEBI BESAR DARI HARGA JUAL -->
+          <input type="hidden" id="harga_jual" name="harga_jual" class="form-control" placeholder="Harga Jual" required="">
+
  
   </form>
       
@@ -628,6 +631,7 @@ $no_faktur = $nomor."/JL/".$data_bulan_terakhir."/".$tahun_terakhir;
   document.getElementById("id_produk").value = $(this).attr('id-barang');
   document.getElementById("harga_baru").value = $(this).attr('harga');
   document.getElementById("jumlahbarang").value = $(this).attr('jumlah-barang');
+  document.getElementById("harga_jual").value = $(this).attr('harga_jual');
 
 
     var session_id = $("#session_id").val();
@@ -691,6 +695,7 @@ $no_faktur = $nomor."/JL/".$data_bulan_terakhir."/".$tahun_terakhir;
     $("#limit_stok").val(limit_stok);
     $("#ber_stok").val(ber_stok);
     $("#id_produk").val(id_barang);
+    $("#harga_jual").val(harga_jual);
 
 if (ber_stok == 'Barang') {
 
@@ -723,6 +728,34 @@ $.post('cek_kode_barang_tbs_pembelian.php',{kode_barang:kode_barang,session_id:s
   });
   });
 
+</script>
+
+<script type="text/javascript">
+  $(document).on('keyup', '#harga_baru', function () {
+
+    var harga_baru = $("#harga_baru").val();
+    var harga_produk = $("#harga_produk").val();
+    var harga_jual = $("#harga_jual").val();
+    var kode_barang = $("#kode_barang").val();
+    var nama_barang = $("#nama_barang").val();
+    if (harga_jual == "") {
+      harga_jual = 0;
+    }
+
+    var selisih_harga = parseInt(harga_jual,10) - parseInt(harga_baru,10);
+
+    if (selisih_harga < 0) {
+        var pesan_alert = confirm("Total Harga '"+nama_barang+"' Lebih Besar Dari Harga Jual. Tetap Lanjutkan ?");
+          
+          if (pesan_alert == true) {
+            $("#harga_baru").val(harga_baru);
+          }
+          else{
+            $("#harga_baru").val(harga_produk);
+          }            
+      }
+
+  });
 </script>
 
 <script>
@@ -821,62 +854,139 @@ $(document).ready(function(){
      var total_bener = parseInt(hitung_tax,10) + parseInt(Math.round(tax_bener,10));
  
 
-      
+      if (jumlah_barang == ''){
+      alert("Jumlah Barang Harus Diisi");
+      $("#jumlah_barang").focus();
+      }
+      else if (suplier == ''){
+      alert("Suplier Harus Dipilih");
 
-
-  if (jumlah_barang == ''){
-  alert("Jumlah Barang Harus Diisi");
-  $("#jumlah_barang").focus();
-  }
-  else if (suplier == ''){
-  alert("Suplier Harus Dipilih");
-
-  }
-  else if (kode_barang == ''){
-  alert("Kode Barang Harus Diisi");
-  }
-    else if (kode_gudang == ''){
-  alert("Gudang Harus Anda Pilih Terlebih Dahulu !!");
-  }
-  else if (ppn == ''){
-  alert("PPN Harus Anda Pilih Terlebih Dahulu !!");
-  }    else if (tax > 100){
-  alert("Tax Tidak Boleh Lebih Dari 100%");
-  }
+      }
+      else if (kode_barang == ''){
+      alert("Kode Barang Harus Diisi");
+      }
+        else if (kode_gudang == ''){
+      alert("Gudang Harus Anda Pilih Terlebih Dahulu !!");
+      }
+      else if (ppn == ''){
+      alert("PPN Harus Anda Pilih Terlebih Dahulu !!");
+      }    else if (tax > 100){
+      alert("Tax Tidak Boleh Lebih Dari 100%");
+      }
 
 
   
   else {
 
+        if (harga != harga_baru) {
 
-        $("#total_pembelian").val(tandaPemisahTitik(Math.round(total_bener)));
-        $("#total_pembelian1").val(tandaPemisahTitik(total_akhir));
-        $("#potongan_pembelian").val(tandaPemisahTitik(Math.round(potongaaan)))
-        $("#tax_rp").val(tandaPemisahTitik(Math.round(tax_bener)))
+             var pesan_alert = confirm("Apakah Anda Ingin Merubah Harga '"+nama_barang+"', Pada Master Data Produk ?");
+             if (pesan_alert == true) {
 
-        $.post("prosestbspembelian.php",{session_id:session_id,kode_barang:kode_barang,nama_barang:nama_barang,jumlah_barang:jumlah_barang,harga:harga,harga_baru:harga_baru,potongan:potongan,tax:tax,satuan:satuan},function(data){
-        //digunakan untuk mengecek sama tidaknya jumlah disc dg total_subtotal di tbs
-  $.getJSON("cek_jumlah_disc_dg_total_sub_tbspembelian.php",function(oke){
-       
-        $("#disc_tbs").val(oke.potongannya);
+              var status_update = 1;
 
-      });
+                $("#total_pembelian").val(tandaPemisahTitik(Math.round(total_bener)));
+                $("#total_pembelian1").val(tandaPemisahTitik(total_akhir));
+                $("#potongan_pembelian").val(tandaPemisahTitik(Math.round(potongaaan)))
+                $("#tax_rp").val(tandaPemisahTitik(Math.round(tax_bener)))
 
-        $("#tbody").prepend(data);
-        $("#kode_barang").focus();
-        $("#ppn").attr("disabled", true);
-        $("#nama_barang").val('');
-        $("#kode_barang").val('').trigger("chosen:updated");
-        $("#kode_barang").trigger('chosen:open');
-        $("#jumlah_barang").val('');
-        $("#potongan1").val('');
-        $("#tax1").val('');  
-        $("#harga_produk").val('');
-        $("#harga_baru").val(''); 
-  $("#jumlahbarang").val('');
- $("#over_stok").val('');
-    });
-}
+                $.post("prosestbspembelian.php",{session_id:session_id,kode_barang:kode_barang,nama_barang:nama_barang,jumlah_barang:jumlah_barang,harga:harga,harga_baru:harga_baru,potongan:potongan,tax:tax,satuan:satuan,status_update:status_update},function(data){
+
+                $.getJSON("cek_jumlah_disc_dg_total_sub_tbspembelian.php",function(oke){
+                 
+                  $("#disc_tbs").val(oke.potongannya);
+
+                });
+
+                  $("#tbody").prepend(data);
+                  $("#kode_barang").focus();
+                  $("#ppn").attr("disabled", true);
+                  $("#nama_barang").val('');
+                  $("#kode_barang").val('').trigger("chosen:updated");
+                  $("#kode_barang").trigger('chosen:open');
+                  $("#jumlah_barang").val('');
+                  $("#potongan1").val('');
+                  $("#tax1").val('');  
+                  $("#harga_produk").val('');
+                  $("#harga_baru").val(''); 
+                  $("#jumlahbarang").val('');
+                  $("#over_stok").val('');
+                
+                });
+
+             }
+             else{
+
+              var status_update = 0;
+
+                  $("#total_pembelian").val(tandaPemisahTitik(Math.round(total_bener)));
+                  $("#total_pembelian1").val(tandaPemisahTitik(total_akhir));
+                  $("#potongan_pembelian").val(tandaPemisahTitik(Math.round(potongaaan)))
+                  $("#tax_rp").val(tandaPemisahTitik(Math.round(tax_bener)))
+
+                  $.post("prosestbspembelian.php",{session_id:session_id,kode_barang:kode_barang,nama_barang:nama_barang,jumlah_barang:jumlah_barang,harga:harga,harga_baru:harga_baru,potongan:potongan,tax:tax,satuan:satuan,status_update:status_update},function(data){
+
+                  $.getJSON("cek_jumlah_disc_dg_total_sub_tbspembelian.php",function(oke){
+                   
+                    $("#disc_tbs").val(oke.potongannya);
+
+                  });
+
+                    $("#tbody").prepend(data);
+                    $("#kode_barang").focus();
+                    $("#ppn").attr("disabled", true);
+                    $("#nama_barang").val('');
+                    $("#kode_barang").val('').trigger("chosen:updated");
+                    $("#kode_barang").trigger('chosen:open');
+                    $("#jumlah_barang").val('');
+                    $("#potongan1").val('');
+                    $("#tax1").val('');  
+                    $("#harga_produk").val('');
+                    $("#harga_baru").val(''); 
+                    $("#jumlahbarang").val('');
+                    $("#over_stok").val('');
+                  
+                  });
+
+             }
+        }
+        else{
+
+                  var status_update = 0;
+
+                  $("#total_pembelian").val(tandaPemisahTitik(Math.round(total_bener)));
+                  $("#total_pembelian1").val(tandaPemisahTitik(total_akhir));
+                  $("#potongan_pembelian").val(tandaPemisahTitik(Math.round(potongaaan)))
+                  $("#tax_rp").val(tandaPemisahTitik(Math.round(tax_bener)))
+
+                  $.post("prosestbspembelian.php",{session_id:session_id,kode_barang:kode_barang,nama_barang:nama_barang,jumlah_barang:jumlah_barang,harga:harga,harga_baru:harga_baru,potongan:potongan,tax:tax,satuan:satuan,status_update:status_update},function(data){
+
+                  $.getJSON("cek_jumlah_disc_dg_total_sub_tbspembelian.php",function(oke){
+                   
+                    $("#disc_tbs").val(oke.potongannya);
+
+                  });
+
+                    $("#tbody").prepend(data);
+                    $("#kode_barang").focus();
+                    $("#ppn").attr("disabled", true);
+                    $("#nama_barang").val('');
+                    $("#kode_barang").val('').trigger("chosen:updated");
+                    $("#kode_barang").trigger('chosen:open');
+                    $("#jumlah_barang").val('');
+                    $("#potongan1").val('');
+                    $("#tax1").val('');  
+                    $("#harga_produk").val('');
+                    $("#harga_baru").val(''); 
+                    $("#jumlahbarang").val('');
+                    $("#over_stok").val('');
+                  
+                  });
+
+        }
+
+
+      }
     
       
   });
@@ -1002,12 +1112,15 @@ alert(" Kode Gudang Harus Diisi ");
 
  {
 
-  $("#pembayaran").hide();
-  $("#hutang").hide();
-  $("#batal").hide();
-  $("#transaksi_baru").show();  
-    $("#cetak_tunai").show();
-
+  var pesan_alert = confirm("Apakah Anda Yakin Dengan Data Pembelian ? Lanjutkan Pembelian ?");
+  if (pesan_alert == true) {
+    
+     
+     $("#pembayaran").hide();
+     $("#hutang").hide();
+     $("#batal").hide();
+     $("#transaksi_baru").show();  
+     $("#cetak_tunai").show();     
      $("#pembayaran_pembelian").val('');
      $("#sisa_pembayaran_pembelian").val('');
      $("#kredit").val('');
@@ -1030,8 +1143,10 @@ alert(" Kode Gudang Harus Diisi ");
     
        
    });
-
-
+ 
+  }
+  else {
+  }
 
  }
  
@@ -1131,27 +1246,36 @@ alert(" Kode Gudang Harus Diisi ");
      
        else
        {
+
+      var pesan_alert = confirm("Apakah Anda Yakin Dengan Data Pembelian ? Lanjutkan Pembelian ?");
+      if (pesan_alert == true) {
+
          $("#kredit").val(sisa_kredit);
          $("#pembayaran").hide();
          $("#hutang").hide();
          $("#batal").hide();
          $("#transaksi_baru").show();
-          $("#cetak_hutang").show();
+         $("#cetak_hutang").show();
 
-       $.post("proses_bayar_beli.php",{no_faktur_suplier:no_faktur_suplier,total_1:total_1,kode_gudang:kode_gudang,session_id:session_id,no_faktur:no_faktur,sisa_pembayaran:sisa_pembayaran,kredit:kredit,suplier:suplier,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,tax1:tax1,cara_bayar:cara_bayar,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,ppn:ppn,ppn_input:ppn_input,tax_rp:tax_rp},function(info) {
+         $.post("proses_bayar_beli.php",{no_faktur_suplier:no_faktur_suplier,total_1:total_1,kode_gudang:kode_gudang,session_id:session_id,no_faktur:no_faktur,sisa_pembayaran:sisa_pembayaran,kredit:kredit,suplier:suplier,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,tax1:tax1,cara_bayar:cara_bayar,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,ppn:ppn,ppn_input:ppn_input,tax_rp:tax_rp},function(info) {
 
-       var no_faktur = info;
+         var no_faktur = info;
 
-       $("#cetak_hutang").attr('href', 'cetak_pembelian_hutang.php?no_faktur='+no_faktur+'');
-       $("#alert_berhasil").show();
-       $("#result").load("tabel_pembelian.php");
-       $("#pembayaran_pembelian").val('');
-       $("#sisa_pembayaran_pembelian").val('');
-       $("#tanggal_jt").val('');
-       
-       
-       
-       });
+         $("#cetak_hutang").attr('href', 'cetak_pembelian_hutang.php?no_faktur='+no_faktur+'');
+         $("#alert_berhasil").show();
+         $("#result").load("tabel_pembelian.php");
+         $("#pembayaran_pembelian").val('');
+         $("#sisa_pembayaran_pembelian").val('');
+         $("#tanggal_jt").val('');
+         
+         
+         
+         });
+
+      }
+      else {
+      }
+
         // #result didapat dari tag span id=result
        
        }  
@@ -1996,6 +2120,7 @@ $.post('cek_jumlah_kas1.php', {cara_bayar : cara_bayar}, function(data) {
               $(nRow).attr('jumlah-barang', aData[3]);
               $(nRow).attr('kategori', aData[5]);
               $(nRow).attr('suplier', aData[6]);
+              $(nRow).attr('harga_jual', aData[10]);
 
 
             }

@@ -10,7 +10,7 @@
  
 $query = $db->query("SELECT * FROM kas_keluar WHERE no_faktur = '$no_faktur' ");
 $kel = mysqli_fetch_array($query);
-
+$user_buat = $kel['user'];
  
 $query0 = $db->query("SELECT km.id, km.dari_akun, da.nama_daftar_akun FROM detail_kas_keluar km INNER JOIN daftar_akun da ON km.dari_akun = da.kode_daftar_akun");
 $ambil = mysqli_fetch_array($query0);
@@ -139,6 +139,10 @@ $ambil1 = mysqli_fetch_array($query10);
 					<div class="form-group col-sm-3">
 					<label> Tanggal </label><br>
 					<input type="text" name="tanggal" id="tanggal1" placeholder="Tanggal" value="<?php echo $kel['tanggal']; ?>" class="form-control" required="" >
+
+          <!--User Buat-->
+          <input type="hidden" name="user_buat" id="user_buat" value="<?php echo $user_buat;?>" class="form-control" required="" >
+
 					</div>
 
            <div class="form-group col-sm-3">
@@ -451,6 +455,7 @@ $.post("cek_jumlah_edit_kas_keluar.php",
    	var dari_akun = $("#dariakun").val();
    	var jumlah = $("#jumlahtotal").val();
    	var tanggal = $("#tanggal1").val();
+    var user_buat = $("#user_buat").val();
     var jam = $("#jam").val();
 
 
@@ -466,7 +471,7 @@ else{
         $("#transaksi_baru").show();
         $("#submit_kas_keluar").hide();
 
-  $.post("proses_edit_kas_keluar.php", {no_faktur:no_faktur,dari_akun:dari_akun,jumlah:jumlah,tanggal:tanggal,jam:jam,keterangan:keterangan}, function(info) {
+  $.post("proses_edit_kas_keluar.php", {user_buat:user_buat,no_faktur:no_faktur,dari_akun:dari_akun,jumlah:jumlah,tanggal:tanggal,jam:jam,keterangan:keterangan}, function(info) {
          
          $("#alert_berhasil").show();
          $("#result").html(info);

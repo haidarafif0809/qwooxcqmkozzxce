@@ -6,13 +6,15 @@ include_once 'sanitasi.php';
 
 $no_reg = stringdoang($_GET['no_reg']);
 
-$select_registrasi = $db->query("SELECT no_rm,nama_pasien,jenis_kelamin,hp_pasien,aps_periksa,gol_darah, dokter_pengirim FROM registrasi WHERE no_reg = '$no_reg' AND jenis_pasien = 'APS' ");
+$select_registrasi = $db->query("SELECT no_rm,nama_pasien,jenis_kelamin,hp_pasien,aps_periksa,gol_darah,dokter_pengirim,kondisi,alergi FROM registrasi WHERE no_reg = '$no_reg' AND jenis_pasien = 'APS' ");
 $data_registrasi = mysqli_fetch_array($select_registrasi);
 $no_rm = $data_registrasi['no_rm'];
 $nama_pasien = $data_registrasi['nama_pasien'];
 $jenis_kelamin = $data_registrasi['jenis_kelamin'];
 $gol_darah = $data_registrasi['gol_darah'];
 $dokter_pengirim = $data_registrasi['dokter_pengirim'];
+$kondisi = $data_registrasi['kondisi'];
+$alergi = $data_registrasi['alergi'];
 $hp_pasien = $data_registrasi['hp_pasien'];
 $aps_periksa = $data_registrasi['aps_periksa'];//1 = Lab, 2 = Radiologi
 
@@ -112,7 +114,10 @@ $dokter = $data_petugas['nama_dokter'];
         <div class="form-group">
           <label for="sel1">Agama</label>
           <select class="form-control" id="agama" name="agama" autocomplete="off">
-          <option value="<?php echo $agama ?>"> <?php echo $agama; ?></option>
+
+          <?php if ($agama == '-'): ?>
+
+            <option selected value="-">Islam</option>
             <option value="islam">Islam</option>
             <option value="khatolik">Khatolik</option>
             <option value="kristen">Kristen</option>
@@ -120,6 +125,92 @@ $dokter = $data_petugas['nama_dokter'];
             <option value="budha">Budha</option>
             <option value="khonghucu">Khonghucu</option>
             <option value="lain - lain">Lain - Lain</option>
+            
+          <?php endif ?>
+
+          <?php if ($agama == 'islam'): ?>
+
+            <option selected value="islam">Islam</option>
+            <option value="khatolik">Khatolik</option>
+            <option value="kristen">Kristen</option>
+            <option value="hindu">Hindu</option>
+            <option value="budha">Budha</option>
+            <option value="khonghucu">Khonghucu</option>
+            <option value="lain - lain">Lain - Lain</option>
+            
+          <?php endif ?>
+
+          <?php if ($agama == 'khatolik'): ?>
+
+            <option value="islam">Islam</option>
+            <option selected value="khatolik">Khatolik</option>
+            <option value="kristen">Kristen</option>
+            <option value="hindu">Hindu</option>
+            <option value="budha">Budha</option>
+            <option value="khonghucu">Khonghucu</option>
+            <option value="lain - lain">Lain - Lain</option>
+            
+          <?php endif ?>
+
+          <?php if ($agama == 'kristen'): ?>
+
+            <option value="islam">Islam</option>
+            <option value="khatolik">Khatolik</option>
+            <option selected value="kristen">Kristen</option>
+            <option value="hindu">Hindu</option>
+            <option value="budha">Budha</option>
+            <option value="khonghucu">Khonghucu</option>
+            <option value="lain - lain">Lain - Lain</option>
+            
+          <?php endif ?>
+
+          <?php if ($agama == 'hindu'): ?>
+
+            <option value="islam">Islam</option>
+            <option value="khatolik">Khatolik</option>
+            <option value="kristen">Kristen</option>
+            <option selected value="hindu">Hindu</option>
+            <option value="budha">Budha</option>
+            <option value="khonghucu">Khonghucu</option>
+            <option value="lain - lain">Lain - Lain</option>
+            
+          <?php endif ?>
+
+          <?php if ($agama == 'budha'): ?>
+
+            <option value="islam">Islam</option>
+            <option value="khatolik">Khatolik</option>
+            <option value="kristen">Kristen</option>
+            <option value="hindu">Hindu</option>
+            <option selected value="budha">Budha</option>
+            <option value="khonghucu">Khonghucu</option>
+            <option value="lain - lain">Lain - Lain</option>
+            
+          <?php endif ?>
+
+          <?php if ($agama == 'khonghucu'): ?>
+
+            <option value="islam">Islam</option>
+            <option value="khatolik">Khatolik</option>
+            <option value="kristen">Kristen</option>
+            <option value="hindu">Hindu</option>
+            <option value="budha">Budha</option>
+            <option selected value="khonghucu">Khonghucu</option>
+            <option value="lain - lain">Lain - Lain</option>
+            
+          <?php endif ?>
+
+          <?php if ($agama == 'lain - lain'): ?>
+
+            <option value="islam">Islam</option>
+            <option value="khatolik">Khatolik</option>
+            <option value="kristen">Kristen</option>
+            <option value="hindu">Hindu</option>
+            <option value="budha">Budha</option>
+            <option value="khonghucu">Khonghucu</option>
+            <option selected value="lain - lain">Lain - Lain</option>
+            
+          <?php endif ?>
           </select>
         </div>
 
@@ -139,17 +230,52 @@ $dokter = $data_petugas['nama_dokter'];
 
         <div class="form-group ">
           <label ><u>A</u>lergi Obat *</label>
-          <input style="height: 20px;" type="text" class="form-control" accesskey="a" id="alergi" name="alergi" value="Tidak Ada" required="" placeholder="Wajib Isi" autocomplete="off"> 
+          <input style="height: 20px;" type="text" class="form-control" accesskey="a" id="alergi" name="alergi" value="<?php echo $alergi; ?>" required="" placeholder="Wajib Isi" autocomplete="off"> 
         </div>
 
         <div class="form-group">
           <label for="sel1">Keadaan Umum Pasien</label>
           <select class="form-control" id="kondisi" name="kondisi" required="" autocomplete="off">
-            <option value="Tampak Normal">Tampak Normal</option>
-            <option value="Pucat dan Lemas">Pucat dan Lemas</option>
-            <option value="Sadar dan Cidera">Sadar dan Cidera</option>
-            <option value="Pingsan / Tidak Sadar">Pingsan / Tidak Sadar</option>
-            <option value="Meninggal Sebelum Tiba">Meninggal Sebelum Tiba</option>
+
+          <?php if ($kondisi == 'Tampak Normal'): ?>
+              <option selected value="Tampak Normal">Tampak Normal</option>
+              <option value="Pucat dan Lemas">Pucat dan Lemas</option>
+              <option value="Sadar dan Cidera">Sadar dan Cidera</option>
+              <option value="Pingsan / Tidak Sadar">Pingsan / Tidak Sadar</option>
+              <option value="Meninggal Sebelum Tiba">Meninggal Sebelum Tiba</option>            
+          <?php endif ?>
+
+          <?php if ($kondisi == 'Pucat dan Lemas'): ?>
+              <option value="Tampak Normal">Tampak Normal</option>
+              <option selected value="Pucat dan Lemas">Pucat dan Lemas</option>
+              <option value="Sadar dan Cidera">Sadar dan Cidera</option>
+              <option value="Pingsan / Tidak Sadar">Pingsan / Tidak Sadar</option>
+              <option value="Meninggal Sebelum Tiba">Meninggal Sebelum Tiba</option>
+          <?php endif ?>
+
+          <?php if ($kondisi == 'Sadar dan Cidera'): ?>
+              <option value="Tampak Normal">Tampak Normal</option>
+              <option value="Pucat dan Lemas">Pucat dan Lemas</option>
+              <option selected value="Sadar dan Cidera">Sadar dan Cidera</option>
+              <option value="Pingsan / Tidak Sadar">Pingsan / Tidak Sadar</option>
+              <option value="Meninggal Sebelum Tiba">Meninggal Sebelum Tiba</option>       
+          <?php endif ?>
+
+          <?php if ($kondisi == 'Pingsan / Tidak Sadar'): ?>
+              <option value="Tampak Normal">Tampak Normal</option>
+              <option value="Pucat dan Lemas">Pucat dan Lemas</option>
+              <option value="Sadar dan Cidera">Sadar dan Cidera</option>
+              <option selected value="Pingsan / Tidak Sadar">Pingsan / Tidak Sadar</option>
+              <option value="Meninggal Sebelum Tiba">Meninggal Sebelum Tiba</option>          
+          <?php endif ?>
+
+          <?php if ($kondisi == 'Meninggal Sebelum Tiba'): ?>
+              <option value="Tampak Normal">Tampak Normal</option>
+              <option value="Pucat dan Lemas">Pucat dan Lemas</option>
+              <option value="Sadar dan Cidera">Sadar dan Cidera</option>
+              <option value="Pingsan / Tidak Sadar">Pingsan / Tidak Sadar</option>
+              <option selected value="Meninggal Sebelum Tiba">Meninggal Sebelum Tiba</option>            
+          <?php endif ?>
           </select>
         </div>
 
