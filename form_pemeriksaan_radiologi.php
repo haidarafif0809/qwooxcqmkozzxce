@@ -4315,13 +4315,14 @@ $.get("cek_total_tbs_form_radiologi.php",{no_reg:no_reg},function(data){
     $(document).on('click','#btnCancel',function(e){
 
       var session_id = $("#session_id").val();
+      var no_reg = $("#no_reg").val();
 
-      $.post("batal_radiologi.php",{session_id:session_id},function(data){
+      $.post("batal_radiologi.php",{session_id:session_id, no_reg:no_reg},function(data){
 
           var tabel_tbs_radiologi = $('#tabel_tbs_radiologi').DataTable();
               tabel_tbs_radiologi.draw();
 
-              
+
           $("#span_tbs").show();
 
         });
