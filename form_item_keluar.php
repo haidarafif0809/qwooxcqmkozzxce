@@ -139,9 +139,6 @@ $session_id = session_id();
       <th> Nama Barang </th>
       <th> Jumlah </th>
       <th> Satuan </th>
-      <th> Harga </th>
-      <th> Subtotal </th>
-    
       <th> Hapus </th>
       
     </thead>
@@ -164,9 +161,6 @@ $session_id = session_id();
       <td class='edit-jumlah' data-id='".$data1['id']."'><span id='text-jumlah-".$data1['id']."'>". $data1['jumlah'] ."</span> <input type='hidden' id='input-jumlah-".$data1['id']."'  value='".$data1['jumlah']."' class='input_jumlah' data-subtotal='".$data1['subtotal']."' data-id='".$data1['id']."' autofocus='' data-harga='".$data1['harga']."' data-faktur='".$data1['no_faktur']."' data-kode='".$data1['kode_barang']."' > </td>
 
       <td>". $data1['nama'] ."</td>
-      <td>". rp($data1['harga']) ."</td>
-      <td><span id='text-subtotal-".$data1['id']."'>". rp($data1['subtotal']) ."</span></td>
-
       <td> <button class='btn btn-sm btn-danger btn-hapus' id='btn-hapus-".$data1['id']."' data-subtotal='".$data1['subtotal']."' data-id='". $data1['id'] ."' data-nama-barang='". $data1['nama_barang'] ."'> <span class='glyphicon glyphicon-trash'> </span> Hapus </button> </td> 
       </tr>";
       }
@@ -190,9 +184,7 @@ mysqli_close($db);
 
   <form action="proses_bayar_item_keluar.php" id="form_item_keluar" method="POST"><!--tag pembuka form-->
 
-      <label> Total </label><br>
-      <!--readonly = agar tek yang ada kolom total tidak bisa diubah hanya bisa dibaca-->
-      <input type="text" name="total" id="total_item_keluar" class="form-control" placeholder="Total" readonly=""  >
+      <input type="hidden" name="total" id="total_item_keluar" class="form-control" placeholder="Total" readonly=""  >
 
       <label>Keterangan </label><br>
       <textarea name="keterangan" style="height: 80px" id="keterangan" class="form-control"></textarea>
@@ -215,92 +207,6 @@ mysqli_close($db);
 </div>
   </div><!-- end of col sm 4 -->
 </div><!-- end of row -->
-     
-<!-- Modal Hapus data -->
-<div id="modal_hapus" class="modal fade" role="dialog">
-  <div class="modal-dialog">
-
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Konfirmasi Hapus Data Item Hapus</h4>
-      </div>
-
-      <div class="modal-body">
-   
-   <p>Apakah Anda yakin Ingin Menghapus Data ini ?</p>
-   <form >
-    <div class="form-group">
-    <label> Nama Barang :</label>
-     <input type="text" id="hapus_nama" class="form-control" readonly=""> 
-     <input type="hidden" id="id_hapus" class="form-control" > 
-    </div>
-   
-   </form>
-   
-  <div class="alert alert-success" style="display:none">
-   <strong>Berhasil!</strong> Data berhasil Di Edit
-  </div>
- 
-
-     </div>
-
-      <div class="modal-footer">
-        <button type="button" class="btn btn-info" id="btn_jadi_hapus"> <span class='glyphicon glyphicon-ok-sign'> </span> Ya</button>
-        <button type="button" class="btn btn-warning" data-dismiss="modal"> <span class='glyphicon glyphicon-remove-sign'> </span> Batal</button>
-      </div>
-    </div>
-
-  </div>
-</div><!-- end of modal hapus data  -->
-
-<!-- Modal edit data -->
-<div id="modal_edit" class="modal fade" role="dialog">
-  <div class="modal-dialog">
-
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Edit Data Item Keluar</h4>
-      </div>
-      <div class="modal-body">
-  <form role="form">
-   <div class="form-group">
-                  <label> Jumlah Barang Baru </label> <br>
-                  <input type="text" name="jumlah_baru" id="edit_jumlah" class="form-control" autocomplete="off" required="" >
-
-                  <label> Jumlah Barang Lama </label> <br>
-                  <input type="text" name="jumlah_lama" id="edit_jumlah_lama" class="form-control" readonly="">
-
-                  <input type="hidden" name="kode_barang" id="kode_edit">
-                  <input type="hidden" name="harga" id="edit_harga">
-
-                  <input type="hidden" class="form-control" id="id_edit">
-                              
-   </div>
-   
-   
-   <button type="submit" id="submit_edit" class="btn btn-success">Submit</button>
-  </form>
-
-  <span id="alert"></span>
-  <div class="alert alert-success" style="display:none">
-   <strong>Berhasil!</strong> Data Berhasil Di Edit
-  </div>
-
-</div>
-
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-
-</div>
-
-  </div>
-</div><!-- end of modal edit data  -->
-
 
 
 
@@ -640,119 +546,56 @@ $.post("cek_total_item_keluar.php",
 
    </script>
 
-<!--script type="text/javascript">
-  
-        $(document).ready(function(){
-        $("#kode_barang").blur(function(){
 
-           var session_id = $("#session_id").val();
-          var kode_barang = $('#kode_barang').val();
-          var kode_barang = kode_barang.substr(0, kode_barang.indexOf('('));
+<script type="text/javascript">
+               
+    $(document).on('dblclick', '.edit-jumlah', function (e) {
+
+          var id = $(this).attr("data-id");
+
+          $("#text-jumlah-"+id+"").hide();
+
+          $("#input-jumlah-"+id+"").attr("type", "text");
+
+       });
+
+       $(document).on('blur', '.input_jumlah', function (e) {
+
+          var id = $(this).attr("data-id");
+          var jumlah_baru = $(this).val();
+          var harga = $(this).attr("data-harga");
+          var kode_barang = $(this).attr("data-kode");
+          $.post("cek_stok_pesanan_barang.php",{kode_barang:kode_barang, jumlah_baru:jumlah_baru},function(data){
+
+             if (data == "ya") {
+
+             alert ("Jumlah Yang Di Masukan Melebihi Stok !");
+
+             $(this).val($(".text-jumlah-"+id+"").text());
+
+           }
+
+           else {
+          //subtotalnya di jadikan 0 karena nilai yang sebenarnya belum di dapatkan
+           $.post("update_jumlah_barang_tbs_item_keluar.php",{id:id,jumlah_baru:jumlah_baru,subtotal:0},function(info){
+
+          $("#text-jumlah-"+id+"").show();
+          $("#text-jumlah-"+id+"").text(jumlah_baru);
+          $("#input-jumlah-"+id+"").attr("type", "hidden");       
           
-          $.post("cek_barang_item_masuk.php",{kode_barang:kode_barang},function(data){
-          $("#jml_barang"). val(data);
+          
           });
           
-    $.post('cek_kode_barang_tbs_item_keluar.php',{kode_barang:kode_barang,session_id:session_id}, function(data){
-    
-    if(data == 1){
-    alert("Anda Tidak Bisa Menambahkan Barang Yang Sudah Ada, Silakan Edit atau Pilih Barang Yang Lain !");
-    $("#kode_barang").val('');
-    $("#nama_barang").val('');
-    }//penutup if
-    
-    });////penutup function(data)
+           }
 
-      $.getJSON('lihat_item_keluar.php',{kode_barang:kode_barang}, function(json){
-      
-      if (json == null)
-      {
-        
-        $('#nama_barang').val('');
-        $('#satuan_produk').val('');
-        $('#harga_produk').val('');
-      }
+         });
 
-      else 
-      {
-        $('#nama_barang').val(json.nama_barang);
-        $('#satuan_produk').val(json.satuan);
-        $('#harga_produk').val(json.harga_jual);     
-      }
-                                              
-        });
-        
-        });
-        });
+         
+         $("#kode_barang").focus();
 
-      
-      
-</script>
--->
-                              <script type="text/javascript">
-                                 
-                                 $(".edit-jumlah").dblclick(function(){
+       });
 
-                                    var id = $(this).attr("data-id");
-
-                                    $("#text-jumlah-"+id+"").hide();
-
-                                    $("#input-jumlah-"+id+"").attr("type", "text");
-
-                                 });
-
-
-                                 $(".input_jumlah").blur(function(){
-
-                                    var id = $(this).attr("data-id");
-                                    var jumlah_baru = $(this).val();
-                                    var harga = $(this).attr("data-harga");
-                                    var kode_barang = $(this).attr("data-kode");
-                                    var subtotal_lama = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($(this).attr("data-subtotal")))));
-                                    var subtotal = harga * jumlah_baru;
-                                    var subtotal_penjualan = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#total_item_keluar").val()))));
-
-                                    
-                                    var total_akhir = parseInt(subtotal_penjualan) - parseInt(subtotal_lama) + parseInt(subtotal);
-
-
-                                    $.post("cek_stok_pesanan_barang.php",{kode_barang:kode_barang, jumlah_baru:jumlah_baru},function(data){
-
-                                       if (data == "ya") {
-
-                                       alert ("Jumlah Yang Di Masukan Melebihi Stok !");
-
-                                       $(this).val($(".text-jumlah-"+id+"").text());
-
-                                     }
-
-                                     else{
-
-
-                                    $("#total_item_keluar").val(tandaPemisahTitik(total_akhir));
-                                    $("#input-jumlah-"+id).attr("data-subtotal", subtotal);
-                                    $("#btn-hapus-"+id).attr("data-subtotal", subtotal);
-
-                                    $.post("update_jumlah_barang_tbs_item_keluar.php",{id:id,jumlah_baru:jumlah_baru,subtotal:subtotal},function(info){
-
-                                    $("#text-jumlah-"+id+"").show();
-                                    $("#text-jumlah-"+id+"").text(jumlah_baru);
-                                    $("#text-subtotal-"+id+"").text(tandaPemisahTitik(subtotal));
-                                    $("#input-jumlah-"+id+"").attr("type", "hidden");       
-                                    
-                                    
-                                    });
-                                    
-                                     }
-
-                                   });
-
-                                   
-                                   $("#kode_barang").focus();
-
-                                 });
-
-                             </script>
+ </script>
 
   <script type="text/javascript">
 //berfunsi untuk mencekal username ganda
