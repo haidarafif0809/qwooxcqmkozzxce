@@ -131,9 +131,6 @@ $ambil = mysqli_fetch_array($perintah);
       <th> Nama Barang </th>
       <th> Jumlah </th>
       <th> Satuan </th>
-      <th> Harga </th>
-      <th> Subtotal </th>
-    
       <th> Hapus </th>
       
     </thead>
@@ -158,9 +155,6 @@ $ambil = mysqli_fetch_array($perintah);
       <td class='edit-jumlah' data-id='".$data1['id']."'><span id='text-jumlah-".$data1['id']."'>". $data1['jumlah'] ."</span> <input type='hidden' id='input-jumlah-".$data1['id']."' value='".$data1['jumlah']."' class='input_jumlah' data-subtotal='".$data1['subtotal']."' data-id='".$data1['id']."' autofocus='' data-harga='".$data1['harga']."' data-faktur='".$data1['no_faktur']."' data-kode='".$data1['kode_barang']."' > </td>
 
       <td>". $data1['nama'] ."</td>
-      <td>". rp($data1['harga']) ."</td>
-      <td><span id='text-subtotal-".$data1['id']."'>". rp($data1['subtotal']) ."</span></td>
-
       <td> <button class='btn btn-danger btn-hapus' id='btn-hapus-".$data1['id']."' data-id='". $data1['id'] ."' data-subtotal='".$data1['subtotal']."' data-nama-barang='". $data1['nama_barang'] ."'> <span class='glyphicon glyphicon-trash'> </span> Hapus </button> </td> 
 
       </tr>";
@@ -203,8 +197,7 @@ mysqli_close($db);
 
   <form action="proses_edit_bayar_item_keluar.php" id="form_item_keluar" method="POST"><!--tag pembuka form-->
 
-      <label style="font-size:15px"> <b> Total Akhir </b></label><br>
-      <b><input type="text" name="total" id="total_item_keluar" class="form-control" placeholder="Total" readonly="" style="height: 25px; width:90%; font-size:20px;" ></b>
+      <b><input type="hidden" name="total" id="total_item_keluar" class="form-control" placeholder="Total" readonly="" style="height: 25px; width:90%; font-size:20px;" ></b>
 
       <label>Keterangan </label><br>
       <textarea name="keterangan" id="keterangan" class="form-control" ></textarea>
@@ -533,94 +526,52 @@ $("#demo").html(info);
 
   
       
-  </script>
-
-
-
-
-  
-  <script>
-       
-$(document).ready(function(){
-$.post("cek_total_edit_item_keluar.php",
-    {
-        no_faktur: "<?php echo $no_faktur; ?>"
-    },
-    function(data){
-        $("#total_item_keluar"). val(data);
-    });
-
-});
-
-
 </script>
 
-
-
-                              
-
-            <script type="text/javascript">
-            $(document).ready(function(){
-            
-            
-            //fungsi hapus data 
-            $(document).on('click', '.btn-hapus', function (e) {
-            var nama_barang = $(this).attr("data-nama-barang");
-            var id = $(this).attr("data-id");
-            var sub_total = $(this).attr("data-subtotal");
-            var total = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#total_item_keluar").val()))));
-
-            if (total == '') 
-              {
-                total = 0;
-              }
-                                        
-            else if (sub_total == '') {
-                sub_total = 0;
-              }
-
-
-            
-            var total_akhir = parseInt(total,10) - parseInt(sub_total,10);
-
-            $("#total_item_keluar").val(tandaPemisahTitik(total_akhir));
-
-
-
-
-            $.post("hapus_tbs_item_keluar.php",{id:id},function(data){
-            if (data == "sukses") {
-
-            $(".tr-id-"+id).remove();
-          }
-
-            });
-            });
+<script type="text/javascript">
+      $(document).ready(function(){
       
+      
+      //fungsi hapus data 
+      $(document).on('click', '.btn-hapus', function (e) {
 
-              $('form').submit(function(){
-              
-              return false;
-              });
+      var nama_barang = $(this).attr("data-nama-barang");
+      var id = $(this).attr("data-id");
+    
+
+      $.post("hapus_tbs_item_keluar.php",{id:id},function(data){
+      if (data == "sukses") {
+
+      $(".tr-id-"+id).remove();
+    }
+
+      });
+      });
+
+
+        $('form').submit(function(){
+        
+        return false;
         });
+  });
 
- 
 
-   </script> 
+
+</script> 
 
    <script type="text/javascript">
      
    $("#jumlah_barang").keyup(function(){
-    var jumlah_barang = $("#jumlah_barang").val();
-    var jml_barang = $("#jml_barang").val();
-    var sisa_barang = parseInt(jml_barang,10) - parseInt(jumlah_barang,10);
+      var jumlah_barang = $("#jumlah_barang").val();
+      var jml_barang = $("#jml_barang").val();
+      var sisa_barang = parseInt(jml_barang,10) - parseInt(jumlah_barang,10);
 
-    if (sisa_barang < 0){
-      alert ("Jumlah Melebihi Stok!");
-      $("#jumlah_barang").val('');
-      $("#jumlah_barang").focus();
+      if (sisa_barang < 0){
+        alert ("Jumlah Melebihi Stok!");
+        $("#jumlah_barang").val('');
+        $("#jumlah_barang").focus();
 
-    }
+      }
 
 
   });
@@ -633,7 +584,7 @@ $.post("cek_total_edit_item_keluar.php",
         $("#kode_barang").blur(function(){
 
           var kode_barang = $('#kode_barang').val();
-    var kode_barang = kode_barang.substr(0, kode_barang.indexOf('('));
+          var kode_barang = kode_barang.substr(0, kode_barang.indexOf('('));
           var no_faktur = $("#nomorfaktur").val();
 
           $.post("cek_barang_item_masuk.php",{kode_barang:kode_barang},function(data){
@@ -692,89 +643,77 @@ $(document).ready(function(){
 
 </script> 
 
-                              <script type="text/javascript">
-                                 
-                                 $(".edit-jumlah").dblclick(function(){
+    <script type="text/javascript">
+       
+       $(".edit-jumlah").dblclick(function(){
 
-                                    var id = $(this).attr("data-id");
+          var id = $(this).attr("data-id");
 
-                                    $("#text-jumlah-"+id+"").hide();
+          $("#text-jumlah-"+id+"").hide();
 
-                                    $("#input-jumlah-"+id+"").attr("type", "text");
+          $("#input-jumlah-"+id+"").attr("type", "text");
 
-                                 });
-
-
-                                 $(".input_jumlah").blur(function(){
-
-                                    var id = $(this).attr("data-id");
-                                    var jumlah_baru = $(this).val();
-
-                                    if (jumlah_baru == "") {
-                                      jumlah_baru = 0;
-                                    }
-
-                                    var harga = $(this).attr("data-harga");
-                                    var kode_barang = $(this).attr("data-kode");
-                                    var subtotal_lama = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($(this).attr("data-subtotal")))));
-                                    var subtotal = harga * jumlah_baru;
-                                    var subtotal_penjualan = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#total_item_keluar").val()))));
-                                    
-                                    var jumlah_lama = $("#text-jumlah-"+id+"").text();
+       });
 
 
-                                    
-                                    var total_akhir = parseInt(subtotal_penjualan) - parseInt(subtotal_lama) + parseInt(subtotal);
-                                       
-                                  if (jumlah_baru == 0) {
-                                       alert("Jumlah barang tidak boleh nol atau kosong");
-                                       
-                                       $("#input-jumlah-"+id+"").val(jumlah_lama);
-                                       $("#text-jumlah-"+id+"").text(jumlah_lama);
-                                       $("#text-jumlah-"+id+"").show();
-                                       $("#input-jumlah-"+id+"").attr("type", "hidden");
-                                  }
-                                  else{
-                                     $.post("cek_stok_pesanan_barang.php",{kode_barang:kode_barang, jumlah_baru:jumlah_baru},function(data){
+       $(".input_jumlah").blur(function(){
 
-                                       if (data == "ya") {
+          var id = $(this).attr("data-id");
+          var jumlah_baru = $(this).val();
+          console.log(id);
+          if (jumlah_baru == "") {
+            jumlah_baru = 0;
+          }
 
-                                       alert ("Jumlah Yang Di Masukan Melebihi Stok !");
+          var harga = $(this).attr("data-harga");
+          var kode_barang = $(this).attr("data-kode"); 
+          var jumlah_lama = $("#text-jumlah-"+id+"").text();
+        
+        if (jumlah_baru == 0) {
+             alert("Jumlah barang tidak boleh nol atau kosong");
+             
+             $("#input-jumlah-"+id+"").val(jumlah_lama);
+             $("#text-jumlah-"+id+"").text(jumlah_lama);
+             $("#text-jumlah-"+id+"").show();
+             $("#input-jumlah-"+id+"").attr("type", "hidden");
+        }
+        else{
+           $.post("cek_stok_barang.php",{kode_barang:kode_barang, jumlah_baru:jumlah_baru},function(data){
 
-                                       $(this).val($(".text-jumlah-"+id+"").text());
+             if (data < 0) {
 
-                                     }
+             alert ("Jumlah Yang Di Masukan Melebihi Stok !");
 
-                                     else{
+             $("#input-jumlah-"+id).val($("#text-jumlah-"+id).text());
+            
 
+           }
 
-                                    $("#total_item_keluar").val(tandaPemisahTitik(total_akhir));
-                                    $("#input-jumlah-"+id).attr("data-subtotal", subtotal);
-                                    $("#btn-hapus-"+id).attr("data-subtotal", subtotal);
+           else{
 
-                                    $.post("update_jumlah_barang_tbs_item_keluar.php",{id:id,jumlah_baru:jumlah_baru,subtotal:subtotal},function(info){
+         
+            $.post("update_jumlah_barang_tbs_item_keluar.php",{id:id,jumlah_baru:jumlah_baru,subtotal:0},function(info){
 
-                                    $("#text-jumlah-"+id+"").show();
-                                    $("#text-jumlah-"+id+"").text(jumlah_baru);
-                                    $("#text-subtotal-"+id+"").text(tandaPemisahTitik(subtotal));
-                                    $("#input-jumlah-"+id+"").attr("type", "hidden");       
-                                    
-                                    
-                                    });
-                                    
-                                     }
+            $("#text-jumlah-"+id+"").show();
+            $("#text-jumlah-"+id+"").text(jumlah_baru);
+            $("#input-jumlah-"+id+"").attr("type", "hidden");       
+            
+            
+            });
+          
+           }
 
-                                   });
-                                  }
+         });
+        }
 
-                                   
+         
 
-                                   
-                                   $("#kode_barang").focus();
+         
+         $("#kode_barang").focus();
 
-                                 });
+       });
 
-                             </script>
+   </script>
 
                              
   <script type="text/javascript">
