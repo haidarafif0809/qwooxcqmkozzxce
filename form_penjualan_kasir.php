@@ -994,16 +994,66 @@ Radiologi  </button>
              
             barang : 'id,kode_barang,nama_barang,harga_jual,harga_jual2,harga_jual3,harga_jual4,harga_jual5,harga_jual6,harga_jual7,satuan,kategori,status,suplier,limit_stok,berkaitan_dgn_stok,tipe_barang'  
           });
+
+           db.barang.count(function (count) { 
+
+
+            var jumlah_data = count;
+
+            if (jumlah_data == 0) {
+
+
+
+              $.get('data_barang.php',function(data){
+
+                 var data_barang = [];
+                $.each(data.result, function(i, item) {
+
+                 
+                    data_barang.push({id: data.result[i].id, kode_barang: data.result[i].kode_barang,nama_barang : data.result[i].nama_barang,harga_jual:  data.result[i].harga_jual,harga_jual2:  data.result[i].harga_jual2,harga_jual3:  data.result[i].harga_jual3,harga_jual4:  data.result[i].harga_jual4,harga_jual5:  data.result[i].harga_jual5,harga_jual6:  data.result[i].harga_jual6,harga_jual7:  data.result[i].harga_jual7,satuan:  data.result[i].satuan,kategori:  data.result[i].kategori,status:  data.result[i].status,suplier:  data.result[i].suplier,limit_stok:  data.result[i].limit_stok,berkaitan_dgn_stok:  data.result[i].berkaitan_dgn_stok,tipe_barang:  data.result[i].tipe_barang  });
+
+
+
+                   });
+
+                   db.barang.bulkPut(data_barang).then(function(lastKey) {
+
+                    console.log("Selesai memasukkan data barang ke indexeddb");
+                    console.log("Jumlah Data yang dimasukkan : " + lastKey); // Will be 100000.
+
+                    menampilkanDataBarangDiSelect();
+
+                
+
+                    }).catch(Dexie.BulkError, function (e) {
+                        // Explicitely catching the bulkAdd() operation makes those successful
+                        // additions commit despite that there were errors.
+                        console.error ("Some raindrops did not succeed. However, " +
+                           100000-e.failures.length + " raindrops was added successfully");
+                    });
+
+              });
+                
+            }
+            else {
+              menampilkanDataBarangDiSelect();
+            }
+             
+           });
+
+
+           function menampilkanDataBarangDiSelect(){
+              return db.barang.each(function(data,i){
+          
+                 var tr_barang = '<option id="opt-produk-'+ data.kode_barang+'" value="'+ data.kode_barang+'" data-kode="'+ data.kode_barang+'" nama-barang="'+ data.nama_barang+'" harga="'+ data.harga_jual+'" harga_jual_2="'+ data.harga_jual2+'" harga_jual_3="'+ data.harga_jual3+'" harga_jual_4="'+ data.harga_jual4+'" harga_jual_5="'+ data.harga_jual5+'" harga_jual_6="'+ data.harga_jual6+'" harga_jual_7="'+ data.harga_jual7+'" satuan="'+ data.satuan+'" kategori="'+ data.kategori+'" status="'+ data.status+'" suplier="'+ data.suplier+'" limit_stok="'+ data.limit_stok+'" ber-stok="'+ data.berkaitan_dgn_stok+'" tipe_barang="'+ data.tipe_barang+'" id-barang="'+ data.id+'" > '+ data.kode_barang+' ( '+ data.nama_barang+' ) </option>';
+                     $("#kode_barang").prepend(tr_barang);
+              }).then(function(){
+
+                      $("#kode_barang").chosen({no_results_text: "Oops, nothing found!"}); 
+              });
+
+           }
             
-            db.barang.each(function(data,i){
-              console.log(data);
-               var tr_barang = '<option id="opt-produk-'+ data.kode_barang+'" value="'+ data.kode_barang+'" data-kode="'+ data.kode_barang+'" nama-barang="'+ data.nama_barang+'" harga="'+ data.harga_jual+'" harga_jual_2="'+ data.harga_jual2+'" harga_jual_3="'+ data.harga_jual3+'" harga_jual_4="'+ data.harga_jual4+'" harga_jual_5="'+ data.harga_jual5+'" harga_jual_6="'+ data.harga_jual6+'" harga_jual_7="'+ data.harga_jual7+'" satuan="'+ data.satuan+'" kategori="'+ data.kategori+'" status="'+ data.status+'" suplier="'+ data.suplier+'" limit_stok="'+ data.limit_stok+'" ber-stok="'+ data.berkaitan_dgn_stok+'" tipe_barang="'+ data.tipe_barang+'" id-barang="'+ data.id+'" > '+ data.kode_barang+' ( '+ data.nama_barang+' ) </option>';
-                   $("#kode_barang").prepend(tr_barang);
-            }).then(function(){
-
-                    $("#kode_barang").chosen({no_results_text: "Oops, nothing found!"}); 
-            });
-
 
 
 
