@@ -5,30 +5,19 @@ include 'navbar.php';
 include 'db.php';
 include 'sanitasi.php';
 
+$hasil_no_periksa = stringdoang($_GET['hasil_no_periksa']);
 $no_rm = stringdoang($_GET['no_rm']);
-$nama = stringdoang($_GET['nama']);
+$nama = stringdoang($_GET['nama_pasien']);
 $no_reg = stringdoang($_GET['no_reg']);
 $dokter = stringdoang($_GET['dokter']);
-$bed = stringdoang($_GET['bed']);
-$kamar = stringdoang($_GET['kamar']);
 $jenis_kelamin = stringdoang($_GET['jenis_kelamin']);
-$jenis_penjualan = stringdoang($_GET['jenis_penjualan']);
-$rujukan = stringdoang($_GET['rujukan']);
- // jika 1 Laboratorium, jika 2 Radiologi
+$tanggal = stringdoang($_GET['tanggal']);
+$jenis_penjualan = 'Rawat Inap';
+$rujukan = 'Rujuk Rawat Inap';
 
-$query_data_pemeriksaan = $db->query("SELECT no_periksa FROM pemeriksaan_lab_inap WHERE no_rm = '$no_rm' AND no_reg = '$no_reg' ORDER BY no_periksa DESC");
-$data_periksa = mysqli_fetch_array($query_data_pemeriksaan);
 
-$no_periksa = $data_periksa['no_periksa'];
+ ?>
 
-if ($no_periksa == ''){
-  $hasil_no_periksa = 1; 
-}
-else{
-  $hasil_no_periksa = $no_periksa + 1;
-}
-
-?>
 <!--Mulai Modal Data Laboratorium-->
 <div id="modal_lab" class="modal fade" role="dialog">
   <!--Modal Dialog-->
@@ -246,7 +235,7 @@ echo '
 <!--Mulai Padding layar-->
 <div style="padding-left: 5%; padding-right: 5%">
   <!--Judul-->
-    <h3><b>FORM INPUT JASA LABORATOIUM</b></h3>
+    <h3><b>FORM EDIT INPUT JASA LABORATOIUM</b></h3>
     <!--Garis-->
     <hr>
 
@@ -311,6 +300,11 @@ echo '
           <input  name="pemeriksaan_keberapa" type="text" style="height:15px;" id="pemeriksaan_keberapa" readonly="" value="<?php echo $hasil_no_periksa ?>" class="form-control" required="">
         </div>
 
+		<div class="col-xs-1">
+          <label>Tanggal</label><br> 
+          <input  name="tanggal" type="text" style="height:15px;" id="tanggal" readonly="" value="<?php echo $tanggal; ?>" class="form-control" required="">
+        </div>
+
       <!--Mulai Col SM Awal-->  
       </div>
 
@@ -328,7 +322,7 @@ echo '
       
         <button type="button" id="cari_jasa_laboratorium" class="btn btn-info " data-toggle="modal" data-target="#modal_lab"><i class='fa fa-search'></i> Cari Laboratorium (F1) </button> 
 
-        <button class="btn btn-success" style="display:none"  id="simpan_lab_inap"> <i class="fa fa-save"></i> Simpan Data </button>
+        <button class="btn btn-success" id="simpan_lab_inap"> <i class="fa fa-save"></i> Simpan Data </button>
 
       <!--Akhir Col SM Kedua-->
       </div>
@@ -360,14 +354,14 @@ echo '
     </table>
   </div>
 </span> 
-
+ 		<!--ALERT BERHASIL-->
+      	<div class="alert alert-success" id="alert_berhasil" style="display:none">
+          <strong>Sukses!</strong>Pengeditan Jasa Laboratorium Berhasil !!
+        </div>
 <!--Akhir Col SM Ketiga-->
 </div>
 
         <!--Mulai Input Hidden-->
-        <input  name="" type="hidden" style="height:15px;" id="bed" class="form-control" required="" autofocus="" value="<?php echo $bed; ?>" >
-        <input  name="" type="hidden" style="height:15px;" id="kamar" class="form-control" required="" autofocus="" value="<?php echo $kamar; ?>" >
-
         <input style="height: 20px;" value="<?php echo $jenis_penjualan ?>" type="hidden" class="form-control disable1" readonly="" id="jenis_penjualan" name="jenis_penjualan">
 
         <input style="height: 20px;" value="<?php echo $rujukan ?>" type="hidden" class="form-control disable1" readonly="" id="rujukan" name="rujukan">
@@ -436,6 +430,7 @@ $(document).on('click','.pilih-header',function(e){
     var analis = $("#analis").val();
     var dokter = $("#dokter").val();
     var nama_pasien = $("#nama_pasien").val();
+    var tanggal = $("#tanggal").val();
     var tipe_barang = "Jasa";
 
 //ambil dari form yang hidden
@@ -450,7 +445,7 @@ $(document).on('click','.pilih-header',function(e){
               
       $(this).attr("data-toogle", 11);
 
-      $.post("proses_input_data_header_inap.php",{id_periksa:id_periksa,kode_jasa_lab:kode_jasa_lab,no_rm:no_rm,no_reg:no_reg,analis:analis,dokter:dokter,nama_pasien:nama_pasien,tipe_barang:tipe_barang,jenis_penjualan:jenis_penjualan,jenis_kelamin:jenis_kelamin,pemeriksaan_keberapa:pemeriksaan_keberapa},function(data){
+      $.post("proses_input_data_header_inap_edit_reg.php",{id_periksa:id_periksa,kode_jasa_lab:kode_jasa_lab,no_rm:no_rm,no_reg:no_reg,analis:analis,dokter:dokter,nama_pasien:nama_pasien,tipe_barang:tipe_barang,jenis_penjualan:jenis_penjualan,jenis_kelamin:jenis_kelamin,pemeriksaan_keberapa:pemeriksaan_keberapa,tanggal:tanggal},function(data){
  
 
       });
@@ -458,7 +453,7 @@ $(document).on('click','.pilih-header',function(e){
     else{
       $(this).attr("data-toogle", 1);
 
-      $.post("hapus_data_header.php",{kode_jasa_lab:kode_jasa_lab,no_reg:no_reg,pemeriksaan_keberapa:pemeriksaan_keberapa},function(data){
+      $.post("hapus_data_header_edit_reg.php",{kode_jasa_lab:kode_jasa_lab,no_reg:no_reg,pemeriksaan_keberapa:pemeriksaan_keberapa},function(data){
 
       });
     }
@@ -491,12 +486,13 @@ $(document).on('click','.pilih-detail-dari-header',function(e){
     var jenis_kelamin = $("#jenis_kelamin").val();
 
     var pemeriksaan_keberapa = $("#pemeriksaan_keberapa").val();
+    var tanggal = $("#tanggal").val();
 
     if (data_toggle == 2) {
               
       $(this).attr("data-toogle", 22);
 
-      $.post("proses_input_data_detail_inap.php",{id_periksa:id_periksa,kode_jasa_lab:kode_jasa_lab,no_rm:no_rm,no_reg:no_reg,analis:analis,dokter:dokter,nama_pasien:nama_pasien,tipe_barang:tipe_barang,jenis_penjualan:jenis_penjualan,jenis_kelamin:jenis_kelamin,pemeriksaan_keberapa:pemeriksaan_keberapa},function(data){
+      $.post("proses_input_data_detail_inap_edit_reg.php",{id_periksa:id_periksa,kode_jasa_lab:kode_jasa_lab,no_rm:no_rm,no_reg:no_reg,analis:analis,dokter:dokter,nama_pasien:nama_pasien,tipe_barang:tipe_barang,jenis_penjualan:jenis_penjualan,jenis_kelamin:jenis_kelamin,pemeriksaan_keberapa:pemeriksaan_keberapa,tanggal:tanggal},function(data){
  
 
       });
@@ -504,7 +500,7 @@ $(document).on('click','.pilih-detail-dari-header',function(e){
     else{
       $(this).attr("data-toogle", 2);
 
-      $.post("hapus_data_detail.php",{kode_jasa_lab:kode_jasa_lab,no_reg:no_reg,pemeriksaan_keberapa:pemeriksaan_keberapa},function(data){
+      $.post("hapus_data_detail_edit_reg_inap.php",{kode_jasa_lab:kode_jasa_lab,no_reg:no_reg,pemeriksaan_keberapa:pemeriksaan_keberapa},function(data){
 
       });
     }
@@ -537,12 +533,13 @@ $(document).on('click','.set-sendirian',function(e){
     var jenis_kelamin = $("#jenis_kelamin").val();
 
     var pemeriksaan_keberapa = $("#pemeriksaan_keberapa").val();
+    var tanggal = $("#tanggal").val();
 
     if (data_toggle == 3) {
               
       $(this).attr("data-toogle", 33);
 
-      $.post("proses_input_data_detail_sendirian_inap.php",{id_periksa:id_periksa,kode_jasa_lab:kode_jasa_lab,no_rm:no_rm,no_reg:no_reg,analis:analis,dokter:dokter,nama_pasien:nama_pasien,tipe_barang:tipe_barang,jenis_penjualan:jenis_penjualan,jenis_kelamin:jenis_kelamin,pemeriksaan_keberapa:pemeriksaan_keberapa},function(data){
+      $.post("proses_input_data_detail_sendirian_inap_reg.php",{id_periksa:id_periksa,kode_jasa_lab:kode_jasa_lab,no_rm:no_rm,no_reg:no_reg,analis:analis,dokter:dokter,nama_pasien:nama_pasien,tipe_barang:tipe_barang,jenis_penjualan:jenis_penjualan,jenis_kelamin:jenis_kelamin,pemeriksaan_keberapa:pemeriksaan_keberapa,tanggal:tanggal},function(data){
  
 
       });
@@ -551,7 +548,7 @@ $(document).on('click','.set-sendirian',function(e){
 
       $(this).attr("data-toogle", 3);
 
-      $.post("hapus_data_detail_sendirian.php",{kode_jasa_lab:kode_jasa_lab,no_reg:no_reg,pemeriksaan_keberapa:pemeriksaan_keberapa},function(data){
+      $.post("hapus_data_detail_sendirian_reg_inap.php",{kode_jasa_lab:kode_jasa_lab,no_reg:no_reg,pemeriksaan_keberapa:pemeriksaan_keberapa},function(data){
 
       });
     }
@@ -646,12 +643,13 @@ $(document).on('click','.set-sendirian',function(e){
     var kode_jasa = $(this).attr("data-kode");
     var nama_jasa = $(this).attr("data-barang");
     var no_reg = $("#no_reg").val();
+    var pemeriksaan_keberapa = $("#pemeriksaan_keberapa").val();
 
     var pesan_alert = confirm("Apakah Anda Yakin Ingin Menghapus "+nama_jasa+""+ "?");
 
     if (pesan_alert == true) {
 
-        $.post("hapus_data_tbs_aps.php",{kode_jasa:kode_jasa,no_reg:no_reg,id:id},function(data){
+        $.post("hapus_data_tbs_aps_edit_reg_inap.php",{pemeriksaan_keberapa:pemeriksaan_keberapa,kode_jasa:kode_jasa,no_reg:no_reg,id:id},function(data){
 
           //TABLE AJAX TBS
           $('#table_tbs_laboratorium').DataTable().destroy();
@@ -708,8 +706,12 @@ $(document).on('click', '#simpan_lab_inap', function (e) {
     var dokter = $("#dokter").val();
     var jenis_kelamin = $("#jenis_kelamin").val();
     var rujukan = $("#rujukan").val();
+    var tanggal = $("#tanggal").val();
 
-    $.post('proses_simpan_lab_inap.php',{no_reg:no_reg,pemeriksaan_keberapa:pemeriksaan_keberapa,no_rm:no_rm,nama_pasien:nama_pasien}, function(data){
+     $("#table_tbs_laboratorium").hide();
+     $("#alert_berhasil").show();
+
+    $.post('proses_update_simpan_data_lab_inap.php',{no_reg:no_reg,pemeriksaan_keberapa:pemeriksaan_keberapa,no_rm:no_rm,nama_pasien:nama_pasien,tanggal:tanggal}, function(data){
      
       if(data == 1){
       window.location.href='data_laboratorium_inap.php?no_reg='+no_reg+'&nama='+nama_pasien+'&dokter_pengirim='+dokter+'&jenis_kelamin='+jenis_kelamin+'&bed='+bed+'&kamar='+kamar+'&rujukan='+rujukan+'&no_rm='+no_rm;
@@ -724,6 +726,12 @@ $(document).on('click', '#simpan_lab_inap', function (e) {
 </script>
 <!--PROSES SIMPAN ENDING-->
 
+<script>
+  $(function() {
+    //DatePicker Tanggal
+    $( "#tanggal" ).datepicker({dateFormat: "yy-mm-dd"});
+  });
+</script>
 
 <!--footer-->
 <?php include 'footer.php'; ?>
