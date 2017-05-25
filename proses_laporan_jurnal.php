@@ -117,9 +117,9 @@ $kredit = $cek105['kredit'];
 					//td debit
 					$nestedData[] = "<b> Ref : ". $data10['jenis_transaksi'] ." / ". $data10['no_faktur'] ." </b>
 					<br>
-					". koma($data10['debit'],2) ." ";
+					". rp($data10['debit']) ." ";
 					//td kredit 
-					$nestedData[] = "<br>". koma($data10['kredit'],2) ." ";
+					$nestedData[] = "<br>". rp($data10['kredit']) ." ";
 					//td keterangan
 					$nestedData[] = "<br>". $data10['keterangan_jurnal'] ." ";
 	$data[] = $nestedData;
@@ -137,9 +137,9 @@ $kredit = $cek105['kredit'];
 					
 					$nestedData[] = "
 					<td>
-					". koma($data10['debit'],2) ." ";
+					". rp($data10['debit']) ." ";
 					
-					$nestedData[] = "<td>". koma($data10['kredit'],2) ." ";
+					$nestedData[] = "<td>". rp($data10['kredit']) ." ";
 					$nestedData[] = "<td>". $data10['keterangan_jurnal'] ." ";
 	$data[] = $nestedData;
 
@@ -148,8 +148,8 @@ $kredit = $cek105['kredit'];
 						 
 					$nestedData[] = "<b style='color:#ff4444'>Subtotal  ". $data10['no_faktur'] ."</b>";
 					$nestedData[] = "";
-					$nestedData[] = "<b style='color:#ff4444'>". koma($debit,2) ."</b>";
-					$nestedData[] = "<b style='color:#ff4444'>". koma($kredit,2) ."</b>";
+					$nestedData[] = "<b style='color:#ff4444'>". rp($debit) ."</b>";
+					$nestedData[] = "<b style='color:#ff4444'>". rp($kredit) ."</b>";
 					$nestedData[] = "";
 
 	$data[] = $nestedData;
@@ -192,8 +192,8 @@ $sum_t_debit = $db->query("SELECT SUM(debit) AS t_debit FROM jurnal_trans WHERE 
 $nestedData = array();
 $nestedData[] = "<b style='color:red' >TOTAL KESELURUHAN:</b>";
 $nestedData[] = "";
-$nestedData[] = "<b style='color:red'>". koma($t_debit,2) ."</b>";
-$nestedData[] = "<b style='color:red'>". koma($t_kredit,2) ."</b>";
+$nestedData[] = "<b style='color:red'>". rp($t_debit) ."</b>";
+$nestedData[] = "<b style='color:red'>". rp($t_kredit) ."</b>";
 $nestedData[] = "";
 $data[] = $nestedData;
 

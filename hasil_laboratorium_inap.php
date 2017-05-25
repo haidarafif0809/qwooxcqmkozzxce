@@ -92,8 +92,6 @@ $jenis_kelamin = $out_gander['jenis_kelamin'];
 </div>
 </span>
 </div><!--div close row-->
-<button type="submit" id="selesai" class="btn btn-default" style="font-size:15px;">
-<i class="fa fa-send"></i> Selesai</button>
 
 </form>
 
@@ -228,6 +226,7 @@ else
 <?php 
 
  ?>
+<button type="submit" id="selesai" class="btn btn-success" style="font-size:15px;">Selesai</button>
 
 <a href='cetak_hasil_lab_inap.php' id="cetak" style="display: none;" class="btn btn-warning" target="blank"><i class="fa fa-print"></i> Cetak </a>
 

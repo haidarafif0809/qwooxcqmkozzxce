@@ -55,10 +55,10 @@ $query = $db->query("SELECT dp.id, dp.no_faktur, dp.kode_barang, dp.nama_barang,
 					}
 					
 					echo "<td>". $data1['nama'] ."</td>
-					<td>". koma($data1['harga'],2) ."</td>
-					<td>". koma($data1['potongan'],2) ."</td>
-					<td>". koma($data1['subtotal'],2) ."</td>
-					<td>". koma($data1['tax'],2) ."</td>
+					<td>". rp($data1['harga']) ."</td>
+					<td>". rp($data1['potongan']) ."</td>
+					<td>". rp($data1['subtotal']) ."</td>
+					<td>". rp($data1['tax']) ."</td>
 					<td>". $data_hpp['sisa_hpp'] ." ".$data1['satuan_asal']."</td>
 					</tr>";
 					}

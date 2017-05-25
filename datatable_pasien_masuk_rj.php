@@ -160,9 +160,7 @@ $nestedData[] = "<a href='form_pemeriksaan_radiologi.php?no_rm=".$row['no_rm']."
 
 // untuk input jasa lab
 if ($input_jasa_lab > 0) {
-
-    $nestedData[] = "<a href='form_penjualan_lab.php?no_rm=".$row['no_rm']."&nama=".$row['nama_pasien']."&no_reg=".$row['no_reg']."&dokter=".$data_id_user['id_dokter']."&jenis_kelamin=".$row['jenis_kelamin']."&jenis_penjualan=Rawat Jalan&rujukan=Rujuk Rawat Jalan' class='btn btn-floating btn-small btn-info'>
-    	<i class='fa fa-stethoscope'></i></a>
+    $nestedData[] = "<a href='form_penjualan_lab.php?no_rm=".$row['no_rm']."&nama=".$row['nama_pasien']."&no_reg=".$row['no_reg']."&dokter=".$row['dokter']."&jenis_penjualan=Rawat Jalan&rujukan=Rujuk Rawat Jalan' class='btn btn-floating btn-small btn-info'><i class='fa fa-stethoscope'></i></a>
        ";
     }
 

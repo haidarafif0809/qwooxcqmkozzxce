@@ -100,9 +100,9 @@ $total_bayar = $total_total - $total_kredit;
           echo "<tr>
           <td>". $data['tanggal'] ."</td>
           <td>". $data1."</td>
-          <td>". koma($t_total,2) ."</td>
-          <td>". koma($t_bayar,2) ."</td>
-          <td>". koma($t_kredit,2) ."</td>
+          <td>". rp($t_total) ."</td>
+          <td>". rp($t_bayar) ."</td>
+          <td>". rp($t_kredit) ."</td>
 
 
           </tr>";
@@ -113,12 +113,7 @@ $total_bayar = $total_total - $total_kredit;
                   mysqli_close($db); 
                   
           ?>
-          <td style="color: red;">TOTAL</td>
-          <td style="color: red;"> <?php echo $data11; ?></td>
-          <td style="color: red;"><?php echo koma($total_total,2); ?></td>
-          <td style="color: red;"><?php echo koma($total_bayar,2); ?></td>
-          <td style="color: red;"><?php echo koma($total_kredit,2); ?></td>
-
+          
             </tbody>
 
       </table>
@@ -126,6 +121,18 @@ $total_bayar = $total_total - $total_kredit;
 </div>
 </div>
 <br>
+
+<div class="container">
+ <table>
+  <tbody>
+
+      <tr>
+      <td><b><i>TOTAL : </b></i> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <?php echo $data11; ?> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo rp($total_total); ?> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <?php echo rp($total_bayar); ?> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <?php echo rp($total_kredit); ?> </td>
+      </tr>
+                 
+  </tbody>
+  </table>
+</div>
 
  <script>
 $(document).ready(function(){

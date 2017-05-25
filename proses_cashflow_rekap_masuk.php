@@ -63,7 +63,7 @@ while( $row=mysqli_fetch_array($query) ) {
 $nestedData[] = $tanggal;
   $nestedData[] = $row["jenis_transaksi"] /*.' ('. $row["no_faktur"] .')'*/;
   $nestedData[] = $row["nama_daftar_akun"];
-  $nestedData[] = koma($row["masuk"],2);
+  $nestedData[] = rp($row["masuk"]);
 $data[] = $nestedData;
 }
 $json_data = array(

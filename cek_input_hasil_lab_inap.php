@@ -9,7 +9,7 @@ $jenis_penjualan = stringdoang($_GET['jenis_penjualan']);
 $no_periksa = stringdoang($_GET['no_periksa']);
 
 
-$perintah3 = $db->query("SELECT no_reg FROM tbs_hasil_lab WHERE no_reg = '$no_reg' ");
+$perintah3 = $db->query("SELECT * FROM tbs_hasil_lab WHERE no_reg = '$no_reg' ");
 $data1 = mysqli_num_rows($perintah3);
 
 if ($data1 > 0)
@@ -19,7 +19,7 @@ if ($data1 > 0)
 
 
 
-$perintah = $db->query("SELECT lab_ke_berapa,kode_barang,nama_barang FROM tbs_penjualan WHERE no_reg = '$no_reg' AND lab_ke_berapa = '$no_periksa' AND lab = 'Laboratorium' AND status_lab  = 'Unfinish'");
+$perintah = $db->query("SELECT lab_ke_berapa,kode_barang,nama_barang FROM tbs_penjualan WHERE no_reg = '$no_reg' AND lab_ke_berapa = '$no_periksa' AND lab = 'Laboratorium' AND status_lab IS NULL");
 while ($data = mysqli_fetch_array($perintah)){
 
 $lab_ke_berapa = $data['lab_ke_berapa'];
@@ -92,7 +92,7 @@ status_pasien,nama_pemeriksaan,normal_lk2,normal_pr2,lab_ke_berapa,kode_barang) 
 
 //START Proses untuk input Header and Detail Jasa Laboratorium
 //Ambil setup hasil yang nama pemeriksaaannya (id) sama dengan id di jasa_lab dan di setup hasilnya Header (Indux)
-$perintah = $db->query("SELECT lab_ke_berapa,kode_barang FROM tbs_penjualan WHERE no_reg = '$no_reg' AND lab_ke_berapa = '$no_periksa' AND lab = 'Laboratorium' AND status_lab = 'Unfinish' ");
+$perintah = $db->query("SELECT lab_ke_berapa,kode_barang FROM tbs_penjualan WHERE no_reg = '$no_reg' AND lab_ke_berapa = '$no_periksa' AND lab = 'Laboratorium' AND status_lab IS NULL ");
 while($data = mysqli_fetch_array($perintah)){
 
 $kode_barang = $data['kode_barang'];

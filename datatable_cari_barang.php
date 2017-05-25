@@ -175,7 +175,7 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 
 	$nestedData[] = $row["kode_barang"];
 	$nestedData[] = $row["nama_barang"];
-	$nestedData[] = koma($row["harga_beli"],2);
+	$nestedData[] = $row["harga_beli"];
 	$nestedData[] = persen($margin);
 	$nestedData[] = $row["harga_jual"];
 	$nestedData[] = $row["harga_jual2"];
@@ -184,7 +184,7 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 	$nestedData[] = $row["harga_jual5"];
 	$nestedData[] = $row["harga_jual6"];
 	$nestedData[] = $row["harga_jual7"];
-	$nestedData[] = koma($total_hpp,2);
+	$nestedData[] = $total_hpp;
 
 	if ($row['berkaitan_dgn_stok'] == 'Jasa') {
 

@@ -380,16 +380,6 @@ include 'sanitasi.php';
 </div><!--container closed-->
 
 
-<script type="text/javascript">
-  Number.prototype.format = function(n, x, s, c) {
-    var re = '\\d(?=(\\d{' + (x || 3) + '})+' + (n > 0 ? '\\D' : '$') + ')',
-        num = this.toFixed(Math.max(0, ~~n));
-
-    return (c ? num.replace('.', c) : num).replace(new RegExp(re, 'g'), '$&' + (s || ','));
-};
-  
-</script>
-
 
 <!--SCRIPT PROSES DETAIL-->
 <script type="text/javascript" language="javascript" >
@@ -403,15 +393,15 @@ var sampai_tanggal = $("#sampai_tanggal_detail").val();
 
 $.getJSON('proses_cashflow_periode_detail.php',{kas_detail:kas_detail,dari_tanggal:dari_tanggal,sampai_tanggal:sampai_tanggal},function(json){
 
-    $("#saldo_awal").html(json.keterangan.format(2, 3, '.', ','));
-    $("#perubahan_saldo").html(json.provinsi.format(2, 3, '.', ','));
-    $("#saldo_akhir").html(json.petugas.format(2, 3, '.', ','));
+    $("#saldo_awal").html(tandaPemisahTitik(json.keterangan));
+    $("#perubahan_saldo").html(tandaPemisahTitik(json.provinsi));
+    $("#saldo_akhir").html(tandaPemisahTitik(json.petugas));
 
-    $("#hasil_masuk_detail").html(json.kelurahan.format(2, 3, '.', ','));
-    $("#hasil_keluar_detail").html(json.kecamatan.format(2, 3, '.', ','));
-    $("#hasil_mutasi_detail").html(json.kabupaten.format(2, 3, '.', ','));
+    $("#hasil_masuk_detail").html(tandaPemisahTitik(json.kelurahan));
+    $("#hasil_keluar_detail").html(tandaPemisahTitik(json.kecamatan));
+    $("#hasil_mutasi_detail").html(tandaPemisahTitik(json.kabupaten));
 
-    $("#hasil_mutasi_masuk_detail").html(json.petugas_lain.format(2, 3, '.', ','));
+    $("#hasil_mutasi_masuk_detail").html(tandaPemisahTitik(json.petugas_lain));
     $("#show_total").show();
 
   });

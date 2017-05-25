@@ -6,7 +6,6 @@ include 'db.php';
 /* Database connection end */
 
 $no_reg = stringdoang($_POST['no_reg']);
-$aps_periksa = stringdoang($_POST['aps_periksa']);
 
 $pilih_akses_tombol = $db->query("SELECT hapus_produk FROM otoritas_penjualan_rj WHERE id_otoritas = '$_SESSION[otoritas_id]' ");
 $otoritas_tombol = mysqli_fetch_array($pilih_akses_tombol);
@@ -32,44 +31,21 @@ $columns = array(
 
 
 );
-if($aps_periksa == 'Laboratorium'){
 
-//LABORATORIUM
+// getting total number records without any search
 $sql =" SELECT tp.id,u.nama AS nama_dokter, tp.no_reg, tp.no_faktur, tp.kode_jasa, tp.nama_jasa, tp.harga, tp.subtotal, tp.dokter, tp.analis, tp.tanggal, tp.jam, uu.nama AS nama_analis";
 $sql.=" FROM tbs_aps_penjualan tp LEFT JOIN user u on tp.dokter = u.id LEFT JOIN user uu on tp.analis = uu.id";
 $sql.=" WHERE tp.no_reg = '$no_reg' AND (tp.no_faktur IS NULL OR tp.no_faktur = '')";
-
-}
-else{
-
-//RADIOLOGI
-$sql =" SELECT tp.id,u.nama AS nama_dokter, tp.no_reg, tp.no_faktur, tp.kode_jasa, tp.nama_jasa, tp.harga, tp.subtotal, tp.dokter, tp.analis, tp.tanggal, tp.jam, uu.nama AS nama_analis";
-$sql.=" FROM tbs_aps_penjualan tp LEFT JOIN user u on tp.dokter = u.id LEFT JOIN user uu on tp.analis = uu.id LEFT JOIN tbs_penjualan_radiologi tpr ON tp.kode_jasa = tpr.kode_barang ";
-$sql.=" WHERE tp.no_reg = '$no_reg' AND tpr.status_periksa = '1' AND (tp.no_faktur IS NULL OR tp.no_faktur = '')";
-
-}
 
 $query = mysqli_query($conn, $sql) or die("eror 1");
 $totalData = mysqli_num_rows($query);
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
-if($aps_periksa == 'Laboratorium'){
-
-//LABORATORIUM
 $sql =" SELECT tp.id,u.nama AS nama_dokter, tp.no_reg, tp.no_faktur, tp.kode_jasa, tp.nama_jasa, tp.harga, tp.subtotal, tp.dokter, tp.analis, tp.tanggal, tp.jam, uu.nama AS nama_analis";
 $sql.=" FROM tbs_aps_penjualan tp LEFT JOIN user u on tp.dokter = u.id LEFT JOIN user uu on tp.analis = uu.id";
 $sql.=" WHERE tp.no_reg = '$no_reg' AND (tp.no_faktur IS NULL OR tp.no_faktur = '')";
 
-}
-else{
-
-//RADIOLOGI
-$sql =" SELECT tp.id,u.nama AS nama_dokter, tp.no_reg, tp.no_faktur, tp.kode_jasa, tp.nama_jasa, tp.harga, tp.subtotal, tp.dokter, tp.analis, tp.tanggal, tp.jam, uu.nama AS nama_analis";
-$sql.=" FROM tbs_aps_penjualan tp LEFT JOIN user u on tp.dokter = u.id LEFT JOIN user uu on tp.analis = uu.id LEFT JOIN tbs_penjualan_radiologi tpr ON tp.kode_jasa = tpr.kode_barang ";
-$sql.=" WHERE tp.no_reg = '$no_reg' AND tpr.status_periksa = '1' AND (tp.no_faktur IS NULL OR tp.no_faktur = '')";
-
-}
     $sql.=" AND (kode_jasa LIKE '".$requestData['search']['value']."%'";  
     $sql.=" OR nama_jasa LIKE '".$requestData['search']['value']."%' )";
 

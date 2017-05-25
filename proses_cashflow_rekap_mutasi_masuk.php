@@ -65,7 +65,7 @@ while( $row=mysqli_fetch_array($query) ) {
 	$nestedData[] = $tanggal;		
 	$nestedData[] = $row["nama_dari_akun"];
 	$nestedData[] = $row["nama_daftar_akun"];
-	$nestedData[] = koma($datadariakun["masuk"],2);
+	$nestedData[] = rp($datadariakun["masuk"]);
 $data[] = $nestedData;
 }
 

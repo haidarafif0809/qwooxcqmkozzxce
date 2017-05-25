@@ -146,7 +146,7 @@ $out_mutasi_keluar_jumlah = mysqli_fetch_array($select_mutasi_keluar_jumlah);
 
 
 <div class="table-responsive"><!--membuat agar ada garis pada tabel disetiap kolom-->
-<h4><b>Kas Masuk <u>Rp. <?php echo koma($out_masuk_jumlah['masuk_jumlah'],2) ?></u></b> </h4>
+<h4><b>Kas Masuk <u>Rp. <?php echo rp($out_masuk_jumlah['masuk_jumlah']) ?></u></b> </h4>
 <table id="table_masuk" class="table table-bordered table-sm">
     <thead>
       
@@ -174,7 +174,7 @@ $out_mutasi_keluar_jumlah = mysqli_fetch_array($select_mutasi_keluar_jumlah);
                 <td>". $out_masuk['keterangan_jurnal'] ."</td>
                 <td>". $out_masuk['jenis_transaksi'] ."</td>
                 <td>". $out_masuk['nama_daftar_akun'] ."</td>
-                <td class='rata-kanan'>". koma($out_masuk['masuk'],2) ."</td>
+                <td class='rata-kanan'>". rp($out_masuk['masuk']) ."</td>
                 <td>". $out_masuk['user_buat'] ."</td>
                 <td>". $out_masuk['user_edit'] ."</td>
                 <td>". $out_masuk['waktu_jurnal'] ."</td>
@@ -190,7 +190,7 @@ $out_mutasi_keluar_jumlah = mysqli_fetch_array($select_mutasi_keluar_jumlah);
 
 <!--Table Kas Keluar-->
 <div class="table-responsive"><!--membuat agar ada garis pada tabel disetiap kolom-->
-<h4><b>Kas Keluar <u>Rp. <?php echo koma($out_keluar_jumlah['keluar_jumlah'],2) ?></u> </b></h4>
+<h4><b>Kas Keluar <u>Rp. <?php echo rp($out_keluar_jumlah['keluar_jumlah']) ?></u> </b></h4>
 <table id="table_keluar" class="table table-bordered table-sm">
     <thead>
 
@@ -218,7 +218,7 @@ $out_mutasi_keluar_jumlah = mysqli_fetch_array($select_mutasi_keluar_jumlah);
                 <td>". $out_keluar['keterangan_jurnal'] ."</td>
                 <td>". $out_keluar['nama_daftar_akun'] ."</td>
                 <td>". $out_keluar['jenis_transaksi'] ."</td>
-                <td class='rata-kanan'>". koma($out_keluar['keluar'],2) ."</td>
+                <td class='rata-kanan'>". rp($out_keluar['keluar']) ."</td>
                 <td>". $out_keluar['user_buat'] ."</td>
                 <td>". $out_keluar['user_edit'] ."</td>
                 <td>". $out_keluar['waktu_jurnal'] ."</td>
@@ -235,7 +235,7 @@ $out_mutasi_keluar_jumlah = mysqli_fetch_array($select_mutasi_keluar_jumlah);
 
 <!--Table Mutasi Kas Masuk-->
 <div class="table-responsive"><!--membuat agar ada garis pada tabel disetiap kolom-->
-<h4><b>Kas Mutasi (Masuk) <u>Rp. <?php echo koma($out_mutasi_masuk_jumlah['mutasi_masuk_jumlah'],2) ?></u> </b></h4>
+<h4><b>Kas Mutasi (Masuk) <u>Rp. <?php echo rp($out_mutasi_masuk_jumlah['mutasi_masuk_jumlah']) ?></u> </b></h4>
 <table id="table_keluar" class="table table-bordered table-sm">
     <thead>
 
@@ -263,7 +263,7 @@ $out_mutasi_keluar_jumlah = mysqli_fetch_array($select_mutasi_keluar_jumlah);
                 <td>". $out_keluar['keterangan_jurnal'] ."</td>
                 <td>". $out['nama_daftar_akun'] ."</td>
                 <td>". $out_keluar['nama_daftar_akun'] ."</td>
-                <td class='rata-kanan'>". koma($out_keluar['mutasi_masuk'],2) ."</td>
+                <td class='rata-kanan'>". rp($out_keluar['mutasi_masuk']) ."</td>
                 <td>". $out_keluar['user_buat'] ."</td>
                 <td>". $out_keluar['user_edit'] ."</td>
                 <td>". $out_keluar['waktu_jurnal'] ."</td>
@@ -280,7 +280,7 @@ $out_mutasi_keluar_jumlah = mysqli_fetch_array($select_mutasi_keluar_jumlah);
 
 <!--Table Mutasi Kas Masuk-->
 <div class="table-responsive"><!--membuat agar ada garis pada tabel disetiap kolom-->
-<h4><b>Kas Mutasi (Keluar) <u>Rp. <?php echo koma($out_mutasi_keluar_jumlah['mutasi_keluar_jumlah'],2) ?></u> </b></h4>
+<h4><b>Kas Mutasi (Keluar) <u>Rp. <?php echo rp($out_mutasi_keluar_jumlah['mutasi_keluar_jumlah']) ?></u> </b></h4>
 <table id="table_keluar" class="table table-bordered table-sm">
     <thead>
 
@@ -306,7 +306,7 @@ $out_mutasi_keluar_jumlah = mysqli_fetch_array($select_mutasi_keluar_jumlah);
                 <td>". $out_keluar['keterangan_jurnal'] ."</td>
                 <td>". $out_keluar['nama_daftar_akun'] ."</td>
                 <td>". $out['nama_daftar_akun'] ."</td>
-                <td class='rata-kanan'>". koma($out_keluar['keluar'],2) ."</td>
+                <td class='rata-kanan'>". rp($out_keluar['keluar']) ."</td>
                 <td>". $out_keluar['user_buat'] ."</td>
                 <td>". $out_keluar['user_edit'] ."</td>
                 <td>". $out_keluar['waktu_jurnal'] ."</td>
@@ -326,9 +326,9 @@ $out_mutasi_keluar_jumlah = mysqli_fetch_array($select_mutasi_keluar_jumlah);
     <table style="font-size: 25">
     <h4><b>Total Cashflow </b></h4>
 
-     <tr><td width="50%"><font class="satu">Saldo Awal</font></td> <td> :&nbsp;</td> <td><font class="satu"> <?php echo koma($saldo,2); ?> </font></tr>
-     <tr><td width="50%"><font class="satu">Perubahan Saldo</font></td> <td> :&nbsp;</td> <td><font class="satu"> <?php echo koma($perubahan_saldo,2); ?></font> </tr>
-        <tr><td width="50%"><font class="satu">Saldo Akhir</font></td> <td> :&nbsp;</td> <td><font class="satu"> <?php echo koma($saldo_akhir,2); ?></font> </tr>
+     <tr><td width="50%"><font class="satu">Saldo Awal</font></td> <td> :&nbsp;</td> <td><font class="satu"> <?php echo rp($saldo); ?> </font></tr>
+     <tr><td width="50%"><font class="satu">Perubahan Saldo</font></td> <td> :&nbsp;</td> <td><font class="satu"> <?php echo rp($perubahan_saldo); ?></font> </tr>
+        <tr><td width="50%"><font class="satu">Saldo Akhir</font></td> <td> :&nbsp;</td> <td><font class="satu"> <?php echo rp($saldo_akhir); ?></font> </tr>
 
     </table>
 

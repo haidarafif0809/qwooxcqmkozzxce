@@ -79,7 +79,7 @@ $rekap = stringdoang($_GET['rekap']);
 				<td></td>
 				<td></td>
 				<td></td>
-				<td><?php echo koma($saldo,2); ?></td>
+				<td><?php echo rp($saldo); ?></td>
 				</tr>
 
 				<?php 
@@ -98,14 +98,14 @@ $rekap = stringdoang($_GET['rekap']);
 						echo "<tr>
 						<td><center> <b>-</b> </center></td>
 						<td>Direkap Per Hari</td>
-						<td>". tanggal($cek['waktu_jurnal'],2) ."</td>
-						<td>". koma($cek['debit'],2) ."</td>
-						<td>". koma($cek['kredit'],2) ."</td>";
+						<td>". tanggal($cek['waktu_jurnal']) ."</td>
+						<td>". rp($cek['debit']) ."</td>
+						<td>". rp($cek['kredit']) ."</td>";
 
 
 						$saldo = $saldo + $cek['debit'] - $cek['kredit'];
 
-						echo "<td>". koma($saldo,2) ."</td></tr>";
+						echo "<td>". rp($saldo) ."</td></tr>";
 
 				}
 
@@ -115,9 +115,9 @@ $rekap = stringdoang($_GET['rekap']);
 				<td></td>
 				<td></td>
 				<td><b>TOTAL :</b></td>
-				<td><b>". koma($total_debit,2) ."</b></td>
-				<td><b>". koma($total_kredit,2) ."</b></td>
-				<td><b>". koma($saldo,2) ."</b></td>
+				<td><b>". rp($total_debit) ."</b></td>
+				<td><b>". rp($total_kredit) ."</b></td>
+				<td><b>". rp($saldo) ."</b></td>
 
 				</tr>";	
 				mysqli_close($db);
@@ -155,7 +155,7 @@ $rekap = stringdoang($_GET['rekap']);
 				<td></td>
 				<td></td>
 				<td></td>
-				<td><?php echo koma($saldo); ?></td>
+				<td><?php echo rp($saldo); ?></td>
 				</tr>
 
 				<?php 
@@ -174,24 +174,24 @@ $rekap = stringdoang($_GET['rekap']);
 						<td>". $cek['no_faktur']."</td>
 						<td>". $cek['keterangan_jurnal']."</td>
 						<td>". tanggal($cek['waktu_jurnal']) ."</td>
-						<td>". koma($cek['debit'],2) ."</td>
-						<td>". koma($cek['kredit'],2) ."</td>";
+						<td>". rp($cek['debit']) ."</td>
+						<td>". rp($cek['kredit']) ."</td>";
 						$saldo = $saldo + $cek['debit'] - $cek['kredit'];
 
 						$total_debit += $cek['debit'];
 						$total_kredit += $cek['kredit'];
 
 
-				  echo "<td>". koma($saldo,2) ."</td></tr>";
+				  echo "<td>". rp($saldo) ."</td></tr>";
 				}
 
 				echo "<tr style='color:red'>
 				<td><b>TOTAL :</b></td>
 				<td></td>
 				<td></td>
-				<td><b>". koma($total_debit,2) ."</b></td>
-				<td><b>". koma($total_kredit,2) ."</b></td>
-				<td><b>". koma($saldo,2) ."</b></td>
+				<td><b>". rp($total_debit) ."</b></td>
+				<td><b>". rp($total_kredit) ."</b></td>
+				<td><b>". rp($saldo) ."</b></td>
 
 				</tr>";	
 				mysqli_close($db);
