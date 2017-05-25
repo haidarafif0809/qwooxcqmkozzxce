@@ -389,6 +389,7 @@ if ($lihat['kartu_stok_lihat'] > 0){
 }
 
 echo '<li><a href="cache_produk_penjualan.php" target="blank" class="waves-effect">Update Cache Produk</a></li>';
+echo '<li><a href="update_cache_browser_barang.php" target="blank" class="waves-effect"> Cache Produk Offline</a></li>';
 echo '<li><a href="cache_produk_lab.php" target="blank" class="waves-effect">Update Cache P.Lab</a></li>';
 echo '<li><a href="cache_produk_obat.php" target="blank" class="waves-effect">Update Cache Obat Obatan</a></li>';
 echo '<li><a href="cache_produk_tindakan.php" target="blank" class="waves-effect">Update Cache Tindakan</a></li>';

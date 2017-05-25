@@ -1,11 +1,13 @@
-<!doctype html>
-<html>
-  <head>
+<?php 
+
+//memasukkan file session login, db, header, navbar.php
+include 'session_login.php';
+include 'db.php';
+include 'header.php';
+include 'navbar.php';
 
 
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-      <!-- Include Dexie -->
-      <script src="https://unpkg.com/dexie@latest/dist/dexie.js"></script>
+ ?>
 
       <script>
           //
@@ -38,8 +40,8 @@
 
                   console.log("Done putting 100,000 raindrops all over the place");
                   console.log("Last raindrop's id was: " + lastKey); // Will be 100000.
-                  
-                  $("#berhasil").html("<h2>Berhasil Cache</h2>");
+
+                  $("#berhasil").html("<h2>Berhasil Cache Data Barang</h2>");
 
                   }).catch(Dexie.BulkError, function (e) {
                       // Explicitely catching the bulkAdd() operation makes those successful
@@ -55,9 +57,16 @@
   
       </script>
   </head>
-
+<div class="container">
   <span id="berhasil">
-    
+    <h1>Processing .....</h1>
   </span>
- 
-</html>
+
+  <a href="update_cache_browser_barang.php" class="btn btn-info">Cache Ulang Data Barang</a>
+<br>
+  <p>Proses ini akan melakukan penyimpanan data barang secara offline di browser anda</p>
+ </div>
+
+<?php 
+include 'footer.php';
+ ?>
