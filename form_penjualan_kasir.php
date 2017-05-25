@@ -510,20 +510,9 @@ $obat = $otoritas_produk['tipe_obat'];
 
   <div class="col-xs-3">
 
-    <select style="font-size:15px; height:20px" type="text" name="kode_barang" id="kode_barang" class="form-control chosen" data-placeholder="SILAKAN PILIH...">
+    <select style="font-size:15px; height:20px" type="text" name="kode_barang" id="kode_barang" class="form-control " data-placeholder="SILAKAN PILIH...">
     <option value="">SILAKAN PILIH...</option>
-       <?php 
-
-        include 'cache.class.php';
-          $c = new Cache();
-          $c->setCache('produk');
-          $data_c = $c->retrieveAll();
-
-          foreach ($data_c as $key) {
-            echo '<option id="opt-produk-'.$key['kode_barang'].'" value="'.$key['kode_barang'].'" data-kode="'.$key['kode_barang'].'" nama-barang="'.$key['nama_barang'].'" harga="'.$key['harga_jual'].'" harga_jual_2="'.$key['harga_jual2'].'" harga_jual_3="'.$key['harga_jual3'].'" harga_jual_4="'.$key['harga_jual4'].'" harga_jual_5="'.$key['harga_jual5'].'" harga_jual_6="'.$key['harga_jual6'].'" harga_jual_7="'.$key['harga_jual7'].'" satuan="'.$key['satuan'].'" kategori="'.$key['kategori'].'" status="'.$key['status'].'" suplier="'.$key['suplier'].'" limit_stok="'.$key['limit_stok'].'" ber-stok="'.$key['berkaitan_dgn_stok'].'" tipe_barang="'.$key['tipe_barang'].'" id-barang="'.$key['id'].'" > '. $key['kode_barang'].' ( '.$key['nama_barang'].' ) </option>';
-          }
-
-        ?>
+    
     </select>
 
  </div>
@@ -1000,7 +989,30 @@ Radiologi  </button>
 <script>
 //untuk menampilkan data tabel
 $(document).ready(function(){
-    $("#kode_barang").trigger('chosen:open');
+
+
+
+      $.get('data_barang.php',function(data){
+
+
+
+              $.each(data.result, function(i, item) {
+
+                  //menampilkan datanya di table
+                     var tr_barang =   '<option id="opt-produk-'+ data.result[i].kode_barang+'" value="'+ data.result[i].kode_barang+'" data-kode="'+ data.result[i].kode_barang+'" nama-barang="'+ data.result[i].nama_barang+'" harga="'+ data.result[i].harga_jual+'" harga_jual_2="'+ data.result[i].harga_jual2+'" harga_jual_3="'+ data.result[i].harga_jual3+'" harga_jual_4="'+ data.result[i].harga_jual4+'" harga_jual_5="'+ data.result[i].harga_jual5+'" harga_jual_6="'+ data.result[i].harga_jual6+'" harga_jual_7="'+ data.result[i].harga_jual7+'" satuan="'+ data.result[i].satuan+'" kategori="'+ data.result[i].kategori+'" status="'+ data.result[i].status+'" suplier="'+ data.result[i].suplier+'" limit_stok="'+ data.result[i].limit_stok+'" ber-stok="'+ data.result[i].berkaitan_dgn_stok+'" tipe_barang="'+ data.result[i].tipe_barang+'" id-barang="'+ data.result[i].id+'" > '+ data.result[i].kode_barang+' ( '+ data.result[i].nama_barang+' ) </option>';
+
+                 $("#kode_barang").prepend(tr_barang);
+                   
+
+
+                 });
+
+
+      }).then(function(){
+
+                    $("#kode_barang").chosen({no_results_text: "Oops, nothing found!"}); 
+                     $("#kode_barang").trigger('chosen:open');
+                 });
 
 });
 
@@ -5527,5 +5539,8 @@ $(document).ready(function(){
 });
 </script>
 <!--Akhir Script Key Up Potongan Produk-->
+
+<!-- script untuk menampilkan data produk di tag select produk -->
+
 
 <?php include 'footer.php'; ?>
