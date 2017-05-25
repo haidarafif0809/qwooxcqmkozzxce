@@ -987,10 +987,6 @@ Radiologi  </button>
 
     
 <script>
-//untuk menampilkan data tabel
-$(document).ready(function(){
-
-
 
       $.get('data_barang.php',function(data){
 
@@ -1014,7 +1010,7 @@ $(document).ready(function(){
                      $("#kode_barang").trigger('chosen:open');
                  });
 
-});
+
 
 </script>
 
