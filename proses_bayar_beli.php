@@ -58,26 +58,69 @@ echo $no_faktur = $nomor."/BL/".$data_bulan_terakhir."/".$tahun_terakhir;
 
 
 // PENGAMBILAN DATA YANG DIPOST DARI FORM PEMBELIAN (JADIKAN DILUAR AGAR BISA DIAMBIL SEMUA)
-           $sisa_kredit = angkadoang($_POST['kredit']);
+           $sisa_kredit = stringdoang($_POST['kredit']);
+           $sisa_kredit = str_replace(',','.',$sisa_kredit);
+              if ($sisa_kredit == '') {
+                $sisa_kredit = 0;
+              }
            $suplier = stringdoang($_POST['suplier']);
-           $total = angkadoang($_POST['total']);
-           $total_1 = angkadoang($_POST['total_1']);
-           $potongan = angkadoang($_POST['potongan']);
-           $tax = angkadoang($_POST['tax']);
-           $sisa_pembayaran = angkadoang($_POST['sisa_pembayaran']);
-           $sisa = angkadoang($_POST['sisa']);
+
+           $total = stringdoang($_POST['total']);
+           $total = str_replace(',','.',$total);
+              if ($total == '') {
+                $total = 0;
+              }
+
+           $total_1 = stringdoang($_POST['total_1']);
+           $total_1 = str_replace(',','.',$total_1);
+              if ($total_1 == '') {
+                $total_1 = 0;
+              }
+
+           $potongan = stringdoang($_POST['potongan']);
+           $potongan = str_replace(',','.',$potongan);
+              if ($potongan == '') {
+                $potongan = 0;
+              }
+           $tax = stringdoang($_POST['tax']);
+           $tax = str_replace(',','.',$tax);
+              if ($tax == '') {
+                $tax = 0;
+              }
+
+           $sisa_pembayaran = stringdoang($_POST['sisa_pembayaran']);
+           $sisa_pembayaran = str_replace(',','.',$sisa_pembayaran);
+              if ($sisa_pembayaran == '') {
+                $sisa_pembayaran = 0;
+              }
+
+           $sisa = stringdoang($_POST['sisa']);
+           $sisa = str_replace(',','.',$sisa);
+              if ($sisa == '') {
+                $sisa = 0;
+              }
+
            $ppn_input = stringdoang($_POST['ppn_input']);
            $cara_bayar = stringdoang($_POST['cara_bayar']);
            $kode_gudang = stringdoang($_POST['kode_gudang']);
            $tanggal_jt = stringdoang($_POST['tanggal_jt']);
-           $pembayaran = angkadoang($_POST['pembayaran']);
+           $pembayaran = stringdoang($_POST['pembayaran']);
+           $pembayaran = str_replace(',','.',$pembayaran);
+              if ($pembayaran == '') {
+                $pembayaran = 0;
+              }
+
            $t_total = $total_1 - $potongan;
 
            $user = $_SESSION['user_name'];
            $_SESSION['no_faktur'] = $no_faktur;
 
-           $a = $total_1 - $potongan;
-           $tax_persen = angkadoang($_POST['tax_rp']);
+           $tax_persen = stringdoang($_POST['tax_rp']);
+           $tax_persen = str_replace(',','.',$tax_persen);
+              if ($tax_persen == '') {
+                $tax_persen = 0;
+              }
+
            $nomor_suplier = stringdoang($_POST['no_faktur_suplier']);
 // PENGAMBILAN DATA YANG DIPOST DARI FORM PEMBELIAN (JADIKAN DILUAR AGAR BISA DIAMBIL SEMUA)
 
@@ -110,7 +153,7 @@ $total_tax = $jumlah_tax['total_tax'];
         
         
   // hubungkan "data" dengan prepared statements
-        $stmt->bind_param("ssssisssiiisis", 
+        $stmt->bind_param("ssssssssssssss", 
         $nomor_suplier,$no_faktur, $kode_gudang, $suplier, $total , $tanggal_sekarang, $jam_sekarang, $user, $potongan, $tax_persen, $sisa, $cara_bayar, $pembayaran, $ppn_input);
   //END hubungkan "data" dengan prepared statements
            
@@ -205,7 +248,7 @@ if ($potongan != "" || $potongan != 0 ) {
         
         
 // hubungkan "data" dengan prepared statements
-        $stmt->bind_param("ssssissssiiiisis", 
+        $stmt->bind_param("ssssssssssssssss", 
         $nomor_suplier,$no_faktur, $kode_gudang, $suplier, $total , $tanggal_sekarang, $tanggal_jt, $jam_sekarang, $user, $potongan, $tax_persen, $sisa_kredit, $sisa_kredit, $cara_bayar, $pembayaran, $ppn_input);
 //END hubungkan "data" dengan prepared statements
        

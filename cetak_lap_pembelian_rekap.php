@@ -10,15 +10,6 @@ $sampai_tanggal = stringdoang($_GET['sampai_tanggal']);
     $query1 = $db->query("SELECT * FROM perusahaan ");
     $data1 = mysqli_fetch_array($query1);
 
-//menampilkan seluruh data yang ada pada tabel pembelian
-$perintah = $db->query("SELECT * FROM pembelian WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal'");
-
-
-//menampilkan seluruh data yang ada pada tabel pembelian
-$perintah0 = $db->query("SELECT * FROM detail_pembelian WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal'");
-$data0 = mysqli_fetch_array($perintah0);
-
-
 
 $query01 = $db->query("SELECT SUM(potongan) AS total_potongan FROM pembelian WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal'");
 $cek01 = mysqli_fetch_array($query01);
@@ -124,12 +115,12 @@ $t_barang = $cek011['total_barang'];
                   <td>". $data11['tanggal'] ."</td>
                   <td>". $data11['nama_suplier'] ."</td>
                   <td>". $total_barang ."</td>
-                  <td>". rp($total_subtotal) ."</td>
-                  <td>". rp($data11['potongan']) ."</td>
-                  <td>". rp($data11['tax']) ."</td>
-                  <td>". rp($data11['total']) ."</td>
-                  <td>". rp($bayar_tunai) ."</td>
-                  <td>". rp($data11['kredit']) ."</td>
+                  <td>". koma($total_subtotal,2) ."</td>
+                  <td>". koma($data11['potongan'],2) ."</td>
+                  <td>". koma($data11['tax'],2) ."</td>
+                  <td>". koma($data11['total'],2) ."</td>
+                  <td>". koma($bayar_tunai,2) ."</td>
+                  <td>". koma($data11['kredit'],2) ."</td>
                   </tr>";
 
 
@@ -164,13 +155,13 @@ $t_barang = $cek011['total_barang'];
   <tbody>
 
       <tr><td width="70%">Jumlah Item</td> <td> :&nbsp; </td> <td> <?php echo $t_barang; ?> </td></tr>
-      <tr><td  width="70%">Total Subtotal</td> <td> :&nbsp; </td> <td> <?php echo rp($t_subtotal); ?> </td>
+      <tr><td  width="70%">Total Subtotal</td> <td> :&nbsp; </td> <td> <?php echo koma($t_subtotal,2); ?> </td>
       </tr>
-      <tr><td  width="70%">Total Potongan</td> <td> :&nbsp; </td> <td> <?php echo rp($total_potongan); ?></td></tr>
-      <tr><td width="70%">Total Pajak</td> <td> :&nbsp; </td> <td> <?php echo rp($total_tax); ?> </td></tr>
-      <tr><td  width="70%">Total Akhir</td> <td> :&nbsp; </td> <td> <?php echo rp($total_akhir); ?> </td>
+      <tr><td  width="70%">Total Potongan</td> <td> :&nbsp; </td> <td> <?php echo koma($total_potongan,2); ?></td></tr>
+      <tr><td width="70%">Total Pajak</td> <td> :&nbsp; </td> <td> <?php echo koma($total_tax,2); ?> </td></tr>
+      <tr><td  width="70%">Total Akhir</td> <td> :&nbsp; </td> <td> <?php echo koma($total_akhir,2); ?> </td>
       </tr>
-      <tr><td  width="70%">Total Kredit</td> <td> :&nbsp; </td> <td> <?php echo rp($total_kredit); ?></td></tr>
+      <tr><td  width="70%">Total Kredit</td> <td> :&nbsp; </td> <td> <?php echo koma($total_kredit,2); ?></td></tr>
             
   </tbody>
   </table>

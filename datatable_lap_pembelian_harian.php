@@ -67,9 +67,9 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 
 					$nestedData[] = $row['tanggal'];
 					$nestedData[] = $data1;
-					$nestedData[] = rp($t_total);
-					$nestedData[] = rp($t_bayar);
-					$nestedData[] = rp($t_kredit);
+					$nestedData[] = koma($t_total,2);
+					$nestedData[] = koma($t_bayar,2);
+					$nestedData[] = koma($t_kredit,2);
 			$data[] = $nestedData;
 }
 

@@ -102,7 +102,7 @@ $nama_akun = $ambil['nama_daftar_akun'];
 			<td></td>
 			<td></td>
 			<td></td>
-			<td><?php echo rp($saldo); ?></td>
+			<td><?php echo koma($saldo,2); ?></td>
 			</tr>
 
 			<?php 
@@ -122,11 +122,11 @@ $select = $db->query("SELECT DATE(waktu_jurnal) AS waktu_jurnal, no_faktur, kete
 					<td><center> <b>-</b> </center></td>
 					<td>Direkap Per Hari</td>
 					<td>". tanggal($cek['waktu_jurnal']) ."</td>
-					<td>". rp($cek['debit']) ."</td>
-					<td>". rp($cek['kredit']) ."</td>";
+					<td>". koma($cek['debit'],2) ."</td>
+					<td>". koma($cek['kredit'],2) ."</td>";
 
 					$saldo = $saldo + $cek['debit']- $cek['kredit'];
-					echo "<td>". rp($saldo) ."</td></tr>";
+					echo "<td>". koma($saldo,2) ."</td></tr>";
 					
 					
 	
@@ -137,9 +137,9 @@ $select = $db->query("SELECT DATE(waktu_jurnal) AS waktu_jurnal, no_faktur, kete
 			<td></td>
 			<td></td>
 			<td><b>TOTAL :</b></td>
-			<td><b>". rp($total_debit) ."</b></td>
-			<td><b>". rp($total_kredit) ."</b></td>
-			<td><b>". rp($saldo) ."</b></td>
+			<td><b>". koma($total_debit,2) ."</b></td>
+			<td><b>". koma($total_kredit,2) ."</b></td>
+			<td><b>". koma($saldo,2) ."</b></td>
 
 			</tr>";	
 			mysqli_close($db);
@@ -196,7 +196,7 @@ $select = $db->query("SELECT DATE(waktu_jurnal) AS waktu_jurnal, no_faktur, kete
 			<td></td>
 			<td></td>
 			<td></td>
-			<td><?php echo rp($saldo); ?></td>
+			<td><?php echo koma($saldo); ?></td>
 			</tr>
 
 			<?php 
@@ -214,14 +214,14 @@ $select = $db->query("SELECT waktu_jurnal, no_faktur, keterangan_jurnal, debit, 
 					<td>". $cek['no_faktur']."</td>
 					<td>". $cek['keterangan_jurnal']."</td>
 					<td>". tanggal($cek['waktu_jurnal']) ."</td>
-					<td>". rp($cek['debit']) ."</td>
-					<td>". rp($cek['kredit']) ."</td>";
+					<td>". koma($cek['debit'],2) ."</td>
+					<td>". koma($cek['kredit'],2) ."</td>";
 
 					$saldo = $saldo + $cek['debit'] -$cek['kredit'];
 
 					
 
-					echo "<td>". rp($saldo) ."</td></tr>";
+					echo "<td>". koma($saldo,2) ."</td></tr>";
 					
 					$total_debit += $cek['debit'];
 					$total_kredit += $cek['kredit'];
@@ -235,9 +235,9 @@ $select = $db->query("SELECT waktu_jurnal, no_faktur, keterangan_jurnal, debit, 
 			<td><b>TOTAL :</b></td>
 			<td></td>
 			<td></td>
-			<td><b>". rp($total_debit) ."</b></td>
-			<td><b>". rp($total_kredit) ."</b></td>
-			<td><b>". rp($saldo) ."</b></td>
+			<td><b>". koma($total_debit,2) ."</b></td>
+			<td><b>". koma($total_kredit,2) ."</b></td>
+			<td><b>". koma($saldo,2) ."</b></td>
 
 			</tr>";	
 			mysqli_close($db);

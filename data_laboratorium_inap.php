@@ -10,6 +10,8 @@ $nama = stringdoang($_GET['nama']);
 $rm = stringdoang($_GET['no_rm']);
 $bed = stringdoang($_GET['bed']);
 $kamar = stringdoang($_GET['kamar']);
+$dokter_pengirim = stringdoang($_GET['dokter_pengirim']);
+$jenis_kelamin = stringdoang($_GET['jenis_kelamin']);
 
 $otoritas_laboratorium = $db->query("SELECT input_jasa_lab, input_hasil_lab FROM otoritas_laboratorium WHERE id_otoritas = '$_SESSION[otoritas_id]'");
 $take_lab = mysqli_fetch_array($otoritas_laboratorium);
@@ -37,17 +39,7 @@ $input_hasil_lab = $take_lab['input_hasil_lab'];
         
       </span>
           <table id="table_detail" class="table table-bordered table-sm">
-        <thead>
-           <th> Nama Pemeriksaan </th>
-           <th> Hasil Pemeriksaan </th>
-           <th> Nilai Normal </th>
-           <th> Status Rawat </th>
-           
-            
-        </thead>
         
-        <tbody id="data_detail">
-        </tbody>
         </table>
 
      </div>
@@ -99,12 +91,17 @@ $input_hasil_lab = $take_lab['input_hasil_lab'];
             <input type="text" value="<?php echo $kamar ?>" class="form-control" name="kamar" autocomplete="off" id="kamar" readonly="" placeholder="Kamar">
         </div>
 
-      </div>
+
+<input type="hidden" value="<?php echo $dokter_pengirim ?>" class="form-control" name="lab_dokter" readonly="" autocomplete="off" id="lab_dokter" placeholder="Dokter">
+
+<input type="hidden" value="<?php echo $jenis_kelamin ?>" class="form-control" name="lab_jenis_kelamin" readonly="" autocomplete="off" id="lab_jenis_kelamin" placeholder="Jenis Kelamin">
+
+</div>
 
 
  <input type="hidden" class="form-control" name="no_reg_hidden" autocomplete="off" id="no_reg_hidden" readonly="" placeholder="Kamar">
-
  <input type="hidden"  class="form-control" name="no_periksa_hidden" autocomplete="off" id="no_periksa_hidden" readonly="" placeholder="Kamar">
+ 
 
 
     </div>
@@ -112,7 +109,7 @@ $input_hasil_lab = $take_lab['input_hasil_lab'];
 </form>
 
 <?php if ($input_jasa_lab): ?>  
-<a href="form_penjualan_lab_inap.php?no_rm=<?php echo $rm ?>&nama=<?php echo $nama ?>&no_reg=<?php echo $reg ?>&jenis_penjualan=Rawat Inap&rujukan=Rujuk Rawat Inap" accesskey="b" class="btn btn-info"><i class="fa fa-plus"></i> Tambah Pemeriksaan</a>
+<a href="form_penjualan_lab_inap.php?no_rm=<?php echo $rm ?>&nama=<?php echo $nama ?>&no_reg=<?php echo $reg ?>&dokter_pengirim=<?php echo $dokter_pengirim ?>&no_reg=<?php echo $reg ?>&jenis_kelamin=<?php echo $jenis_kelamin ?>&dokter=<?php echo $dokter_pengirim ?>&bed=<?php echo $bed ?>&kamar=<?php echo $kamar ?>&jenis_penjualan=Rawat Inap&rujukan=Rujuk Rawat Inap" accesskey="b" class="btn btn-info"><i class="fa fa-plus"></i> Tambah Pemeriksaan</a>
 <?php endif?>
 
 <div class="table-responsive"><!--membuat agar ada garis pada tabel disetiap kolom-->
@@ -132,7 +129,8 @@ $input_hasil_lab = $take_lab['input_hasil_lab'];
 <th style="background-color: #4CAF50; color: white;"> Analis</th>
 <th style="background-color: #4CAF50; color: white;"> Status</th>
 <th style="background-color: #4CAF50; color: white;"> Waktu </th>
-<th style="background-color: #4CAF50; color: white;"> Detail / Edit</th>
+<th style="background-color: #4CAF50; color: white;"> Edit Jasa </th>
+<th style="background-color: #4CAF50; color: white;"> Detail / Edit Hasil</th>
 
 		</thead>
 		<tbody>
@@ -161,6 +159,7 @@ $input_hasil_lab = $take_lab['input_hasil_lab'];
              "data": function ( d ) {   
                 d.no_rm = $("#no_rm").val(); 
                 d.no_reg = $("#no_reg").val(); 
+                d.jenis_kelamin = $("#lab_jenis_kelamin").val(); 
             },
             type: "post",  // method  , by default get
 
@@ -183,7 +182,7 @@ $input_hasil_lab = $take_lab['input_hasil_lab'];
 
 
 
-<!--<script type="text/javascript">
+<script type="text/javascript">
 $(document).ready(function () {
 $(document).on('click', '.detail-lab-inap', function (e) {
 
@@ -201,12 +200,12 @@ $(document).on('click', '.detail-lab-inap', function (e) {
 		
 		});
 		});
-</script>-->
+</script>
 
 
 
 <!--Script mulai untuk tombol detail-->
-<script type="text/javascript">
+<!--<script type="text/javascript">
 $(document).on('click', '.detail-lab-inap', function (e) {
 
     var no_reg = $(this).attr('data-reg');
@@ -247,7 +246,7 @@ $(document).on('click', '.detail-lab-inap', function (e) {
     
     });
 
-</script>
+</script>-->
 <!--Script akhir untuk tombol detail-->
 
 

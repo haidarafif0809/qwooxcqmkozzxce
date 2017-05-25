@@ -76,7 +76,7 @@ while( $row=mysqli_fetch_array($query) ) {
 
     $nestedData[] = $row["kode_barang"];
     $nestedData[] = $row["nama_barang"];
-    $nestedData[] = $row["harga_beli"];
+    $nestedData[] = koma($row["harga_beli"],2);
     $nestedData[] = "$stok_barang";
     $nestedData[] = $row["nama"];
     $nestedData[] = $row["kategori"];

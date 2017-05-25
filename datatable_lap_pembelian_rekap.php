@@ -60,15 +60,15 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 
 			$nestedData[] = $row['no_faktur'];
 			$nestedData[] = $row['nama'];
-			$nestedData[] = rp($row['total']);
+			$nestedData[] = koma($row['total'],2);
 			$nestedData[] = $row['tanggal'];
 			$nestedData[] = $row['jam'];
 			$nestedData[] = $row['user'];
 			$nestedData[] = $row['status'];
-			$nestedData[] = rp($row['potongan']);
-			$nestedData[] = rp($row['tax']);
-			$nestedData[] = rp($row['sisa']);
-			$nestedData[] = rp($row["kredit"]);
+			$nestedData[] = koma($row['potongan'],2);
+			$nestedData[] = koma($row['tax'],2);
+			$nestedData[] = koma($row['sisa'],2);
+			$nestedData[] = koma($row["kredit"],2);
 			$data[] = $nestedData;
 }
 
