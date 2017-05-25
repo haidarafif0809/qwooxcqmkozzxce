@@ -217,7 +217,7 @@ if ($item_masuk['item_keluar_hapus'] > 0) {
         },
             
             "fnCreatedRow": function( nRow, aData, iDataIndex ) {
-                $(nRow).attr('class','tr-id-'+aData[11]+'');
+                $(nRow).attr('class','tr-id-'+aData[12]);
             },
         });
 
@@ -263,21 +263,21 @@ if ($item_masuk['item_keluar_hapus'] > 0) {
 		});
 
 
-		$("#btn_jadi_hapus").click(function(){
-		
-		var no_faktur = $("#data_faktur").val();
-		var id = $(this).attr("data-id");
-		
-		$.post("hapus_item_keluar.php",{no_faktur:no_faktur},function(data){
+			$("#btn_jadi_hapus").click(function(){
+			
+			var no_faktur = $("#data_faktur").val();
+			var id = $(this).attr("data-id");
+			
+			$.post("hapus_item_keluar.php",{no_faktur:no_faktur},function(data){
 
+			
+			$("#modal_hapus").modal('hide');
+			$(".tr-id-"+id).remove();
+			
 		
-		$("#modal_hapus").modal('hide');
-		$(".tr-id-"+id).remove();
-		
-	
 
-		
-		});
+			
+			});
 		
 		});
 // end fungsi hapus data

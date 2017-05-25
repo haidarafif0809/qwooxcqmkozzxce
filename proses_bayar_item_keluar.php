@@ -1,4 +1,3 @@
-
 <?php session_start();
 
     //memasukkan file db.php
@@ -58,21 +57,8 @@ $no_faktur = $nomor."/IK/".$data_bulan_terakhir."/".$tahun_terakhir;
 
  }
 
-  // buat prepared statements
-        $stmt = $db->prepare("INSERT INTO item_keluar (no_faktur, total, tanggal, jam, user, keterangan)
-			VALUES (?,?,?,?,?,?)");
 
-  // hubungkan "data" dengan prepared statements
-        $stmt->bind_param("sissss", 
-        $no_faktur, $total , $tanggal_sekarang, $jam_sekarang, $user, $keterangan);		
 
-  // siapkan "data" query
-    $total = angkadoang($_POST['total']);
-    $user = $_SESSION['user_name'];
-    $keterangan = stringdoang($_POST['keterangan']);
-
-  // jalankan query
-        $stmt->execute();
 
 
 
@@ -86,12 +72,31 @@ $no_faktur = $nomor."/IK/".$data_bulan_terakhir."/".$tahun_terakhir;
 
     //BATAS SINI
 
+//mengambil nilai persediaan dari hpp keluar item keluar
 
 $sum_hpp_keluar = $db->query("SELECT SUM(total_nilai) AS total FROM hpp_keluar WHERE no_faktur = '$no_faktur'");
 $ambil_sum = mysqli_fetch_array($sum_hpp_keluar);
 $total = $ambil_sum['total'];
 
-$select_setting_akun = $db->query("SELECT * FROM setting_akun");
+
+  // buat prepared statements untuk memasukkan data ke item keluar
+        $stmt = $db->prepare("INSERT INTO item_keluar (no_faktur, total, tanggal, jam, user, keterangan)
+      VALUES (?,?,?,?,?,?)");
+
+  // hubungkan "data" dengan prepared statements
+        $stmt->bind_param("sissss", 
+        $no_faktur, $total , $tanggal_sekarang, $jam_sekarang, $user, $keterangan);   
+
+  // siapkan "data" query
+    $user = $_SESSION['user_name'];
+    $keterangan = stringdoang($_POST['keterangan']);
+
+  // jalankan query item keluar
+        $stmt->execute();
+
+
+
+$select_setting_akun = $db->query("SELECT persediaan,item_keluar FROM setting_akun");
 $ambil_setting = mysqli_fetch_array($select_setting_akun);
 
 
