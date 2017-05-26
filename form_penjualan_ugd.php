@@ -1006,7 +1006,7 @@ Radiologi  </button>
                      $("#kode_barang").prepend(tr_barang);
               }).then(function(){
 
-                      $("#kode_barang").chosen({no_results_text: "Oops, nothing found!"}); 
+                      $("#kode_barang").chosen({no_results_text: "Maaf, Data Tidak Ada!",search_contains:true});
               });
 
            }
