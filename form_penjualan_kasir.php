@@ -1046,7 +1046,7 @@ Radiologi  </button>
               return db.barang.each(function(data,i){
           
                  var tr_barang = '<option id="opt-produk-'+ data.kode_barang+'" value="'+ data.kode_barang+'" data-kode="'+ data.kode_barang+'" nama-barang="'+ data.nama_barang+'" harga="'+ data.harga_jual+'" harga_jual_2="'+ data.harga_jual2+'" harga_jual_3="'+ data.harga_jual3+'" harga_jual_4="'+ data.harga_jual4+'" harga_jual_5="'+ data.harga_jual5+'" harga_jual_6="'+ data.harga_jual6+'" harga_jual_7="'+ data.harga_jual7+'" satuan="'+ data.satuan+'" kategori="'+ data.kategori+'" status="'+ data.status+'" suplier="'+ data.suplier+'" limit_stok="'+ data.limit_stok+'" ber-stok="'+ data.berkaitan_dgn_stok+'" tipe_barang="'+ data.tipe_barang+'" id-barang="'+ data.id+'" > '+ data.kode_barang+' ( '+ data.nama_barang+' ) </option>';
-                     $("#kode_barang").prepend(tr_barang);
+                     $("#kode_barang").append(tr_barang);
               }).then(function(){
 
                       $("#kode_barang").chosen({no_results_text: "Maaf, Data Tidak Ada!",search_contains:true});
@@ -2514,7 +2514,7 @@ $("#tbody-barang-jual").find("tr").remove();
 
  
     var tr_barang = "<tr><td>"+ result.barang[i].kode_barang+"</td><td>"+ result.barang[i].nama_barang+"</td><td>"+ result.barang[i].jumlah_jual+"</td><td>"+ result.barang[i].stok+"</td></tr>"
-     $("#tbody-barang-jual").prepend(tr_barang);
+     $("#tbody-barang-jual").append(tr_barang);
 
    });
 
@@ -2952,7 +2952,7 @@ $("#tbody-barang-jual").find("tr").remove();
 
  
     var tr_barang = "<tr><td>"+ result.barang[i].kode_barang+"</td><td>"+ result.barang[i].nama_barang+"</td><td>"+ result.barang[i].jumlah_jual+"</td><td>"+ result.barang[i].stok+"</td></tr>"
-     $("#tbody-barang-jual").prepend(tr_barang);
+     $("#tbody-barang-jual").append(tr_barang);
 
    });
 
@@ -3152,7 +3152,7 @@ $("#tbody-barang-jual").find("tr").remove();
 
  
     var tr_barang = "<tr><td>"+ result.barang[i].kode_barang+"</td><td>"+ result.barang[i].nama_barang+"</td><td>"+ result.barang[i].jumlah_jual+"</td><td>"+ result.barang[i].stok+"</td></tr>"
-     $("#tbody-barang-jual").prepend(tr_barang);
+     $("#tbody-barang-jual").append(tr_barang);
 
    });
 
