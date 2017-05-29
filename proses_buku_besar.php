@@ -144,7 +144,7 @@ th {
 				<td></td>
 				<td></td>
 				<td></td>
-				<td><?php echo koma($saldo); ?></td>
+				<td><?php echo koma($saldo,2); ?></td>
 				</tr>
 
 				<?php 

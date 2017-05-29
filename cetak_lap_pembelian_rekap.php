@@ -7,7 +7,7 @@ include 'db.php';
 $dari_tanggal = stringdoang($_GET['dari_tanggal']);
 $sampai_tanggal = stringdoang($_GET['sampai_tanggal']);
 
-    $query1 = $db->query("SELECT * FROM perusahaan ");
+    $query1 = $db->query("SELECT foto,nama_perusahaan,alamat_perusahaan,no_telp FROM perusahaan ");
     $data1 = mysqli_fetch_array($query1);
 
 

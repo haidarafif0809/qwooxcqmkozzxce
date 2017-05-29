@@ -157,7 +157,7 @@ if($mutasi_masuk == 0 OR $mutasi_masuk == '')
                 <td>". $tanggal ."</td>
                 <td>". $out_masuk['jenis_transaksi'] ."</td>
                 <td>". $out_masuk['nama_daftar_akun'] ."</td>
-                <td class='rata-kanan'>". koma($out_masuk['masuk']) ."</td>
+                <td class='rata-kanan'>". koma($out_masuk['masuk'],2) ."</td>
             <tr>";
 
             }
