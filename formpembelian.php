@@ -1373,6 +1373,41 @@ alert(" Kode Gudang Harus Diisi ");
 </script>
 
 
+
+
+<script>
+// untuk memunculkan jumlah kas secara otomatis
+  $(document).ready(function(){
+
+
+$("#pembayaran_pembelian").keyup(function(){
+      var jumlah = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#pembayaran_pembelian").val()))));
+      var jumlah_kas = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#jumlah1").val()))));
+      var sisa = parseFloat(jumlah_kas,2) - parseFloat(jumlah,2);
+      var carabayar1 = $("#carabayar1").val();
+
+
+       if (sisa < 0 || carabayar1 == "") 
+
+      {
+          $("#submit").hide();
+          $("#pembayaran_pembelian").val('');
+          $("#potongan_pembelian").val('');
+          $("#potongan_persen").val('');
+          $("#tax").val('');
+
+        alert("Jumlah Kas Tidak Mencukupi Atau Kolom Cara Bayar Masih Kosong");
+
+      }
+      else {
+        $("#submit").show();
+      }
+});
+
+  });
+</script>
+
+
 <script>
 
 //untuk menampilkan sisa penjualan secara otomatis

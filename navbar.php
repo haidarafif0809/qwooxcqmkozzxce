@@ -36,7 +36,7 @@
             <!-- Logo -->
             <li>
                 <div class="logo-wrapper waves-light">
-                    <a href="http://www.andaglos.com"><img src="save_picture/andaglos_logo.png" class="img-fluid flex-center"></a>
+                    <a href="http://www.andaglos.id"><img src="save_picture/andaglos_logo.png" class="img-fluid flex-center"></a>
                 </div>
             </li>
             <!--/. Logo -->
@@ -652,7 +652,7 @@ if ($lihat['radiologi_lihat'] > 0) {
                 echo '<li><a href="kas.php" class="waves-effect"> <i class="fa fa-money"></i> Posisi Kas </a></li>';
 }
 ?>
-                <li><a href="https://www.andaglos.com" class="waves-effect"> <i class="fa fa-envelope"></i> Contact Us </a></li>
+                <li><a href="https://www.andaglos.id" class="waves-effect"> <i class="fa fa-envelope"></i> Contact Us </a></li>
                     
 
 
@@ -680,7 +680,7 @@ if ($lihat['radiologi_lihat'] > 0) {
 
       include_once 'db.php';
       
-      $perusahaan = $db->query("SELECT * FROM perusahaan ");
+      $perusahaan = $db->query("SELECT nama_perusahaan FROM perusahaan ");
       $ambil_perusahaan = mysqli_fetch_array($perusahaan);
 
 
@@ -699,7 +699,7 @@ if ($lihat['radiologi_lihat'] > 0) {
         </li>
 
         <li class="nav-item ">
-                    <a href="https://www.andaglos.com" class="nav-link"><i class="fa fa-envelope"></i> <span class="hidden-sm-down">Contact Us</span></a>
+                    <a href="https://www.andaglos.id" class="nav-link"><i class="fa fa-envelope"></i> <span class="hidden-sm-down">Contact Us</span></a>
                 </li>
                 <li class="nav-item ">
                     <a class="nav-link"><i class="fa fa-user"></i> <span class="hidden-sm-down"><?php echo $_SESSION['nama'];?></span>

@@ -132,7 +132,7 @@ $pembelian_hapus = mysqli_num_rows($pilih_akses_pembelian_hapus);
 			$nestedData[] = $row["status"];	
 			$nestedData[] = $row["potongan"];
 			$nestedData[] = $row["tax"];
-			$nestedData[] = $row["sisa"];	
+			$nestedData[] = koma($row["sisa"],2);	
 			$nestedData[] = koma($row["kredit"],2);
 			$nestedData[] = $row["id"];
 
