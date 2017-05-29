@@ -99,7 +99,7 @@ $ambil_suplier = mysqli_fetch_array($select_suplier);
                 $cek_hpp_kel2 = mysqli_num_rows($select_hpp_keluar2);
 
 
-            if ($kel_hpp_kel['sum_hpp'] < $data['jumlah_barang'] AND $cek_hpp_kel2 > 0) {
+            if ($kel_hpp_kel['sum_hpp'] <= $data['jumlah_barang'] AND $cek_hpp_kel2 > 0) {
 
 
             $delete_detail_pembelian = $db->query("DELETE FROM detail_pembelian WHERE no_faktur = '$nomor_faktur' AND kode_barang = '$data[kode_barang]'");
@@ -133,19 +133,16 @@ $ambil_suplier = mysqli_fetch_array($select_suplier);
             
             }
 
-            $total_sub = $data['harga'] * $jumlah_barang;
+            $ambil_har_unit = $db->query("SELECT harga_unit,jumlah_kuantitas FROM hpp_keluar WHERE no_faktur_hpp_masuk = '$nomor_faktur' AND kode_barang = '$data[kode_barang]' ");
+            while ($kel_harga_unnit = mysqli_fetch_array($ambil_har_unit)) {
+              
+               if ($kel_harga_unnit['harga_unit'] != $harga ) 
+                  {
+                      $updattte = $db->query(" UPDATE hpp_keluar SET harga_unit = '$harga' , total_nilai = harga_unit * jumlah_kuantitas WHERE  no_faktur_hpp_masuk = '$nomor_faktur' AND kode_barang = '$data[kode_barang]' ");
 
-        $ambil_har_unit = $db->query("SELECT harga_unit,jumlah_kuantitas FROM hpp_keluar WHERE no_faktur_hpp_masuk = '$nomor_faktur' AND kode_barang = '$data[kode_barang]' ");
-            $kel_harga_unnit = mysqli_fetch_array($ambil_har_unit);
+                  }
 
-                if ($kel_harga_unnit['harga_unit'] != $harga ) 
-                {
-
-                    $sub_akhir = $kel_harga_unnit['jumlah_kuantitas'] *  $harga;
-
-               $updattte = $db->query(" UPDATE hpp_keluar SET harga_unit = '$harga' , total_nilai = '$sub_akhir' WHERE  no_faktur_hpp_masuk = '$nomor_faktur' AND kode_barang = '$data[kode_barang]' ");
-
-                }
+            }
 
  
         }
