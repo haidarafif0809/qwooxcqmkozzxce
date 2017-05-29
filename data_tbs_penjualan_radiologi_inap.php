@@ -6,6 +6,7 @@ include 'db.php';
 /* Database connection end */
 
 $no_reg = stringdoang($_POST['no_reg']);
+$no_pemeriksaan = stringdoang($_POST['no_pemeriksaan']);
 
 // storing  request (ie, get/post) global array to a variable  
 $requestData= $_REQUEST;
@@ -40,7 +41,7 @@ $columns = array(
 // getting total number records without any search
 $sql =" SELECT tr.id, tr.session_id, tr.no_faktur, tr.no_reg, tr.kode_barang, tr.nama_barang, tr.jumlah_barang, tr.harga, tr.subtotal, tr.potongan, tr.tax, tr.foto, tr.tipe_barang, tr.tanggal, tr.jam, tr.radiologi, tr.dokter_pengirim, tr.dokter_pelaksana, tr.dokter_periksa, u.nama AS nama_dkoter_pengirim";
 $sql.=" FROM tbs_penjualan_radiologi tr LEFT JOIN user u ON tr.dokter_pengirim = u.id";
-$sql.=" WHERE tr.no_reg = '$no_reg' AND tr.radiologi = 'Radiologi' AND no_pemeriksaan = '0' AND (tr.no_faktur IS NULL OR tr.no_faktur = '')";
+$sql.=" WHERE tr.no_reg = '$no_reg' AND tr.radiologi = 'Radiologi' AND no_pemeriksaan = '$no_pemeriksaan' AND (tr.no_faktur IS NULL OR tr.no_faktur = '')";
 
 $query = mysqli_query($conn, $sql) or die("eror 1");
 $totalData = mysqli_num_rows($query);
@@ -49,7 +50,7 @@ $totalFiltered = $totalData;  // when there is no search parameter then total nu
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
 $sql =" SELECT tr.id, tr.session_id, tr.no_faktur, tr.no_reg, tr.kode_barang, tr.nama_barang, tr.jumlah_barang, tr.harga, tr.subtotal, tr.potongan, tr.tax, tr.foto, tr.tipe_barang, tr.tanggal, tr.jam, tr.radiologi, tr.dokter_pengirim, tr.dokter_pelaksana, tr.dokter_periksa, u.nama AS nama_dkoter_pengirim";
 $sql.=" FROM tbs_penjualan_radiologi tr LEFT JOIN user u ON tr.dokter_pengirim = u.id";
-$sql.=" WHERE tr.no_reg = '$no_reg' AND tr.radiologi = 'Radiologi' AND no_pemeriksaan = '0' AND (tr.no_faktur IS NULL OR tr.no_faktur = '')";
+$sql.=" WHERE tr.no_reg = '$no_reg' AND tr.radiologi = 'Radiologi' AND no_pemeriksaan = '$no_pemeriksaan' AND (tr.no_faktur IS NULL OR tr.no_faktur = '')";
 
     $sql.=" AND (tr.kode_barang LIKE '".$requestData['search']['value']."%'";  
     $sql.=" OR tr.nama_barang LIKE '".$requestData['search']['value']."%' )";
@@ -87,7 +88,7 @@ while( $row = mysqli_fetch_array($query) ) {  // preparing an array
 
 
 
-      $nestedData[] = "<button class='btn btn-danger btn-sm btn-hapus-tbs' id='hapus-tbs-". $row['id'] ."' data-id='". $row['id'] ."' data-kode-barang='". $row['kode_barang'] ."' data-barang='". $row['nama_barang'] ."' data-subtotal='". $row['subtotal'] ."'>Hapus</button>";
+      $nestedData[] = "<button class='btn btn-danger btn-sm btn-hapus-tbs' id='hapus-tbs-". $row['id'] ."' data-id='". $row['id'] ."' data-kode-barang='". $row['kode_barang'] ."' data-barang='". $row['nama_barang'] ."'>Hapus</button>";
       
 
       $nestedData[] = "<p style='font-size:15px' align='right' class='edit-jumlah' data-id='".$row['id']."' data-kode-barang-input='".$row['kode_barang']."'> <span id='text-jumlah-".$row['id']."'>".$row["jumlah_barang"]."</span> <input type='hidden' id='input-jumlah-".$row['id']."' value='".$row['jumlah_barang']."' class='input_jumlah' data-id='".$row['id']."' autofocus='' data-kode='".$row['kode_barang']."' data-harga='".$row['harga']."' data-tipe='".$row['tipe_barang']."' data-nama-barang='".$row['nama_barang']."'> </p>";

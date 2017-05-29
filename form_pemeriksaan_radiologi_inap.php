@@ -57,6 +57,16 @@ $select_reg = $db->query("SELECT poli, bed, group_bed FROM registrasi WHERE no_r
 $data_reg = mysqli_fetch_array($select_reg);
 //DATA YANG DIBUTUHKAN UNTK KEMBALI KE FORM R> JALAN / INAP
 
+$query_row = $db->query("SELECT no_pemeriksaan FROM tbs_penjualan_radiologi WHERE no_reg = '$no_reg' AND no_pemeriksaan != '0' ORDER BY no_pemeriksaan DESC LIMIT 1");
+$jumlah_row = mysqli_num_rows($query_row);
+$data_row = mysqli_fetch_array($query_row);
+
+if ($jumlah_row > 0) {
+  $no_pemeriksaan = $data_row['no_pemeriksaan'] + 1;
+}
+else{
+  $no_pemeriksaan = 1;
+}
 
  ?>
 
@@ -156,12 +166,17 @@ $data_reg = mysqli_fetch_array($select_reg);
 <?php endif ?>
 
 
-<div class="col-xs-2 form-group"> 
+<div class="col-xs-3 form-group"> 
     <label> Nama Pasien </label><br>
   <input  name="kode_pelanggan" type="hidden" style="height:15px;" id="kd_pelanggan" class="form-control" required="" autofocus="" >
   <input  name="nama_pelanggan" type="text" style="height:15px;" id="nama_pelanggan" class="form-control" required="" autofocus="" value="<?php echo $nama ?>">
 <input  name="kode_pelanggan1" type="hidden" style="height:15px;" id="kd_pelanggan1" class="form-control" required="" autofocus="" value="<?php echo $no_rm ?>">
 </div>
+
+    <div class="col-xs-1">
+      <label> Pemeriksaan </label><br>
+      <input type="text" style="height:15px;" value="<?php echo $no_pemeriksaan ?>" class="form-control" name="no_pemeriksaan" readonly="" autocomplete="off" id="no_pemeriksaan">
+    </div>
 
 <!-- DATA YANG DIUBUTHKAN UNTUK KEMABLI KE FORM PENJUALAN R. JALAN / INAP -->
 <input  name="asal_poli" type="hidden" style="height:15px;" id="asal_poli" class="form-control" required="" autofocus="" value="<?php echo $data_reg['poli']; ?>" >
@@ -214,7 +229,7 @@ $data_reg = mysqli_fetch_array($select_reg);
 
 
 <?php if ($no_reg == ""): ?>
-    <div class="col-xs-3">
+    <div class="col-xs-4">
        <label> Dokter Pengirim </label><br>
               
         <select name="dokter" id="dokter" class="form-control chosen" required="" >
@@ -281,7 +296,7 @@ $data_reg = mysqli_fetch_array($select_reg);
 
 <?php else: ?>
 
-  <div class="col-xs-2">
+  <div class="col-xs-3">
    <label> Dokter Pengirim </label><br>
           
     <select name="dokter" id="dokter" class="form-control chosen" required="" >
@@ -327,7 +342,7 @@ $data_reg = mysqli_fetch_array($select_reg);
   </select>
 </div>
 
-    <div class="col-xs-2">
+    <div class="col-xs-3">
    <label> Petugas Radiologi </label><br>
           
     <select name="petugas" id="petugas_radiologi" class="form-control chosen" required="" >
@@ -347,6 +362,8 @@ $data_reg = mysqli_fetch_array($select_reg);
 </div>
 
 <?php endif ?>
+
+
 
 </div>
 
@@ -426,7 +443,7 @@ $data_reg = mysqli_fetch_array($select_reg);
 
                     while ($data_kontras = mysqli_fetch_array($select_pemriksaan_kontras)) {
 
-                    $query_pemeriksaan = $db->query("SELECT kode_barang FROM tbs_penjualan_radiologi WHERE kode_barang = '$data_kontras[kode_pemeriksaan]' AND no_reg = '$no_reg'");
+                    $query_pemeriksaan = $db->query("SELECT kode_barang FROM tbs_penjualan_radiologi WHERE kode_barang = '$data_kontras[kode_pemeriksaan]' AND no_pemeriksaan = '$no_pemeriksaan' AND no_reg = '$no_reg'");
 
                     $jumlah_pemeriksaan = mysqli_num_rows($query_pemeriksaan);
 
@@ -473,7 +490,7 @@ $data_reg = mysqli_fetch_array($select_reg);
 
                     while ($data_tanpa_kontras = mysqli_fetch_array($select_pemriksaan_tanpa_kontras)) {
 
-                      $query_pemeriksaan = $db->query("SELECT kode_barang FROM tbs_penjualan_radiologi WHERE kode_barang = '$data_tanpa_kontras[kode_pemeriksaan]' AND no_reg = '$no_reg'");
+                      $query_pemeriksaan = $db->query("SELECT kode_barang FROM tbs_penjualan_radiologi WHERE kode_barang = '$data_tanpa_kontras[kode_pemeriksaan]' AND no_reg = '$no_reg' AND no_pemeriksaan = '$no_pemeriksaan' ");
 
                       $jumlah_pemeriksaan = mysqli_num_rows($query_pemeriksaan);
 
@@ -659,6 +676,19 @@ $data_reg = mysqli_fetch_array($select_reg);
 
   <button type="submit" id="submit_produk" class="btn btn-success" > <i class="fa fa-send"></i> Submit (F3)</button>
 
+
+              <?php if ($jenis_penjualan == 'Rawat Jalan'): ?>
+                  <button class="btn btn-warning" id="raja"> <i class="fa fa-reply-all"></i> Kembali Rawat Jalan </button>
+              <?php endif ?>
+
+              <?php if ($jenis_penjualan == 'Rawat Inap'): ?>
+                  <button class="btn btn-default" id="simpan_ranap"> <i class="fa fa-save"></i> Simpan Pemeriksaan </button>
+                  <button class="btn btn-warning" id="ranap" style="display: none"> <i class="fa fa-reply-all"></i> Kembali Rawat Inap </button>
+              <?php endif ?>
+
+              <?php if ($jenis_penjualan == 'UGD'): ?>
+                  <button class="btn btn-warning" id="ugd"> <i class="fa fa-reply-all"></i> Kembali UGD </button>
+              <?php endif ?>
 </div>
 
     <input type="hidden" class="form-control" name="kontras" id="kontras" placeholder="Kontras" >
@@ -673,40 +703,16 @@ $data_reg = mysqli_fetch_array($select_reg);
 </form> <!-- tag penutup form -->
 
 
-
-                <span id="span_tbs">            
-                
-                  <div class="table-responsive">
-                    <table id="tabel_tbs_radiologi" class="table table-bordered table-sm">
-                          <thead> <!-- untuk memberikan nama pada kolom tabel -->
-                              
-                              <th style='background-color: #4CAF50; color: white'> Kode  </th>
-                              <th style='background-color: #4CAF50; color: white'> Nama </th>
-                              <th style='background-color: #4CAF50; color: white'> Dokter Pengirim </th>
-                          <!--
-                              <th style='background-color: #4CAF50; color: white'; text-align: right" > Jumlah </th>
-                              <th style='background-color: #4CAF50; color: white'; text-align: right" > Harga </th>
-                              <th style='background-color: #4CAF50; color: white'; text-align: right" > Subtotal </th>
-                              <th style='background-color: #4CAF50; color: white'; text-align: right" > Potongan </th>
-                              <th style='background-color: #4CAF50; color: white'; text-align: right" > Pajak </th>
-
-                              -->
-
-                              <th style='background-color: #4CAF50; color: white'> Hapus </th>
-                          
-                          </thead> <!-- tag penutup tabel -->
-                    </table>
-                  </div>
-
-                </span>                
+<!--TABLE DAN SPAN TBS (SEBELUMNYA DI SINI)-->
+                             
 
 <?php if ($no_reg != ""): ?>
 
-  <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample" id="rawat"><i class='fa fa-wheelchair-alt'> </i> Rawat Jalan / Inap / UGD</button>
+  <button style="display: none" class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample" id="rawat"><i class='fa fa-wheelchair-alt'> </i> Rawat Jalan / Inap / UGD</button>
 
        <?php if ($jenis_penjualan == 'Rawat Inap'): ?>
 
-        <button class="btn btn-primary" type="button" id="btnOperasi" data-toggle="collapse" data-target="#collapseExampleops" aria-expanded="false" aria-controls="collapseExample"><i class='fa fa-plus-circle'> </i>
+        <button style="display: none" class="btn btn-primary" type="button" id="btnOperasi" data-toggle="collapse" data-target="#collapseExampleops" aria-expanded="false" aria-controls="collapseExample"><i class='fa fa-plus-circle'> </i>
       Operasi  </button>
       <?php endif ?>
 
@@ -735,7 +741,6 @@ $data_reg = mysqli_fetch_array($select_reg);
                
  </div>
 
-                <h6 style="text-align: left; color: red"><i><b> * Short Key (F2) untuk mencari Kode Produk atau Nama Produk.</b></i></h6>
 
   
 </div> <!-- / END COL SM 6 (1)-->
@@ -757,7 +762,7 @@ $data_reg = mysqli_fetch_array($select_reg);
     </style>
 
   <div class="form-group">
-    <div class="card card-block">
+    <div style="display: none" class="card card-block">
         <?php if ($no_reg == ""): ?>
 
 
@@ -935,15 +940,16 @@ $data_reg = mysqli_fetch_array($select_reg);
           ?>
 
         <?php else: ?>
+
           <div class="row">
             <div class="col-xs-6">          
-              <label style="font-size:15px"> <b> Subtotal Keseluruhan</b></label><br>
-              <input style="height:25px;font-size:15px" type="text" name="total" id="total2" class="form-control" placeholder="Subtotal Keseluruhan" readonly="" >
+              <label style="display: none" style="font-size:15px"> <b> Subtotal Keseluruhan</b></label><br>
+              <input style="display: none" style="height:25px;font-size:15px" type="text" name="total" id="total2" class="form-control" placeholder="Subtotal Keseluruhan" readonly="" >
             </div>
 
             <div class="col-xs-6">
-              <label style="font-size:15px"> <b> Subtotal Radiologi</b></label><br>
-              <input style="height:25px;font-size:15px" type="text" name="total" id="sub_radiologi" class="form-control" placeholder="Subtotal Radiologi" readonly="" >
+              <label style="display: none" style="font-size:15px"> <b> Subtotal Radiologi</b></label><br>
+              <input style="display: none" style="height:25px;font-size:15px" type="text" name="total" id="sub_radiologi" class="form-control" placeholder="Subtotal Radiologi" readonly="" >
             </div>
           </div>
 
@@ -1137,18 +1143,6 @@ $data_reg = mysqli_fetch_array($select_reg);
         <?php else: ?>
 
 
-              <?php if ($jenis_penjualan == 'Rawat Jalan'): ?>
-                  <button class="btn btn-warning" id="raja"> <i class="fa fa-reply-all"></i> Kembali Rawat Jalan </button>
-              <?php endif ?>
-
-              <?php if ($jenis_penjualan == 'Rawat Inap'): ?>
-                  <button class="btn btn-default" id="simpan_ranap"> <i class="fa fa-save"></i> Simpan Rawat Inap </button>
-                  <button class="btn btn-warning" id="ranap" style="display: none"> <i class="fa fa-reply-all"></i> Kembali Rawat Inap </button>
-              <?php endif ?>
-
-              <?php if ($jenis_penjualan == 'UGD'): ?>
-                  <button class="btn btn-warning" id="ugd"> <i class="fa fa-reply-all"></i> Kembali UGD </button>
-              <?php endif ?>
 
         <?php endif ?>
 
@@ -1170,6 +1164,37 @@ $data_reg = mysqli_fetch_array($select_reg);
 
 
 </div><!-- end of row -->
+
+
+                <span id="span_tbs">            
+                
+                  <div class="table-responsive">
+                    <table id="tabel_tbs_radiologi" class="table table-bordered table-sm">
+                          <thead> <!-- untuk memberikan nama pada kolom tabel -->
+                              
+                              <th style='background-color: #4CAF50; color: white'> Kode  </th>
+                              <th style='background-color: #4CAF50; color: white'> Nama </th>
+                              <th style='background-color: #4CAF50; color: white'> Dokter Pengirim </th>
+                              <!--
+                              <th style='background-color: #4CAF50; color: white'; text-align: right" > Jumlah </th>
+                              <th style='background-color: #4CAF50; color: white'; text-align: right" > Harga </th>
+                              <th style='background-color: #4CAF50; color: white'; text-align: right" > Subtotal </th>
+                              <th style='background-color: #4CAF50; color: white'; text-align: right" > Potongan </th>
+                              <th style='background-color: #4CAF50; color: white'; text-align: right" > Pajak </th>
+
+                              -->
+
+                              <th style='background-color: #4CAF50; color: white'> Hapus </th>
+                          
+                          </thead> <!-- tag penutup tabel -->
+                    </table>
+                  </div>
+
+                </span> 
+
+                <h6 style="text-align: left; color: red"><i><b> * Short Key (F2) untuk mencari Kode Produk atau Nama Produk.</b></i></h6>
+
+
 
 </div><!-- end of container -->
 
@@ -1329,8 +1354,9 @@ $(document).ready(function() {
 
     var session_id = $("#session_id").val();
     var kode_barang = $("#kode_barang").val();
+    var no_pemeriksaan = $("#no_pemeriksaan").val();
     var no_reg = $("#no_reg").val();
- $.post('cek_tbs_penjualan_radiologi.php',{kode_barang:kode_barang,session_id:session_id,no_reg:no_reg}, function(data){
+ $.post('cek_tbs_penjualan_radiologi_inap.php',{no_pemeriksaan:no_pemeriksaan,kode_barang:kode_barang,session_id:session_id,no_reg:no_reg}, function(data){
   
   if(data == 1){
     alert("Anda Tidak Bisa Menambahkan Barang Yang Sudah Ada, Silakan Edit atau Pilih Barang Yang Lain !");
@@ -1583,8 +1609,9 @@ else if (level_harga == "harga_7") {
         $('#id_radiologi').val(id_radiologi);
         $('#kontras').val(kontras);
 
+    var no_pemeriksaan = $("#no_pemeriksaan").val();
 
- $.post('cek_tbs_penjualan_radiologi.php',{kode_barang:kode_barang,session_id:session_id,no_reg:no_reg}, function(data){
+ $.post('cek_tbs_penjualan_radiologi_inap.php',{no_pemeriksaan:no_pemeriksaan,kode_barang:kode_barang,session_id:session_id,no_reg:no_reg}, function(data){
           
           if(data == 1){
             alert("Anda Tidak Bisa Menambahkan Barang Yang Sudah Ada, Silakan Edit atau Pilih Barang Yang Lain !");
@@ -1638,7 +1665,7 @@ $(document).ready(function(){
 
     $.post("simpan_jasa_radiologi.php", {no_reg:no_reg},function(data){
 
-     window.location.href="data_pemeriksaan_radiologi_inap.php?no_rm="+no_rm+"&nama="+nama+"&no_reg="+no_reg+"&dokter="+no_reg+"&jenis_penjualan=Rawat Inap&rujukan=Rujuk Rawat Jalan&penjamin="+penjamin+"&bed="+bed+"&kamar="+kamar+"";
+     window.location.href="data_pemeriksaan_radiologi_inap.php?no_rm="+no_rm+"&nama="+nama+"&no_reg="+no_reg+"&dokter="+no_reg+"&jenis_penjualan=Rawat Inap&rujukan=Rujuk Rawat Inap&penjamin="+penjamin+"&bed="+bed+"&kamar="+kamar+"";
 
     });
 
@@ -4038,11 +4065,12 @@ $(document).on('click','.insert-tbs',function(e){
     var kolom_cek_harga = $("#kolom_cek_harga").val();
     var kode_barang = $("#kode_barang").val();
 
+    var no_pemeriksaan = $("#no_pemeriksaan").val();
 
     if (data_toggle == 0) {
         
        
-        $.post('cek_tbs_penjualan_radiologi.php',{kode_barang:kode_barang,no_reg:no_reg}, function(data){
+        $.post('cek_tbs_penjualan_radiologi_inap.php',{no_pemeriksaan:no_pemeriksaan,kode_barang:kode_barang,no_reg:no_reg}, function(data){
 
 
           if(data == 1){

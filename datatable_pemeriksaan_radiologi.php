@@ -6,6 +6,12 @@ include 'db.php';
 /* Database connection end */
 
 $no_reg = stringdoang($_POST['no_reg']);
+$no_rm = stringdoang($_POST['no_rm']);
+$nama = stringdoang($_POST['nama']);
+$bed = stringdoang($_POST['bed']);
+$kamar = stringdoang($_POST['kamar']);
+$penjamin = stringdoang($_POST['penjamin']);
+$dokter = stringdoang($_POST['dokter']);
 
 // storing  request (ie, get/post) global array to a variable  
 $requestData= $_REQUEST;
@@ -38,21 +44,22 @@ $columns = array(
 );
 
 // getting total number records without any search
-$sql =" SELECT tr.id, tr.session_id, tr.no_faktur, tr.no_reg, tr.kode_barang, tr.nama_barang, tr.jumlah_barang, tr.harga, tr.subtotal, tr.potongan, tr.tax, tr.foto, tr.tipe_barang, tr.tanggal, tr.jam, tr.radiologi, tr.dokter_pengirim, tr.dokter_pelaksana, tr.dokter_periksa, u.nama AS nama_dkoter_pengirim";
+$sql =" SELECT tr.id, tr.session_id, tr.no_faktur, tr.no_reg, tr.kode_barang, tr.nama_barang, tr.jumlah_barang, tr.harga, tr.subtotal, tr.potongan, tr.tax, tr.foto, tr.tipe_barang, tr.tanggal, tr.jam, tr.radiologi, tr.dokter_pengirim, tr.dokter_pelaksana, tr.dokter_periksa, tr.no_pemeriksaan, u.nama AS nama_dkoter_pengirim";
 $sql.=" FROM tbs_penjualan_radiologi tr LEFT JOIN user u ON tr.dokter_pengirim = u.id";
-$sql.=" WHERE tr.no_reg = '$no_reg' AND tr.radiologi = 'Radiologi' AND no_pemeriksaan = '0' AND (tr.no_faktur IS NULL OR tr.no_faktur = '')";
+$sql.=" WHERE tr.no_reg = '$no_reg' AND tr.radiologi = 'Radiologi' AND (tr.no_faktur IS NULL OR tr.no_faktur = '') GROUP BY no_pemeriksaan ";
 
 $query = mysqli_query($conn, $sql) or die("eror 1");
 $totalData = mysqli_num_rows($query);
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
-$sql =" SELECT tr.id, tr.session_id, tr.no_faktur, tr.no_reg, tr.kode_barang, tr.nama_barang, tr.jumlah_barang, tr.harga, tr.subtotal, tr.potongan, tr.tax, tr.foto, tr.tipe_barang, tr.tanggal, tr.jam, tr.radiologi, tr.dokter_pengirim, tr.dokter_pelaksana, tr.dokter_periksa, u.nama AS nama_dkoter_pengirim";
+$sql =" SELECT tr.id, tr.session_id, tr.no_faktur, tr.no_reg, tr.kode_barang, tr.nama_barang, tr.jumlah_barang, tr.harga, tr.subtotal, tr.potongan, tr.tax, tr.foto, tr.tipe_barang, tr.tanggal, tr.jam, tr.radiologi, tr.dokter_pengirim, tr.dokter_pelaksana, tr.dokter_periksa, tr.no_pemeriksaan, u.nama AS nama_dkoter_pengirim";
 $sql.=" FROM tbs_penjualan_radiologi tr LEFT JOIN user u ON tr.dokter_pengirim = u.id";
-$sql.=" WHERE tr.no_reg = '$no_reg' AND tr.radiologi = 'Radiologi' AND no_pemeriksaan = '0' AND (tr.no_faktur IS NULL OR tr.no_faktur = '')";
+$sql.=" WHERE tr.no_reg = '$no_reg' AND tr.radiologi = 'Radiologi' AND (tr.no_faktur IS NULL OR tr.no_faktur = '')";
 
     $sql.=" AND (tr.kode_barang LIKE '".$requestData['search']['value']."%'";  
     $sql.=" OR tr.nama_barang LIKE '".$requestData['search']['value']."%' )";
+    $sql.=" GROUP BY no_reg AND no_pemeriksaan ";
 
     $query=mysqli_query($conn, $sql) or die("eror 2");
 
@@ -75,29 +82,19 @@ while( $row = mysqli_fetch_array($query) ) {  // preparing an array
   $nestedData = array(); 
 
 
-      $nestedData[] = $row["kode_barang"];
-      $nestedData[] = $row["nama_barang"];
+      $nestedData[] = "<p  align='center'> ".$row["no_pemeriksaan"]."</p>";
+      $nestedData[] = $no_reg;
+      $nestedData[] = "<p  align='center'> ".$no_rm."</p>";
+      $nestedData[] = $nama;
+      $nestedData[] = $penjamin;
+      $nestedData[] = $bed;
+      $nestedData[] = $kamar;
 
-      if ($row['dokter_pengirim'] == 0 ) {        
-      $nestedData[] = "-";
-      }
-      else{
-      $nestedData[] = $row["nama_dkoter_pengirim"];
-      }
+      //Edit Jasa Radiologi
+      $nestedData[] ='<td> <a href="form_edit_pemeriksaan_radiologi_inap.php?id='.$row["id"].'&no_pemeriksaan='.$row["no_pemeriksaan"].'&no_rm='.$no_rm.'&nama_pasien='.$nama.'&penjamin='.$penjamin.'&no_reg='.$no_reg.'&dokter='.$dokter.'&bed='.$bed.'&kamar='.$kamar.'&tanggal='.$row["tanggal"].'" class="btn btn-info btn-floating"> <i class="fa fa-edit"> </i></a></td>';
 
-
-
-      $nestedData[] = "<button class='btn btn-danger btn-sm btn-hapus-tbs' id='hapus-tbs-". $row['id'] ."' data-id='". $row['id'] ."' data-kode-barang='". $row['kode_barang'] ."' data-barang='". $row['nama_barang'] ."' data-subtotal='". $row['subtotal'] ."'>Hapus</button>";
-      
-
-      $nestedData[] = "<p style='font-size:15px' align='right' class='edit-jumlah' data-id='".$row['id']."' data-kode-barang-input='".$row['kode_barang']."'> <span id='text-jumlah-".$row['id']."'>".$row["jumlah_barang"]."</span> <input type='hidden' id='input-jumlah-".$row['id']."' value='".$row['jumlah_barang']."' class='input_jumlah' data-id='".$row['id']."' autofocus='' data-kode='".$row['kode_barang']."' data-harga='".$row['harga']."' data-tipe='".$row['tipe_barang']."' data-nama-barang='".$row['nama_barang']."'> </p>";
-
-
-      $nestedData[] = "<p  align='right'>".rp($row["harga"])."</p>";
-      $nestedData[] = "<p style='font-size:15px' align='right'><span id='text-subtotal-".$row['id']."'> ".rp($row["subtotal"])." </span> </p>";
-      $nestedData[] = "<p style='font-size:15px' align='right'><span id='text-potongan-".$row['id']."'> ".rp($row["potongan"])." </span> </p>";
-      $nestedData[] = "<p style='font-size:15px' align='right'><span id='text-tax-".$row['id']."'> ".rp($row["tax"])." </span> </p>";
-
+      //Detail Jasa Radiologi
+      $nestedData[] = "<td><button class='btn btn-floating  btn-info detail-radiologi-inap' data-reg='".$row['no_reg']."' data-periksa='".$row['no_pemeriksaan']."'><i class='fa fa-list'></i></button></td>";
 
       $nestedData[] = $row["id"];
 
