@@ -20,7 +20,7 @@ $columns = array(
 	6=> 'nama_gudang',
 	7=> 'nama',
 	8 => 'total',
-	9=> 'tanggal',
+	9=> 'tanggal', 
 	10 => 'tanggal_jt',
 	11=> 'jam',
 	12=> 'user',
@@ -124,7 +124,7 @@ $pembelian_hapus = mysqli_num_rows($pilih_akses_pembelian_hapus);
 			$nestedData[] = $row["nama_gudang"];
 			$nestedData[] = $row["no_faktur_suplier"];
 			$nestedData[] = $row["nama"];
-			$nestedData[] = rp($row["total"]);
+			$nestedData[] = koma($row["total"],2);
 			$nestedData[] = $row["tanggal"];
 			$nestedData[] = $row["tanggal_jt"];	
 			$nestedData[] = $row["jam"];
@@ -133,7 +133,7 @@ $pembelian_hapus = mysqli_num_rows($pilih_akses_pembelian_hapus);
 			$nestedData[] = $row["potongan"];
 			$nestedData[] = $row["tax"];
 			$nestedData[] = $row["sisa"];	
-			$nestedData[] = rp($row["kredit"]);
+			$nestedData[] = koma($row["kredit"],2);
 			$nestedData[] = $row["id"];
 
 

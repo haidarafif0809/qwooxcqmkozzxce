@@ -47,7 +47,7 @@ $sql.=" GROUP BY tanggal ORDER BY id DESC  LIMIT ".$requestData['start']." ,".$r
 /* $requestData['order'][0]['column'] contains colmun index, $requestData['order'][0]['dir'] contains order such as asc/desc  */	
 $query=mysqli_query($conn, $sql) or die("show_data_pembelian.php: get employees");
 
-$data = array();
+$data = array(); 
 while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 	$nestedData=array(); 
 
@@ -67,9 +67,9 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 
 					$nestedData[] = $row['tanggal'];
 					$nestedData[] = $data1;
-					$nestedData[] = rp($t_total);
-					$nestedData[] = rp($t_bayar);
-					$nestedData[] = rp($t_kredit);
+					$nestedData[] = koma($t_total,2);
+					$nestedData[] = koma($t_bayar,2);
+					$nestedData[] = koma($t_kredit,2);
 			$data[] = $nestedData;
 }
 

@@ -32,7 +32,7 @@ $sql.=" ";
 $query = mysqli_query($conn, $sql) or die("eror 1");
 $totalData = mysqli_num_rows($query);
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
-
+ 
 
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
 $sql = "SELECT SUM(js.debit) AS masuk,js.jenis_transaksi,js.id,da.nama_daftar_akun,js.keterangan_jurnal,js.no_faktur,js.user_buat,js.user_edit,js.waktu_jurnal";
@@ -73,7 +73,7 @@ while( $row=mysqli_fetch_array($query) ) {
 	$nestedData[] = $row["keterangan_jurnal"];
 	$nestedData[] = $row["nama_daftar_akun"];
 	$nestedData[] = $out["nama_daftar_akun"];
-	$nestedData[] = rp($row["keluar"]);
+	$nestedData[] = koma($row["keluar"],2);
 	$nestedData[] = $row["user_buat"];
 	$nestedData[] = $row["user_edit"];
 	$nestedData[] = $row["waktu_jurnal"];

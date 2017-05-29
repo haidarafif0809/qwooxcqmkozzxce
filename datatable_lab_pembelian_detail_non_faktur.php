@@ -28,7 +28,7 @@ $columns = array(
 	 8=>'id',
 	 9=>'id'
 );
-
+ 
 // getting total number records without any search
 $sql ="SELECT SUM(dp.jumlah_barang) as sum_jumlah,s.nama,dp.id,dp.kode_barang,dp.nama_barang,dp.jumlah_barang,dp.satuan,dp.harga,SUM(dp.subtotal) as sum_subtotal,SUM(dp.potongan) AS sum_potongan,SUM(dp.tax) AS sum_tax,SUM(dp.sisa) AS sum_sisa, ss.nama AS asal_satuan ";
 $sql.=" FROM detail_pembelian dp INNER JOIN satuan s ON dp.satuan = s.id INNER JOIN satuan ss ON dp.asal_satuan = ss.id WHERE dp.tanggal >= '$dari_tanggal' AND dp.tanggal <= '$sampai_tanggal' ";
@@ -65,9 +65,9 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 					$nestedData[] = $row['kode_barang'];
 					$nestedData[] = $row['nama_barang'];
 					$nestedData[] = "<p align='right'>".$row['sum_jumlah']." ". $row['asal_satuan']." </p>";
-					$nestedData[] = "<p align='right'>".rp($row['sum_subtotal'])." </p>";
-					$nestedData[] = rp($row['sum_potongan']);
-					$nestedData[] = rp($row['sum_tax']);
+					$nestedData[] = "<p align='right'>".koma($row['sum_subtotal'],2)." </p>";
+					$nestedData[] = koma($row['sum_potongan'],2);
+					$nestedData[] = koma($row['sum_tax'],2);
 					$nestedData[] = $row["id"];
 				$data[] = $nestedData;
 			}
@@ -78,7 +78,7 @@ $nestedData=array();
       $nestedData[] = "<p style='color:red'> - </p>";
       $nestedData[] = "<p style='color:red'> - </p>";
       $nestedData[] = "<p style='color:red' align='right'> ".rp($total_jumlah)." </p>";
-      $nestedData[] = "<p style='color:red' align='right'> ".rp($total_akhir)." </p>";
+      $nestedData[] = "<p style='color:red' align='right'> ".koma($total_akhir,2)." </p>";
       $nestedData[] = "<p style='color:red'> - </p>";
       $nestedData[] = "<p style='color:red'> - </p>";
 	

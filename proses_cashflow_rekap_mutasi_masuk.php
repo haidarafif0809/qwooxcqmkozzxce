@@ -17,7 +17,7 @@ $columns = array(
 	3=>'total',
 	4=>'id'
 
-);
+); 
 // getting total number records without any search
 
 $sql = "SELECT daf.nama_daftar_akun AS nama_dari_akun ,dk.kode_akun_jurnal AS dari_akun_jurnal , js.jenis_transaksi,da.nama_daftar_akun,js.keterangan_jurnal";
@@ -65,7 +65,7 @@ while( $row=mysqli_fetch_array($query) ) {
 	$nestedData[] = $tanggal;		
 	$nestedData[] = $row["nama_dari_akun"];
 	$nestedData[] = $row["nama_daftar_akun"];
-	$nestedData[] = rp($datadariakun["masuk"]);
+	$nestedData[] = koma($datadariakun["masuk"],2);
 $data[] = $nestedData;
 }
 

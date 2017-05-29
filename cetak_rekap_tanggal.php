@@ -7,7 +7,7 @@ $kas = stringdoang($_GET['kasnya']);
 $tanggal = stringdoang($_GET['tanggalnya']);
 
 
-$select_comp = $db->query("SELECT * FROM perusahaan ");
+$select_comp = $db->query("SELECT foto,nama_perusahaan,alamat_perusahaan,no_telp FROM perusahaan ");
 $out_comp = mysqli_fetch_array($select_comp);
 
 $select_nama_kas = $db->query("SELECT nama_daftar_akun FROM daftar_akun WHERE kode_daftar_akun = '$kas'");
@@ -132,7 +132,7 @@ if($mutasi_masuk == 0 OR $mutasi_masuk == '')
 
 
 <div class="table-responsive"><!--membuat agar ada garis pada tabel disetiap kolom-->
-<h4><b>Kas Masuk <u>Rp. <?php echo rp($masuk) ?></u></b> </h4>
+<h4><b>Kas Masuk <u>Rp. <?php echo koma($masuk,2) ?></u></b> </h4>
 <table id="table_masuk" class="table table-hover table-sm">
 		<thead>
 			<th> Tanggal </th>
@@ -157,7 +157,7 @@ if($mutasi_masuk == 0 OR $mutasi_masuk == '')
                 <td>". $tanggal ."</td>
                 <td>". $out_masuk['jenis_transaksi'] ."</td>
                 <td>". $out_masuk['nama_daftar_akun'] ."</td>
-                <td class='rata-kanan'>". rp($out_masuk['masuk']) ."</td>
+                <td class='rata-kanan'>". koma($out_masuk['masuk']) ."</td>
             <tr>";
 
             }
@@ -170,7 +170,7 @@ if($mutasi_masuk == 0 OR $mutasi_masuk == '')
 
 <!--Table Kas Keluar-->
 <div class="table-responsive"><!--membuat agar ada garis pada tabel disetiap kolom-->
-<h4><b>Kas Keluar <u>Rp. <?php echo rp($keluar) ?></u> </b></h4>
+<h4><b>Kas Keluar <u>Rp. <?php echo koma($keluar,2) ?></u> </b></h4>
 <table id="table_keluar" class="table table-hover table-sm">
 		<thead>
 			<th> Tanggal </th>
@@ -198,7 +198,7 @@ if($mutasi_masuk == 0 OR $mutasi_masuk == '')
                 <td>". $tanggal ."</td>
                 <td>". $out_keluar['nama_daftar_akun'] ."</td>
                 <td>". $out_keluar['jenis_transaksi'] ."</td>
-                <td class='rata-kanan'>". rp($out_keluar['keluar']) ."</td>
+                <td class='rata-kanan'>". koma($out_keluar['keluar'],2) ."</td>
             <tr>";
 
             }
@@ -212,7 +212,7 @@ if($mutasi_masuk == 0 OR $mutasi_masuk == '')
 
 <!--TABLE MUTASI MASUK-->
 <div class="table-responsive"><!--membuat agar ada garis pada tabel disetiap kolom-->
-<h4><b>Kas Mutasi (Masuk) <u>Rp. <?php echo rp($mutasi_masuk) ?></u> </b></h4>
+<h4><b>Kas Mutasi (Masuk) <u>Rp. <?php echo koma($mutasi_masuk,2) ?></u> </b></h4>
 <table id="table_mutasi_masuk" class="table table-hover table-sm">
     <thead>
       <th> Tanggal </th>
@@ -238,7 +238,7 @@ if($mutasi_masuk == 0 OR $mutasi_masuk == '')
                 <td>". $tanggal ."</td>
                 <td>". $out_mutasi_masuk['nama_dari_akun'] ."</td>
                 <td>". $out_mutasi_masuk['nama_daftar_akun'] ."</td>
-                <td class='rata-kanan'>". rp($datadariakun['mutasi_masuk']) ."</td>
+                <td class='rata-kanan'>". koma($datadariakun['mutasi_masuk'],2) ."</td>
             <tr>";
 
             }
@@ -252,7 +252,7 @@ if($mutasi_masuk == 0 OR $mutasi_masuk == '')
 
 
 <div class="table-responsive"><!--membuat agar ada garis pada tabel disetiap kolom-->
-<h4><b>Kas Mutasi (Keluar) <u>Rp. <?php echo rp($mutasi_keluar) ?></u> </b></h4>
+<h4><b>Kas Mutasi (Keluar) <u>Rp. <?php echo koma($mutasi_keluar,2) ?></u> </b></h4>
 <table id="table_mutasi" class="table table-hover table-sm">
 		<thead>
 			<th> Tanggal </th>
@@ -278,7 +278,7 @@ if($mutasi_masuk == 0 OR $mutasi_masuk == '')
                 <td>". $tanggal ."</td>
                 <td>". $out_mutasi_keluar['nama_daftar_akun'] ."</td>
                 <td>". $out_mutasi_keluar['nama_dari_akun'] ."</td>
-                <td class='rata-kanan'>". rp($datadariakun['mutasi_keluar']) ."</td>
+                <td class='rata-kanan'>". koma($datadariakun['mutasi_keluar'],2) ."</td>
             <tr>";
 
             }
@@ -297,9 +297,9 @@ if($mutasi_masuk == 0 OR $mutasi_masuk == '')
 <table style="font-size: 25">
 <h3><b>Total Cashflow </b></h3>
 <h3>
-  <h4><tr> <td> Saldo Awal</td>   <td >:</td>  <td>Rp.</td> <td> <?php echo rp($saldo) ?></td> </tr>  </h4>
- <h4> <tr> <td> Perubahan Saldo</td><td>:</td> <td>Rp.</td> <td> <?php echo rp($perubahan_saldo) ?></td></tr></h4>
-  <h4><tr> <td> Saldo Akhir</td>  <td>:</td>  <td>Rp.</td> <td> <?php echo rp($saldo_akhir) ?></td> </tr></h4>
+  <h4><tr> <td> Saldo Awal</td>   <td >:</td>  <td>Rp.</td> <td> <?php echo koma($saldo,2) ?></td> </tr>  </h4>
+ <h4> <tr> <td> Perubahan Saldo</td><td>:</td> <td>Rp.</td> <td> <?php echo koma($perubahan_saldo,2) ?></td></tr></h4>
+  <h4><tr> <td> Saldo Akhir</td>  <td>:</td>  <td>Rp.</td> <td> <?php echo koma($saldo_akhir,2) ?></td> </tr></h4>
 
 </table>
 

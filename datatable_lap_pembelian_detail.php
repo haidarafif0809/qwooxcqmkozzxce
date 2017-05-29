@@ -33,7 +33,7 @@ $columns = array(
 	 10=>'sisa',
 	 11=>'nama',
 	 12=>'id'
-);
+); 
 
 // getting total number records without any search
 $sql ="SELECT s.nama,dp.id,dp.no_faktur,dp.kode_barang,dp.nama_barang,dp.jumlah_barang,dp.satuan,dp.harga,dp.subtotal,dp.potongan,dp.tax,dp.sisa, ss.nama AS asal_satuan ";
@@ -81,11 +81,11 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 					$nestedData[] = $row['kode_barang'];
 					$nestedData[] = $row['nama_barang'];
 					$nestedData[] = "<p  align='right'>".$jumlah_barang ." ". $row['nama']." </p>";
-					$nestedData[] = rp($row['harga']);
-					$nestedData[] = "<p  align='right'>".rp($row['subtotal'])." </p>";
-					$nestedData[] = rp($row['potongan']);
-					$nestedData[] = rp($row['tax']);
-					$nestedData[] = rp($row['sisa']) ." ". $row['asal_satuan'];
+					$nestedData[] = koma($row['harga'],2);
+					$nestedData[] = "<p  align='right'>".koma($row['subtotal'],2)." </p>";
+					$nestedData[] = koma($row['potongan'],2);
+					$nestedData[] = koma($row['tax'],2);
+					$nestedData[] = $row['sisa'] ." ". $row['asal_satuan'];
 				$nestedData[] = $row["id"];
 				$data[] = $nestedData;
 			}
@@ -96,9 +96,9 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
       $nestedData[] = "<p style='color:red'> - </p>";
       $nestedData[] = "<p style='color:red'> - </p>";
       $nestedData[] = "<p style='color:red'> - </p>";
-      $nestedData[] = "<p style='color:red' align='right'> ".rp($total_jumlah)." </p>";
+      $nestedData[] = "<p style='color:red' align='right'> ".$total_jumlah." </p>";
       $nestedData[] = "<p style='color:red'> - </p>";
-      $nestedData[] = "<p style='color:red' align='right'> ".rp($total_akhir)." </p>";
+      $nestedData[] = "<p style='color:red' align='right'> ".koma($total_akhir,2)." </p>";
       $nestedData[] = "<p style='color:red'> - </p>";
       $nestedData[] = "<p style='color:red'> - </p>";
       $nestedData[] = "<p style='color:red'> - </p>";

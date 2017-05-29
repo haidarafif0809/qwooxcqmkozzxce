@@ -35,7 +35,7 @@ tr:nth-child(even){background-color: #f2f2f2}
 th {
     background-color: #4CAF50;
     color: white;
-}
+} 
 </style>
 
 <div class="card card-block">
@@ -65,7 +65,7 @@ th {
 				<td></td>
 				<td></td>
 				<td></td>
-				<td><?php echo rp($saldo); ?></td>
+				<td><?php echo koma($saldo,2); ?></td>
 				</tr>
 
 				<?php 
@@ -86,15 +86,15 @@ th {
 						<td><center> <b>-</b> </center></td>
 						<td>Direkap Per Hari</td>
 						<td>". tanggal($cek['waktu_jurnal']) ."</td>
-						<td>". rp($cek['debit']) ."</td>
-						<td>". rp($cek['kredit']) ."</td>";
+						<td>". koma($cek['debit'],2) ."</td>
+						<td>". koma($cek['kredit'],2) ."</td>";
 
 						$total_debit += $cek['debit'];
 						$total_kredit += $cek['kredit'];
 
 						$saldo = $saldo + $cek['debit'] - $cek['kredit'];
 
-						echo "<td>". rp($saldo) ."</td></tr>";
+						echo "<td>". koma($saldo,2) ."</td></tr>";
 						
 
 						
@@ -109,9 +109,9 @@ th {
 				<td></td>
 				<td></td>
 				<td><b>TOTAL :</b></td>
-				<td><b>". rp($total_debit) ."</b></td>
-				<td><b>". rp($total_kredit) ."</b></td>
-				<td><b>". rp($saldo) ."</b></td>
+				<td><b>". koma($total_debit,2) ."</b></td>
+				<td><b>". koma($total_kredit,2) ."</b></td>
+				<td><b>". koma($saldo,2) ."</b></td>
 
 				</tr>";	
 				mysqli_close($db);
@@ -167,8 +167,8 @@ th {
 						<td>". $cek['no_faktur']."</td>
 						<td>". $cek['keterangan_jurnal']."</td>
 						<td>". tanggal($cek['waktu_jurnal']) ."</td>
-						<td>". rp($cek['debit']) ."</td>
-						<td>". rp($cek['kredit']) ."</td>";
+						<td>". koma($cek['debit'],2) ."</td>
+						<td>". koma($cek['kredit'],2) ."</td>";
 
 						
 						$total_debit += $cek['debit'];
@@ -176,7 +176,7 @@ th {
 						
 						$saldo = $saldo + $cek['debit'] - $cek['kredit'];
 
-						echo "<td>". rp($saldo) ."</td></tr>";
+						echo "<td>". koma($saldo,2) ."</td></tr>";
 						
 
 
@@ -186,9 +186,9 @@ th {
 				<td><b>TOTAL :</b></td>
 				<td></td>
 				<td></td>
-				<td><b>". rp($total_debit) ."</b></td>
-				<td><b>". rp($total_kredit) ."</b></td>
-				<td><b>". rp($saldo) ."</b></td>
+				<td><b>". koma($total_debit,2) ."</b></td>
+				<td><b>". koma($total_kredit,2) ."</b></td>
+				<td><b>". koma($saldo,2) ."</b></td>
 
 				</tr>";	
 				mysqli_close($db);
