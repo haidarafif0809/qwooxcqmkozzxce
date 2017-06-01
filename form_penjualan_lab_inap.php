@@ -323,7 +323,7 @@ echo '
       <!--Mulai Col SM Kedua-->
       <div class="col-sm-8">
 
-          <a type="button" class="btn btn-warning" href="pasien_sudah_masuk.php"><i class="fa fa-reply-all"></i> Kembali</a>
+          <a type="button" class="btn btn-warning" href="rawat_inap.php"><i class="fa fa-reply-all"></i> Kembali</a>
           
       
         <button type="button" id="cari_jasa_laboratorium" class="btn btn-info " data-toggle="modal" data-target="#modal_lab"><i class='fa fa-search'></i> Cari Laboratorium (F1) </button> 

@@ -39,14 +39,14 @@ while($data_query_select_detail = mysqli_fetch_array($query_select_detail)){
 
 
     //INSERT TBS APS PENJUALAN
-    $query_insert_tbs_aps_penjualan = $db->query("INSERT INTO tbs_aps_penjualan (no_reg,kode_jasa,nama_jasa,harga,dokter,
+    $query_insert_tbs_aps_penjualan = $db->query("INSERT INTO tbs_aps_penjualan (no_reg,kode_jasa,nama_jasa,harga,subtotal,dokter,
       analis,no_periksa_lab_inap,tanggal,jam) VALUES ('$no_reg','$kode_jasa_lab',
-      '$nama_jasa','$harga_jasa','$dokter','$analis','$pemeriksaan_keberapa','$tanggal','$jam')");
+      '$nama_jasa','$harga_jasa','$harga_jasa','$dokter','$analis','$pemeriksaan_keberapa','$tanggal','$jam')");
 
     //INSERT TBS PENJUALAN
     $query_insert_tbs_penjualan = $db->query("INSERT INTO tbs_penjualan 
-      (no_reg,kode_barang,nama_barang,harga,lab_ke_berapa,tanggal,jam,jumlah_barang, tipe_barang,lab,status_lab,dokter,analis) VALUES ('$no_reg','$kode_jasa_lab',
-      '$nama_jasa','$harga_jasa','$pemeriksaan_keberapa','$tanggal','$jam','1','jasa',
+      (no_reg,kode_barang,nama_barang,harga,subtotal,lab_ke_berapa,tanggal,jam,jumlah_barang, tipe_barang,lab,status_lab,dokter,analis) VALUES ('$no_reg','$kode_jasa_lab',
+      '$nama_jasa','$harga_jasa','$harga_jasa','$pemeriksaan_keberapa','$tanggal','$jam','1','jasa',
       'Laboratorium','Unfinish','$dokter','$analis')");
 
   // INSERT FEE DOKTER JASA LAB
