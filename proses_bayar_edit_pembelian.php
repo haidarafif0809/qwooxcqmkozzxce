@@ -19,31 +19,62 @@ $ambil_suplier = mysqli_fetch_array($select_suplier);
 
             
 // siapkan "data" query dari post form edit pembelian
-            $sisa_kredit = angkadoang($_POST['kredit']);
+            $sisa_kredit = stringdoang($_POST['kredit']);
+            if ($sisa_kredit == '' ) {
+                $sisa_kredit = 0;
+              }
             $nomor_faktur = stringdoang($_POST['no_faktur']);
             $suplier = stringdoang($_POST['suplier']);
-            $total = angkadoang($_POST['total']);
-            $total_1 = angkadoang($_POST['total_1']);
-            $potongan = angkadoang($_POST['potongan']);
-            $tax = angkadoang($_POST['tax']);
+            $total = stringdoang($_POST['total']);
+            $total = str_replace(',','.',$total);
+              if ($total == '') {
+                $total = 0;
+              }
+            $total_1 = stringdoang($_POST['total_1']);
+            $total_1 = str_replace(',','.',$total_1);
+              if ($total_1 == '') {
+                $total_1 = 0;
+              }
+            $potongan = stringdoang($_POST['potongan']);
+            $potongan = str_replace(',','.',$potongan);
+              if ($potongan == '') {
+                $potongan = 0;
+              }
+            $tax = stringdoang($_POST['tax']);
+            $tax = str_replace(',','.',$tax);
+              if ($tax == '') {
+                $tax = 0;
+              }
+
             $ppn_input = stringdoang($_POST['ppn_input']);
-            $sisa_pembayaran = angkadoang($_POST['sisa_pembayaran']);
+
+            $sisa_pembayaran = stringdoang($_POST['sisa_pembayaran']);
+            $sisa_pembayaran = str_replace(',','.',$sisa_pembayaran);
+              if ($sisa_pembayaran == '') {
+                $sisa_pembayaran = 0;
+              }
+
             $cara_bayar = stringdoang($_POST['cara_bayar']);
-            $pembayaran = angkadoang($_POST['pembayaran']);
+
+            $pembayaran = stringdoang($_POST['pembayaran']);
+            $pembayaran = str_replace(',','.',$pembayaran);
+             if ($pembayaran == '') {
+                $pembayaran = 0;
+              }
+
             $tanggal = stringdoang($_POST['tanggal']);
             $user = $_SESSION['user_name'];
             $no_faktur_suplier = stringdoang($_POST['no_faktur_suplier']);
-            $tanggal_jt = angkadoang($_POST['tanggal_jt']);
-            $x = angkadoang($_POST['x']);
-            $sisa = 0;
-
-            if ($x <= $total) {
-            $sisa = 0;
-            } 
+            $tanggal_jt = stringdoang($_POST['tanggal_jt']);
             
-            else {
-            $sisa = $x - $total;
-            }
+
+            $sisa = stringdoang($_POST['sisa']);
+           $sisa = str_replace(',','.',$sisa);
+              if ($sisa == '') {
+                $sisa = 0;
+              }
+
+
 
             $t_total = $total_1 - $potongan;
 
@@ -177,7 +208,7 @@ $total_tax = $jumlah_tax['total_tax'];
             
             
             // hubungkan "data" dengan prepared statements
-            $stmt2->bind_param("ssisssiiiisisss", 
+            $stmt2->bind_param("sssssssssssssss", 
             $nomor_faktur, $suplier, $total , $tanggal, $jam_sekarang, $user, $potongan, $tax_persen, $sisa, $sisa_kredit, $cara_bayar, $pembayaran, $ppn_input,$no_faktur_suplier, $nomor_faktur);
             
              $sisa_kredit = 0;
@@ -271,10 +302,8 @@ if ($potongan != "" || $potongan != 0 ) {
             
             
             // hubungkan "data" dengan prepared statements
-            $stmt2->bind_param("ssissssiiiisisss", 
+            $stmt2->bind_param("ssssssssssssssss", 
             $nomor_faktur, $suplier, $total , $tanggal, $jam_sekarang, $tanggal_jt, $user, $potongan, $tax, $sisa, $sisa_kredit, $cara_bayar, $pembayaran, $ppn_input,$no_faktur_suplier, $nomor_faktur);
-            
-            $sisa_kredit = angkadoang($_POST['jumlah_kredit_baru']);
 
 // jalankan query
       $stmt2->execute(); 
@@ -356,7 +385,7 @@ if ($pajak != "" || $pajak != 0) {
 
 if ($potongan != "" || $potongan != 0 ) {
 //POTONGAN
-        $insert_juranl = $db->query("INSERT INTO jurnal_trans (nomor_jurnal,waktu_jurnal,keterangan_jurnal,kode_akun_jurnal,debit,kredit,jenis_transaksi,no_faktur,approved,user_buat) VALUES ('".no_jurnal()."', '$tanggal $jam_sekarang', 'Pembelian Tunai - $ambil_suplier[nama]', '$ambil_setting[potongan]', '0', '$potongan', 'Pembelian', '$nomor_faktur','1', '$user')");
+        $insert_juranl = $db->query("INSERT INTO jurnal_trans (nomor_jurnal,waktu_jurnal,keterangan_jurnal,kode_akun_jurnal,debit,kredit,jenis_transaksi,no_faktur,approved,user_buat) VALUES ('".no_jurnal()."', '$tanggal $jam_sekarang', 'Pembelian - $ambil_suplier[nama]', '$ambil_setting[potongan]', '0', '$potongan', 'Pembelian', '$nomor_faktur','1', '$user')");
 }
 
 }
