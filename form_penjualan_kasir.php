@@ -59,6 +59,9 @@ $obat = $otoritas_produk['tipe_obat'];
     cursor: not-allowed;
     disabled: true;
 }
+
+
+
 </style>
 
 
@@ -381,6 +384,31 @@ $obat = $otoritas_produk['tipe_obat'];
 
   </div>
 </div><!-- end of modal data barang  -->
+
+
+<!--tampilan modal loading form-->
+<div id="modal_loading_form" class="modal" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- isi modal-->
+    <div class="modal-content">
+
+      <div class="modal-header">
+    
+      </div>
+      <div class="modal-body">
+
+      <h2>Sedang Menyiapkan Form Penjualan..</h2>
+      <center><h4>Harap tunggu sebentar..</h4></center>
+          <center><div class="loader"></div></center>
+      </div> <!-- tag penutup modal-body-->
+      <div class="modal-footer">
+      
+      </div>
+    </div>
+
+  </div>
+</div><!-- end of modal loading form  -->
 
 
 <!-- Modal cari registrasi pasien-->
@@ -988,6 +1016,17 @@ Radiologi  </button>
     
 <script>
 
+
+   $(window).on('load',function(){
+
+       
+
+ $('#modal_loading_form').modal({  backdrop: 'static',
+                      keyboard: false});
+                            
+                            $('#modal_loading_form').modal('show');
+
+
           var db = new Dexie("database_barang");
     
            db.version(2).stores({
@@ -1050,11 +1089,17 @@ Radiologi  </button>
               }).then(function(){
 
                       $("#kode_barang").chosen({no_results_text: "Maaf, Data Tidak Ada!",search_contains:true});
+                     $('#modal_loading_form').modal('hide');
+
+            
+
+
               });
 
            }
             
 
+});
 
 
 </script>

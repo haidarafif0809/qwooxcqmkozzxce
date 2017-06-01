@@ -42,6 +42,32 @@ $user = $_SESSION['nama'];
   </script>
 
 
+
+  <!--tampilan modal loading form-->
+<div id="modal_loading_form" class="modal" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- isi modal-->
+    <div class="modal-content">
+
+      <div class="modal-header">
+    
+      </div>
+      <div class="modal-body">
+
+      <h2>Sedang Menyiapkan Form Penjualan..</h2>
+      <center><h4>Harap tunggu sebentar..</h4></center>
+          <center><div class="loader"></div></center>
+      </div> <!-- tag penutup modal-body-->
+      <div class="modal-footer">
+      
+      </div>
+    </div>
+
+  </div>
+</div><!-- end of modal loading form  -->
+
+
  <!-- Modal Untuk Confirm LAYANAN PERUSAHAAN-->
 <div id="detail" class="modal fade" role="dialog">
   <div class="modal-dialog modal-lg">
@@ -756,8 +782,17 @@ $user = $_SESSION['nama'];
 
     
 <script>
+  $(window).on('load',function(){
 
-         var db = new Dexie("database_barang");
+       
+
+ $('#modal_loading_form').modal({  backdrop: 'static',
+                      keyboard: false});
+                            
+                            $('#modal_loading_form').modal('show');
+
+
+          var db = new Dexie("database_barang");
     
            db.version(2).stores({
              
@@ -819,10 +854,17 @@ $user = $_SESSION['nama'];
               }).then(function(){
 
                       $("#kode_barang").chosen({no_results_text: "Maaf, Data Tidak Ada!",search_contains:true});
+                     $('#modal_loading_form').modal('hide');
+
+            
+
+
               });
 
            }
             
+
+});
 
 
 </script>
