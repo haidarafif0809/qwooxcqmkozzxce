@@ -987,8 +987,8 @@ $(".btn-alert-hapus").click(function(){
         jumlah_bayar_lama = 0.00;
        }
 
-       var jumlah_kredit_baru = parseFloat(kredit.replace(',','.'),10) - parseFloat(jumlah_bayar_lama.replace(',','.'),10);
-       var x = parseFloat(jumlah_bayar_lama.replace(',','.'),10) + parseFloat(pembayaran.replace(',','.'),10);
+       var jumlah_kredit_baru = parseFloat(kredit.replace(',','.'),2) - parseFloat(jumlah_bayar_lama.replace(',','.'),2);
+       var x = parseFloat(jumlah_bayar_lama.replace(',','.'),2) + parseFloat(pembayaran.replace(',','.'),2);
        $("#zxzx").val(x);
 
 
@@ -1036,7 +1036,7 @@ alert(" Anda Belum Melakukan Pembelian ");
        $("#hutang").hide();
        $("#transaksi_baru").show(); 
        
-       $.post("proses_bayar_edit_pembelian.php",{total_1:total_1,no_faktur:no_faktur,sisa_pembayaran:sisa_pembayaran,kredit:kredit,suplier:suplier1,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,tax1:tax1,cara_bayar:cara_bayar,jumlah_barang:jumlah_barang,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,tanggal:tanggal,total_1:total_1,jumlah_kredit_baru:jumlah_kredit_baru,x:x,ppn:ppn,ppn_input:ppn_input,no_faktur_suplier:no_faktur_suplier},function(info) {
+       $.post("proses_bayar_edit_pembelian.php",{total_1:total_1,no_faktur:no_faktur,sisa_pembayaran:sisa_pembayaran,kredit:kredit,suplier:suplier1,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,tax1:tax1,cara_bayar:cara_bayar,jumlah_barang:jumlah_barang,pembayaran:pembayaran,sisa:sisa_pembayaran,sisa_kredit:sisa_kredit,tanggal:tanggal,total_1:total_1,jumlah_kredit_baru:jumlah_kredit_baru,x:x,ppn:ppn,ppn_input:ppn_input,no_faktur_suplier:no_faktur_suplier},function(info) {
        
        
        $("#alert_berhasil").show();
@@ -1113,8 +1113,8 @@ else
        var sisa_kredit = parseFloat($("#total_pembelian").val(),2) - parseFloat($("#pembayaran_pembelian").val(),2);
 
 
-       var jumlah_kredit_baru = parseFloat(kredit.replace(',','.'),10) - parseFloat(jumlah_bayar_lama.replace(',','.'),10);
-       var x = parseFloat(jumlah_bayar_lama.replace(',','.'),10) + parseFloat(pembayaran.replace(',','.'),10);
+       var jumlah_kredit_baru = parseFloat(kredit.replace(',','.'),2) - parseFloat(jumlah_bayar_lama.replace(',','.'),2);
+       var x = parseFloat(jumlah_bayar_lama.replace(',','.'),2) + parseFloat(pembayaran.replace(',','.'),2);
        $("#zxzx").val(x);
 
 
@@ -1153,7 +1153,7 @@ alert(" Anda Belum Melakukan Pembelian ");
           $("#hutang").hide();
           $("#transaksi_baru").show();
        
-       $.post("proses_bayar_edit_pembelian.php",{total_1:total_1,tax1:tax1,tanggal:tanggal,no_faktur:no_faktur,sisa_pembayaran:sisa_pembayaran,kredit:kredit,suplier:suplier,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,cara_bayar:cara_bayar,jumlah_barang:jumlah_barang,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,total_1:total_1,jumlah_kredit_baru:jumlah_kredit_baru,x:x,ppn:ppn,ppn_input:ppn_input,no_faktur_suplier:no_faktur_suplier},function(info) {
+       $.post("proses_bayar_edit_pembelian.php",{total_1:total_1,tax1:tax1,tanggal:tanggal,no_faktur:no_faktur,sisa_pembayaran:sisa_pembayaran,kredit:kredit,suplier:suplier,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,cara_bayar:cara_bayar,jumlah_barang:jumlah_barang,pembayaran:pembayaran,sisa:sisa_pembayaran,sisa_kredit:sisa_kredit,total_1:total_1,jumlah_kredit_baru:jumlah_kredit_baru,x:x,ppn:ppn,ppn_input:ppn_input,no_faktur_suplier:no_faktur_suplier},function(info) {
 
        
        $("#alert_berhasil").show();

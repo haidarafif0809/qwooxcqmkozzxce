@@ -323,7 +323,7 @@ $no_faktur = $nomor."/JL/".$data_bulan_terakhir."/".$tahun_terakhir;
           $data_c = $c->retrieveAll();
 
           foreach ($data_c as $key) {
-            echo '<option id="opt-produk-'.$key['kode_barang'].'" value="'.$key['kode_barang'].'" data-kode="'.$key['kode_barang'].'" nama-barang="'.$key['nama_barang'].'" harga="'.$key['harga_beli'].'"  satuan="'.$key['satuan'].'" kategori="'.$key['kategori'].'" status="'.$key['status'].'" suplier="'.$key['suplier'].'" limit_stok="'.$key['limit_stok'].'" over_stok="'.$key['over_stok'].'" ber-stok="'.$key['berkaitan_dgn_stok'].'" tipe_barang="'.$key['tipe_barang'].'" id-barang="'.$key['id'].'" > '. $key['kode_barang'].' ( '.$key['nama_barang'].' ) </option>';
+            echo '<option id="opt-produk-'.$key['kode_barang'].'" value="'.$key['kode_barang'].'" data-kode="'.$key['kode_barang'].'" nama-barang="'.$key['nama_barang'].'" harga="'.koma($key['harga_beli'],2).'"  satuan="'.$key['satuan'].'" kategori="'.$key['kategori'].'" status="'.$key['status'].'" suplier="'.$key['suplier'].'" limit_stok="'.$key['limit_stok'].'" over_stok="'.$key['over_stok'].'" ber-stok="'.$key['berkaitan_dgn_stok'].'" tipe_barang="'.$key['tipe_barang'].'" id-barang="'.$key['id'].'" > '. $key['kode_barang'].' ( '.$key['nama_barang'].' ) </option>';
           }
 
         ?>
@@ -1506,7 +1506,12 @@ $(document).ready(function(){
 
 
     var pembayaran = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#pembayaran_pembelian").val()))));
-       var sisa = parseFloat(pembayaran.replace(',','.')) - parseFloat(sisa_potongan);
+    if (pembayaran == '') {
+      var pembayaran = 0.00
+    }
+
+       var sisa = parseFloat(pembayaran,2) - parseFloat(sisa_potongan,2);
+
         var sisa_kredit = parseFloat(sisa_potongan) - parseFloat(pembayaran.replace(',','.')); 
        
         
@@ -2116,17 +2121,24 @@ function myFunction(event) {
                             else
                             {
 
+                                    
                                     $("#text-jumlah-"+id+"").show();
                                     $("#text-jumlah-"+id+"").text(jumlah_kirim);
                                     $("#text-subtotal-"+id+"").text(subtotal.format(2, 3, '.', ','));
                                     $("#hapus-tbs-"+id+"").attr('data-subtotal', subtotal.format(2, 3, '.', ','));
-                                    $("#text-tax-"+id+"").text(Math.round(jumlah_tax.format(2, 3, '.', ',')));
+                                    if (jumlah_tax == "") {
+                                       $("#text-tax-"+id+"").text("0,00");
+                                    }
+                                    else{
+                                      $("#text-tax-"+id+"").text(jumlah_tax.format(2, 3, '.', ','));
+                                    }
+
                                     $("#input-jumlah-"+id+"").attr("type", "hidden"); 
                                     $("#total_pembelian1").val(subtotal_penjualan.format(2, 3, '.', ','));   
                                     $("#total_pembelian").val(sub_akhir.format(2, 3, '.', ','));      
                                     $("#potongan_pembelian").val(potongaaan.format(2, 3, '.', ','));
 
-                                    if(tax_fak == 0.00)
+                                    if(tax_fak == 0)
                                     {
                                       $("#tax_rp").val(tax_fak); 
                                     }
