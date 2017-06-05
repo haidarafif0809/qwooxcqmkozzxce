@@ -17,7 +17,6 @@ $total_kredit = $data210['total_kredit'];
 
 $total_bayar = $total_total - $total_kredit;
 
-
 // storing  request (ie, get/post) global array to a variable  
 $requestData= $_REQUEST;
 
@@ -35,23 +34,19 @@ $query=mysqli_query($conn, $sql) or die("eror.php: get employees");
 $totalData = mysqli_num_rows($query);
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
-$query=mysqli_query($conn, $sql) or die("eror.php: get employees");
-$totalData = mysqli_num_rows($query);
-$totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
-
 $sql =" SELECT tanggal ";
 $sql.=" FROM penjualan ";
-$sql.=" WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal'";
-if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
+$sql.=" WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' GROUP BY tanggal";
 
+if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
 
   $sql.=" AND (tanggal LIKE '".$requestData['search']['value']."%' )";  
 
 }
+
 $query=mysqli_query($conn, $sql) or die("eror.php2: get employees");
 $totalFiltered = mysqli_num_rows($query);
 // when there is a search parameter then we have to modify total number filtered rows as per search result. 
-
 
 $sql.= " ORDER BY CONCAT(tanggal,' ',jam) DESC LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
 
@@ -62,7 +57,7 @@ $data = array();
 while( $row=mysqli_fetch_array($query) ) {  // preparing an array
   $nestedData=array();      
 
-    $perintah1 = $db->query("SELECT * FROM penjualan WHERE tanggal = '$row[tanggal]'");
+    $perintah1 = $db->query("SELECT tanggal FROM penjualan WHERE tanggal = '$row[tanggal]'");
     $data1 = mysqli_num_rows($perintah1);
             
     $perintah2 = $db->query("SELECT SUM(total) AS t_total, SUM(nilai_kredit) AS t_kredit FROM penjualan WHERE tanggal = '$row[tanggal]'");
