@@ -91,8 +91,12 @@ tr:nth-child(even){background-color: #f2f2f2}
 <div class="table-responsive"><!-- membuat agar ada garis pada tabel, disetiap kolom -->
 <table id="table_jurnal_manual" class="table table-bordered table-sm">
 		<thead> 	
+    <?php if ($akuntansi['transaksi_jurnal_manual_hapus'] > 0) { ?>
 			<th style='background-color: #4CAF50; color:white'> Hapus </th>
+      <?php } ?>
+      <?php if ($akuntansi['transaksi_jurnal_manual_edit'] > 0) { ?>
 			<th style='background-color: #4CAF50; color:white'> Edit </th>	
+      <?php } ?>
 			<th style='background-color: #4CAF50; color:white'> Nomor Faktur </th>
 			<th style='background-color: #4CAF50; color:white'> Jenis Transaksi</th>
 			<th style='background-color: #4CAF50; color:white'> User Buat</th>

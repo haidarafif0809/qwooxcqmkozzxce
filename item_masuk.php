@@ -252,7 +252,7 @@ if ($item_masuk['item_masuk_hapus'] > 0) {
         },
             
             "fnCreatedRow": function( nRow, aData, iDataIndex ) {
-                $(nRow).attr('class','tr-id-'+aData[11]+'');
+                $(nRow).attr('class','tr-id-'+aData[12]+'');
             },
         });
 

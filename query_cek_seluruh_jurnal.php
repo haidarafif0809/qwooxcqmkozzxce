@@ -359,6 +359,83 @@ while ($data_retur_penjualan = mysqli_fetch_array($query_retur_penjualan)) {
 </tbody>
 </table>
 
+<h2>Item Keluar</h2>
+<table border="1">
+<thead>
+		<th>No Faktur </th>
+		<th>Tanggal</th>
+		<th>Jumlah Jurnal</th>
+		<th>Total Debit</th>
+		<th>Total Kredit</th>
+		<th>Status Balance Jurnal</th>
+		<th>Nilai Persediaan Jurnal</th>
+		<th>Nilai Persediaan Di hpp Keluar</th>
+		<th>Status Balance Persediaan</th>
+	</thead>
+	<tbody>
+
+<?php 
+
+
+// jurnal item_keluar 
+
+$query_item_keluar = $db->query("SELECT no_faktur,tanggal FROM item_keluar WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' ");
+
+
+while ($data_item_keluar = mysqli_fetch_array($query_item_keluar)) {
+	# code...
+	//query untuk mengambil ada berapa jumlah jurnal di item_keluar tersebut
+	$query_jurnal_item_keluar = $db->query("SELECT COUNT(*) AS jumlah_jurnal,SUM(debit) AS total_debit,SUM(kredit) AS total_kredit  FROM jurnal_trans WHERE no_faktur = '$data_item_keluar[no_faktur]' AND (debit  != 0 OR kredit != 0)");
+	$data_jurnal_item_keluar = mysqli_fetch_array($query_jurnal_item_keluar);
+	//jika jumlah jurnal nya kurang dari 2 , maka item_keluarnya di lakukan update , agar jurnal nya kembali benar.
+
+
+
+	$selisih_debit_kredit = $data_jurnal_item_keluar['total_debit'] - $data_jurnal_item_keluar['total_kredit'];
+	$status_balance = 'Balance';
+
+
+	//nilai persediaan di jurnal 
+
+	$query_nilai_persediaan_jurnal = $db->query("SELECT kredit AS nilai_persediaan FROM jurnal_trans WHERE kode_akun_jurnal = '1-1301' AND no_faktur = '$data_item_keluar[no_faktur]'");
+	$data_nilai_persediaan_jurnal = mysqli_fetch_array($query_nilai_persediaan_jurnal);
+	// nilai persediaan di hpp keluar 
+	$query_nilai_persediaan_hpp_keluar = $db->query("SELECT SUM(total_nilai) AS nilai_persediaan FROM hpp_keluar WHERE no_faktur = '$data_item_keluar[no_faktur]'");
+	$data_nilai_persediaan_hpp_keluar = mysqli_fetch_array($query_nilai_persediaan_hpp_keluar);
+
+	//status balance persediaan
+
+	$status_balance_persediaan = 'Balance';
+	$selisih_persediaan = $data_nilai_persediaan_jurnal['nilai_persediaan'] - $data_nilai_persediaan_hpp_keluar['nilai_persediaan'];
+
+	// jika debit kredit nya ada selisih maka lakukan update agar menjadi balance
+	if ($selisih_debit_kredit != 0 OR $selisih_persediaan != 0) {
+
+		$status_balance = 'Tidak Balance';
+		$status_balance_persediaan = 'Tidak Balance';
+
+		$db->query("UPDATE jurnal_trans SET debit = '$data_nilai_persediaan_hpp_keluar[nilai_persediaan]' WHERE no_faktur = '$data_item_keluar[no_faktur]' AND kode_akun_jurnal = '5-2202' ");
+
+		$db->query("UPDATE jurnal_trans SET kredit = '$data_nilai_persediaan_hpp_keluar[nilai_persediaan]' WHERE no_faktur = '$data_item_keluar[no_faktur]' AND kode_akun_jurnal = '1-1301' ");
+
+	}
+	echo "<tr>
+			<td>".$data_item_keluar['no_faktur']."</td>
+			<td>".$data_item_keluar['tanggal']."</td>
+			<td>".$data_jurnal_item_keluar['jumlah_jurnal']."</td>
+			<td>".$data_jurnal_item_keluar['total_debit']."</td>
+			<td>".$data_jurnal_item_keluar['total_kredit']."</td>
+			<td>".$status_balance."</td>
+			<td>".$data_nilai_persediaan_jurnal['nilai_persediaan']."</td>
+			<td>".$data_nilai_persediaan_hpp_keluar['nilai_persediaan']."</td>
+			<td>".$status_balance_persediaan."</td>
+		 </tr>";
+}
+
+
+ ?>
+</tbody>
+</table>
 
 
 <h2>Stok Opname</h2>

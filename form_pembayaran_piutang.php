@@ -7,7 +7,7 @@
  
  $session_id = session_id(); 
  
- $perintah50 = $db->query("SELECT * FROM tbs_pembayaran_piutang WHERE session_id = '$session_id'");
+ $perintah50 = $db->query("SELECT no_faktur_penjualan FROM tbs_pembayaran_piutang WHERE session_id = '$session_id'");
  $data50 = mysqli_fetch_array($perintah50);
  $no_faktur_penjualan = $data50['no_faktur_penjualan']; 
 

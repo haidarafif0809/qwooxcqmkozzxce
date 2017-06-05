@@ -59,6 +59,9 @@ $obat = $otoritas_produk['tipe_obat'];
     cursor: not-allowed;
     disabled: true;
 }
+
+
+
 </style>
 
 
@@ -383,6 +386,31 @@ $obat = $otoritas_produk['tipe_obat'];
 </div><!-- end of modal data barang  -->
 
 
+<!--tampilan modal loading form-->
+<div id="modal_loading_form" class="modal" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- isi modal-->
+    <div class="modal-content">
+
+      <div class="modal-header">
+    
+      </div>
+      <div class="modal-body">
+
+      <h2>Sedang Menyiapkan Form Penjualan..</h2>
+      <center><h4>Harap tunggu sebentar..</h4></center>
+          <center><div class="loader"></div></center>
+      </div> <!-- tag penutup modal-body-->
+      <div class="modal-footer">
+      
+      </div>
+    </div>
+
+  </div>
+</div><!-- end of modal loading form  -->
+
+
 <!-- Modal cari registrasi pasien-->
 <div id="modal_reg" class="modal fade" role="dialog">
   <div class="modal-dialog">
@@ -510,20 +538,9 @@ $obat = $otoritas_produk['tipe_obat'];
 
   <div class="col-xs-3">
 
-    <select style="font-size:15px; height:20px" type="text" name="kode_barang" id="kode_barang" class="form-control chosen" data-placeholder="SILAKAN PILIH...">
+    <select style="font-size:15px; height:20px" type="text" name="kode_barang" id="kode_barang" class="form-control " data-placeholder="SILAKAN PILIH...">
     <option value="">SILAKAN PILIH...</option>
-       <?php 
-
-        include 'cache.class.php';
-          $c = new Cache();
-          $c->setCache('produk');
-          $data_c = $c->retrieveAll();
-
-          foreach ($data_c as $key) {
-            echo '<option id="opt-produk-'.$key['kode_barang'].'" value="'.$key['kode_barang'].'" data-kode="'.$key['kode_barang'].'" nama-barang="'.$key['nama_barang'].'" harga="'.$key['harga_jual'].'" harga_jual_2="'.$key['harga_jual2'].'" harga_jual_3="'.$key['harga_jual3'].'" harga_jual_4="'.$key['harga_jual4'].'" harga_jual_5="'.$key['harga_jual5'].'" harga_jual_6="'.$key['harga_jual6'].'" harga_jual_7="'.$key['harga_jual7'].'" satuan="'.$key['satuan'].'" kategori="'.$key['kategori'].'" status="'.$key['status'].'" suplier="'.$key['suplier'].'" limit_stok="'.$key['limit_stok'].'" ber-stok="'.$key['berkaitan_dgn_stok'].'" tipe_barang="'.$key['tipe_barang'].'" id-barang="'.$key['id'].'" > '. $key['kode_barang'].' ( '.$key['nama_barang'].' ) </option>';
-          }
-
-        ?>
+    
     </select>
 
  </div>
@@ -998,11 +1015,92 @@ Radiologi  </button>
 
     
 <script>
-//untuk menampilkan data tabel
-$(document).ready(function(){
-    $("#kode_barang").trigger('chosen:open');
+
+
+   $(window).on('load',function(){
+
+       
+
+ $('#modal_loading_form').modal({  backdrop: 'static',
+                      keyboard: false});
+                            
+                            $('#modal_loading_form').modal('show');
+
+
+          var db = new Dexie("database_barang");
+    
+           db.version(2).stores({
+             
+            barang : 'id,kode_barang,nama_barang,harga_jual,harga_jual2,harga_jual3,harga_jual4,harga_jual5,harga_jual6,harga_jual7,satuan,kategori,status,suplier,limit_stok,berkaitan_dgn_stok,tipe_barang'  
+          });
+
+           db.barang.count(function (count) { 
+
+
+            var jumlah_data = count;
+
+            if (jumlah_data == 0) {
+
+
+
+              $.get('data_barang.php',function(data){
+
+                 var data_barang = [];
+                $.each(data.result, function(i, item) {
+
+                 
+                    data_barang.push({id: data.result[i].id, kode_barang: data.result[i].kode_barang,nama_barang : data.result[i].nama_barang,harga_jual:  data.result[i].harga_jual,harga_jual2:  data.result[i].harga_jual2,harga_jual3:  data.result[i].harga_jual3,harga_jual4:  data.result[i].harga_jual4,harga_jual5:  data.result[i].harga_jual5,harga_jual6:  data.result[i].harga_jual6,harga_jual7:  data.result[i].harga_jual7,satuan:  data.result[i].satuan,kategori:  data.result[i].kategori,status:  data.result[i].status,suplier:  data.result[i].suplier,limit_stok:  data.result[i].limit_stok,berkaitan_dgn_stok:  data.result[i].berkaitan_dgn_stok,tipe_barang:  data.result[i].tipe_barang  });
+
+
+
+                   });
+
+                   db.barang.bulkPut(data_barang).then(function(lastKey) {
+
+                    console.log("Selesai memasukkan data barang ke indexeddb");
+                    console.log("Jumlah Data yang dimasukkan : " + lastKey); // Will be 100000.
+
+                    menampilkanDataBarangDiSelect();
+
+                
+
+                    }).catch(Dexie.BulkError, function (e) {
+                        // Explicitely catching the bulkAdd() operation makes those successful
+                        // additions commit despite that there were errors.
+                        console.error ("Some raindrops did not succeed. However, " +
+                           100000-e.failures.length + " raindrops was added successfully");
+                    });
+
+              });
+                
+            }
+            else {
+              menampilkanDataBarangDiSelect();
+            }
+             
+           });
+
+
+           function menampilkanDataBarangDiSelect(){
+              return db.barang.each(function(data,i){
+          
+                 var tr_barang = '<option id="opt-produk-'+ data.kode_barang+'" value="'+ data.kode_barang+'" data-kode="'+ data.kode_barang+'" nama-barang="'+ data.nama_barang+'" harga="'+ data.harga_jual+'" harga_jual_2="'+ data.harga_jual2+'" harga_jual_3="'+ data.harga_jual3+'" harga_jual_4="'+ data.harga_jual4+'" harga_jual_5="'+ data.harga_jual5+'" harga_jual_6="'+ data.harga_jual6+'" harga_jual_7="'+ data.harga_jual7+'" satuan="'+ data.satuan+'" kategori="'+ data.kategori+'" status="'+ data.status+'" suplier="'+ data.suplier+'" limit_stok="'+ data.limit_stok+'" ber-stok="'+ data.berkaitan_dgn_stok+'" tipe_barang="'+ data.tipe_barang+'" id-barang="'+ data.id+'" > '+ data.kode_barang+' ( '+ data.nama_barang+' ) </option>';
+                     $("#kode_barang").append(tr_barang);
+              }).then(function(){
+
+                      $("#kode_barang").chosen({no_results_text: "Maaf, Data Tidak Ada!",search_contains:true});
+                     $('#modal_loading_form').modal('hide');
+
+            
+
+
+              });
+
+           }
+            
 
 });
+
 
 </script>
 
@@ -2461,7 +2559,7 @@ $("#tbody-barang-jual").find("tr").remove();
 
  
     var tr_barang = "<tr><td>"+ result.barang[i].kode_barang+"</td><td>"+ result.barang[i].nama_barang+"</td><td>"+ result.barang[i].jumlah_jual+"</td><td>"+ result.barang[i].stok+"</td></tr>"
-     $("#tbody-barang-jual").prepend(tr_barang);
+     $("#tbody-barang-jual").append(tr_barang);
 
    });
 
@@ -2899,7 +2997,7 @@ $("#tbody-barang-jual").find("tr").remove();
 
  
     var tr_barang = "<tr><td>"+ result.barang[i].kode_barang+"</td><td>"+ result.barang[i].nama_barang+"</td><td>"+ result.barang[i].jumlah_jual+"</td><td>"+ result.barang[i].stok+"</td></tr>"
-     $("#tbody-barang-jual").prepend(tr_barang);
+     $("#tbody-barang-jual").append(tr_barang);
 
    });
 
@@ -3099,7 +3197,7 @@ $("#tbody-barang-jual").find("tr").remove();
 
  
     var tr_barang = "<tr><td>"+ result.barang[i].kode_barang+"</td><td>"+ result.barang[i].nama_barang+"</td><td>"+ result.barang[i].jumlah_jual+"</td><td>"+ result.barang[i].stok+"</td></tr>"
-     $("#tbody-barang-jual").prepend(tr_barang);
+     $("#tbody-barang-jual").append(tr_barang);
 
    });
 
@@ -5527,5 +5625,8 @@ $(document).ready(function(){
 });
 </script>
 <!--Akhir Script Key Up Potongan Produk-->
+
+<!-- script untuk menampilkan data produk di tag select produk -->
+
 
 <?php include 'footer.php'; ?>

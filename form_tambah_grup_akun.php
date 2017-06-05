@@ -33,7 +33,7 @@
 					<option value="-"> - </option>
 
 						<?php 
-						$select = $db->query("SELECT * FROM grup_akun ");
+						$select = $db->query("SELECT kode_grup_akun, nama_grup_akun FROM grup_akun ");
 						while ($ambil = mysqli_fetch_array($select))
 						{
 
@@ -54,14 +54,14 @@
 
 					<option value="">--Kategori Akun--</option>	
 
-					<option value="Aktiva">Aktiva</option>	
-					<option value="Kewajiban">Kewajiban</option>	
-					<option value="Modal">Modal</option>	
-					<option value="Pendapatan">Pendapatan</option>	
-					<option value="HPP">HPP</option>	
-					<option value="Biaya">Biaya</option>
-					<option value="HPP">Pendapatan Lain</option>	
-					<option value="Biaya">Biaya Lain</option>	
+					<option>Aktiva</option>	
+					<option>Kewajiban</option>	
+					<option>Modal</option>	
+					<option>Pendapatan</option>	
+					<option>HPP</option>	
+					<option>Biaya</option>
+					<option>Pendapatan Lain</option>	
+					<option>Biaya Lain</option>	
 
 					</select>
 					</div>

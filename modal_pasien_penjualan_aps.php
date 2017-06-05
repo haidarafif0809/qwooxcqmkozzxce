@@ -16,7 +16,7 @@ $columns = array(
     0=>'no_reg', 
     1=>'no_rm',
     2=>'nama_pasien',
-    3=>'jenis_pasien',
+    3=>'aps_periksa',
     4=>'tanggal',
     5=>'penjamin',
     6=>'poli',
@@ -26,7 +26,7 @@ $columns = array(
 );
 
 // getting total number records without any search
-$sql = "SELECT r.no_reg, r.no_rm, r.nama_pasien, r.jenis_pasien, r.tanggal, r.penjamin, r.poli, r.dokter, r.id, u.id  AS id_dokter, p.harga AS level_harga";
+$sql = "SELECT r.aps_periksa,r.no_reg, r.no_rm, r.nama_pasien, r.jenis_pasien, r.tanggal, r.penjamin, r.poli, r.dokter, r.id, u.id  AS id_dokter, p.harga AS level_harga";
 $sql.=" FROM registrasi r LEFT JOIN user u ON r.dokter = u.nama LEFT JOIN penjamin p ON r.penjamin = p.nama LEFT JOIN penjualan penj ON r.no_reg = penj.no_reg ";
 $sql.=" WHERE r.jenis_pasien = 'APS' AND r.status = 'aps_masuk' AND penj.no_faktur IS NULL ";
 
@@ -71,10 +71,21 @@ $data = array();
 while( $row=mysqli_fetch_array($query) ) {  // preparing an array
   $nestedData=array(); 
 
+      //$nestedData[] = '<p style="width:150">'.$row["nama_pasien"].'</p>';
       $nestedData[] = $row["no_reg"];
       $nestedData[] = $row["no_rm"];
       $nestedData[] = $row["nama_pasien"];
-      $nestedData[] = $row["jenis_pasien"];
+
+      $status_rawat = $row["aps_periksa"];
+        $lab = 'Laboratorium';
+        $radio = 'Radiologi';
+      if($status_rawat == 1){
+        $nestedData[] = $lab;
+      }
+      else{
+        $nestedData[] = $radio;
+      }
+
       $nestedData[] = $row["tanggal"];
       $nestedData[] = $row["penjamin"];
       $nestedData[] = $row["poli"];

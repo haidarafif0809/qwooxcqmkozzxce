@@ -389,6 +389,7 @@ if ($lihat['kartu_stok_lihat'] > 0){
 }
 
 echo '<li><a href="cache_produk_penjualan.php" target="blank" class="waves-effect">Update Cache Produk</a></li>';
+echo '<li><a href="update_cache_browser_barang.php" target="blank" class="waves-effect"> Cache Produk Offline</a></li>';
 echo '<li><a href="cache_produk_lab.php" target="blank" class="waves-effect">Update Cache P.Lab</a></li>';
 echo '<li><a href="cache_produk_obat.php" target="blank" class="waves-effect">Update Cache Obat Obatan</a></li>';
 echo '<li><a href="cache_produk_tindakan.php" target="blank" class="waves-effect">Update Cache Tindakan</a></li>';
@@ -607,6 +608,8 @@ if ($lihat['laboratorium_lihat'] > 0)
 <li ><a class="collapsible-header waves-effect arrow-r"><i class="fa fa-flask"></i>Laboratorium <i class="fa fa-angle-down rotate-icon"></i></a>
     <div class="collapsible-body">
        <ul>
+
+<li><a href="form_input_hasil_lab.php" class="waves-effect" >Input Hasil Laboratorium</a></li>
 <li><a href="lab_bidang.php" class="waves-effect" >Kelompok Bidang</a></li>
 <li><a href="jasa_lab.php" class="waves-effect" >Nama Pemeriksaan</a></li>
 <li><a href="setup_hasil.php" class="waves-effect" >Parameter Laboratorium</a></li>

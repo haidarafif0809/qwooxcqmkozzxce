@@ -77,39 +77,51 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
  	$nestedData[] = "<button type='button' data-reg='".$row['no_reg']."'  data-id='".$row['id']."'  class='btn btn-floating btn-small btn-info batal_aps' ><b> X </b></button>";
 	}
 
-	
-	
+
 	// untuk input jasa lab
 	if ($input_jasa_lab > 0) {
-	 $nestedData[] = "<a href='input_jasa_laboratorium.php?no_rm=".$row['no_rm']."&nama=".$row['nama_pasien']."&no_reg=".$row['no_reg']."&dokter=".$row['dokter_pengirim']."&jenis_kelamin=".$row['jenis_kelamin']."&aps_periksa=".$row['aps_periksa']."&jenis_penjualan=APS' class='btn btn-floating btn-small btn-info'><i class='fa fa-stethoscope'></i></a>
-	       ";
+		
+		$nestedData[] = "<a href='input_jasa_laboratorium.php?no_rm=".$row['no_rm']."&nama=".$row['nama_pasien']."&no_reg=".$row['no_reg']."&dokter=".$row['dokter_pengirim']."&jenis_kelamin=".$row['jenis_kelamin']."&aps_periksa=".$row['aps_periksa']."&jenis_penjualan=APS' class='btn btn-floating btn-small btn-info'><i class='fa fa-stethoscope'></i></a>";
 	}
-
-	// untuk input hasil lab
-	if ($input_hasil_lab > 0) {
-	$show = $db->query("SELECT COUNT(*) AS jumlah FROM tbs_aps_penjualan WHERE no_reg = '$row[no_reg]' ");
-	$take = mysqli_fetch_array($show);
-
-		if ($take['jumlah'] > 0){
 	
-		$query_cek_setting = $db->query("SELECT nama FROM setting_laboratorium");
-		$data_cek_setting = mysqli_fetch_array($query_cek_setting);
-		$angka_setting_lab = $data_cek_setting['nama'];
+	
+	//cek periksaan apa
+	/*$data_periksa = $row["aps_periksa"];
+	if($data_periksa == 1){
+		// untuk input hasil lab
+		if ($input_hasil_lab > 0) {
+		$show = $db->query("SELECT COUNT(*) AS jumlah FROM tbs_aps_penjualan WHERE no_reg = '$row[no_reg]' ");
+		$take = mysqli_fetch_array($show);
 
-			if($angka_setting_lab == 0){
-			$nestedData[] = "<p style='color:red'>Cek Setting Laboratorium</p>";
+			if ($take['jumlah'] > 0){
+				
+			$query_cek_setting = $db->query("SELECT nama FROM setting_laboratorium");
+			$data_cek_setting = mysqli_fetch_array($query_cek_setting);
+			$angka_setting_lab = $data_cek_setting['nama'];
+
+				if($angka_setting_lab == 0){
+					$nestedData[] = "<p style='color:red'>Cek Setting Laboratorium</p>";
+				}
+				else{
+					
+					$nestedData[] = "<a href='input_tbs_aps_hasil_lab.php?no_rm=".$row['no_rm']."&nama=".$row['nama_pasien']."&no_reg=".$row['no_reg']."&jenis_penjualan=APS' class='btn btn-floating btn-small btn-info'><i class='fa fa-pencil'></i></a>";
+					}
 			}
 			else{
-		
-			$nestedData[] = "<a href='input_tbs_aps_hasil_lab.php?no_rm=".$row['no_rm']."&nama=".$row['nama_pasien']."&no_reg=".$row['no_reg']."&jenis_penjualan=APS' class='btn btn-floating btn-small btn-info'><i class='fa fa-pencil'></i></a>";
+				
+				$nestedData[] = "<p style='color:red'>Input Jasa Laboratorium</p>";
+
 			}
 		}
-		else{
-	  	$nestedData[] = "<p style='color:red'>Input Jasa Laboratorium</p>";
+		// end untuk input hasil lab
 
-		}
 	}
-// end untuk input hasil lab
+	else{
+
+		//Untuk Input Hasil Radiologiny
+		$nestedData[] = "<p style='color:red'>Input Radiologi</p>";
+
+	}*/
 
 	$nestedData[] = "<a href='registrasi_edit_aps.php?no_reg=". $row['no_reg']."' class='btn btn-floating btn-small btn-info ' ><i class='fa fa-edit'></i></a> ";
 	

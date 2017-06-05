@@ -865,6 +865,7 @@ tr:nth-child(even){background-color: #f2f2f2}
   <?php if ($registrasi_ri['registrasi_ri_lihat']):?>      
           <th style='background-color: #4CAF50; color: white'>Pindah Kamar</th>
           <th style='background-color: #4CAF50; color: white'>Operasi</th>
+          <th style='background-color:#4CAF50; color: white'> Rujuk Radiologi</th>
           <th style='background-color:#4CAF50; color: white'> Rujuk Lab</th>
           <!--<th style='background-color:#4CAF50; color: white'> Input Hasil Lab</th>-->
   <?php endif ?>

@@ -11,8 +11,8 @@ include 'sanitasi.php';
 $dari_tanggal = stringdoang($_GET['dari_tanggal']);
 $sampai_tanggal = stringdoang($_GET['sampai_tanggal']);
 
-$query1 = $db->query("SELECT * FROM perusahaan ");
-$data1 = mysqli_fetch_array($query1);
+$query_data_perusahaan = $db->query("SELECT nama_perusahaan,alamat_perusahaan,no_telp FROM perusahaan ");
+$data_perusahaan = mysqli_fetch_array($query_data_perusahaan);
 
 
  ?>
@@ -22,9 +22,9 @@ $data1 = mysqli_fetch_array($query1);
  <div class="row"><!--row1-->
 
         <div class="col-sm-6">
-            <h4> <b> <?php echo $data1['nama_perusahaan']; ?> </b> </h4> 
-            <p> <?php echo $data1['alamat_perusahaan']; ?> </p> 
-            <p> No.Telp:<?php echo $data1['no_telp']; ?> </p> 
+            <h4> <b> <?php echo $data_perusahaan['nama_perusahaan']; ?> </b> </h4> 
+            <p> <?php echo $data_perusahaan['alamat_perusahaan']; ?> </p> 
+            <p> No.Telp:<?php echo $data_perusahaan['no_telp']; ?> </p> 
                  
         </div><!--penutup colsm4-->
 
@@ -64,9 +64,9 @@ $data1 = mysqli_fetch_array($query1);
             <tbody>
             <?php
 
-      $perintah009 = $db->query("SELECT us.nama AS dokter, se.nama AS analis,hl.nama_pasien,hl.no_rm,hl.no_faktur,hl.no_reg,hl.nama_pemeriksaan,hl.status,hl.hasil_pemeriksaan,hl.id,hl.status_pasien,hl.tanggal FROM hasil_lab hl LEFT JOIN user us ON hl.dokter = us.id  LEFT JOIN user se ON hl.petugas_analis = se.id WHERE hl.tanggal >= '$dari_tanggal' AND hl.tanggal <= '$sampai_tanggal' GROUP BY hl.no_reg");
-        
-        while ($data11 = mysqli_fetch_array($perintah009))
+    $query_data_pemeriksaan = $db->query("SELECT us.nama AS dokter, se.nama AS analis, hl.nama_pasien, hl.no_rm, hl.no_faktur, hl.no_reg, hl.status, hl.id, hl.status_pasien, DATE(hl.waktu) AS tanggal FROM pemeriksaan_laboratorium hl LEFT JOIN user us ON hl.dokter = us.id LEFT JOIN user se ON hl.analis = se.id WHERE DATE(hl.waktu) >= '$dari_tanggal' AND DATE(hl.waktu) <= '$sampai_tanggal' AND hl.status = '1'");
+
+        while ($data11 = mysqli_fetch_array($query_data_pemeriksaan))
 
           {
             $stat = 'Belum Penjualan';

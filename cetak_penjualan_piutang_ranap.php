@@ -128,6 +128,13 @@ include 'db.php';
 </style>
 <br><br>
 
+<?php 
+  $query5 = $db->query("SELECT * FROM detail_penjualan WHERE no_faktur = '$no_faktur' AND tipe_produk = 'Bed' ");
+  $cek_kamar = mysqli_num_rows($query5);
+
+    if ($cek_kamar > 0) {
+
+?>
 <h6><b>Kamar</b></h6>
 
 <table id="tableuser" class="table table-bordered table-sm">
@@ -189,6 +196,16 @@ include 'db.php';
     </table>
 
 <h6 align="right"><b>Subtotal Bed : <?php echo rp($subtotal_bed); ?></b></h6>
+
+<?php } ?>
+
+<?php 
+  $query5 = $db->query("SELECT dp.kode_barang,dp.tanggal,dp.jam,dp.nama_barang,dp.jumlah_barang,dp.harga,dp.potongan,dp.tax,dp.subtotal FROM detail_penjualan dp LEFT JOIN barang bb ON dp.kode_barang = bb.kode_barang  WHERE dp.no_faktur = '$no_faktur' AND bb.berkaitan_dgn_stok = 'Barang' AND ( dp.lab = '' OR dp.lab IS NULL ) ");
+  $cek_jasa = mysqli_num_rows($query5);
+
+    if ($cek_jasa > 0) {
+
+?>
 
 <h6><b>Jasa & Tindakan </b></h6>
 
@@ -253,6 +270,16 @@ include 'db.php';
 
 <h6 align="right"><b>Subtotal Jasa & Tindakan : <?php echo rp($subtotal_jasa); ?></b></h6>
 
+<?php } ?>
+
+<?php 
+  $query5 = $db->query("SELECT dp.kode_barang,dp.tanggal,dp.jam,dp.nama_barang,dp.jumlah_barang,dp.harga,dp.potongan,dp.tax,dp.subtotal FROM detail_penjualan dp LEFT JOIN barang bb ON dp.kode_barang = bb.kode_barang  WHERE dp.no_faktur = '$no_faktur' AND bb.berkaitan_dgn_stok = 'Barang' AND ( dp.lab = '' OR dp.lab IS NULL ) ");
+  $cek_obat = mysqli_num_rows($query5);
+
+    if ($cek_obat > 0) {
+
+?>
+
 <h6><b>Obat Obatan / ALKES </b></h6>
 
 <table id="tableuser" class="table table-bordered table-sm">
@@ -271,7 +298,7 @@ include 'db.php';
         <tbody>
         <?php
 
-            $query5 = $db->query("SELECT dp.kode_barang,dp.tanggal,dp.jam,dp.nama_barang,dp.jumlah_barang,dp.harga,dp.potongan,dp.tax,dp.subtotal FROM detail_penjualan dp LEFT JOIN barang bb ON dp.kode_barang = bb.kode_barang  WHERE dp.no_faktur = '$no_faktur' AND bb.berkaitan_dgn_stok = 'Barang' AND ( dp.lab = '' OR dp.lab IS NULL ) ");
+
             //menyimpan data sementara yang ada pada $perintah
             while ($data5 = mysqli_fetch_array($query5))
             {
@@ -314,6 +341,16 @@ include 'db.php';
 
 <h6 align="right"><b>Subtotal Obat Obatan / ALKES : <?php echo rp($subtotal_barang); ?></b></h6>
 
+<?php } ?>
+
+<?php 
+ $query5 = $db->query("SELECT tanggal, nama_barang, jumlah_barang, harga, potongan, tax, subtotal FROM detail_penjualan WHERE no_faktur = '$no_faktur' AND lab = 'Laboratorium' ");
+ $cek_lab = mysqli_num_rows($query5);
+
+    if ($cek_lab > 0) {
+
+?>
+
 <h6><b>Laboratorium</b></h6>
 
 <table id="tableuser" class="table table-bordered table-sm">
@@ -332,7 +369,7 @@ include 'db.php';
         <tbody>
         <?php
 
-      $query5 = $db->query("SELECT * FROM detail_penjualan WHERE no_faktur = '$no_faktur' AND lab = 'Laboratorium' ");
+
             //menyimpan data sementara yang ada pada $perintah
             while ($data5 = mysqli_fetch_array($query5))
             {
@@ -369,6 +406,15 @@ include 'db.php';
 
 <h6 align="right"><b>Subtotal Laboratorium : <?php echo rp($subtotal_lab); ?></b></h6>
 
+<?php } ?>
+
+<?php 
+ $take_data_or = $db->query("SELECT operasi, waktu, harga_jual FROM hasil_operasi WHERE no_reg = '$data0[no_reg]'");
+ $cek_operasi = mysqli_num_rows($take_data_or);
+
+    if ($cek_operasi > 0) {
+
+?>
 
 <h6><b>Operasi</b></h6>
 
@@ -388,7 +434,6 @@ include 'db.php';
         <tbody>
 <?php        
 // OPERASI TABLE
- $take_data_or = $db->query("SELECT * FROM hasil_operasi WHERE no_reg = '$data0[no_reg]'");
 
     while($out_operasi = mysqli_fetch_array($take_data_or))
       {
@@ -436,7 +481,75 @@ include 'db.php';
     </table>
 
 <h6 align="right"><b>Subtotal Operasi : <?php echo rp($subtotal_operasi); ?></b></h6>
+<br>
+<?php } ?>
+<!-- JIKA  Radiologi maka akan ditampilkan -->
+<?php 
+    $query_radiologi = $db->query("SELECT nama_barang, jumlah_barang, harga, potongan, tax, subtotal, tanggal, jam FROM hasil_pemeriksaan_radiologi WHERE no_reg = '$data0[no_reg]' AND no_faktur = '$no_faktur' AND status_periksa = '1'");
+    $cek_radiologi = mysqli_num_rows($query_radiologi);
 
+    if ($cek_radiologi > 0) { #<!-- JIKA Radiologi  maka akan ditampilkan -->
+
+     ?>
+<h6><b>Radiologi</b></h6>
+  <table id="tabel_jasa" class="table table-bordered table-sm">
+        <thead>
+            <th class="table1" style="width: 15%"> <center> Tanggal </center> </th>
+            <th class="table1" style="width: 50%"> <center> Nama Produk </center> </th>
+            <th class="table1" style="width: 5%"> <center> Qty </center> </th>
+            <th class="table1" style="width: 5%"> <center> Satuan </center> </th>
+            <th class="table1" style="width: 15%"> <center> Harga </center> </th>
+            <th class="table1" style="width: 5%"> <center> Disc. </center> </th>
+            <th class="table1" style="width: 5%"> <center> Pajak </center> </th>
+            <th class="table1" style="width: 12%"> <center> Subtotal </center> </th>
+        
+            
+        </thead>
+        <tbody>
+        <?php 
+
+
+           $nomor_radiologi = 0;
+
+              while($data_hasil = mysqli_fetch_array($query_radiologi))
+                {
+                 
+                 $nomor_radiologi++;
+
+                  echo"<tr>
+                              
+                      <td class='table1' align='center'>".$data_hasil['tanggal']." ".$data_hasil['jam']."</td>   
+                      <td class='table1'>".$data_hasil['nama_barang']."</td> 
+                      <td class='table1' align='center'>".$data_hasil['jumlah_barang']."</td>
+                      <td class='table1' align='center'>Radiologi</td>
+                      <td class='table1' align='right'>". rp($data_hasil['harga']) ."</td>
+                      <td class='table1' align='right'>". rp($data_hasil['potongan']) ."</td>
+                      <td class='table1' align='right'>". rp($data_hasil['tax']) ."</td>
+                      <td class='table1' align='right'>". rp($data_hasil['subtotal']) ."</td>
+                </tr>";
+
+                              
+                            
+              }
+
+          $query_ambil_radiologi = $db->query("SELECT SUM(subtotal) AS sub FROM hasil_pemeriksaan_radiologi WHERE no_reg = '$data0[no_reg]' AND no_faktur = '$no_faktur' AND status_periksa = '1' ");
+            //menyimpan data sementara yang ada pada $perintah
+            $data_ambil_radiologi = mysqli_fetch_array($query_ambil_radiologi);
+            $subtotal_radiologi = $data_ambil_radiologi['sub'];
+
+
+//Untuk Memutuskan Koneksi Ke Database
+mysqli_close($db); 
+
+        ?>
+        </tbody>
+
+    </table>
+<h6 align="right"><b>Subtotal Radiologi : <?php echo rp($subtotal_radiologi); ?></b></h6>
+
+
+<?php } ?>
+<br>
 
         <div class="col-sm-6">
             

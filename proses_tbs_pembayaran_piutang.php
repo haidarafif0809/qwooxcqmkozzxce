@@ -8,7 +8,7 @@
 
 
    
-$cek = $db->query("SELECT * FROM tbs_pembayaran_piutang WHERE no_faktur_penjualan = '$no_faktur_penjualan'");
+$cek = $db->query("SELECT no_faktur_penjualan FROM tbs_pembayaran_piutang WHERE no_faktur_penjualan = '$no_faktur_penjualan'");
 
 $jumlah = mysqli_num_rows($cek);
     
