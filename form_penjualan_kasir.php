@@ -962,7 +962,7 @@ Radiologi  </button>
           <button type="submit" id="piutang" class="btn btn-warning" style="font-size:15px">Piutang (F9)</button>
           <?php endif;?>
 
-          <a href='cetak_penjualan_piutang.php' id="cetak_piutang" style="display: none;" class="btn btn-success" target="blank">Cetak Piutang  </a>
+          <a href='cetak_penjualan_piutang.php' id="cetak_piutang" style="display: none;" class="btn btn-success btnPrint" target="blank">Cetak Piutang  </a>
 
           <?php if ($otoritas_tombol['tombol_simpan'] > 0):?>  
 
@@ -970,7 +970,7 @@ Radiologi  </button>
 
           <?php endif;?>
 
-          <a href='cetak_penjualan_tunai_rj.php' id="cetak_tunai" style="display: none;" class="btn btn-primary" target="blank"> Cetak Tunai  </a>
+          <a href='cetak_penjualan_tunai_rj.php' id="cetak_tunai" style="display: none;" class="btn btn-primary btnPrint" > Cetak Tunai  </a>
 
            <?php if ($otoritas_tombol['tombol_bayar'] > 0):?>              
 
@@ -978,7 +978,7 @@ Radiologi  </button>
 
           <?php endif;?>
 
-           <a href='cetak_penjualan_tunai_kategori_rj.php' id="cetak_tunai_kategori" style="display: none;" class="btn btn-warning" target="blank"> Cetak Tunai/Kategori  </a>
+           <a href='cetak_penjualan_tunai_kategori_rj.php' id="cetak_tunai_kategori" style="display: none;" class="btn btn-warning btnPrint" target="blank"> Cetak Tunai/Kategori  </a>
 
            <?php if ($otoritas_tombol['tombol_batal'] > 0):?>
               <button type="submit" id="batal_penjualan" class="btn btn-danger" style="font-size:15px">  Batal (Ctrl + B)</button>
@@ -986,7 +986,7 @@ Radiologi  </button>
 
          
 
-          <a href='cetak_penjualan_tunai_besar_rj.php' id="cetak_tunai_besar" style="display: none;" class="btn btn-warning" target="blank"> Cetak Tunai  Besar </a>
+          <a href='cetak_penjualan_tunai_besar_rj.php' id="cetak_tunai_besar" style="display: none;" class="btn btn-warning btnPrint" target="blank"> Cetak Tunai  Besar </a>
           
      
     
@@ -1018,6 +1018,9 @@ Radiologi  </button>
 
 
    $(window).on('load',function(){
+
+
+        $(".btnPrint").printPage();
 
        
 
@@ -2499,14 +2502,7 @@ if (data == 1) {
 
      $("#cetak_tunai_kategori").attr('href','cetak_penjualan_tunai_kategori_rj.php?no_reg='+no_reg+'&sisa='+sisa_pembayaran+'&tunai='+pembayaran+'&total='+total+'&biaya_admin='+biaya_adm+'&potongan='+potongan+'&no_rm='+no_rm+'&nama_pasien='+nama_pasien+'');
 
-     var win = window.open('cetak_penjualan_tunai_rj.php?no_reg='+no_reg+'&sisa='+sisa_pembayaran+'&tunai='+pembayaran+'&total='+total+'&biaya_admin='+biaya_adm+'&potongan='+potongan+'&no_rm='+no_rm+'&nama_pasien='+nama_pasien+'');
-      if (win) {    
-          win.focus(); 
-        } 
-      else {    
-          alert('Mohon Izinkan PopUps Pada Website Ini !'); 
-        }
-
+     $("#cetak_tunai").click();
         
      $("#cetak_tunai").show();
      $("#cetak_tunai_kategori").show();
