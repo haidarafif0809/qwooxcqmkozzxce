@@ -27,7 +27,7 @@ if ($data_row > 0) {
         $data1 = mysqli_fetch_array($query1);
 
         
-        $query2 = $db->query("SELECT * FROM tbs_penjualan WHERE no_reg = '$no_reg' ");
+      
         
         $select_operasi = $db->query("SELECT * FROM hasil_operasi WHERE no_reg = '$no_reg'");
         
@@ -42,7 +42,6 @@ else{
         $query1 = $db->query("SELECT * FROM perusahaan ");
         $data1 = mysqli_fetch_array($query1);
 
-        $query2 = $db->query("SELECT * FROM detail_penjualan WHERE no_reg = '$no_reg' ");
 
        
         $select_operasi = $db->query("SELECT * FROM hasil_operasi WHERE no_reg = '$data0[no_reg]'");
@@ -57,7 +56,8 @@ else{
 
     
  ?>
-
+ <script type="text/javascript" src="js/jquery-2.2.3.min.js"></script>  
+ <script src="https://unpkg.com/dexie@latest/dist/dexie.js"></script>
 
   <?php echo $data1['nama_perusahaan']; ?><br>
   <?php echo $data1['alamat_perusahaan']; ?><br><br>
@@ -92,24 +92,7 @@ else{
 ===================<br>
  <table>
 
-  <tbody>
- <?php if ($status_print == 'Detail'){
-
-           while ($data2 = mysqli_fetch_array($query2)){
-           
-           echo '<tr>
-           <td width:"50%"> '. $data2['nama_barang'] .' </td> 
-           <td style="padding:3px"> '. $data2['jumlah_barang'] .'</td> 
-           <td style="padding:3px"> '. rp($data2['harga']) .'</td> 
-           <td style="padding:3px"> '. rp($data2['subtotal']) . ' </td></tr>';
-           
-           }
-       } 
-
-//Untuk Memutuskan Koneksi Ke Database
-           
-           
-?> 
+  <tbody id="tbody-detail">
 
 <?php 
            while ($out_operasi = mysqli_fetch_array($select_operasi))
@@ -165,7 +148,31 @@ mysqli_close($db);
 
  <script>
 $(document).ready(function(){
-  window.print();
+ 
+
+
+   var db = new Dexie("database_penjualan");
+    
+       db.version(1).stores({
+         
+        detail_penjualan : 'id,no_reg,kode_barang,nama_barang,jumlah_barang,harga,subtotal,satuan,potongan'  
+      });
+
+       var no_reg = '<?php echo $no_reg ?>';
+       var status_print = '<?php echo $status_print ?>';
+
+       db.detail_penjualan.where('no_reg').equals(no_reg).each(function(data,i){
+            
+        var data_detail_penjualan = '<tr><td width:"50%"> '+ data.nama_barang+' </td><td style="padding:3px"> '+ data.jumlah_barang +'</td><td style="padding:3px"> '+ data.harga +'</td><td style="padding:3px"> '+ data.subtotal + ' </td></tr>';
+        if (status_print == 'Detail') {
+            $("#tbody-detail").append(data_detail_penjualan);
+        }
+      
+                
+        });
+           
+
+
 });
 </script>
 

@@ -1037,6 +1037,7 @@ Radiologi  </button>
             barang : 'id,kode_barang,nama_barang,harga_jual,harga_jual2,harga_jual3,harga_jual4,harga_jual5,harga_jual6,harga_jual7,satuan,kategori,status,suplier,limit_stok,berkaitan_dgn_stok,tipe_barang'  
           });
 
+
            db.barang.count(function (count) { 
 
 
@@ -1082,6 +1083,8 @@ Radiologi  </button>
             }
              
            });
+
+       
 
 
            function menampilkanDataBarangDiSelect(){
@@ -2496,17 +2499,62 @@ if (data == 1) {
         if (result.status == 0) {
 
 
-     $("#cetak_tunai").attr('href', 'cetak_penjualan_tunai_rj.php?no_reg='+no_reg+'&sisa='+sisa_pembayaran+'&tunai='+pembayaran+'&total='+total+'&biaya_admin='+biaya_adm+'&potongan='+potongan+'&no_rm='+no_rm+'&nama_pasien='+nama_pasien+'');
+  $.get("ambil_data_tbs_penjualan.php?no_reg="+no_reg ,function(data){
 
-     $("#cetak_tunai_besar").attr('href', 'cetak_penjualan_tunai_besar_rj.php?no_reg='+no_reg+'&sisa='+sisa_pembayaran+'&kredit='+sisa_kredit+'&tunai='+pembayaran+'&total='+total+'&biaya_admin='+biaya_adm+'&potongan='+potongan+'&no_rm='+no_rm+'&nama_pasien='+nama_pasien+'&keterangan='+keterangan+'&cara_bayar='+cara_bayar+'');
+     var db = new Dexie("database_penjualan");
+    
+           db.version(1).stores({
+             
+            detail_penjualan : 'id,no_reg,kode_barang,nama_barang,jumlah_barang,harga,subtotal,satuan,potongan' 
+          });
 
-     $("#cetak_tunai_kategori").attr('href','cetak_penjualan_tunai_kategori_rj.php?no_reg='+no_reg+'&sisa='+sisa_pembayaran+'&tunai='+pembayaran+'&total='+total+'&biaya_admin='+biaya_adm+'&potongan='+potongan+'&no_rm='+no_rm+'&nama_pasien='+nama_pasien+'');
+            var data_detail_penjualan = [];
+                $.each(data.result, function(i, item) {
 
-     $("#cetak_tunai").click();
-        
-     $("#cetak_tunai").show();
-     $("#cetak_tunai_kategori").show();
-     $("#cetak_tunai_besar").show('');
+                 
+                    data_detail_penjualan.push({id: data.result[i].id, kode_barang: data.result[i].kode_barang,nama_barang : data.result[i].nama_barang,satuan:  data.result[i].satuan,no_reg:  data.result[i].no_reg,jumlah_barang:  data.result[i].jumlah_barang,harga:  data.result[i].harga,subtotal:  data.result[i].subtotal,potongan:  data.result[i].potongan  });
+
+
+
+                   });
+
+                 db.detail_penjualan.bulkPut(data_detail_penjualan).then(function(lastKey) {
+
+                    console.log("Selesai memasukkan data detail penjualan ke indexeddb");
+                    console.log("Jumlah Data yang dimasukkan : " + lastKey); // Will be 100000.
+
+
+
+      
+                  $("#cetak_tunai").attr('href', 'cetak_penjualan_tunai_rj.php?no_reg='+no_reg+'&sisa='+sisa_pembayaran+'&tunai='+pembayaran+'&total='+total+'&biaya_admin='+biaya_adm+'&potongan='+potongan+'&no_rm='+no_rm+'&nama_pasien='+nama_pasien+'');
+
+                   $("#cetak_tunai_besar").attr('href', 'cetak_penjualan_tunai_besar_rj.php?no_reg='+no_reg+'&sisa='+sisa_pembayaran+'&kredit='+sisa_kredit+'&tunai='+pembayaran+'&total='+total+'&biaya_admin='+biaya_adm+'&potongan='+potongan+'&no_rm='+no_rm+'&nama_pasien='+nama_pasien+'&keterangan='+keterangan+'&cara_bayar='+cara_bayar+'');
+
+                   $("#cetak_tunai_kategori").attr('href','cetak_penjualan_tunai_kategori_rj.php?no_reg='+no_reg+'&sisa='+sisa_pembayaran+'&tunai='+pembayaran+'&total='+total+'&biaya_admin='+biaya_adm+'&potongan='+potongan+'&no_rm='+no_rm+'&nama_pasien='+nama_pasien+'');
+
+                   $("#cetak_tunai").click();
+                      
+                   $("#cetak_tunai").show();
+                   $("#cetak_tunai_kategori").show();
+                   $("#cetak_tunai_besar").show('');
+                
+
+                    }).catch(Dexie.BulkError, function (e) {
+                        // Explicitely catching the bulkAdd() operation makes those successful
+                        // additions commit despite that there were errors.
+                        console.error ("Some raindrops did not succeed. However, " +
+                           100000-e.failures.length + " raindrops was added successfully");
+                    });
+
+                    db.detail_penjualan.where('no_reg').equals(no_reg).each(function(data,i){
+                      console.log(data.kode_barang);
+                    });
+           
+
+
+  });
+
+     
 
  $.post("proses_bayar_jual_kasir.php",{id_user:id_user,sisa_pembayaran:sisa_pembayaran, kredit:kredit,no_rm:no_rm,no_reg:no_reg,tanggal_jt:tanggal_jt,total:total,total2:total2,potongan:potongan,potongan_persen:potongan_persen,/*tax:tax,*/cara_bayar:cara_bayar,pembayaran:pembayaran,total_hpp:total_hpp,harga:harga,kode_gudang:kode_gudang,dokter:dokter,petugas_kasir:petugas_kasir,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,sisa:sisa,ppn:ppn,penjamin:penjamin,nama_pasien:nama_pasien,jenis_penjualan:jenis_penjualan,biaya_adm:biaya_adm,analis:analis,petugas_radiologi:petugas_radiologi},function(info) {
 
@@ -2940,16 +2988,62 @@ alert("Silakan Bayar Piutang");
 
         if (result.status == 0) {
 
-     $("#cetak_tunai").attr('href', 'cetak_penjualan_tunai_rj.php?no_reg='+no_reg+'&sisa='+sisa_pembayaran+'&tunai='+pembayaran+'&total='+total+'&biaya_admin='+biaya_adm+'&potongan='+potongan+'&no_rm='+no_rm+'&nama_pasien='+nama_pasien+'');
+     $.get("ambil_data_tbs_penjualan.php?no_reg="+no_reg ,function(data){
 
-     $("#cetak_tunai_besar").attr('href', 'cetak_penjualan_tunai_besar_rj.php?no_reg='+no_reg+'&sisa='+sisa_pembayaran+'&kredit='+sisa_kredit+'&tunai='+pembayaran+'&total='+total+'&biaya_admin='+biaya_adm+'&potongan='+potongan+'&no_rm='+no_rm+'&nama_pasien='+nama_pasien+'&keterangan='+keterangan+'&cara_bayar='+cara_bayar+'');
+     var db = new Dexie("database_penjualan");
+    
+           db.version(1).stores({
+             
+            detail_penjualan : 'id,no_reg,kode_barang,nama_barang,jumlah_barang,harga,subtotal,satuan,potongan'
+          
+          });
 
-     $("#cetak_tunai_kategori").attr('href','cetak_penjualan_tunai_kategori_rj.php?no_reg='+no_reg+'&sisa='+sisa_pembayaran+'&tunai='+pembayaran+'&total='+total+'&biaya_admin='+biaya_adm+'&potongan='+potongan+'&no_rm='+no_rm+'&nama_pasien='+nama_pasien+'');
+            var data_detail_penjualan = [];
+                $.each(data.result, function(i, item) {
+
+                 
+                    data_detail_penjualan.push({id: data.result[i].id, kode_barang: data.result[i].kode_barang,nama_barang : data.result[i].nama_barang,satuan:  data.result[i].satuan,no_reg:  data.result[i].no_reg,jumlah_barang:  data.result[i].jumlah_barang,harga:  data.result[i].harga,subtotal:  data.result[i].subtotal,potongan:  data.result[i].potongan  });
 
 
-     $("#cetak_tunai").show();
-     $("#cetak_tunai_kategori").show();
-     $("#cetak_tunai_besar").show();
+
+                   });
+
+                 db.detail_penjualan.bulkPut(data_detail_penjualan).then(function(lastKey) {
+
+                    console.log("Selesai memasukkan data detail penjualan ke indexeddb");
+                    console.log("Jumlah Data yang dimasukkan : " + lastKey); // Will be 100000.
+
+
+
+      
+                  $("#cetak_tunai").attr('href', 'cetak_penjualan_tunai_rj.php?no_reg='+no_reg+'&sisa='+sisa_pembayaran+'&tunai='+pembayaran+'&total='+total+'&biaya_admin='+biaya_adm+'&potongan='+potongan+'&no_rm='+no_rm+'&nama_pasien='+nama_pasien+'');
+
+                   $("#cetak_tunai_besar").attr('href', 'cetak_penjualan_tunai_besar_rj.php?no_reg='+no_reg+'&sisa='+sisa_pembayaran+'&kredit='+sisa_kredit+'&tunai='+pembayaran+'&total='+total+'&biaya_admin='+biaya_adm+'&potongan='+potongan+'&no_rm='+no_rm+'&nama_pasien='+nama_pasien+'&keterangan='+keterangan+'&cara_bayar='+cara_bayar+'');
+
+                   $("#cetak_tunai_kategori").attr('href','cetak_penjualan_tunai_kategori_rj.php?no_reg='+no_reg+'&sisa='+sisa_pembayaran+'&tunai='+pembayaran+'&total='+total+'&biaya_admin='+biaya_adm+'&potongan='+potongan+'&no_rm='+no_rm+'&nama_pasien='+nama_pasien+'');
+
+                   $("#cetak_tunai").click();
+                      
+                   $("#cetak_tunai").show();
+                   $("#cetak_tunai_kategori").show();
+                   $("#cetak_tunai_besar").show('');
+                
+
+                    }).catch(Dexie.BulkError, function (e) {
+                        // Explicitely catching the bulkAdd() operation makes those successful
+                        // additions commit despite that there were errors.
+                        console.error ("Some raindrops did not succeed. However, " +
+                           100000-e.failures.length + " raindrops was added successfully");
+                    });
+
+                    db.detail_penjualan.where('no_reg').equals(no_reg).each(function(data,i){
+                      console.log(data.kode_barang);
+                    });
+           
+
+
+  });
+
 
       $.post("proses_bayar_jual_kasir.php",{id_user:id_user,sisa_pembayaran:sisa_pembayaran, kredit:kredit,no_rm:no_rm,no_reg:no_reg,tanggal_jt:tanggal_jt,total:total,total2:total2,potongan:potongan,potongan_persen:potongan_persen,/*tax:tax,*/cara_bayar:cara_bayar,pembayaran:pembayaran,total_hpp:total_hpp,harga:harga,kode_gudang:kode_gudang,dokter:dokter,petugas_kasir:petugas_kasir,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,sisa:sisa,ppn:ppn,penjamin:penjamin,nama_pasien:nama_pasien,jenis_penjualan:jenis_penjualan,biaya_adm:biaya_adm,analis:analis},function(info) {
 
@@ -3143,6 +3237,53 @@ $("#tbody-barang-jual").find("tr").remove();
 
         if (result.status == 0) {
 
+
+            $.get("ambil_data_tbs_penjualan.php?no_reg="+no_reg ,function(data){
+
+     var db = new Dexie("database_penjualan");
+    
+           db.version(1).stores({
+             
+            detail_penjualan : 'id,no_reg,kode_barang,nama_barang,jumlah_barang,harga,subtotal,satuan,potongan'
+          
+          });
+
+            var data_detail_penjualan = [];
+                $.each(data.result, function(i, item) {
+
+                 
+                    data_detail_penjualan.push({id: data.result[i].id, kode_barang: data.result[i].kode_barang,nama_barang : data.result[i].nama_barang,satuan:  data.result[i].satuan,no_reg:  data.result[i].no_reg,jumlah_barang:  data.result[i].jumlah_barang,harga:  data.result[i].harga,subtotal:  data.result[i].subtotal,potongan:  data.result[i].potongan  });
+
+
+
+                   });
+
+                 db.detail_penjualan.bulkPut(data_detail_penjualan).then(function(lastKey) {
+
+                    console.log("Selesai memasukkan data detail penjualan ke indexeddb");
+                    console.log("Jumlah Data yang dimasukkan : " + lastKey); // Will be 100000.
+
+
+
+      
+                      
+            
+
+                    }).catch(Dexie.BulkError, function (e) {
+                        // Explicitely catching the bulkAdd() operation makes those successful
+                        // additions commit despite that there were errors.
+                        console.error ("Some raindrops did not succeed. However, " +
+                           100000-e.failures.length + " raindrops was added successfully");
+                    });
+
+                    db.detail_penjualan.where('no_reg').equals(no_reg).each(function(data,i){
+                      console.log(data.kode_barang);
+                    });
+           
+
+
+  });
+
      $.post("proses_bayar_jual_kasir.php",{id_user:id_user,sisa_pembayaran:sisa_pembayaran, kredit:kredit,no_rm:no_rm,no_reg:no_reg,tanggal_jt:tanggal_jt,total:total,total2:total2,potongan:potongan,potongan_persen:potongan_persen,/*tax:tax,*/cara_bayar:cara_bayar,pembayaran:pembayaran,total_hpp:total_hpp,harga:harga,kode_gudang:kode_gudang,dokter:dokter,petugas_kasir:petugas_kasir,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,sisa:sisa,ppn:ppn,penjamin:penjamin,nama_pasien:nama_pasien,jenis_penjualan:jenis_penjualan,biaya_adm:biaya_adm,analis:analis},function(info) {
 
     if (info == 1)
@@ -3156,7 +3297,7 @@ $("#tbody-barang-jual").find("tr").remove();
 
                 $("#table-baru").html(info);
                 var no_faktur = info;
-                $("#cetak_piutang").attr('href', 'cetak_penjualan_piutang.php?no_faktur='+no_faktur+'');
+                $("#cetak_piutang").attr('href', 'cetak_penjualan_piutang.php?no_faktur='+no_faktur+'&no_reg='+no_reg);
                   $("#cetak_piutang").show();
                 $("#table-baru").html(info);
                 $("#alert_berhasil").show();
