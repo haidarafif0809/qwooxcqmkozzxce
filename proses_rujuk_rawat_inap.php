@@ -39,12 +39,28 @@ else
       $poli = stringdoang($_POST['poli']);
       $dokter_pengirim = stringdoang($_POST['dokter_pengirim']);
       $group_bed = stringdoang($_POST['group_bed']);
-      $tinggi_badan = stringdoang($_POST['tinggi_badan']);
-      $berat_badan = stringdoang($_POST['berat_badan']);
-      $suhu = stringdoang($_POST['suhu']);
-      $nadi = stringdoang($_POST['nadi']);
-      $respiratory_rate = stringdoang($_POST['respiratory_rate']);
-      $sistole_distole = stringdoang($_POST['sistole_distole']);
+
+
+      $sett_registrasi= $db->query("SELECT * FROM setting_registrasi ");
+      $data_sett = mysqli_fetch_array($sett_registrasi);
+
+        if ($data_sett['tampil_ttv'] == 0){
+            $tinggi_badan = '-';
+            $berat_badan = '-';
+            $suhu = '-';
+            $nadi = '-';
+            $respiratory_rate = '-';
+            $sistole_distole = '-';
+       }
+      else{
+            $tinggi_badan = stringdoang($_POST['tinggi_badan']);
+            $berat_badan = stringdoang($_POST['berat_badan']);
+            $suhu = stringdoang($_POST['suhu']);
+            $nadi = stringdoang($_POST['nadi']);
+            $respiratory_rate = stringdoang($_POST['respiratory_rate']);
+            $sistole_distole = stringdoang($_POST['sistole_distole']);
+      }
+
       $perujuk = stringdoang($_POST['rujukan']);
       $alergi = stringdoang($_POST['alergi']);
       $no_reg = stringdoang($_POST['no_reg']);
@@ -107,8 +123,7 @@ else
 
 
 
-
-            $sql0 ="INSERT INTO rekam_medik_inap
+             $sql0 ="INSERT INTO rekam_medik_inap
             (group_bed,alergi,no_reg,no_rm,nama,alamat,umur,jenis_kelamin,sistole_distole,suhu,berat_badan,tinggi_badan,nadi,
             respiratory,poli,tanggal_periksa,jam,dokter,kondisi,rujukan,dokter_penanggung_jawab,bed,ruangan)
             VALUES 
@@ -122,7 +137,7 @@ else
             {
               echo "Error: " . $sql0 . "<br>" . $db->error;
             }
-
+      
 
             // UPDATE PASIEN NYA
             $update_pasien = "UPDATE pelanggan SET pekerjaan_suamiortu = '$pekerjaan', no_hp_penanggung = '$no_hp_penanggung', hubungan_dengan_pasien = '$hubungan_dengan_pasien', alamat_penanggung = '$alamat_penanggung', nama_penanggungjawab = '$penanggung_jawab', umur = '$umur', no_telp = '$hp_pasien', alamat_sekarang = '$alamat', penjamin = '$penjamin' WHERE kode_pelanggan = '$no_rm'";
@@ -196,8 +211,7 @@ else
       } // token
 }
 
-
- echo '<META HTTP-EQUIV="Refresh" Content="0; URL=rawat_inap.php">';
+echo '<META HTTP-EQUIV="Refresh" Content="0; URL=rawat_inap.php">';
 
 ?>
 
