@@ -909,13 +909,12 @@ Radiologi  </button>
                           <thead> <!-- untuk memberikan nama pada kolom tabel -->
                               
                               <th> Kode  </th>
-                              <th> Nama </th>
+                              <th> Pemeriksaan  </th>
+                              <th> Nama Jasa</th>
                               <th> Nama Petugas</th>
                               <th> Jumlah </th>
                               <th> Harga </th>
                               <th> Subtotal </th>
-                              <th> Potongan </th>
-                              <th> Pajak </th>
                               <th> Tanggal </th>
                           </thead> <!-- tag penutup tabel -->
                     </table>

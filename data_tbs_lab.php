@@ -30,7 +30,7 @@ $columns = array(
 );
 
 // getting total number records without any search
-$sql =" SELECT kode_barang, nama_barang, jumlah_barang, harga, subtotal, potongan, tax, tanggal, jam, id";
+$sql =" SELECT kode_barang,lab_ke_berapa, nama_barang, jumlah_barang, harga, subtotal, potongan, tax, tanggal, jam, id";
 $sql.=" FROM tbs_penjualan ";
 $sql.=" WHERE no_reg = '$no_reg' AND lab = 'Laboratorium' AND no_faktur IS NULL";
 
@@ -39,7 +39,7 @@ $totalData = mysqli_num_rows($query);
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
-$sql =" SELECT kode_barang, nama_barang, jumlah_barang, harga, subtotal, potongan, tax, tanggal, jam, id";
+$sql =" SELECT kode_barang,lab_ke_berapa, nama_barang, jumlah_barang, harga, subtotal, potongan, tax, tanggal, jam, id";
 $sql.=" FROM tbs_penjualan ";
 $sql.=" WHERE no_reg = '$no_reg' AND lab = 'Laboratorium' AND no_faktur IS NULL";
 
@@ -63,6 +63,7 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
   $nestedData=array(); 
 
       $nestedData[] = $row["kode_barang"];
+      $nestedData[] = "<center> ".$row['lab_ke_berapa']."</center>";
       $nestedData[] = $row["nama_barang"];
 
       $kd = $db->query("SELECT f.nama_petugas, u.nama FROM tbs_fee_produk f LEFT JOIN user u ON f.nama_petugas = u.id WHERE f.kode_produk = '$row[kode_barang]' AND f.jam = '$row[jam]' ");
@@ -71,8 +72,7 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 
       $nu = mysqli_fetch_array($kd);
 
-        if ($nu['nama'] != '')
-        {
+        if ($nu['nama'] != ''){
 
           while($nur = mysqli_fetch_array($kdD))
           {
@@ -80,17 +80,14 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
           }
 
         }
-
-        else
-        {
+        else{
            $nestedData[] = "";
         }
 
       $nestedData[] = rp($row["jumlah_barang"]);
       $nestedData[] = rp($row["harga"]);
-      $nestedData[] = rp($row["potongan"]);
-      $nestedData[] = rp($row["tax"]);
       $nestedData[] = rp($row["subtotal"]);
+      $nestedData[] = $row["tanggal"];
 
 
       $nestedData[] = $row["id"];
