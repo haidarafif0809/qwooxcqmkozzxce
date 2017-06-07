@@ -17,7 +17,7 @@ $dari_tanggal = stringdoang($_GET['dari_tanggal']);
 $sampai_tanggal = stringdoang($_GET['sampai_tanggal']);
 
 
-$query_jurnal_persediaan = $db->query("SELECT no_faktur,debit,kredit ,waktu_jurnal FROM jurnal_trans WHERE kode_akun_jurnal = '1-1301' AND DATE(waktu_jurnal) >= '$dari_tanggal' AND DATE(waktu_jurnal) = '$sampai_tanggal' GROUP BY no_faktur  ");
+$query_jurnal_persediaan = $db->query("SELECT no_faktur,debit,kredit ,waktu_jurnal, jenis_transaksi FROM jurnal_trans WHERE kode_akun_jurnal = '1-1301' AND DATE(waktu_jurnal) >= '$dari_tanggal' AND DATE(waktu_jurnal) <= '$sampai_tanggal' GROUP BY no_faktur ");
 
 
 while ($data_jurnal_persediaan = mysqli_fetch_array($query_jurnal_persediaan)) {
@@ -41,6 +41,19 @@ while ($data_jurnal_persediaan = mysqli_fetch_array($query_jurnal_persediaan)) {
 		$nilai_persediaan_jurnal = $data_jurnal_persediaan['kredit'];
 
 		$selisih_nilai_persediaan = $nilai_persediaan_asli - $nilai_persediaan_jurnal;
+				
+		
+				if($selisih_nilai_persediaan != 0 AND $data_jurnal_persediaan['jenis_transaksi'] == 'Penjualan'){
+
+				$db->query("UPDATE penjualan SET keterangan = 'Edit Otomatis Jurnal' WHERE no_faktur = '$data_jurnal_persediaan[no_faktur]'");
+
+				}
+				elseif($selisih_nilai_persediaan != 0 AND $data_jurnal_persediaan['jenis_transaksi'] == 'Item Keluar'){
+
+				$db->query("UPDATE jurnal_trans SET debit = '$nilai_persediaan_asli' WHERE no_faktur = '$data_jurnal_persediaan[no_faktur]' AND kode_akun_jurnal = '5-2202' ");
+
+				$db->query("UPDATE jurnal_trans SET kredit = '$nilai_persediaan_asli' WHERE no_faktur = '$data_jurnal_persediaan[no_faktur]' AND kode_akun_jurnal = '1-1301' ");
+				}
 	}
 
 	echo "<tr>
