@@ -52,7 +52,7 @@ $jenis_kelamin = $out_gander['jenis_kelamin'];
          <select type="text" class="form-control chosen" id="analis" autocomplete="off">        
 
          <?php 
-         $query09 = $db->query("SELECT nama,id FROM user WHERE tipe = '2' ");
+         $query09 = $db->query("SELECT nama,id FROM user WHERE tipe = '6' ");
          while ( $data09 = mysqli_fetch_array($query09)) {
 
           echo "<option value='".$data09['id'] ."'>".$data09['nama'] ."</option>";

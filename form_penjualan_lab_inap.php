@@ -458,7 +458,7 @@ $(document).on('click','.pilih-header',function(e){
     else{
       $(this).attr("data-toogle", 1);
 
-      $.post("hapus_data_header.php",{kode_jasa_lab:kode_jasa_lab,no_reg:no_reg,pemeriksaan_keberapa:pemeriksaan_keberapa},function(data){
+      $.post("hapus_data_header_inap.php",{kode_jasa_lab:kode_jasa_lab,no_reg:no_reg,pemeriksaan_keberapa:pemeriksaan_keberapa},function(data){
 
       });
     }
@@ -504,7 +504,7 @@ $(document).on('click','.pilih-detail-dari-header',function(e){
     else{
       $(this).attr("data-toogle", 2);
 
-      $.post("hapus_data_detail.php",{kode_jasa_lab:kode_jasa_lab,no_reg:no_reg,pemeriksaan_keberapa:pemeriksaan_keberapa},function(data){
+      $.post("hapus_data_detail_inap.php",{kode_jasa_lab:kode_jasa_lab,no_reg:no_reg,pemeriksaan_keberapa:pemeriksaan_keberapa},function(data){
 
       });
     }
@@ -551,7 +551,7 @@ $(document).on('click','.set-sendirian',function(e){
 
       $(this).attr("data-toogle", 3);
 
-      $.post("hapus_data_detail_sendirian.php",{kode_jasa_lab:kode_jasa_lab,no_reg:no_reg,pemeriksaan_keberapa:pemeriksaan_keberapa},function(data){
+      $.post("hapus_data_detail_sendirian_inap.php",{kode_jasa_lab:kode_jasa_lab,no_reg:no_reg,pemeriksaan_keberapa:pemeriksaan_keberapa},function(data){
 
       });
     }
@@ -709,7 +709,7 @@ $(document).on('click', '#simpan_lab_inap', function (e) {
     var jenis_kelamin = $("#jenis_kelamin").val();
     var rujukan = $("#rujukan").val();
 
-    $.post('proses_simpan_lab_inap.php',{no_reg:no_reg,pemeriksaan_keberapa:pemeriksaan_keberapa,no_rm:no_rm,nama_pasien:nama_pasien}, function(data){
+    $.post('proses_simpan_lab_inap.php',{analis:analis,dokter:dokter,no_reg:no_reg,pemeriksaan_keberapa:pemeriksaan_keberapa,no_rm:no_rm,nama_pasien:nama_pasien}, function(data){
      
       if(data == 1){
       window.location.href='data_laboratorium_inap.php?no_reg='+no_reg+'&nama='+nama_pasien+'&dokter_pengirim='+dokter+'&jenis_kelamin='+jenis_kelamin+'&bed='+bed+'&kamar='+kamar+'&rujukan='+rujukan+'&no_rm='+no_rm;

@@ -11,6 +11,8 @@ $nama = stringdoang($_GET['nama_pasien']);
 $no_reg = stringdoang($_GET['no_reg']);
 $dokter = stringdoang($_GET['dokter']);
 $jenis_kelamin = stringdoang($_GET['jenis_kelamin']);
+$bed = stringdoang($_GET['bed']);
+$kamar = stringdoang($_GET['kamar']);
 $tanggal = stringdoang($_GET['tanggal']);
 $jenis_penjualan = 'Rawat Inap';
 $rujukan = 'Rujuk Rawat Inap';
@@ -317,7 +319,7 @@ echo '
       <!--Mulai Col SM Kedua-->
       <div class="col-sm-8">
 
-          <a type="button" class="btn btn-warning" href="pasien_sudah_masuk.php"><i class="fa fa-reply-all"></i> Kembali</a>
+<a type="button" id="kembali" class="btn btn-warning" href="data_laboratorium_inap.php?no_reg=<?php echo $no_reg ?>&nama=<?php echo $nama ?>&dokter_pengirim=<?php echo $dokter ?>&jenis_kelamin=<?php echo $jenis_kelamin ?>&bed=<?php echo $bed ?>&kamar=<?php echo $kamar ?>&no_rm=<?php echo $no_rm ?> "><i class="fa fa-reply-all"></i> Kembali</a>
           
       
         <button type="button" id="cari_jasa_laboratorium" class="btn btn-info " data-toggle="modal" data-target="#modal_lab"><i class='fa fa-search'></i> Cari Laboratorium (F1) </button> 
@@ -709,6 +711,8 @@ $(document).on('click', '#simpan_lab_inap', function (e) {
     var tanggal = $("#tanggal").val();
 
      $("#table_tbs_laboratorium").hide();
+     $("#cari_jasa_laboratorium").hide();
+     $("#kembali").hide();
      $("#alert_berhasil").show();
 
     $.post('proses_update_simpan_data_lab_inap.php',{no_reg:no_reg,pemeriksaan_keberapa:pemeriksaan_keberapa,no_rm:no_rm,nama_pasien:nama_pasien,tanggal:tanggal}, function(data){

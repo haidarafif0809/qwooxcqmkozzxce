@@ -122,9 +122,6 @@ $input_hasil_lab = $take_lab['input_hasil_lab'];
 <?php endif?>
 <th style="background-color: #4CAF50; color: white;"> Cetak</th>
 <th style="background-color: #4CAF50; color: white;"> No Periksa</th>
-<th style="background-color: #4CAF50; color: white;"> No REG</th>
-<th style="background-color: #4CAF50; color: white;"> No RM</th>
-<th style="background-color: #4CAF50; color: white;"> Nama Pasien</th>
 <th style="background-color: #4CAF50; color: white;"> Dokter</th>
 <th style="background-color: #4CAF50; color: white;"> Analis</th>
 <th style="background-color: #4CAF50; color: white;"> Status</th>
@@ -160,6 +157,8 @@ $input_hasil_lab = $take_lab['input_hasil_lab'];
                 d.no_rm = $("#no_rm").val(); 
                 d.no_reg = $("#no_reg").val(); 
                 d.jenis_kelamin = $("#lab_jenis_kelamin").val(); 
+                d.bed = $("#bed").val(); 
+                d.kamar = $("#kamar").val(); 
             },
             type: "post",  // method  , by default get
 
