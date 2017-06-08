@@ -74,8 +74,17 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
     $nestedData[] = rp($row["fisik"]);
     $nestedData[] = rp($row["selisih_fisik"]);
 
-
-	$nestedData[] = $row["total_selisih"];
+if($row["total_selisih"] < 0){
+	 $sum_hpp_keluar = $db->query("SELECT SUM(total_nilai) AS total FROM hpp_keluar WHERE no_faktur = '$row[no_faktur]'");
+              $ambil_sum = mysqli_fetch_array($sum_hpp_keluar);
+              $total_selisih = "(-) ".rp($ambil_sum['total']);
+}
+else{
+	 $sum_hpp_masuk = $db->query("SELECT SUM(total_nilai) AS total FROM hpp_masuk WHERE no_faktur = '$row[no_faktur]'");
+              $ambil_sum_masuk = mysqli_fetch_array($sum_hpp_masuk);
+              $total_selisih = "(+) ".rp($ambil_sum_masuk['total']);
+}
+	$nestedData[] = $total_selisih;
 
 
 	$nestedData[] = $row["status"];
