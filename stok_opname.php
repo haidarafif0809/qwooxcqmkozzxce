@@ -160,7 +160,6 @@ echo '<button style="display:none" data-toggle="collapse tooltip" accesskey="k" 
                 <h6 style="text-align: left ;"><i><b> * Short Key (F2) untuk mencari Kode Produk atau Nama Produk.</b></i></h6>
 
 
-    <input type="hidden" class="form-control" style="font-size: 25px" name="total_selisih_harga" id="total_selisih_harga" readonly="" placeholder="Total Selisih Harga">
 
     <button type="submit" id="selesai" style="display:none;" class="btn btn-info"> <i class='fa fa-send'> </i> Selesai </button>
 
@@ -215,6 +214,8 @@ echo '<button style="display:none" data-toggle="collapse tooltip" accesskey="k" 
 <span id="result"></span>  
 </span>
 <!--END FILTER DETAIl-->
+
+    <input type="hidden" class="form-control" style="font-size: 25px" name="total_selisih_harga" id="total_selisih_harga" readonly="" placeholder="Total Selisih Harga">
 
 <div class="table-responsive">
 <span id="tabel_baru">
@@ -387,7 +388,7 @@ echo '<button style="display:none" data-toggle="collapse tooltip" accesskey="k" 
                   $.post("proses_selesai_stok_opname.php",{total_selisih_harga:total_selisih_harga,keterangan:keterangan},function(info) {
                   
                   $("#result").hide();
-
+                  $("#total_selisih_harga").val(info);
             $('#table_stok_opname').DataTable().destroy();
             $('#tabel_tbs_stok_opname').DataTable().destroy();
 
@@ -435,7 +436,6 @@ echo '<button style="display:none" data-toggle="collapse tooltip" accesskey="k" 
 //pembaruan datatable data tbs stok opname 
 
 
-                  $("#total_selisih_harga").val('');       
                   $("#alert_berhasil").show();
                   $("#kode_barang").show();
                   $("#nama_barang").show();

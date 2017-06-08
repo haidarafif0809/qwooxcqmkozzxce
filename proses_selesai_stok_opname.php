@@ -96,7 +96,7 @@
         if ($selisih_fisik < 0) {//jika selisih nya kurang dari 0 harga ambil dari hppp masuk harga_unit
 
         // HARGA DARI HPP MASUK
-       $pilih_hpp = $db->query("SELECT harga_unit FROM hpp_masuk WHERE kode_barang = '$data[kode_barang]' ORDER BY id DESC LIMIT 1");
+       $pilih_hpp = $db->query("SELECT harga_unit FROM hpp_masuk WHERE kode_barang = '$data[kode_barang]' ORDER BY id ASC LIMIT 1");
        $ambil_hpp = mysqli_fetch_array($pilih_hpp);
        $jumlah_hpp = $ambil_hpp['harga_unit'];
        // SAMPAI SINI
@@ -106,7 +106,7 @@
 
               // HARGA DARI DETAIL PEMBELIAN ATAU BARANG
         
-        $select2 = $db->query("SELECT harga FROM detail_pembelian WHERE kode_barang = '$data[kode_barang]' ORDER BY id DESC LIMIT 1");
+        $select2 = $db->query("SELECT harga_unit FROM hpp_masuk WHERE kode_barang = '$data[kode_barang]' ORDER BY id ASC LIMIT 1");
         $num_rows = mysqli_num_rows($select2);
         $fetc_array = mysqli_fetch_array($select2);
         
@@ -118,7 +118,7 @@
         } 
         
         else {
-         $jumlah_hpp = $fetc_array['harga'];
+         $jumlah_hpp = $fetc_array['harga_unit'];
         }
         
         // SAMPAI SINI
@@ -175,20 +175,29 @@
               $sum_hpp_keluar = $db->query("SELECT SUM(total_nilai) AS total FROM hpp_keluar WHERE no_faktur = '$no_faktur'");
               $ambil_sum = mysqli_fetch_array($sum_hpp_keluar);
               $total = $ambil_sum['total'];
-
+              if ($total == null) {
+                # code...
+                $total = 0;
+              }
 
               $sum_hpp_masuk = $db->query("SELECT SUM(total_nilai) AS total FROM hpp_masuk WHERE no_faktur = '$no_faktur'");
-              $ambil_sum_masuk = mysqli_fetch_array($sum_hpp_keluar);
+              $ambil_sum_masuk = mysqli_fetch_array($sum_hpp_masuk);
               $total_masuk = $ambil_sum_masuk['total'];
+              if ($total_masuk == null) {
+                # code...
+                $total_masuk = 0;
+              }
+
+              $total_hpp_jumlah = $total_masuk - $total;
 
               $select_setting_akun = $db->query("SELECT pengaturan_stok,persediaan  FROM setting_akun");
               $ambil_setting = mysqli_fetch_array($select_setting_akun);
 
-             if ($data_detail_stok_opname['total_selisih_harga'] < 0) {
-                $total0 = $total;
+             if ($total_hpp_jumlah < 0) {
+                $total_minus = $total;
 
                //PERSEDIAAN    
-             $insert_jurnal = "INSERT INTO jurnal_trans (nomor_jurnal,waktu_jurnal,keterangan_jurnal,kode_akun_jurnal,debit,kredit,jenis_transaksi,no_faktur,approved,user_buat) VALUES ('".no_jurnal()."', '$tanggal_sekarang $jam_sekarang', 'Stok Opname -', '$ambil_setting[persediaan]', '0', '$total0', 'Stok Opname', '$no_faktur','1', '$user')";
+             $insert_jurnal = "INSERT INTO jurnal_trans (nomor_jurnal,waktu_jurnal,keterangan_jurnal,kode_akun_jurnal,debit,kredit,jenis_transaksi,no_faktur,approved,user_buat) VALUES ('".no_jurnal()."', '$tanggal_sekarang $jam_sekarang', 'Stok Opname -', '$ambil_setting[persediaan]', '0', '$total_minus', 'Stok Opname', '$no_faktur','1', '$user')";
               if ($db->query($insert_jurnal) === TRUE) {
                 
                } else {
@@ -198,7 +207,7 @@
 
 
               //STOK OPNAME    
-              $insert_jurnal2 = "INSERT INTO jurnal_trans (nomor_jurnal,waktu_jurnal,keterangan_jurnal,kode_akun_jurnal,debit,kredit,jenis_transaksi,no_faktur,approved,user_buat) VALUES ('".no_jurnal()."', '$tanggal_sekarang $jam_sekarang', 'Stok Opname -', '$ambil_setting[pengaturan_stok]', '$total0', '0', 'Stok Opname', '$no_faktur','1', '$user')";
+              $insert_jurnal2 = "INSERT INTO jurnal_trans (nomor_jurnal,waktu_jurnal,keterangan_jurnal,kode_akun_jurnal,debit,kredit,jenis_transaksi,no_faktur,approved,user_buat) VALUES ('".no_jurnal()."', '$tanggal_sekarang $jam_sekarang', 'Stok Opname -', '$ambil_setting[pengaturan_stok]', '$total_minus', '0', 'Stok Opname', '$no_faktur','1', '$user')";
               if ($db->query($insert_jurnal2) === TRUE) {
                 
                } else {
@@ -209,10 +218,10 @@
 
       else {
 
-       $total_tbs = $total_masuk;
+          $total_plus = $total_masuk;
 
         //PERSEDIAAN    
-        $insert_jurnal3 = "INSERT INTO jurnal_trans (nomor_jurnal,waktu_jurnal,keterangan_jurnal,kode_akun_jurnal,debit,kredit,jenis_transaksi,no_faktur,approved,user_buat) VALUES ('".no_jurnal()."', '$tanggal_sekarang $jam_sekarang', 'Stok Opname -', '$ambil_setting[persediaan]', '$data_detail_stok_opname[total_selisih_harga]', '0', 'Stok Opname', '$no_faktur','1', '$user')";
+        $insert_jurnal3 = "INSERT INTO jurnal_trans (nomor_jurnal,waktu_jurnal,keterangan_jurnal,kode_akun_jurnal,debit,kredit,jenis_transaksi,no_faktur,approved,user_buat) VALUES ('".no_jurnal()."', '$tanggal_sekarang $jam_sekarang', 'Stok Opname -', '$ambil_setting[persediaan]', '$total_masuk', '0', 'Stok Opname', '$no_faktur','1', '$user')";
         
         if ($db->query($insert_jurnal3) === TRUE) {
                 
@@ -221,7 +230,7 @@
             }
 
         //STOK OPNAME    
-        $insert_jurnal4 = "INSERT INTO jurnal_trans (nomor_jurnal,waktu_jurnal,keterangan_jurnal,kode_akun_jurnal,debit,kredit,jenis_transaksi,no_faktur,approved,user_buat) VALUES ('".no_jurnal()."', '$tanggal_sekarang $jam_sekarang', 'Stok Opname -', '$ambil_setting[pengaturan_stok]', '0', '$data_detail_stok_opname[total_selisih_harga]', 'Stok Opname', '$no_faktur','1', '$user')";
+        $insert_jurnal4 = "INSERT INTO jurnal_trans (nomor_jurnal,waktu_jurnal,keterangan_jurnal,kode_akun_jurnal,debit,kredit,jenis_transaksi,no_faktur,approved,user_buat) VALUES ('".no_jurnal()."', '$tanggal_sekarang $jam_sekarang', 'Stok Opname -', '$ambil_setting[pengaturan_stok]', '0', '$total_masuk', 'Stok Opname', '$no_faktur','1', '$user')";
         if ($db->query($insert_jurnal4) === TRUE) {
                 
             } else {
