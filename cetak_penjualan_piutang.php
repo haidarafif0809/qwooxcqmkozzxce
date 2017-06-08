@@ -236,7 +236,10 @@ $(document).ready(function(){
        
       $("#subtotal_barang").text(subtotal);
                 
+        }).then(function(){
+         window.print(); 
         });
+           
 
 });
 </script>

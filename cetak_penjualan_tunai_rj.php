@@ -155,6 +155,8 @@ $(document).ready(function(){
         }
       
                 
+        }).then(function(){
+         window.print(); 
         });
            
 

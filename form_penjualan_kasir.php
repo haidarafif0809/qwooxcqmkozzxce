@@ -970,7 +970,7 @@ Radiologi  </button>
 
           <?php endif;?>
 
-          <a href='cetak_penjualan_tunai_rj.php' id="cetak_tunai" style="display: none;" class="btn btn-primary btnPrint" > Cetak Tunai  </a>
+          <a href='cetak_penjualan_tunai_rj.php' id="cetak_tunai" style="display: none;" class="btn btn-primary btnPrint" target="blank" > Cetak Tunai  </a>
 
            <?php if ($otoritas_tombol['tombol_bayar'] > 0):?>              
 
