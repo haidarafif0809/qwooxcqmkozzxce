@@ -2496,23 +2496,26 @@ if (data == 1) {
 
 
   $.get("ambil_data_tbs_penjualan.php?no_reg="+no_reg ,function(data){
-
-     var db = new Dexie("database_penjualan");
+  
+  var db = new Dexie("database_penjualan");
     
            db.version(1).stores({
              
-            detail_penjualan : 'id,no_reg,kode_barang,nama_barang,jumlah_barang,harga,subtotal,satuan,potongan' 
+            detail_penjualan : 'id,no_reg,kode_barang,nama_barang,jumlah_barang,harga,subtotal,satuan,potongan,pajak'
+          
           });
 
             var data_detail_penjualan = [];
+
                 $.each(data.result, function(i, item) {
 
                  
-                    data_detail_penjualan.push({id: data.result[i].id, kode_barang: data.result[i].kode_barang,nama_barang : data.result[i].nama_barang,satuan:  data.result[i].satuan,no_reg:  data.result[i].no_reg,jumlah_barang:  data.result[i].jumlah_barang,harga:  data.result[i].harga,subtotal:  data.result[i].subtotal,potongan:  data.result[i].potongan  });
+                    data_detail_penjualan.push({id: data.result[i].id, kode_barang: data.result[i].kode_barang,nama_barang : data.result[i].nama_barang,satuan:  data.result[i].satuan,no_reg:  data.result[i].no_reg,jumlah_barang:  data.result[i].jumlah_barang,harga:  data.result[i].harga,subtotal:  data.result[i].subtotal,potongan:  data.result[i].potongan ,pajak:  data.result[i].pajak  });
 
 
 
                    });
+
 
                  db.detail_penjualan.bulkPut(data_detail_penjualan).then(function(lastKey) {
 
@@ -3226,24 +3229,25 @@ $("#tbody-barang-jual").find("tr").remove();
 
 
             $.get("ambil_data_tbs_penjualan.php?no_reg="+no_reg ,function(data){
-
-     var db = new Dexie("database_penjualan");
+           var db = new Dexie("database_penjualan");
     
            db.version(1).stores({
              
-            detail_penjualan : 'id,no_reg,kode_barang,nama_barang,jumlah_barang,harga,subtotal,satuan,potongan'
+            detail_penjualan : 'id,no_reg,kode_barang,nama_barang,jumlah_barang,harga,subtotal,satuan,potongan,pajak'
           
           });
 
             var data_detail_penjualan = [];
+
                 $.each(data.result, function(i, item) {
 
                  
-                    data_detail_penjualan.push({id: data.result[i].id, kode_barang: data.result[i].kode_barang,nama_barang : data.result[i].nama_barang,satuan:  data.result[i].satuan,no_reg:  data.result[i].no_reg,jumlah_barang:  data.result[i].jumlah_barang,harga:  data.result[i].harga,subtotal:  data.result[i].subtotal,potongan:  data.result[i].potongan  });
+                    data_detail_penjualan.push({id: data.result[i].id, kode_barang: data.result[i].kode_barang,nama_barang : data.result[i].nama_barang,satuan:  data.result[i].satuan,no_reg:  data.result[i].no_reg,jumlah_barang:  data.result[i].jumlah_barang,harga:  data.result[i].harga,subtotal:  data.result[i].subtotal,potongan:  data.result[i].potongan ,pajak:  data.result[i].pajak  });
 
 
 
                    });
+
 
                  db.detail_penjualan.bulkPut(data_detail_penjualan).then(function(lastKey) {
 
