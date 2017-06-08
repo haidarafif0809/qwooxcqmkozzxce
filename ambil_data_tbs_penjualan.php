@@ -7,7 +7,7 @@ header('Content-Type: application/json');
 
 $no_reg = $_GET['no_reg'];
 
-$query_tbs = $db->query("SELECT tp.id,no_reg,kode_barang,nama_barang,jumlah_barang,harga,subtotal,potongan,s.nama AS satuan FROM tbs_penjualan tp  INNER JOIN satuan s ON tp.satuan = s.id WHERE no_reg = '$no_reg' ");
+$query_tbs = $db->query("SELECT tp.id,no_reg,kode_barang,nama_barang,jumlah_barang,harga,subtotal,potongan,s.nama AS satuan,tax FROM tbs_penjualan tp  INNER JOIN satuan s ON tp.satuan = s.id WHERE no_reg = '$no_reg' ");
 
 $data_tbs_array = array();
 while ($data_tbs = mysqli_fetch_array($query_tbs)) {
@@ -20,7 +20,8 @@ while ($data_tbs = mysqli_fetch_array($query_tbs)) {
 								'harga' => $data_tbs['harga'],
 								'subtotal' => $data_tbs['subtotal'],
 								'satuan' => $data_tbs['satuan'],
-								'potongan' => $data_tbs['potongan']]);
+								'potongan' => $data_tbs['potongan'],
+								'pajak' => $data_tbs['tax']]);
 
 }
 

@@ -17,39 +17,14 @@ $no_rm = $_GET['no_rm'];
 $nama_pasien = $_GET['nama_pasien'];
 $tanggal = date('Y-m-d');
 
-$row = $db->query("SELECT * FROM tbs_penjualan WHERE no_reg = '$no_reg' ");
-$data_row = mysqli_num_rows($row);
-if ($data_row > 0) {
-        $query0 = $db->query("SELECT r.id, r.no_rm, r.nama_pasien, SUM(tp.subtotal) AS total_subtotal, SUM(tp.jumlah_barang) as total_item,  SUM(tp.tax) as pajak FROM registrasi r INNER JOIN tbs_penjualan tp on r.no_reg = tp.no_reg WHERE r.no_reg = '$no_reg' ");
-        $data0 = mysqli_fetch_array($query0);
-        
-        $query1 = $db->query("SELECT * FROM perusahaan ");
-        $data1 = mysqli_fetch_array($query1);
+$query1 = $db->query("SELECT * FROM perusahaan ");
+$data1 = mysqli_fetch_array($query1);  
 
-        
-      
-        
-        $select_operasi = $db->query("SELECT * FROM hasil_operasi WHERE no_reg = '$no_reg'");
-        
-        $query4 = $db->query("SELECT status_print FROM setting_printer WHERE nama_print = 'Printer Struk' OR nama_print = 'Printer Besar'");
-        $datas = mysqli_fetch_array($query4);
-        $status_print = $datas['status_print'];
-}
-else{
-        $query0 = $db->query("SELECT p.id, p.potongan,p.kode_pelanggan,p.nama,p.no_faktur,p.potongan,p.biaya_admin,p.total,p.tunai,p.sisa,p.tanggal,p.no_reg,dp.id as iddp, sum(dp.subtotal) as total_subtotal, SUM(dp.jumlah_barang) as total_item, SUM(dp.tax) as pajak FROM penjualan p inner join detail_penjualan dp on p.no_reg = dp.no_reg WHERE p.no_reg = '$no_reg' ");
-        $data0 = mysqli_fetch_array($query0);
+$select_operasi = $db->query("SELECT * FROM hasil_operasi WHERE no_reg = '$no_reg'");
 
-        $query1 = $db->query("SELECT * FROM perusahaan ");
-        $data1 = mysqli_fetch_array($query1);
-
-
-       
-        $select_operasi = $db->query("SELECT * FROM hasil_operasi WHERE no_reg = '$data0[no_reg]'");
-
-        $query4 = $db->query("SELECT status_print FROM setting_printer WHERE nama_print = 'Printer Struk' OR nama_print = 'Printer Besar'");
-        $datas = mysqli_fetch_array($query4);
-        $status_print = $datas['status_print'];
-}
+$query4 = $db->query("SELECT status_print FROM setting_printer WHERE nama_print = 'Printer Struk' OR nama_print = 'Printer Besar'");
+$datas = mysqli_fetch_array($query4);
+$status_print = $datas['status_print'];
 
 
 
@@ -79,11 +54,7 @@ else{
  <table>
   <tbody>
     <tr>
-<?php if ($data_row > 0): ?>
   <td>No. REG</td><td>&nbsp;:&nbsp;</td><td> <?php echo $no_reg; ?></td></tr><tr>  
-<?php else: ?>
-  <td>No. Faktur</td><td>&nbsp;:&nbsp;</td><td> <?php echo $data0['no_faktur']; ?></td></tr><tr>
-<?php endif ?>
 
 <td>Kasir </td><td>&nbsp;:&nbsp;</td><td> <?php echo $_SESSION['nama']; ?></td>
     </tr>
@@ -125,10 +96,10 @@ mysqli_close($db);
     ===================<br>
  <table>
   <tbody>
-      <tr><td  width="50%">Total Item</td> <td> :</td> <td> <?php echo rp($data0['total_item']); ?> </td></tr>
-      <tr><td width="50%">Subtotal</td> <td> :</td> <td><?php echo rp($data0['total_subtotal']);?> </tr>
+      <tr><td  width="50%">Total Item</td> <td> :</td> <td> <span id="total_item"></span> </td></tr>
+      <tr><td width="50%">Subtotal</td> <td> :</td> <td><span id="subtotal_item"></span> </tr>
       <tr><td width="50%">Diskon</td> <td> :</td> <td><?php echo rp($potongan);?> </tr>
-      <tr><td  width="50%">Pajak</td> <td> :</td> <td> <?php echo rp($data0['pajak']);?> </td></tr>
+      <tr><td  width="50%">Pajak</td> <td> :</td> <td> <span id="pajak"></span> </td></tr>
       <tr><td  width="50%">Biaya Admin</td> <td> :</td> <td> <?php echo rp($biaya_admin);?> </td></tr>
       <tr><td width="50%">Total Penjualan</td> <td> :</td> <td><?php echo rp($total) ?> </tr>
       <tr><td  width="50%">Tunai</td> <td> :</td> <td> <?php echo rp($tunai); ?> </td></tr>
@@ -160,10 +131,23 @@ $(document).ready(function(){
 
        var no_reg = '<?php echo $no_reg ?>';
        var status_print = '<?php echo $status_print ?>';
+       var total_item  = 0;
+       var subtotal_item = 0;
+       var pajak =  0;
 
        db.detail_penjualan.where('no_reg').equals(no_reg).each(function(data,i){
             
+       total_item = parseInt(total_item) + parseInt(data.jumlah_barang);
+       subtotal_item = parseInt(subtotal_item) + parseInt(data.subtotal);
+       pajak = parseInt(pajak) + parseInt(data.pajak);
+
+
         var data_detail_penjualan = '<tr><td width:"50%"> '+ data.nama_barang+' </td><td style="padding:3px"> '+ data.jumlah_barang +'</td><td style="padding:3px"> '+ data.harga +'</td><td style="padding:3px"> '+ data.subtotal + ' </td></tr>';
+
+        $("#total_item").text(total_item);
+        $("#subtotal_item").text(subtotal_item);
+        $("#pajak").text(pajak);
+
         if (status_print == 'Detail') {
             $("#tbody-detail").append(data_detail_penjualan);
         }

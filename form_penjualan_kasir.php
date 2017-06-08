@@ -1016,19 +1016,15 @@ Radiologi  </button>
     
 <script>
 
-
    $(window).on('load',function(){
 
 
-        $(".btnPrint").printPage();
-
-       
-
- $('#modal_loading_form').modal({  backdrop: 'static',
+          // $(".btnPrint").printPage();
+  
+         $('#modal_loading_form').modal({  backdrop: 'static',
                       keyboard: false});
                             
-                            $('#modal_loading_form').modal('show');
-
+          $('#modal_loading_form').modal('show');
 
           var db = new Dexie("database_barang");
     
@@ -2546,9 +2542,7 @@ if (data == 1) {
                            100000-e.failures.length + " raindrops was added successfully");
                     });
 
-                    db.detail_penjualan.where('no_reg').equals(no_reg).each(function(data,i){
-                      console.log(data.kode_barang);
-                    });
+                    
            
 
 
@@ -2994,15 +2988,16 @@ alert("Silakan Bayar Piutang");
     
            db.version(1).stores({
              
-            detail_penjualan : 'id,no_reg,kode_barang,nama_barang,jumlah_barang,harga,subtotal,satuan,potongan'
+            detail_penjualan : 'id,no_reg,kode_barang,nama_barang,jumlah_barang,harga,subtotal,satuan,potongan,pajak'
           
           });
 
             var data_detail_penjualan = [];
+            
                 $.each(data.result, function(i, item) {
 
                  
-                    data_detail_penjualan.push({id: data.result[i].id, kode_barang: data.result[i].kode_barang,nama_barang : data.result[i].nama_barang,satuan:  data.result[i].satuan,no_reg:  data.result[i].no_reg,jumlah_barang:  data.result[i].jumlah_barang,harga:  data.result[i].harga,subtotal:  data.result[i].subtotal,potongan:  data.result[i].potongan  });
+                    data_detail_penjualan.push({id: data.result[i].id, kode_barang: data.result[i].kode_barang,nama_barang : data.result[i].nama_barang,satuan:  data.result[i].satuan,no_reg:  data.result[i].no_reg,jumlah_barang:  data.result[i].jumlah_barang,harga:  data.result[i].harga,subtotal:  data.result[i].subtotal,potongan:  data.result[i].potongan ,pajak:  data.result[i].pajak  });
 
 
 
@@ -3021,8 +3016,6 @@ alert("Silakan Bayar Piutang");
                    $("#cetak_tunai_besar").attr('href', 'cetak_penjualan_tunai_besar_rj.php?no_reg='+no_reg+'&sisa='+sisa_pembayaran+'&kredit='+sisa_kredit+'&tunai='+pembayaran+'&total='+total+'&biaya_admin='+biaya_adm+'&potongan='+potongan+'&no_rm='+no_rm+'&nama_pasien='+nama_pasien+'&keterangan='+keterangan+'&cara_bayar='+cara_bayar+'');
 
                    $("#cetak_tunai_kategori").attr('href','cetak_penjualan_tunai_kategori_rj.php?no_reg='+no_reg+'&sisa='+sisa_pembayaran+'&tunai='+pembayaran+'&total='+total+'&biaya_admin='+biaya_adm+'&potongan='+potongan+'&no_rm='+no_rm+'&nama_pasien='+nama_pasien+'');
-
-                   $("#cetak_tunai").click();
                       
                    $("#cetak_tunai").show();
                    $("#cetak_tunai_kategori").show();
@@ -3035,13 +3028,7 @@ alert("Silakan Bayar Piutang");
                         console.error ("Some raindrops did not succeed. However, " +
                            100000-e.failures.length + " raindrops was added successfully");
                     });
-
-                    db.detail_penjualan.where('no_reg').equals(no_reg).each(function(data,i){
-                      console.log(data.kode_barang);
-                    });
-           
-
-
+   
   });
 
 
@@ -3276,9 +3263,7 @@ $("#tbody-barang-jual").find("tr").remove();
                            100000-e.failures.length + " raindrops was added successfully");
                     });
 
-                    db.detail_penjualan.where('no_reg').equals(no_reg).each(function(data,i){
-                      console.log(data.kode_barang);
-                    });
+                    
            
 
 
