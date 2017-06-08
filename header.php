@@ -1,4 +1,5 @@
-<html lang="in" >
+<!doctype html>
+<html>
 <head>
 
 	<title>
