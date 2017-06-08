@@ -4,6 +4,10 @@ include 'sanitasi.php';
 
 $no_rm = stringdoang($_POST['no_rm']);
 $no_reg = stringdoang($_POST['no_reg']);
+$jenis_kelamin = stringdoang($_POST['jenis_kelamin']);
+$bed = stringdoang($_POST['bed']);
+$kamar = stringdoang($_POST['kamar']);
+
 // storing  request (ie, get/post) global array to a variable  
 $otoritas_laboratorium = $db->query("SELECT input_jasa_lab, input_hasil_lab FROM otoritas_laboratorium WHERE id_otoritas = '$_SESSION[otoritas_id]'");
 $take_lab = mysqli_fetch_array($otoritas_laboratorium);
@@ -29,13 +33,13 @@ $columns = array(
 );
 
 // getting total number records without any search
-$sql = "SELECT us.nama AS dokter,se.nama AS analis,pi.no_reg,pi.no_rm,pi.nama_pasien,pi.no_periksa,pi.status,pi.waktu,pi.id FROM pemeriksaan_lab_inap pi LEFT JOIN user us ON pi.dokter = us.id LEFT JOIN user se ON pi.analis = se.id WHERE pi.no_reg = '$no_reg' AND pi.no_rm = '$no_rm' ORDER BY pi.no_periksa DESC";
+$sql = "SELECT us.nama AS dokter,se.nama AS analis,pi.no_reg,pi.no_rm,pi.nama_pasien,pi.no_periksa,pi.status,DATE(pi.waktu) AS tanggal,pi.id,pi.dokter AS id_dokter FROM pemeriksaan_lab_inap pi LEFT JOIN user us ON pi.dokter = us.id LEFT JOIN user se ON pi.analis = se.id WHERE pi.no_reg = '$no_reg' AND pi.no_rm = '$no_rm' ORDER BY pi.no_periksa DESC";
 
 $query=mysqli_query($conn, $sql) or die("1.php: get employees");
 $totalData = mysqli_num_rows($query);
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
-$sql = "SELECT us.nama AS dokter,se.nama AS analis,pi.no_reg,pi.no_rm,pi.nama_pasien,pi.no_periksa,pi.status,pi.waktu,pi.id FROM pemeriksaan_lab_inap pi LEFT JOIN user us ON pi.dokter = us.id LEFT JOIN user se ON pi.analis = se.id WHERE pi.no_reg = '$no_reg' AND pi.no_rm = '$no_rm' ";
+$sql = "SELECT us.nama AS dokter,se.nama AS analis,pi.no_reg,pi.no_rm,pi.nama_pasien,pi.no_periksa,pi.status,DATE(pi.waktu) AS tanggal,pi.id,pi.dokter AS id_dokter FROM pemeriksaan_lab_inap pi LEFT JOIN user us ON pi.dokter = us.id LEFT JOIN user se ON pi.analis = se.id WHERE pi.no_reg = '$no_reg' AND pi.no_rm = '$no_rm' ";
 
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
 
@@ -77,7 +81,7 @@ if ($input_hasil_lab > 0) {
 	}
 	else
 	{
-		$nestedData[] = "<p style='color:red'> Selesai </p>";
+		$nestedData[] = "<p style='color:green'> Selesai </p>";
 	}
 }
 
@@ -87,13 +91,15 @@ if($row['status'] == '0')
 {
 	$nestedData[] = "<p style='color:red'> Belum Ada Hasil </p>";
 	$nestedData[] = $row["no_periksa"];
-	$nestedData[] = $row["no_reg"];
-	$nestedData[] = $row["no_rm"];	
-	$nestedData[] = $row["nama_pasien"];
 	$nestedData[] = $row["dokter"];
 	$nestedData[] = $row["analis"];
 	$nestedData[] = "<p style='color:red'>Belum</p>";
-	$nestedData[] = $row["waktu"];
+	$nestedData[] = $row["tanggal"];
+
+	$nestedData[] ='<td> <a href="cek_edit_hasil_lab_registrasi_inap.php?id='.$row["id"].'&
+	no_periksa='.$row["no_periksa"].'&no_rm='.$row["no_rm"].'&nama_pasien='.$row["nama_pasien"].'&dokter='.$row["id_dokter"].'
+	&no_reg='.$row["no_reg"].'&jenis_kelamin='.$jenis_kelamin.'&tanggal='.$row["tanggal"].'&bed='.$bed.'&kamar='.$kamar.'" class="btn btn-info btn-floating"> <i class="fa fa-edit"> </i></a></td>';
+
 	$nestedData[] = "<p style='color:red'> Belum Input Hasil</p>";
 }
 else
@@ -101,13 +107,16 @@ else
 
 	$nestedData[] = "<a href='cetak_hasil_lab_inap_after_input_hasil.php?no_reg=".$row['no_reg']."&no_periksa=".$row['no_periksa']."' target='blank' class='btn btn-floating btn-primary' data-target='blank'> <i class='fa fa-print'></i> </a>";
 	$nestedData[] = $row["no_periksa"];
-	$nestedData[] = $row["no_reg"];
-	$nestedData[] = $row["no_rm"];	
-	$nestedData[] = $row["nama_pasien"];
 	$nestedData[] = $row["dokter"];
 	$nestedData[] = $row["analis"];
 	$nestedData[] = "<p style='color:green'>Selesai</p>";
-	$nestedData[] = $row["waktu"];
+	$nestedData[] = $row["tanggal"];
+
+	$nestedData[] ='<td> <a href="cek_edit_hasil_lab_registrasi_inap.php?id='.$row["id"].'&
+	no_periksa='.$row["no_periksa"].'&no_rm='.$row["no_rm"].'&nama_pasien='.$row["nama_pasien"].'&dokter='.$row["id_dokter"].'
+	&no_reg='.$row["no_reg"].'&jenis_kelamin='.$jenis_kelamin.'&tanggal='.$row["tanggal"].'&bed='.$bed.'&kamar='.$kamar.'" class="btn btn-info btn-floating"> <i class="fa fa-edit"> </i></a></td>';
+
+
 	$nestedData[] = "<td><button class='btn btn-floating  btn-info detail-lab-inap' data-reg='".$row['no_reg']."' data-periksa='".$row['no_periksa']."'><i class='fa fa-list'></i></button></td>";
 }
 	

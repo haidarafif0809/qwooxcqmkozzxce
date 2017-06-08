@@ -8,6 +8,7 @@ $bulan_sekarang = date('m');
 $tanggal_sekarang = date('Y-m-d');
 $jam_sekarang = date('H:i:s');
 $tahun_terakhir = substr($tahun_sekarang, 2);
+$waktu = date("Y-m-d H:i:s");
 
 try {
 
@@ -352,7 +353,18 @@ $no_jurnal = no_jurnal();
 $cek_lab = $db->query("SELECT no_reg FROM hasil_lab WHERE no_reg = '$no_reg'");
 $out_lab = mysqli_num_rows($cek_lab);
 if($out_lab > 0 ){
+  //Insert Data Pemeriksaannya 
+  $query_insert_data_periksa = "INSERT INTO pemeriksaan_laboratorium 
+  (no_reg,no_rm,waktu,status,nama_pasien,status_pasien) VALUES 
+  ('$no_reg','$no_rm','$waktu','1','$nama_pasien','UGD')";
+    if ($db->query($query_insert_data_periksa) === TRUE){
 
+    }
+    else{
+      echo "Error: " . $query_insert_data_periksa . "<br>" . $db->error;
+      }
+
+  //Update no faktur di hasil labortoriumnya
   $update_hasilnya = $db->query("UPDATE hasil_lab SET no_faktur = '$no_faktur' WHERE no_reg = '$no_reg'");
 }
 else
