@@ -1019,7 +1019,7 @@ Radiologi  </button>
    $(window).on('load',function(){
 
 
-          // $(".btnPrint").printPage();
+         $(".btnPrint").printPage();
   
          $('#modal_loading_form').modal({  backdrop: 'static',
                       keyboard: false});
@@ -2993,7 +2993,7 @@ alert("Silakan Bayar Piutang");
           });
 
             var data_detail_penjualan = [];
-            
+
                 $.each(data.result, function(i, item) {
 
                  
