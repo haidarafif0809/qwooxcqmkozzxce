@@ -382,6 +382,7 @@ $(document).ready(function(){
               url :"datatable_tbs_aps.php", // json datasource
                "data": function ( d ) {
                   d.no_reg = $("#no_reg").val();
+                  d.aps_periksa = $("#aps_periksa").val();
                   // d.custom = $('#myInput').val();
                   // etc
               },
@@ -407,10 +408,11 @@ $("#span_tbs_aps").show('fast');
 
 //START SUBTOTAL DAN TOTAL
 var no_reg = $("#no_reg").val();
+var aps_periksa = $("#aps_periksa").val();
 var diskon_persen = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#diskon_persen").val()))));
 var diskon_rupiah = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#diskon_rupiah").val()))));
 
-$.post("cek_subtotal_aps.php",{no_reg:no_reg},function(data){
+$.post("cek_subtotal_aps.php",{no_reg:no_reg,aps_periksa:aps_periksa},function(data){
     data = data.replace(/\s+/g, '');
     if (data == ""){
     	data = 0;
@@ -495,7 +497,7 @@ $.post("cek_subtotal_aps.php",{no_reg:no_reg},function(data){
         //Akhir Setting Laboratorium
 
     	}
-        else{
+       /* else{
         //Start Hasil Radiologi
         $.post("cek_status_aps_hasil_radiologi.php",{no_reg:no_reg},function(data){
 	        if(data == 1){
@@ -524,7 +526,7 @@ $.post("cek_subtotal_aps.php",{no_reg:no_reg},function(data){
             }
         });
         //Akhir Hasil Radiologi
-        }
+        }*/
 
       	//End Cek Hasil Laboratorium
 
@@ -887,6 +889,7 @@ $.post("cek_subtotal_aps.php",{no_reg:no_reg},function(data){
 			              url :"datatable_tbs_aps.php", // json datasource
 			               "data": function ( d ) {
 			                  d.no_reg = $("#no_reg").val();
+                        d.aps_periksa = $("#aps_periksa").val();
 			                  // d.custom = $('#myInput').val();
 			                  // etc
 			              },

@@ -269,6 +269,14 @@ opacity: 0.9;
           <input type="text" class="form-control" name="lab_kamar" readonly="" autocomplete="off" id="lab_kamar" placeholder=" No Reg">
         </div>
 
+        <!--HIDDEN-->
+        <input type="hidden" class="form-control" name="lab_dokter" readonly="" autocomplete="off" id="lab_dokter" placeholder="Dokter">
+
+        <input type="hidden" class="form-control" name="lab_jenis_kelamin" readonly="" autocomplete="off" id="lab_jenis_kelamin" placeholder="Jenis Kelamin">
+
+
+
+
     </div>
   
 </div>
@@ -1696,6 +1704,9 @@ else
                var kamar = $(this).attr("data-kamar");
                var bed = $(this).attr("data-bed");
 
+               var dokter_pengirim = $(this).attr("data-dokter-pengirim");
+               var jenis_kelamin = $(this).attr("data-jenis-kelamin");
+
                var id = $(this).attr("data-id");
                var pasien = $('#name-tag-'+id).text();
 
@@ -1707,8 +1718,10 @@ else
                $("#lab_reg").val(reg);
                $("#lab_bed").val(bed);
                $("#lab_kamar").val(kamar);
+               $("#lab_dokter").val(dokter_pengirim);
+               $("#lab_jenis_kelamin").val(jenis_kelamin);
 
-  $("#input_lab").attr('href','data_laboratorium_inap.php?no_reg='+reg+'&nama='+pasien+'&bed='+bed+'&kamar='+kamar+'&no_rm='+rm);
+  $("#input_lab").attr('href','data_laboratorium_inap.php?no_reg='+reg+'&nama='+pasien+'&dokter_pengirim='+dokter_pengirim+'&jenis_kelamin='+jenis_kelamin+'&bed='+bed+'&kamar='+kamar+'&no_rm='+rm);
                
      });
 </script>
