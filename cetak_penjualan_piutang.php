@@ -32,8 +32,6 @@ include 'db.php';
 
  ?>
 
-  <script type="text/javascript" src="js/jquery-2.2.3.min.js"></script>  
- <script src="https://unpkg.com/dexie@latest/dist/dexie.js"></script>
 <style type="text/css">
 /*unTUK mengatur ukuran font*/
    .satu {

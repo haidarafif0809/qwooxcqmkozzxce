@@ -7,17 +7,17 @@ include 'db.php';
 
 
 
-$no_reg = $_GET['no_reg'];
-$potongan = $_GET['potongan'];
-$biaya_admin = $_GET['biaya_admin'];
-$total = $_GET['total'];
-$tunai = $_GET['tunai'];
-$sisa = $_GET['sisa'];
-$no_rm = $_GET['no_rm'];
-$nama_pasien = $_GET['nama_pasien'];
+$no_reg = stringdoang($_GET['no_reg']);
+$potongan = stringdoang($_GET['potongan']);
+$biaya_admin = stringdoang($_GET['biaya_admin']);
+$total = stringdoang($_GET['total']);
+$tunai = stringdoang($_GET['tunai']);
+$sisa = stringdoang($_GET['sisa']);
+$no_rm = stringdoang($_GET['no_rm']);
+$nama_pasien = stringdoang($_GET['nama_pasien']);
 $tanggal = date('Y-m-d');
 
-$query1 = $db->query("SELECT * FROM perusahaan ");
+$query1 = $db->query("SELECT nama_perusahaan,alamat_perusahaan,no_telp FROM perusahaan ");
 $data1 = mysqli_fetch_array($query1);  
 
 $select_operasi = $db->query("SELECT * FROM hasil_operasi WHERE no_reg = '$no_reg'");
@@ -31,8 +31,7 @@ $status_print = $datas['status_print'];
 
     
  ?>
- <script type="text/javascript" src="js/jquery-2.2.3.min.js"></script>  
- <script src="https://unpkg.com/dexie@latest/dist/dexie.js"></script>
+
 
   <?php echo $data1['nama_perusahaan']; ?><br>
   <?php echo $data1['alamat_perusahaan']; ?><br><br>
@@ -134,12 +133,15 @@ $(document).ready(function(){
        var total_item  = 0;
        var subtotal_item = 0;
        var pajak =  0;
+       var no_urut = 0;
 
        db.detail_penjualan.where('no_reg').equals(no_reg).each(function(data,i){
             
        total_item = parseInt(total_item) + parseInt(data.jumlah_barang);
        subtotal_item = parseInt(subtotal_item) + parseInt(data.subtotal);
        pajak = parseInt(pajak) + parseInt(data.pajak);
+
+       console.log(no_urut++);
 
 
         var data_detail_penjualan = '<tr><td width:"50%"> '+ data.nama_barang+' </td><td style="padding:3px"> '+ data.jumlah_barang +'</td><td style="padding:3px"> '+ data.harga +'</td><td style="padding:3px"> '+ data.subtotal + ' </td></tr>';
@@ -160,5 +162,7 @@ $(document).ready(function(){
 });
 </script>
 
- </body>
- </html>
+<?php 
+include 'footer.php';
+
+ ?>
