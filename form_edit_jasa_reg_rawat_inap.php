@@ -377,6 +377,10 @@ echo '
     <input type="hidden" id="kontras" name="kontras" class="form-control" placeholder="Kontras"> 
     <input type="hidden" id="harga_produk" name="harga_produk" class="form-control" placeholder="Harga Produk"> 
 
+    <!--Input Hidden Laboratorium-->
+    <input type="hidden" id="bed" name="bed" value="<?php echo $bed ?>" class="form-control" placeholder="Kode Bed"> 
+    <input type="hidden" id="kamar" name="kamar" value="<?php echo $kamar ?>" class="form-control" placeholder="Kamar"> 
+
     <!--Akhir Row Pertama-->
     </div>
 

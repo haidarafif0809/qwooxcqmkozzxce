@@ -9,18 +9,17 @@ $jenis_penjualan = stringdoang($_GET['jenis_penjualan']);
 $no_periksa = stringdoang($_GET['no_periksa']);
 
 
-$perintah3 = $db->query("SELECT no_reg FROM tbs_hasil_lab WHERE no_reg = '$no_reg' ");
-$data1 = mysqli_num_rows($perintah3);
+$query_cek_tbs_hasil = $db->query("SELECT no_reg FROM tbs_hasil_lab WHERE no_reg = '$no_reg' AND lab_ke_berapa = '$no_periksa'");
+$data_tbs_hasil = mysqli_num_rows($query_cek_tbs_hasil);
 
-if ($data1 > 0)
-{
-      $perintah2 = $db->query("DELETE FROM tbs_hasil_lab WHERE no_reg = '$no_reg' AND hasil_pemeriksaan IS NULL");
+if ($data_tbs_hasil > 0){
+      $query_hapustbs_hasil = $db->query("DELETE FROM tbs_hasil_lab WHERE no_reg = '$no_reg' AND hasil_pemeriksaan IS NULL");
 }
 
 
 
-$perintah = $db->query("SELECT lab_ke_berapa,kode_barang,nama_barang FROM tbs_penjualan WHERE no_reg = '$no_reg' AND lab_ke_berapa = '$no_periksa' AND lab = 'Laboratorium' AND status_lab  = 'Unfinish'");
-while ($data = mysqli_fetch_array($perintah)){
+$query_cek_tbs_penjualan = $db->query("SELECT lab_ke_berapa,kode_barang,nama_barang FROM tbs_penjualan WHERE no_reg = '$no_reg' AND lab_ke_berapa = '$no_periksa' AND lab = 'Laboratorium' AND status_lab  = 'Unfinish'");
+while ($data = mysqli_fetch_array($query_cek_tbs_penjualan)){
 
 $lab_ke_berapa = $data['lab_ke_berapa'];
 $kode_barang = $data['kode_barang'];

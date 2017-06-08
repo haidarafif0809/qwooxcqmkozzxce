@@ -17,7 +17,6 @@ $dokter = stringdoang($_POST['dokter']);
 $nama_pasien = stringdoang($_POST['nama_pasien']);
 $tipe_barang = stringdoang($_POST['tipe_barang']);
 $jenis_penjualan = stringdoang($_POST['jenis_penjualan']);
-$jenis_kelamin = stringdoang($_POST['jenis_kelamin']);
 $pemeriksaan_keberapa = stringdoang($_POST['pemeriksaan_keberapa']);
 
   //Hapus Jika id sama dengan yang sudah ada di TBS
