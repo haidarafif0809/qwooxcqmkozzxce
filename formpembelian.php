@@ -166,9 +166,9 @@ $no_faktur = $nomor."/JL/".$data_bulan_terakhir."/".$tahun_terakhir;
         <div class="col-sm-3">
           <label>PPN</label>
           <select name="ppn" id="ppn" class="form-control chosen">
+            <option value="Non">Non</option>          
             <option value="Include">Include</option>  
             <option value="Exclude">Exclude</option>
-            <option value="Non">Non</option>          
           </select>
         </div>
 
@@ -1475,7 +1475,6 @@ $(document).ready(function(){
 
 
 
-
 <script type="text/javascript">
         $(document).ready(function(){    
         $("#potongan_persen").keyup(function(){
@@ -1506,12 +1505,10 @@ $(document).ready(function(){
 
 
     var pembayaran = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#pembayaran_pembelian").val()))));
-    if (pembayaran == '') {
-      var pembayaran = 0.00
+    if (pembayaran == "") {
+      var pembayaran = "0,00";
     }
-
-       var sisa = parseFloat(pembayaran,2) - parseFloat(sisa_potongan,2);
-
+       var sisa = parseFloat(pembayaran.replace(',','.')) - parseFloat(sisa_potongan);
         var sisa_kredit = parseFloat(sisa_potongan) - parseFloat(pembayaran.replace(',','.')); 
        
         
@@ -1638,33 +1635,39 @@ if(potongan_persen > 100.00)
      }
 
 });
-// END $("#potongan_pembelian").keyup(function(){        
+// END $("#potongan_pembelian").keyup(function(){     
        
 
      $("#tax").keyup(function(){
 
         var potongan = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#potongan_pembelian").val() ))));
+        if (potongan == '') {
+          potongan = 0,00;
+        }
         var potongan_persen = $("#potongan_persen").val();
         var total1 = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah( $("#total_pembelian").val() ))));
         var total = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#total_pembelian1").val() ))));
        
               var cara_bayar = $("#carabayar1").val();
-              var tax = $("#tax").val();
-              var t_total = total - Math.round(potongan);
+              var tax = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#tax").val()))));
+              if (potongan == '') {
+              var t_total = parseFloat(total.replace(',','.'),2);
+              }
+              else{
+              var t_total = parseFloat(total.replace(',','.'),2) - parseFloat(potongan.replace(',','.'),2);
+              }
 
-              if (tax == "") {
-                tax = 0;
-              }
-              else if (cara_bayar == "") {
-                alert ("Kolom Cara Bayar Masih Kosong");
-                 $("#tax").val('');
-                 $("#potongan_pembelian").val('');
-                 $("#potongan_persen").val('');
-              }
               
-              var t_tax = ((parseInt(bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah(t_total,10))))) * parseInt(bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah(tax,10)))))) / 100);
 
-              var total_akhir = parseInt(bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah(t_total,10))))) + Math.round(parseInt(t_tax,10));
+
+              if (tax == "" || tax == 0) {
+                var t_tax = 0.00;
+              }
+              else{
+                var t_tax = parseFloat(t_total,2) * parseFloat(tax.replace(',','.'),2) / 100;
+              }
+
+              var total_akhir = parseFloat(t_total,2) + parseFloat(t_tax,2);
               
               
               
@@ -1672,16 +1675,23 @@ if(potongan_persen > 100.00)
               if (tax > 100) {
                 alert ('Jumlah Tax Tidak Boleh Lebih Dari 100%');
                  $("#tax").val('');
-                 $("#total_pembelian").val(tandaPemisahTitik(total));
+                 $("#total_pembelian").val(t_total.format(2, 3, '.', ','));
 
               }
+              else if (cara_bayar == "") {
+                alert ("Kolom Cara Bayar Masih Kosong");
+                 $("#tax").val('');
+                 $("#potongan_pembelian").val('');
+                 $("#potongan_persen").val('');
+              }
+
               else
               {
-                $("#total_pembelian").val(Math.round(total_akhir));
+                $("#total_pembelian").val(total_akhir.format(2, 3, '.', ','));
               }
         
 
-       $("#tax_rp").val(Math.round(t_tax))
+       $("#tax_rp").val(t_tax.format(2, 3, '.', ','));
 
 
         });

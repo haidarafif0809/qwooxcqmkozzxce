@@ -517,7 +517,9 @@
                 
               <div class="col-sm-6">
                 <label> Tax </label><br>
-                <input style="height:20px;font-size:15px" type="text" name="tax" id="tax" class="form-control" value="<?php echo $hasil_tax; ?>" autocomplete="off" placeholder="" >
+                <input style="height:20px;font-size:15px" type="text" name="tax" id="tax" class="form-control" value="<?php echo koma($hasil_tax,2); ?>" autocomplete="off" placeholder="" >
+                              <input type="text" name="tax_rp" id="tax_rp" class="form-control" value="<?php echo koma($tax,2); ?>" autocomplete="off" >              
+
               </div>
             </div>
 
@@ -977,7 +979,7 @@ $(".btn-alert-hapus").click(function(){
        var jumlah_bayar_lama = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#jumlah_bayar_lama").val()))));
        var ppn = $("#ppn").val();
        var ppn_input = $("#ppn_input").val();
-
+      var tax_rp = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#tax_rp").val()))));
 
        var sisa = parseFloat($("#pembayaran_pembelian").val(),2) - parseFloat($("#total_pembelian").val(),2);
        var sisa_kredit = parseFloat($("#total_pembelian").val(),2) - parseFloat($("#pembayaran_pembelian").val(),2);
@@ -1036,7 +1038,7 @@ alert(" Anda Belum Melakukan Pembelian ");
        $("#hutang").hide();
        $("#transaksi_baru").show(); 
        
-       $.post("proses_bayar_edit_pembelian.php",{total_1:total_1,no_faktur:no_faktur,sisa_pembayaran:sisa_pembayaran,kredit:kredit,suplier:suplier1,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,tax1:tax1,cara_bayar:cara_bayar,jumlah_barang:jumlah_barang,pembayaran:pembayaran,sisa:sisa_pembayaran,sisa_kredit:sisa_kredit,tanggal:tanggal,total_1:total_1,jumlah_kredit_baru:jumlah_kredit_baru,x:x,ppn:ppn,ppn_input:ppn_input,no_faktur_suplier:no_faktur_suplier},function(info) {
+       $.post("proses_bayar_edit_pembelian.php",{total_1:total_1,no_faktur:no_faktur,sisa_pembayaran:sisa_pembayaran,kredit:kredit,suplier:suplier1,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,tax1:tax1,cara_bayar:cara_bayar,jumlah_barang:jumlah_barang,pembayaran:pembayaran,sisa:sisa_pembayaran,sisa_kredit:sisa_kredit,tanggal:tanggal,total_1:total_1,jumlah_kredit_baru:jumlah_kredit_baru,x:x,ppn:ppn,ppn_input:ppn_input,no_faktur_suplier:no_faktur_suplier,tax_rp:tax_rp},function(info) {
        
        
        $("#alert_berhasil").show();
@@ -1115,6 +1117,9 @@ else
 
        var jumlah_kredit_baru = parseFloat(kredit.replace(',','.'),2) - parseFloat(jumlah_bayar_lama.replace(',','.'),2);
        var x = parseFloat(jumlah_bayar_lama.replace(',','.'),2) + parseFloat(pembayaran.replace(',','.'),2);
+              var tax_rp = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#tax_rp").val()))));
+
+
        $("#zxzx").val(x);
 
 
@@ -1153,7 +1158,7 @@ alert(" Anda Belum Melakukan Pembelian ");
           $("#hutang").hide();
           $("#transaksi_baru").show();
        
-       $.post("proses_bayar_edit_pembelian.php",{total_1:total_1,tax1:tax1,tanggal:tanggal,no_faktur:no_faktur,sisa_pembayaran:sisa_pembayaran,kredit:kredit,suplier:suplier,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,cara_bayar:cara_bayar,jumlah_barang:jumlah_barang,pembayaran:pembayaran,sisa:sisa_pembayaran,sisa_kredit:sisa_kredit,total_1:total_1,jumlah_kredit_baru:jumlah_kredit_baru,x:x,ppn:ppn,ppn_input:ppn_input,no_faktur_suplier:no_faktur_suplier},function(info) {
+       $.post("proses_bayar_edit_pembelian.php",{total_1:total_1,tax1:tax1,tanggal:tanggal,no_faktur:no_faktur,sisa_pembayaran:sisa_pembayaran,kredit:kredit,suplier:suplier,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,cara_bayar:cara_bayar,jumlah_barang:jumlah_barang,pembayaran:pembayaran,sisa:sisa_pembayaran,sisa_kredit:sisa_kredit,total_1:total_1,jumlah_kredit_baru:jumlah_kredit_baru,x:x,ppn:ppn,ppn_input:ppn_input,no_faktur_suplier:no_faktur_suplier,tax_rp:tax_rp},function(info) {
 
        
        $("#alert_berhasil").show();
@@ -1664,30 +1669,36 @@ if(potongan_persen > 100.00)
 // END $("#potongan_pembelian").keyup(function(){        
        
 
-     $("#tax").keyup(function(){
+    $("#tax").keyup(function(){
 
         var potongan = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#potongan_pembelian").val() ))));
+        if (potongan == '') {
+          potongan = 0,00;
+        }
         var potongan_persen = $("#potongan_persen").val();
         var total1 = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah( $("#total_pembelian").val() ))));
         var total = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#total_pembelian1").val() ))));
        
               var cara_bayar = $("#carabayar1").val();
-              var tax = $("#tax").val();
-              var t_total = total - Math.round(potongan);
+              var tax = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#tax").val()))));
+              if (potongan == '') {
+              var t_total = parseFloat(total.replace(',','.'),2);
+              }
+              else{
+              var t_total = parseFloat(total.replace(',','.'),2) - parseFloat(potongan.replace(',','.'),2);
+              }
 
-              if (tax == "") {
-                tax = 0;
-              }
-              else if (cara_bayar == "") {
-                alert ("Kolom Cara Bayar Masih Kosong");
-                 $("#tax").val('');
-                 $("#potongan_pembelian").val('');
-                 $("#potongan_persen").val('');
-              }
               
-              var t_tax = ((parseInt(bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah(t_total,10))))) * parseInt(bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah(tax,10)))))) / 100);
 
-              var total_akhir = parseInt(bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah(t_total,10))))) + Math.round(parseInt(t_tax,10));
+
+              if (tax == "" || tax == 0) {
+                var t_tax = 0.00;
+              }
+              else{
+                var t_tax = parseFloat(t_total,2) * parseFloat(tax.replace(',','.'),2) / 100;
+              }
+
+              var total_akhir = parseFloat(t_total,2) + parseFloat(t_tax,2);
               
               
               
@@ -1695,16 +1706,23 @@ if(potongan_persen > 100.00)
               if (tax > 100) {
                 alert ('Jumlah Tax Tidak Boleh Lebih Dari 100%');
                  $("#tax").val('');
-                 $("#total_pembelian").val(tandaPemisahTitik(total));
+                 $("#total_pembelian").val(t_total.format(2, 3, '.', ','));
 
               }
+              else if (cara_bayar == "") {
+                alert ("Kolom Cara Bayar Masih Kosong");
+                 $("#tax").val('');
+                 $("#potongan_pembelian").val('');
+                 $("#potongan_persen").val('');
+              }
+
               else
               {
-                $("#total_pembelian").val(Math.round(total_akhir));
+                $("#total_pembelian").val(total_akhir.format(2, 3, '.', ','));
               }
         
 
-       $("#tax_rp").val(Math.round(t_tax))
+             $("#tax_rp").val(t_tax.format(2, 3, '.', ','));
 
 
         });

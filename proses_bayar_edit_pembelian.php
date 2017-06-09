@@ -303,7 +303,7 @@ if ($potongan != "" || $potongan != 0 ) {
             
             // hubungkan "data" dengan prepared statements
             $stmt2->bind_param("ssssssssssssssss", 
-            $nomor_faktur, $suplier, $total , $tanggal, $jam_sekarang, $tanggal_jt, $user, $potongan, $tax, $sisa, $sisa_kredit, $cara_bayar, $pembayaran, $ppn_input,$no_faktur_suplier, $nomor_faktur);
+            $nomor_faktur, $suplier, $total , $tanggal, $jam_sekarang, $tanggal_jt, $user, $potongan, $tax_persen, $sisa, $sisa_kredit, $cara_bayar, $pembayaran, $ppn_input,$no_faktur_suplier, $nomor_faktur);
 
 // jalankan query
       $stmt2->execute(); 
