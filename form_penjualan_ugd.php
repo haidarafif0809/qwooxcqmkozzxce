@@ -3460,7 +3460,7 @@ $.post('cek_kode_barang_tbs_penjualan.php',{kode_barang:kode_barang,no_reg:no_re
           $("#kode_barang").trigger("chosen:updated");
           $("#nama_barang").val('');
           $("#kode_barang").trigger('chosen:open');
-          $(".chosen").chosen({no_results_text: "Maaf, Data Tidak Ada!",search_contains:true}); 
+         
    }//penutup if     
 
 
