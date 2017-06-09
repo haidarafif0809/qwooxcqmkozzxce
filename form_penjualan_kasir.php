@@ -162,23 +162,8 @@ $obat = $otoritas_produk['tipe_obat'];
 
 <div class="col-xs-3">
 <label>Dokter Pelaksana</label>
-<select style="font-size:15px; height:35px" name="dokter" id="dokter" class="form-control chosen">
+<select style="font-size:15px; height:35px" name="dokter" id="dokter" class="form-control ">
 
- <?php 
-
-    
-    //untuk menampilkan semua data pada tabel pelanggan dalam DB
-    $query01 = $db->query("SELECT nama,id FROM user WHERE tipe = '1' ");
-
-    //untuk menyimpan data sementara yang ada pada $query
-    while($data01 = mysqli_fetch_array($query01))
-    {
-      echo "<option value='".$data01['id'] ."'>".$data01['nama'] ."</option>";
-    
-    }
-    
-    
-  ?>
 
 </select>
 </div>
@@ -187,33 +172,8 @@ $obat = $otoritas_produk['tipe_obat'];
 
 <div class="col-xs-3">
 <label>Petugas Paramedik</label>
-<select style="font-size:15px; height:35px" name="petugas_paramedik" id="petugas_paramedik" class="form-control chosen">
+<select style="font-size:15px; height:35px" name="petugas_paramedik" id="petugas_paramedik" class="form-control ">
 <option value="">Cari Petugas</option>
- <?php 
-    
-    //untuk menampilkan semua data pada tabel pelanggan dalam DB
-    $query01 = $db->query("SELECT nama,id FROM user WHERE tipe = '2' ");
-
-        $petugas_paramedik = $db->query("SELECT nama_paramedik FROM penetapan_petugas ");
-        $data_petugas = mysqli_fetch_array($petugas_paramedik);
-
-    //untuk menyimpan data sementara yang ada pada $query
-    while($data01 = mysqli_fetch_array($query01))
-    {
-    
-       
-    if ($data01['nama'] == $data_petugas['nama_paramedik']) {
-     echo "<option selected value='".$data01['id'] ."'>".$data01['nama'] ."</option>";
-    }
-    else{
-      echo "<option value='".$data01['id'] ."'>".$data01['nama'] ."</option>";
-    }
-
-    
-    }
-    
-    
-    ?>
 
 </select>
 </div>  
@@ -234,15 +194,8 @@ $obat = $otoritas_produk['tipe_obat'];
 
   <div class="form-group col-xs-2">
     <label for="email">Penjamin:</label>
-    <select class="form-control chosen" id="penjamin" name="penjamin" required="">
-      <?php    
-     
-      $query = $db->query("SELECT nama FROM penjamin");
-      while ( $icd = mysqli_fetch_array($query))
-      {
-      echo "<option value='".$icd['nama']."'>".$icd['nama']."</option>";
-      }
-      ?>
+    <select class="form-control " id="penjamin" name="penjamin" required="">
+   
     </select>
 </div>
 
@@ -272,34 +225,9 @@ $obat = $otoritas_produk['tipe_obat'];
 
 <div class="col-xs-3">
 <label>Petugas Farmasi</label>
-<select style="font-size:15px; height:35px" name="petugas_farmasi" id="petugas_farmasi" class="form-control chosen">
-<option value="">Cari Petugas</option>
-  <?php 
-    
-    //untuk menampilkan semua data pada tabel pelanggan dalam DB
-    $query01 = $db->query("SELECT nama,id FROM user WHERE tipe = '3'");
+<select style="font-size:15px; height:35px" name="petugas_farmasi" id="petugas_farmasi" class="form-control ">
 
-    //untuk menyimpan data sementara yang ada pada $query
-      $petugas_farmasi = $db->query("SELECT nama_farmasi FROM penetapan_petugas ");
-
-        $data_petugas = mysqli_fetch_array($petugas_farmasi);
-
-    while($data01 = mysqli_fetch_array($query01))
-    {
-    
-  
-    if ($data01['nama'] == $data_petugas['nama_farmasi']) {
-     echo "<option selected value='".$data01['id'] ."'>".$data01['nama'] ."</option>";
-    }
-    else{
-      echo "<option value='".$data01['id'] ."'>".$data01['nama'] ."</option>";
-    }
-
-    
-    }
-    
-    
-    ?>
+ 
 
 </select>
 </div>  
@@ -307,20 +235,8 @@ $obat = $otoritas_produk['tipe_obat'];
 
 <div class="col-xs-3">
 <label>Petugas Lain</label>
-<select style="font-size:15px; height:35px" name="petugas_lain" id="petugas_lain" class="form-control chosen" >
+<select style="font-size:15px; height:35px" name="petugas_lain" id="petugas_lain" class="form-control " >
 <option value="">Cari Petugas</option>
-  <?php 
-    //untuk menampilkan semua data pada tabel pelanggan dalam DB
-    $query01 = $db->query("SELECT nama,id FROM user WHERE tipe != '5'");
-    //untuk menyimpan data sementara yang ada pada $query
-    while($data01 = mysqli_fetch_array($query01)){
-
-    echo "<option value='".$data01['id'] ."'>".$data01['nama'] ."</option>"; 
-
-    }
-    
-    
-    ?>
 
 </select>
 </div>
@@ -1080,6 +996,8 @@ Radiologi  </button>
              
            });
 
+          
+
 
            function menampilkanDataBarangDiSelect(){
               return db.barang.each(function(data,i){
@@ -1096,7 +1014,76 @@ Radiologi  </button>
 
               });
 
-           }
+           }   
+
+
+           $.get('data_penjamin.php',function(data){
+
+             $.each(data.result, function(i, item) {
+
+                tr_penjamin =  '<option value="'+data.result[i].id+'">'+data.result[i].nama+'</option>';
+                $("#penjamin").append(tr_penjamin);
+              });
+
+            
+           }).then(function(){
+
+              $("#penjamin").chosen({no_results_text: "Maaf, Data Tidak Ada!",search_contains:true});
+            
+            });
+
+           $.get('data_petugas.php',function(data){
+
+               $.each(data.result, function(i, item) {
+
+                if (data.result[i].tipe == 1) {
+                    if (data.result[i].penetapan_petugas == 'dokter') {
+                       tr_petugas =  '<option value="'+data.result[i].id+'" selecterd="">'+data.result[i].nama+'</option>';
+                    }
+                    else {
+                        tr_petugas =  '<option value="'+data.result[i].id+'" >'+data.result[i].nama+'</option>';
+                    }
+                    $("#dokter").append(tr_petugas);
+                }
+                else if (data.result[i].tipe == 2) {
+                    if (data.result[i].penetapan_petugas == 'paramedik') {
+                       tr_petugas =  '<option value="'+data.result[i].id+'" selecterd="">'+data.result[i].nama+'</option>';
+                    }
+                    else {
+                        tr_petugas =  '<option value="'+data.result[i].id+'" >'+data.result[i].nama+'</option>';
+                    }
+                    $("#petugas_paramedik").append(tr_petugas);
+                }
+                else if (data.result[i].tipe == 3) {
+                    if (data.result[i].penetapan_petugas == 'farmasi') {
+                       tr_petugas =  '<option value="'+data.result[i].id+'" selecterd="">'+data.result[i].nama+'</option>';
+                    }
+                    else {
+                        tr_petugas =  '<option value="'+data.result[i].id+'" >'+data.result[i].nama+'</option>';
+                    }
+                   
+                }
+
+                  tr_petugas =  '<option value="'+data.result[i].id+'" >'+data.result[i].nama+'</option>';
+                   $("#petugas_lain").append(tr_petugas);
+
+
+                  
+
+                });
+
+
+           }).then(function(){
+
+              $("#dokter").chosen({no_results_text: "Maaf, Data Tidak Ada!",search_contains:true});
+              $("#petugas_paramedik").chosen({no_results_text: "Maaf, Data Tidak Ada!",search_contains:true});
+              $("#petugas_farmasi").chosen({no_results_text: "Maaf, Data Tidak Ada!",search_contains:true}); 
+              $("#petugas_lain").chosen({no_results_text: "Maaf, Data Tidak Ada!",search_contains:true});
+            
+            });
+
+
+        
             
 
 });
