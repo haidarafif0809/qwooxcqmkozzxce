@@ -2529,20 +2529,30 @@ if (data == 1) {
 
                    $("#cetak_tunai_besar").attr('href', 'cetak_penjualan_tunai_besar_rj.php?no_reg='+no_reg+'&sisa='+sisa_pembayaran+'&kredit='+sisa_kredit+'&tunai='+pembayaran+'&total='+total+'&biaya_admin='+biaya_adm+'&potongan='+potongan+'&no_rm='+no_rm+'&nama_pasien='+nama_pasien+'&keterangan='+keterangan+'&cara_bayar='+cara_bayar+'');
 
-                   $("#cetak_tunai_kategori").attr('href','cetak_penjualan_tunai_kategori_rj.php?no_reg='+no_reg+'&sisa='+sisa_pembayaran+'&tunai='+pembayaran+'&total='+total+'&biaya_admin='+biaya_adm+'&potongan='+potongan+'&no_rm='+no_rm+'&nama_pasien='+nama_pasien+'');
-
-                   $("#cetak_tunai").click();
+                   $("#cetak_tunai_kategori").attr('href','cetak_penjualan_tunai_kategori_rj.php?no_reg='+no_reg+'&sisa='+sisa_pembayaran+'&tunai='+pembayaran+'&total='+total+'&biaya_admin='+biaya_adm+'&potongan='+potongan+'&no_rm='+no_rm+'&nama_pasien='+nama_pasien+'');            
                       
                    $("#cetak_tunai").show();
                    $("#cetak_tunai_kategori").show();
                    $("#cetak_tunai_besar").show('');
+
+                   var win = window.open('cetak_penjualan_tunai_rj.php?no_reg='+no_reg+'&sisa='+sisa_pembayaran+'&tunai='+pembayaran+'&total='+total+'&biaya_admin='+biaya_adm+'&potongan='+potongan+'&no_rm='+no_rm+'&nama_pasien='+nama_pasien+'');
+
+                    if (win) {  
+
+                    win.focus(); 
+
+                    } 
+                    else { 
+
+                      alert('Mohon Izinkan PopUps Pada Website Ini !');    
+
+                    }
                 
 
                     }).catch(Dexie.BulkError, function (e) {
                         // Explicitely catching the bulkAdd() operation makes those successful
                         // additions commit despite that there were errors.
-                        console.error ("Some raindrops did not succeed. However, " +
-                           100000-e.failures.length + " raindrops was added successfully");
+                        console.error ("Terjadi Kesalahan. data gagal di masukkan");
                     });
 
                     
