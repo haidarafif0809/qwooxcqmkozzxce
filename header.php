@@ -1,4 +1,5 @@
-<html lang="in" >
+<!doctype html>
+<html>
 <head>
 
 	<title>
@@ -109,6 +110,7 @@
 		<script src='jquery.elevatezoom.js'></script>
 		<!-- untuk operasi indexeddb -->
 		 <script src="https://unpkg.com/dexie@latest/dist/dexie.js"></script>
+		   <script src="jquery.printPage.js" type="text/javascript"></script>
 
                
 </head>
