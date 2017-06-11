@@ -5707,7 +5707,7 @@ $(document).on('dblclick','.edit-waktu-or',function(){
             "info":     false,
             "language": { "emptyTable":     "My Custom Message On Empty Table" },
             "ajax":{
-              url :"data_tbs_lab.php", // json datasource
+              url :"data_tbs_lab_inap.php", // json datasource
                "data": function ( d ) {
                   d.no_reg = $("#no_reg").val();
                   // d.custom = $('#myInput').val();
