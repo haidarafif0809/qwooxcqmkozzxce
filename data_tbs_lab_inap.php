@@ -52,7 +52,7 @@ $sql.=" WHERE no_reg = '$no_reg' AND lab = 'Laboratorium' AND no_faktur IS NULL 
 $query=mysqli_query($conn, $sql) or die("eror 2");
 $totalFiltered = mysqli_num_rows($query); // when there is a search parameter then we have to modify total number filtered rows as per search result. 
         
-$sql.=" ORDER BY id ".$requestData['order'][0]['dir']."  LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
+$sql.=" ORDER BY lab_ke_berapa ".$requestData['order'][0]['dir']."  LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
 
 /* $requestData['order'][0]['column'] contains colmun index, $requestData['order'][0]['dir'] contains order such as asc/desc  */    
 $query=mysqli_query($conn, $sql) or die("eror 3");
@@ -63,6 +63,7 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
   $nestedData=array(); 
 
       $nestedData[] = $row["kode_barang"];
+      $nestedData[] = "<center> ".$row['lab_ke_berapa']."</center>";
       $nestedData[] = $row["nama_barang"];
 
       $kd = $db->query("SELECT f.nama_petugas, u.nama FROM tbs_fee_produk f LEFT JOIN user u ON f.nama_petugas = u.id WHERE f.kode_produk = '$row[kode_barang]' AND f.jam = '$row[jam]' ");
