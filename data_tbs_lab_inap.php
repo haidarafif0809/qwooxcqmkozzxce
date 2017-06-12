@@ -3,13 +3,8 @@
 include 'sanitasi.php';
 include 'db.php';
 
-/* Database connection end */
-
 $no_reg = stringdoang($_POST['no_reg']);
 
-$pilih_akses_tombol = $db->query("SELECT edit_tanggal_inap FROM otoritas_penjualan_inap WHERE id_otoritas = '$_SESSION[otoritas_id]' ");
-$otoritas_tombol = mysqli_fetch_array($pilih_akses_tombol);
-// storing  request (ie, get/post) global array to a variable  
 $requestData= $_REQUEST;
 
 

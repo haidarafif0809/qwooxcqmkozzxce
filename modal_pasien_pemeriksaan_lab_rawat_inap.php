@@ -14,12 +14,23 @@ $columns = array(
     5=>'tanggal',
     6=>'id'    
 );
+$cek_setting = $db->query("SELECT nama FROM setting_laboratorium");
+$data_setting = mysqli_fetch_array($cek_setting);
+$hasil_setting = $data_setting['nama']; //jika hasil 1 maka = input hasil baru bayar, jika 0 maka = bayar dulu baru input hasil
 
+if($hasil_setting == '1'){
 //Query Rawat Inap
 $sql = "SELECT pem.no_periksa, reg.no_reg, reg.no_rm, reg.nama_pasien, reg.jenis_pasien, reg.tanggal, reg.dokter, reg.jenis_kelamin, pj.no_faktur, reg.id";
 $sql.=" FROM registrasi reg INNER JOIN pemeriksaan_lab_inap pem ON reg.no_reg = pem.no_reg LEFT JOIN penjualan pj ON reg.no_reg = pj.no_reg ";
 $sql.=" WHERE pem.status = '0' AND reg.jenis_pasien = 'Rawat Inap' AND reg.status = 'menginap' AND reg.status != 'Batal Rawat Inap' AND pj.no_faktur IS NULL ";
 
+}
+else{
+//Query Rawat Inap
+$sql = "SELECT pem.no_periksa, reg.no_reg, reg.no_rm, reg.nama_pasien, reg.jenis_pasien, reg.tanggal, reg.dokter, reg.jenis_kelamin, pj.no_faktur, reg.id";
+$sql.=" FROM registrasi reg INNER JOIN pemeriksaan_lab_inap pem ON reg.no_reg = pem.no_reg LEFT JOIN penjualan pj ON reg.no_reg = pj.no_reg ";
+$sql.=" WHERE pem.status = '0' AND reg.jenis_pasien = 'Rawat Inap' AND reg.status = 'Sudah Pulang' AND reg.status != 'Batal Rawat Inap' AND pj.no_faktur IS NULL ";
+}
 
 $query = mysqli_query($conn, $sql) or die("eror 1");
 $totalData = mysqli_num_rows($query);
@@ -62,9 +73,6 @@ $data = array();
 while( $row=mysqli_fetch_array($query) ) {  // preparing an array
   $nestedData=array(); 
 
-$cek_setting = $db->query("SELECT nama FROM setting_laboratorium");
-$data_setting = mysqli_fetch_array($cek_setting);
-$hasil_setting = $data_setting['nama'];
   if($hasil_setting == 0){
       $nestedData[] = $row["no_reg"];
       $nestedData[] = $row["no_rm"];

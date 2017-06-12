@@ -4,14 +4,18 @@ include 'header.php';
 include 'sanitasi.php';
 include 'db.php';
 
-$no_faktur = stringdoang($_GET['no_faktur']);
+$no_reg = stringdoang($_GET['no_reg']);
+$no_periksa = stringdoang($_GET['pemeriksaan']);
 
-
-
-$select = $db->query("SELECT no_faktur,no_rm,no_reg,nama_pasien,petugas_analis,dokter,tanggal FROM hasil_lab WHERE no_faktur = '$no_faktur' AND status = '1'");
+$select = $db->query("SELECT no_rm,no_reg,nama_pasien,petugas_analis,dokter FROM hasil_lab WHERE no_reg = '$no_reg' AND status = '1'");
 $out = mysqli_fetch_array($select);
 
-$select_bio = $db->query("SELECT jenis_kelamin,umur_pasien,alamat_pasien FROM registrasi WHERE no_rm = '$out[no_rm]' AND no_reg = '$out[no_reg]'");
+$query1 = $db->query("SELECT foto,nama_perusahaan,alamat_perusahaan,no_telp FROM perusahaan ");
+$data1 = mysqli_fetch_array($query1);
+
+$tanggal = date('Y-m-d');
+
+$select_bio = $db->query("SELECT jenis_kelamin,umur_pasien,alamat_pasien FROM registrasi WHERE no_rm = '$out[no_rm]'");
 $show_bio = mysqli_fetch_array($select_bio);
 $umur = $show_bio['umur_pasien'];
 $alamat = $show_bio['alamat_pasien'];
@@ -25,10 +29,6 @@ $p_dokter = $db->query("SELECT id,nama FROM user WHERE id = '$out[dokter]'");
 $out_dokter = mysqli_fetch_array($p_dokter);
 $dokter = $out_dokter['nama'];
 
-$query1 = $db->query("SELECT foto,nama_perusahaan,alamat_perusahaan,no_telp FROM perusahaan");
-$data1 = mysqli_fetch_array($query1);
-
-$tanggal = date('Y-m-d');
  ?>
 
 <div class="container">
@@ -47,35 +47,38 @@ $tanggal = date('Y-m-d');
                  
         </div><!--penutup colsm4-->
 
-        <div class="col-sm-4">
+        <div class="col-sm-5">
                          
 
    <table>
   <tbody>
 
-  <tr><td >No Faktur</td>  <td> :&nbsp;<?php echo $out['no_faktur']; ?> </td></tr>
-  <tr><td  >Nama </td>  <td> :&nbsp;<?php echo $out['nama_pasien'];?> </td></tr>
+  <tr><td>No RM</td>  <td> :&nbsp;<?php echo $out['no_rm']; ?> </td></tr>
+  <tr><td>No REG</td>  <td> :&nbsp;<?php echo $out['no_reg'];?> </td></tr>
+  <tr><td>Nama </td>  <td> :&nbsp;<?php echo $out['nama_pasien'];?> </td></tr>
   <tr><td>Jenis Kelamin </td>  <td> :&nbsp;<?php echo $jenis_kelamin;?> </td></tr>
-  <tr><td  >Umur </td>  <td> :&nbsp;<?php echo $umur;?> </td></tr>
-  <tr><td  >Alamat Pasien</td>  <td> :&nbsp;<?php echo $alamat;?> </td></tr>
-            
+  <tr><td>Umur </td><td> :&nbsp;<?php echo $umur;?> </td></tr>
+  <tr><td>Alamat Pasien</td>  <td>:&nbsp; <?php echo $alamat;?> </td></tr>  
+
+ 
   </tbody>
   </table>
                  
         </div><!--penutup colsm4-->
-          <div class="col-sm-4">  
-             
+
+        <div class="col-sm-3">
+        
    <table>
-  <tbody>
+  <tbody> 
+ 
+      <tr><td>Tanggal </td> <td> :</td> <td><?php echo $tanggal; ?> </td></tr>
+      <tr><td>Petugas </td> <td> :</td> <td> <?php echo $_SESSION['nama']; ?> </td></tr>
 
-      <tr><td  >Tanggal </td>  <td>:&nbsp;<?php echo $out['tanggal']; ?> </td></tr>
-      <tr><td  >Petugas </td>  <td>:&nbsp; <?php echo $_SESSION['nama']; ?> </td></tr>
-
-      <tr><td  >Dokter </td>  <td>:&nbsp;<?php echo $dokter;?> </td></tr>
-      <tr><td  >Analis </td>  <td>:&nbsp; <?php echo $analis;?> </td></tr>
+      <tr><td>Dokter </td> <td> :</td> <td><?php echo $dokter;?> </td></tr>
+      <tr><td>Petugas </td> <td> :</td> <td> <?php echo $analis;?> </td></tr>
       
   </tbody>
-  </table>   
+  </table>       
 
         </div><!--penutup colsm4-->
 
@@ -90,24 +93,29 @@ $tanggal = date('Y-m-d');
 
 <table id="tableuser" class="table table-bordered table-sm">
         <thead>
+
            <th> Nama Pemeriksaan </th>
            <th> Hasil Pemeriksaan </th>
            <th> Nilai Normal  </th>
+           <!--<th> Normal / Tidak Normal </th>-->
            <th> Status Rawat </th>
            
             
         </thead>
         
         <tbody>
-        <?php
+       <?php
 
-$selectui = $db->query("SELECT * FROM hasil_lab WHERE no_faktur = '$no_faktur' AND status = '1' GROUP BY id_sub_header");
- while($trace = mysqli_fetch_array($selectui))
- {
+ $show = $db->query("SELECT * FROM hasil_lab WHERE no_reg = '$no_reg' AND status = '1' AND id_sub_header != '0' AND lab_ke_berapa = '$no_periksa' GROUP BY id_sub_header ");
+  while($drop_show = mysqli_fetch_array($show))
+{
 
-  $select = $db->query("SELECT id,nama_pemeriksaan FROM setup_hasil WHERE id = '$trace[id_sub_header]' AND kategori_index = 'Header'");
- $drop = mysqli_fetch_array($select);
- $face_drop = mysqli_num_rows($select);
+  $id_sub_head = $drop_show['id_sub_header']; //ok take id indux /sub
+
+// select id lab nya
+  $select = $db->query("SELECT id,nama_pemeriksaan FROM setup_hasil WHERE id = '$id_sub_head' GROUP BY sub_hasil_lab");
+$drop = mysqli_fetch_array($select);
+   $face_drop = mysqli_num_rows($select);
 
   $id_set_up = $drop['nama_pemeriksaan'];
   $id_get = $drop['id'];
@@ -117,8 +125,7 @@ $selectui = $db->query("SELECT * FROM hasil_lab WHERE no_faktur = '$no_faktur' A
   $name_sub_header = $get['nama'];
                 //menampilkan data
     
-  $show = $db->query("SELECT * FROM hasil_lab WHERE no_faktur = '$no_faktur' AND status = '1' ");
-  $drop_show = mysqli_fetch_array($show);
+ 
 
 if($face_drop >= 1)
 {
@@ -140,7 +147,7 @@ if($face_drop >= 1)
 
     </tr>";
 
-    $show_one = $db->query("SELECT * FROM hasil_lab WHERE no_faktur = '$no_faktur' AND status = '1' AND id_sub_header = '$id_get'");
+    $show_one = $db->query("SELECT * FROM hasil_lab WHERE no_reg = '$no_reg' AND status = '1'  AND id_sub_header = '$id_get' AND lab_ke_berapa = '$no_periksa'");
             //menyimpan data sementara yang ada pada $perintah
   
         while ($take = mysqli_fetch_array($show_one))
@@ -155,6 +162,7 @@ if($face_drop >= 1)
         {
             echo "
             <td>&nbsp; ". '-' ." </td>
+            <td>&nbsp; ". '-'." </td>
             ";
         }
         else
@@ -234,11 +242,14 @@ if($face_drop >= 1)
 
         } //END WHILE
 } //END IF UNTUK DATA LABORATORIUM YANG ADA HEADER / INDUX
+
 }
 
 
+
+
 //start untuk yang sendirian / yang tidak ber HEADER/INDUX
-      $show_two = $db->query("SELECT * FROM hasil_lab WHERE no_faktur = '$no_faktur' AND status = '1' AND (id_sub_header = 0 OR id_sub_header IS NULL)");
+       $show_two = $db->query("SELECT * FROM hasil_lab WHERE no_reg = '$no_reg' AND status = '1' AND lab_ke_berapa = '$no_periksa' AND id_sub_header = 0");
             //menyimpan data sementara yang ada pada $perintah
   
           while ($drop_two = mysqli_fetch_array($show_two))
@@ -347,7 +358,7 @@ mysqli_close($db);
      
 <div class="col-sm-1">
      </div>
-     <div class="col-sm-3"><b><br><br><br><br></b></div>
+     <div class="col-sm-3"><b>&nbsp;&nbsp;&nbsp;&nbsp;<br><br><br><br></b></div>
      <div class="col-sm-2">
      </div>
      <div class="col-sm-3">
@@ -355,16 +366,20 @@ mysqli_close($db);
      <div class="col-sm-3"><b>&nbsp;&nbsp;&nbsp;Hormat Kami<br><br><br><br>( ...................... )</b></div>
 
 
-
 </div>
         
+
 </div> <!--end container-->
+
+
+
 
  <script>
 $(document).ready(function(){
   window.print();
 });
 </script>
+
 
 
 

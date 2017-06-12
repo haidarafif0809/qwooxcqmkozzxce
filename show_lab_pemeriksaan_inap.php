@@ -63,7 +63,7 @@ while($trace = mysqli_fetch_array($selectui)){
 
     echo " </tr>";
 
-    $query_hasil_lab = $db->query("SELECT id, nama_pemeriksaan, hasil_pemeriksaan, model_hitung, nilai_normal_lk2, nilai_normal_lk, nilai_normal_pr2, nilai_normal_pr, satuan_nilai_normal, status_pasien FROM hasil_lab WHERE no_reg = '$no_reg' AND no_faktur IS NULL AND status = '1' AND id_sub_header = '$id_get' AND lab_ke_berapa = '$no_periksa' AND (id_sub_header != 0 OR id_sub_header != '')");
+    $query_hasil_lab = $db->query("SELECT id, nama_pemeriksaan, hasil_pemeriksaan, model_hitung, nilai_normal_lk2, nilai_normal_lk, nilai_normal_pr2, nilai_normal_pr, satuan_nilai_normal, status_pasien FROM hasil_lab WHERE no_reg = '$no_reg' AND status = '1' AND id_sub_header = '$id_get' AND lab_ke_berapa = '$no_periksa' AND (id_sub_header != 0 OR id_sub_header != '')");
             //menyimpan data sementara yang ada pada $perintah
       while ($data_hasil_lab = mysqli_fetch_array($query_hasil_lab)){
 
@@ -158,7 +158,7 @@ while($trace = mysqli_fetch_array($selectui)){
 
 
 //start untuk yang sendirian / yang tidak ber HEADER/INDUX
-$query_hasil_lab_tunggal = $db->query("SELECT id, nama_pemeriksaan, hasil_pemeriksaan, model_hitung, nilai_normal_lk2, nilai_normal_lk, nilai_normal_pr2, nilai_normal_pr, satuan_nilai_normal, status_pasien FROM hasil_lab WHERE no_reg = '$no_reg' AND no_faktur IS NULL AND status = '1' AND lab_ke_berapa = '$no_periksa' AND (id_sub_header = 0 OR id_sub_header IS NULL)");
+$query_hasil_lab_tunggal = $db->query("SELECT id, nama_pemeriksaan, hasil_pemeriksaan, model_hitung, nilai_normal_lk2, nilai_normal_lk, nilai_normal_pr2, nilai_normal_pr, satuan_nilai_normal, status_pasien FROM hasil_lab WHERE no_reg = '$no_reg' AND status = '1' AND lab_ke_berapa = '$no_periksa' AND (id_sub_header = 0 OR id_sub_header IS NULL)");
             //menyimpan data sementara yang ada pada $perintah
   
 while ($data_hasil_lab_tunggal = mysqli_fetch_array($query_hasil_lab_tunggal)){

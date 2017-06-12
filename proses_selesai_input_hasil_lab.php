@@ -6,6 +6,10 @@ $nama = stringdoang($_POST['nama']);
 $no_rm = stringdoang($_POST['no_rm']);
 echo $no_reg = stringdoang($_POST['no_reg']);
 $jenis_penjualan = stringdoang($_POST['jenis_penjualan']);
+$no_periksa = stringdoang($_POST['pemeriksaan']);
+if($no_periksa == ''){
+	$no_periksa = '0';
+}
 
 $tanggal = date('Y-m-d');
 $jam = date('H:m:s');
@@ -28,11 +32,18 @@ if($hasil_setting == '1'){
 	if($jenis_penjualan == 'APS'){
 		$query_update_status = $db->query("UPDATE pemeriksaan_laboratorium SET status = '1' WHERE no_reg = '$no_reg'");
 	}
+	else if ($jenis_penjualan == 'Rawat Inap'){
+
+		$query_update_periksa_lab_inap = $db->query("UPDATE pemeriksaan_lab_inap SET status = '1' WHERE no_reg = '$no_reg' AND no_periksa = '$no_periksa'");
+
+	}
 	else{
 		$insert_pemeriksaan_laboratorium = $db->query("INSERT INTO pemeriksaan_laboratorium (no_reg,no_rm,status,nama_pasien,status_pasien,waktu) VALUES ('$no_reg',
 			'$no_rm','1','$nama','$jenis_penjualan','$waktu')");
 	}
 
+
+	$query_update_registrasi_status_lab = $db->query("UPDATE registrasi SET status_lab = '1' WHERE no_reg = '$no_reg' AND no_rm = '$no_rm'");
 
 	//Input ke Hasil Lab (Data Detail Hasil Lab)
 	$query_select_tbs_hasil = $db->query("SELECT * FROM tbs_hasil_lab WHERE no_reg = '$no_reg' AND no_rm = '$no_rm'");
@@ -41,7 +52,7 @@ if($hasil_setting == '1'){
 	$input = "INSERT INTO hasil_lab (id_pemeriksaan, nama_pemeriksaan, hasil_pemeriksaan, nilai_normal_lk, nilai_normal_pr, status_abnormal, status_pasien, status, no_rm, no_reg,nama_pasien,tanggal,jam,model_hitung,
 		satuan_nilai_normal,id_sub_header,nilai_normal_lk2,
 		nilai_normal_pr2,kode_barang,dokter,petugas_analis,
-		id_setup_hasil) VALUES ('$data_tbs[id_pemeriksaan]',
+		id_setup_hasil,lab_ke_berapa) VALUES ('$data_tbs[id_pemeriksaan]',
 		'$data_tbs[nama_pemeriksaan]','$data_tbs[hasil_pemeriksaan]',
 		'$data_tbs[nilai_normal_lk]','$data_tbs[nilai_normal_pr]',
 		'$data_tbs[status_abnormal]','$jenis_penjualan','1',
@@ -50,7 +61,7 @@ if($hasil_setting == '1'){
 		'$data_tbs[id_sub_header]','$data_tbs[normal_lk2]',
 		'$data_tbs[normal_pr2]','$data_tbs[kode_barang]',
 		'$data_tbs[dokter]','$data_tbs[analis]',
-		'$data_tbs[id_setup_hasil]')";
+		'$data_tbs[id_setup_hasil]','$no_periksa')";
 
 		if ($db->query($input) === TRUE){
 	      
@@ -70,9 +81,16 @@ else{
 	if($jenis_penjualan == 'APS'){
 		$query_update_status = $db->query("UPDATE pemeriksaan_laboratorium SET status = '1', no_faktur = '$no_faktur' WHERE no_reg = '$no_reg'");
 	}
+	else if ($jenis_penjualan == 'Rawat Inap'){
+
+		$query_update_periksa_lab_inap = $db->query("UPDATE pemeriksaan_lab_inap SET status = '1' WHERE no_reg = '$no_reg' AND no_periksa = '$no_periksa'");
+
+	}
 	else{
 		$insert_pemeriksaan_laboratorium = $db->query("INSERT INTO pemeriksaan_laboratorium (no_faktur,no_reg,no_rm,status,nama_pasien,status_pasien,waktu) VALUES ('$no_faktur',
 			'$no_reg','$no_rm','1','$nama','$jenis_penjualan','$waktu')");
+		
+		$query_update_registrasi_status_lab = $db->query("UPDATE registrasi SET status_lab = '1' WHERE no_reg = '$no_reg' AND no_rm = '$no_rm'");
 	}
 
 
@@ -83,24 +101,24 @@ else{
 	$input = "INSERT INTO hasil_lab (no_faktur,id_pemeriksaan, nama_pemeriksaan, hasil_pemeriksaan, nilai_normal_lk, nilai_normal_pr, status_abnormal, status_pasien, status, no_rm, no_reg,nama_pasien,tanggal,jam,model_hitung,
 		satuan_nilai_normal,id_sub_header,nilai_normal_lk2,
 		nilai_normal_pr2,kode_barang,dokter,petugas_analis,
-		id_setup_hasil) VALUES ('$no_faktur','$data_tbs[id_pemeriksaan]',
+		id_setup_hasil,lab_ke_berapa) VALUES ('$no_faktur','$data_tbs[id_pemeriksaan]',
 		'$data_tbs[nama_pemeriksaan]','$data_tbs[hasil_pemeriksaan]',
 		'$data_tbs[nilai_normal_lk]','$data_tbs[nilai_normal_pr]',
-		'$data_tbs[status_abnormal]','$jenis_penjualan','Selesai',
+		'$data_tbs[status_abnormal]','$jenis_penjualan','1',
 		'$no_rm','$no_reg','$nama','$tanggal','$jam',
 		'$data_tbs[model_hitung]','$data_tbs[satuan_nilai_normal]',
 		'$data_tbs[id_sub_header]','$data_tbs[normal_lk2]',
 		'$data_tbs[normal_pr2]','$data_tbs[kode_barang]',
 		'$data_tbs[dokter]','$data_tbs[analis]',
-		'$data_tbs[id_setup_hasil]')";
+		'$data_tbs[id_setup_hasil]','$no_periksa')";
 
-	if ($db->query($input) === TRUE){
-      
-      } 
-      else {
-      echo "Error: " . $input . "<br>" . $db->error;
-      }
-  }
+		if ($db->query($input) === TRUE){
+	      
+	      } 
+	      else {
+	      echo "Error: " . $input . "<br>" . $db->error;
+	      }
+  	}
 
   $query_hapus_tbs_aps = $db->query("DELETE FROM tbs_aps_penjualan WHERE no_reg = '$no_reg' ");
 

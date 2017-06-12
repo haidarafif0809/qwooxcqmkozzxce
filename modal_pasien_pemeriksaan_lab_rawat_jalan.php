@@ -15,10 +15,24 @@ $columns = array(
     5=>'id'    
 );
 
+
+$cek_setting = $db->query("SELECT nama FROM setting_laboratorium");
+$data_setting = mysqli_fetch_array($cek_setting);
+$hasil_setting = $data_setting['nama']; //jika hasil 1 maka = input hasil baru bayar, jika 0 maka = bayar dulu baru input hasil
+
+if($hasil_setting == '1'){
 //Query Rawat Jalan
 $sql = "SELECT reg.no_reg, reg.no_rm, reg.nama_pasien, reg.jenis_pasien, reg.tanggal, reg.dokter, reg.jenis_kelamin, pj.no_faktur, reg.id, us.id AS id_dokter";
 $sql.=" FROM registrasi reg INNER JOIN tbs_aps_penjualan tap ON reg.no_reg = tap.no_reg LEFT JOIN penjualan pj ON reg.no_reg = pj.no_reg LEFT JOIN user us ON reg.dokter = us.nama";
-$sql.=" WHERE (reg.status = 'Proses' OR reg.status = 'Rujuk Keluar Ditangani') AND pj.no_faktur IS NULL GROUP BY reg.no_reg";
+$sql.=" WHERE (reg.status = 'Proses' OR reg.status = 'Rujuk Keluar Ditangani') AND reg.status_lab != '1' AND pj.no_faktur IS NULL GROUP BY reg.no_reg";
+  
+}
+else{
+//Query Rawat Jalan
+$sql = "SELECT reg.no_reg, reg.no_rm, reg.nama_pasien, reg.jenis_pasien, reg.tanggal, reg.dokter, reg.jenis_kelamin, pj.no_faktur, reg.id, us.id AS id_dokter";
+$sql.=" FROM registrasi reg INNER JOIN tbs_aps_penjualan tap ON reg.no_reg = tap.no_reg LEFT JOIN penjualan pj ON reg.no_reg = pj.no_reg LEFT JOIN user us ON reg.dokter = us.nama";
+$sql.=" WHERE reg.jenis_pasien = 'Rawat Jalan' AND reg.status = 'Sudah Pulang' AND reg.status_lab != '1' AND pj.no_faktur != '' GROUP BY reg.no_reg";
+}
 
 $query = mysqli_query($conn, $sql) or die("eror 1");
 $totalData = mysqli_num_rows($query);
@@ -56,10 +70,7 @@ $data = array();
 while( $row=mysqli_fetch_array($query) ) {  // preparing an array
   $nestedData=array(); 
 
-  $cek_setting = $db->query("SELECT nama FROM setting_laboratorium");
-$data_setting = mysqli_fetch_array($cek_setting);
-$hasil_setting = $data_setting['nama'];
-  if($hasil_setting == 0){
+if($hasil_setting == '1'){
       $nestedData[] = $row["no_reg"];
       $nestedData[] = $row["no_rm"];
       $nestedData[] = $row["nama_pasien"];

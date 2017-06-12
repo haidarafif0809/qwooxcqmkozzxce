@@ -9,8 +9,6 @@ $session_id = session_id();
 $user = $_SESSION['nama'];
 $id_user = $_SESSION['id'];
 
-$pilih_akses_tombol = $db->query("SELECT tombol_submit, tombol_bayar, tombol_piutang, tombol_simpan, tombol_batal, hapus_produk FROM otoritas_penjualan_rj WHERE id_otoritas = '$_SESSION[otoritas_id]' ");
-$otoritas_tombol = mysqli_fetch_array($pilih_akses_tombol);
 
 $cek_setting = $db->query("SELECT nama FROM setting_laboratorium");
 $data_setting = mysqli_fetch_array($cek_setting);
@@ -41,7 +39,6 @@ $hasil_setting = $data_setting['nama'];
                   if($hasil_setting == 0){
 
                     echo "
-                      <th>No. Faktur</th>
                       <th>No. REG</th>
                       <th>No. RM</th>
                       <th>Nama Pasien</th>
@@ -65,7 +62,7 @@ $hasil_setting = $data_setting['nama'];
       </div>
       <div class="modal-footer">
       <center>
-        <button type="button" class="btn btn-warning" id="btnRefreshPasien"> <i class='fa fa-refresh'></i> Refresh Pasien</button>
+        <button type="button" class="btn btn-warning" id="btnRefreshPasien_jalan"> <i class='fa fa-refresh'></i> Refresh Pasien</button>
         <button type="button" accesskey="e" class="btn btn-danger" data-dismiss="modal"><i class='fa fa-close'></i> Close</button>
       </center>
       </div>
@@ -119,7 +116,7 @@ $hasil_setting = $data_setting['nama'];
       </div>
       <div class="modal-footer">
       <center>
-        <button type="button" class="btn btn-warning" id="btnRefreshPasien"> <i class='fa fa-refresh'></i> Refresh Pasien</button>
+        <button type="button" class="btn btn-warning" id="btnRefreshPasien_inap"> <i class='fa fa-refresh'></i> Refresh Pasien</button>
         <button type="button" accesskey="e" class="btn btn-danger" data-dismiss="modal"><i class='fa fa-close'></i> Close</button>
       </center>
       </div>
@@ -149,7 +146,6 @@ $hasil_setting = $data_setting['nama'];
                   if($hasil_setting == 0){
 
                     echo "
-                      <th>No. Faktur</th>
                       <th>No. REG</th>
                       <th>No. RM</th>
                       <th>Nama Pasien</th>
@@ -173,7 +169,7 @@ $hasil_setting = $data_setting['nama'];
       </div>
       <div class="modal-footer">
       <center>
-        <button type="button" class="btn btn-warning" id="btnRefreshPasien"> <i class='fa fa-refresh'></i> Refresh Pasien</button>
+        <button type="button" class="btn btn-warning" id="btnRefreshPasien_ugd"> <i class='fa fa-refresh'></i> Refresh Pasien</button>
         <button type="button" accesskey="e" class="btn btn-danger" data-dismiss="modal"><i class='fa fa-close'></i> Close</button>
       </center>
       </div>
@@ -690,19 +686,29 @@ $("#selesai").click(function(){
   var no_reg = $("#no_reg").val();
   var nama = $("#nama_pasien").val();
   var jenis_penjualan = $("#jenis_pasien").val();
-
+  var pemeriksaan = $("#pemeriksaan").val();
+  if(pemeriksaan == ''){
+    pemeriksaan = '0';
+  }
     $.post("cek_pemeriksaan_sementara.php",{no_reg:no_reg},function(data){
       if(data == 1){
         alert("Data Hasil Laboratorium Tidak Boleh Kosong, Silahkan Anda Isi Terlebih Dahulu !!");
       }
       else{
 
-      $.post("proses_selesai_input_hasil_lab.php",{no_rm:no_rm,no_reg:no_reg,nama:nama,jenis_penjualan:jenis_penjualan},function(info){
+      $.post("proses_selesai_input_hasil_lab.php",{no_rm:no_rm,no_reg:no_reg,nama:nama,jenis_penjualan:jenis_penjualan,pemeriksaan:pemeriksaan},function(info){
 
        //$("#table-baru").html(info);
       
       $("#cetak").show();
+      if(jenis_penjualan == 'Rawat Inap'){
+
+      $("#cetak").attr('href', 'cetak_hasil_input_hasil_lab_inap.php?no_reg='+no_reg+'&pemeriksaan='+pemeriksaan+'');
+      }
+      else{
+
       $("#cetak").attr('href', 'cetak_hasil_lab.php?no_reg='+no_reg+'');
+      }
       $("#alert_berhasil").show();
       $("#no_rm").val('');
       $("#nama").val('');
@@ -739,7 +745,38 @@ $("#selesai").click(function(){
 </script>
 <!-- / DATATABLE DRAW -->
 
+<!-- / DATATABLE DRAW -->
+<script type="text/javascript">
+    $(document).on('click','#btnRefreshPasien_jalan',function(e){
 
+       var table_pasien = $('#tabel_cari_pasien_jalan').DataTable();
+       table_pasien.draw();
+       
+    }); 
+</script>
+<!-- / DATATABLE DRAW -->
+
+<!-- / DATATABLE DRAW -->
+<script type="text/javascript">
+    $(document).on('click','#btnRefreshPasien_inap',function(e){
+
+       var table_pasien = $('#tabel_cari_pasien_inap').DataTable();
+       table_pasien.draw();
+       
+    }); 
+</script>
+<!-- / DATATABLE DRAW -->
+
+<!-- / DATATABLE DRAW -->
+<script type="text/javascript">
+    $(document).on('click','#btnRefreshPasien_ugd',function(e){
+
+       var table_pasien = $('#tabel_cari_pasien_ugd').DataTable();
+       table_pasien.draw();
+       
+    }); 
+</script>
+<!-- / DATATABLE DRAW -->
 
 
 <!--MULAI SCRIPT ANALIS-->

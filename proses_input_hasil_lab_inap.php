@@ -11,7 +11,8 @@ $pemeriksaan = stringdoang($_POST['pemeriksaan']);
 $perintah3 = $db->query("SELECT hasil_pemeriksaan,no_reg FROM tbs_hasil_lab WHERE no_reg = '$no_reg'");
 $data1 = mysqli_num_rows($perintah3);
 if ($data1 > 0){
-    $perintah2 = $db->query("DELETE FROM tbs_hasil_lab WHERE no_reg = '$no_reg' AND hasil_pemeriksaan IS NULL");
+    $perintah2 = $db->query("DELETE FROM tbs_hasil_lab WHERE no_reg = '$no_reg' AND 
+	(hasil_pemeriksaan = '' OR hasil_pemeriksaan IS NULL)");
 }
 
 $perintah = $db->query("SELECT kode_jasa,nama_jasa,dokter,analis,harga FROM tbs_aps_penjualan WHERE no_reg = '$no_reg' AND no_periksa_lab_inap = '$pemeriksaan'");
@@ -170,7 +171,7 @@ else{
 
 $query_cek_data_tbs_hasil = $db->query("SELECT no_reg FROM tbs_hasil_lab WHERE no_reg = '$no_reg' AND lab_ke_berapa = '$pemeriksaan'");
 $data_hasil = mysqli_num_rows($query_cek_data_tbs_hasil);
-if ($data_hasil > 1){
+if ($data_hasil > 0){
 	echo 1;
 }
 else{
