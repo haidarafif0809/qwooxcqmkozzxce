@@ -1019,7 +1019,7 @@ Radiologi  </button>
    $(window).on('load',function(){
 
 
-         // $(".btnPrint").printPage();
+          $(".btnPrint").printPage();
   
          $('#modal_loading_form').modal({  backdrop: 'static',
                       keyboard: false});
@@ -2527,6 +2527,8 @@ if (data == 1) {
       
                   $("#cetak_tunai").attr('href', 'cetak_penjualan_tunai_rj.php?no_reg='+no_reg+'&sisa='+sisa_pembayaran+'&tunai='+pembayaran+'&total='+total+'&biaya_admin='+biaya_adm+'&potongan='+potongan+'&no_rm='+no_rm+'&nama_pasien='+nama_pasien+'');
 
+                  $('#cetak_tunai').trigger('click');
+
                    $("#cetak_tunai_besar").attr('href', 'cetak_penjualan_tunai_besar_rj.php?no_reg='+no_reg+'&sisa='+sisa_pembayaran+'&kredit='+sisa_kredit+'&tunai='+pembayaran+'&total='+total+'&biaya_admin='+biaya_adm+'&potongan='+potongan+'&no_rm='+no_rm+'&nama_pasien='+nama_pasien+'&keterangan='+keterangan+'&cara_bayar='+cara_bayar+'');
 
                    $("#cetak_tunai_kategori").attr('href','cetak_penjualan_tunai_kategori_rj.php?no_reg='+no_reg+'&sisa='+sisa_pembayaran+'&tunai='+pembayaran+'&total='+total+'&biaya_admin='+biaya_adm+'&potongan='+potongan+'&no_rm='+no_rm+'&nama_pasien='+nama_pasien+'');            
@@ -2535,7 +2537,7 @@ if (data == 1) {
                    $("#cetak_tunai_kategori").show();
                    $("#cetak_tunai_besar").show('');
 
-                   var win = window.open('cetak_penjualan_tunai_rj.php?no_reg='+no_reg+'&sisa='+sisa_pembayaran+'&tunai='+pembayaran+'&total='+total+'&biaya_admin='+biaya_adm+'&potongan='+potongan+'&no_rm='+no_rm+'&nama_pasien='+nama_pasien+'');
+                   // var win = window.open('cetak_penjualan_tunai_rj.php?no_reg='+no_reg+'&sisa='+sisa_pembayaran+'&tunai='+pembayaran+'&total='+total+'&biaya_admin='+biaya_adm+'&potongan='+potongan+'&no_rm='+no_rm+'&nama_pasien='+nama_pasien+'');
 
                     if (win) {  
 
