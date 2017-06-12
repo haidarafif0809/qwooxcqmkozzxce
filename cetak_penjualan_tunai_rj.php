@@ -101,7 +101,6 @@ mysqli_close($db);
    ?>
       <tr><td width="50%">Subtotal</td> <td> :</td> <td><?php echo $subtotal_item ?> </tr>
       <tr><td width="50%">Diskon</td> <td> :</td> <td><?php echo rp($potongan);?> </tr>
-      <tr><td  width="50%">Pajak</td> <td> :</td> <td> <span id="pajak"></span> </td></tr>
       <tr><td  width="50%">Biaya Admin</td> <td> :</td> <td> <?php echo rp($biaya_admin);?> </td></tr>
       <tr><td width="50%">Total Penjualan</td> <td> :</td> <td><?php echo rp($total) ?> </tr>
       <tr><td  width="50%">Tunai</td> <td> :</td> <td> <?php echo rp($tunai); ?> </td></tr>
@@ -133,12 +132,11 @@ $(document).ready(function(){
 
        var no_reg = '<?php echo $no_reg ?>';
        var status_print = '<?php echo $status_print ?>';
-       var pajak =  0;
+
        var no_urut = 0;
 
        db.detail_penjualan.where('no_reg').equals(no_reg).each(function(data,i){
             
-       pajak = parseInt(pajak) + parseInt(data.pajak);
 
        console.log(no_urut++);
 
@@ -146,8 +144,6 @@ $(document).ready(function(){
         var data_detail_penjualan = '<tr><td width:"50%"> '+ data.nama_barang+' </td><td style="padding:3px"> '+ data.jumlah_barang +'</td><td style="padding:3px"> '+ data.harga +'</td><td style="padding:3px"> '+ data.subtotal + ' </td></tr>';
 
 
-
-        $("#pajak").text(pajak);
 
         if (status_print == 'Detail') {
             $("#tbody-detail").append(data_detail_penjualan);
