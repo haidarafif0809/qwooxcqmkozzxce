@@ -195,12 +195,29 @@ $hasil_setting = $data_setting['nama'];
             <center>
             <table id="tabel_cari_pasien" class="table table-bordered table-sm">
                   <thead> <!-- untuk memberikan nama pada kolom tabel -->
-                      <th>No. Faktur</th>
+                     
+                  <?php 
+
+                  if($hasil_setting == 0){
+                    echo"
                       <th>No. REG</th>
                       <th>No. RM</th>
                       <th>Nama Pasien</th>
                       <th>Jenis Pasien</th>
-                      <th>Tanggal</th>
+                      <th>Tanggal</th>";
+
+                  }
+                  else{
+
+                     echo "
+                      <th>No. REG</th>
+                      <th>No. RM</th>
+                      <th>Nama Pasien</th>
+                      <th>Jenis Pasien</th>
+                      <th>Tanggal</th>";
+                  }
+
+                   ?>
                   
                   </thead> <!-- tag penutup tabel -->
             </table>
