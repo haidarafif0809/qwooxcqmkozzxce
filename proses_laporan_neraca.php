@@ -48,8 +48,7 @@ while($data = mysqli_fetch_array($select))
   echo "<hr>";
 // AKTIVA LANCAR, PERSEDIAAN , KEWAJIBAN
 
-$select_grup_akun = $db->query("SELECT kode_grup_akun, nama_grup_akun FROM grup_akun WHERE kategori_akun = 'Aktiva' AND tipe_akun = 'Akun Header' 
-  AND parent= '$data[kode_grup_akun]' ");
+$select_grup_akun = $db->query("SELECT kode_grup_akun, nama_grup_akun FROM grup_akun WHERE kategori_akun = 'Aktiva' AND tipe_akun = 'Akun Header' AND parent= '$data[kode_grup_akun]' ");
 
 
 while ($datagrup_akun = mysqli_fetch_array($select_grup_akun))
@@ -575,20 +574,9 @@ $total_modal = $total_modal + $datadaftar_akun['total'];
 
 }
 
-if ($total_laba_tahun_berjalan > 0) {
+if ($total_laba_tahun_berjalan != 0) {
 
 
-if ($total_laba_tahun_berjalan < 0) {
-  echo "
- <table>
-  <tbody>
-    <tr><td width='100%'><h4 style='padding-left:50px'>" .$data_sett['laba_tahun_berjalan'] ." - >" .$data_sett['laba_tahun_berjalan'] ."</h4></td> <td> <h4> (".rp($total_laba_tahun_berjalan).") </h4>  </td></tr>
-  </tbody>
-</table>
-";
-
-}
-else{
   echo "
  <table>
   <tbody>
@@ -597,7 +585,7 @@ else{
 </table>
 ";
 
-}
+
 
 }
 
