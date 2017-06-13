@@ -106,7 +106,7 @@ $dokter = $out_dokter['nama'];
         <tbody>
        <?php
 
- $show = $db->query("SELECT * FROM hasil_lab WHERE no_reg = '$no_reg' AND status = '1' AND id_sub_header != '0' AND lab_ke_berapa = '$no_periksa' GROUP BY id_sub_header ");
+ $show = $db->query("SELECT id_sub_header FROM hasil_lab WHERE no_reg = '$no_reg' AND status = '1' AND id_sub_header != '0' AND lab_ke_berapa = '$no_periksa' GROUP BY id_sub_header ");
   while($drop_show = mysqli_fetch_array($show))
 {
 
