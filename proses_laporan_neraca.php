@@ -48,7 +48,8 @@ while($data = mysqli_fetch_array($select))
   echo "<hr>";
 // AKTIVA LANCAR, PERSEDIAAN , KEWAJIBAN
 
-$select_grup_akun = $db->query("SELECT kode_grup_akun, nama_grup_akun FROM grup_akun WHERE kategori_akun = 'Aktiva' AND tipe_akun = 'Akun Header' AND parent= '$data[kode_grup_akun]' ");
+$select_grup_akun = $db->query("SELECT kode_grup_akun, nama_grup_akun FROM grup_akun WHERE kategori_akun = 'Aktiva' AND tipe_akun = 'Akun Header' 
+  AND parent= '$data[kode_grup_akun]' ");
 
 
 while ($datagrup_akun = mysqli_fetch_array($select_grup_akun))
