@@ -699,9 +699,8 @@ Radiologi  </button>
                               <th> Nama Petugas</th>
                               <th> Jumlah </th>
                               <th> Harga </th>
-                              <th> Potongan </th>
-                              <th> Pajak </th>
                               <th> Subtotal </th>
+                              <th> Tanggal </th>
                           
                           </thead> <!-- tag penutup tabel -->
                     </table>

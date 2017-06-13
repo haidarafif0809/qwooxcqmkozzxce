@@ -13,13 +13,12 @@ $requestData= $_REQUEST;
 $columns = array( 
 // datatable column index  => database column name
 
-    0=>'no_faktur', 
-    1=>'no_reg',
-    2=>'no_rm',
-    3=>'nama_pasien',
-    4=>'status_pasien',
-    5=>'waktu',
-    6=>'id'    
+    0=>'no_reg',
+    1=>'no_rm',
+    2=>'nama_pasien',
+    3=>'status_pasien',
+    4=>'waktu',
+    5=>'id'    
 );
 
 // getting total number records without any search
@@ -67,14 +66,6 @@ $query=mysqli_query($conn, $sql) or die("eror 3");
 $data = array();
 while( $row=mysqli_fetch_array($query) ) {  // preparing an array
   $nestedData=array(); 
-
-      if ($row["no_faktur"] == ''){
-        $nestedData[] = "";
-
-      }
-      else{
-        $nestedData[] = $row["no_faktur"];
-      }
 
       $nestedData[] = $row["no_reg"];
       $nestedData[] = $row["no_rm"];

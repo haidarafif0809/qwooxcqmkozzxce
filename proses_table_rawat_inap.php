@@ -51,7 +51,7 @@ $columns = array(
 );
 
 // getting total number records without any search
-$sql = "SELECT r.id as id_ruangan, r.nama_ruangan, reg.ruangan, reg.no_rm, reg.no_reg, reg.status, reg.nama_pasien, reg.jam, reg.penjamin, reg.poli, reg.dokter_pengirim, reg.dokter, reg.bed, reg.group_bed, reg.tanggal_masuk, reg.penanggung_jawab, reg.umur_pasien, reg.id";
+$sql = "SELECT r.id as id_ruangan, r.nama_ruangan, reg.ruangan, reg.no_rm, reg.no_reg, reg.status, reg.nama_pasien, reg.jam, reg.penjamin, reg.poli, reg.dokter_pengirim, reg.dokter, reg.bed, reg.group_bed, reg.tanggal_masuk, reg.penanggung_jawab, reg.umur_pasien, reg.jenis_kelamin, reg.id"; 
 $sql.=" FROM registrasi reg LEFT JOIN ruangan r ON reg.ruangan = r.id WHERE reg.jenis_pasien = 'Rawat Inap' AND reg.status = 'menginap' AND reg.status != 'Batal Rawat Inap'";
 
 
@@ -60,7 +60,7 @@ $totalData = mysqli_num_rows($query);
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
 
-$sql = "SELECT r.id as id_ruangan, r.nama_ruangan, reg.ruangan, reg.no_rm, reg.no_reg, reg.status, reg.nama_pasien, reg.jam, reg.penjamin, reg.poli, reg.dokter_pengirim, reg.dokter, reg.bed, reg.group_bed, reg.tanggal_masuk, reg.penanggung_jawab, reg.umur_pasien, reg.id";
+$sql = "SELECT r.id as id_ruangan, r.nama_ruangan, reg.ruangan, reg.no_rm, reg.no_reg, reg.status, reg.nama_pasien, reg.jam, reg.penjamin, reg.poli, reg.dokter_pengirim, reg.dokter, reg.bed, reg.group_bed, reg.tanggal_masuk, reg.penanggung_jawab, reg.umur_pasien, reg.jenis_kelamin, reg.id"; 
 $sql.=" FROM registrasi reg LEFT JOIN ruangan r ON reg.ruangan = r.id WHERE reg.jenis_pasien = 'Rawat Inap' AND reg.status = 'menginap' AND reg.status != 'Batal Rawat Inap' AND 1 = 1";
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
 	$sql.=" AND ( reg.no_reg LIKE '".$requestData['search']['value']."%' ";    
@@ -94,6 +94,9 @@ $sttus = mysqli_num_rows($penjual);
 $query_id_user = $db->query("SELECT id AS id_dokter FROM user WHERE nama = '$row[dokter]' ");
 $data_id_user = mysqli_fetch_array($query_id_user);
 
+
+$query_id_user_dokter_pengirim = $db->query("SELECT id AS id_dokter FROM user WHERE nama = '$row[dokter_pengirim]' "); 
+$data_id_user_dokter_pengirim = mysqli_fetch_array($query_id_user_dokter_pengirim); 
 
   if ($registrasi_ri['registrasi_ri_hapus'] == 1)
   	{
@@ -165,10 +168,11 @@ $data_z = mysqli_fetch_array($query_z);
 				}*/
 
 				//else {
-					 $nestedData[] = "<a href='form_pemeriksaan_radiologi.php?no_rm=".$row['no_rm']."&nama=".$row['nama_pasien']."&no_reg=".$row['no_reg']."&dokter=".$data_id_user['id_dokter']."&jenis_penjualan=Rawat Inap&rujukan=Rujuk Rawat Inap&penjamin=".$row['penjamin']."' class='btn btn-floating btn-small btn-info'><i class='fa fa-universal-access'></i></a>";
+					 $nestedData[] = "<a href='data_pemeriksaan_radiologi_inap.php?no_rm=".$row['no_rm']."&nama=".$row['nama_pasien']."&no_reg=".$row['no_reg']."&dokter=".$data_id_user['id_dokter']."&jenis_penjualan=Rawat Inap&rujukan=Rujuk Rawat Inap&penjamin=".$row['penjamin']."&bed=".$row['bed']."&kamar=".$row['group_bed']."' class='btn btn-floating btn-small btn-info'><i class='fa fa-universal-access'></i></a>";
 
-					 $nestedData[] = "<button  class='btn btn-floating btn-small btn-info pemeriksaan_lab_inap' data-kamar=".$row['group_bed']." data-bed=".$row['bed']." data-rm=".$row['no_rm']." data-nama=".$row['nama_pasien']." data-reg=".$row['no_reg']." data-id=".$row['id']." '><i class='fa fa-stethoscope'></i></button>
-						   ";
+					
+					$nestedData[] = "<button  class='btn btn-floating btn-small btn-info pemeriksaan_lab_inap' data-kamar=".$row['group_bed']." data-bed=".$row['bed']." data-rm=".$row['no_rm']." data-nama=".$row['nama_pasien']." data-reg=".$row['no_reg']." data-dokter-pengirim=".$data_id_user_dokter_pengirim['id_dokter']." data-jenis-kelamin=".$row['jenis_kelamin']." data-id=".$row['id']." '><i class='fa fa-stethoscope'></i></button>";
+
 						
 				//} 
 

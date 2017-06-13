@@ -6,7 +6,8 @@ session_start();
 $tahun_sekarang = date('Y');
 $bulan_sekarang = date('m');
 $tanggal_sekarang = date('Y-m-d');
-$jam_sekarang = date('H:i:sa');
+$jam_sekarang = date('H:i:s');
+$waktu = date("Y-m-d H:i:s");
 $tahun_terakhir = substr($tahun_sekarang, 2);
 
 try {
@@ -343,6 +344,10 @@ $no_jurnal = no_jurnal();
 $cek_lab = $db->query("SELECT no_reg FROM hasil_lab WHERE no_reg = '$no_reg'");
 $out_lab = mysqli_num_rows($cek_lab);
 if($out_lab > 0 ){
+  
+  //Input agar tampil di laporan laboratoriu (Tambahan sore hari belom di tes)
+    $insert_pemeriksaan_laboratorium = $db->query("INSERT INTO pemeriksaan_laboratorium (no_reg,no_faktur,no_rm,status,nama_pasien,status_pasien,waktu,status_pasien) VALUES ('$no_reg',
+      '$no_faktur','$no_rm','1','$nama_pasien','$jenis_penjualan','$waktu','Rawat Inap')");
 
   $update_hasilnya = $db->query("UPDATE hasil_lab SET no_faktur = '$no_faktur' WHERE no_reg = '$no_reg'");
 }
@@ -352,6 +357,10 @@ else{
   $get = mysqli_fetch_array($cek_setting);
   $hasil = $get['nama'];
   if($hasil == 0){
+
+        //Input agar tampil di laporan laboratoriu (Tambahan sore hari belom di tes)
+    $insert_pemeriksaan_laboratorium = $db->query("INSERT INTO pemeriksaan_laboratorium (no_reg,no_faktur,no_rm,status,nama_pasien,status_pasien,waktu,status_pasien) VALUES ('$no_reg',
+      '$no_faktur','$no_rm','1','$nama_pasien','$jenis_penjualan','$waktu','Rawat Inap')");
 
     //ambil di tbs penjualan jasa labnya
     $taked_tbs = $db->query("SELECT kode_barang,nama_barang,lab_ke_berapa FROM tbs_penjualan WHERE no_reg = '$no_reg' AND lab = 'Laboratorium'");

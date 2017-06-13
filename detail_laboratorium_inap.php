@@ -28,22 +28,9 @@ $no_faktur = stringdoang($_GET['faktur']);
 
       <div class="modal-body">
       <div class="table-responsive">
-      <span id="modal-detail"> </span>
+      <span id="span-detail"> </span>
 
-       <table id="table_detail" class="table table-bordered table-sm">
-        <thead>
-           <th> Nama Pemeriksaan </th>
-           <th> Hasil Pemeriksaan </th>
-           <th> Nilai Normal </th>
-           <th> Status Rawat </th>
-           
-            
-        </thead>
-        
-        <tbody id="data_detail">
-        </tbody>
-
-        </table>
+  
       </div>
 
      </div>
@@ -164,11 +151,24 @@ $no_faktur = stringdoang($_GET['faktur']);
 <script type="text/javascript">
 $(document).on('click', '.detail-lab-inap', function (e) {
 
-    var no_reg = $(this).attr('data-reg');
-    var no_periksa = $(this).attr('data-periksa');
-    $("#no_reg_hidden").val(no_reg);
-    $("#no_periksa_hidden").val(no_periksa);
- //ajax
+  var no_reg = $(this).attr('data-reg');
+  var no_periksa = $(this).attr('data-periksa');
+  $("#no_reg_hidden").val(no_reg);
+  $("#no_periksa_hidden").val(no_periksa);
+
+  var no_reg_hidden = $("#no_reg_hidden").val();
+  var no_periksa_hidden = $("#no_periksa_hidden").val();
+
+  $("#modal_detail").modal('show');
+
+  $.post("show_lab_pemeriksaan_inap.php",{no_reg:no_reg,no_periksa:no_periksa},function(data){
+    $("#span-detail").html(data);
+  });
+
+
+
+
+ /*
       $('#table_detail').DataTable().destroy();
             var dataTable = $('#table_detail').DataTable( {
             "processing": true,
@@ -196,9 +196,7 @@ $(document).on('click', '.detail-lab-inap', function (e) {
             },  
 
       });
-      // ajax end
-    
-        $("#modal_detail").modal('show');
+      */
     
     });
 
