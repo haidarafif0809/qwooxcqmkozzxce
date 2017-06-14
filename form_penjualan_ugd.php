@@ -1547,7 +1547,7 @@ $('#tabel_tbs_radiologi').DataTable().destroy();
 
 //Start Cek Hasil Laboratorium
 var pasien = $("#no_rm").val();
-$.post("cek_setting_laboratorium.php",{no_reg:no_reg},function(data){
+$.post("cek_setting_laboratorium_ugd.php",{no_reg:no_reg},function(data){
   if(data == 1){
     $("#penjualan").hide();
      $("#simpan_sementara").hide();

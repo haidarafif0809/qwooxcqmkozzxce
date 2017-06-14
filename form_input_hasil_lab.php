@@ -10,10 +10,6 @@ $user = $_SESSION['nama'];
 $id_user = $_SESSION['id'];
 
 
-$cek_setting = $db->query("SELECT nama FROM setting_laboratorium");
-$data_setting = mysqli_fetch_array($cek_setting);
-$hasil_setting = $data_setting['nama'];
-
 ?>
 <!-- js untuk tombol shortcut -->
 <script src="shortcut.js"></script>
@@ -35,26 +31,12 @@ $hasil_setting = $data_setting['nama'];
             <center>
             <table id="tabel_cari_pasien_jalan" class="table table-bordered table-sm">
                   <thead> <!-- untuk memberikan nama pada kolom tabel -->
-                  <?php
-                  if($hasil_setting == 0){
-
-                    echo "
+                  
                       <th>No. REG</th>
                       <th>No. RM</th>
                       <th>Nama Pasien</th>
                       <th>Jenis Pasien</th>
-                      <th>Tanggal</th>";
-                  }
-                  else{
-                    echo "
-                      <th>No. REG</th>
-                      <th>No. RM</th>
-                      <th>Nama Pasien</th>
-                      <th>Jenis Pasien</th>
-                      <th>Tanggal</th>";
-
-                  }
-                  ?>
+                      <th>Tanggal</th>
                   
                   </thead> <!-- tag penutup tabel -->
             </table>
@@ -88,28 +70,14 @@ $hasil_setting = $data_setting['nama'];
             <center>
             <table id="tabel_cari_pasien_inap" class="table table-bordered table-sm">
                   <thead> <!-- untuk memberikan nama pada kolom tabel -->
-                  <?php
-                  if($hasil_setting == 0){
-
-                    echo "
+                  
                       <th>No. REG</th>
                       <th>No. RM</th>
                       <th>Nama Pasien</th>
                       <th>Jenis Pasien</th>
                       <th>Pemeriksaan</th>
-                      <th>Tanggal</th>";
-                  }
-                  else{
-                    echo "
-                      <th>No. REG</th>
-                      <th>No. RM</th>
-                      <th>Nama Pasien</th>
-                      <th>Jenis Pasien</th>
-                      <th>Pemeriksaan</th>
-                      <th>Tanggal</th>";
+                      <th>Tanggal</th>
 
-                  }
-                  ?>
                   </thead> <!-- tag penutup tabel -->
             </table>
             </center>
@@ -142,26 +110,11 @@ $hasil_setting = $data_setting['nama'];
             <table id="tabel_cari_pasien_ugd" class="table table-bordered table-sm">
                 <thead> <!-- untuk memberikan nama pada kolom tabel -->
                 
-                <?php
-                  if($hasil_setting == 0){
-
-                    echo "
                       <th>No. REG</th>
                       <th>No. RM</th>
                       <th>Nama Pasien</th>
                       <th>Jenis Pasien</th>
-                      <th>Tanggal</th>";
-                  }
-                  else{
-                    echo "
-                      <th>No. REG</th>
-                      <th>No. RM</th>
-                      <th>Nama Pasien</th>
-                      <th>Jenis Pasien</th>
-                      <th>Tanggal</th>";
-
-                  }
-                ?>
+                      <th>Tanggal</th>
                   
                 </thead> <!-- tag penutup tabel -->
             </table>
@@ -195,29 +148,12 @@ $hasil_setting = $data_setting['nama'];
             <center>
             <table id="tabel_cari_pasien" class="table table-bordered table-sm">
                   <thead> <!-- untuk memberikan nama pada kolom tabel -->
-                     
-                  <?php 
-
-                  if($hasil_setting == 0){
-                    echo"
+                    
                       <th>No. REG</th>
                       <th>No. RM</th>
                       <th>Nama Pasien</th>
                       <th>Jenis Pasien</th>
-                      <th>Tanggal</th>";
-
-                  }
-                  else{
-
-                     echo "
-                      <th>No. REG</th>
-                      <th>No. RM</th>
-                      <th>Nama Pasien</th>
-                      <th>Jenis Pasien</th>
-                      <th>Tanggal</th>";
-                  }
-
-                   ?>
+                      <th>Tanggal</th>
                   
                   </thead> <!-- tag penutup tabel -->
             </table>

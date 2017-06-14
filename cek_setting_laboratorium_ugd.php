@@ -4,12 +4,12 @@ include 'sanitasi.php';
 
 $no_reg = stringdoang($_POST['no_reg']);
 
-$cek_setting = $db->query("SELECT nama FROM setting_laboratorium WHERE jenis_lab = 'APS'");
+$cek_setting = $db->query("SELECT nama FROM setting_laboratorium WHERE jenis_lab = 'UGD'");
 $get = mysqli_fetch_array($cek_setting);
 $hasil = $get['nama'];
 if($hasil == 1){
 
-	$cek_jasa_lab_tbs = $db->query("SELECT no_reg FROM tbs_aps_penjualan WHERE no_reg = '$no_reg'");
+	$cek_jasa_lab_tbs = $db->query("SELECT no_reg,lab FROM tbs_penjualan WHERE no_reg = '$no_reg' AND lab = 'Laboratorium'");
 	$show_jasa = mysqli_num_rows($cek_jasa_lab_tbs);
 	if($show_jasa > 0){
 

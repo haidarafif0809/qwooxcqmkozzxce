@@ -4,7 +4,7 @@ include 'sanitasi.php';
 
 $no_reg = stringdoang($_POST['no_reg']);
 
-$cek_setting = $db->query("SELECT nama FROM setting_laboratorium");
+$cek_setting = $db->query("SELECT nama FROM setting_laboratorium WHERE jenis_lab = 'Rawat Inap'");
 $get = mysqli_fetch_array($cek_setting);
 $hasil = $get['nama'];
 if($hasil == 1){

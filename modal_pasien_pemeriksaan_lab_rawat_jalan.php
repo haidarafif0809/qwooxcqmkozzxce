@@ -16,7 +16,7 @@ $columns = array(
 );
 
 
-$cek_setting = $db->query("SELECT nama FROM setting_laboratorium");
+$cek_setting = $db->query("SELECT nama FROM setting_laboratorium WHERE jenis_lab = 'Rawat Jalan'");
 $data_setting = mysqli_fetch_array($cek_setting);
 $hasil_setting = $data_setting['nama']; //jika hasil 1 maka = input hasil baru bayar, jika 0 maka = bayar dulu baru input hasil
 
