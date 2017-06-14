@@ -247,6 +247,7 @@ try {
       $query_history_tbs_aps = $db->query("INSERT INTO history_tbs_aps_penjualan (no_reg,no_faktur,kode_jasa,
         nama_jasa,harga,subtotal,dokter,analis,tanggal,jam) SELECT no_reg, no_faktur,kode_jasa,nama_jasa,harga, subtotal,dokter,analis,tanggal,jam FROM tbs_aps_penjualan  WHERE no_reg = '$no_reg' ");
 
+      $query_hapus_tbs_jual = $db->query("DELETE FROM tbs_penjualan WHERE no_reg = '$no_reg' ");
 
       $query_hapus_fee_produk = $db->query("DELETE FROM tbs_fee_produk WHERE no_reg = '$no_reg' ");
 

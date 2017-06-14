@@ -21,10 +21,21 @@ $columns = array(
     5=>'id'    
 );
 
-// getting total number records without any search
-$sql = "SELECT no_faktur,no_reg,no_rm,nama_pasien,status_pasien,DATE(waktu) AS tanggal ,id";
-$sql.=" FROM pemeriksaan_laboratorium ";
-$sql.=" WHERE status = '0' ";
+$cek_setting = $db->query("SELECT nama FROM setting_laboratorium");
+$data_setting = mysqli_fetch_array($cek_setting);
+$hasil_setting = $data_setting['nama']; //jika hasil 1 maka = input hasil baru bayar, jika 0 maka = bayar dulu baru input hasil
+
+if($hasil_setting == '1'){
+//Query Rawat APS
+$sql = "SELECT pl.no_faktur,pl.no_reg,pl.no_rm,pl.nama_pasien,pl.status_pasien,DATE(pl.waktu) AS tanggal ,pl.id";
+$sql.=" FROM pemeriksaan_laboratorium pl INNER JOIN registrasi reg ON pl.no_reg = reg.no_reg";
+$sql.=" WHERE pl.status = '0' AND reg.status = 'aps_masuk' AND reg.jenis_pasien = 'APS'";
+}
+else{
+$sql = "SELECT pl.no_faktur,pl.no_reg,pl.no_rm,pl.nama_pasien,pl.status_pasien,DATE(pl.waktu) AS tanggal ,pl.id";
+$sql.=" FROM pemeriksaan_laboratorium pl INNER JOIN registrasi reg ON pl.no_reg = reg.no_reg";
+$sql.=" WHERE pl.status = '0' AND reg.status = 'Sudah Pulang' AND reg.jenis_pasien = 'APS'";
+}
 
 $query = mysqli_query($conn, $sql) or die("eror 1");
 $totalData = mysqli_num_rows($query);
