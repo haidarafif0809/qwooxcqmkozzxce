@@ -4,10 +4,9 @@ include 'db.php';
 include 'sanitasi.php';
 /* Database connection end */
 
-$otoritas_laboratorium = $db->query("SELECT input_jasa_lab, input_hasil_lab FROM otoritas_laboratorium WHERE id_otoritas = '$_SESSION[otoritas_id]'");
+$otoritas_laboratorium = $db->query("SELECT input_jasa_lab FROM otoritas_laboratorium WHERE id_otoritas = '$_SESSION[otoritas_id]'");
 $take_lab = mysqli_fetch_array($otoritas_laboratorium);
 $input_jasa_lab = $take_lab['input_jasa_lab'];
-$input_hasil_lab = $take_lab['input_hasil_lab'];
 
 //untuk otoritas akses
 $pilih_akses_registrasi_rj = $db->query("SELECT registrasi_ugd_lihat, registrasi_ugd_tambah, registrasi_ugd_edit, registrasi_ugd_hapus FROM otoritas_registrasi WHERE id_otoritas = '$_SESSION[otoritas_id]'");
@@ -116,31 +115,6 @@ if ($input_jasa_lab > 0) {
 
  $nestedData[] = "<a href='form_penjualan_lab.php?no_rm=".$row['no_rm']."&nama=".$row['nama_pasien']."&no_reg=".$row['no_reg']."&dokter=".$data_id_user['id_dokter']."&jenis_kelamin=".$row['jenis_kelamin']."&jenis_penjualan=UGD&rujukan=Rujuk UGD' class='btn btn-floating btn-small btn-info'><i class='fa fa-stethoscope'></i></a>";
 }
-
-// untuk input hasil lab
-if ($input_hasil_lab > 0) {
-$show = $db->query("SELECT COUNT(*) AS jumlah FROM tbs_penjualan WHERE no_reg = '$row[no_reg]' AND lab = 'Laboratorium' ");
-$take = mysqli_fetch_array($show);
-
-	if ($take['jumlah'] > 0)
-	{
-		$query_cek_setting = $db->query("SELECT nama FROM setting_laboratorium");
-		$data_cek_setting = mysqli_fetch_array($query_cek_setting);
-		$angka_setting_lab = $data_cek_setting['nama'];
-		if($angka_setting_lab == 0){
-		$nestedData[] = "<p style='color:red'>Cek Setting Laboratorium</p>";
-		}
-		else{
-		$nestedData[] = "<a href='cek_input_hasil_lab.php?no_rm=".$row['no_rm']."&nama=".$row['nama_pasien']."&no_reg=".$row['no_reg']."&jenis_penjualan=UGD' class='btn btn-floating btn-small btn-info'><i class='fa fa-pencil'></i></a>";
-		}
-	}
-	else
-	{
-	  $nestedData[] = "<p style='color:red'>Input Laboratorium</p>";
-
-	}
-}
-// end untuk input hasil lab
 
 
 	if ($rekam_medik['rekam_medik_ugd_lihat'] > 0) {
