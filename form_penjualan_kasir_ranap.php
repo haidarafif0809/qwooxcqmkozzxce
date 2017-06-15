@@ -909,13 +909,12 @@ Radiologi  </button>
                           <thead> <!-- untuk memberikan nama pada kolom tabel -->
                               
                               <th> Kode  </th>
-                              <th> Nama </th>
+                              <th> Pemeriksaan  </th>
+                              <th> Nama Jasa</th>
                               <th> Nama Petugas</th>
                               <th> Jumlah </th>
                               <th> Harga </th>
                               <th> Subtotal </th>
-                              <th> Potongan </th>
-                              <th> Pajak </th>
                               <th> Tanggal </th>
                           </thead> <!-- tag penutup tabel -->
                     </table>
@@ -5708,7 +5707,7 @@ $(document).on('dblclick','.edit-waktu-or',function(){
             "info":     false,
             "language": { "emptyTable":     "My Custom Message On Empty Table" },
             "ajax":{
-              url :"data_tbs_lab.php", // json datasource
+              url :"data_tbs_lab_inap.php", // json datasource
                "data": function ( d ) {
                   d.no_reg = $("#no_reg").val();
                   // d.custom = $('#myInput').val();

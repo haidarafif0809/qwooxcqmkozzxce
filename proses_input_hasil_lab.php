@@ -7,11 +7,12 @@ $no_rm = stringdoang($_POST['no_rm']);
 $no_reg = stringdoang($_POST['no_reg']);
 $jenis_penjualan = stringdoang($_POST['status_pasien']);
 
-$perintah3 = $db->query("SELECT hasil_pemeriksaan,no_reg FROM tbs_hasil_lab WHERE no_reg = '$no_reg' ");
-$data1 = mysqli_num_rows($perintah3);
+$query_cek_tbs_hasil = $db->query("SELECT hasil_pemeriksaan,no_reg FROM tbs_hasil_lab WHERE no_reg = '$no_reg' ");
+$data_cek_tbs = mysqli_num_rows($query_cek_tbs_hasil);
 
-if ($data1 > 0){
-    $perintah2 = $db->query("DELETE FROM tbs_hasil_lab WHERE no_reg = '$no_reg' AND hasil_pemeriksaan IS NULL");
+if ($data_cek_tbs > 0){
+    $query_hapus_tbs_hasil = $db->query("DELETE FROM tbs_hasil_lab WHERE no_reg = '$no_reg' AND 
+	(hasil_pemeriksaan = '' OR hasil_pemeriksaan IS NULL)");
 }
 
 
@@ -172,7 +173,7 @@ else{
 
 $query_cek_data_tbs_hasil = $db->query("SELECT no_reg FROM tbs_hasil_lab WHERE no_reg = '$no_reg'");
 $data_hasil = mysqli_num_rows($query_cek_data_tbs_hasil);
-if ($data_hasil > 1){
+if ($data_hasil > 0){
 	echo 1;
 }
 else{

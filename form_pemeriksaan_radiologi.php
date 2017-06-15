@@ -1142,7 +1142,8 @@ $data_reg = mysqli_fetch_array($select_reg);
               <?php endif ?>
 
               <?php if ($jenis_penjualan == 'Rawat Inap'): ?>
-                  <button class="btn btn-warning" id="ranap"> <i class="fa fa-reply-all"></i> Kembali Rawat Inap </button>
+                  <button class="btn btn-default" id="simpan_ranap"> <i class="fa fa-save"></i> Simpan Rawat Inap </button>
+                  <button class="btn btn-warning" id="ranap" style="display: none"> <i class="fa fa-reply-all"></i> Kembali Rawat Inap </button>
               <?php endif ?>
 
               <?php if ($jenis_penjualan == 'UGD'): ?>
@@ -1618,6 +1619,30 @@ data = data.replace(/\s+/g, '');
           $('#kolom_cek_harga').val('1');
         });
     });
+});
+//end cek level harga
+</script>
+
+
+
+<script type="text/javascript">
+$(document).ready(function(){
+  $(document).on("click","#simpan_ranap",function(){    
+    var no_reg = $("#no_reg").val();
+    var no_rm = $("#kd_pelanggan1").val();
+    var nama = $("#nama_pelanggan").val();
+    var dokter = "<?php echo $dokter_pengirim ?>";
+    var penjamin = "<?php echo $penjamin ?>";
+    var bed = $("#bed").val();
+    var kamar = $("#kamar").val();
+
+    $.post("simpan_jasa_radiologi.php", {no_reg:no_reg},function(data){
+
+     window.location.href="data_pemeriksaan_radiologi_inap.php?no_rm="+no_rm+"&nama="+nama+"&no_reg="+no_reg+"&dokter="+no_reg+"&jenis_penjualan=Rawat Inap&rujukan=Rujuk Rawat Jalan&penjamin="+penjamin+"&bed="+bed+"&kamar="+kamar+"";
+
+    });
+
+  });
 });
 //end cek level harga
 </script>

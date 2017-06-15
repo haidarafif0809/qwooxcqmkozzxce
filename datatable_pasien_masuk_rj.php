@@ -5,10 +5,9 @@ include 'sanitasi.php';
 
 
 
-$otoritas_laboratorium = $db->query("SELECT input_jasa_lab, input_hasil_lab FROM otoritas_laboratorium WHERE id_otoritas = '$_SESSION[otoritas_id]'");
+$otoritas_laboratorium = $db->query("SELECT input_jasa_lab FROM otoritas_laboratorium WHERE id_otoritas = '$_SESSION[otoritas_id]'");
 $take_lab = mysqli_fetch_array($otoritas_laboratorium);
 $input_jasa_lab = $take_lab['input_jasa_lab'];
-$input_hasil_lab = $take_lab['input_hasil_lab'];
 
 $pilih_akses_penjualan = $db->query("SELECT penjualan_tambah FROM otoritas_penjualan WHERE id_otoritas = '$_SESSION[otoritas_id]'");
 $penjualan = mysqli_fetch_array($pilih_akses_penjualan);
@@ -160,32 +159,13 @@ $nestedData[] = "<a href='form_pemeriksaan_radiologi.php?no_rm=".$row['no_rm']."
 
 // untuk input jasa lab
 if ($input_jasa_lab > 0) {
-    $nestedData[] = "<a href='form_penjualan_lab.php?no_rm=".$row['no_rm']."&nama=".$row['nama_pasien']."&no_reg=".$row['no_reg']."&dokter=".$row['dokter']."&jenis_penjualan=Rawat Jalan&rujukan=Rujuk Rawat Jalan' class='btn btn-floating btn-small btn-info'><i class='fa fa-stethoscope'></i></a>
+
+    $nestedData[] = "<a href='form_penjualan_lab.php?no_rm=".$row['no_rm']."&nama=".$row['nama_pasien']."&no_reg=".$row['no_reg']."&dokter=".$data_id_user['id_dokter']."&jenis_kelamin=".$row['jenis_kelamin']."&jenis_penjualan=Rawat Jalan&rujukan=Rujuk Rawat Jalan' class='btn btn-floating btn-small btn-info'>
+    	<i class='fa fa-stethoscope'></i></a>
        ";
     }
 
-// untuk input hasil lab
-if ($input_hasil_lab > 0) {
-	$show = $db->query("SELECT COUNT(*) AS jumlah FROM tbs_penjualan WHERE no_reg = '$row[no_reg]' AND lab = 'Laboratorium' ");
-	$take = mysqli_fetch_array($show);
-		if ($take['jumlah'] > 0)
-		{
-			$query_cek_setting = $db->query("SELECT nama FROM setting_laboratorium");
-			$data_cek_setting = mysqli_fetch_array($query_cek_setting);
-			$angka_setting_lab = $data_cek_setting['nama'];
-			if($angka_setting_lab == 0){
-			$nestedData[] = "<p style='color:red'>Cek Setting Laboratorium</p>";
-			}
-			else{
-			$nestedData[] = "<a id='input_hasil' href='cek_input_hasil_lab.php?no_rm=".$row['no_rm']."&nama=".$row['nama_pasien']."&no_reg=".$row['no_reg']."&jenis_penjualan=Rawat Jalan' class='btn btn-floating btn-small btn-info'><i class='fa fa-pencil'></i></a>";
-			}
-		}
-		else
-		{
-		  $nestedData[] = "<p style='color:red'>Input Laboratorium</p>";
-		}
-}
-// end untuk input hasil lab
+
 
 if ($rekam_medik['rekam_medik_rj_lihat'] > 0) {
   $nestedData[] = "<a href='input_rekammedik_raja.php?no_reg=".$row['no_reg']."&tgl=".$row['tanggal_periksa']."&jam=".$row['jam']."' class='btn-floating btn-info btn-small'><i class='fa fa-medkit '></i></a>";

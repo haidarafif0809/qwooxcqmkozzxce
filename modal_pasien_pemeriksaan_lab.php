@@ -13,19 +13,29 @@ $requestData= $_REQUEST;
 $columns = array( 
 // datatable column index  => database column name
 
-    0=>'no_faktur', 
-    1=>'no_reg',
-    2=>'no_rm',
-    3=>'nama_pasien',
-    4=>'status_pasien',
-    5=>'waktu',
-    6=>'id'    
+    0=>'no_reg',
+    1=>'no_rm',
+    2=>'nama_pasien',
+    3=>'status_pasien',
+    4=>'waktu',
+    5=>'id'    
 );
 
-// getting total number records without any search
-$sql = "SELECT no_faktur,no_reg,no_rm,nama_pasien,status_pasien,DATE(waktu) AS tanggal ,id";
-$sql.=" FROM pemeriksaan_laboratorium ";
-$sql.=" WHERE status = '0' ";
+$cek_setting = $db->query("SELECT nama FROM setting_laboratorium WHERE jenis_lab = 'APS'");
+$data_setting = mysqli_fetch_array($cek_setting);
+$hasil_setting = $data_setting['nama']; //jika hasil 1 maka = input hasil baru bayar, jika 0 maka = bayar dulu baru input hasil
+
+if($hasil_setting == '1'){
+//Query Rawat APS
+$sql = "SELECT pl.no_faktur,pl.no_reg,pl.no_rm,pl.nama_pasien,pl.status_pasien,DATE(pl.waktu) AS tanggal ,pl.id";
+$sql.=" FROM pemeriksaan_laboratorium pl INNER JOIN registrasi reg ON pl.no_reg = reg.no_reg";
+$sql.=" WHERE pl.status = '0' AND reg.status = 'aps_masuk' AND reg.jenis_pasien = 'APS'";
+}
+else{
+$sql = "SELECT pl.no_faktur,pl.no_reg,pl.no_rm,pl.nama_pasien,pl.status_pasien,DATE(pl.waktu) AS tanggal ,pl.id";
+$sql.=" FROM pemeriksaan_laboratorium pl INNER JOIN registrasi reg ON pl.no_reg = reg.no_reg";
+$sql.=" WHERE pl.status = '0' AND reg.status = 'Sudah Pulang' AND reg.jenis_pasien = 'APS'";
+}
 
 $query = mysqli_query($conn, $sql) or die("eror 1");
 $totalData = mysqli_num_rows($query);
@@ -67,14 +77,6 @@ $query=mysqli_query($conn, $sql) or die("eror 3");
 $data = array();
 while( $row=mysqli_fetch_array($query) ) {  // preparing an array
   $nestedData=array(); 
-
-      if ($row["no_faktur"] == ''){
-        $nestedData[] = "";
-
-      }
-      else{
-        $nestedData[] = $row["no_faktur"];
-      }
 
       $nestedData[] = $row["no_reg"];
       $nestedData[] = $row["no_rm"];

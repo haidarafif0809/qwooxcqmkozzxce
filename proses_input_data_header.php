@@ -61,6 +61,11 @@ while($data_query_select_detail = mysqli_fetch_array($query_select_detail)){
       '$nama_jasa','$harga_jasa','$dokter','$analis','$tanggal',
       '$jam')");
 
+    //INSERT TBS PENJUALAN
+    $query_insert_tbs_penjualan = $db->query("INSERT INTO tbs_penjualan 
+      (no_reg,kode_barang,nama_barang,harga,lab_ke_berapa,tanggal,jam,jumlah_barang, tipe_barang,lab,status_lab,dokter,analis,subtotal) VALUES ('$no_reg','$kode_jasa_lab',
+      '$nama_jasa','$harga_jasa','$pemeriksaan_keberapa','$tanggal','$jam','1','jasa',
+      'Laboratorium','Unfinish','$dokter','$analis','$harga_jasa')");
 
   // INSERT FEE DOKTER JASA LAB
     $query_fee_jasa_lab = $db->query("SELECT jumlah_prosentase, jumlah_uang FROM fee_produk WHERE nama_petugas = '$dokter' AND kode_produk = '$kode_jasa_lab'");

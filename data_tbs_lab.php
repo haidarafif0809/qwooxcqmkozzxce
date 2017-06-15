@@ -30,18 +30,18 @@ $columns = array(
 );
 
 // getting total number records without any search
-$sql =" SELECT kode_barang, nama_barang, jumlah_barang, harga, subtotal, potongan, tax, tanggal, jam, id";
+$sql =" SELECT kode_barang,lab_ke_berapa, nama_barang, jumlah_barang, harga, subtotal, potongan, tax, tanggal, jam, id";
 $sql.=" FROM tbs_penjualan ";
-$sql.=" WHERE no_reg = '$no_reg' AND lab = 'Laboratorium' AND no_faktur IS NULL";
+$sql.=" WHERE no_reg = '$no_reg' AND lab = 'Laboratorium' AND no_faktur IS NULL ";
 
 $query = mysqli_query($conn, $sql) or die("eror 1");
 $totalData = mysqli_num_rows($query);
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
-$sql =" SELECT kode_barang, nama_barang, jumlah_barang, harga, subtotal, potongan, tax, tanggal, jam, id";
+$sql =" SELECT kode_barang,lab_ke_berapa, nama_barang, jumlah_barang, harga, subtotal, potongan, tax, tanggal, jam, id";
 $sql.=" FROM tbs_penjualan ";
-$sql.=" WHERE no_reg = '$no_reg' AND lab = 'Laboratorium' AND no_faktur IS NULL";
+$sql.=" WHERE no_reg = '$no_reg' AND lab = 'Laboratorium' AND no_faktur IS NULL ";
 
     $sql.=" AND (kode_barang LIKE '".$requestData['search']['value']."%'";  
     $sql.=" OR nama_barang LIKE '".$requestData['search']['value']."%' )";
@@ -52,7 +52,7 @@ $sql.=" WHERE no_reg = '$no_reg' AND lab = 'Laboratorium' AND no_faktur IS NULL"
 $query=mysqli_query($conn, $sql) or die("eror 2");
 $totalFiltered = mysqli_num_rows($query); // when there is a search parameter then we have to modify total number filtered rows as per search result. 
         
-$sql.=" ORDER BY kode_barang ".$requestData['order'][0]['dir']."  LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
+$sql.=" ORDER BY id ".$requestData['order'][0]['dir']."  LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
 
 /* $requestData['order'][0]['column'] contains colmun index, $requestData['order'][0]['dir'] contains order such as asc/desc  */    
 $query=mysqli_query($conn, $sql) or die("eror 3");
@@ -71,26 +71,26 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 
       $nu = mysqli_fetch_array($kd);
 
-        if ($nu['nama'] != '')
-        {
+      if ($nu['nama'] != ''){
 
-          while($nur = mysqli_fetch_array($kdD))
-          {
-            $nestedData[] = $nur["nama"]." ,";
-          }
+        $nama_fee = "<p style='font-size:15px;'>";
+        while($nur = mysqli_fetch_array($kdD)){
+          
+          $nama_fee .= " ".$nur["nama"].",";
+        } 
+          $nama_fee .= "</p>";  
+        //Tampilan Nama        
+        $nestedData[] = $nama_fee;
 
-        }
-
-        else
-        {
-           $nestedData[] = "";
-        }
+      }
+      else{
+        $nestedData[] = "";
+      }
 
       $nestedData[] = rp($row["jumlah_barang"]);
       $nestedData[] = rp($row["harga"]);
-      $nestedData[] = rp($row["potongan"]);
-      $nestedData[] = rp($row["tax"]);
       $nestedData[] = rp($row["subtotal"]);
+      $nestedData[] = $row["tanggal"];
 
 
       $nestedData[] = $row["id"];

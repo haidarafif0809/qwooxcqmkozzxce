@@ -7,10 +7,9 @@ include_once 'sanitasi.php';
 $tanggal = date("Y-m-d");
 
 
-$otoritas_laboratorium = $db->query("SELECT input_jasa_lab, input_hasil_lab FROM otoritas_laboratorium WHERE id_otoritas = '$_SESSION[otoritas_id]'");
+$otoritas_laboratorium = $db->query("SELECT input_jasa_lab FROM otoritas_laboratorium WHERE id_otoritas = '$_SESSION[otoritas_id]'");
 $take_lab = mysqli_fetch_array($otoritas_laboratorium);
 $input_jasa_lab = $take_lab['input_jasa_lab'];
-$input_hasil_lab = $take_lab['input_hasil_lab'];
 
 $pilih_akses_registrasi_rj = $db->query("SELECT registrasi_rj_lihat, registrasi_rj_edit, registrasi_rj_hapus FROM otoritas_registrasi WHERE id_otoritas = '$_SESSION[otoritas_id]'");
 $registrasi_rj = mysqli_fetch_array($pilih_akses_registrasi_rj);
@@ -253,11 +252,6 @@ tr:nth-child(even){background-color: #f2f2f2}
 <?php if ($input_jasa_lab): ?>  
   <th style='background-color: #4CAF50; color: white' >Rujuk Lab</th>
 <?php endif?>
-
-<?php if ($input_hasil_lab): ?> 
-    <th style='background-color: #4CAF50; color: white' >Input Hasil Lab</th> 
-<?php endif?>
-
 
 
 <?php if ($rekam_medik['rekam_medik_rj_lihat'] > 0): ?>                      
