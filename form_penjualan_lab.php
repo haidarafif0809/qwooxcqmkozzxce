@@ -14,6 +14,10 @@ $jenis_penjualan = stringdoang($_GET['jenis_penjualan']);
 $rujukan = stringdoang($_GET['rujukan']);
  // jika 1 Laboratorium, jika 2 Radiologi
 
+$pilih_akses_tombol = $db->query("SELECT input_jasa_lab FROM otoritas_laboratorium WHERE id_otoritas = '$_SESSION[otoritas_id]' ");
+$otoritas_tombol = mysqli_fetch_array($pilih_akses_tombol);
+
+
 ?>
 <!--MODAL JASA RADIOLOGI-->
 <div id="myModal" class="modal fade" role="dialog">
@@ -479,8 +483,12 @@ else if($jenis_penjualan == 'UGD'){
       <th style='background-color: #4CAF50; color: white'> Analis</th>
       <th style='background-color: #4CAF50; color: white'> Tanggal</th>
       <th style='background-color: #4CAF50; color: white'> Jam</th>
+      <?php 
+      if ($otoritas_tombol['input_jasa_lab'] > 0) {
+        ?>
       <th style='background-color: #4CAF50; color: white'> Hapus </th>
-                          
+        <?php } ?>
+
     </thead> <!-- tag penutup tabel -->
     <tbody class="tbody">
       
