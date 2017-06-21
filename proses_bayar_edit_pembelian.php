@@ -55,6 +55,10 @@ $ambil_suplier = mysqli_fetch_array($select_suplier);
 // end siapkan "data" query dari post form edit pembelian
 
 
+            // setting akun
+            $select_setting_akun = $db->query("SELECT hpp_penjualan,pengaturan_stok,persediaan,item_keluar FROM setting_akun");
+            $ambil_setting = mysqli_fetch_array($select_setting_akun);
+
 
 
 //query delete jurnal 
@@ -133,12 +137,82 @@ $ambil_suplier = mysqli_fetch_array($select_suplier);
             
             }
 
-            $ambil_har_unit = $db->query("SELECT harga_unit,jumlah_kuantitas FROM hpp_keluar WHERE no_faktur_hpp_masuk = '$nomor_faktur' AND kode_barang = '$data[kode_barang]' ");
+            $ambil_har_unit = $db->query("SELECT no_faktur,harga_unit,jumlah_kuantitas, jenis_transaksi FROM hpp_keluar WHERE no_faktur_hpp_masuk = '$nomor_faktur' AND kode_barang = '$data[kode_barang]' ");
             while ($kel_harga_unnit = mysqli_fetch_array($ambil_har_unit)) {
               
                if ($kel_harga_unnit['harga_unit'] != $harga ) 
                   {
-                      $updattte = $db->query(" UPDATE hpp_keluar SET harga_unit = '$harga' , total_nilai = harga_unit * jumlah_kuantitas WHERE  no_faktur_hpp_masuk = '$nomor_faktur' AND kode_barang = '$data[kode_barang]' ");
+
+
+
+                      $updattte = $db->query("UPDATE hpp_keluar SET harga_unit = '$harga' , total_nilai = harga_unit * jumlah_kuantitas WHERE  no_faktur_hpp_masuk = '$nomor_faktur' AND kode_barang = '$data[kode_barang]' ");
+
+                                            // ambil total nilai hpp keluar
+                      $sum_hpp_keluar = $db->query("SELECT SUM(total_nilai) AS total FROM hpp_keluar WHERE no_faktur = '$kel_harga_unnit[no_faktur]'");
+                      $ambil_sum = mysqli_fetch_array($sum_hpp_keluar);
+                      $total_nilai_keluar = $ambil_sum['total'];
+                      if ($total_nilai_keluar ==  NULL) {
+                          $total_nilai_keluar = 0;
+                      }
+
+                      /// jika jenis transaksi nya penjualan
+                        if ($kel_harga_unnit['jenis_transaksi'] == 'Penjualan') {
+                               
+                               // update persediaan di jurnal penjualan
+                                                        // Item Keluar
+                              $db->query("UPDATE jurnal_trans SET debit =  '$total_nilai_keluar' WHERE no_faktur = '$kel_harga_unnit[no_faktur]' AND kode_akun_jurnal = '$ambil_setting[hpp_penjualan]' ");
+
+                              $db->query("UPDATE jurnal_trans SET kredit =  '$total_nilai_keluar' WHERE no_faktur = '$kel_harga_unnit[no_faktur]' AND kode_akun_jurnal = '$ambil_setting[persediaan]' ");
+                                                      
+
+                        }
+                        elseif ($kel_harga_unnit['jenis_transaksi'] == 'Item Keluar') {
+
+                          // Item Keluar
+                              $db->query("UPDATE jurnal_trans SET debit =  '$total_nilai_keluar' WHERE no_faktur = '$kel_harga_unnit[no_faktur]' AND kode_akun_jurnal = '$ambil_setting[item_keluar]' ");
+
+                              $db->query("UPDATE jurnal_trans SET kredit =  '$total_nilai_keluar' WHERE no_faktur = '$kel_harga_unnit[no_faktur]' AND kode_akun_jurnal = '$ambil_setting[persediaan]' ");
+                                                      
+                        }
+                        elseif ($kel_harga_unnit['jenis_transaksi'] == 'Stok Opname') {
+
+                              # Stok Opname
+                               
+                               // ambil total nilai hpp keluar
+                              $sum_hpp_masuk = $db->query("SELECT SUM(total_nilai) AS total FROM hpp_masuk WHERE no_faktur = '$kel_harga_unnit[no_faktur]'");
+                              $ambil_sum_masuk = mysqli_fetch_array($sum_hpp_masuk);
+                              $total_nilai_masuk = $ambil_sum_masuk['total'];
+
+                              if ($total_nilai_masuk ==  NULL) {
+
+                                  $total_nilai_masuk = 0;
+                              }
+
+                              $total_opname = $total_nilai_masuk - $total_nilai_keluar;
+
+                                if($total_opname < 0)
+                                {
+                                  $total_opname = $total_opname * -1;
+
+                                  $update_jurnal1 = $db->query("UPDATE jurnal_trans SET kredit = '$total_opname' WHERE kode_akun_jurnal = '$ambil_setting[persediaan]' AND no_faktur = '$kel_harga_unnit[no_faktur]' ");
+
+                                  $update_jurnal2 = $db->query("UPDATE jurnal_trans SET debit = '$total_opname'  WHERE kode_akun_jurnal = '$ambil_setting[pengaturan_stok]' AND no_faktur = '$kel_harga_unnit[no_faktur]' ");
+
+
+                                }
+                                else
+                                {
+                                  $total_opname = $total_opname;
+
+
+                                  $update_jurnal1 = $db->query("UPDATE jurnal_trans SET debit = '$total_opname' WHERE kode_akun_jurnal = '$ambil_setting[persediaan]' AND no_faktur = '$kel_harga_unnit[no_faktur]' ");
+
+                                  $update_jurnal2 = $db->query("UPDATE jurnal_trans SET kredit = '$total_opname'  WHERE kode_akun_jurnal = '$ambil_setting[pengaturan_stok]' AND no_faktur = '$kel_harga_unnit[no_faktur]' ");
+                                }
+
+                        }
+
+
 
                   }
 
