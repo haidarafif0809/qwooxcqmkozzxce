@@ -4,7 +4,7 @@
 include 'header.php';
 include 'sanitasi.php';
 include 'db.php';
-
+include 'cache.class.php';
 
 
 $no_reg = stringdoang($_GET['no_reg']);
@@ -25,6 +25,8 @@ $select_operasi = $db->query("SELECT * FROM hasil_operasi WHERE no_reg = '$no_re
 $query4 = $db->query("SELECT status_print FROM setting_printer WHERE nama_print = 'Printer Struk' OR nama_print = 'Printer Besar'");
 $datas = mysqli_fetch_array($query4);
 $status_print = $datas['status_print'];
+
+
 
 
 
@@ -65,6 +67,19 @@ $status_print = $datas['status_print'];
   <tbody id="tbody-detail">
 
 <?php 
+
+
+if ($status_print == 'Detail') {
+   $c = new Cache();
+  $c->setCache('detail_penjualan');
+  $data_detail_penjualan = $c->retrieve($no_reg);
+
+  foreach ($data_detail_penjualan as $data ) {
+
+   echo  '<tr><td width:"50%"> '. $data['nama_barang'] .' </td><td style="padding:3px"> '. $data['jumlah_barang'] .'</td><td style="padding:3px"> '. $data['harga'] .'</td><td style="padding:3px"> '. $data['subtotal'] . ' </td></tr>';
+    
+  }
+}
            while ($out_operasi = mysqli_fetch_array($select_operasi))
            {
 

@@ -5,6 +5,13 @@ include 'navbar.php';
 include 'db.php';
 include 'sanitasi.php';
 
+
+$query_printer = $db->query("SELECT status_print FROM setting_printer WHERE nama_print = 'Printer Struk' OR nama_print = 'Printer Besar'");
+$data_printer = mysqli_fetch_array($query_printer);
+
+$status_print = $data_printer['status_print'];
+
+
 // menampilkan seluruh data yang ada pada tabel penjualan yang terdapt pada DB
 
 if (isset($_GET['analis'])) {
@@ -2446,16 +2453,16 @@ alert("Kode barang harus terisi");
 else if ((total2 != "" || total2 != 0) && pembayaran == "" && potongan_persen != '100' && disc_tbs == 0)
  {
 
-alert("Pembayaran Harus Di Isi");
-$("#pembayaran_penjualan").focus()
+  alert("Pembayaran Harus Di Isi");
+  $("#pembayaran_penjualan").focus()
 
  }
 
    else if (kode_gudang == "")
  {
 
-alert(" Kode Gudang Harus Diisi ");
-$("#kode_gudang").focus()
+  alert(" Kode Gudang Harus Diisi ");
+  $("#kode_gudang").focus();
 
 
  }
@@ -2466,12 +2473,12 @@ $("#kode_gudang").focus()
 alert("Silakan Isi Kolom Pembayaran  atau lakukan Bayar Piutang");
 
  }
-    else if ((total2 ==  0 || total2 ==  "") && (total ==  0 || total == "")  && potongan_persen != 100 && (pembayaran == 0 || pembayaran == "") && (disc_tbs == 0))  
-        {
+  else if ((total2 ==  0 || total2 ==  "") && (total ==  0 || total == "")  && potongan_persen != 100 && (pembayaran == 0 || pembayaran == "") && (disc_tbs == 0))  
+    {
         
-        alert("Anda Belum Melakukan Pemesanan");
+      alert("Anda Belum Melakukan Pemesanan");
         
-        }
+    }
 
  else
 
@@ -2491,39 +2498,15 @@ if (data == 1) {
 
  $.getJSON("cek_status_stok_penjualan.php?no_reg="+no_reg, function(result){
 
-        if (result.status == 0) {
+    if (result.status == 0) {
 
-
-  $.get("ambil_data_tbs_penjualan.php?no_reg="+no_reg ,function(data){
-  
-  var db = new Dexie("database_penjualan");
-    
-           db.version(1).stores({
-             
-            detail_penjualan : 'id,no_reg,kode_barang,nama_barang,jumlah_barang,harga,subtotal,satuan,potongan,pajak'
-          
-          });
-
-            var data_detail_penjualan = [];
-
-                $.each(data.result, function(i, item) {
-
-                 
-                    data_detail_penjualan.push({id: data.result[i].id, kode_barang: data.result[i].kode_barang,nama_barang : data.result[i].nama_barang,satuan:  data.result[i].satuan,no_reg:  data.result[i].no_reg,jumlah_barang:  data.result[i].jumlah_barang,harga:  data.result[i].harga,subtotal:  data.result[i].subtotal,potongan:  data.result[i].potongan ,pajak:  data.result[i].pajak  });
-
-
-
-                   });
-
-
-                 db.detail_penjualan.bulkPut(data_detail_penjualan).then(function(lastKey) {
-
-                    console.log("Selesai memasukkan data detail penjualan ke indexeddb");
-                    console.log("Jumlah Data yang dimasukkan : " + lastKey); // Will be 100000.
-
-
-
+        var status_print = '<?php echo $status_print; ?>';
       
+        if (status_print == 'Detail') {
+
+          $.get("simpan_data_tbs_penjualan_cache.php?no_reg="+no_reg ,function(data){
+  
+          
                   $("#cetak_tunai").attr('href', 'cetak_penjualan_tunai_rj.php?no_reg='+no_reg+'&sisa='+sisa_pembayaran+'&tunai='+pembayaran+'&total='+total+'&biaya_admin='+biaya_adm+'&potongan='+potongan+'&no_rm='+no_rm+'&nama_pasien='+nama_pasien+'');
 
                   $('#cetak_tunai').trigger('click');
@@ -2535,32 +2518,30 @@ if (data == 1) {
                    $("#cetak_tunai").show();
                    $("#cetak_tunai_kategori").show();
                    $("#cetak_tunai_besar").show('');
+    
 
-                   // var win = window.open('cetak_penjualan_tunai_rj.php?no_reg='+no_reg+'&sisa='+sisa_pembayaran+'&tunai='+pembayaran+'&total='+total+'&biaya_admin='+biaya_adm+'&potongan='+potongan+'&no_rm='+no_rm+'&nama_pasien='+nama_pasien+'');
+            });
 
-                    if (win) {  
+          } // if printnya detail
+        else { 
 
-                    win.focus(); 
+               $("#cetak_tunai").attr('href', 'cetak_penjualan_tunai_rj.php?no_reg='+no_reg+'&sisa='+sisa_pembayaran+'&tunai='+pembayaran+'&total='+total+'&biaya_admin='+biaya_adm+'&potongan='+potongan+'&no_rm='+no_rm+'&nama_pasien='+nama_pasien+'');
 
-                    } 
-                    else { 
+                  $('#cetak_tunai').trigger('click');
 
-                      alert('Mohon Izinkan PopUps Pada Website Ini !');    
+                   $("#cetak_tunai_besar").attr('href', 'cetak_penjualan_tunai_besar_rj.php?no_reg='+no_reg+'&sisa='+sisa_pembayaran+'&kredit='+sisa_kredit+'&tunai='+pembayaran+'&total='+total+'&biaya_admin='+biaya_adm+'&potongan='+potongan+'&no_rm='+no_rm+'&nama_pasien='+nama_pasien+'&keterangan='+keterangan+'&cara_bayar='+cara_bayar+'');
 
-                    }
+                   $("#cetak_tunai_kategori").attr('href','cetak_penjualan_tunai_kategori_rj.php?no_reg='+no_reg+'&sisa='+sisa_pembayaran+'&tunai='+pembayaran+'&total='+total+'&biaya_admin='+biaya_adm+'&potongan='+potongan+'&no_rm='+no_rm+'&nama_pasien='+nama_pasien+'');            
+                      
+                   $("#cetak_tunai").show();
+                   $("#cetak_tunai_kategori").show();
+                   $("#cetak_tunai_besar").show('');
+
                 
-
-                    }).catch(Dexie.BulkError, function (e) {
-                        // Explicitely catching the bulkAdd() operation makes those successful
-                        // additions commit despite that there were errors.
-                        console.error ("Terjadi Kesalahan. data gagal di masukkan");
-                    });
-
-                    
-           
+                
+        } // printnya rekap
 
 
-  });
 
      
 
@@ -2996,55 +2977,45 @@ alert("Silakan Bayar Piutang");
 
         if (result.status == 0) {
 
-     $.get("ambil_data_tbs_penjualan.php?no_reg="+no_reg ,function(data){
 
-     var db = new Dexie("database_penjualan");
-    
-           db.version(1).stores({
-             
-            detail_penjualan : 'id,no_reg,kode_barang,nama_barang,jumlah_barang,harga,subtotal,satuan,potongan,pajak'
-          
-          });
-
-            var data_detail_penjualan = [];
-
-                $.each(data.result, function(i, item) {
-
-                 
-                    data_detail_penjualan.push({id: data.result[i].id, kode_barang: data.result[i].kode_barang,nama_barang : data.result[i].nama_barang,satuan:  data.result[i].satuan,no_reg:  data.result[i].no_reg,jumlah_barang:  data.result[i].jumlah_barang,harga:  data.result[i].harga,subtotal:  data.result[i].subtotal,potongan:  data.result[i].potongan ,pajak:  data.result[i].pajak  });
-
-
-
-                   });
-
-                 db.detail_penjualan.bulkPut(data_detail_penjualan).then(function(lastKey) {
-
-                    console.log("Selesai memasukkan data detail penjualan ke indexeddb");
-                    console.log("Jumlah Data yang dimasukkan : " + lastKey); // Will be 100000.
-
-
-
+        var status_print = '<?php echo $status_print; ?>';
       
+        if (status_print == 'Detail') {
+
+          $.get("simpan_data_tbs_penjualan_cache.php?no_reg="+no_reg ,function(data){
+  
+          
                   $("#cetak_tunai").attr('href', 'cetak_penjualan_tunai_rj.php?no_reg='+no_reg+'&sisa='+sisa_pembayaran+'&tunai='+pembayaran+'&total='+total+'&biaya_admin='+biaya_adm+'&potongan='+potongan+'&no_rm='+no_rm+'&nama_pasien='+nama_pasien+'');
 
+ 
                    $("#cetak_tunai_besar").attr('href', 'cetak_penjualan_tunai_besar_rj.php?no_reg='+no_reg+'&sisa='+sisa_pembayaran+'&kredit='+sisa_kredit+'&tunai='+pembayaran+'&total='+total+'&biaya_admin='+biaya_adm+'&potongan='+potongan+'&no_rm='+no_rm+'&nama_pasien='+nama_pasien+'&keterangan='+keterangan+'&cara_bayar='+cara_bayar+'');
 
-                   $("#cetak_tunai_kategori").attr('href','cetak_penjualan_tunai_kategori_rj.php?no_reg='+no_reg+'&sisa='+sisa_pembayaran+'&tunai='+pembayaran+'&total='+total+'&biaya_admin='+biaya_adm+'&potongan='+potongan+'&no_rm='+no_rm+'&nama_pasien='+nama_pasien+'');
+                   $("#cetak_tunai_kategori").attr('href','cetak_penjualan_tunai_kategori_rj.php?no_reg='+no_reg+'&sisa='+sisa_pembayaran+'&tunai='+pembayaran+'&total='+total+'&biaya_admin='+biaya_adm+'&potongan='+potongan+'&no_rm='+no_rm+'&nama_pasien='+nama_pasien+'');            
                       
                    $("#cetak_tunai").show();
                    $("#cetak_tunai_kategori").show();
                    $("#cetak_tunai_besar").show('');
+    
+
+            });
+
+          } // if printnya detail
+        else { 
+
+               $("#cetak_tunai").attr('href', 'cetak_penjualan_tunai_rj.php?no_reg='+no_reg+'&sisa='+sisa_pembayaran+'&tunai='+pembayaran+'&total='+total+'&biaya_admin='+biaya_adm+'&potongan='+potongan+'&no_rm='+no_rm+'&nama_pasien='+nama_pasien+'');
+
+           
+                   $("#cetak_tunai_besar").attr('href', 'cetak_penjualan_tunai_besar_rj.php?no_reg='+no_reg+'&sisa='+sisa_pembayaran+'&kredit='+sisa_kredit+'&tunai='+pembayaran+'&total='+total+'&biaya_admin='+biaya_adm+'&potongan='+potongan+'&no_rm='+no_rm+'&nama_pasien='+nama_pasien+'&keterangan='+keterangan+'&cara_bayar='+cara_bayar+'');
+
+                   $("#cetak_tunai_kategori").attr('href','cetak_penjualan_tunai_kategori_rj.php?no_reg='+no_reg+'&sisa='+sisa_pembayaran+'&tunai='+pembayaran+'&total='+total+'&biaya_admin='+biaya_adm+'&potongan='+potongan+'&no_rm='+no_rm+'&nama_pasien='+nama_pasien+'');            
+                      
+                   $("#cetak_tunai").show();
+                   $("#cetak_tunai_kategori").show();
+                   $("#cetak_tunai_besar").show('');
+
                 
-
-                    }).catch(Dexie.BulkError, function (e) {
-                        // Explicitely catching the bulkAdd() operation makes those successful
-                        // additions commit despite that there were errors.
-                        console.error ("Some raindrops did not succeed. However, " +
-                           100000-e.failures.length + " raindrops was added successfully");
-                    });
-   
-  });
-
+                
+        } // printnya rekap
 
       $.post("proses_bayar_jual_kasir.php",{id_user:id_user,sisa_pembayaran:sisa_pembayaran, kredit:kredit,no_rm:no_rm,no_reg:no_reg,tanggal_jt:tanggal_jt,total:total,total2:total2,potongan:potongan,potongan_persen:potongan_persen,/*tax:tax,*/cara_bayar:cara_bayar,pembayaran:pembayaran,total_hpp:total_hpp,harga:harga,kode_gudang:kode_gudang,dokter:dokter,petugas_kasir:petugas_kasir,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,sisa:sisa,ppn:ppn,penjamin:penjamin,nama_pasien:nama_pasien,jenis_penjualan:jenis_penjualan,biaya_adm:biaya_adm,analis:analis},function(info) {
 
@@ -3227,62 +3198,25 @@ $("#tbody-barang-jual").find("tr").remove();
   $("#piutang").hide();
   $("#transaksi_baru").show();
   
- $.post("cek_subtotal_penjualan.php",{total:total,no_reg:no_reg,potongan:potongan,/*tax:tax,*/biaya_adm:biaya_adm},function(data) {
+ $.post("cek_subtotal_penjualan.php",{total:total,no_reg:no_reg,potongan:potongan,biaya_adm:biaya_adm},function(data) {
 
 
 
   if (data == 1) {
 
-
     $.getJSON("cek_status_stok_penjualan.php?no_reg="+no_reg , function(result){
 
         if (result.status == 0) {
 
-
-            $.get("ambil_data_tbs_penjualan.php?no_reg="+no_reg ,function(data){
-           var db = new Dexie("database_penjualan");
-    
-           db.version(1).stores({
-             
-            detail_penjualan : 'id,no_reg,kode_barang,nama_barang,jumlah_barang,harga,subtotal,satuan,potongan,pajak'
-          
-          });
-
-            var data_detail_penjualan = [];
-
-                $.each(data.result, function(i, item) {
-
-                 
-                    data_detail_penjualan.push({id: data.result[i].id, kode_barang: data.result[i].kode_barang,nama_barang : data.result[i].nama_barang,satuan:  data.result[i].satuan,no_reg:  data.result[i].no_reg,jumlah_barang:  data.result[i].jumlah_barang,harga:  data.result[i].harga,subtotal:  data.result[i].subtotal,potongan:  data.result[i].potongan ,pajak:  data.result[i].pajak  });
-
-
-
-                   });
-
-
-                 db.detail_penjualan.bulkPut(data_detail_penjualan).then(function(lastKey) {
-
-                    console.log("Selesai memasukkan data detail penjualan ke indexeddb");
-                    console.log("Jumlah Data yang dimasukkan : " + lastKey); // Will be 100000.
-
-
-
+        var status_print = '<?php echo $status_print; ?>';
       
-                      
-            
+        if (status_print == 'Detail') {
 
-                    }).catch(Dexie.BulkError, function (e) {
-                        // Explicitely catching the bulkAdd() operation makes those successful
-                        // additions commit despite that there were errors.
-                        console.error ("Some raindrops did not succeed. However, " +
-                           100000-e.failures.length + " raindrops was added successfully");
-                    });
+          $.get("simpan_data_tbs_penjualan_cache.php?no_reg="+no_reg ,function(data){
 
-                    
-           
+            });
 
-
-  });
+          } // if printnya detail
 
      $.post("proses_bayar_jual_kasir.php",{id_user:id_user,sisa_pembayaran:sisa_pembayaran, kredit:kredit,no_rm:no_rm,no_reg:no_reg,tanggal_jt:tanggal_jt,total:total,total2:total2,potongan:potongan,potongan_persen:potongan_persen,/*tax:tax,*/cara_bayar:cara_bayar,pembayaran:pembayaran,total_hpp:total_hpp,harga:harga,kode_gudang:kode_gudang,dokter:dokter,petugas_kasir:petugas_kasir,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,sisa:sisa,ppn:ppn,penjamin:penjamin,nama_pasien:nama_pasien,jenis_penjualan:jenis_penjualan,biaya_adm:biaya_adm,analis:analis},function(info) {
 
@@ -3360,47 +3294,17 @@ $("#tbody-barang-jual").find("tr").remove();
     $('#tabel_tbs_penjualan_jasa').DataTable().clear();
     $('#tabel_tbs_lab').DataTable().clear();
 
-
-
- $("form").submit(function(){
-    return false;
- 
-});
+   $("form").submit(function(){
+      return false;
+   
+  });
 
 });
 
-               $("#piutang").mouseleave(function(){
-               
-
-               var kode_pelanggan = $("#kd_pelanggan").val();
-               if (kode_pelanggan == ""){
-               $("#kd_pelanggan").attr("disabled", false);
-               }
-               
-               });
       
   </script>
 
 
-<!--
-<script type="text/javascript">
-$(document).ready(function(){
-$("#cari_produk_penjualan").click(function(){
-  var no_reg = $("#no_reg").val();
-
-  $.post("cek_tbs_penjualan.php",{no_reg:no_reg},function(data){
-    $("#keterangan").val(data)
-        if (data != "1") {
-
-
-             $("#ppn").attr("disabled", false);
-
-        }
-    });
-
-});
-});
-</script>-->
 
 
 <script type="text/javascript">
