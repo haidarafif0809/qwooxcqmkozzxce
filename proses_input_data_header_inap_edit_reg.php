@@ -23,58 +23,69 @@ $tanggal = stringdoang($_POST['tanggal']);
 $query_hapus = $db->query("DELETE FROM tbs_hasil_lab WHERE kode_barang = '$kode_jasa_lab'");
 
 
-//INPUT JASA LABORATORIUM , ANAK DARI HEADER
-  $cek_id_pemeriksaan = $db->query("SELECT id,nama,harga_1 FROM jasa_lab WHERE kode_lab = '$kode_jasa_lab'");
-  $out = mysqli_fetch_array($cek_id_pemeriksaan);
-  $id_jasa_lab = $out['id'];
-  $nama_jasa = $out['nama'];
-  $harga_jasa = $out['harga_1'];
+$cek_setting = $db->query("SELECT nama FROM setting_laboratorium WHERE jenis_lab = 'Rawat Inap'");
+$data_setting = mysqli_fetch_array($cek_setting);
+$hasil_setting = $data_setting['nama']; //jika hasil 1 maka = input hasil baru bayar, jika 0 maka = bayar dulu baru input hasil
 
-  $cek_ibu_header = $db->query("SELECT id FROM setup_hasil WHERE nama_pemeriksaan = '$id_jasa_lab'");
-  while($out_mother = mysqli_fetch_array($cek_ibu_header)){
-  $id_mother = $out_mother['id'];
+if($hasil_setting == '1'){
+    //INPUT JASA LABORATORIUM , ANAK DARI HEADER
+    $cek_id_pemeriksaan = $db->query("SELECT id,nama,harga_1 FROM jasa_lab WHERE kode_lab = '$kode_jasa_lab'");
+    $out = mysqli_fetch_array($cek_id_pemeriksaan);
 
-    $select_detail_anaknya = $db->query("SELECT * FROM setup_hasil WHERE sub_hasil_lab = '$id_mother'");
-    while($drop = mysqli_fetch_array($select_detail_anaknya)){
-    $ambil_nama_jasa = $db->query("SELECT nama FROM jasa_lab WHERE id = '$drop[nama_pemeriksaan]'");
-    $get = mysqli_fetch_array($ambil_nama_jasa);
-    $nama_jasa_anak = $get['nama'];
+    $id_jasa_lab = $out['id'];
+    $nama_jasa = $out['nama'];
+    $harga_jasa = $out['harga_1'];
+
+    $cek_ibu_header = $db->query("SELECT id FROM setup_hasil WHERE nama_pemeriksaan = '$id_jasa_lab'");
+    while($out_mother = mysqli_fetch_array($cek_ibu_header)){
       
-    //Select untuk Data yang sudah di input kan hasilnya tidak di insert dan tidak di DELETE (TIDAK DI DELETE SUDAH ADA DI ATAS)
-      $get_data = $db->query("SELECT id_pemeriksaan FROM tbs_hasil_lab WHERE id_pemeriksaan = '$drop[nama_pemeriksaan]' AND hasil_pemeriksaan != '' AND no_reg = '$no_reg'");
-      $out_data = mysqli_num_rows($get_data);
-      $out_data_id = mysqli_fetch_array($get_data);
+      $id_mother = $out_mother['id'];
 
-      $datanya = $out_data_id['id_pemeriksaan'];
+      $select_detail_anaknya = $db->query("SELECT * FROM setup_hasil WHERE sub_hasil_lab = '$id_mother'");
+      while($drop = mysqli_fetch_array($select_detail_anaknya)){
+      $ambil_nama_jasa = $db->query("SELECT nama FROM jasa_lab WHERE id = '$drop[nama_pemeriksaan]'");
+      $get = mysqli_fetch_array($ambil_nama_jasa);
+      
+        $nama_jasa_anak = $get['nama'];
+        
+      //Select untuk Data yang sudah di input kan hasilnya tidak di insert dan tidak di DELETE (TIDAK DI DELETE SUDAH ADA DI ATAS)
+        $get_data = $db->query("SELECT id_pemeriksaan FROM tbs_hasil_lab WHERE id_pemeriksaan = '$drop[nama_pemeriksaan]' AND hasil_pemeriksaan != '' AND no_reg = '$no_reg'");
+        $out_data = mysqli_num_rows($get_data);
+        $out_data_id = mysqli_fetch_array($get_data);
 
-      if($out_data > 0 AND $datanya != ''){
+        $datanya = $out_data_id['id_pemeriksaan'];
 
+        if($out_data > 0 AND $datanya != ''){
+
+        }
+        else{
+          //Insert TBS HASIL LAB
+
+        $insert_anaknya = "INSERT INTO tbs_hasil_lab (satuan_nilai_normal,
+        model_hitung,no_rm,no_reg,id_pemeriksaan,nilai_normal_lk,nilai_normal_pr,status_pasien,
+        nama_pemeriksaan,id_sub_header,normal_lk2,normal_pr2,kode_barang,
+        id_setup_hasil, hasil_pemeriksaan, dokter, analis,tanggal, jam) VALUES 
+        ('$drop[satuan_nilai_normal]','$drop[model_hitung]',
+        '$no_rm','$no_reg','$drop[nama_pemeriksaan]','$drop[normal_lk]',
+        '$drop[normal_pr]','$jenis_penjualan','$nama_jasa_anak','$id_mother',
+        '$drop[normal_lk2]','$drop[normal_pr2]','$kode_jasa_lab',
+        '$drop[id]','Ada Pengeditan','$dokter','$analis','$tanggal','$jam')";
+
+            if ($db->query($insert_anaknya) === TRUE){
+            
+            } 
+            else{
+            echo "Error: " . $insert_anaknya . "<br>" . $db->error;
+            }
+        }
+          //under while 3x
       }
-      else{
-        //Insert TBS HASIL LAB
-
-      $insert_anaknya = "INSERT INTO tbs_hasil_lab (satuan_nilai_normal,
-      model_hitung,no_rm,no_reg,id_pemeriksaan,nilai_normal_lk,nilai_normal_pr,status_pasien,
-      nama_pemeriksaan,id_sub_header,normal_lk2,normal_pr2,kode_barang,
-      id_setup_hasil, hasil_pemeriksaan, dokter, analis,tanggal, jam) VALUES 
-      ('$drop[satuan_nilai_normal]','$drop[model_hitung]',
-      '$no_rm','$no_reg','$drop[nama_pemeriksaan]','$drop[normal_lk]',
-      '$drop[normal_pr]','$jenis_penjualan','$nama_jasa_anak','$id_mother',
-      '$drop[normal_lk2]','$drop[normal_pr2]','$kode_jasa_lab',
-      '$drop[id]','Ada Pengeditan','$dokter','$analis','$tanggal','$jam')";
-
-          if ($db->query($insert_anaknya) === TRUE){
-          
-          } 
-          else{
-          echo "Error: " . $insert_anaknya . "<br>" . $db->error;
-          }
-      }
-        //under while 3x
     }
-  }
-//INPUT JASA LABORATORIUM , ANAK DARI HEADER
+  //INPUT JASA LABORATORIUM , ANAK DARI HEADER
+}
+else{
 
+}
 
 
 
