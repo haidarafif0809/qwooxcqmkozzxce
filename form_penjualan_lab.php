@@ -480,7 +480,7 @@ else if($jenis_penjualan == 'UGD'){
       <th style='background-color: #4CAF50; color: white'> Tanggal</th>
       <th style='background-color: #4CAF50; color: white'> Jam</th>
       <th style='background-color: #4CAF50; color: white'> Hapus </th>
-                          
+
     </thead> <!-- tag penutup tabel -->
     <tbody class="tbody">
       
