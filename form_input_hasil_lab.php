@@ -211,6 +211,7 @@ $id_user = $_SESSION['id'];
         <!--(MULAI TOMBOL DAN TABLE TBS APS PENJUALAN)-->
         <!--Mulai Col SM Kedua-->
         <div class="col-sm-12">
+          <button type="button" style="display: none" class="btn btn-info" id="reloading" ><i class="fa fa-repeat"></i> Input Hasil Baru</button>
 
           <button type="button" class="btn btn-warning" id="cari_pasien_rj" data-toggle="modal" data-target="#modal_reg_jalan"><i class="fa fa-user"></i> Pasien R.Jalan (F1)</button>
 
@@ -668,10 +669,12 @@ $("#selesai").click(function(){
       $("#kembali_ugd").show();
 
     //Tombol Show
-    $("#cari_pasien_aps").show();
-    $("#cari_pasien_rj").show();
-    $("#cari_pasien_ri").show();
-    $("#cari_pasien_ugd").show();
+    $("#reloading").show();
+
+    $("#cari_pasien_aps").hide();
+    $("#cari_pasien_rj").hide();
+    $("#cari_pasien_ri").hide();
+    $("#cari_pasien_ugd").hide();
       
       $("#selesai").hide();
       $("#result").hide();
@@ -763,5 +766,37 @@ $(document).on('blur','.input_analis',function(e){
 });
 </script>
 <!--AKHIR SCRIPT ANALIS-->
+
+<script type="text/javascript">
+   //perintah javascript yang diambil dari form proses_bayar_beli.php dengan id=form_beli
+$("#reloading").click(function(){
+
+    $("#selesai").hide();
+    $("#alert_berhasil").hide();
+    $("#cetak").hide();
+    $("#reloading").hide();
+
+    $("#no_reg").val('');
+
+    $("#span_tbs_aps").show();
+    $("#cari_pasien_aps").show();
+    $("#cari_pasien_rj").show();
+    $("#cari_pasien_ri").show();
+    $("#cari_pasien_ugd").show();
+
+       var table_pasien = $('#tabel_cari_pasien').DataTable();
+       table_pasien.draw();
+
+       var table_pasien = $('#tabel_cari_pasien_jalan').DataTable();
+       table_pasien.draw();
+
+       var table_pasien = $('#tabel_cari_pasien_inap').DataTable();
+       table_pasien.draw();
+
+       var table_pasien = $('#tabel_cari_pasien_ugd').DataTable();
+       table_pasien.draw();
+});
+</script>
+
 <!--Footer-->
 <?php include 'footer.php'; ?>
