@@ -38,6 +38,11 @@ while($data_query_select_detail = mysqli_fetch_array($query_select_detail)){
   $nama_jasa = $data_nama_jasa['nama'];
   $harga_jasa = $data_nama_jasa['harga_1'];
 
+  $cek_setting = $db->query("SELECT nama FROM setting_laboratorium WHERE jenis_lab = 'Rawat Inap'");
+  $data_setting = mysqli_fetch_array($cek_setting);
+  $hasil_setting = $data_setting['nama']; //jika hasil 1 maka = input hasil baru bayar, jika 0 maka = bayar dulu baru input hasil
+
+  if($hasil_setting == '1'){
   //INSERT DATA DETAILNYA
   $query_insert_tbs_hasil = $db->query("INSERT INTO tbs_hasil_lab
     (id_pemeriksaan, no_reg, no_rm, kode_barang, status_pasien,
@@ -55,7 +60,10 @@ while($data_query_select_detail = mysqli_fetch_array($query_select_detail)){
     '$data_query_select_detail[sub_hasil_lab]',
     '$data_query_select_detail[id]','$tanggal','$jam','$dokter',
     '$analis','$harga_jasa','Ada Pengeditan')");
+  }
+  else{
 
+  }
     //INSERT TBS APS PENJUALAN
     $query_insert_tbs_aps_penjualan = $db->query("INSERT INTO tbs_aps_penjualan (no_reg,kode_jasa,nama_jasa,harga,subtotal,dokter,
       analis,no_periksa_lab_inap,tanggal,jam) VALUES ('$no_reg','$kode_jasa_lab',

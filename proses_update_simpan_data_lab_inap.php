@@ -14,15 +14,29 @@ $waktu = $tanggal.' '. $jam;
 
 $query_hapus_hasil = $db->query("DELETE FROM hasil_lab WHERE no_reg = '$no_reg' AND lab_ke_berapa = '$pemeriksaan_keberapa'");
 
-//UPDATE PEMERIKSAANNYA
-$query_update_pemeriksaan = "UPDATE pemeriksaan_lab_inap SET status = '1', waktu = '$waktu', user_edit = '$user' WHERE no_reg = '$no_reg' AND no_periksa = '$pemeriksaan_keberapa'";
-if ($db->query($query_update_pemeriksaan) === TRUE) {
-    
+$cek_setting = $db->query("SELECT nama FROM setting_laboratorium WHERE jenis_lab = 'Rawat Inap'");
+$data_setting = mysqli_fetch_array($cek_setting);
+$hasil = $data_setting['nama']; //jika hasil 1 maka = input hasil baru bayar, jika 0 maka = bayar dulu baru input hasil
+if($hasil == 1){
+  //UPDATE PEMERIKSAANNYA
+  $query_update_pemeriksaan = "UPDATE pemeriksaan_lab_inap SET status = '1', waktu = '$waktu', user_edit = '$user' WHERE no_reg = '$no_reg' AND no_periksa = '$pemeriksaan_keberapa'";
+  if ($db->query($query_update_pemeriksaan) === TRUE) {
+      
+  }
+  else {
+      echo "Error: " . $query_update_pemeriksaan . "<br>" . $db->error;
+  }
 }
-else {
-    echo "Error: " . $query_update_pemeriksaan . "<br>" . $db->error;
+else{
+  //UPDATE PEMERIKSAANNYA
+  $query_bayar_awal = "UPDATE pemeriksaan_lab_inap SET status = '0', waktu = '$waktu', user_edit = '$user' WHERE no_reg = '$no_reg' AND no_periksa = '$pemeriksaan_keberapa'";
+  if ($db->query($query_bayar_awal) === TRUE) {
+      
+  }
+  else {
+      echo "Error: " . $query_bayar_awal . "<br>" . $db->error;
+  }
 }
-
 //UPDATE PEMERIKSAANNYA
 $query_update_status_tbs_penjualan = "UPDATE tbs_penjualan SET status_lab = 'Selesai' WHERE no_reg = '$no_reg' AND lab_ke_berapa = '$pemeriksaan_keberapa'";
 if ($db->query($query_update_status_tbs_penjualan) === TRUE) {
@@ -41,7 +55,12 @@ $query_insert_tbs_penjualan = $db->query("INSERT INTO tbs_penjualan (no_reg,kode
       'Laboratorium','Unfinish','$data_tbs_aps[dokter]','$data_tbs_aps[analis]')");
 }*/
 
+$cek_setting = $db->query("SELECT nama FROM setting_laboratorium WHERE jenis_lab = 'Rawat Inap'");
+$data_setting = mysqli_fetch_array($cek_setting);
+$hasil_setting = $data_setting['nama']; //jika hasil 1 maka = input hasil baru bayar, jika 0 maka = bayar dulu baru input hasil
 
+if($hasil_setting == '1'){
+//Query Rawat Inap
    //MULAI INSERT KE HASIL LAB DARI TBS HASIL LAB
           $query_insert_hasil_lab = "INSERT INTO hasil_lab (id_pemeriksaan, nama_pemeriksaan, hasil_pemeriksaan, nilai_normal_lk, nilai_normal_pr, status_pasien, no_rm, no_reg,nama_pasien,lab_ke_berapa, tanggal, jam, dokter, petugas_analis, model_hitung, satuan_nilai_normal, id_sub_header, nilai_normal_lk2, nilai_normal_pr2, kode_barang, id_setup_hasil,status) SELECT id_pemeriksaan, nama_pemeriksaan, hasil_pemeriksaan, nilai_normal_lk, nilai_normal_pr, status_pasien, no_rm, no_reg, '$nama', 
           '$pemeriksaan_keberapa', tanggal, jam, dokter, analis, model_hitung, satuan_nilai_normal, id_sub_header, normal_lk2, normal_pr2, kode_barang, id_setup_hasil,'1' FROM tbs_hasil_lab WHERE no_reg = '$no_reg'";
@@ -53,7 +72,11 @@ $query_insert_tbs_penjualan = $db->query("INSERT INTO tbs_penjualan (no_reg,kode
               else{
                   echo "Error: " . $query_insert_hasil_lab . "<br>" . $db->error;
               }
-
+}
+else{
+  $query_hapus_tbs_hasil = $db->query("DELETE FROM tbs_hasil_lab WHERE no_reg = '$no_reg'");
+    echo 1;
+}
 //Untuk Memutuskan Koneksi Ke Database
 mysqli_close($db);      
 ?>
