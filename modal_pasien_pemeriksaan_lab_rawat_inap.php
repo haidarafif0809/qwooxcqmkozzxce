@@ -29,7 +29,7 @@ else{
 //Query Rawat Inap
 $sql = "SELECT pem.no_periksa, reg.no_reg, reg.no_rm, reg.nama_pasien, reg.jenis_pasien, reg.tanggal, reg.dokter, reg.jenis_kelamin, pj.no_faktur, reg.id";
 $sql.=" FROM registrasi reg INNER JOIN pemeriksaan_lab_inap pem ON reg.no_reg = pem.no_reg LEFT JOIN penjualan pj ON reg.no_reg = pj.no_reg ";
-$sql.=" WHERE pem.status = '0' AND reg.jenis_pasien = 'Rawat Inap' AND reg.status = 'Sudah Pulang' AND reg.status != 'Batal Rawat Inap' AND pj.no_faktur IS NULL ";
+$sql.=" WHERE pem.status = '0' AND reg.jenis_pasien = 'Rawat Inap' AND reg.status = 'Sudah Pulang'  ";
 }
 
 $query = mysqli_query($conn, $sql) or die("eror 1");

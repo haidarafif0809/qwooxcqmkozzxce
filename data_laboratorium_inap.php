@@ -17,6 +17,11 @@ $otoritas_laboratorium = $db->query("SELECT input_jasa_lab FROM otoritas_laborat
 $take_lab = mysqli_fetch_array($otoritas_laboratorium);
 $input_jasa_lab = $take_lab['input_jasa_lab'];
 
+$cek_setting = $db->query("SELECT nama FROM setting_laboratorium WHERE jenis_lab = 'Rawat Inap'");
+$data_setting = mysqli_fetch_array($cek_setting);
+$hasil_setting = $data_setting['nama']; //jika hasil 1 maka = input hasil baru bayar, jika 0 maka = bayar dulu baru input hasil
+
+
 ?>
 
 <div class="container">
@@ -124,6 +129,7 @@ $input_jasa_lab = $take_lab['input_jasa_lab'];
 <th style="background-color: #4CAF50; color: white;"> Waktu </th>
 <th style="background-color: #4CAF50; color: white;"> Edit Jasa </th>
 <th style="background-color: #4CAF50; color: white;"> Detail / Edit Hasil</th>
+
 
 		</thead>
 		<tbody>

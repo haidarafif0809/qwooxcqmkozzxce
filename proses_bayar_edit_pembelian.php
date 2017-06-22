@@ -56,7 +56,7 @@ $ambil_suplier = mysqli_fetch_array($select_suplier);
 
 
             // setting akun
-            $select_setting_akun = $db->query("SELECT pengaturan_stok,persediaan,item_keluar FROM setting_akun");
+            $select_setting_akun = $db->query("SELECT hpp_penjualan,pengaturan_stok,persediaan,item_keluar FROM setting_akun");
             $ambil_setting = mysqli_fetch_array($select_setting_akun);
 
 
@@ -159,8 +159,11 @@ $ambil_suplier = mysqli_fetch_array($select_suplier);
                         if ($kel_harga_unnit['jenis_transaksi'] == 'Penjualan') {
                                
                                // update persediaan di jurnal penjualan
+                                                        // Item Keluar
+                              $db->query("UPDATE jurnal_trans SET debit =  '$total_nilai_keluar' WHERE no_faktur = '$kel_harga_unnit[no_faktur]' AND kode_akun_jurnal = '$ambil_setting[hpp_penjualan]' ");
 
-                              $db->query("UPDATE penjualan SET keterangan = 'Edit Otomatis Jurnal' WHERE no_faktur = '$kel_harga_unnit[no_faktur]'");
+                              $db->query("UPDATE jurnal_trans SET kredit =  '$total_nilai_keluar' WHERE no_faktur = '$kel_harga_unnit[no_faktur]' AND kode_akun_jurnal = '$ambil_setting[persediaan]' ");
+                                                      
 
                         }
                         elseif ($kel_harga_unnit['jenis_transaksi'] == 'Item Keluar') {
