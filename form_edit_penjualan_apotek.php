@@ -1615,6 +1615,8 @@ if (ppn == 'Exclude') {
      $("#tipe_barang").val(''); 
      $("#harga_penjamin").val('');
      $("#kode_barang").val('');
+     $("#kode_barang").trigger('chosen:updated');
+     $("#kode_barang").trigger('chosen:open');
 
      });
 
@@ -1651,7 +1653,9 @@ if (ppn == 'Exclude') {
                  $("#potongan1").val('');
                  $("#tax1").val('');
                  $("#tipe_barang").val('');
-                 $("#kode_barang").focus();
+                $("#kode_barang").val('');
+          $("#kode_barang").trigger('chosen:updated');
+          $("#kode_barang").trigger('chosen:open');
                  $("#harga_penjamin").val('');
 
      

@@ -159,7 +159,7 @@ $ambil_suplier = mysqli_fetch_array($select_suplier);
                         if ($kel_harga_unnit['jenis_transaksi'] == 'Penjualan') {
                                
                                // update persediaan di jurnal penjualan
-                                                        // Item Keluar
+                                                          // Item Keluar
                               $db->query("UPDATE jurnal_trans SET debit =  '$total_nilai_keluar' WHERE no_faktur = '$kel_harga_unnit[no_faktur]' AND kode_akun_jurnal = '$ambil_setting[hpp_penjualan]' ");
 
                               $db->query("UPDATE jurnal_trans SET kredit =  '$total_nilai_keluar' WHERE no_faktur = '$kel_harga_unnit[no_faktur]' AND kode_akun_jurnal = '$ambil_setting[persediaan]' ");
