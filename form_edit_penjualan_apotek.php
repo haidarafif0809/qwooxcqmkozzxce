@@ -46,7 +46,11 @@ $nama_gudang = $da['nama_gudang'];
     $ppn = $ambil_tanggal['ppn'];
     $tanggal = $ambil_tanggal['tanggal'];
     $jam = $ambil_tanggal['jam'];
+    $perawat = $ambil_tanggal['perawat'];
 
+$nama_perawat = $db->query("SELECT nama FROM user WHERE id = '$perawat' ");
+$data_nama_perawat = mysqli_fetch_array($nama_perawat);
+$nama_perawat = $data_nama_perawat['nama'];
 
 $nama_kasir = $db->query("SELECT nama FROM user WHERE id = '$ambil_tanggal[sales]' ");
 $dara_nama_kasir = mysqli_fetch_array($nama_kasir);
@@ -215,10 +219,7 @@ $level_harga = $data_level['harga'];
          $query09 = $db->query("SELECT nama,id FROM user WHERE tipe = '2' ");
          while ( $data09 = mysqli_fetch_array($query09)) {
          
-         $petugas = $db->query("SELECT nama_farmasi FROM penetapan_petugas WHERE nama_farmasi = '$data01[nama]'");
-         $data_petugas = mysqli_fetch_array($petugas);
-
-            if ($data09['nama'] == $data_petugas['nama_farmasi']) {
+            if ($data09['nama'] == $nama_perawat) {
              echo "<option selected value='".$data09['id'] ."'>".$data09['nama'] ."</option>";
             }
             else{
@@ -793,7 +794,7 @@ else{
           $totaljum = $total_akhir - $tax - $biaya_adm + $potongan_p; 
           $potongan = $potongan_p / $totaljum * 100;
 
-         $total_potongan = $subtotal * round($potongan) / 100;
+         $total_potongan = $subtotal * $potongan / 100;
 
         }
         else
@@ -828,7 +829,7 @@ else{
 
           <div class="form-group col-xs-6">
           <label> Tanggal Jatuh Tempo </label><br>
-          <input type="text" name="tanggal_jt" id="tanggal_jt" style="height:15px;font-size:15px"  value="" class="form-control tanggal" >
+          <input type="text" name="tanggal_jt" id="tanggal_jt" style="height:15px;font-size:15px"  value="<?php echo $ambil_tanggal['tanggal_jt'] ?>" class="form-control tanggal" >
           </div>
 
           <div class="form-group  col-xs-6">
@@ -882,7 +883,7 @@ else{
       <div class="form-group  col-xs-6">
 
      <label style="font-size:15px">  <b> Pembayaran (F7)</b> </label><br>
-           <b><input type="text" name="pembayaran" id="pembayaran_penjualan" style="height: 20px; width:90%; font-size:20px;" autocomplete="off" class="form-control"   style="font-size: 20px"  onkeydown="return numbersonly(this, event);" onkeyup="javascript:tandaPemisahTitik(this);"></b>
+           <b><input type="text" name="pembayaran" id="pembayaran_penjualan" style="height: 20px; width:90%; font-size:20px;" autocomplete="off" class="form-control" style="font-size: 20px" value="<?php echo $dp ?>" onkeydown="return numbersonly(this, event);" onkeyup="javascript:tandaPemisahTitik(this);"></b>
       </div>
 
     </div>
@@ -3697,6 +3698,38 @@ $.post("cek_level_harga_apotek.php", {level_harga:level_harga,kode_barang:kode_b
  
  </script>
 
+
+<script type="text/javascript">
+//Ducoment Ready Perhitungan Kembalian , kredit berdasarkan pembayaran Awal
+$(document).ready(function(){
+
+//Start Ducoment Ready Perhitungan Kembalian , kredit berdasarkan pembayaran Awal
+    var pembayaran = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#pembayaran_penjualan").val()))));
+    if(pembayaran == ''){
+      pembayaran = 0;
+    }
+    var total = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah( $("#total1").val()))));
+    var sisa = pembayaran - total;
+    var sisa_kredit = total - pembayaran; 
+        
+    if (sisa < 0 ){
+      $("#kredit").val( tandaPemisahTitik(sisa_kredit));
+      $("#sisa_pembayaran_penjualan").val('0');
+      $("#tanggal_jt").attr("disabled", false);
+        
+    }
+    else{
+      $("#sisa_pembayaran_penjualan").val(tandaPemisahTitik(sisa));
+      $("#kredit").val('0');
+      $("#tanggal_jt").attr("disabled", true);
+        
+    }
+//Akhir Ducoment Ready Perhitungan Kembalian , kredit berdasarkan pembayaran Awal
  
+        
+});
+</script>
+
+
 <!-- memasukan file footer.php -->
 <?php include 'footer.php'; ?>
