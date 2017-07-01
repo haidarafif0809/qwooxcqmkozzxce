@@ -10,7 +10,7 @@
     $nama = $_GET['nama'];
     $id = $_GET['id'];
 
-    $otoritas_akses = $db->query("SELECT * FROM hak_otoritas ho LEFT JOIN otoritas_penjualan open ON ho.id = open.id_otoritas LEFT JOIN otoritas_pembelian opem ON ho.id = opem.id_otoritas LEFT JOIN otoritas_master_data omd ON ho.id = omd.id_otoritas LEFT JOIN otoritas_pembayaran opemb ON ho.id = opemb.id_otoritas LEFT JOIN otoritas_transaksi_kas otk ON ho.id = otk.id_otoritas LEFT JOIN otoritas_kas_keluar okk ON ho.id = okk.id_otoritas LEFT JOIN otoritas_kas_masuk okm ON ho.id = okm.id_otoritas LEFT JOIN otoritas_kas_mutasi okmut ON ho.id = okmut.id_otoritas LEFT JOIN otoritas_persediaan operse ON ho.id = operse.id_otoritas LEFT JOIN otoritas_stok_opname oso ON ho.id = oso.id_otoritas LEFT JOIN otoritas_stok_awal osa ON ho.id = osa.id_otoritas LEFT JOIN otoritas_item_masuk oim ON ho.id = oim.id_otoritas LEFT JOIN otoritas_item_keluar oik ON ho.id = oik.id_otoritas LEFT JOIN otoritas_kas ok ON ho.id = ok.id_otoritas LEFT JOIN otoritas_laporan ol ON ho.id = ol.id_otoritas LEFT JOIN otoritas_registrasi oreg ON ho.id = oreg.id_otoritas LEFT JOIN otoritas_rekam_medik orm ON ho.id = orm.id_otoritas LEFT JOIN otoritas_setting os ON ho.id = os.id_otoritas LEFT JOIN otoritas_tipe_produk otp ON ho.id = otp.id_otoritas LEFT JOIN otoritas_laboratorium olab ON ho.id = olab.id_otoritas LEFT JOIN otoritas_radiologi ord ON ho.id = ord.id_otoritas WHERE ho.id = '$id'");
+    $otoritas_akses = $db->query("SELECT * FROM hak_otoritas ho LEFT JOIN otoritas_penjualan open ON ho.id = open.id_otoritas LEFT JOIN otoritas_pembelian opem ON ho.id = opem.id_otoritas LEFT JOIN otoritas_master_data omd ON ho.id = omd.id_otoritas LEFT JOIN otoritas_pembayaran opemb ON ho.id = opemb.id_otoritas LEFT JOIN otoritas_transaksi_kas otk ON ho.id = otk.id_otoritas LEFT JOIN otoritas_kas_keluar okk ON ho.id = okk.id_otoritas LEFT JOIN otoritas_kas_masuk okm ON ho.id = okm.id_otoritas LEFT JOIN otoritas_kas_mutasi okmut ON ho.id = okmut.id_otoritas LEFT JOIN otoritas_persediaan operse ON ho.id = operse.id_otoritas LEFT JOIN otoritas_stok_opname oso ON ho.id = oso.id_otoritas LEFT JOIN otoritas_stok_awal osa ON ho.id = osa.id_otoritas LEFT JOIN otoritas_item_masuk oim ON ho.id = oim.id_otoritas LEFT JOIN otoritas_item_keluar oik ON ho.id = oik.id_otoritas LEFT JOIN otoritas_kas ok ON ho.id = ok.id_otoritas LEFT JOIN otoritas_laporan ol ON ho.id = ol.id_otoritas LEFT JOIN otoritas_registrasi oreg ON ho.id = oreg.id_otoritas LEFT JOIN otoritas_rekam_medik orm ON ho.id = orm.id_otoritas LEFT JOIN otoritas_setting os ON ho.id = os.id_otoritas LEFT JOIN otoritas_tipe_produk otp ON ho.id = otp.id_otoritas LEFT JOIN otoritas_laboratorium olab ON ho.id = olab.id_otoritas LEFT JOIN otoritas_radiologi ord ON ho.id = ord.id_otoritas LEFT JOIN otoritas_transfer_stok ots ON ho.id = ots.id_otoritas WHERE ho.id = '$id'");
     $data_otoritas = mysqli_fetch_array($otoritas_akses);
 
 
@@ -4914,6 +4914,55 @@ else{
 <div class="form-group col-sm-12">
     
 </div>
+<div class="form-group col-sm-3"> <!-- start otoritas laporan_pembayaran_hutang -->
+<label>Transfer Stok</label><br>
+
+<?php 
+
+if ($data_otoritas['transfer_stok_lihat'] == '1'){
+    echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="checkbox22101996" name="transfer_stok_lihat" checked="">
+    <label for="checkbox22101996">Lihat</label> <br>';
+}
+
+else{
+    echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="checkbox22101996" name="transfer_stok_lihat">
+    <label for="checkbox22101996">Lihat</label> <br>';  
+}
+
+if ($data_otoritas['transfer_stok_tambah'] == '1'){
+    echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="checkbox24121998" name="transfer_stok_tambah" checked=""> 
+    <label for="checkbox24121998">Tambah</label> <br>';
+}
+
+else{
+    echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="checkbox24121998" name="transfer_stok_tambah"> 
+    <label for="checkbox24121998">Tambah</label> <br>';  
+}
+
+if ($data_otoritas['transfer_stok_edit'] == '1'){
+    echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="checkbox25121985" name="transfer_stok_edit" checked="">
+    <label for="checkbox25121985">Edit</label> <br>';
+}
+
+else{
+    echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="checkbox25121985" name="transfer_stok_edit">
+    <label for="checkbox25121985">Edit</label> <br>';  
+}
+
+if ($data_otoritas['transfer_stok_hapus'] == '1'){
+    echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="checkbox17081965" name="transfer_stok_hapus" checked=""> 
+    <label for="checkbox17081965">Hapus</label> <br>';
+}
+
+else{
+    echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="checkbox17081965" name="transfer_stok_hapus"> 
+    <label for="checkbox17081965">Hapus</label> <br>';  
+}
+
+?>
+
+</div> <!-- / of otoritas lap_retur pembelian - retur  penjualan -->
+
 
 <div class="form-group col-sm-3"> <!-- start otoritas laporan_pembayaran_hutang -->
 <label>Laporan Pembayaran</label><br>
