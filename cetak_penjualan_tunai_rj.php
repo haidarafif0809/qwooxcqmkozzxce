@@ -136,40 +136,9 @@ mysqli_close($db);
  <script>
 $(document).ready(function(){
  
+  window.print();
+ });
 
-
-   var db = new Dexie("database_penjualan");
-    
-       db.version(1).stores({
-         
-        detail_penjualan : 'id,no_reg,kode_barang,nama_barang,jumlah_barang,harga,subtotal,satuan,potongan'  
-      });
-
-       var no_reg = '<?php echo $no_reg ?>';
-       var status_print = '<?php echo $status_print ?>';
-
-       var no_urut = 0;
-
-       db.detail_penjualan.where('no_reg').equals(no_reg).each(function(data,i){
-            
-
-       console.log(no_urut++);
-
-
-        var data_detail_penjualan = '<tr><td width:"50%"> '+ data.nama_barang+' </td><td style="padding:3px"> '+ data.jumlah_barang +'</td><td style="padding:3px"> '+ data.harga +'</td><td style="padding:3px"> '+ data.subtotal + ' </td></tr>';
-
-
-
-        if (status_print == 'Detail') {
-            $("#tbody-detail").append(data_detail_penjualan);
-        }
-      
-                
-        }); // end each
-           
-
-
-});
 </script>
 
 <?php 

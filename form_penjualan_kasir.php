@@ -1025,7 +1025,7 @@ Radiologi  </button>
    $(window).on('load',function(){
 
 
-          $(".btnPrint").printPage();
+          // $(".btnPrint").printPage();
   
          $('#modal_loading_form').modal({  backdrop: 'static',
                       keyboard: false});
