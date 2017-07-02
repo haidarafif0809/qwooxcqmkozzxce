@@ -348,7 +348,7 @@ $obat = $otoritas_produk['tipe_obat'];
 <button type="button" class="btn btn-default" id="btnRefreshsubtotal"> <i class='fa fa-refresh'></i> Refresh Subtotal</button>
 
 <!--tampilan modal-->
-<div id="myModal" class="modal fade" role="dialog">
+<div id="myModal" class="modal " role="dialog">
   <div class="modal-dialog">
 
     <!-- isi modal-->
@@ -419,7 +419,7 @@ $obat = $otoritas_produk['tipe_obat'];
 
 
 <!-- Modal cari registrasi pasien-->
-<div id="modal_reg" class="modal fade" role="dialog">
+<div id="modal_reg" class="modal " role="dialog">
   <div class="modal-dialog">
 
     <!-- Modal content-->
@@ -461,7 +461,7 @@ $obat = $otoritas_produk['tipe_obat'];
 <!-- / modal barang yang tidak bisa di jual -- >
 
 <!-- Modal Hapus data -->
-<div id="modal_hapus" class="modal fade" role="dialog">
+<div id="modal_hapus" class="modal " role="dialog">
   <div class="modal-dialog">
 
     <!-- Modal content-->
