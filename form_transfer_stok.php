@@ -556,22 +556,29 @@ var keterangan = $("#keterangan").val();
                 
                 }
                 else{
-                
-                  $("#pembayaran_transfer_stok").hide();
-                  $("#batal").hide();
-                  $("#transaksi_baru").show();
-                  
-                  $("#alert_berhasil").show();
-                  $("#total_transfer").val('');
-                  $("#keterangan").val('');
-                  
-                  $.post("proses_bayar_transfer_stok.php",{total:total,keterangan:keterangan},function(info) {
-                  });
 
-                  var tabel_tbs_transfer_stok = $('#tabel_tbs_transfer_stok').DataTable();
-                  tabel_tbs_transfer_stok.draw();
-                
-                  $("#span_tbs").show();
+                      $.ajax({
+                      url: "proses_bayar_transfer_stok",
+                      data: {total : total,keterangan : keterangan
+                      // d.custom = $('#myInput').val();
+                      // etc
+                    },
+                      type: "POST",
+                      beforeSend: function(){
+
+                          $("#pembayaran_transfer_stok").hide(); 
+                          $("#batal").hide();
+                          $("#transaksi_baru").show();
+                          $("#alert_berhasil").show();
+                          $("#total_transfer").val('');
+                          $("#keterangan").val('');   
+                         
+                      }
+                    });
+               var tabel_tbs_transfer_stok = $('#tabel_tbs_transfer_stok').DataTable();
+               tabel_tbs_transfer_stok.draw(); 
+                $("#span_tbs").show();
+
                 }
 
 

@@ -610,17 +610,26 @@ var no_faktur = $("#no_faktur").val();
                 
                 }
                 else{
-                
-                  $("#pembayaran_transfer_stok").hide();
-                  $("#batal").hide();
-                  $("#transaksi_baru").show();
                   
-                  $("#alert_berhasil").show();
-                  $("#total_transfer").val('');
-                  $("#keterangan").val('');
-                  
-                  $.post("proses_bayar_edit_transfer_stok.php",{no_faktur,total:total,keterangan:keterangan},function(info) {
-                  });
+                     $.ajax({
+                      url: "proses_bayar_edit_transfer_stok",
+                      data: {no_faktur:no_faktur,total:total,keterangan:keterangan
+                      // d.custom = $('#myInput').val();
+                      // etc
+                    },
+                      type: "POST",
+                      beforeSend: function(){
+
+                        $("#pembayaran_transfer_stok").hide();
+                        $("#batal").hide();
+                        $("#transaksi_baru").show();
+                        
+                        $("#alert_berhasil").show();
+                        $("#total_transfer").val('');
+                        $("#keterangan").val('');
+                               
+                      }
+                    });
 
                   var tabel_tbs_transfer_stok = $('#tabel_tbs_transfer_stok').DataTable();
                   tabel_tbs_transfer_stok.draw();

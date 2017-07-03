@@ -81,7 +81,7 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 					else
 					{
 
-						$nestedData[] = "<button style='width:65px;' class='btn btn-danger btn-hapus' data-id='".$row['id']."' data-item='". $row['no_faktur'] ."'> <i class='fa fa-trash'> </i> Hapus </button>";			
+						$nestedData[] = "<button style='width:70px;' class='btn btn-danger btn-hapus' data-id='".$row['id']."' data-item='". $row['no_faktur'] ."'> <i class='fa fa-trash'> </i> Hapus </button>";			
 		
 					}
 		}// 			if ($transfer_stok['transfer_stok_tambah'] > 0) {

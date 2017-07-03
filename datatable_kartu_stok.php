@@ -351,6 +351,15 @@ $total_saldo = $total_saldo - $keluar;
 
 				$nestedData[] = "<p style='text-align:right'>".rp($harga_opname)."<p/>";
 			}
+			else if ($data['jenis_transaksi'] == 'Transfer Stok') {
+
+
+				$ambil_harga_transfer_stok = $db->query("SELECT harga AS harga_transfer_stok FROM detail_transfer_stok  WHERE no_faktur = '$data[no_faktur]' AND kode_barang = '$kode_barang' ");
+				$data_transfer_stok = mysqli_fetch_array($ambil_harga_transfer_stok);
+				$harga_transfer_stok = $data_transfer_stok['harga_transfer_stok'];
+
+				$nestedData[] = "<p style='text-align:right'>".rp($harga_transfer_stok)."</p>";
+			}
 
 //LOGIKA UNTUK MENAMPILKAN HARGA DARI MASING" TRANSAKSI (JUMLAH PRODUK BERKURANG)
 
