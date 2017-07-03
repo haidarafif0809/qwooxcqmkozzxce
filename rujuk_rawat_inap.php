@@ -393,6 +393,9 @@ opacity: 0.9;
 
 <?php if ($data_sett['tampil_ttv'] == 0): ?>
 
+  <input style="height:20;" type="hidden" class="form-control" id="token" name="token" value="Kosasih" autocomplete="off"> 
+
+
 <button accesskey="d" style="width:100px" type="submit" class="btn btn-info"><i class="fa fa-plus"></i>  <u>D</u>aftar</button>
 
   
@@ -442,9 +445,10 @@ opacity: 0.9;
 </div>
 
 
+  <input style="height:20;" type="hidden" class="form-control" id="token" name="token" value="Kosasih" autocomplete="off"> 
+
 
 <br>
-  <input style="height:20;" type="hidden" class="form-control" id="token" name="token" value="Kosasih" autocomplete="off"> 
 
 <button accesskey="d" style="width:100px" type="submit" class="btn btn-info"><i class="fa fa-plus"></i>  <u>D</u>aftar</button>
 

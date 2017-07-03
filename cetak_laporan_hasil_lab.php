@@ -8,7 +8,7 @@ $no_faktur = stringdoang($_GET['no_faktur']);
 
 
 
-$select = $db->query("SELECT no_faktur,no_rm,no_reg,nama_pasien,petugas_analis,dokter,tanggal FROM hasil_lab WHERE no_faktur = '$no_faktur' AND status = 'Selesai'");
+$select = $db->query("SELECT no_faktur,no_rm,no_reg,nama_pasien,petugas_analis,dokter,tanggal FROM hasil_lab WHERE no_faktur = '$no_faktur' AND status = '1'");
 $out = mysqli_fetch_array($select);
 
 $select_bio = $db->query("SELECT jenis_kelamin,umur_pasien,alamat_pasien FROM registrasi WHERE no_rm = '$out[no_rm]' AND no_reg = '$out[no_reg]'");
@@ -101,7 +101,7 @@ $tanggal = date('Y-m-d');
         <tbody>
         <?php
 
-$selectui = $db->query("SELECT * FROM hasil_lab WHERE no_faktur = '$no_faktur' AND status = 'Selesai' GROUP BY id_sub_header");
+$selectui = $db->query("SELECT * FROM hasil_lab WHERE no_faktur = '$no_faktur' AND status = '1' GROUP BY id_sub_header");
  while($trace = mysqli_fetch_array($selectui))
  {
 
@@ -117,7 +117,7 @@ $selectui = $db->query("SELECT * FROM hasil_lab WHERE no_faktur = '$no_faktur' A
   $name_sub_header = $get['nama'];
                 //menampilkan data
     
-  $show = $db->query("SELECT * FROM hasil_lab WHERE no_faktur = '$no_faktur' AND status = 'Selesai' ");
+  $show = $db->query("SELECT * FROM hasil_lab WHERE no_faktur = '$no_faktur' AND status = '1' ");
   $drop_show = mysqli_fetch_array($show);
 
 if($face_drop >= 1)
@@ -140,7 +140,7 @@ if($face_drop >= 1)
 
     </tr>";
 
-    $show_one = $db->query("SELECT * FROM hasil_lab WHERE no_faktur = '$no_faktur' AND status = 'Selesai' AND id_sub_header = '$id_get'");
+    $show_one = $db->query("SELECT * FROM hasil_lab WHERE no_faktur = '$no_faktur' AND status = '1' AND id_sub_header = '$id_get'");
             //menyimpan data sementara yang ada pada $perintah
   
         while ($take = mysqli_fetch_array($show_one))
@@ -238,7 +238,7 @@ if($face_drop >= 1)
 
 
 //start untuk yang sendirian / yang tidak ber HEADER/INDUX
-      $show_two = $db->query("SELECT * FROM hasil_lab WHERE no_faktur = '$no_faktur' AND status = 'Selesai' AND (id_sub_header = 0 OR id_sub_header IS NULL)");
+      $show_two = $db->query("SELECT * FROM hasil_lab WHERE no_faktur = '$no_faktur' AND status = '1' AND (id_sub_header = 0 OR id_sub_header IS NULL)");
             //menyimpan data sementara yang ada pada $perintah
   
           while ($drop_two = mysqli_fetch_array($show_two))

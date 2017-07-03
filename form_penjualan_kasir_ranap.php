@@ -71,6 +71,32 @@ padding-right: 5%;
   });
   </script>
 
+
+  <!--tampilan modal loading form-->
+<div id="modal_loading_form" class="modal" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- isi modal-->
+    <div class="modal-content">
+
+      <div class="modal-header">
+    
+      </div>
+      <div class="modal-body">
+
+      <h2>Sedang Menyiapkan Form Penjualan..</h2>
+      <center><h4>Harap tunggu sebentar..</h4></center>
+          <center><div class="loader"></div></center>
+      </div> <!-- tag penutup modal-body-->
+      <div class="modal-footer">
+      
+      </div>
+    </div>
+
+  </div>
+</div><!-- end of modal loading form  -->
+
+
 <!--untuk membuat agar tampilan form terlihat rapih dalam satu tempat -->
 
 <div class="padding" >
@@ -883,13 +909,12 @@ Radiologi  </button>
                           <thead> <!-- untuk memberikan nama pada kolom tabel -->
                               
                               <th> Kode  </th>
-                              <th> Nama </th>
+                              <th> Pemeriksaan  </th>
+                              <th> Nama Jasa</th>
                               <th> Nama Petugas</th>
                               <th> Jumlah </th>
                               <th> Harga </th>
                               <th> Subtotal </th>
-                              <th> Potongan </th>
-                              <th> Pajak </th>
                               <th> Tanggal </th>
                           </thead> <!-- tag penutup tabel -->
                     </table>
@@ -1195,7 +1220,17 @@ Radiologi  </button>
 
 <script>
 
- var db = new Dexie("database_barang");
+   $(window).on('load',function(){
+
+       
+
+ $('#modal_loading_form').modal({  backdrop: 'static',
+                      keyboard: false});
+                            
+                            $('#modal_loading_form').modal('show');
+
+
+          var db = new Dexie("database_barang");
     
            db.version(2).stores({
              
@@ -1257,10 +1292,17 @@ Radiologi  </button>
               }).then(function(){
 
                       $("#kode_barang").chosen({no_results_text: "Maaf, Data Tidak Ada!",search_contains:true});
+                     $('#modal_loading_form').modal('hide');
+
+            
+
+
               });
 
            }
+            
 
+});
 </script>
 
 
@@ -5665,7 +5707,7 @@ $(document).on('dblclick','.edit-waktu-or',function(){
             "info":     false,
             "language": { "emptyTable":     "My Custom Message On Empty Table" },
             "ajax":{
-              url :"data_tbs_lab.php", // json datasource
+              url :"data_tbs_lab_inap.php", // json datasource
                "data": function ( d ) {
                   d.no_reg = $("#no_reg").val();
                   // d.custom = $('#myInput').val();

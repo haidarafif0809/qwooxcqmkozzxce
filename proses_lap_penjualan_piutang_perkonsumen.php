@@ -92,6 +92,10 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
   $nestedData=array(); 
 
 
+$query_pasien = $db_pasien->query("SELECT nama_pelanggan FROM pelanggan WHERE kode_pelanggan = '$row[kode_pelanggan]' ");
+$data_pasien = mysqli_fetch_array($query_pasien);
+
+
 $query0232 = $db->query("SELECT SUM(jumlah_bayar) + SUM(potongan) AS total_bayar FROM detail_pembayaran_piutang WHERE no_faktur_penjualan = '$row[no_faktur]' ");
 $kel_bayar = mysqli_fetch_array($query0232);
 
@@ -105,7 +109,7 @@ $tot_bayar = $kel_bayar['total_bayar'] + $Dp;
 
       $nestedData[] = $row['no_faktur'];
       $nestedData[] = $row['penjamin'];
-      $nestedData[] = $row['nama_pelanggan'];
+      $nestedData[] = $data_pasien['nama_pelanggan'];
       $nestedData[] = $row['tanggal'];
       $nestedData[] = $row['tanggal_jt'];
       $nestedData[] =  "<p align='right'>".rp($row['usia_piutang'])." Hari</p>";

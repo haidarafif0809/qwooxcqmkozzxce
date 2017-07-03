@@ -382,6 +382,7 @@ $(document).ready(function(){
               url :"datatable_tbs_aps.php", // json datasource
                "data": function ( d ) {
                   d.no_reg = $("#no_reg").val();
+                  d.aps_periksa = $("#aps_periksa").val();
                   // d.custom = $('#myInput').val();
                   // etc
               },
@@ -407,10 +408,11 @@ $("#span_tbs_aps").show('fast');
 
 //START SUBTOTAL DAN TOTAL
 var no_reg = $("#no_reg").val();
+var aps_periksa = $("#aps_periksa").val();
 var diskon_persen = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#diskon_persen").val()))));
 var diskon_rupiah = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#diskon_rupiah").val()))));
 
-$.post("cek_subtotal_aps.php",{no_reg:no_reg},function(data){
+$.post("cek_subtotal_aps.php",{no_reg:no_reg,aps_periksa:aps_periksa},function(data){
     data = data.replace(/\s+/g, '');
     if (data == ""){
     	data = 0;
@@ -495,7 +497,7 @@ $.post("cek_subtotal_aps.php",{no_reg:no_reg},function(data){
         //Akhir Setting Laboratorium
 
     	}
-        else{
+       /* else{
         //Start Hasil Radiologi
         $.post("cek_status_aps_hasil_radiologi.php",{no_reg:no_reg},function(data){
 	        if(data == 1){
@@ -524,7 +526,7 @@ $.post("cek_subtotal_aps.php",{no_reg:no_reg},function(data){
             }
         });
         //Akhir Hasil Radiologi
-        }
+        }*/
 
       	//End Cek Hasil Laboratorium
 
@@ -606,14 +608,15 @@ $.post("cek_subtotal_aps.php",{no_reg:no_reg},function(data){
       var tanggal_jt = $("#tanggal_jt").val();
       var nama_pasien = $("#nama_pasien").val();
       var petugas_kasir = $("#petugas_kasir").val();
+      var aps_periksa = $("#aps_periksa").val();
 
       if (no_reg == '') {
-		alert ('Maaf Anda Belum Memilih Pasien, Silakan Pilih Pasien.');
-		$("#modal_reg").modal('show');
+		    alert ('Maaf Anda Belum Memilih Pasien, Silakan Pilih Pasien.');
+		    $("#modal_reg").modal('show');
       }
       else if (no_rm == '') {
-		alert ('Maaf Anda Belum Memilih Pasien, Silakan Pilih Pasien.');
-		$("#modal_reg").modal('show');
+		    alert ('Maaf Anda Belum Memilih Pasien, Silakan Pilih Pasien.');
+		    $("#modal_reg").modal('show');
       }
       else{
 
@@ -625,7 +628,8 @@ $.post("cek_subtotal_aps.php",{no_reg:no_reg},function(data){
 //LOGIKA CEK SUBTOTAL ANTARA TBS DAN KOLOM SUBTOTAL
       			if (data == 1) {
 
-	      			$.post("proses_bayar_jual_aps.php",{id_user:id_user,no_reg:no_reg,no_rm:no_rm,
+	      			$.post("proses_bayar_jual_aps.php",{aps_periksa:aps_periksa,id_user:id_user,
+                no_reg:no_reg,no_rm:no_rm,
 	      				biaya_adm:biaya_adm,diskon_rupiah:diskon_rupiah,cara_bayar:cara_bayar,
 	      				subtotal:subtotal,total:total,pembayaran_penjualan:pembayaran_penjualan,
 	      				sisa_pembayaran:sisa_pembayaran,tanggal_jt:tanggal_jt,keterangan:keterangan,
@@ -697,14 +701,15 @@ $.post("cek_subtotal_aps.php",{no_reg:no_reg},function(data){
       var tanggal_jt = $("#tanggal_jt").val();
       var nama_pasien = $("#nama_pasien").val();
       var petugas_kasir = $("#petugas_kasir").val();
+      var aps_periksa = $("#aps_periksa").val();
 
       if (no_reg == '') {
-		alert ('Maaf Anda Belum Memilih Pasien, Silakan Pilih Pasien.');
-		$("#modal_reg").modal('show');
+    		alert ('Maaf Anda Belum Memilih Pasien, Silakan Pilih Pasien.');
+    		$("#modal_reg").modal('show');
       }
       else if (no_rm == '') {
-		alert ('Maaf Anda Belum Memilih Pasien, Silakan Pilih Pasien.');
-		$("#modal_reg").modal('show');
+  		  alert ('Maaf Anda Belum Memilih Pasien, Silakan Pilih Pasien.');
+  		  $("#modal_reg").modal('show');
       }
       else{
 
@@ -716,7 +721,8 @@ $.post("cek_subtotal_aps.php",{no_reg:no_reg},function(data){
 //LOGIKA CEK SUBTOTAL ANTARA TBS DAN KOLOM SUBTOTAL
       			if (data == 1) {
 
-	      			$.post("proses_bayar_jual_aps.php",{id_user:id_user,no_reg:no_reg,no_rm:no_rm,
+	      			$.post("proses_bayar_jual_aps.php",{aps_periksa:aps_periksa,id_user:id_user,
+                no_reg:no_reg,no_rm:no_rm,
 	      				biaya_adm:biaya_adm,diskon_rupiah:diskon_rupiah,cara_bayar:cara_bayar,
 	      				subtotal:subtotal,total:total,pembayaran_penjualan:pembayaran_penjualan,
 	      				sisa_pembayaran:sisa_pembayaran,tanggal_jt:tanggal_jt,keterangan:keterangan,
@@ -887,6 +893,7 @@ $.post("cek_subtotal_aps.php",{no_reg:no_reg},function(data){
 			              url :"datatable_tbs_aps.php", // json datasource
 			               "data": function ( d ) {
 			                  d.no_reg = $("#no_reg").val();
+                        d.aps_periksa = $("#aps_periksa").val();
 			                  // d.custom = $('#myInput').val();
 			                  // etc
 			              },

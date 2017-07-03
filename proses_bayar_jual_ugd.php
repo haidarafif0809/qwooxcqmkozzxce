@@ -8,6 +8,7 @@ $bulan_sekarang = date('m');
 $tanggal_sekarang = date('Y-m-d');
 $jam_sekarang = date('H:i:s');
 $tahun_terakhir = substr($tahun_sekarang, 2);
+$waktu = date("Y-m-d H:i:s");
 
 try {
 
@@ -15,7 +16,6 @@ $no_reg = stringdoang($_POST['no_reg']);
 $total = angkadoang($_POST['total']);
 $potongan = angkadoang($_POST['potongan']);
 $biaya_admin = angkadoang($_POST['biaya_adm']);
-
 
 
 // menampilakn hasil penjumlah subtotal ALIAS total penjualan dari tabel tbs_penjualan berdasarkan data no faktur
@@ -352,16 +352,32 @@ $no_jurnal = no_jurnal();
 $cek_lab = $db->query("SELECT no_reg FROM hasil_lab WHERE no_reg = '$no_reg'");
 $out_lab = mysqli_num_rows($cek_lab);
 if($out_lab > 0 ){
+  //Insert Data Pemeriksaannya 
+  /*$query_insert_data_periksa = "INSERT INTO pemeriksaan_laboratorium 
+  (no_reg,no_rm,waktu,status,nama_pasien,status_pasien) VALUES 
+  ('$no_reg','$no_rm','$waktu','1','$nama_pasien','UGD')";
+    if ($db->query($query_insert_data_periksa) === TRUE){
 
+    }
+    else{
+      echo "Error: " . $query_insert_data_periksa . "<br>" . $db->error;
+      }*/
+
+  //Update no faktur di hasil labortoriumnya
   $update_hasilnya = $db->query("UPDATE hasil_lab SET no_faktur = '$no_faktur' WHERE no_reg = '$no_reg'");
 }
 else
 {
   // Cek dulu setting, jika tidak di hubungkan akan jalankan ini
-  $cek_setting = $db->query("SELECT nama FROM setting_laboratorium");
+  $cek_setting = $db->query("SELECT nama FROM setting_laboratorium WHERE jenis_lab = 'UGD'");
   $get = mysqli_fetch_array($cek_setting);
   $hasil = $get['nama'];
   if($hasil == 0){
+
+
+    //Input agar tampil di laporan laboratoriu (Tambahan sore hari belom di tes)
+    $insert_pemeriksaan_laboratorium = $db->query("INSERT INTO pemeriksaan_laboratorium (no_reg,no_rm,status,nama_pasien,waktu,status_pasien) VALUES ('$no_reg',
+      '$no_rm','1','$nama_pasien','$waktu','UGD')");
 
     //ambil di tbs penjualan jasa labnya
     $taked_tbs = $db->query("SELECT kode_barang,nama_barang FROM tbs_penjualan WHERE no_reg = '$no_reg' AND lab = 'Laboratorium'");

@@ -40,6 +40,7 @@ tr:nth-child(even){background-color: #f2f2f2}
 	</div>
 			
 	<input type="hidden" name="id" id="id_edit" value="">
+	<input type="text" name="jenis_edit" id="jenis_edit" value="">
    
   </form>
   <div class="alert alert-success" style="display:none">
@@ -61,34 +62,53 @@ tr:nth-child(even){background-color: #f2f2f2}
 <table id="tableuser" class="table table-bordered">
 	<thead>
 		<th style='background-color: #4CAF50; color: white'>Nama Setting</th>
-		<th style='background-color: #4CAF50; color: white'>Edit</th>	
+		<th style='background-color: #4CAF50; color: white'>Jenis Penjualan</th>
 	</thead>
 
 	<tbody id="tbody">
 
 		<?php
-			$perintah = $db->query("SELECT id,nama FROM setting_laboratorium");
+			$query_setting = $db->query("SELECT id,nama,jenis_lab FROM setting_laboratorium");
 			//menyimpan data sementara yang ada pada $perintah
-			while ($data1 = mysqli_fetch_array($perintah))
+			while ($data_setting = mysqli_fetch_array($query_setting))
 		{
-			//karena setting INT 1 & 0 maka digunakan if agar menampilkan karakter
-			if ($data1['nama'] == 1)
-			{
-				$nama = 'Input Hasil Baru Bayar';
-			}
-			else 
-			{
-				$nama = 'Bayar Dulu Baru Input Hasil';
-			}
+
 			//menampilkan data
-			echo "<tr class='tr-id-".$data1['id']."'>
+			echo "<tr class='tr-id-".$data_setting['id']."'>";
+			//karena setting INT 1 & 0 maka digunakan if agar menampilkan karakter
+			if ($data_setting['nama'] == 1){
+				$nama = 'Input Hasil Baru Bayar';
+
+	        echo"<td class='edit-nama' data-id='".$data_setting['id']."'>
+	        <span id='text-nama-".$data_setting['id']."'>Input Hasil Baru Bayar</span>
+	      	<select style='display:none' id='select-nama-".$data_setting['id']."' value='".$data_setting['nama']."' class='select-nama' data-id='".$data_setting['id']."' data-jenis='". $data_setting['jenis_lab'] ."' autofocus=''>";
+
+	      	echo '<option value="1">Input Hasil Baru Bayar</option>';
+	      	echo '<option value="0">Bayar Dulu Baru Input Hasil</option>';
+
+      
+		     echo  '</select>
+		      </td>';
+			}
+			else{
+				$nama = 'Bayar Dulu Baru Input Hasil';
+
+	        echo"<td class='edit-nama' data-id='".$data_setting['id']."'>
+	        <span id='text-nama-".$data_setting['id']."'>Bayar Dulu Baru Input Hasil</span>
+	      	<select style='display:none' id='select-nama-".$data_setting['id']."' value='".$data_setting['nama']."' class='select-nama' data-id='".$data_setting['id']."' data-jenis='". $data_setting['jenis_lab'] ."' autofocus=''>";
+
+	      	echo '<option value="1">Input Hasil Baru Bayar</option>';
+	      	echo '<option value="0">Bayar Dulu Baru Input Hasil</option>';
+
+      
+		     echo  '</select>
+		      </td>';
 
 
-			<td>". $nama ."</td>";
+			}
 			
-
-			 echo "<td> <button class='btn btn-info btn-edit' data-id='". $data1['id'] ."'  data-nama='". $data1['nama'] ."'> <span class='glyphicon glyphicon-edit'> </span> Edit </button> </td>
-
+			echo " 
+			<td>". $data_setting['jenis_lab'] ."</td>
 			</tr>";
 		}
 	
@@ -99,7 +119,8 @@ mysqli_close($db);
 
 	</tbody>
 
-</table>
+</table> 
+<h6 style="text-align: left ; color: red"><i> Note* Untuk Edit Click 2x Pada Nama Setting !!</i></h6>
   <h6 style="text-align: left ; color: red"><i> Note* Jika nama setting Dihubungkan, maka jika pasien tersebut rujuk laboratorium dan belum di input hasilnya (Tombol Bayar Tidak akan Muncul).</i></h6>
 </div>
 
@@ -111,7 +132,41 @@ $(document).ready(function(){
 </script>
 
 
-<script type="text/javascript">
+ <script type="text/javascript">
+$(document).on('dblclick','.edit-nama',function(e){		
+
+    var id = $(this).attr("data-id");
+
+   	$("#text-nama-"+id+"").hide();
+   	$("#select-nama-"+id+"").show();
+
+});
+
+$(document).on('blur','.select-nama',function(e){	
+   var id = $(this).attr("data-id");
+   var jenis_lab = $(this).attr("data-jenis");
+   var nama = $(this).val();
+
+
+	$.post("proses_setting_laboratorium.php",{id:id,nama:nama,jenis_lab:jenis_lab},function(data){
+	if (nama == 1){
+		nama = 'Input Hasil Baru Bayar';
+	}
+	else{
+	    nama = 'Bayar Dulu Baru Input Hasil';
+	}
+                                  
+    $("#text-nama-"+id+"").show();
+    $("#text-nama-"+id+"").text(nama);
+
+    $("#select-nama-"+id+"").hide();           
+
+	});
+});
+
+</script>
+
+<!--<script type="text/javascript">
 //Script fungsi edit data 
 $(document).on('click','.btn-edit',function(e){		
 	$("#modal_edit").modal('show');
@@ -136,7 +191,7 @@ $(document).on('click','#submit_edit',function(e){
 		$("#tbody").prepend(data);
 	});
 	});
-</script>
+</script>-->
 
 </div> <!--Penutup Container-->
 

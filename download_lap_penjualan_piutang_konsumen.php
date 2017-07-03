@@ -115,6 +115,9 @@ $query0232 = $db->query("SELECT SUM(jumlah_bayar) + SUM(potongan) AS total_bayar
 $kel_bayar = mysqli_fetch_array($query0232);
 $num_rows = mysqli_num_rows($query0232);
 
+$query_pasien = $db_pasien->query("SELECT nama_pelanggan FROM pelanggan WHERE kode_pelanggan = '$data11[kode_pelanggan]' ");
+$data_pasien = mysqli_fetch_array($query_pasien);
+
 
 $sum_dp = $db->query("SELECT SUM(tunai) AS tunai_penjualan FROM penjualan WHERE no_faktur = '$data11[no_faktur]' ");
 $data_sum = mysqli_fetch_array($sum_dp);
@@ -128,7 +131,7 @@ $tot_bayar = $kel_bayar['total_bayar'] + $Dp;
                   echo "<tr>
                   <td>". $data11['no_faktur'] ."</td>
                   <td>". $data11['penjamin'] ."</td>
-                  <td>". $data11['nama_pelanggan'] ."</td>
+                  <td>". $data_pasien['nama_pelanggan'] ."</td>
                   <td>". $data11['tanggal'] ."</td>
                   <td>". $data11['tanggal_jt'] ."</td>
                   <td align='right'>". rp($data11['usia_piutang']) ." Hari</td>

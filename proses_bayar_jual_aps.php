@@ -78,6 +78,7 @@ try {
     $keterangan = stringdoang($_POST['keterangan']);
     $petugas_kasir = stringdoang($_POST['petugas_kasir']);
     $nama_pasien = stringdoang($_POST['nama_pasien']);
+    $aps_periksa = stringdoang($_POST['aps_periksa']);
     $jenis_penjualan = "APS";
     $no_jurnal = no_jurnal();
 
@@ -101,18 +102,31 @@ try {
     $query_hapus_detail = $db->query("DELETE FROM detail_penjualan WHERE no_faktur = '$no_faktur' ");
 
     //INSERT DARI TBS APS KE DETAIL PENJUALAN
-            $insert_detail_penjualan = "INSERT INTO detail_penjualan (no_faktur,no_rm, no_reg,kode_barang,
-            nama_barang, jumlah_barang, harga, subtotal, sisa,tipe_produk,tanggal, jam) SELECT '$no_faktur',
-            '$no_rm',no_reg, kode_jasa, nama_jasa, '1', harga, harga, '1', 'Jasa', tanggal, jam FROM
-            tbs_aps_penjualan WHERE no_reg = '$no_reg' AND no_faktur IS NULL";
+  if($aps_periksa == 'Laboratorium'){
+    //DETAIL INPUT LABORATORIUM
+      $insert_detail_penjualan = "INSERT INTO detail_penjualan (no_faktur,no_rm, no_reg,kode_barang,nama_barang, jumlah_barang, harga, subtotal, sisa,tipe_produk,tanggal, jam) SELECT '$no_faktur','$no_rm',no_reg, kode_jasa, nama_jasa, '1', harga, harga, '1', 'Jasa', tanggal, jam FROM tbs_aps_penjualan WHERE no_reg = '$no_reg' AND no_faktur IS NULL";
 
-              if ($db->query($insert_detail_penjualan) === TRUE) {
-              
-              }
-              else{
-                  echo "Error: " . $insert_detail_penjualan . "<br>" . $db->error;
-              }
+      if ($db->query($insert_detail_penjualan) === TRUE) {
+                
+      }
+      else{
+        echo "Error: " . $insert_detail_penjualan . "<br>" . $db->error;
+      }
+  }
+  else{
+    //DETAIL INPUT KE RADIOLOGI
+      $insert_detail_penjualan = "INSERT INTO detail_penjualan (no_faktur,no_rm, no_reg,kode_barang,nama_barang, jumlah_barang, harga, subtotal, sisa,tipe_produk,tanggal, jam) SELECT '$no_faktur','$no_rm',no_reg, kode_barang, nama_barang, '1', harga, harga, '1', 'Jasa', tanggal, jam FROM tbs_penjualan_radiologi WHERE no_reg = '$no_reg' AND status_periksa = '1' AND no_faktur IS NULL";
+
+      if ($db->query($insert_detail_penjualan) === TRUE) {
+                
+      }
+      else{
+        echo "Error: " . $insert_detail_penjualan . "<br>" . $db->error;
+      }
+
+  }
     //INSERT DARI TBS APS KE DETAIL PENJUALAN
+  
 
 //INSERT DARI TBS PENJUALAN RADIOLOGI KE HASIL PEMERIKSAAN RADIOLOGI
       $insert_hasil_radiologi = "INSERT INTO hasil_pemeriksaan_radiologi (no_faktur, no_reg, kode_barang, nama_barang, jumlah_barang, harga, subtotal, potongan, tax, foto, tipe_barang, tanggal, jam, radiologi, kontras, dokter_pengirim, dokter_pelaksana, dokter_periksa, status_periksa, status_simpan, keterangan) SELECT '$no_faktur', no_reg, kode_barang, nama_barang, jumlah_barang, harga, subtotal, potongan, tax, foto, tipe_barang, tanggal, jam, radiologi, kontras, dokter_pengirim, dokter_pelaksana, dokter_periksa, status_periksa, status_simpan, keterangan FROM tbs_penjualan_radiologi WHERE no_reg = '$no_reg' ";
@@ -233,6 +247,7 @@ try {
       $query_history_tbs_aps = $db->query("INSERT INTO history_tbs_aps_penjualan (no_reg,no_faktur,kode_jasa,
         nama_jasa,harga,subtotal,dokter,analis,tanggal,jam) SELECT no_reg, no_faktur,kode_jasa,nama_jasa,harga, subtotal,dokter,analis,tanggal,jam FROM tbs_aps_penjualan  WHERE no_reg = '$no_reg' ");
 
+      $query_hapus_tbs_jual = $db->query("DELETE FROM tbs_penjualan WHERE no_reg = '$no_reg' ");
 
       $query_hapus_fee_produk = $db->query("DELETE FROM tbs_fee_produk WHERE no_reg = '$no_reg' ");
 

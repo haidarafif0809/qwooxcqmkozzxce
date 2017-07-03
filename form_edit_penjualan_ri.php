@@ -69,7 +69,8 @@ $user = $_SESSION['nama'];
 
     $dp = $ambil_tanggal['tunai'];
     $nilai_kredit = $ambil_tanggal['nilai_kredit'];
-  
+    $tanggal_jt = $ambil_tanggal['tanggal_jt'];
+
     $tax = $data_penj['tax']; 
     $potongan_p = $data_penj['potongan']; 
     $biaya_adm = $data_penj['biaya_admin']; 
@@ -1116,7 +1117,7 @@ Laboratorium  </button>
            <div class="col-xs-6">
              
            <label> Tanggal JT</label>
-           <input type="text" name="tanggal_jt" id="tanggal_jt"  value="" style="height:15px;font-size:15px" placeholder="Tanggal JT" class="form-control" value="<?php echo $ambil_tanggal['tanggal_jt']; ?>">
+           <input type="text" name="tanggal_jt" id="tanggal_jt" style="height:15px;font-size:15px" placeholder="Tanggal JT" class="form-control" value="<?php echo $tanggal_jt ?>">
            </div>
 
         <div class="col-xs-6">
@@ -1169,7 +1170,7 @@ Laboratorium  </button>
             <div class="col-xs-6">
               
            <label style="font-size:15px">  <b> Pembayaran (F7)</b> </label><br>
-           <b><input type="text" name="pembayaran" id="pembayaran_penjualan" style="height: 20px; width:90%; font-size:20px;" autocomplete="off" class="form-control"   style="font-size: 20px"  onkeydown="return numbersonly(this, event);" onkeyup="javascript:tandaPemisahTitik(this);" value="0"></b>
+           <b><input type="text" name="pembayaran" id="pembayaran_penjualan" style="height: 20px; width:90%; font-size:20px;" autocomplete="off" class="form-control"   style="font-size: 20px"  onkeydown="return numbersonly(this, event);" onkeyup="javascript:tandaPemisahTitik(this);" value="<?php echo $dp ?>"></b>
 
             </div>
       </div>
@@ -3780,6 +3781,28 @@ $.post('cek_kode_barang_edit_tbs_penjualan.php',{kode_barang:kode_barang,no_fakt
       var total = (parseInt(data,10) + parseInt(total_operasi,10)) - parseInt(pot_fakt_rp,10) + parseInt(biaya_admin,10) + parseInt(total_lab,10);
                   $("#total1").val(tandaPemisahTitik(total))
 
+                  //Start Ducoment Ready Perhitungan Kembalian , kredit berdasarkan pembayaran Awal
+                  var pembayaran = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#pembayaran_penjualan").val()))));
+                  if(pembayaran == ''){
+                    pembayaran = 0;
+                  }
+                  var sisa = pembayaran - total;
+                  var sisa_kredit = total - pembayaran; 
+                      
+                  if (sisa < 0 ){
+                    $("#kredit").val( tandaPemisahTitik(sisa_kredit));
+                    $("#sisa_pembayaran_penjualan").val('0');
+                    $("#tanggal_jt").attr("disabled", false);
+                      
+                  }
+                  else{
+                    $("#sisa_pembayaran_penjualan").val(tandaPemisahTitik(sisa));
+                    $("#kredit").val('0');
+                    $("#tanggal_jt").attr("disabled", true);
+                      
+                  }
+                  //Akhir Ducoment Ready Perhitungan Kembalian , kredit berdasarkan pembayaran Awal
+
             }
             else if(pot_fakt_rp == 0)
             {
@@ -3794,14 +3817,60 @@ $.post('cek_kode_barang_edit_tbs_penjualan.php',{kode_barang:kode_barang,no_fakt
 
       var total = (parseInt(bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah(data)))),10) + parseInt(total_operasi,10)) - parseInt(pot_fakt_rp,10) + parseInt(biaya_admin,10) + parseInt(total_lab,10);
                   $("#total1").val(tandaPemisahTitik(total))
+
+                  //Start Ducoment Ready Perhitungan Kembalian , kredit berdasarkan pembayaran Awal
+                  var pembayaran = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#pembayaran_penjualan").val()))));
+                  if(pembayaran == ''){
+                    pembayaran = 0;
+                  }
+                  var sisa = pembayaran - total;
+                  var sisa_kredit = total - pembayaran; 
+                      
+                  if (sisa < 0 ){
+                    $("#kredit").val( tandaPemisahTitik(sisa_kredit));
+                    $("#sisa_pembayaran_penjualan").val('0');
+                    $("#tanggal_jt").attr("disabled", false);
+                      
+                  }
+                  else{
+                    $("#sisa_pembayaran_penjualan").val(tandaPemisahTitik(sisa));
+                    $("#kredit").val('0');
+                    $("#tanggal_jt").attr("disabled", true);
+                      
+                  }
+                  //Akhir Ducoment Ready Perhitungan Kembalian , kredit berdasarkan pembayaran Awal
             }
             else{
               var akhir = (parseInt(sum,10) - parseInt(pot_fakt_rp,10)) + parseInt(biaya_admin,10) + parseInt(total_lab,10);
-                  $("#total1").val(tandaPemisahTitik(akhir))
+                  $("#total1").val(tandaPemisahTitik(akhir));
+
+                  //Start Ducoment Ready Perhitungan Kembalian , kredit berdasarkan pembayaran Awal
+                  var pembayaran = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#pembayaran_penjualan").val()))));
+                  if(pembayaran == ''){
+                    pembayaran = 0;
+                  }
+                  var sisa = pembayaran - akhir;
+                  var sisa_kredit = akhir - pembayaran; 
+                      
+                  if (sisa < 0 ){
+                    $("#kredit").val( tandaPemisahTitik(sisa_kredit));
+                    $("#sisa_pembayaran_penjualan").val('0');
+                    $("#tanggal_jt").attr("disabled", false);
+                      
+                  }
+                  else{
+                    $("#sisa_pembayaran_penjualan").val(tandaPemisahTitik(sisa));
+                    $("#kredit").val('0');
+                    $("#tanggal_jt").attr("disabled", true);
+                      
+                  }
+                  //Akhir Ducoment Ready Perhitungan Kembalian , kredit berdasarkan pembayaran Awal
+
             }
       
 
                 });
+                 
         }
 
       });
@@ -4687,7 +4756,29 @@ $(document).ready(function(){
               
 
       var total = (parseInt(data,10) + parseInt(total_operasi,10)) - parseInt(pot_fakt_rp,10) + parseInt(biaya_admin,10);
-                  $("#total1").val(tandaPemisahTitik(total))
+                  $("#total1").val(tandaPemisahTitik(total));
+
+                //Start Ducoment Ready Perhitungan Kembalian , kredit berdasarkan pembayaran Awal
+                  var pembayaran = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#pembayaran_penjualan").val()))));
+                  if(pembayaran == ''){
+                    pembayaran = 0;
+                  }
+                  var sisa = pembayaran - total;
+                  var sisa_kredit = total - pembayaran; 
+                      
+                  if (sisa < 0 ){
+                    $("#kredit").val( tandaPemisahTitik(sisa_kredit));
+                    $("#sisa_pembayaran_penjualan").val('0');
+                    $("#tanggal_jt").attr("disabled", false);
+                      
+                  }
+                  else{
+                    $("#sisa_pembayaran_penjualan").val(tandaPemisahTitik(sisa));
+                    $("#kredit").val('0');
+                    $("#tanggal_jt").attr("disabled", true);
+                      
+                  }
+                  //Akhir Ducoment Ready Perhitungan Kembalian , kredit berdasarkan pembayaran Awal
 
             }
             else if(pot_fakt_rp == 0)
@@ -4702,11 +4793,58 @@ $(document).ready(function(){
 
 
       var total = (parseInt(bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah(data)))),10) + parseInt(total_operasi,10)) - parseInt(pot_fakt_rp,10) + parseInt(biaya_admin,10);
-                  $("#total1").val(tandaPemisahTitik(total))
+                  $("#total1").val(tandaPemisahTitik(total));
+
+
+              //Start Ducoment Ready Perhitungan Kembalian , kredit berdasarkan pembayaran Awal
+              var pembayaran = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#pembayaran_penjualan").val()))));
+              if(pembayaran == ''){
+                pembayaran = 0;
+              }
+              var sisa = pembayaran - total;
+              var sisa_kredit = total - pembayaran; 
+                  
+              if (sisa < 0 ){
+                $("#kredit").val( tandaPemisahTitik(sisa_kredit));
+                $("#sisa_pembayaran_penjualan").val('0');
+                $("#tanggal_jt").attr("disabled", false);
+                  
+              }
+              else{
+                $("#sisa_pembayaran_penjualan").val(tandaPemisahTitik(sisa));
+                $("#kredit").val('0');
+                $("#tanggal_jt").attr("disabled", true);
+                  
+              }
+              //Akhir Ducoment Ready Perhitungan Kembalian , kredit berdasarkan pembayaran Awal
+
             }
             else{
               var akhir = (parseInt(sum,10) - parseInt(pot_fakt_rp,10)) + parseInt(biaya_admin,10);
-                  $("#total1").val(tandaPemisahTitik(akhir))
+                  $("#total1").val(tandaPemisahTitik(akhir));
+
+
+              //Start Ducoment Ready Perhitungan Kembalian , kredit berdasarkan pembayaran Awal
+              var pembayaran = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#pembayaran_penjualan").val()))));
+              if(pembayaran == ''){
+                pembayaran = 0;
+              }
+              var sisa = pembayaran - akhir;
+              var sisa_kredit = akhir - pembayaran; 
+                  
+              if (sisa < 0 ){
+                $("#kredit").val( tandaPemisahTitik(sisa_kredit));
+                $("#sisa_pembayaran_penjualan").val('0');
+                $("#tanggal_jt").attr("disabled", false);
+                  
+              }
+              else{
+                $("#sisa_pembayaran_penjualan").val(tandaPemisahTitik(sisa));
+                $("#kredit").val('0');
+                $("#tanggal_jt").attr("disabled", true);
+                  
+              }
+              //Akhir Ducoment Ready Perhitungan Kembalian , kredit berdasarkan pembayaran Awal
             }
       
 
@@ -4836,8 +4974,8 @@ $(document).on('dblclick','.edit-waktu-or',function(){
 
 
 </script>
-
 <!-- END EDIT TANGGAL TBS LABORATORIUM -->
+
 
 <!-- memasukan file footer.php -->
 <?php include 'footer.php'; ?>

@@ -574,20 +574,9 @@ $total_modal = $total_modal + $datadaftar_akun['total'];
 
 }
 
-if ($total_laba_tahun_berjalan > 0) {
+if ($total_laba_tahun_berjalan != 0) {
 
 
-if ($total_laba_tahun_berjalan < 0) {
-  echo "
- <table>
-  <tbody>
-    <tr><td width='100%'><h4 style='padding-left:50px'>" .$data_sett['laba_tahun_berjalan'] ." - >" .$data_sett['laba_tahun_berjalan'] ."</h4></td> <td> <h4> (".koma($total_laba_tahun_berjalan,2).") </h4>  </td></tr>
-  </tbody>
-</table>
-";
-
-}
-else{
   echo "
  <table>
   <tbody>
@@ -596,7 +585,7 @@ else{
 </table>
 ";
 
-}
+
 
 }
 

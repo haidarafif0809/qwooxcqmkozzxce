@@ -52,7 +52,7 @@ $jenis_kelamin = $out_gander['jenis_kelamin'];
          <select type="text" class="form-control chosen" id="analis" autocomplete="off">        
 
          <?php 
-         $query09 = $db->query("SELECT nama,id FROM user WHERE tipe = '2' ");
+         $query09 = $db->query("SELECT nama,id FROM user WHERE tipe = '6' ");
          while ( $data09 = mysqli_fetch_array($query09)) {
 
           echo "<option value='".$data09['id'] ."'>".$data09['nama'] ."</option>";
@@ -92,6 +92,8 @@ $jenis_kelamin = $out_gander['jenis_kelamin'];
 </div>
 </span>
 </div><!--div close row-->
+<button type="submit" id="selesai" class="btn btn-default" style="font-size:15px;">
+<i class="fa fa-send"></i> Selesai</button>
 
 </form>
 
@@ -226,7 +228,6 @@ else
 <?php 
 
  ?>
-<button type="submit" id="selesai" class="btn btn-success" style="font-size:15px;">Selesai</button>
 
 <a href='cetak_hasil_lab_inap.php' id="cetak" style="display: none;" class="btn btn-warning" target="blank"><i class="fa fa-print"></i> Cetak </a>
 

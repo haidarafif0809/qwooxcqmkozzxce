@@ -6,7 +6,7 @@ include 'db.php';
 $no_faktur = $_POST['no_faktur'];
 $no_reg = $_POST['no_reg'];
 
-$select = $db->query("SELECT no_faktur,no_rm,no_reg,nama_pasien,petugas_analis,dokter,tanggal FROM hasil_lab WHERE no_faktur = '$no_faktur' AND status = 'Selesai'");
+$select = $db->query("SELECT no_faktur,no_rm,no_reg,nama_pasien,petugas_analis,dokter,tanggal FROM hasil_lab WHERE no_faktur = '$no_faktur' AND status = '1'");
 $out = mysqli_fetch_array($select);
 
 $select_bio = $db->query("SELECT jenis_kelamin,umur_pasien,alamat_pasien FROM registrasi WHERE no_rm = '$out[no_rm]' AND no_reg = '$out[no_reg]'");
@@ -32,7 +32,7 @@ $jenis_kelamin = $show_bio['jenis_kelamin'];
       <tbody>
 <?php
 
-$selectui = $db->query("SELECT id_sub_header FROM hasil_lab WHERE no_faktur = '$no_faktur' AND status = 'Selesai' AND (id_sub_header != 0 OR id_sub_header != '') GROUP BY id_sub_header");
+$selectui = $db->query("SELECT id_sub_header FROM hasil_lab WHERE no_faktur = '$no_faktur' AND status = '1' AND (id_sub_header != 0 OR id_sub_header != '') GROUP BY id_sub_header");
 while($trace = mysqli_fetch_array($selectui)){
 
   $select = $db->query("SELECT id,nama_pemeriksaan FROM setup_hasil WHERE id = '$trace[id_sub_header]' AND kategori_index = 'Header'");
@@ -47,7 +47,7 @@ while($trace = mysqli_fetch_array($selectui)){
   $name_sub_header = $get['nama'];
                 //menampilkan data
     
-  $show = $db->query("SELECT * FROM hasil_lab WHERE no_faktur = '$no_faktur' AND status = 'Selesai' AND (id_sub_header != 0 OR id_sub_header != '')");
+  $show = $db->query("SELECT * FROM hasil_lab WHERE no_faktur = '$no_faktur' AND status = '1' AND (id_sub_header != 0 OR id_sub_header != '')");
   $drop_show = mysqli_fetch_array($show);
 
   if($face_drop >= 1){
@@ -68,7 +68,7 @@ while($trace = mysqli_fetch_array($selectui)){
 
     echo " </tr>";
 
-    $query_hasil_lab = $db->query("SELECT id, nama_pemeriksaan, hasil_pemeriksaan, model_hitung, nilai_normal_lk2, nilai_normal_lk, nilai_normal_pr2, nilai_normal_pr, satuan_nilai_normal, status_pasien FROM hasil_lab WHERE no_faktur = '$no_faktur' AND status = 'Selesai' AND id_sub_header = '$id_get' AND (id_sub_header != 0 OR id_sub_header != '')");
+    $query_hasil_lab = $db->query("SELECT id, nama_pemeriksaan, hasil_pemeriksaan, model_hitung, nilai_normal_lk2, nilai_normal_lk, nilai_normal_pr2, nilai_normal_pr, satuan_nilai_normal, status_pasien FROM hasil_lab WHERE no_faktur = '$no_faktur' AND status = '1' AND id_sub_header = '$id_get' AND (id_sub_header != 0 OR id_sub_header != '')");
             //menyimpan data sementara yang ada pada $perintah
       while ($data_hasil_lab = mysqli_fetch_array($query_hasil_lab)){
 
@@ -163,7 +163,7 @@ while($trace = mysqli_fetch_array($selectui)){
 
 
 //start untuk yang sendirian / yang tidak ber HEADER/INDUX
-$query_hasil_lab_tunggal = $db->query("SELECT id, nama_pemeriksaan, hasil_pemeriksaan, model_hitung, nilai_normal_lk2, nilai_normal_lk, nilai_normal_pr2, nilai_normal_pr, satuan_nilai_normal, status_pasien FROM hasil_lab WHERE no_faktur = '$no_faktur' AND status = 'Selesai' AND (id_sub_header = 0 OR id_sub_header IS NULL)");
+$query_hasil_lab_tunggal = $db->query("SELECT id, nama_pemeriksaan, hasil_pemeriksaan, model_hitung, nilai_normal_lk2, nilai_normal_lk, nilai_normal_pr2, nilai_normal_pr, satuan_nilai_normal, status_pasien FROM hasil_lab WHERE no_faktur = '$no_faktur' AND status = '1' AND (id_sub_header = 0 OR id_sub_header IS NULL)");
             //menyimpan data sementara yang ada pada $perintah
   
 while ($data_hasil_lab_tunggal = mysqli_fetch_array($query_hasil_lab_tunggal)){

@@ -1,4 +1,5 @@
-<html lang="in" >
+<!doctype html>
+<html>
 <head>
 
 	<title>
@@ -39,6 +40,19 @@
 		margin:10px;
 		padding: 15px
 	}
+	.loader {
+    border: 16px solid #f3f3f3; /* Light grey */
+    border-top: 16px solid #3498db; /* Blue */
+    border-radius: 50%;
+    width: 90px;
+    height: 90px;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
 </style>
 
 		<meta charset="utf-8">
@@ -96,6 +110,7 @@
 		<script src='jquery.elevatezoom.js'></script>
 		<!-- untuk operasi indexeddb -->
 		 <script src="https://unpkg.com/dexie@latest/dist/dexie.js"></script>
+		   <script src="jquery.printPage.js" type="text/javascript"></script>
 
                
 </head>

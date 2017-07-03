@@ -101,7 +101,7 @@
         $user_buat = $_SESSION['user_name'];
         $cara_bayar = stringdoang($_POST['cara_bayar']);
 
-    $select_kode_pelanggan = $db->query("SELECT nama_pelanggan FROM pelanggan WHERE kode_pelanggan = '$kode_pelanggan'");
+    $select_kode_pelanggan = $db_pasien->query("SELECT nama_pelanggan FROM pelanggan WHERE kode_pelanggan = '$kode_pelanggan'");
     $ambil_kode_pelanggan = mysqli_fetch_array($select_kode_pelanggan);
 
     $select_setting_akun = $db->query("SELECT pembayaran_kredit, potongan_piutang FROM setting_akun");

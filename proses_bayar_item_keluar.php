@@ -95,10 +95,11 @@ $total = $ambil_sum['total'];
         $stmt->execute();
 
 
+//Permasalahan untuk Jurnal IK selalu double (solusi dari riko)
+$delete_jurnal = $db->query("DELETE  FROM jurnal_trans WHERE jenis_transaksi = 'Item Keluar' AND no_faktur = '$no_faktur'");
 
 $select_setting_akun = $db->query("SELECT persediaan,item_keluar FROM setting_akun");
 $ambil_setting = mysqli_fetch_array($select_setting_akun);
-
 
   //PERSEDIAAN    
         $insert_jurnal = $db->query("INSERT INTO jurnal_trans (nomor_jurnal,waktu_jurnal,keterangan_jurnal,kode_akun_jurnal,debit,kredit,jenis_transaksi,no_faktur,approved,user_buat) VALUES ('".no_jurnal()."', '$tanggal_sekarang $jam_sekarang', 'Persediaan -', '$ambil_setting[persediaan]', '0', '$total', 'Item Keluar', '$no_faktur','1', '$user')");

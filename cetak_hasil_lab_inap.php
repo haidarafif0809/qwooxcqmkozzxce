@@ -7,7 +7,7 @@ include 'db.php';
 $no_reg = stringdoang($_GET['no_reg']);
 $no_periksa = stringdoang($_GET['no_periksa']);
 
-$select = $db->query("SELECT no_rm,no_reg,nama_pasien,petugas_analis,dokter FROM hasil_lab WHERE no_reg = '$no_reg' AND status = 'Selesai' AND lab_ke_berapa = '$no_periksa' AND status_lab IS NULL");
+$select = $db->query("SELECT no_rm,no_reg,nama_pasien,petugas_analis,dokter FROM hasil_lab WHERE no_reg = '$no_reg' AND status = '1' AND lab_ke_berapa = '$no_periksa' AND status_lab IS NULL");
 $out = mysqli_fetch_array($select);
 
 $query1 = $db->query("SELECT foto,nama_perusahaan,alamat_perusahaan,no_telp FROM perusahaan ");
@@ -110,7 +110,7 @@ $dokter = $out_dokter['nama'];
         <tbody>
        <?php
 
- $show = $db->query("SELECT id_sub_header FROM hasil_lab WHERE no_reg = '$no_reg' AND status = 'Selesai' AND status_lab IS NULL AND id_sub_header != '0' GROUP BY id_sub_header ");
+ $show = $db->query("SELECT id_sub_header FROM hasil_lab WHERE no_reg = '$no_reg' AND status = '1' AND status_lab IS NULL AND id_sub_header != '0' GROUP BY id_sub_header ");
   while($drop_show = mysqli_fetch_array($show))
 {
 
@@ -151,7 +151,7 @@ if($face_drop >= 1)
 
     </tr>";
 
-    $show_one = $db->query("SELECT nama_pemeriksaan,hasil_pemeriksaan,nilai_normal_lk,satuan_nilai_normal,nilai_normal_pr,model_hitung,status_pasien FROM hasil_lab WHERE no_reg = '$no_reg' AND status = 'Selesai' AND lab_ke_berapa = '$no_periksa' AND status_lab IS NULL AND id_sub_header = '$id_get' ");
+    $show_one = $db->query("SELECT nama_pemeriksaan,hasil_pemeriksaan,nilai_normal_lk,satuan_nilai_normal,nilai_normal_pr,model_hitung,status_pasien FROM hasil_lab WHERE no_reg = '$no_reg' AND status = '1' AND lab_ke_berapa = '$no_periksa' AND status_lab IS NULL AND id_sub_header = '$id_get' ");
             //menyimpan data sementara yang ada pada $perintah
   
         while ($take = mysqli_fetch_array($show_one))
@@ -252,7 +252,7 @@ if($face_drop >= 1)
 
 
 //start untuk yang sendirian / yang tidak ber HEADER/INDUX
-       $show_two = $db->query("SELECT nama_pemeriksaan,hasil_pemeriksaan,nilai_normal_lk,satuan_nilai_normal,nilai_normal_pr,model_hitung,status_pasien FROM hasil_lab WHERE no_reg = '$no_reg' AND status = 'Selesai' AND lab_ke_berapa = '$no_periksa' AND status_lab IS NULL AND id_sub_header = 0");
+       $show_two = $db->query("SELECT nama_pemeriksaan,hasil_pemeriksaan,nilai_normal_lk,satuan_nilai_normal,nilai_normal_pr,model_hitung,status_pasien FROM hasil_lab WHERE no_reg = '$no_reg' AND status = '1' AND lab_ke_berapa = '$no_periksa' AND status_lab IS NULL AND id_sub_header = 0");
             //menyimpan data sementara yang ada pada $perintah
   
           while ($drop_two = mysqli_fetch_array($show_two))

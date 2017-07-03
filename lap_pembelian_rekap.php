@@ -80,7 +80,7 @@ tr:nth-child(even){background-color: #f2f2f2}
   </table>
 
   <span id="cetak" style="display: none;">
- <a href="cetak_lap_pembelian_rekap.php" id="cetak_lap"  class="btn btn-success"><i class="fa fa-print"> </i> Cetak Penjualan </a>
+ <a href="cetak_lap_pembelian_rekap.php" id="cetak_lap"  class="btn btn-success"><i class="fa fa-print"> </i> Cetak Pembelian </a>
 </span>
 </div> <!--/ container-->
 
