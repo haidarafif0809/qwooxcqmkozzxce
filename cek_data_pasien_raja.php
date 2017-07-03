@@ -15,6 +15,8 @@ if ($jumlah > 0){
 }
 else {
 
+  echo "0";
+
 }
 
         //Untuk Memutuskan Koneksi Ke Database
