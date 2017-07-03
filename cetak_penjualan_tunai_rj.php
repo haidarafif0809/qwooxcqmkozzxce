@@ -1,10 +1,10 @@
 <?php session_start();
 
 
-include 'header.php';
+include 'header_cetak.php';
 include 'sanitasi.php';
 include 'db.php';
-include 'cache.class.php';
+
 
 
 $no_reg = stringdoang($_GET['no_reg']);
@@ -17,26 +17,15 @@ $no_rm = stringdoang($_GET['no_rm']);
 $nama_pasien = stringdoang($_GET['nama_pasien']);
 $tanggal = date('Y-m-d');
 
-$query1 = $db->query("SELECT nama_perusahaan,alamat_perusahaan,no_telp FROM perusahaan ");
-$data1 = mysqli_fetch_array($query1);  
-
 $select_operasi = $db->query("SELECT * FROM hasil_operasi WHERE no_reg = '$no_reg'");
 
-$query4 = $db->query("SELECT status_print FROM setting_printer WHERE nama_print = 'Printer Struk' OR nama_print = 'Printer Besar'");
-$datas = mysqli_fetch_array($query4);
-$status_print = $datas['status_print'];
-
-
-
-
-
-
-    
+$status_print = $data_setting_printer['status_print'];
+  
  ?>
 
 
-  <?php echo $data1['nama_perusahaan']; ?><br>
-  <?php echo $data1['alamat_perusahaan']; ?><br><br>
+  <?php echo $data_perusahaan['nama_perusahaan']; ?><br>
+  <?php echo $data_perusahaan['alamat_perusahaan']; ?><br><br>
 
 ===================<br>
   <table>
@@ -130,7 +119,7 @@ mysqli_close($db);
     ===================<br><br>
     Terima Kasih<br>
     Semoga Lekas Sembuh...<br>
-    Telp. <?php echo $data1['no_telp']; ?><br>
+    Telp. <?php echo $data_perusahaan['no_telp']; ?><br>
 
 
  <script>
