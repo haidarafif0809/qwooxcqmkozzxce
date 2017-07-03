@@ -558,7 +558,7 @@ var keterangan = $("#keterangan").val();
                 else{
 
                       $.ajax({
-                      url: "proses_bayar_transfer_stok",
+                      url: "proses_bayar_transfer_stok.php",
                       data: {total : total,keterangan : keterangan
                       // d.custom = $('#myInput').val();
                       // etc

@@ -612,7 +612,7 @@ var no_faktur = $("#no_faktur").val();
                 else{
                   
                      $.ajax({
-                      url: "proses_bayar_edit_transfer_stok",
+                      url: "proses_bayar_edit_transfer_stok.php",
                       data: {no_faktur:no_faktur,total:total,keterangan:keterangan
                       // d.custom = $('#myInput').val();
                       // etc
