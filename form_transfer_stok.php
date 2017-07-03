@@ -504,8 +504,12 @@ alert("Tujuan Transfer Stok Harus Diisi");
 else
   {
 
-
-      $("#total_transfer").val(tandaPemisahTitik(subtotal));
+         $("#kode_barang").val('').trigger("chosen:updated");
+         $("#kode_barang").trigger("chosen:open");
+         $("#barang_tujuan").val('').trigger("chosen:updated");
+         $("#jumlah_barang").val('');
+         $("#span_tbs").show()
+         $("#total_transfer").val(tandaPemisahTitik(subtotal));
 
       $.post("proses_tbs_transfer_stok.php",{barang_tujuan:barang_tujuan,nama_barang_tujuan:nama_barang_tujuan,
         kode_barang:kode_barang,jumlah_barang:jumlah_barang,satuan:satuan,nama_barang:nama_barang,harga:harga},function(info) {
@@ -515,11 +519,8 @@ else
          
          var tabel_tbs_transfer_stok = $('#tabel_tbs_transfer_stok').DataTable();
          tabel_tbs_transfer_stok.draw();
-         $("#kode_barang").val('').trigger("chosen:updated");
-         $("#kode_barang").trigger("chosen:open");
-         $("#barang_tujuan").val('').trigger("chosen:updated");
-         $("#jumlah_barang").val('');
-         $("#span_tbs").show()
+
+
 
 
 }
@@ -720,7 +721,12 @@ $("#total_transfer").val(tandaPemisahTitik(data));
               var pesan_alert = confirm("Apakah Anda Yakin Ingin Menghapus '"+nama_barang+""+ "' ?");
               if (pesan_alert == true) {
               
-              $("#total_transfer").val(tandaPemisahTitik(total_akhir));
+               $("#total_transfer").val(tandaPemisahTitik(total_akhir));
+               $("#kode_barang").val('').trigger("chosen:updated");
+               $("#kode_barang").trigger("chosen:open");
+               $("#barang_tujuan").val('').trigger("chosen:updated");
+
+
               $.post("hapus_tbs_transfer_stok.php",{id:id},function(data){
               
               });
@@ -728,11 +734,8 @@ $("#total_transfer").val(tandaPemisahTitik(data));
          
                var tabel_tbs_transfer_stok = $('#tabel_tbs_transfer_stok').DataTable();
                tabel_tbs_transfer_stok.draw();
-               $("#kode_barang").val('').trigger("chosen:updated");
-               $("#kode_barang").trigger("chosen:open");
-               $("#barang_tujuan").val('').trigger("chosen:updated");
         
-        $("#span_tbs").show()
+              $("#span_tbs").show()
 // END DATATABLE AJAX END DATATABLE AJAX END DATATABLE AJAX END DATATABLE AJAX END DATATABLE AJAX END DATATABLE AJAX
 }
 else{

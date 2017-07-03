@@ -542,21 +542,22 @@ else
   {
 
 
-      $("#total_transfer").val(tandaPemisahTitik(subtotal));
+         $("#total_transfer").val(tandaPemisahTitik(subtotal));
+         $("#kode_barang").val('').trigger("chosen:updated");
+         $("#kode_barang").trigger("chosen:open");
+         $("#barang_tujuan").val('').trigger("chosen:updated");
+         $("#jumlah_barang").val('');
+         
 
       $.post("proses_tbs_transfer_stok.php",{no_faktur:no_faktur,barang_tujuan:barang_tujuan,nama_barang_tujuan:nama_barang_tujuan,
         kode_barang:kode_barang,jumlah_barang:jumlah_barang,satuan:satuan,nama_barang:nama_barang,harga:harga},function(info) {
 
 
       });
-         
+
          var tabel_tbs_transfer_stok = $('#tabel_tbs_transfer_stok').DataTable();
          tabel_tbs_transfer_stok.draw();
-         $("#kode_barang").val('').trigger("chosen:updated");
-         $("#kode_barang").trigger("chosen:open");
-         $("#barang_tujuan").val('').trigger("chosen:updated");
-         $("#jumlah_barang").val('');
-         $("#span_tbs").show()
+         $("#span_tbs").show();
 
 
 }
@@ -711,6 +712,10 @@ return false;
                      if (pesan_alert == true) {
                      
                      $("#total_transfer").val(tandaPemisahTitik(total_akhir));
+                     $("#kode_barang").val('').trigger("chosen:updated");
+                     $("#kode_barang").trigger("chosen:open");
+                     $("#barang_tujuan").val('').trigger("chosen:updated");
+                     
                      $.post("hapus_tbs_transfer_stok.php",{id:id},function(data){
                      
                      });
@@ -718,10 +723,7 @@ return false;
                      
                      var tabel_tbs_transfer_stok = $('#tabel_tbs_transfer_stok').DataTable();
                      tabel_tbs_transfer_stok.draw();
-                     $("#kode_barang").val('').trigger("chosen:updated");
-                     $("#kode_barang").trigger("chosen:open");
-                     $("#barang_tujuan").val('').trigger("chosen:updated");
-                     
+                    
                      $("#span_tbs").show()
                      }
                 };
