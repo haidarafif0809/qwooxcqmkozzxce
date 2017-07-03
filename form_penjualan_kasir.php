@@ -6,10 +6,8 @@ include 'db.php';
 include 'sanitasi.php';
 
 
-$query_printer = $db->query("SELECT status_print FROM setting_printer WHERE nama_print = 'Printer Struk' OR nama_print = 'Printer Besar'");
-$data_printer = mysqli_fetch_array($query_printer);
 
-$status_print = $data_printer['status_print'];
+$status_print = $data_setting_printer['status_print'];
 
 
 // menampilkan seluruh data yang ada pada tabel penjualan yang terdapt pada DB

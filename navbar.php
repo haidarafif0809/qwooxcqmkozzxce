@@ -683,17 +683,13 @@ if ($lihat['radiologi_lihat'] > 0) {
 
           <?php 
 
-      include_once 'db.php';
-      
-      $perusahaan = $db->query("SELECT * FROM perusahaan ");
-      $ambil_perusahaan = mysqli_fetch_array($perusahaan);
 
 
            ?>
 
 
             <div class="breadcrumb-dn">
-                <p style="font-size: 100%"><?php echo $ambil_perusahaan['nama_perusahaan']; ?></p>
+                <p style="font-size: 100%"><?php echo $data_perusahaan['nama_perusahaan']; ?></p>
             </div>
 
             <ul class="nav navbar-nav pull-right">
