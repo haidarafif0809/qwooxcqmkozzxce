@@ -19,6 +19,25 @@
     	
     }	
 
+    $cache_printer = new Cache();
+
+
+	$cache_printer->setCache('setting_printer');
+
+	if (!$cache_printer->isCached('data')) {
+
+		$query_printer = $db->query("SELECT nama_print,status_print FROM setting_printer ");
+		$data_printer = mysqli_fetch_array($query_printer);
+
+
+		  $cache_printer->store('data',array('nama_print' => $data_printer['nama_print'],'status_print' => $data_printer['status_print']));
+
+		
+	}
+  
+         
+ 	$data_setting_printer = $cache_printer->retrieve('data');
+
 	$data_perusahaan = $c->retrieve('data');
 	echo $data_perusahaan['nama_perusahaan'];
 
