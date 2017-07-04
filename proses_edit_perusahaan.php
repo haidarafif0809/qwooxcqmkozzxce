@@ -2,12 +2,18 @@
 	// memasukan file db.php
     include 'sanitasi.php';
     include 'db.php';
+    include_once 'cache.class.php';
     // mengrim data dengan menggunakan metode POST
     $id = angkadoang($_POST['id']);
 
+    $c = new Cache();
+
+    $c->setCache('data_perusahaan');
+
+    if (isset($_FILES['foto']) && count($_FILES['foto']['error']) == 1 && $_FILES['foto']['error'][0] > 0) {
 
 
-       $query =$db->prepare("UPDATE perusahaan SET nama_perusahaan = ?, alamat_perusahaan = ?, singkatan_perusahaan = ?, foto= ?, no_telp = ?, no_fax = ? WHERE id = ?");
+       $query = $db->prepare("UPDATE perusahaan SET nama_perusahaan = ?, alamat_perusahaan = ?, singkatan_perusahaan = ?, foto= ?, no_telp = ?, no_fax = ? WHERE id = ?");
 
        $query->bind_param("ssssssi",
         $nama_perusahaan, $alamat_perusahaan, $singkatan_perusahaan, $foto, $nomor, $no_fax, $id);
@@ -24,15 +30,15 @@
 
         $query->execute();
 
-if (!$query) 
-{
- die('Query Error : '.$db->errno.
- ' - '.$db->error);
-}
-else 
-{
-   
-}
+     $c->store('data',array('nama_perusahaan' => $_POST['nama_perusahaan'],'alamat_perusahaan' => $_POST['alamat_perusahaan'],'singkatan_perusahaan' => $_POST['singkatan_perusahaan'],'foto' => $_FILES['foto']['name'],'no_telp' => $_POST['no_telp']));
+         
+
+
+        if (!$query) 
+        {
+         die('Query Error : '.$db->errno.
+         ' - '.$db->error);
+        }
 
 
         //logika=> jika $perintah benar maka akan menuju ke barang.php, jika salah maka muncul kalimat error            
@@ -111,6 +117,50 @@ else
             echo "Sorry, there was an error uploading your file.";
             }
     }
+        
+
+    }
+    // end if isset foto
+    else {
+
+               $query =$db->prepare("UPDATE perusahaan SET nama_perusahaan = ?, alamat_perusahaan = ?, singkatan_perusahaan = ?,no_telp = ?, no_fax = ? WHERE id = ?");
+
+       $query->bind_param("sssssi",
+        $nama_perusahaan, $alamat_perusahaan, $singkatan_perusahaan,  $nomor, $no_fax, $id);
+
+           
+         
+           $nama_perusahaan = stringdoang($_POST['nama_perusahaan']);
+           $alamat_perusahaan = stringdoang($_POST['alamat_perusahaan']);
+           $singkatan_perusahaan = stringdoang($_POST['singkatan_perusahaan']);
+      
+           $nomor = stringdoang($_POST['no_telp']);
+           $no_fax = stringdoang($_POST['no_fax']);
+           $id = angkadoang($_POST['id']);
+
+        $query->execute();
+
+     $c->store('data',array('nama_perusahaan' => $_POST['nama_perusahaan'],'alamat_perusahaan' => $_POST['alamat_perusahaan'],'singkatan_perusahaan' => $_POST['singkatan_perusahaan'],'foto' => $_POST['nama_foto_lama'],'no_telp' => $_POST['no_telp']));
+         
+
+
+        if (!$query) 
+        {
+         die('Query Error : '.$db->errno.
+         ' - '.$db->error);
+        }
+        
+        else {
+            echo '<META HTTP-EQUIV="Refresh" Content="0; URL=setting_perusahaan.php">';
+        }
+
+               
+
+    }
+
+
+
+
 
 
 //Untuk Memutuskan Koneksi Ke Database

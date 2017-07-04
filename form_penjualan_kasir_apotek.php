@@ -2927,7 +2927,7 @@ $.post('cek_tbs_penjualan_apotek.php',{kode_barang:kode_barang, session_id:sessi
           $("#kode_barang").trigger("chosen:updated");
           $("#nama_barang").val('');
           $("#kode_barang").trigger('chosen:open');
-          $(".chosen").chosen({no_results_text: "Maaf, Data Tidak Ada!",search_contains:true}); 
+    
    }//penutup if     
 
 
