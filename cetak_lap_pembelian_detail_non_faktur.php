@@ -50,7 +50,7 @@ $total_jumlah = $data_sum_dari_detail_pembaelian['sum_jumlah'];
         
     </div><!--penutup row1-->
     <br>
-    <br>
+    <br> 
     <br>
 
  <table id="tableuser" class="table table-hover table-sm">
@@ -78,9 +78,9 @@ $total_jumlah = $data_sum_dari_detail_pembaelian['sum_jumlah'];
           <td>".$data11['kode_barang']."</td>
           <td>".$data11['nama_barang']."</td>
           <td align='right'>".$data11['sum_jumlah'] ." ". $data11['asal_satuan']."</td>
-          <td align='right'>".rp($data11['sum_subtotal'])."</td>
-          <td>".rp($data11['sum_potongan'])."</td>
-          <td>".rp($data11['sum_tax'])."</td>
+          <td align='right'>".koma($data11['sum_subtotal'],2)."</td>
+          <td>".koma($data11['sum_potongan'],2)."</td>
+          <td>".koma($data11['sum_tax'],2)."</td>
           </tr>";
 
 
@@ -91,7 +91,7 @@ $total_jumlah = $data_sum_dari_detail_pembaelian['sum_jumlah'];
         <td style='color:red'> - </td>
         <td style='color:red'> - </td>
         <td style='color:red' align='right'> <?php echo rp($total_jumlah); ?> </td>
-        <td style='color:red' align='right'> <?php echo rp($total_akhir); ?> </td>
+        <td style='color:red' align='right'> <?php echo koma($total_akhir,2); ?> </td>
         <td style='color:red'> - </td>
         <td style='color:red'> - </td>
             </tbody>

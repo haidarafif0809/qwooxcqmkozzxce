@@ -3,6 +3,7 @@
 
 // memasukan file db.php
 include 'db.php';
+include 'sanitasi.php';
 
 
  // mengirim data no faktur menggunakan metode POST
@@ -17,7 +18,7 @@ include 'db.php';
  $data = mysqli_fetch_array($query);
 
 // menampilkan file atau isi dari data total pembelian
- echo $data['total_pembelian'] ;
+ echo koma($data['total_pembelian'],2);
 
          //Untuk Memutuskan Koneksi Ke Database
 

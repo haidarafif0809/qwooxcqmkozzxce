@@ -26,7 +26,7 @@ $columns = array(
     8=>'over_stok',
     9=>'id',
 
-);
+); 
 
 // getting total number records without any search
 $sql =" SELECT b.id, b.kode_barang, b.nama_barang, b.harga_beli, b.harga_jual, b.satuan, b.kategori, b.suplier, b.over_stok, b.stok_barang, s.nama ";
@@ -76,7 +76,7 @@ while( $row=mysqli_fetch_array($query) ) {
 
     $nestedData[] = $row["kode_barang"];
     $nestedData[] = $row["nama_barang"];
-    $nestedData[] = $row["harga_beli"];
+    $nestedData[] = koma($row["harga_beli"],2);
     $nestedData[] = "$stok_barang";
     $nestedData[] = $row["nama"];
     $nestedData[] = $row["kategori"];

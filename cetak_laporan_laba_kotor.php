@@ -136,11 +136,11 @@ $penjualan = $db->query("SELECT p.id,p.no_faktur,p.total,p.kode_pelanggan,p.tang
 			<td class='table1' style='text-align: center'>". $data_penjualan['no_faktur'] ."</td>
 			<td class='table1' style='text-align: center'>". $data_penjualan['tanggal'] ."</td>
 			<td class='table1' style='text-align: center'>". $data_penjualan['kode_pelanggan'] ." - ". $data_pelanggan['nama_pelanggan'] ."</td>
-			<td class='table1' style='text-align: right'>". rp($subtotal) ."</td>
-			<td class='table1' style='text-align: right'>". rp($cek_sum_hpp['total_hpp']) ."</td>
-			<td class='table1' style='text-align: right'>". rp($laba_kotor) ."</td>
-			<td class='table1' style='text-align: right'>". rp($data_penjualan['potongan']) ."</td>
-			<td class='table1' style='text-align: right'>". rp($laba_jual) ."</td>
+			<td class='table1' style='text-align: right'>". koma($subtotal,2) ."</td>
+			<td class='table1' style='text-align: right'>". koma($cek_sum_hpp['total_hpp'],2) ."</td>
+			<td class='table1' style='text-align: right'>". koma($laba_kotor,2) ."</td>
+			<td class='table1' style='text-align: right'>". koma($data_penjualan['potongan'],2) ."</td>
+			<td class='table1' style='text-align: right'>". koma($laba_jual,2) ."</td>
 			</tr>";
 			}
 
@@ -165,11 +165,11 @@ $penjualan = $db->query("SELECT p.id,p.no_faktur,p.total,p.kode_pelanggan,p.tang
 		<table>
 		<tbody>
 		
-		<tr><td width="50%"><font class="satu"><b>Sub Total</b></font></td> <td><b> :&nbsp;</b></td> <td><?php echo rp($total_subtotal); ?></td></tr>
-		<tr><td width="50%"><font class="satu"><b>Total Pokok</b></font></td> <td><b> :&nbsp;</b></td> <td><?php echo rp($total_total_pokok); ?></td></tr>
-		<tr><td  width="50%"><font class="satu"><b>Laba Kotor</b></font></td> <td><b> :&nbsp;</b></td> <td><?php echo rp($total_laba_kotor); ?></td></tr>
-		<tr><td  width="50%"><font class="satu"><b>Potongan Faktur</b></font></td> <td><b> :&nbsp;</b></td> <td><?php echo rp($total_diskon); ?></td></tr>
-		<tr><td  width="50%"><font class="satu"><b>Laba Jual</b></font></td> <td><b> :&nbsp;</b></td> <td><?php echo rp($total_laba_jual); ?></td></tr>
+		<tr><td width="50%"><font class="satu"><b>Sub Total</b></font></td> <td><b> :&nbsp;</b></td> <td><?php echo koma($total_subtotal,2); ?></td></tr>
+		<tr><td width="50%"><font class="satu"><b>Total Pokok</b></font></td> <td><b> :&nbsp;</b></td> <td><?php echo koma($total_total_pokok,2); ?></td></tr>
+		<tr><td  width="50%"><font class="satu"><b>Laba Kotor</b></font></td> <td><b> :&nbsp;</b></td> <td><?php echo koma($total_laba_kotor,2); ?></td></tr>
+		<tr><td  width="50%"><font class="satu"><b>Potongan Faktur</b></font></td> <td><b> :&nbsp;</b></td> <td><?php echo koma($total_diskon,2); ?></td></tr>
+		<tr><td  width="50%"><font class="satu"><b>Laba Jual</b></font></td> <td><b> :&nbsp;</b></td> <td><?php echo koma($total_laba_jual,2); ?></td></tr>
 		
 		</tbody>
 		</table>

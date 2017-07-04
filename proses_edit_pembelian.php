@@ -4,11 +4,11 @@ include 'sanitasi.php';
 include 'db.php';
 
 
-$no_faktur = $_GET['no_faktur'];
-$suplier = $_GET['suplier'];
-$nama_suplier = $_GET['nama_suplier'];
-$kode_gudang = $_GET['kode_gudang'];
-$nama_gudang = $_GET['nama_gudang'];
+$no_faktur = stringdoang($_GET['no_faktur']);
+$suplier = stringdoang($_GET['suplier']);
+$nama_suplier = stringdoang($_GET['nama_suplier']);
+$kode_gudang = stringdoang($_GET['kode_gudang']);
+$nama_gudang = stringdoang($_GET['nama_gudang']);
 
 $perintah3 = $db->query("SELECT * FROM tbs_pembelian WHERE no_faktur = '$no_faktur'");
 $data1 = mysqli_num_rows($perintah3);

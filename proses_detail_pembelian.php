@@ -21,7 +21,7 @@ $query = $db->query("SELECT dp.id, dp.no_faktur, dp.kode_barang, dp.nama_barang,
 					<th> Nomor Faktur </th>
 					<th> Kode Barang </th>
 					<th> Nama Barang </th>
-					<th> Jumlah Barang </th>
+					<th> Jumlah Barang </th> 
 					<th> Satuan </th>
 					<th> Harga </th>
 					<th> Potongan </th>
@@ -55,10 +55,10 @@ $query = $db->query("SELECT dp.id, dp.no_faktur, dp.kode_barang, dp.nama_barang,
 					}
 					
 					echo "<td>". $data1['nama'] ."</td>
-					<td>". rp($data1['harga']) ."</td>
-					<td>". rp($data1['potongan']) ."</td>
-					<td>". rp($data1['subtotal']) ."</td>
-					<td>". rp($data1['tax']) ."</td>
+					<td>". koma($data1['harga'],2) ."</td>
+					<td>". koma($data1['potongan'],2) ."</td>
+					<td>". koma($data1['subtotal'],2) ."</td>
+					<td>". koma($data1['tax'],2) ."</td>
 					<td>". $data_hpp['sisa_hpp'] ." ".$data1['satuan_asal']."</td>
 					</tr>";
 					}

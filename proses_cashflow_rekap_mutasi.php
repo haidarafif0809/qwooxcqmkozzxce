@@ -11,7 +11,7 @@ $requestData= $_REQUEST;
 $columns = array( 
 // datatable column index  => database column name
 
-	0=>'tanggal', 
+	0=>'tanggal',  
 	1=>'dari_akun',
 	2=>'ke_akun',
 	3=>'total',
@@ -67,7 +67,7 @@ while( $row=mysqli_fetch_array($query) ) {
 	$nestedData[] = $tanggal;
 	$nestedData[] = $row["nama_daftar_akun"];
 	$nestedData[] = $row["nama_dari_akun"];
-	$nestedData[] = rp($datadariakun["keluar"]);
+	$nestedData[] = koma($datadariakun["keluar"],2);
 $data[] = $nestedData;
 }
 

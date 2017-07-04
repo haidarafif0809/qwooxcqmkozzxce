@@ -35,7 +35,7 @@ border-collapse: collapse;
 <div class="card card-block">
 
 <!-- AKTIVA-->
-<?php
+<?php 
 $select = $db->query("SELECT kode_grup_akun, nama_grup_akun FROM grup_akun WHERE kategori_akun = 'Aktiva' AND tipe_akun = 'Akun Header' AND parent= '-' " );
 
 $total_akhir_aktiva = 0;
@@ -83,7 +83,7 @@ if ($datadaftar_akun_inner['total'] < 0) {
 echo "
  <table>
   <tbody>
-    <tr><td width='100%'><h4 style='padding-left:75px'>" .$datadaftar_akun_inner['kode_daftar_akun']." ".$datadaftar_akun_inner['nama_daftar_akun'] ."</h4></td> <td> <h4>(". rp($datadaftar_akun_inner['total']). ") </h4>  </td></tr>
+    <tr><td width='100%'><h4 style='padding-left:75px'>" .$datadaftar_akun_inner['kode_daftar_akun']." ".$datadaftar_akun_inner['nama_daftar_akun'] ."</h4></td> <td> <h4>(". koma($datadaftar_akun_inner['total'],2). ") </h4>  </td></tr>
   </tbody>
 </table>
 ";
@@ -92,7 +92,7 @@ else{
   echo "
  <table>
   <tbody>
-    <tr><td width='100%'><h4 style='padding-left:75px'>" .$datadaftar_akun_inner['kode_daftar_akun']." ".$datadaftar_akun_inner['nama_daftar_akun'] ."</h4></td> <td> <h4>". rp($datadaftar_akun_inner['total']). " </h4>  </td></tr>
+    <tr><td width='100%'><h4 style='padding-left:75px'>" .$datadaftar_akun_inner['kode_daftar_akun']." ".$datadaftar_akun_inner['nama_daftar_akun'] ."</h4></td> <td> <h4>". koma($datadaftar_akun_inner['total'],2). " </h4>  </td></tr>
   </tbody>
 </table>
 ";
@@ -107,7 +107,7 @@ if ($kas_bank < 0) {
 echo "
  <table>
   <tbody>
-    <tr><td width='100%'><h4 style='padding-left:50px'><b> TOTAL ".$datagrup_akun_sub['nama_grup_akun'] ." </b></h4></td> <td> <h4><b> (".rp($kas_bank).") </b> </h4>  </td></tr>
+    <tr><td width='100%'><h4 style='padding-left:50px'><b> TOTAL ".$datagrup_akun_sub['nama_grup_akun'] ." </b></h4></td> <td> <h4><b> (".koma($kas_bank,2).") </b> </h4>  </td></tr>
   </tbody>
 </table>
 ";
@@ -117,7 +117,7 @@ else{
   echo "
  <table>
   <tbody>
-    <tr><td width='100%'><h4 style='padding-left:50px'><b> TOTAL ".$datagrup_akun_sub['nama_grup_akun'] ." </b></h4></td> <td> <h4><b> ".rp($kas_bank)." </b> </h4>  </td></tr>
+    <tr><td width='100%'><h4 style='padding-left:50px'><b> TOTAL ".$datagrup_akun_sub['nama_grup_akun'] ." </b></h4></td> <td> <h4><b> ".koma($kas_bank,2)." </b> </h4>  </td></tr>
   </tbody>
 </table>
 ";
@@ -131,7 +131,7 @@ if ($total_aktiva_lancar < 0) {
     echo "
  <table>
   <tbody>
-    <tr><td width='100%'><h4 style='padding-left:25px'><b> TOTAL ".$datagrup_akun['nama_grup_akun'] ." </b></h4></td> <td> <h4><b> (".rp($total_aktiva_lancar).") </b> </h4>  </td></tr>
+    <tr><td width='100%'><h4 style='padding-left:25px'><b> TOTAL ".$datagrup_akun['nama_grup_akun'] ." </b></h4></td> <td> <h4><b> (".koma($total_aktiva_lancar,2).") </b> </h4>  </td></tr>
   </tbody>
 </table>
 ";
@@ -140,7 +140,7 @@ else{
     echo "
  <table>
   <tbody>
-    <tr><td width='100%'><h4 style='padding-left:25px'><b> TOTAL ".$datagrup_akun['nama_grup_akun'] ." </b></h4></td> <td> <h4><b> ".rp($total_aktiva_lancar)." </b> </h4>  </td></tr>
+    <tr><td width='100%'><h4 style='padding-left:25px'><b> TOTAL ".$datagrup_akun['nama_grup_akun'] ." </b></h4></td> <td> <h4><b> ".koma($total_aktiva_lancar,2)." </b> </h4>  </td></tr>
   </tbody>
 </table>
 ";
@@ -166,7 +166,7 @@ if ($datadaftar_akun_inner['total'] < 0) {
 echo "
  <table>
   <tbody>
-    <tr><td width='100%'><h4 style='padding-left:75px'>" .$datadaftar_akun_inner['kode_daftar_akun']." ".$datadaftar_akun_inner['nama_daftar_akun'] ."</h4></td> <td> <h4>(". rp($datadaftar_akun_inner['total']). ") </h4>  </td></tr>
+    <tr><td width='100%'><h4 style='padding-left:75px'>" .$datadaftar_akun_inner['kode_daftar_akun']." ".$datadaftar_akun_inner['nama_daftar_akun'] ."</h4></td> <td> <h4>(". koma($datadaftar_akun_inner['total'],2). ") </h4>  </td></tr>
   </tbody>
 </table>
 ";
@@ -175,7 +175,7 @@ else{
   echo "
  <table>
   <tbody>
-    <tr><td width='100%'><h4 style='padding-left:75px'>" .$datadaftar_akun_inner['kode_daftar_akun']." ".$datadaftar_akun_inner['nama_daftar_akun'] ."</h4></td> <td> <h4>". rp($datadaftar_akun_inner['total']). " </h4> </td></tr>
+    <tr><td width='100%'><h4 style='padding-left:75px'>" .$datadaftar_akun_inner['kode_daftar_akun']." ".$datadaftar_akun_inner['nama_daftar_akun'] ."</h4></td> <td> <h4>". koma($datadaftar_akun_inner['total'],2). " </h4> </td></tr>
   </tbody>
 </table>
 ";
@@ -191,7 +191,7 @@ if ($total_persediaan_aktiva_tetap < 0) {
     echo "
  <table>
   <tbody>
-    <tr><td width='100%'><h4 style='padding-left:25px'><b> TOTAL ".$datagrup_akun['nama_grup_akun'] ." </b></h4></td> <td> <h4><b> (".rp($total_persediaan_aktiva_tetap).") </b> </h4>  </td></tr>
+    <tr><td width='100%'><h4 style='padding-left:25px'><b> TOTAL ".$datagrup_akun['nama_grup_akun'] ." </b></h4></td> <td> <h4><b> (".koma($total_persediaan_aktiva_tetap,2).") </b> </h4>  </td></tr>
   </tbody>
 </table>
 ";
@@ -200,7 +200,7 @@ else{
     echo "
  <table>
   <tbody>
-    <tr><td width='100%'><h4 style='padding-left:25px'><b> TOTAL ".$datagrup_akun['nama_grup_akun'] ." </b></h4></td> <td> <h4><b> ".rp($total_persediaan_aktiva_tetap)." </b> </h4>  </td></tr>
+    <tr><td width='100%'><h4 style='padding-left:25px'><b> TOTAL ".$datagrup_akun['nama_grup_akun'] ." </b></h4></td> <td> <h4><b> ".koma($total_persediaan_aktiva_tetap,2)." </b> </h4>  </td></tr>
   </tbody>
 </table>
 ";
@@ -219,7 +219,7 @@ if ($total_akhir_aktiva < 0) {
 echo "
  <table>
   <tbody>
-    <tr><td width='100%'><h4><b> TOTAL ".$data['nama_grup_akun'] ." </b></h4></td> <td> <h4><b> (".rp($total_akhir_aktiva).") </b> </h4>  </td></tr>
+    <tr><td width='100%'><h4><b> TOTAL ".$data['nama_grup_akun'] ." </b></h4></td> <td> <h4><b> (".koma($total_akhir_aktiva,2).") </b> </h4>  </td></tr>
   </tbody>
 </table>
 ";
@@ -229,7 +229,7 @@ else{
 echo "
  <table>
   <tbody>
-    <tr  style='background-color: #c62828; color:white'><td width='100%'><h4><b> TOTAL ".$data['nama_grup_akun'] ." </b></h4></td> <td> <h4><b> ".rp($total_akhir_aktiva)." </b> </h4>  </td></tr>
+    <tr  style='background-color: #c62828; color:white'><td width='100%'><h4><b> TOTAL ".$data['nama_grup_akun'] ." </b></h4></td> <td> <h4><b> ".koma($total_akhir_aktiva,2)." </b> </h4>  </td></tr>
   </tbody>
 </table>
 ";
@@ -294,7 +294,7 @@ if ($datadaftar_akun_inner['total'] < 0) {
 echo "
  <table>
   <tbody>
-    <tr><td width='100%'><h4 style='padding-left:75px'>" .$datadaftar_akun_inner['kode_daftar_akun']." ".$datadaftar_akun_inner['nama_daftar_akun'] ."</h4></td> <td> <h4>(". rp($datadaftar_akun_inner['total']). ") </h4>  </td></tr>
+    <tr><td width='100%'><h4 style='padding-left:75px'>" .$datadaftar_akun_inner['kode_daftar_akun']." ".$datadaftar_akun_inner['nama_daftar_akun'] ."</h4></td> <td> <h4>(". koma($datadaftar_akun_inner['total'],2). ") </h4>  </td></tr>
   </tbody>
 </table>
 ";
@@ -303,7 +303,7 @@ else{
   echo "
  <table>
   <tbody>
-    <tr><td width='100%'><h4 style='padding-left:75px'>" .$datadaftar_akun_inner['kode_daftar_akun']." ".$datadaftar_akun_inner['nama_daftar_akun'] ."</h4></td> <td> <h4>". rp($datadaftar_akun_inner['total']). " </h4>  </td></tr>
+    <tr><td width='100%'><h4 style='padding-left:75px'>" .$datadaftar_akun_inner['kode_daftar_akun']." ".$datadaftar_akun_inner['nama_daftar_akun'] ."</h4></td> <td> <h4>". koma($datadaftar_akun_inner['total'],2). " </h4>  </td></tr>
   </tbody>
 </table>
 ";
@@ -318,7 +318,7 @@ if ($kas_bank < 0) {
 echo "
  <table>
   <tbody>
-    <tr><td width='100%'><h4 style='padding-left:50px'><b> TOTAL ".$datagrup_akun_sub['nama_grup_akun'] ." </b></h4></td> <td> <h4><b> (".rp($kas_bank).") </b> </h4>  </td></tr>
+    <tr><td width='100%'><h4 style='padding-left:50px'><b> TOTAL ".$datagrup_akun_sub['nama_grup_akun'] ." </b></h4></td> <td> <h4><b> (".koma($kas_bank,2).") </b> </h4>  </td></tr>
   </tbody>
 </table>
 ";
@@ -328,7 +328,7 @@ else{
   echo "
  <table>
   <tbody>
-    <tr><td width='100%'><h4 style='padding-left:50px'><b> TOTAL ".$datagrup_akun_sub['nama_grup_akun'] ." </b></h4></td> <td> <h4><b> ".rp($kas_bank)." </b> </h4>  </td></tr>
+    <tr><td width='100%'><h4 style='padding-left:50px'><b> TOTAL ".$datagrup_akun_sub['nama_grup_akun'] ." </b></h4></td> <td> <h4><b> ".koma($kas_bank,2)." </b> </h4>  </td></tr>
   </tbody>
 </table>
 ";
@@ -345,7 +345,7 @@ if ($total_aktiva_lancar < 0) {
     echo "
  <table>
   <tbody>
-    <tr><td width='100%'><h4 style='padding-left:25px'><b> TOTAL ".$datagrup_akun['nama_grup_akun'] ." </b></h4></td> <td> <h4><b> (".rp($total_aktiva_lancar).") </b> </h4>  </td></tr>
+    <tr><td width='100%'><h4 style='padding-left:25px'><b> TOTAL ".$datagrup_akun['nama_grup_akun'] ." </b></h4></td> <td> <h4><b> (".koma($total_aktiva_lancar,2).") </b> </h4>  </td></tr>
   </tbody>
 </table>
 ";
@@ -354,7 +354,7 @@ else{
     echo "
  <table>
   <tbody>
-    <tr><td width='100%'><h4 style='padding-left:25px'><b> TOTAL ".$datagrup_akun['nama_grup_akun'] ." </b></h4></td> <td> <h4><b> ".rp($total_aktiva_lancar)." </b> </h4>  </td></tr>
+    <tr><td width='100%'><h4 style='padding-left:25px'><b> TOTAL ".$datagrup_akun['nama_grup_akun'] ." </b></h4></td> <td> <h4><b> ".koma($total_aktiva_lancar,2)." </b> </h4>  </td></tr>
   </tbody>
 </table>
 ";
@@ -390,7 +390,7 @@ if ($datadaftar_akun_inner['total'] < 0) {
 echo "
  <table>
   <tbody>
-    <tr><td width='100%'><h4 style='padding-left:75px'>" .$datadaftar_akun_inner['kode_daftar_akun']." ".$datadaftar_akun_inner['nama_daftar_akun'] ."</h4></td> <td> <h4>(". rp($datadaftar_akun_inner['total']). ") </h4>  </td></tr>
+    <tr><td width='100%'><h4 style='padding-left:75px'>" .$datadaftar_akun_inner['kode_daftar_akun']." ".$datadaftar_akun_inner['nama_daftar_akun'] ."</h4></td> <td> <h4>(". koma($datadaftar_akun_inner['total'],2). ") </h4>  </td></tr>
   </tbody>
 </table>
 ";
@@ -399,7 +399,7 @@ else{
   echo "
  <table>
   <tbody>
-    <tr><td width='100%'><h4 style='padding-left:75px'>" .$datadaftar_akun_inner['kode_daftar_akun']." ".$datadaftar_akun_inner['nama_daftar_akun'] ."</h4></td> <td> <h4>". rp($datadaftar_akun_inner['total']). " </h4>  </td></tr>
+    <tr><td width='100%'><h4 style='padding-left:75px'>" .$datadaftar_akun_inner['kode_daftar_akun']." ".$datadaftar_akun_inner['nama_daftar_akun'] ."</h4></td> <td> <h4>". koma($datadaftar_akun_inner['total'],2). " </h4>  </td></tr>
   </tbody>
 </table>
 ";
@@ -414,7 +414,7 @@ if ($kas_bank < 0) {
 echo "
  <table>
   <tbody>
-    <tr><td width='100%'><h4 style='padding-left:50px'><b> TOTAL ".$datagrup_akun_sub['nama_grup_akun'] ." </b></h4></td> <td> <h4><b> (".rp($kas_bank).") </b> </h4>  </td></tr>
+    <tr><td width='100%'><h4 style='padding-left:50px'><b> TOTAL ".$datagrup_akun_sub['nama_grup_akun'] ." </b></h4></td> <td> <h4><b> (".koma($kas_bank,2).") </b> </h4>  </td></tr>
   </tbody>
 </table>
 ";
@@ -424,7 +424,7 @@ else{
   echo "
  <table>
   <tbody>
-    <tr><td width='100%'><h4 style='padding-left:50px'><b> TOTAL ".$datagrup_akun_sub['nama_grup_akun'] ." </b></h4></td> <td> <h4><b> ".rp($kas_bank)." </b> </h4>  </td></tr>
+    <tr><td width='100%'><h4 style='padding-left:50px'><b> TOTAL ".$datagrup_akun_sub['nama_grup_akun'] ." </b></h4></td> <td> <h4><b> ".koma($kas_bank,2)." </b> </h4>  </td></tr>
   </tbody>
 </table>
 ";
@@ -452,7 +452,7 @@ if ($datadaftar_akun_inner['total'] < 0) {
 echo "
  <table>
   <tbody>
-    <tr><td width='100%'><h4 style='padding-left:75px'>" .$datadaftar_akun_inner['kode_daftar_akun']." ".$datadaftar_akun_inner['nama_daftar_akun'] ."</h4></td> <td> <h4>(". rp($datadaftar_akun_inner['total']). ") </h4>  </td></tr>
+    <tr><td width='100%'><h4 style='padding-left:75px'>" .$datadaftar_akun_inner['kode_daftar_akun']." ".$datadaftar_akun_inner['nama_daftar_akun'] ."</h4></td> <td> <h4>(". koma($datadaftar_akun_inner['total'],2). ") </h4>  </td></tr>
   </tbody>
 </table>
 ";
@@ -461,7 +461,7 @@ else{
   echo "
  <table>
   <tbody>
-    <tr><td width='100%'><h4 style='padding-left:75px'>" .$datadaftar_akun_inner['kode_daftar_akun']." ".$datadaftar_akun_inner['nama_daftar_akun'] ."</h4></td> <td> <h4>". rp($datadaftar_akun_inner['total']). " </h4>  </td></tr>
+    <tr><td width='100%'><h4 style='padding-left:75px'>" .$datadaftar_akun_inner['kode_daftar_akun']." ".$datadaftar_akun_inner['nama_daftar_akun'] ."</h4></td> <td> <h4>". koma($datadaftar_akun_inner['total'],2). " </h4>  </td></tr>
   </tbody>
 </table>
 ";
@@ -478,7 +478,7 @@ if ($total_persediaan_aktiva_tetap < 0) {
     echo "
  <table>
   <tbody>
-    <tr><td width='100%'><h4 style='padding-left:15px'><b> TOTAL ".$datagrup_akun['nama_grup_akun'] ." </b></h4></td> <td> <h4><b> (".rp($total_persediaan_aktiva_tetap).") </b> </h4>  </td></tr>
+    <tr><td width='100%'><h4 style='padding-left:15px'><b> TOTAL ".$datagrup_akun['nama_grup_akun'] ." </b></h4></td> <td> <h4><b> (".koma($total_persediaan_aktiva_tetap,2).") </b> </h4>  </td></tr>
   </tbody>
 </table>
 ";
@@ -487,7 +487,7 @@ else{
     echo "
  <table>
   <tbody>
-    <tr><td width='100%'><h4 style='padding-left:15px'><b> TOTAL ".$datagrup_akun['nama_grup_akun'] ." </b></h4></td> <td> <h4><b> ".rp($total_persediaan_aktiva_tetap)." </b> </h4>  </td></tr>
+    <tr><td width='100%'><h4 style='padding-left:15px'><b> TOTAL ".$datagrup_akun['nama_grup_akun'] ." </b></h4></td> <td> <h4><b> ".koma($total_persediaan_aktiva_tetap,2)." </b> </h4>  </td></tr>
   </tbody>
 </table>
 ";
@@ -504,7 +504,7 @@ else{
 echo "
  <table>
   <tbody>
-    <tr><td width='100%'><h4><b> TOTAL ".$data['nama_grup_akun'] ." </b></h4></td> <td> <h4><b> ".rp($total_akhir_kewajiban)." </b> </h4>  </td></tr>
+    <tr><td width='100%'><h4><b> TOTAL ".$data['nama_grup_akun'] ." </b></h4></td> <td> <h4><b> ".koma($total_akhir_kewajiban,2)." </b> </h4>  </td></tr>
   </tbody>
 </table>
 ";
@@ -552,7 +552,7 @@ if ($datadaftar_akun['total'] < 0) {
   echo "
  <table>
   <tbody>
-    <tr><td width='100%'><h4 style='padding-left:50px'>" .$datadaftar_akun['kode_daftar_akun']." ".$datadaftar_akun['nama_daftar_akun'] ."</h4></td> <td> <h4> &#40;". rp($datadaftar_akun['total']). "&#41; </h4>  </td></tr>
+    <tr><td width='100%'><h4 style='padding-left:50px'>" .$datadaftar_akun['kode_daftar_akun']." ".$datadaftar_akun['nama_daftar_akun'] ."</h4></td> <td> <h4> &#40;". koma($datadaftar_akun['total'],2). "&#41; </h4>  </td></tr>
   </tbody>
 </table>
 ";
@@ -563,7 +563,7 @@ else{
   echo "
  <table>
   <tbody>
-    <tr><td width='100%'><h4 style='padding-left:50px'>" .$datadaftar_akun['kode_daftar_akun']." ".$datadaftar_akun['nama_daftar_akun'] ."</h4></td> <td> <h4>". rp($datadaftar_akun['total']). " </h4>  </td></tr>
+    <tr><td width='100%'><h4 style='padding-left:50px'>" .$datadaftar_akun['kode_daftar_akun']." ".$datadaftar_akun['nama_daftar_akun'] ."</h4></td> <td> <h4>". koma($datadaftar_akun['total'],2). " </h4>  </td></tr>
   </tbody>
 </table>
 ";
@@ -580,7 +580,7 @@ if ($total_laba_tahun_berjalan != 0) {
   echo "
  <table>
   <tbody>
-    <tr><td width='100%'><h4 style='padding-left:50px'>" .$data_sett['laba_tahun_berjalan'] ." " .$data_sett['nama_daftar_akun'] ."</h4></td> <td> <h4> ".rp($total_laba_tahun_berjalan)." </h4>  </td></tr>
+    <tr><td width='100%'><h4 style='padding-left:50px'>" .$data_sett['laba_tahun_berjalan'] ." " .$data_sett['nama_daftar_akun'] ."</h4></td> <td> <h4> ".koma($total_laba_tahun_berjalan,2)." </h4>  </td></tr>
   </tbody>
 </table>
 ";
@@ -594,7 +594,7 @@ if ( $total_modal < 0) {
   echo "
  <table>
   <tbody>
-    <tr><td width='100%'><h4 style='padding-left:50px'><b>TOTAL ".$datadaftar_akun['nama_daftar_akun'] ." </b></h4></td> <td> <h4> <b> (".rp($total_modal).") </b> </h4>  </td></tr>
+    <tr><td width='100%'><h4 style='padding-left:50px'><b>TOTAL ".$datadaftar_akun['nama_daftar_akun'] ." </b></h4></td> <td> <h4> <b> (".koma($total_modal,2).") </b> </h4>  </td></tr>
   </tbody>
 </table>
 ";
@@ -604,7 +604,7 @@ else{
   echo "
  <table>
   <tbody>
-    <tr><td width='100%'><h4><b>TOTAL ".$data['nama_grup_akun'] ."</b></h4></td> <td> <h4><b> ".rp($total_modal)." </b></h4>  </td></tr>
+    <tr><td width='100%'><h4><b>TOTAL ".$data['nama_grup_akun'] ."</b></h4></td> <td> <h4><b> ".koma($total_modal,2)." </b></h4>  </td></tr>
   </tbody>
 </table>
 ";
@@ -619,7 +619,7 @@ if ( $totol_kewajiban_modal < 0) {
   echo "
  <table>
   <tbody>
-    <tr><td width='100%'><h4 style='padding-left:50px'><b>TOTAL KEWAJIBAN dan MODAL </b></h4></td> <td> <h4> <b> (".rp($totol_kewajiban_modal).") </b> </h4>  </td></tr>
+    <tr><td width='100%'><h4 style='padding-left:50px'><b>TOTAL KEWAJIBAN dan MODAL </b></h4></td> <td> <h4> <b> (".koma($totol_kewajiban_modal,2).") </b> </h4>  </td></tr>
   </tbody>
 </table>
 ";
@@ -629,7 +629,7 @@ else{
   echo "
  <table>
   <tbody>
-    <tr style='background-color: #c62828; color:white'><td width='100%'><h4><b>TOTAL KEWAJIBAN dan MODAL</b></h4></td> <td> <h4><b> ".rp($totol_kewajiban_modal)." </b></h4>  </td></tr>
+    <tr style='background-color: #c62828; color:white'><td width='100%'><h4><b>TOTAL KEWAJIBAN dan MODAL</b></h4></td> <td> <h4><b> ".koma($totol_kewajiban_modal,2)." </b></h4>  </td></tr>
   </tbody>
 </table>
 ";

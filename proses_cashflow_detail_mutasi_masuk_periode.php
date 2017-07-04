@@ -22,7 +22,7 @@ $columns = array(
 	7=>'waktu',
 	8=>'id'
 
-);
+); 
 // getting total number records without any search
 $sql = "SELECT SUM(js.debit) AS mutasi_masuk,js.jenis_transaksi,js.id,da.nama_daftar_akun,js.keterangan_jurnal,js.no_faktur,js.user_buat,js.user_edit,js.waktu_jurnal";
 $sql.=" FROM jurnal_trans js LEFT JOIN daftar_akun da ON js.kode_akun_jurnal = da.kode_daftar_akun";
@@ -73,7 +73,7 @@ while( $row=mysqli_fetch_array($query) ) {
 	$nestedData[] = $row["keterangan_jurnal"];
 	$nestedData[] = $out["nama_daftar_akun"];
 	$nestedData[] = $row["nama_daftar_akun"];
-	$nestedData[] = rp($row["mutasi_masuk"]);
+	$nestedData[] = koma($row["mutasi_masuk"],2);
 	$nestedData[] = $row["user_buat"];
 	$nestedData[] = $row["user_edit"];
 	$nestedData[] = $row["waktu_jurnal"];

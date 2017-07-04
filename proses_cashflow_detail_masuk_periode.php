@@ -12,7 +12,7 @@ $requestData= $_REQUEST;
 $columns = array( 
 // datatable column index  => database column name
 
-	0=>'no_faktur',
+	0=>'no_faktur', 
 	1=>'keterangan',
 	2=>'dari_akun',
 	3=>'ke_akun',
@@ -76,7 +76,7 @@ $out = mysqli_fetch_array($select);
 	$nestedData[] = $row["keterangan_jurnal"];
 	$nestedData[] = $out["nama_daftar_akun"];
 	$nestedData[] = $row["nama_daftar_akun"];
-	$nestedData[] = rp($row["masuk"]);
+	$nestedData[] = koma($row["masuk"],2);
 	$nestedData[] = $row["user_buat"];
 	$nestedData[] = $row["user_edit"];
 	$nestedData[] = $row["waktu_jurnal"];

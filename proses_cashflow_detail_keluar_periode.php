@@ -28,7 +28,7 @@ $sql = "SELECT SUM(js.kredit) AS keluar,js.jenis_transaksi,js.id,da.nama_daftar_
 $sql.=" FROM jurnal_trans js LEFT JOIN daftar_akun da ON js.kode_akun_jurnal = da.kode_daftar_akun";
 $sql.=" WHERE DATE(js.waktu_jurnal) >= '$dari_tanggal' AND DATE(js.waktu_jurnal) <= '$sampai_tanggal' AND js.kode_akun_jurnal = '$kas' AND js.kredit != '0' AND jenis_transaksi != 'Kas Mutasi' GROUP BY js.no_faktur";
 $sql.=" ";
-
+ 
 
 $query = mysqli_query($conn, $sql) or die("eror 1");
 $totalData = mysqli_num_rows($query);
@@ -74,7 +74,7 @@ while( $row=mysqli_fetch_array($query) ) {
 	$nestedData[] = $row["keterangan_jurnal"];
 	$nestedData[] = $row["nama_daftar_akun"];
 	$nestedData[] = $out["nama_daftar_akun"];
-	$nestedData[] = rp($row["keluar"]);
+	$nestedData[] = koma($row["keluar"],2);
 	$nestedData[] = $row["user_buat"];
 	$nestedData[] = $row["user_edit"];
 	$nestedData[] = $row["waktu_jurnal"];

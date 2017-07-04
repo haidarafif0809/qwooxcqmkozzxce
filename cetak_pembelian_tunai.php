@@ -14,7 +14,7 @@ $data001 = mysqli_fetch_array($perintah);
     $query0 = $db->query("SELECT * FROM pembelian WHERE no_faktur = '$no_faktur' ");
     $data0 = mysqli_fetch_array($query0);
 
-    $query1 = $db->query("SELECT * FROM perusahaan ");
+    $query1 = $db->query("SELECT foto,nama_perusahaan,alamat_perusahaan,no_telp FROM perusahaan ");
     $data1 = mysqli_fetch_array($query1);
 
 
@@ -112,8 +112,8 @@ $query5 = $db->query("SELECT s.nama,dp.id,dp.no_faktur,dp.kode_barang,dp.nama_ba
                 <td>". $data5['nama_barang'] ."</td>
                 <td>". $data5['jumlah_barang'] ."</td>
                 <td>". $data5['nama'] ."</td>
-                <td>". rp($data5['harga']) ."</td>
-                <td>". rp($data5['subtotal']) ."</td>
+                <td>". koma($data5['harga'],2) ."</td>
+                <td>". koma($data5['subtotal'],2) ."</td>
             <tr>";
 
             }
@@ -141,9 +141,9 @@ mysqli_close($db);
   <tbody>
 
       <tr><td width="75%">Jumlah Item</td> <td> : </td> <td> <?php echo $total_item; ?> </td></tr>
-      <tr><td  width="75%">Potongan</td> <td> : </td> <td> <?php echo rp($data0['potongan']); ?> </td>
+      <tr><td  width="75%">Potongan</td> <td> : </td> <td> <?php echo koma($data0['potongan'],2); ?> </td>
       </tr>
-      <tr><td  width="75%">Pajak</td> <td> : </td> <td> <?php echo rp($data0['tax']); ?></td></tr>
+      <tr><td  width="75%">Pajak</td> <td> : </td> <td> <?php echo koma($data0['tax'],2); ?></td></tr>
             
   </tbody>
   </table>
@@ -155,11 +155,11 @@ mysqli_close($db);
 
  <table>
   <tbody>
-      <tr><td width="75%">Total Pembelian</td> <td> : </td> <td> <?php echo rp($total_subtotal); ?> </tr>
-      <tr><td  width="75%">Total Akhir</td> <td> : </td> <td> <?php echo rp($data0['total']); ?> </td></tr>
-      <tr><td  width="75%">Tunai</td> <td> : </td> <td> <?php echo rp($data0['tunai']); ?> </td></tr>
-      <tr><td  width="75%">Kredit</td> <td> : </td> <td> <?php echo rp($total_kredit); ?> </td></tr>
-      <tr><td  width="75%">Kembalian</td> <td> : </td> <td> <?php echo rp($total_kembalian); ?> </td></tr>
+      <tr><td width="75%">Total Pembelian</td> <td> : </td> <td> <?php echo koma($total_subtotal,2); ?> </tr>
+      <tr><td  width="75%">Total Akhir</td> <td> : </td> <td> <?php echo koma($data0['total'],2); ?> </td></tr>
+      <tr><td  width="75%">Tunai</td> <td> : </td> <td> <?php echo koma($data0['tunai'],2); ?> </td></tr>
+      <tr><td  width="75%">Kredit</td> <td> : </td> <td> <?php echo koma($total_kredit,2); ?> </td></tr>
+      <tr><td  width="75%">Kembalian</td> <td> : </td> <td> <?php echo koma($total_kembalian,2); ?> </td></tr>
             
 
   </tbody>

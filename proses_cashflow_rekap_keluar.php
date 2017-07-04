@@ -24,7 +24,7 @@ $columns = array(
 $sql = "SELECT js.no_faktur,sum(js.kredit) as masuk,da.nama_daftar_akun AS nama_dari_akun,dk.kode_akun_jurnal AS dari_akun_jurnal ,js.jenis_transaksi,da.nama_daftar_akun,js.keterangan_jurnal";
 $sql.=" FROM jurnal_trans js LEFT JOIN daftar_akun da ON js.kode_akun_jurnal = da.kode_daftar_akun LEFT JOIN jurnal_trans dk ON js.no_faktur = dk.no_faktur LEFT JOIN daftar_akun daf ON daf.kode_daftar_akun = dk.kode_akun_jurnal ";
 $sql.=" WHERE DATE(js.waktu_jurnal) = '$tanggal' AND js.kode_akun_jurnal = '$kas' AND dk.kode_akun_jurnal != js.kode_akun_jurnal AND js.kredit != '0' AND dk.debit != '0'  AND js.jenis_transaksi != 'Kas Mutasi' AND js.kredit = dk.debit GROUP BY dk.kode_akun_jurnal ";
-
+  
 
 
 $query = mysqli_query($conn, $sql) or die("eror 1");
@@ -66,7 +66,7 @@ while( $row=mysqli_fetch_array($query) ) {
 $nestedData[] = $tanggal;
   $nestedData[] = $row["nama_dari_akun"];
   $nestedData[] = $row["jenis_transaksi"] /*.' ('. $row["no_faktur"] .')'*/;
-  $nestedData[] = rp($row["masuk"]);
+  $nestedData[] = koma($row["masuk"],2);
 $data[] = $nestedData;
 }
 $json_data = array(
