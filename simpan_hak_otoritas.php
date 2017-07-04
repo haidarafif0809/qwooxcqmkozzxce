@@ -251,6 +251,13 @@ $detail_sub_operasi_tambah = angkadoang(isset($_POST['detail_sub_operasi_tambah'
 $detail_sub_operasi_edit = angkadoang(isset($_POST['detail_sub_operasi_edit']));
 $detail_sub_operasi_hapus = angkadoang(isset($_POST['detail_sub_operasi_hapus']));
 
+// transfer stok
+$transfer_stok_lihat = stringdoang(isset($_POST['transfer_stok_lihat']));
+$transfer_stok_tambah = stringdoang(isset($_POST['transfer_stok_tambah']));
+$transfer_stok_edit = stringdoang(isset($_POST['transfer_stok_edit']));
+$transfer_stok_hapus = stringdoang(isset($_POST['transfer_stok_hapus']));
+// end
+
 
 
 // tiga pilihan
@@ -573,6 +580,14 @@ $update_otoritas_radiologi->bind_param("iiiiiiiii",
  $radiologi_lihat, $daftar_radiologi, $pemeriksaan_radiologi, $hasil_radiologi, $simpan_hasil_radiologi, $status_hasil, $foto_hasil, $keterangan_hasil, $id);
 
 $update_otoritas_radiologi->execute();
+
+
+$update_otoritas_transfer_stok = $db->prepare("UPDATE otoritas_transfer_stok SET transfer_stok_lihat = ?, transfer_stok_tambah = ?, transfer_stok_edit = ?, transfer_stok_hapus = ? WHERE id_otoritas = ?");
+
+$update_otoritas_transfer_stok->bind_param("iiiii",
+    $transfer_stok_lihat,$transfer_stok_tambah,$transfer_stok_edit,$transfer_stok_hapus,$id);
+
+$update_otoritas_transfer_stok->execute();
 
                 echo '<META HTTP-EQUIV="Refresh" Content="0; URL=hak_otoritas.php">';
 
