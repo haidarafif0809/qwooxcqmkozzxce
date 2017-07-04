@@ -54,7 +54,9 @@
 		<link href="css/bootstrap4.min.css" rel="stylesheet">
 		<!-- Font Awesome -->
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.0/css/font-awesome.min.css">
-	
+    	<script type="text/javascript" src="js/jquery-2.2.3.min.js"></script>		<script src="my.js"></script>
+
+    		<script src="jquery-ui/jquery-ui.js"></script>
 
 
 	
