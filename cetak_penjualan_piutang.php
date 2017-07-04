@@ -4,7 +4,7 @@
 include 'header.php';
 include 'sanitasi.php';
 include 'db.php';
-include 'cache.class.php';
+include_once 'cache.class.php';
 
   $no_faktur = stringdoang($_GET['no_faktur']);
   $no_reg = stringdoang($_GET['no_reg']);
@@ -133,17 +133,22 @@ include 'cache.class.php';
 
         <?php 
 
-           $c = new Cache();
+          $c = new Cache();
           $c->setCache('detail_penjualan');
           $data_detail_penjualan = $c->retrieve($no_reg);
           $no_urut = 0;
           $subtotal = 0;
-          foreach ($data_detail_penjualan as $data ) {
-            $no_urut++;
-            $subtotal += $data['subtotal'];
-           echo  "<tr> <td class='table1' align='center'>".$no_urut."</td><td class='table1'>". $data['nama_barang']. "</td><td class='table1' align='right'>". $data['jumlah_barang']."</td>  <td class='table1'>". $data['satuan'] ."</td><td class='table1' align='right'>". $data['harga']."</td><td class='table1' align='right'>". $data['potongan'] ."</td><td class='table1' align='right'>". $data['subtotal'] ."</td> <tr>"; 
-      
-        }
+
+          if (is_array($data_detail_penjualan) || is_object($data_detail_penjualan)){
+                      foreach ($data_detail_penjualan as $data ) {
+                      $no_urut++;
+                      $subtotal += $data['subtotal'];
+                     echo  "<tr> <td class='table1' align='center'>".$no_urut."</td><td class='table1'>". $data['nama_barang']. "</td><td class='table1' align='right'>". $data['jumlah_barang']."</td>  <td class='table1'>". $data['satuan'] ."</td><td class='table1' align='right'>". $data['harga']."</td><td class='table1' align='right'>". $data['potongan'] ."</td><td class='table1' align='right'>". $data['subtotal'] ."</td> <tr>"; 
+                
+                  }
+          }
+
+
          ?>
        
         </tbody>

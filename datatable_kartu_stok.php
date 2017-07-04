@@ -252,6 +252,14 @@ if ($data['jenis_hpp'] == '1')
 
 				$nestedData[] = "<p style='text-align:right'>".rp($harga_awal)."<p/>";
 			}
+			else if ($data['jenis_transaksi'] == 'Transfer Stok') {
+
+				$ambil_harga_transfer_stok = $db->query("SELECT harga_unit AS harga_transfer_stok FROM hpp_masuk  WHERE no_faktur = '$data[no_faktur]' AND kode_barang = '$kode_barang' ");
+				$data_transfer_stok = mysqli_fetch_array($ambil_harga_transfer_stok);
+				$harga_transfer_stok = $data_transfer_stok['harga_transfer_stok'];
+
+				$nestedData[] = "<p style='text-align:right'>".rp($harga_transfer_stok)."<p/>";
+			}
 
 //LOGIKA UNTUK MENAMPILKAN HARGA DARI MASING" TRANSAKSI (JUMLAH PRODUK BERTAMBAH)
 
