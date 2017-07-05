@@ -609,7 +609,7 @@ $otoritas_tombol = mysqli_fetch_array($pilih_akses_tombol);
      <option value="">SILAKAN PILIH</option>
         <?php 
 
-        include 'cache.class.php';
+        include_once 'cache.class.php';
           $c = new Cache();
           $c->setCache('produk');
           $data_c = $c->retrieveAll();
