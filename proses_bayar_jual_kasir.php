@@ -2,6 +2,9 @@
 include 'db.php';
 include_once 'sanitasi.php';
 
+header("Content-type:application/json");
+
+
 
 $tahun_sekarang = date('Y');
 $bulan_sekarang = date('m');
@@ -30,9 +33,17 @@ $no_reg = stringdoang($_POST['no_reg']);
 $total_tbs = ($total_ss - $potongan) + $biaya_admin + $data_radiologi['harga_radiologi'];
 
 if ($total != $total_tbs) {
-    echo 1;
+    $status_jual = 1;
+
+    echo '{ "no_faktur": "0", "status_jual" : "'.$status_jual.'"}';
+
+
   }
   else{
+
+
+
+    $status_jual = 0;
   
     // First of all, let's begin a transaction
 $db->begin_transaction();
@@ -85,6 +96,8 @@ $no_faktur = $nomor."/JL/".$data_bulan_terakhir."/".$tahun_terakhir;
  }
 
   
+echo '{ "no_faktur": "'.$no_faktur.'", "status_jual" : "'.$status_jual.'"}';
+
 
  $session_id = session_id();
 
