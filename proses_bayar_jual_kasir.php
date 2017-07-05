@@ -68,7 +68,9 @@ jika tidak maka nomor terakhir ditambah dengan 1
  */
  if ($v_bulan_terakhir['bulan'] != $bulan_sekarang) {
   # code...
-echo $no_faktur = "1/JL/".$data_bulan_terakhir."/".$tahun_terakhir;
+
+$no_faktur = "1/JL/".$data_bulan_terakhir."/".$tahun_terakhir;
+
 
  }
 
@@ -77,7 +79,7 @@ echo $no_faktur = "1/JL/".$data_bulan_terakhir."/".$tahun_terakhir;
 
 $nomor = 1 + $ambil_nomor ;
 
-echo $no_faktur = $nomor."/JL/".$data_bulan_terakhir."/".$tahun_terakhir;
+$no_faktur = $nomor."/JL/".$data_bulan_terakhir."/".$tahun_terakhir;
 
 
  }
@@ -354,7 +356,7 @@ else
 
     //Input agar tampil di laporan laboratoriu (Tambahan sore hari belom di tes)
     $insert_pemeriksaan_laboratorium = $db->query("INSERT INTO pemeriksaan_laboratorium (no_reg,no_rm,status,nama_pasien,waktu,status_pasien) VALUES ('$no_reg',
-      '$no_rm','1','$nama','$waktu','Rawat Jalan')");
+      '$no_rm','1','$ambil_kode_pelanggan[nama_pelanggan]','$waktu','Rawat Jalan')");
 
     //ambil di tbs penjualan jasa labnya
     $taked_tbs = $db->query("SELECT kode_barang,nama_barang FROM tbs_penjualan WHERE no_reg = '$no_reg' AND lab = 'Laboratorium'");
