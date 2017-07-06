@@ -3,12 +3,12 @@
     include 'sanitasi.php';
     include 'db.php';
 
-    $session_id = $_POST['session_id'];
+    $session_id = session_id();
 
     $no_faktur_pembelian = stringdoang($_POST['no_faktur_pembelian']);
     
     
-    $cek2 = $db->query("SELECT * FROM tbs_pembayaran_hutang WHERE no_faktur_pembelian = '$no_faktur_pembelian'");
+    $cek2 = $db->query("SELECT no_faktur_pembelian FROM tbs_pembayaran_hutang WHERE no_faktur_pembelian = '$no_faktur_pembelian' AND session_id = '$session_id' ");
     $data= mysqli_num_rows($cek2); 
 
 if ($data > 0){
