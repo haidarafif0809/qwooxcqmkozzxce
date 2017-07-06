@@ -87,7 +87,13 @@ else{
 
 }
 
+    //INPUT JASA LABORATORIUM , ANAK DARI HEADER
+    $cek_id_pemeriksaan = $db->query("SELECT id,nama,harga_1 FROM jasa_lab WHERE kode_lab = '$kode_jasa_lab'");
+    $out = mysqli_fetch_array($cek_id_pemeriksaan);
 
+    $id_jasa_lab = $out['id'];
+    $nama_jasa = $out['nama'];
+    $harga_jasa = $out['harga_1'];
 
 
     //INSERT TBS APS PENJUALAN
