@@ -180,7 +180,7 @@ else
 				
 			}
 			else if ($row['jenis_transaksi'] == 'Penjualan') {
-				$ambil_kode = $db_pasien->query("SELECT kode_pelanggan FROM penjualan WHERE no_faktur = '$row[no_faktur]' ");
+				$ambil_kode = $db->query("SELECT kode_pelanggan FROM penjualan WHERE no_faktur = '$row[no_faktur]' ");
 				$data_kode = mysqli_fetch_array($ambil_kode);
 
 				$ambil_pelanggan = $db_pasien->query("SELECT nama_pelanggan FROM pelanggan WHERE kode_pelanggan = '$data_kode[kode_pelanggan]' ");
