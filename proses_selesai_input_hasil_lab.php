@@ -123,6 +123,7 @@ else{
   $query_hapus_tbs_aps = $db->query("DELETE FROM tbs_aps_penjualan WHERE no_reg = '$no_reg' ");
 
 }
+$query_update_registrasi = $db->query("UPDATE registrasi SET status_lab = '1' WHERE no_reg = '$no_reg' ");
 
 $query_hapus_tbs_hasil = $db->query("DELETE FROM tbs_hasil_lab WHERE no_reg = '$no_reg'");
 ?>

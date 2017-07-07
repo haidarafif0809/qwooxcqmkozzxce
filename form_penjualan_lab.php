@@ -691,18 +691,8 @@ $(document).on('click','.set-sendirian',function(e){
 
 <!--Start Tampilan Awal DataTable Ajax-->
 <script type="text/javascript">
-  $(document).ready(function(){
+$(document).ready(function(){
 
-    /*var no_reg = $("#no_reg").val();
-    //Ambil Data Togle dari Header, Detail, dan Hasil Sendirian
-
-    
-    $.post("cek_data_tbs_aps.php",{no_reg:no_reg},function(data){
-
-      if(data == 1){
-
-      }
-    });*/
 
 
       $('#table_tbs_laboratorium').DataTable().destroy();
@@ -728,8 +718,9 @@ $(document).on('click','.set-sendirian',function(e){
             }
           }   
         });
-      $("#span_tbs").show()
-  });
+      $("#span_tbs").show();
+    
+});
 </script>
 <!--Akhir Tampilan Awal DataTable Ajax-->
 
@@ -737,6 +728,11 @@ $(document).on('click','.set-sendirian',function(e){
 <script type="text/javascript">
   $(document).ready(function(){
     $(document).on('click','#simpan_data',function(e){
+      
+    var no_reg = $("#no_reg").val();
+    
+    $.post("save_laboratorium.php",{no_reg:no_reg},function(data){
+    if (data == 1) {
 
     //TABLE AJAX TBS
     $('#table_tbs_laboratorium').DataTable().destroy();
@@ -766,6 +762,9 @@ $(document).on('click','.set-sendirian',function(e){
       $("#span_tbs").show();
       $("#modal_lab").modal('hide');
     //TABLE AJAX TBS
+    }
+
+    });
     });
   });
 </script>

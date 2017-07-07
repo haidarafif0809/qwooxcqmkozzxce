@@ -25,35 +25,35 @@ if($hasil_setting == '1'){
   // getting total number records without any search
   $sql = "SELECT COUNT(*) AS jumlah_data ";
   $sql.=" FROM registrasi";
-  $sql.=" WHERE registrasi.jenis_pasien = 'Rawat Jalan' AND (registrasi.status = 'Proses' OR registrasi.status = 'Rujuk Keluar Ditangani')";
+  $sql.=" WHERE registrasi.jenis_pasien = 'Rawat Jalan' AND registrasi.status_lab = '2' AND (registrasi.status = 'Proses' OR registrasi.status = 'Rujuk Keluar Ditangani')";
 
   $query = mysqli_query($conn, $sql) or die("Eror Sql 1: get employees");
   $query_data = mysqli_fetch_array($query);
   $totalData = $query_data['jumlah_data'];
   $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
-  //Query Rawat Jalan
+  //Query Rawat Jalan, INNER JOIN KE TBS APS PENJUALAN UNTUK CEK DATA NYA ADA TIDAK , JANGAN DI BUANG !
   $sql = "SELECT reg.no_reg, reg.no_rm, reg.nama_pasien, reg.jenis_pasien, reg.tanggal, pj.no_faktur, reg.id";
-  $sql.=" FROM tbs_aps_penjualan tbs INNER JOIN registrasi reg ON tbs.no_reg = reg.no_reg INNER JOIN penjualan pj ON tbs.no_reg = pj.no_reg";
-  $sql.=" WHERE (reg.status = 'Proses' OR reg.status = 'Rujuk Keluar Ditangani') AND reg.jenis_pasien = 'Rawat Jalan' AND pj.no_faktur IS NULL GROUP BY tbs.no_reg";
-
+  $sql.=" FROM registrasi reg LEFT JOIN penjualan pj ON reg.no_reg = pj.no_reg ";
+  $sql.=" WHERE (reg.status = 'Proses' OR reg.status = 'Rujuk Keluar Ditangani') AND reg.jenis_pasien = 'Rawat Jalan' AND reg.status_lab = '2' AND pj.no_faktur IS NULL GROUP BY reg.no_reg";
+  
 }
 else{
 
   // getting total number records without any search
   $sql = "SELECT COUNT(*) AS jumlah_data ";
   $sql.=" FROM registrasi";
-  $sql.=" WHERE registrasi.jenis_pasien = 'Rawat Jalan' AND registrasi.status = 'Sudah Pulang' ";
+  $sql.=" WHERE registrasi.jenis_pasien = 'Rawat Jalan' AND registrasi.status = 'Sudah Pulang' AND registrasi.status_lab = '2' ";
 
   $query = mysqli_query($conn, $sql) or die("Eror Sql 2: get employees");
   $query_data = mysqli_fetch_array($query);
   $totalData = $query_data['jumlah_data'];
   $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
-  //Query Rawat Jalan
+  //Query Rawat Jalan, INNER JOIN KE TBS APS PENJUALAN UNTUK CEK DATA NYA ADA TIDAK , JANGAN DI BUANG !
   $sql = "SELECT reg.no_reg, reg.no_rm, reg.nama_pasien, reg.jenis_pasien, reg.tanggal, pj.no_faktur, reg.id";
-  $sql.=" FROM tbs_aps_penjualan tbs INNER JOIN registrasi reg ON tbs.no_reg = reg.no_reg INNER JOIN penjualan pj ON tbs.no_reg = pj.no_reg";
-  $sql.=" WHERE reg.jenis_pasien = 'Rawat Jalan' AND reg.status = 'Sudah Pulang'  AND pj.no_faktur != '' GROUP BY tbs.no_reg";
+  $sql.=" FROM registrasi reg LEFT JOIN penjualan pj ON reg.no_reg = pj.no_reg";
+  $sql.=" WHERE reg.jenis_pasien = 'Rawat Jalan' AND reg.status = 'Sudah Pulang' AND reg.status_lab = '2' AND pj.no_faktur != '' GROUP BY reg.no_reg";
 
 }
 
