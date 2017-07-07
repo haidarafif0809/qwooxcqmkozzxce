@@ -78,7 +78,8 @@ tr:nth-child(even){background-color: #f2f2f2}
          <th style ='background-color: #4CAF50; color: white' >Nama Pasien</th>
          <th style ='background-color: #4CAF50; color: white' >Tanggal Periksa</th>
          <th style ='background-color: #4CAF50; color: white' >Nama Dokter</th>        
-         <th style ='background-color: #4CAF50; color: white' >Poli</th>
+         <th style ='background-color: #4CAF50; color: white' >Petugas</th>        
+    
     </thead>
 
  </table>
