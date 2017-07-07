@@ -34,7 +34,7 @@ if($hasil_setting == '1'){
 
   //Query Rawat Jalan
   $sql = "SELECT reg.no_reg, reg.no_rm, reg.nama_pasien, reg.jenis_pasien, reg.tanggal, pj.no_faktur, reg.id";
-  $sql.=" FROM registrasi reg INNER JOIN tbs_aps_penjualan tap ON reg.no_reg = tap.no_reg LEFT JOIN penjualan pj ON reg.no_reg = pj.no_reg ";
+  $sql.=" FROM registrasi reg LEFT JOIN penjualan pj ON reg.no_reg = pj.no_reg ";
   $sql.=" WHERE (reg.status = 'Proses' OR reg.status = 'Rujuk Keluar Ditangani') AND reg.jenis_pasien = 'Rawat Jalan' AND reg.status_lab != '1' AND pj.no_faktur IS NULL GROUP BY reg.no_reg";
   
 }
@@ -52,7 +52,7 @@ else{
 
   //Query Rawat Jalan
   $sql = "SELECT reg.no_reg, reg.no_rm, reg.nama_pasien, reg.jenis_pasien, reg.tanggal, pj.no_faktur, reg.id";
-  $sql.=" FROM registrasi reg INNER JOIN tbs_aps_penjualan tap ON reg.no_reg = tap.no_reg LEFT JOIN penjualan pj ON reg.no_reg = pj.no_reg";
+  $sql.=" FROM registrasi reg LEFT JOIN penjualan pj ON reg.no_reg = pj.no_reg";
   $sql.=" WHERE reg.jenis_pasien = 'Rawat Jalan' AND reg.status = 'Sudah Pulang' AND reg.status_lab != '1' AND pj.no_faktur != '' GROUP BY reg.no_reg";
 
 }
@@ -73,10 +73,7 @@ if( !empty($requestData['search']['value']) ) {   // if there is a search parame
         $sql.=" OR reg.no_rm = '".$requestData['search']['value']."' ";
         $sql.=" OR reg.nama_pasien LIKE '".$requestData['search']['value']."%'";   
         $sql.=" OR reg.tanggal = '".$tanggal_cari."' )";
-  
-    $query=mysqli_query($conn, $sql) or die("Eror Search: get employees");
-
-$totalFiltered = mysqli_num_rows($query); // when there is a search parameter then we have to modify total number filtered rows as per search result. 
+ 
 }
 
 
