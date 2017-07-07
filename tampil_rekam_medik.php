@@ -37,8 +37,8 @@ $totalData = mysqli_num_rows($query);
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
 
-$sql = "SELECT *";
-$sql.=" FROM rekam_medik"; 
+$sql = "SELECT rekam_medik.*,petugas";
+$sql.=" FROM rekam_medik INNER JOIN registrasi rg ON rg.no_reg = rekam_medik.no_reg"; 
 $sql.=" WHERE 1=1 ";
 $sql.=" AND nama LIKE '%$pencarian%' ";
 $sql.=" AND tanggal_periksa >= '$dari_tanggal'";
@@ -57,7 +57,9 @@ $query=mysqli_query($conn, $sql) or die("eror 2");
 $totalFiltered = mysqli_num_rows($query); // when there is a search parameter then we have to modify total number filtered rows as per search result. 
 
 
-$sql.=" ORDER BY id ".$requestData['order'][0]['dir']." LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
+$sql.=" ORDER BY rekam_medik.id ".$requestData['order'][0]['dir']." LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
+
+
 /* $requestData['order'][0]['column'] contains colmun index, $requestData['order'][0]['dir'] contains order such as asc/desc  */  
 $query=mysqli_query($conn, $sql) or die("eror 3");
 
@@ -71,6 +73,7 @@ $query=mysqli_query($conn, $sql) or die("eror 3");
             $nestedData[] = $row["nama"];
             $nestedData[] = $row["tanggal_periksa"];
             $nestedData[] = $row["dokter"]; 
+            $nestedData[] = $row["petugas"]; 
             $nestedData[] = $row["poli"];
             $nestedData[] = $row["id"];    
 
@@ -93,8 +96,8 @@ $totalData = mysqli_num_rows($query);
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
 
-$sql = "SELECT *";
-$sql.=" FROM rekam_medik"; 
+$sql = "SELECT rekam_medik.*,petugas";
+$sql.=" FROM rekam_medik  INNER JOIN registrasi rg ON rg.no_reg = rekam_medik.no_reg"; 
 $sql.=" WHERE 1=1 ";
 $sql.=" AND no_rm LIKE '%$pencarian%' ";
 $sql.=" AND tanggal_periksa >= '$dari_tanggal'";
@@ -127,6 +130,7 @@ $query=mysqli_query($conn, $sql) or die("eror 3");
             $nestedData[] = $row["nama"];
             $nestedData[] = $row["tanggal_periksa"];
             $nestedData[] = $row["dokter"]; 
+            $nestedData[] = $row["petugas"]; 
             $nestedData[] = $row["poli"];
             $nestedData[] = $row["id"];    
 
