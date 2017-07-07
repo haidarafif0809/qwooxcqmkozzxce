@@ -32,11 +32,11 @@ if($hasil_setting == '1'){
   $totalData = $query_data['jumlah_data'];
   $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
-  //Query Rawat Jalan, LEFT JOIN KE TBS APS PENJUALAN UNTUK CEK DATA NYA ADA TIDAK , JANGAN DI BUANG !
+  //Query Rawat Jalan
   $sql = "SELECT reg.no_reg, reg.no_rm, reg.nama_pasien, reg.jenis_pasien, reg.tanggal, pj.no_faktur, reg.id";
-  $sql.=" FROM registrasi reg LEFT JOIN tbs_aps_penjualan tap ON reg.no_reg = tap.no_reg LEFT JOIN penjualan pj ON reg.no_reg = pj.no_reg ";
-  $sql.=" WHERE (reg.status = 'Proses' OR reg.status = 'Rujuk Keluar Ditangani') AND reg.jenis_pasien = 'Rawat Jalan'  AND pj.no_faktur IS NULL GROUP BY reg.no_reg";
-  
+  $sql.=" FROM tbs_aps_penjualan tbs LEFT JOIN registrasi reg ON tbs.no_reg = reg.no_reg LEFT JOIN penjualan pj ON tbs.no_reg = pj.no_reg";
+  $sql.=" WHERE (reg.status = 'Proses' OR reg.status = 'Rujuk Keluar Ditangani') AND reg.jenis_pasien = 'Rawat Jalan'  AND pj.no_faktur IS NULL GROUP BY tbs.no_reg";
+
 }
 else{
 
@@ -50,10 +50,10 @@ else{
   $totalData = $query_data['jumlah_data'];
   $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
-  //Query Rawat Jalan, LEFT JOIN KE TBS APS PENJUALAN UNTUK CEK DATA NYA ADA TIDAK , JANGAN DI BUANG !
+  //Query Rawat Jalan
   $sql = "SELECT reg.no_reg, reg.no_rm, reg.nama_pasien, reg.jenis_pasien, reg.tanggal, pj.no_faktur, reg.id";
-  $sql.=" FROM registrasi reg LEFT JOIN tbs_aps_penjualan tap ON reg.no_reg = tap.no_reg LEFT JOIN penjualan pj ON reg.no_reg = pj.no_reg";
-  $sql.=" WHERE reg.jenis_pasien = 'Rawat Jalan' AND reg.status = 'Sudah Pulang'  AND pj.no_faktur != '' GROUP BY reg.no_reg";
+  $sql.=" FROM tbs_aps_penjualan tbs LEFT JOIN registrasi reg ON tbs.no_reg = reg.no_reg LEFT JOIN penjualan pj ON tbs.no_reg = pj.no_reg";
+  $sql.=" WHERE reg.jenis_pasien = 'Rawat Jalan' AND reg.status = 'Sudah Pulang'  AND pj.no_faktur != '' GROUP BY tbs.no_reg";
 
 }
 
