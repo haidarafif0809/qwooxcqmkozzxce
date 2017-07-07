@@ -19,8 +19,9 @@ $columns = array(
   1 => 'nama',
   2=> 'tanggal_periksa',
   3 => 'dokter',
-  4=> 'poli',
-  5=> 'id'
+  4 => 'petugas',
+  5=> 'poli',
+  6=> 'id'
   
 );
 
@@ -28,18 +29,20 @@ switch ($cari_berdasarkan) {
     case "nama":
 
 // getting total number records without any search
-$sql = "SELECT *";
+$sql = "SELECT COUNT(*) AS jumlah_data";
 $sql.=" FROM rekam_medik_inap  ";
 $sql.=" WHERE nama LIKE '%$pencarian%' ";
 $sql.=" AND tanggal_periksa >= '$dari_tanggal'";
 $sql.=" AND tanggal_periksa <= '$sampai_tanggal' ";
 $query = mysqli_query($conn, $sql) or die("eror 1");
-$totalData = mysqli_num_rows($query);
+$query_data = $db->query($sql);
+$jumlah_data = mysqli_fetch_array($query_data);
+$totalData = $jumlah_data['jumlah_data'];
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
 
-$sql = "SELECT *";
-$sql.=" FROM rekam_medik_inap "; 
+$sql = "SELECT rekam_medik_inap.*,petugas";
+$sql.=" FROM rekam_medik_inap INNER JOIN registrasi rg ON rg.no_reg = rekam_medik_inap.no_reg"; 
 $sql.=" WHERE 1=1 ";
 $sql.=" AND nama LIKE '%$pencarian%' ";
 $sql.=" AND tanggal_periksa >= '$dari_tanggal'";
@@ -72,6 +75,7 @@ $query=mysqli_query($conn, $sql) or die("eror 3");
             $nestedData[] = $row["nama"];
             $nestedData[] = $row["tanggal_periksa"];
             $nestedData[] = $row["dokter"]; 
+            $nestedData[] = $row["petugas"]; 
             $nestedData[] = $row["poli"];
             $nestedData[] = $row["id"];    
 
@@ -84,18 +88,20 @@ $query=mysqli_query($conn, $sql) or die("eror 3");
     case "no_rm":
 
 // getting total number records without any search
-$sql = "SELECT *";
+$sql = "SELECT COUNT(*) AS jumlah_data";
 $sql.=" FROM rekam_medik_inap  ";
 $sql.=" WHERE no_rm LIKE '%$pencarian%' ";
 $sql.=" AND tanggal_periksa >= '$dari_tanggal'";
 $sql.=" AND tanggal_periksa <= '$sampai_tanggal' ";
+$query_data = $db->query($sql);
+$jumlah_data = mysqli_fetch_array($query_data);
 $query = mysqli_query($conn, $sql) or die("eror 1");
-$totalData = mysqli_num_rows($query);
+$totalData = $jumlah_data['jumlah_data'];
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
 
-$sql = "SELECT *";
-$sql.=" FROM rekam_medik_inap "; 
+$sql = "SELECT rekam_medik_inap.*,petugas";
+$sql.=" FROM rekam_medik_inap INNER JOIN registrasi rg ON rg.no_reg = rekam_medik_inap.no_reg"; 
 $sql.=" WHERE 1=1 ";
 $sql.=" AND no_rm LIKE '%$pencarian%' ";
 $sql.=" AND tanggal_periksa >= '$dari_tanggal'";
@@ -128,6 +134,7 @@ $query=mysqli_query($conn, $sql) or die("eror 3");
             $nestedData[] = $row["nama"];
             $nestedData[] = $row["tanggal_periksa"];
             $nestedData[] = $row["dokter"]; 
+            $nestedData[] = $row["petugas"]; 
             $nestedData[] = $row["poli"];
             $nestedData[] = $row["id"];    
 
