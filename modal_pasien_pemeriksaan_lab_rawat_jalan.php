@@ -20,6 +20,8 @@ $cek_setting = $db->query("SELECT nama FROM setting_laboratorium WHERE jenis_lab
 $data_setting = mysqli_fetch_array($cek_setting);
 $hasil_setting = $data_setting['nama']; //jika hasil 1 maka = input hasil baru bayar, jika 0 maka = bayar dulu baru input hasil
 
+if($hasil_setting == '1'){
+
   // getting total number records without any search
   $sql = "SELECT COUNT(*) AS jumlah_data ";
   $sql.=" FROM registrasi";
@@ -30,9 +32,6 @@ $hasil_setting = $data_setting['nama']; //jika hasil 1 maka = input hasil baru b
   $totalData = $query_data['jumlah_data'];
   $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
-if($hasil_setting == '1'){
-
-
   //Query Rawat Jalan
   $sql = "SELECT reg.no_reg, reg.no_rm, reg.nama_pasien, reg.jenis_pasien, reg.tanggal, pj.no_faktur, reg.id";
   $sql.=" FROM registrasi reg LEFT JOIN penjualan pj ON reg.no_reg = pj.no_reg ";
@@ -41,6 +40,15 @@ if($hasil_setting == '1'){
 }
 else{
 
+  // getting total number records without any search
+  $sql = "SELECT COUNT(*) AS jumlah_data ";
+  $sql.=" FROM registrasi";
+  $sql.=" WHERE registrasi.jenis_pasien = 'Rawat Jalan' AND registrasi.status = 'Sudah Pulang' AND registrasi.status_lab != '1' ";
+
+  $query = mysqli_query($conn, $sql) or die("Eror Sql 2: get employees");
+  $query_data = mysqli_fetch_array($query);
+  $totalData = $query_data['jumlah_data'];
+  $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
   //Query Rawat Jalan
   $sql = "SELECT reg.no_reg, reg.no_rm, reg.nama_pasien, reg.jenis_pasien, reg.tanggal, pj.no_faktur, reg.id";
@@ -77,12 +85,15 @@ $data = array();
 while( $row=mysqli_fetch_array($query) ) {  // preparing an array
   $nestedData=array(); 
 
+
       $nestedData[] = $row["no_reg"];
       $nestedData[] = $row["no_rm"];
       $nestedData[] = $row["nama_pasien"];
       $nestedData[] = $row["jenis_pasien"];
       $nestedData[] = $row["tanggal"];
       $nestedData[] = $row["id"];
+  
+
 
 
   $data[] = $nestedData;
