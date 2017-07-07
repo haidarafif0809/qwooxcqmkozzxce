@@ -27,6 +27,7 @@ $columns = array(
 	10 => 'group_bed',
 	11=> 'jam',
 	12=> 'tanggal_periksa',
+	12=> 'petugas',
 	13=> 'aksi',
 	14=> 'selesai'
 
@@ -47,8 +48,8 @@ $totalFiltered = $totalData;  // when there is no search parameter then total nu
 
 $sql = "SELECT rekam_medik_inap.jam,rekam_medik_inap.no_reg,rekam_medik_inap.no_rm,rekam_medik_inap.nama,
 rekam_medik_inap.alamat,rekam_medik_inap.umur,rekam_medik_inap.jenis_kelamin,rekam_medik_inap.poli,rekam_medik_inap.dokter,
-rekam_medik_inap.dokter_penanggung_jawab,rekam_medik_inap.bed,rekam_medik_inap.group_bed,rekam_medik_inap.tanggal_periksa,rekam_medik_inap.id";
-$sql.=" FROM rekam_medik_inap";
+rekam_medik_inap.dokter_penanggung_jawab,rekam_medik_inap.bed,rekam_medik_inap.group_bed,rekam_medik_inap.tanggal_periksa,rekam_medik_inap.id,petugas";
+$sql.=" FROM rekam_medik_inap  INNER JOIN registrasi rg ON rg.no_reg = rekam_medik_inap.no_reg";
 $sql.=" WHERE 1=1 ";
 $sql.=" AND rekam_medik_inap.status IS NULL ";
 
@@ -85,6 +86,7 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 	$nestedData[] = $row["group_bed"];
 	$nestedData[] = $row["jam"];	
 	$nestedData[] = $row["tanggal_periksa"];
+	$nestedData[] = $row["petugas"];
 
  if ($rekam_medik['rekam_medik_ri_lihat'] > 0) 
 
