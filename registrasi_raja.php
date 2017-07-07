@@ -271,12 +271,12 @@ if ($registrasi_rj['registrasi_rj_lihat'] > 0) {
 <br>
 
 
-<div class="row">
+<div class="row form_registrasi_raja">
   <div class="col-sm-4">
   <div class="card card-block">
 
 
-<form role="form" action="proses_rawat_jalan.php" id="sending" method="POST">
+<form role="form" action="proses_rawat_jalan.php" id="" method="POST">
 
 
 <input style="height: 20px;" type="hidden" class="form-control" id="token" name="token" value="Kosasih" autocomplete="off"> 
@@ -870,24 +870,6 @@ else{
 <!--end script panggil pasien-->
 
 
-<!--<script type="text/javascript">
-//tanggal_lahir
- $(function() {
-   
-$( "#tanggal_lahir" ).datepicker({
-  dateFormat: "dd-mm-yy", changeYear: true ,  yearRange: "1800:2500"
-});
-});
-//end tanggal_LAHIR
-</script>
-
-<script>
-//tanggal_lahir
-  $(function() {
-  $( "#tanggal_lahir" ).pickadate({ selectYears: 100, format: 'dd-mm-yyyy'});
-  });
-  </script>-->
-
 <script type="text/javascript">
 
 $("#tanggal_lahir").blur(function(){
@@ -1019,9 +1001,14 @@ $("#form_cari").submit(function(){
     $("#gol_darah").val('');
     $("#umur").val('');
 
-   }//penutup if
+   }
+   else {
+    $('html,body').animate({
+        scrollTop: $(".form_registrasi_raja").offset().top},
+        'fast');
+   }
 
-    });////penutup function(data)
+    });
 
     });//penutup click(function()
   });//penutup ready(function()
@@ -1062,34 +1049,6 @@ $("#form_cari").submit(function(){
 
 </script>
 
-<script type="text/javascript">
-//berfunsi untuk mencekal username ganda
- $(document).ready(function(){
-  $(document).on('click', '.pilih', function (e) {
-    var no_rm = $("#no_rm").val();
-    var nama_pasien = $("#nama_pasien").val();
-
- $.post('cek_data_pasien_rawat_jalan.php',{no_rm:no_rm,nama_pasien:nama_pasien}, function(data){
-  
-  if(data == 1){
-    alert("Anda Tidak Bisa Menambahkan Pasien Yang Sudah Ada!");
-    $("#no_rm").val('');
-    $("#nama_pasien").val('');
-    $("#no_hp").val('');
-    $("#tanggal_lahir").val('');
-    $("#alamat").val('');
-    $("#jenis_kelamin").val('');
-    $("#penjamin").val('');
-    $("#gol_darah").val('');
-    $("#umur").val('');
-
-   }//penutup if
-
-    });////penutup function(data)
-
-    });//penutup click(function()
-  });//penutup ready(function()
-</script>
 
 <!-- DATATABLE AJAX PASIEN LAMA-->
     <script type="text/javascript" language="javascript" >

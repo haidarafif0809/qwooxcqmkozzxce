@@ -199,7 +199,8 @@ echo '<button type="button" class="btn btn-info " data-toggle="modal" data-targe
 		$("#nama_kategori").val('');
 
 		$(".alert").show('fast');
-		$("#table_baru").load('tabel-kategori.php');
+ var table_kategori = $('#table_kategori').DataTable();
+        table_kategori.draw();
 		
 		setTimeout(tutupalert, 2000);
 		$(".modal").modal("hide");
@@ -282,9 +283,10 @@ echo '<button type="button" class="btn btn-info " data-toggle="modal" data-targe
 
 // mulai proses edit
 $.post("update_kategori.php",{id:id,nama:nama},function(data){
-		if (data != '') {
+		if (data == 1) {
 		$(".alert").show('fast');
-		$("#table_baru").load('tabel-kategori.php');
+ var table_kategori = $('#table_kategori').DataTable();
+        table_kategori.draw();
 		
 		setTimeout(tutupalert, 2000);
 		$(".modal").modal("hide");

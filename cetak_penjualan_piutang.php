@@ -4,7 +4,7 @@
 include 'header.php';
 include 'sanitasi.php';
 include 'db.php';
-
+include_once 'cache.class.php';
 
   $no_faktur = stringdoang($_GET['no_faktur']);
   $no_reg = stringdoang($_GET['no_reg']);
@@ -128,6 +128,28 @@ include 'db.php';
             
         </thead>
         <tbody id="tbody-detail">
+
+       
+
+        <?php 
+
+          $c = new Cache();
+          $c->setCache('detail_penjualan');
+          $data_detail_penjualan = $c->retrieve($no_reg);
+          $no_urut = 0;
+          $subtotal = 0;
+
+          if (is_array($data_detail_penjualan) || is_object($data_detail_penjualan)){
+                      foreach ($data_detail_penjualan as $data ) {
+                      $no_urut++;
+                      $subtotal += $data['subtotal'];
+                     echo  "<tr> <td class='table1' align='center'>".$no_urut."</td><td class='table1'>". $data['nama_barang']. "</td><td class='table1' align='right'>". $data['jumlah_barang']."</td>  <td class='table1'>". $data['satuan'] ."</td><td class='table1' align='right'>". $data['harga']."</td><td class='table1' align='right'>". $data['potongan'] ."</td><td class='table1' align='right'>". $data['subtotal'] ."</td> <tr>"; 
+                
+                  }
+          }
+
+
+         ?>
        
         </tbody>
 
@@ -161,7 +183,7 @@ div.mix {border-style: dotted dashed solid double;}
  <table>
   <tbody>
 
-      <tr><td width="50%"><font class="satu">Sub Total</font></td> <td> :&nbsp;</td> <td><font class="satu"> <span id="subtotal_barang"></span></font></tr>
+      <tr><td width="50%"><font class="satu">Sub Total</font></td> <td> :&nbsp;</td> <td><font class="satu"> <?php echo $subtotal ?></font></tr>
       <tr><td width="50%"><font class="satu">Diskon</font></td> <td> :&nbsp;</td> <td><font class="satu"> <?php echo rp($data0['potongan']); ?></font> </tr>
             <tr><td width="50%"><font class="satu">Biaya Admin</font></td> <td> :&nbsp;</td> <td><font class="satu"> <?php echo rp($data0['biaya_admin']); ?></font> </tr>
       <tr><td  width="50%"><font class="satu">Tax</font></td> <td> :&nbsp;</td> <td><font class="satu"> <?php echo rp($data0['tax']); ?> </font></td></tr>
@@ -211,36 +233,8 @@ div.mix {border-style: dotted dashed solid double;}
 
  <script>
 $(document).ready(function(){
-
-
-   var db = new Dexie("database_penjualan");
-    
-       db.version(1).stores({
-         
-        detail_penjualan : 'id,no_reg,kode_barang,nama_barang,jumlah_barang,harga,subtotal,satuan,potongan'  
-      });
-
-       var no_reg = '<?php echo $no_reg ?>';
-  
-        var no_urut = 0;
-        var subtotal =  0;
-       db.detail_penjualan.where('no_reg').equals(no_reg).each(function(data,i){
-            
-            subtotal = parseInt(subtotal,10) + parseInt(data.subtotal,10);
-        no_urut++;
-        var data_detail_penjualan = "<tr> <td class='table1' align='center'>"+no_urut+"</td><td class='table1'>"+ data.nama_barang +"</td><td class='table1' align='right'>"+ data.jumlah_barang+"</td>  <td class='table1'>"+ data.satuan +"</td><td class='table1' align='right'>"+ data.harga+"</td><td class='table1' align='right'>"+ data.potongan +"</td><td class='table1' align='right'>"+ data.subtotal +"</td> <tr>"; 
-
-             
-
-            $("#tbody-detail").append(data_detail_penjualan);
        
-      $("#subtotal_barang").text(subtotal);
-                
-        }).then(function(){
-         window.print(); 
-        });
-           
-
+         window.print();             
 });
 </script>
 

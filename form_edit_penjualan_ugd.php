@@ -67,8 +67,9 @@ $user = $_SESSION['nama'];
 $id_user = $_SESSION['id'];
 
 
-    $perintah = $db->query("SELECT tanggal, tunai, nilai_kredit, total,tax,potongan,biaya_admin,tunai FROM penjualan WHERE no_faktur = '$no_faktur' AND no_reg = '$no_reg'");
+    $perintah = $db->query("SELECT tanggal, tanggal_jt, tunai, nilai_kredit, total,tax,potongan,biaya_admin,tunai FROM penjualan WHERE no_faktur = '$no_faktur' AND no_reg = '$no_reg'");
     $ambil_tanggal = mysqli_fetch_array($perintah);
+    $tanggal_jt = $ambil_tanggal['tanggal_jt'];
 
 
 
@@ -631,7 +632,7 @@ Level 7
        <option value="">SILAKAN PILIH</option>
         <?php 
 
-        include 'cache.class.php';
+        include_once 'cache.class.php';
           $c = new Cache();
           $c->setCache('produk');
           $data_c = $c->retrieveAll();
@@ -902,48 +903,46 @@ else{
           <div class="row">
               
 
-                <?php
+      <?php
 
           $ambil_diskon_tax = $db->query("SELECT * FROM setting_diskon_tax");
           $data_diskon = mysqli_fetch_array($ambil_diskon_tax);
 
-        if ($data_diskon['diskon_nominal'] != 0 AND $data_diskon['diskon_persen'] == 0) 
-        {// first if ($data_diskon['diskon_nominal'] != 0 AND $data_diskon['diskon_persen'] == 0) 
+      if ($data_diskon['diskon_nominal'] != 0 AND $data_diskon['diskon_persen'] == 0) {
+      // first if ($data_diskon['diskon_nominal'] != 0 AND $data_diskon['diskon_persen'] == 0) 
 
-             $diskon = $data_diskon['diskon_nominal'];
-                   if ($subtotal == 0) {
-                        $diskon_p = 0;
-                        $diskon_n = $diskon;
-                    }
-                    else{
-                        $diskon_p = $diskon * 100 / $subtotal;
-                        $diskon_n = $diskon;
-                        }
+          $diskon = $data_diskon['diskon_nominal'];
+            
+          if ($subtotal == 0) {
+            $diskon_p = 0;
+            $diskon_n = $diskon;
+          }
+          else{
+            $diskon_p = $diskon * 100 / $subtotal;
+            $diskon_n = $diskon;
+          }
         
-         } // end if ($data_diskon['diskon_nominal'] != 0 AND $data_diskon['diskon_persen'] == 0) 
+      } // end if ($data_diskon['diskon_nominal'] != 0 AND $data_diskon['diskon_persen'] == 0) 
+      else{
 
-         else
-         {
+          $diskon = $data_diskon['diskon_persen'];
 
-            $diskon = $data_diskon['diskon_persen'];
+          $diskon_n = $subtotal /  100 * $diskon;
+          $diskon_p = $diskon;
 
-            $diskon_n = $subtotal /  100 * $diskon;
-            $diskon_p = $diskon;
+      }
 
-        }
-
-          if ($potongan_p != 0) {
-          $totaljum = $total_akhir - $tax - $biaya_adm + $potongan_p; 
+      if ($potongan_p != 0) {
+          $totaljum = $total_akhir - $biaya_adm + $potongan_p; 
           $potongan = $potongan_p / $totaljum * 100;
 
-         $total_potongan = $subtotal * round($potongan) / 100;
+         $total_potongan = $subtotal * $potongan / 100;
 
-        }
-        else
-        {
+      }
+      else{
           $potongan = $diskon_p;
-          $total_potongan = round($diskon_n);
-        }
+          $total_potongan = $diskon_n;
+      }
 
          $hitung_total = $subtotal - $total_potongan; 
          $hitung_tax = $hitung_total * round($pajak) / 100;
@@ -983,8 +982,8 @@ else{
            
            <div class="col-xs-6">
             
-           <label> Tanggal</label>
-            <input type="text" name="tanggal_jt" id="tanggal_jt" style="height:20px;font-size:15px" placeholder="Tanggal JT" class="form-control" value="" >
+           <label> Tanggal JT</label>
+            <input type="text" name="tanggal_jt" id="tanggal_jt" style="height:20px;font-size:15px" placeholder="Tanggal JT" class="form-control" value="<?php echo $tanggal_jt ?>" >
         
            
 
@@ -1043,7 +1042,7 @@ else{
             <div class="col-xs-6">
               
            <label style="font-size:15px">  <b> Pembayaran (F7)</b> </label><br>
-           <b><input type="text" name="pembayaran" id="pembayaran_penjualan" style="height: 20px; width:90%; font-size:20px;" autocomplete="off" class="form-control"   style="font-size: 20px"  onkeydown="return numbersonly(this, event);" onkeyup="javascript:tandaPemisahTitik(this);" ></b>
+           <b><input type="text" name="pembayaran" id="pembayaran_penjualan" style="height: 20px; width:90%; font-size:20px;" autocomplete="off" class="form-control" value="<?php echo $dp ?>"  style="font-size: 20px"  onkeydown="return numbersonly(this, event);" onkeyup="javascript:tandaPemisahTitik(this);" ></b>
 
             </div>
       </div>
@@ -1053,7 +1052,7 @@ else{
 
           <div class="col-xs-6">
             <label> Pembayaran Awal </label><br>
-            <input type="text" name="pembayaran" id="pembayaran_awal" style="height: 15px; width:90%;" autocomplete="off" class="form-control" readonly="" value="<?php echo rp($data_penj['tunai']); ?>">
+            <input type="text" name="pembayaran" id="pembayaran_awal" style="height: 15px; width:90%;" autocomplete="off" class="form-control" readonly="" value="<?php echo rp($pembayaran_awal); ?>">
           </div>
 
             <div class="col-xs-6">
@@ -4510,5 +4509,36 @@ $(document).ready(function(){
  
  </script>
 
+
+<script type="text/javascript">
+//Ducoment Ready Perhitungan Kembalian , kredit berdasarkan pembayaran Awal
+$(document).ready(function(){
+
+//Start Ducoment Ready Perhitungan Kembalian , kredit berdasarkan pembayaran Awal
+    var pembayaran = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#pembayaran_penjualan").val()))));
+    if(pembayaran == ''){
+      pembayaran = 0;
+    }
+    var total = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah( $("#total1").val()))));
+    var sisa = pembayaran - total;
+    var sisa_kredit = total - pembayaran; 
+        
+    if (sisa < 0 ){
+      $("#kredit").val( tandaPemisahTitik(sisa_kredit));
+      $("#sisa_pembayaran_penjualan").val('0');
+      $("#tanggal_jt").attr("disabled", false);
+        
+    }
+    else{
+      $("#sisa_pembayaran_penjualan").val(tandaPemisahTitik(sisa));
+      $("#kredit").val('0');
+      $("#tanggal_jt").attr("disabled", true);
+        
+    }
+//Akhir Ducoment Ready Perhitungan Kembalian , kredit berdasarkan pembayaran Awal
+ 
+        
+});
+</script>
 
 <?php include 'footer.php'; ?>

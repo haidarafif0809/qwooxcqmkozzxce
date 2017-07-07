@@ -29,8 +29,9 @@ $qu = $db->query("SELECT poli FROM registrasi WHERE no_reg = '$no_reg' ");
 $da = mysqli_fetch_array($qu);
 $poli = $da['poli'];
 
-    $perintah = $db->query("SELECT tanggal, tunai, nilai_kredit, total,tax,potongan,dokter,penjamin,biaya_admin,tunai,jam,perawat,apoteker,petugas_lain FROM penjualan WHERE no_faktur = '$no_faktur' AND no_reg = '$no_reg'");
+    $perintah = $db->query("SELECT tanggal,tanggal_jt,tunai, nilai_kredit, total,tax,potongan,dokter,penjamin,biaya_admin,tunai,jam,perawat,apoteker,petugas_lain FROM penjualan WHERE no_faktur = '$no_faktur' AND no_reg = '$no_reg'");
     $ambil_tanggal = mysqli_fetch_array($perintah);
+    $tanggal_jt = $ambil_tanggal['tanggal_jt'];
 
 $perintah_detail = $db->query("SELECT SUM(subtotal) AS total_detail FROM detail_penjualan WHERE no_faktur = '$no_faktur' AND no_reg = '$no_reg'");
     $data_detail = mysqli_fetch_array($perintah_detail);
@@ -608,7 +609,7 @@ $otoritas_tombol = mysqli_fetch_array($pilih_akses_tombol);
      <option value="">SILAKAN PILIH</option>
         <?php 
 
-        include 'cache.class.php';
+        include_once 'cache.class.php';
           $c = new Cache();
           $c->setCache('produk');
           $data_c = $c->retrieveAll();
@@ -937,7 +938,7 @@ Radiologi  </button>
 
           <div class="form-group col-xs-6">
           <label> Tanggal Jatuh Tempo </label><br>
-          <input type="text" name="tanggal_jt" id="tanggal_jt" style="height:15px;font-size:15px"  value="" class="form-control tanggal" >
+          <input type="text" name="tanggal_jt" id="tanggal_jt" style="height:15px;font-size:15px"  value="<?php echo $tanggal_jt ?>" class="form-control tanggal" >
           </div>
 
           <div class="form-group  col-xs-6">

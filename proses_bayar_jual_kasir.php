@@ -2,6 +2,9 @@
 include 'db.php';
 include_once 'sanitasi.php';
 
+header("Content-type:application/json");
+
+
 
 $tahun_sekarang = date('Y');
 $bulan_sekarang = date('m');
@@ -30,9 +33,17 @@ $no_reg = stringdoang($_POST['no_reg']);
 $total_tbs = ($total_ss - $potongan) + $biaya_admin + $data_radiologi['harga_radiologi'];
 
 if ($total != $total_tbs) {
-    echo 1;
+    $status_jual = 1;
+
+    echo '{ "no_faktur": "0", "status_jual" : "'.$status_jual.'"}';
+
+
   }
   else{
+
+
+
+    $status_jual = 0;
   
     // First of all, let's begin a transaction
 $db->begin_transaction();
@@ -68,7 +79,9 @@ jika tidak maka nomor terakhir ditambah dengan 1
  */
  if ($v_bulan_terakhir['bulan'] != $bulan_sekarang) {
   # code...
-echo $no_faktur = "1/JL/".$data_bulan_terakhir."/".$tahun_terakhir;
+
+$no_faktur = "1/JL/".$data_bulan_terakhir."/".$tahun_terakhir;
+
 
  }
 
@@ -77,12 +90,14 @@ echo $no_faktur = "1/JL/".$data_bulan_terakhir."/".$tahun_terakhir;
 
 $nomor = 1 + $ambil_nomor ;
 
-echo $no_faktur = $nomor."/JL/".$data_bulan_terakhir."/".$tahun_terakhir;
+$no_faktur = $nomor."/JL/".$data_bulan_terakhir."/".$tahun_terakhir;
 
 
  }
 
   
+echo '{ "no_faktur": "'.$no_faktur.'", "status_jual" : "'.$status_jual.'"}';
+
 
  $session_id = session_id();
 
@@ -354,7 +369,7 @@ else
 
     //Input agar tampil di laporan laboratoriu (Tambahan sore hari belom di tes)
     $insert_pemeriksaan_laboratorium = $db->query("INSERT INTO pemeriksaan_laboratorium (no_reg,no_rm,status,nama_pasien,waktu,status_pasien) VALUES ('$no_reg',
-      '$no_rm','1','$nama','$waktu','Rawat Jalan')");
+      '$no_rm','1','$ambil_kode_pelanggan[nama_pelanggan]','$waktu','Rawat Jalan')");
 
     //ambil di tbs penjualan jasa labnya
     $taked_tbs = $db->query("SELECT kode_barang,nama_barang FROM tbs_penjualan WHERE no_reg = '$no_reg' AND lab = 'Laboratorium'");

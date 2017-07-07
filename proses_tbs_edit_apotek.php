@@ -316,13 +316,14 @@ $otoritas_tombol = mysqli_fetch_array($pilih_akses_tombol);
                 //menyimpan data sementara yang ada pada $perintah
                 
                 $data1 = mysqli_fetch_array($perintah);
+                //menampilkan data
                 echo "<tr class='tr-kode-". $data1['kode_barang'] ." tr-id-". $data1['id'] ."' data-kode-barang='".$data1['kode_barang']."'>
                 <td style='font-size:15px'>". $data1['kode_barang'] ."</td>
                 <td style='font-size:15px;'>". $data1['nama_barang'] ."</td>";
 
-                $kd = $db->query("SELECT f.nama_petugas, u.nama FROM tbs_fee_produk f INNER JOIN user u ON f.nama_petugas = u.id WHERE f.kode_produk = '$data1[kode_barang]' AND f.no_reg is NULL ");
+                 $kd = $db->query("SELECT f.nama_petugas, u.nama,f.tanggal,f.jam FROM tbs_fee_produk f INNER JOIN user u ON f.nama_petugas = u.id WHERE f.kode_produk = '$data1[kode_barang]' AND f.no_faktur = '$no_faktur' ");
                 
-                $kdD = $db->query("SELECT f.nama_petugas, u.nama FROM tbs_fee_produk f INNER JOIN user u ON f.nama_petugas = u.id WHERE f.kode_produk = '$data1[kode_barang]' AND f.no_reg is NULL "); 
+                $kdD = $db->query("SELECT f.nama_petugas, u.nama,f.tanggal,f.jam  FROM tbs_fee_produk f INNER JOIN user u ON f.nama_petugas = u.id WHERE f.kode_produk = '$data1[kode_barang]' AND f.no_faktur = '$no_faktur' ");
                     
                 $nu = mysqli_fetch_array($kd);
 
@@ -341,7 +342,7 @@ $otoritas_tombol = mysqli_fetch_array($pilih_akses_tombol);
                   {
                     echo "<td></td>";
                   }
- 
+
 $pilih = $db->query("SELECT no_faktur_penjualan FROM detail_retur_penjualan WHERE no_faktur_penjualan = '$data1[no_faktur]' AND kode_barang = '$data1[kode_barang]'");
 $row_retur = mysqli_num_rows($pilih);
 
@@ -363,11 +364,15 @@ else{
           echo"<td style='font-size:15px' align='right' class='tidak_punya_otoritas' data-id='".$data1['id']."'><span id='text-jumlah-".$data1['id']."'>". $data1['jumlah_barang'] ."</span> <input type='hidden' id='input-jumlah-".$data1['id']."' value='".$data1['jumlah_barang']."' class='input_jumlah' data-id='".$data1['id']."' autofocus='' data-kode='".$data1['kode_barang']."' data-tipe='".$data1['tipe_barang']."' data-harga='".$data1['harga']."' data-satuan='".$data1['satuan']."' data-tipe='".$data1['tipe_barang']."' > </td>";
 }
 
-                echo "<td style='font-size:15px'>". $data1['nama'] ."</td>
-                <td style='font-size:15px' align='right'>". rp($data1['harga']) ."</td>
-                <td style='font-size:15px' align='right'><span id='text-subtotal-".$data1['id']."'>". rp($data1['subtotal']) ."</span></td>
-                <td style='font-size:15px' align='right'><span id='text-potongan-".$data1['id']."'>". rp($data1['potongan']) ."</span></td>
-                <td style='font-size:15px' align='right'><span id='text-tax-".$data1['id']."'>". rp($data1['tax']) ."</span></td>";
+
+                echo"<td style='font-size:15px'>". $data1['nama'] ."</td>
+              <td style='font-size:15px' align='right'> <span id='text-harga-".$data1['id']."'>". rp($data1['harga']) ."</span></td>
+
+                <td class='edit-potongan' style='font-size:15px' align='right' data-id=".$data1['id']."><span id='text-potongan-".$data1['id']."'> ".rp($data1["potongan"])." </span> 
+                <input type='hidden' id='input-potongan-".$data1['id']."' value='".$data1['potongan']."' class='input_potongan' data-id='".$data1['id']."' autofocus='' data-kode='".$data1['kode_barang']."'> </td>
+
+                <td style='font-size:15px' align='right'><span id='text-tax-".$data1['id']."'>". rp($data1['tax']) ."</span></td>
+                <td style='font-size:15px' align='right'><span id='text-subtotal-".$data1['id']."'>". rp($data1['subtotal']) ."</span></td>";
 
 if ($otoritas_tombol['hapus_produk_apotek'] > 0) {
 
@@ -385,8 +390,7 @@ if ($otoritas_tombol['hapus_produk_apotek'] > 0) {
 else{
             echo "<td style='font-size:15px; color:red'> Tidak Ada Otoritas </td>";
 }
-
-                echo "</tr>";
+                echo"</tr>";
 
 
 //Untuk Memutuskan Koneksi Ke Database

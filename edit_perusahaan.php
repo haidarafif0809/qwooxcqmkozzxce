@@ -47,7 +47,7 @@ mysqli_close($db);
 
 					<div class="form-group">
 					<label> Foto </label><br>
-					<input type="file" name="foto" required="" >
+					<input type="file" name="foto"  >
 					</div>
 
 					<div class="form-group">
@@ -63,6 +63,7 @@ mysqli_close($db);
 							
 
 					<input type="hidden" name="id" value="<?php echo $id; ?>">
+					<input type="hidden" name="nama_foto_lama" value="<?php echo $data['foto']; ?>">
 					<!-- membuat tombol Edit -->
 					<button type="submit" class="btn btn-info">Edit</button>
 
