@@ -77,23 +77,12 @@ $data = array();
 while( $row=mysqli_fetch_array($query) ) {  // preparing an array
   $nestedData=array(); 
 
-if($hasil_setting == '1'){
       $nestedData[] = $row["no_reg"];
       $nestedData[] = $row["no_rm"];
       $nestedData[] = $row["nama_pasien"];
       $nestedData[] = $row["jenis_pasien"];
       $nestedData[] = $row["tanggal"];
       $nestedData[] = $row["id"];
-  }
-  else{
-      $nestedData[] = $row["no_reg"];
-      $nestedData[] = $row["no_rm"];
-      $nestedData[] = $row["nama_pasien"];
-      $nestedData[] = $row["jenis_pasien"];
-      $nestedData[] = $row["tanggal"];
-      $nestedData[] = $row["id"];
-  }
-
 
 
   $data[] = $nestedData;
