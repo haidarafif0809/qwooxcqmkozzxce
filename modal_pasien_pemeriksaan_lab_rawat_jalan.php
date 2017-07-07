@@ -25,7 +25,7 @@ if($hasil_setting == '1'){
   // getting total number records without any search
   $sql = "SELECT COUNT(*) AS jumlah_data ";
   $sql.=" FROM registrasi";
-  $sql.=" WHERE registrasi.jenis_pasien = 'Rawat Jalan' AND registrasi.status_lab != '1' AND (registrasi.status = 'Proses' OR registrasi.status = 'Rujuk Keluar Ditangani')";
+  $sql.=" WHERE registrasi.jenis_pasien = 'Rawat Jalan' AND (registrasi.status = 'Proses' OR registrasi.status = 'Rujuk Keluar Ditangani')";
 
   $query = mysqli_query($conn, $sql) or die("Eror Sql 1: get employees");
   $query_data = mysqli_fetch_array($query);
@@ -35,7 +35,7 @@ if($hasil_setting == '1'){
   //Query Rawat Jalan, INNER JOIN KE TBS APS PENJUALAN UNTUK CEK DATA NYA ADA TIDAK , JANGAN DI BUANG !
   $sql = "SELECT reg.no_reg, reg.no_rm, reg.nama_pasien, reg.jenis_pasien, reg.tanggal, pj.no_faktur, reg.id";
   $sql.=" FROM registrasi reg INNER JOIN tbs_aps_penjualan tap ON reg.no_reg = tap.no_reg LEFT JOIN penjualan pj ON reg.no_reg = pj.no_reg ";
-  $sql.=" WHERE (reg.status = 'Proses' OR reg.status = 'Rujuk Keluar Ditangani') AND reg.jenis_pasien = 'Rawat Jalan' AND reg.status_lab != '1' AND pj.no_faktur IS NULL GROUP BY reg.no_reg";
+  $sql.=" WHERE (reg.status = 'Proses' OR reg.status = 'Rujuk Keluar Ditangani') AND reg.jenis_pasien = 'Rawat Jalan'  AND pj.no_faktur IS NULL GROUP BY reg.no_reg";
   
 }
 else{
@@ -43,7 +43,7 @@ else{
   // getting total number records without any search
   $sql = "SELECT COUNT(*) AS jumlah_data ";
   $sql.=" FROM registrasi";
-  $sql.=" WHERE registrasi.jenis_pasien = 'Rawat Jalan' AND registrasi.status = 'Sudah Pulang' AND registrasi.status_lab != '1' ";
+  $sql.=" WHERE registrasi.jenis_pasien = 'Rawat Jalan' AND registrasi.status = 'Sudah Pulang' ";
 
   $query = mysqli_query($conn, $sql) or die("Eror Sql 2: get employees");
   $query_data = mysqli_fetch_array($query);
@@ -53,7 +53,7 @@ else{
   //Query Rawat Jalan, INNER JOIN KE TBS APS PENJUALAN UNTUK CEK DATA NYA ADA TIDAK , JANGAN DI BUANG !
   $sql = "SELECT reg.no_reg, reg.no_rm, reg.nama_pasien, reg.jenis_pasien, reg.tanggal, pj.no_faktur, reg.id";
   $sql.=" FROM registrasi reg INNER JOIN tbs_aps_penjualan tap ON reg.no_reg = tap.no_reg LEFT JOIN penjualan pj ON reg.no_reg = pj.no_reg";
-  $sql.=" WHERE reg.jenis_pasien = 'Rawat Jalan' AND reg.status = 'Sudah Pulang' AND reg.status_lab != '1' AND pj.no_faktur != '' GROUP BY reg.no_reg";
+  $sql.=" WHERE reg.jenis_pasien = 'Rawat Jalan' AND reg.status = 'Sudah Pulang'  AND pj.no_faktur != '' GROUP BY reg.no_reg";
 
 }
 
