@@ -80,10 +80,22 @@ else{
 
 	if($jenis_penjualan == 'APS'){
 		$query_update_status = $db->query("UPDATE pemeriksaan_laboratorium SET status = '1', no_faktur = '$no_faktur' WHERE no_reg = '$no_reg'");
+
 	}
 	else if ($jenis_penjualan == 'Rawat Inap'){
 
 		$query_update_periksa_lab_inap = $db->query("UPDATE pemeriksaan_lab_inap SET status = '1' WHERE no_reg = '$no_reg' AND no_periksa = '$no_periksa'");
+
+		//cek dulu data untuk update registrasi
+		$select_data_periksa_lab_inap = $db->query("SELECT no_reg FROM pemeriksaan_lab_inap WHERE no_reg = '$no_reg'");
+		$tampilkan_data = mysqli_num_rows($select_data_periksa_lab_inap);
+		if($tampilkan_data <= 0){
+
+			$query_update_registrasi_status_lab_inap = $db->query("UPDATE registrasi SET status_lab = '1' WHERE no_reg = '$no_reg' AND no_rm = '$no_rm'");
+
+		}
+
+
 
 	}
 	else{
@@ -91,6 +103,7 @@ else{
 			'$no_reg','$no_rm','1','$nama','$jenis_penjualan','$waktu')");
 		
 		$query_update_registrasi_status_lab = $db->query("UPDATE registrasi SET status_lab = '1' WHERE no_reg = '$no_reg' AND no_rm = '$no_rm'");
+
 	}
 
 
@@ -123,7 +136,7 @@ else{
   $query_hapus_tbs_aps = $db->query("DELETE FROM tbs_aps_penjualan WHERE no_reg = '$no_reg' ");
 
 }
-$query_update_registrasi = $db->query("UPDATE registrasi SET status_lab = '1' WHERE no_reg = '$no_reg' ");
+
 
 $query_hapus_tbs_hasil = $db->query("DELETE FROM tbs_hasil_lab WHERE no_reg = '$no_reg'");
 ?>
