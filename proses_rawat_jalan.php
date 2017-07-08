@@ -50,7 +50,7 @@ else{
 
 
 
-$username = stringdoang($_SESSION['user_name']);
+$username = stringdoang($_SESSION['nama']);
 $no_rm = stringdoang($_POST['no_rm']);
 $nama_lengkap =  stringdoang($_POST['nama_lengkap']);
 $alamat = stringdoang($_POST['alamat']);

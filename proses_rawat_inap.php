@@ -18,7 +18,7 @@ if ($token == '')
 }
 else {
 
-$username = stringdoang($_SESSION['user_name']);
+$username = stringdoang($_SESSION['nama']);
 $tanggal_lahir = stringdoang($_POST['tanggal_lahir']);
 $ruangan = angkadoang($_POST['ruangan']);
 $umur = stringdoang($_POST['umur']);

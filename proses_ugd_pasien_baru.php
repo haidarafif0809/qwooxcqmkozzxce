@@ -20,7 +20,7 @@ echo '<META HTTP-EQUIV="Refresh" Content="0; URL=registrasi_ugd.php">';
 }
 else
 {
-$username = $_SESSION['user_name'];
+$username = $_SESSION['nama'];
 
 $no_rm_lama = stringdoang($_POST['no_rm_lama']);
 $nama_lengkap = stringdoang($_POST['nama_lengkap']);
