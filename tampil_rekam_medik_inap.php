@@ -41,8 +41,8 @@ $totalData = $jumlah_data['jumlah_data'];
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
 
-$sql = "SELECT rekam_medik_inap.*,petugas";
-$sql.=" FROM rekam_medik_inap INNER JOIN registrasi rg ON rg.no_reg = rekam_medik_inap.no_reg"; 
+$sql = "SELECT no_reg,nama,tanggal_periksa,dokter,petugas,poli,id";
+$sql.=" FROM rekam_medik_inap "; 
 $sql.=" WHERE 1=1 ";
 $sql.=" AND nama LIKE '%$pencarian%' ";
 $sql.=" AND tanggal_periksa >= '$dari_tanggal'";
@@ -101,8 +101,8 @@ $totalData = $jumlah_data['jumlah_data'];
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
 
-$sql = "SELECT rekam_medik_inap.*,petugas";
-$sql.=" FROM rekam_medik_inap INNER JOIN registrasi rg ON rg.no_reg = rekam_medik_inap.no_reg"; 
+$sql = "SELECT  no_reg,nama,tanggal_periksa,dokter,petugas,poli,id";
+$sql.=" FROM rekam_medik_inap "; 
 $sql.=" WHERE 1=1 ";
 $sql.=" AND rekam_medik_inap.no_rm LIKE '%$pencarian%' ";
 $sql.=" AND tanggal_periksa >= '$dari_tanggal'";

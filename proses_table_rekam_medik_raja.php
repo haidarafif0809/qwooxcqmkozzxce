@@ -40,8 +40,8 @@ $totalFiltered = $totalData;  // when there is no search parameter then total nu
 
 
 $sql = "SELECT rekam_medik.no_reg, rekam_medik.no_rm, rekam_medik.nama, rekam_medik.alamat,
-  rekam_medik.umur, rekam_medik.jenis_kelamin, rekam_medik.poli, rekam_medik.dokter, rekam_medik.jam, rekam_medik.tanggal_periksa,rekam_medik.id,petugas";
-$sql.=" FROM rekam_medik  INNER JOIN registrasi rg ON rg.no_reg = rekam_medik.no_reg ";
+  rekam_medik.umur, rekam_medik.jenis_kelamin, rekam_medik.poli, rekam_medik.dokter, rekam_medik.jam, rekam_medik.tanggal_periksa,rekam_medik.id,rekam_medik.petugas";
+$sql.=" FROM rekam_medik  ";
 $sql.=" WHERE 1=1 ";
 $sql.=" AND rekam_medik.status IS NULL ";
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
