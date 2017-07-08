@@ -50,7 +50,7 @@ $sql.=" AND tanggal_periksa <= '$sampai_tanggal' ";
 
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
   $sql.=" AND ( no_reg LIKE '".$requestData['search']['value']."%' "; 
-  $sql.=" OR no_rm LIKE '".$requestData['search']['value']."%' ";
+  $sql.=" OR rekam_medik_inap.no_rm LIKE '".$requestData['search']['value']."%' ";
   $sql.=" OR nama LIKE '".$requestData['search']['value']."%' ";
   $sql.=" OR poli LIKE '".$requestData['search']['value']."%' ";
   $sql.=" OR dokter LIKE '".$requestData['search']['value']."%' ";
@@ -61,8 +61,9 @@ $query=mysqli_query($conn, $sql) or die("eror 2");
 $totalFiltered = mysqli_num_rows($query); // when there is a search parameter then we have to modify total number filtered rows as per search result. 
 
 
-$sql.=" ORDER BY id ".$requestData['order'][0]['dir']." LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
+$sql.=" ORDER BY rekam_medik_inap.id ".$requestData['order'][0]['dir']." LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
 /* $requestData['order'][0]['column'] contains colmun index, $requestData['order'][0]['dir'] contains order such as asc/desc  */  
+
 $query=mysqli_query($conn, $sql) or die("eror 3");
 
 
@@ -103,13 +104,13 @@ $totalFiltered = $totalData;  // when there is no search parameter then total nu
 $sql = "SELECT rekam_medik_inap.*,petugas";
 $sql.=" FROM rekam_medik_inap INNER JOIN registrasi rg ON rg.no_reg = rekam_medik_inap.no_reg"; 
 $sql.=" WHERE 1=1 ";
-$sql.=" AND no_rm LIKE '%$pencarian%' ";
+$sql.=" AND rekam_medik_inap.no_rm LIKE '%$pencarian%' ";
 $sql.=" AND tanggal_periksa >= '$dari_tanggal'";
 $sql.=" AND tanggal_periksa <= '$sampai_tanggal' ";
 
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
   $sql.=" AND ( no_reg LIKE '".$requestData['search']['value']."%' "; 
-  $sql.=" OR no_rm LIKE '".$requestData['search']['value']."%' ";
+  $sql.=" OR rekam_medik_inap.no_rm LIKE '".$requestData['search']['value']."%' ";
   $sql.=" OR nama LIKE '".$requestData['search']['value']."%' ";
   $sql.=" OR poli LIKE '".$requestData['search']['value']."%' ";
   $sql.=" OR dokter LIKE '".$requestData['search']['value']."%' ";
@@ -120,8 +121,9 @@ $query=mysqli_query($conn, $sql) or die("eror 2");
 $totalFiltered = mysqli_num_rows($query); // when there is a search parameter then we have to modify total number filtered rows as per search result. 
 
 
-$sql.=" ORDER BY id ".$requestData['order'][0]['dir']." LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
+$sql.=" ORDER BY rekam_medik_inap.id ".$requestData['order'][0]['dir']." LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
 /* $requestData['order'][0]['column'] contains colmun index, $requestData['order'][0]['dir'] contains order such as asc/desc  */  
+
 $query=mysqli_query($conn, $sql) or die("eror 3");
 
 

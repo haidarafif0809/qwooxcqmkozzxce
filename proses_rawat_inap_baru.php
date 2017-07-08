@@ -21,7 +21,7 @@ if ($token == '')
 }
 else
 {
-$username = $_SESSION['user_name'];
+$username = $_SESSION['nama'];
 $ruangan = angkadoang($_POST['ruangan']);
 $no_rm_lama = stringdoang($_POST['no_rm_lama']);
 $nama_lengkap = stringdoang($_POST['nama_lengkap']);

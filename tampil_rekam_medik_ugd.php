@@ -48,7 +48,7 @@ $sql.=" AND rekam_medik_ugd.tanggal <= '$sampai_tanggal' ";
 
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
   $sql.=" AND ( no_reg LIKE '".$requestData['search']['value']."%' "; 
-  $sql.=" OR no_rm LIKE '".$requestData['search']['value']."%' ";
+  $sql.=" OR rekam_medik_ugd.no_rm LIKE '".$requestData['search']['value']."%' ";
   $sql.=" OR nama LIKE '".$requestData['search']['value']."%' ";
   $sql.=" OR poli LIKE '".$requestData['search']['value']."%' ";
   $sql.=" OR dokter LIKE '".$requestData['search']['value']."%' ";
@@ -89,7 +89,7 @@ $query=mysqli_query($conn, $sql) or die("eror 3");
 // getting total number records without any search
 $sql = "SELECT COUNT(*) as jumlah_data";
 $sql.=" FROM rekam_medik_ugd  ";
-$sql.=" WHERE no_rm LIKE '%$pencarian%' ";
+$sql.=" WHERE rekam_medik_ugd.no_rm LIKE '%$pencarian%' ";
 $sql.=" AND tanggal >= '$dari_tanggal'";
 $sql.=" AND tanggal <= '$sampai_tanggal' ";
 $query = mysqli_query($conn, $sql) or die("eror 1");
@@ -102,13 +102,13 @@ $totalFiltered = $totalData;  // when there is no search parameter then total nu
 $sql = "SELECT rekam_medik_ugd.*,petugas";
 $sql.=" FROM rekam_medik_ugd INNER JOIN registrasi rg ON rg.no_reg = rekam_medik_ugd.no_reg"; 
 $sql.=" WHERE 1=1 ";
-$sql.=" AND no_rm LIKE '%$pencarian%' ";
+$sql.=" AND rekam_medik_ugd.no_rm LIKE '%$pencarian%' ";
 $sql.=" AND rekam_medik_ugd.tanggal >= '$dari_tanggal'";
 $sql.=" AND rekam_medik_ugd.tanggal <= '$sampai_tanggal' ";
 
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
   $sql.=" AND ( no_reg LIKE '".$requestData['search']['value']."%' "; 
-  $sql.=" OR no_rm LIKE '".$requestData['search']['value']."%' ";
+  $sql.=" OR rekam_medik_ugd.no_rm LIKE '".$requestData['search']['value']."%' ";
   $sql.=" OR nama LIKE '".$requestData['search']['value']."%' ";
   $sql.=" OR poli LIKE '".$requestData['search']['value']."%' ";
   $sql.=" OR dokter LIKE '".$requestData['search']['value']."%' ";

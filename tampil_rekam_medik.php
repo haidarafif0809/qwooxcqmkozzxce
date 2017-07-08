@@ -46,12 +46,13 @@ $sql.=" AND tanggal_periksa <= '$sampai_tanggal' ";
 
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
   $sql.=" AND ( no_reg LIKE '".$requestData['search']['value']."%' "; 
-  $sql.=" OR no_rm LIKE '".$requestData['search']['value']."%' ";
+  $sql.=" OR rekam_medik.no_rm LIKE '".$requestData['search']['value']."%' ";
   $sql.=" OR nama LIKE '".$requestData['search']['value']."%' ";
   $sql.=" OR poli LIKE '".$requestData['search']['value']."%' ";
   $sql.=" OR dokter LIKE '".$requestData['search']['value']."%' ";
   $sql.=" OR tanggal_periksa LIKE '".$requestData['search']['value']."%' )";
 }
+
 
 $query=mysqli_query($conn, $sql) or die("eror 2");
 $totalFiltered = mysqli_num_rows($query); // when there is a search parameter then we have to modify total number filtered rows as per search result. 
@@ -99,18 +100,20 @@ $totalFiltered = $totalData;  // when there is no search parameter then total nu
 $sql = "SELECT rekam_medik.*,petugas";
 $sql.=" FROM rekam_medik  INNER JOIN registrasi rg ON rg.no_reg = rekam_medik.no_reg"; 
 $sql.=" WHERE 1=1 ";
-$sql.=" AND no_rm LIKE '%$pencarian%' ";
+$sql.=" AND rekam_medik.no_rm LIKE '%$pencarian%' ";
 $sql.=" AND tanggal_periksa >= '$dari_tanggal'";
 $sql.=" AND tanggal_periksa <= '$sampai_tanggal' ";
 
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
   $sql.=" AND ( no_reg LIKE '".$requestData['search']['value']."%' "; 
-  $sql.=" OR no_rm LIKE '".$requestData['search']['value']."%' ";
+  $sql.=" OR rekam_medik.no_rm LIKE '".$requestData['search']['value']."%' ";
   $sql.=" OR nama LIKE '".$requestData['search']['value']."%' ";
   $sql.=" OR poli LIKE '".$requestData['search']['value']."%' ";
   $sql.=" OR dokter LIKE '".$requestData['search']['value']."%' ";
   $sql.=" OR tanggal_periksa LIKE '".$requestData['search']['value']."%' )";
 }
+
+
 
 $query=mysqli_query($conn, $sql) or die("eror 2");
 $totalFiltered = mysqli_num_rows($query); // when there is a search parameter then we have to modify total number filtered rows as per search result. 
