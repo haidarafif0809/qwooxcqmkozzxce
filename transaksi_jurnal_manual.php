@@ -11,6 +11,18 @@ $session_id = session_id();
 
  ?>
 
+     <script>
+    $(function() {
+    $( "#dari_tanggal" ).datepicker({dateFormat: "yy-mm-dd"});
+    });
+    </script>
+
+
+    <script>
+    $(function() {
+    $( "#sampai_tanggal" ).datepicker({dateFormat: "yy-mm-dd"});
+    });
+    </script>
 
 <div class="container"><!--tag yang digunakan untuk membuat tampilan form menjadi rapih dalam satu tempat-->
 
@@ -28,10 +40,35 @@ echo '<a href="form_transaksi_jurnal_manual.php" class="btn btn-info" > <i class
 }
 ?>
 
+<span id="tombol_span_filter">
+  <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample"><i class='fa fa-filter'> </i>
+  Filter Pencarian  </button>
+</span>
+
+<span id="tombol_span_filter_2" style="display: none">
+  <button class="btn btn-purple" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample"><i class='fa fa-filter'> </i>
+  Filter Pencarian  </button>
+</span>
 <br>
 <br>
 
+ <div class="collapse" id="collapseExample">
 
+    <div class="row">
+      <div class="col-sm-2">
+        <label>Dari Tanggal</label>
+        <input style="height: 15px;" type="text" class="form-control" id="dari_tanggal" name="dari_tanggal" autocomplete="off"  >
+      </div>
+      <div class="col-sm-2">
+        <label>Sampai Tanggal</label>
+        <input style="height: 15px;" type="text" class="form-control" id="sampai_tanggal" name="sampai_tanggal" autocomplete="off" value="<?php echo date("Y-m-d"); ?>" >
+      </div> 
+    <label><br><br><br></label>
+        <button id="filter_cari" type="submit" class="btn btn-success"><i class='fa fa-search'> </i>&nbsp;Cari</button>
+
+    </div>
+
+ </div> <!--END collapseExample -->
 
 <!-- Modal Hapus data -->
 <div id="modal_hapus" class="modal fade" role="dialog">
@@ -200,7 +237,7 @@ tr:nth-child(even){background-color: #f2f2f2}
 
 <script type="text/javascript" language="javascript" >
    $(document).ready(function() {
-   	      $('#table_jurnal_manual').DataTable().destroy();
+          $('#table_jurnal_manual').DataTable().destroy();
 
         var dataTable = $('#table_jurnal_manual').DataTable( {
           "processing": true,
@@ -228,6 +265,100 @@ tr:nth-child(even){background-color: #f2f2f2}
  
  </script>
 
+
+<script type="text/javascript" language="javascript" >
+   $(document).ready(function() {
+    $("#filter_cari").click(function(){
+    
+    var dari_tanggal = $("#dari_tanggal").val();
+    var sampai_tanggal = $("#sampai_tanggal").val();
+    if (dari_tanggal == '') {
+      alert("Silakan isi kolom dari tanggal terlebih dahulu.");
+      $("#dari_tanggal").focus();
+    }
+    else if (sampai_tanggal == '') {
+      alert("silakan isi kolom sampai tanggal trlebih dahulu.");
+      $("#sampai_tanggal").focus();
+    }
+    else {
+
+        $('#table_jurnal_manual').DataTable().destroy();
+
+        var dataTable = $('#table_jurnal_manual').DataTable( {
+          "processing": true,
+          "serverSide": true,
+          "ajax":{
+            url :"datatable_transaksi_jurnal_manual_periode.php", // json datasource
+                   "data": function ( d ) {
+                      d.dari_tanggal = $("#dari_tanggal").val();
+                      d.sampai_tanggal = $("#sampai_tanggal").val();
+                      // d.custom = $('#myInput').val();
+                      // etc
+                  },
+            type: "post",  // method  , by default get
+            error: function(){  // error handling
+              $(".employee-grid-error").html("");
+              $("#table_jurnal_manual").append('<tbody class="employee-grid-error"><tr><th colspan="3">Data Tidak Ditemukan.. !!</th></tr></tbody>');
+              $("#employee-grid_processing").css("display","none");
+              
+            }
+          },
+
+          "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+
+              $(nRow).attr('class','tr-id-', aData[8]);
+
+          }
+
+        }); 
+    }
+   
+     
+  });
+     
+  });
+ 
+ </script>
+
+<script type="text/javascript">
+  $("#tombol_span_filter").click(function(){
+  $("#tombol_span_filter").hide();
+  $("#tombol_span_filter_2").show();
+  });
+    
+  $("#tombol_span_filter_2").click(function(){  
+  $("#tombol_span_filter_2").hide();
+  $("#tombol_span_filter").show();
+  $("#dari_tanggal").val('');
+  $("#sampai_tanggal").val('');
+
+          $('#table_jurnal_manual').DataTable().destroy();
+
+        var dataTable = $('#table_jurnal_manual').DataTable( {
+          "processing": true,
+          "serverSide": true,
+          "ajax":{
+            url :"datatable_transaksi_jurnal_manual.php", // json datasource
+            type: "post",  // method  , by default get
+            error: function(){  // error handling
+              $(".employee-grid-error").html("");
+              $("#table_jurnal_manual").append('<tbody class="employee-grid-error"><tr><th colspan="3">Data Tidak Ditemukan.. !!</th></tr></tbody>');
+              $("#employee-grid_processing").css("display","none");
+              
+            }
+          },
+
+          "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+
+              $(nRow).attr('class','tr-id-', aData[8]);
+
+          }
+
+        });  
+
+  });
+
+</script>
 
 <!-- memasukan file footer.db -->
 <?php include 'footer.php'; ?>
