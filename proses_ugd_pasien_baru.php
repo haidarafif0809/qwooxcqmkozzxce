@@ -187,9 +187,9 @@ $sql9901->execute();
 
 }
 
-$query11 = $db->prepare("INSERT INTO rekam_medik_ugd (tanggal,jam,no_reg,no_rm,nama,jenis_kelamin,umur,alamat,eye,verbal,motorik,rujukan,pengantar,alergi,keadaan_umum,dokter) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+$query11 = $db->prepare("INSERT INTO rekam_medik_ugd (tanggal,jam,no_reg,no_rm,nama,jenis_kelamin,umur,alamat,eye,verbal,motorik,rujukan,pengantar,alergi,keadaan_umum,dokter,petugas) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
-$query11->bind_param("ssssssssssssssss", $tanggal_sekarang,$jam,$no_reg,$no_rm,$nama_lengkap,$jenis_kelamin,$umur,$alamat_sekarang,$eye,$verbal, $motorik,$rujukan,$pengantar,$alergi,$kondisi,$dokter_jaga);
+$query11->bind_param("sssssssssssssssss", $tanggal_sekarang,$jam,$no_reg,$no_rm,$nama_lengkap,$jenis_kelamin,$umur,$alamat_sekarang,$eye,$verbal, $motorik,$rujukan,$pengantar,$alergi,$kondisi,$dokter_jaga,$username);
 
 $query11->execute();
 
