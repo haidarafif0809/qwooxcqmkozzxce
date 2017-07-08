@@ -41,8 +41,8 @@ $totalFiltered = $totalData;  // when there is no search parameter then total nu
 
 
 $sql = "SELECT rekam_medik_ugd.no_reg, rekam_medik_ugd.no_rm, rekam_medik_ugd.nama, rekam_medik_ugd.alamat,
-rekam_medik_ugd.umur, rekam_medik_ugd.jenis_kelamin, rekam_medik_ugd.alergi, rekam_medik_ugd.dokter, rekam_medik_ugd.jam, rekam_medik_ugd.tanggal, rekam_medik_ugd.id,petugas";
-$sql.=" FROM rekam_medik_ugd INNER JOIN registrasi rg ON rg.no_reg = rekam_medik_ugd.no_reg ";
+rekam_medik_ugd.umur, rekam_medik_ugd.jenis_kelamin, rekam_medik_ugd.alergi, rekam_medik_ugd.dokter, rekam_medik_ugd.jam, rekam_medik_ugd.tanggal, rekam_medik_ugd.id,rekam_medik_ugd.petugas";
+$sql.=" FROM rekam_medik_ugd  ";
 $sql.=" WHERE 1=1 ";
 $sql.=" AND rekam_medik_ugd.status IS NULL ";
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
@@ -72,9 +72,10 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 	$nestedData[] = $row["jenis_kelamin"];	
 	$nestedData[] = $row["alergi"];
 	$nestedData[] = $row["dokter"];
-	$nestedData[] = $row["petugas"];
+	
 	$nestedData[] = $row["jam"];	
 	$nestedData[] = $row["tanggal"];
+	$nestedData[] = $row["petugas"];
 
  if ($rekam_medik['rekam_medik_ugd_lihat'] > 0) 
 

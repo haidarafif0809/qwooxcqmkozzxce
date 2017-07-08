@@ -27,18 +27,20 @@ switch ($cari_berdasarkan) {
     case "nama":
 
 // getting total number records without any search
-$sql = "SELECT *";
+$sql = "SELECT COUNT(*) as jumlah_data ";
 $sql.=" FROM rekam_medik ";
 $sql.=" WHERE nama LIKE '%$pencarian%' ";
 $sql.=" AND tanggal_periksa >= '$dari_tanggal'";
 $sql.=" AND tanggal_periksa <= '$sampai_tanggal' ";
 $query = mysqli_query($conn, $sql) or die("eror 1");
-$totalData = mysqli_num_rows($query);
+$query_data = $db->query($sql);
+$jumlah_data = mysqli_fetch_array($query_data);
+$totalData = $jumlah_data['jumlah_data'];
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
 
-$sql = "SELECT rekam_medik.*,petugas";
-$sql.=" FROM rekam_medik INNER JOIN registrasi rg ON rg.no_reg = rekam_medik.no_reg"; 
+$sql = "SELECT no_reg,nama,tanggal_periksa,dokter,petugas,poli,id ";
+$sql.=" FROM rekam_medik "; 
 $sql.=" WHERE 1=1 ";
 $sql.=" AND nama LIKE '%$pencarian%' ";
 $sql.=" AND tanggal_periksa >= '$dari_tanggal'";
@@ -93,12 +95,14 @@ $sql.=" WHERE no_rm LIKE '%$pencarian%' ";
 $sql.=" AND tanggal_periksa >= '$dari_tanggal'";
 $sql.=" AND tanggal_periksa <= '$sampai_tanggal' ";
 $query = mysqli_query($conn, $sql) or die("eror 1");
-$totalData = mysqli_num_rows($query);
+$query_data = $db->query($sql);
+$jumlah_data = mysqli_fetch_array($sql);
+$totalData = $jumlah_data['jumlah_data'];
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
 
-$sql = "SELECT rekam_medik.*,petugas";
-$sql.=" FROM rekam_medik  INNER JOIN registrasi rg ON rg.no_reg = rekam_medik.no_reg"; 
+$sql = "SELECT no_reg,nama,tanggal_periksa,dokter,petugas,poli,id ";
+$sql.=" FROM rekam_medik  "; 
 $sql.=" WHERE 1=1 ";
 $sql.=" AND rekam_medik.no_rm LIKE '%$pencarian%' ";
 $sql.=" AND tanggal_periksa >= '$dari_tanggal'";
