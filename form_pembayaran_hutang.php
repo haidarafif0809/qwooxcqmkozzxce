@@ -281,7 +281,7 @@ $session_id = session_id();
         // menampilkan data
       echo "<tr class='tr-id-".$data1['id']."'>
       <td>". $data1['no_faktur_pembelian'] ."</td>
-      <td>". $out['nama'] ."</td>
+      <td>". $data1['suplier'] ."</td>
       <td>". $data1['tanggal'] ."</td>
       <td>". $data1['tanggal_jt'] ."</td>
       <td>". rp($data1['kredit']) ."</td>
