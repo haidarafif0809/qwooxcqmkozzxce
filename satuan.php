@@ -5,9 +5,9 @@ include 'navbar.php';
 include 'sanitasi.php';
 include 'db.php';
 
-$query = $db->query("SELECT * FROM satuan");
+?>
 
- ?>
+
 
 <div class="container">
 
@@ -19,8 +19,7 @@ include 'db.php';
 $pilih_akses_satuan_tambah = $db->query("SELECT satuan_tambah FROM otoritas_master_data WHERE id_otoritas = '$_SESSION[otoritas_id]' AND satuan_tambah = '1'");
 $satuan_tambah = mysqli_num_rows($pilih_akses_satuan_tambah);
 
-
-    if ($satuan_tambah > 0){
+if ($satuan_tambah > 0){
 // Trigger the modal with a button -->
 echo '<button type="button" class="btn btn-info " data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"> </i> SATUAN</button>';
 
@@ -40,53 +39,26 @@ echo '<button type="button" class="btn btn-info " data-toggle="modal" data-targe
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Tambah Data Satuan</h4>
-      </div>
-      <div class="modal-body">
-<form role="form">
-   <div class="form-group">
-					
-
-					<div class="form-group">
-					<label> Satuan </label><br>
-					<input type="text" name="nama" id="nama_satuan" class="form-control" autocomplete="off" required="" >
-					</div>
-
-					<!--
-					<div class="form-group">
-					<label> Nama Cetak </label>
-					<br>
-					<input type="text"  autocomplete="off" id="nama_cetak" name="nama_cetak" class="form-control" required="">
-
-					</div>
-
-
-					<div class="form-group">
-					<label> Dari Satuan </label><br>
-					<input type="text" name="dari_satuan" id="dari_satuan" class="form-control" autocomplete="off" required="" >
-					</div>
-
-
-					<div class="form-group">
-					<label> Quantity </label><br>
-					<input type="text" name="qty" id="qty" autocomplete="off" class="form-control" required="" >
-					</div>-->
-
-     
-   </div>
-   
-   
-   					<button type="submit" id="submit_tambah" class="btn btn-primary"><span class='glyphicon glyphicon-plus'> </span> Tambah</button>
-</form>
-				
-				<div class="alert alert-success" style="display:none">
-				<strong>Berhasil!</strong> Data berhasil Di Tambah
-				</div>
-  </div>
-				<div class ="modal-footer">
-				<button type ="button"  class="btn btn-default" data-dismiss="modal">Close</button>
-				</div>
-  </div>
+       	 <h4 class="modal-title">Tambah Data Satuan</h4>
+     	 	</div>
+     		 	<div class="modal-body">
+					<form role="form">
+   						<div class="form-group">
+							<div class="form-group">
+							<label> Satuan </label><br>
+							<input type="text" name="nama" id="nama_satuan" class="form-control" autocomplete="off" required="" >
+							</div>
+  						    </div>
+   							<button type="submit" id="submit_tambah" class="btn btn-primary"><span class='glyphicon glyphicon-plus'> </span> Tambah</button>
+					</form>
+						<div class="alert alert-success" style="display:none">
+						<strong>Berhasil!</strong> Data berhasil Di Tambah
+						</div>
+  			    </div>
+				 <div class ="modal-footer">
+				 <button type ="button"  class="btn btn-default" data-dismiss="modal">Close</button>
+			    </div>
+ 	 </div>
 
   </div>
 </div><!-- end of modal buat data  -->
@@ -156,7 +128,7 @@ echo '<button type="button" class="btn btn-info " data-toggle="modal" data-targe
    </div>
    
    
-   <button type="submit" id="submit_edit" data-nama ="" class="btn btn-default">Submit</button>
+   <button type="submit" id="submit_edit" class="btn btn-default">Submit</button>
   </form>
   <div class="alert alert-success" style="display:none">
    <strong>Berhasil!</strong> Data Berhasil Di Edit
@@ -172,170 +144,80 @@ echo '<button type="button" class="btn btn-info " data-toggle="modal" data-targe
   </div>
 </div><!-- end of modal edit data  -->
 
-<style>
-table {
-    border-collapse: collapse;
-    width: 100%;
-}
-
-th, td {
-    text-align: left;
-    padding: 8px;
-}
-
-tr:nth-child(even){background-color: #f2f2f2}
-
-th {
-    background-color: #4CAF50;
-    color: white;
-}
-</style>
-
 <div class="table-responsive">
 <span id="table-baru">
-<table id="tableuser" class="table table-bordered table-sm">
+<table id="tabel_satuan" class="table table-bordered table-sm">
 		<thead>
-			<th> Satuan </th>
-
-
-<?php 
-include 'db.php';
-
-$pilih_akses_satuan_hapus = $db->query("SELECT satuan_hapus FROM otoritas_master_data WHERE id_otoritas = '$_SESSION[otoritas_id]' AND satuan_hapus = '1'");
-$satuan_hapus = mysqli_num_rows($pilih_akses_satuan_hapus);
-
-
-    if ($satuan_hapus > 0){
-			echo "<th> Hapus </th>";
-
-		}
-?>
-
-<?php 
-include 'db.php';
-
-$pilih_akses_satuan_edit = $db->query("SELECT satuan_edit FROM otoritas_master_data WHERE id_otoritas = '$_SESSION[otoritas_id]' AND satuan_edit = '1'");
-$satuan_edit = mysqli_num_rows($pilih_akses_satuan_edit);
-
-
-    if ($satuan_edit > 0){
-			echo "<th> Edit </th>";
-		}
-?>
-			
+			<th style="background-color: #4CAF50; color: white" > Satuan </th>
+			<th style="background-color: #4CAF50; color: white" > Hapus </th>
+			<th style="background-color: #4CAF50; color: white" > Edit </th>		
 		</thead>
-		
-		<tbody>
-		<?php
-
-		
-			while ($data = mysqli_fetch_array($query))
-			{
-			echo "<tr class='tr-id-".$data['id']."'>
-			<td>". $data['nama'] ."</td>
-";
-
-
-include 'db.php';
-
-$pilih_akses_satuan_hapus = $db->query("SELECT satuan_hapus FROM otoritas_master_data WHERE id_otoritas = '$_SESSION[otoritas_id]' AND satuan_hapus = '1'");
-$satuan_hapus = mysqli_num_rows($pilih_akses_satuan_hapus);
-
-
-    if ($satuan_hapus > 0){
-			echo "<td> <button class='btn btn-danger btn-hapus' data-id='". $data['id'] ."' data-satuan='". $data['nama'] ."'> <span class='glyphicon glyphicon-trash'> </span> Hapus </button> </td>";
-		}
-
-include 'db.php';
-
-$pilih_akses_satuan_edit = $db->query("SELECT satuan_edit FROM otoritas_master_data WHERE id_otoritas = '$_SESSION[otoritas_id]' AND satuan_edit = '1'");
-$satuan_edit = mysqli_num_rows($pilih_akses_satuan_edit);
-
-
-    if ($satuan_edit > 0){
-			
-
-			echo "<td><button class='btn btn-success btn-edit' data-satuan='". $data['nama'] ."' data-id='". $data['id'] ."' > <span class='glyphicon glyphicon-edit'> </span> Edit </button> </td>
-
-			</tr>";
-		}
-			}
-		?>
-		</tbody>
-
 	</table>
 </span>
 </div>
 </div>
 
+ <script type="text/javascript">
+  // ajax table penjualan
+    $(document).ready(function(){
 
-	
-<script type="text/javascript">
-$("#nama_satuan").blur(function(){
+        $("#tabel_satuan").DataTable().destroy();
+          var dataTable = $('#tabel_satuan').DataTable( {
+          "processing": true,
+          "serverSide": true,
+          "ajax":{
+            url :"datatable_satuan.php", // json datasource
+            "data": function ( d ) {
+                  d.status = status;
+                  // d.custom = $('#myInput').val();
+                  // etc
+              },
+            type: "post",  // method  , by default get
+            error: function(){  // error handling
+              $(".employee-grid-error").html("");
+              $("#tabel_satuan").append('<tbody class="employee-grid-error"><tr><th colspan="3">Data Tidak Ditemukan.. !!</th></tr></tbody>');
+              $("#employee-grid_processing").css("display","none");
+              
+            }
+          },
+              "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+              $(nRow).attr('class','tr-id-'+aData[3]+'');
+            },
 
-var nama = $("#nama_satuan").val();
-// cek namanya
- $.post('cek_nama_satuan.php',{nama:nama}, function(data){
-
-        if(data == 1){
-          alert('Nama Satuan Sudah Ada!');
-          $("#nama_satuan").val('');
-          $("#nama_satuan").focus();
-        }
-        else{
-
-// Finish Proses
-        }
-
-      }); // end post dari cek nama
-
-});
-</script>						 
-
+      }); 
+  });
+</script>
 
 <script>
-$(document).ready(function(){
-$(document).on('click','#submit_tambah',function(e){
-
+    $(document).ready(function(){
+//fungsi untuk menambahkan data
+		$("#submit_tambah").click(function(){
 		var nama = $("#nama_satuan").val();
-		/*/
-		var nama_cetak = $("#nama_cetak").val();
-		var satuan = $("#dari_satuan").val();
-		var qty = $("#qty").val();/*/
 
-		if (nama == "")
-			{
-				alert("Satuan Harus Diisi");
-			}
-/*/
-		else if (nama_cetak = "") 
-			{
-				alert("Nama Cetak Harus Diisi");
-          		$("#nama_cetak").focus();
-			}
-		else if (satuan = "") 
-			{
-				alert("Satuan Harus Diisi");
-			}
-		else if (qty = "") 
-			{
-				alert("Quantity Harus Diisi");
-			}/*/
 
+		$("#nama_satuan").val('');
+
+
+		if (nama == ""){
+			alert("Nama Harus Diisi");
+		}
+	
 		else{
 
-		$.post('prosessatuan.php',{nama:nama/*/,nama_cetak:nama_cetak,satuan:satuan,qty:qty/*/},function(data){
+		$.post('prosessatuan.php',{nama:nama},function(data){
 
 		if (data != '') {
 		$("#nama_satuan").val('');
-
 		$(".alert").show('fast');
-		$("#table-baru").load('tabel-satuan.php');
 		
 		setTimeout(tutupalert, 2000);
 		$(".modal").modal("hide");
+    var table_satuan = $('#tabel_satuan').DataTable();
+       table_satuan.draw();
+
 		}
-		
+
+		      
 		
 		});
 		}
@@ -380,78 +262,52 @@ $(document).on('click', '#btn_jadi_hapus', function (e) {
 // end fungsi hapus data
 
 //fungsi edit data 
-		$(".btn-edit").click(function(){
+		$(document).on('click', '.btn-edit', function (e) {
 		
 		$("#modal_edit").modal('show');
 		var nama = $(this).attr("data-satuan"); 
 		var id  = $(this).attr("data-id");
 		$("#nama_edit").val(nama);
 		$("#id_edit").val(id);
-		$("#submit_edit").attr("data-nama",nama); // ambil data-nama di tombol edit (isinya nama yang sebenarnya)
-
+		
 		
 		});
 		
 		$("#submit_edit").click(function(){
 		var nama = $("#nama_edit").val();
 		var id = $("#id_edit").val();
-    	var show_name = $(this).attr("data-nama"); // send nama  sebenarnya
 
+		$.post("updatesatuan.php",{id:id,nama:nama},function(data){
+		if (data == 'sukses') {
+		$(".alert").show('fast');
+		$("#modal_edit").modal('hide');
+    var table_satuan = $('#tabel_satuan').DataTable();
+       table_satuan.draw();
 
-if (nama == '')
-{
-	alert("Nama Harus Terisi");
-}
-else
-{
-// cek namanya
- $.post('cek_nama_satuan.php',{nama:nama}, function(data){
-        if(data == 1){
-          alert('Nama Satuan yang anda masukkan sudah ada!');
-          $("#nama_edit").val(show_name); // menampilkan NAMA yang sebelumnya
-          $("#nama_edit").focus();
-        }
-        else{
-
-// mulai proses edit
-$.post("updatesatuan.php",{id:id,nama:nama},function(data){
-
-		$("#table-baru").load('tabel-satuan.php');
-				$("#modal_edit").modal('hide');
-
+		}
 		});
-// end proses edit
-        }
-
-      }); // end post dari cek nama
-}
-
-
 		});
 		
 
 
 //end function edit data
-		$('form').submit(function(){	
+
+		$('form').submit(function(){
+		
 		return false;
 		});
 		
 		});
 		
+		
+		
+		
+		function tutupalert() {
+		$(".alert").hide("fast");
 
-function tutupalert() {
-$(".alert").hide("fast");
-}
+		}
 		
 
-
-</script>
-
-<script type="text/javascript">
-	
-  $(function () {
-  $(".table").dataTable({ordering :false });
-  });
 
 </script>
 

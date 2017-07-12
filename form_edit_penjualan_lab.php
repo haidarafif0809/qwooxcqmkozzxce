@@ -418,7 +418,7 @@ $data_rj_ri = mysqli_fetch_array($sum_rj_ri);
         <option value="">SILAKAN PILIH</option>
           <?php 
 
-                include 'cache.class.php';
+                include_once 'cache.class.php';
                   $c = new Cache();
                   $c->setCache('produk_lab');
                   $data_c = $c->retrieveAll();

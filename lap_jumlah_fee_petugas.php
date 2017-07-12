@@ -2,8 +2,8 @@
 
 
 //memasukkan file session login, header, navbar, db.php
-include 'navbar.php';
 include 'header.php';
+include 'navbar.php';
 include 'sanitasi.php';
 include 'db.php';
 

@@ -16,7 +16,7 @@ $id_user = $_SESSION['id'];
 <!-- js untuk tombol shortcut -->
 
 <!-- Mulai Modal cari registrasi pasien Rawat Jalan-->
-<div id="modal_reg_jalan" class="modal fade" role="dialog">
+<div id="modal_reg_jalan" class="modal" role="dialog">
   <div class="modal-dialog">
 
     <!-- Modal content-->
@@ -55,7 +55,7 @@ $id_user = $_SESSION['id'];
 
 
 <!-- Mulai Modal cari registrasi pasien Rawat Inap-->
-<div id="modal_reg_inap" class="modal fade" role="dialog">
+<div id="modal_reg_inap" class="modal" role="dialog">
   <div class="modal-dialog">
 
     <!-- Modal content-->
@@ -94,7 +94,7 @@ $id_user = $_SESSION['id'];
 <!-- Akhir Modal cari registrasi pasien Rawat Inap-->
 
 <!-- Mulai Modal cari registrasi pasien UGD-->
-<div id="modal_reg_ugd" class="modal fade" role="dialog">
+<div id="modal_reg_ugd" class="modal" role="dialog">
   <div class="modal-dialog">
 
     <!-- Modal content-->
@@ -133,7 +133,7 @@ $id_user = $_SESSION['id'];
 
 
 <!-- Awal Modal cari registrasi pasien APS-->
-<div id="modal_reg" class="modal fade" role="dialog">
+<div id="modal_reg" class="modal" role="dialog">
   <div class="modal-dialog">
 
     <!-- Modal content-->

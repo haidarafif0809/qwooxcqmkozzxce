@@ -2514,16 +2514,13 @@ if (data == 1) {
 
  $.post("proses_bayar_jual_kasir.php",{id_user:id_user,sisa_pembayaran:sisa_pembayaran, kredit:kredit,no_rm:no_rm,no_reg:no_reg,tanggal_jt:tanggal_jt,total:total,total2:total2,potongan:potongan,potongan_persen:potongan_persen,/*tax:tax,*/cara_bayar:cara_bayar,pembayaran:pembayaran,total_hpp:total_hpp,harga:harga,kode_gudang:kode_gudang,dokter:dokter,petugas_kasir:petugas_kasir,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,sisa:sisa,ppn:ppn,penjamin:penjamin,nama_pasien:nama_pasien,jenis_penjualan:jenis_penjualan,biaya_adm:biaya_adm,analis:analis,petugas_radiologi:petugas_radiologi},function(info) {
 
-        if (info == 1)
+        if (info.status_jual == 1)
         {
             alert("Maaf Subtotal Penjualan Tidak Sesuai, Silakan Tunggu Sebentar!");       
                 window.location.href="form_penjualan_kasir.php";
         } 
         else
         {
-        	info = info.replace(/\s/g, '');
-             $("#table-baru").html(info);
-             var no_faktur = info;
              $("#alert_berhasil").show();
              $("#pembayaran_penjualan").val('');
              $("#sisa_pembayaran_penjualan").val('');
@@ -2954,13 +2951,11 @@ alert("Silakan Bayar Piutang");
 
       $.post("proses_bayar_jual_kasir.php",{id_user:id_user,sisa_pembayaran:sisa_pembayaran, kredit:kredit,no_rm:no_rm,no_reg:no_reg,tanggal_jt:tanggal_jt,total:total,total2:total2,potongan:potongan,potongan_persen:potongan_persen,/*tax:tax,*/cara_bayar:cara_bayar,pembayaran:pembayaran,total_hpp:total_hpp,harga:harga,kode_gudang:kode_gudang,dokter:dokter,petugas_kasir:petugas_kasir,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,sisa:sisa,ppn:ppn,penjamin:penjamin,nama_pasien:nama_pasien,jenis_penjualan:jenis_penjualan,biaya_adm:biaya_adm,analis:analis},function(info) {
 
-        if (info == 1) {
+        if (info.status_jual == 1) {
            alert("Maaf Subtotal Penjualan Tidak Sesuai, Silakan Tunggu Sebentar! (2) ");       
                 window.location.href="form_penjualan_kasir.php";
         }
         else {
-             $("#table-baru").html(info);
-             var no_faktur = info;
              $("#alert_berhasil").show();
              $("#pembayaran_penjualan").val('');
              $("#sisa_pembayaran_penjualan").val('');
@@ -3146,7 +3141,7 @@ $("#tbody-barang-jual").find("tr").remove();
 
      $.post("proses_bayar_jual_kasir.php",{id_user:id_user,sisa_pembayaran:sisa_pembayaran, kredit:kredit,no_rm:no_rm,no_reg:no_reg,tanggal_jt:tanggal_jt,total:total,total2:total2,potongan:potongan,potongan_persen:potongan_persen,/*tax:tax,*/cara_bayar:cara_bayar,pembayaran:pembayaran,total_hpp:total_hpp,harga:harga,kode_gudang:kode_gudang,dokter:dokter,petugas_kasir:petugas_kasir,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,sisa:sisa,ppn:ppn,penjamin:penjamin,nama_pasien:nama_pasien,jenis_penjualan:jenis_penjualan,biaya_adm:biaya_adm,analis:analis},function(info) {
 
-    if (info == 1)
+    if (info.status_jual == 1)
     {
        alert("Maaf Subtotal Penjualan Tidak Sesuai, Silakan Tunggu Sebentar! (2) ");       
             window.location.href="form_penjualan_kasir.php";
@@ -3155,8 +3150,7 @@ $("#tbody-barang-jual").find("tr").remove();
     {
 
 
-                $("#table-baru").html(info);
-                var no_faktur = info;
+                var no_faktur = info.no_faktur;
                 $("#cetak_piutang").attr('href', 'cetak_penjualan_piutang.php?no_faktur='+no_faktur+'&no_reg='+no_reg);
                   $("#cetak_piutang").show();
                 $("#table-baru").html(info);
