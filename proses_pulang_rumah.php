@@ -30,7 +30,7 @@ $update = $db->query("UPDATE registrasi SET status = 'Batal UGD' , keterangan = 
 
 $query_del = "DELETE FROM rekam_medik_ugd WHERE no_reg = '$no_reg'";
 if ($db->query($query_del) === TRUE) {
-    
+    echo 1;
 } 
 else {
     echo "Error: " . $query_del . "<br>" . $db->error;
