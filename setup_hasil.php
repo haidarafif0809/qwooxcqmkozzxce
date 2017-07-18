@@ -200,7 +200,10 @@ include 'db.php';
   <option >mmol/L</option>
   <option >%</option>
   <option >/mm3</option>
+  <option >menit</option>
   <option >seconds</option>
+  <option >gr%</option>
+  <option >mikron</option>
 </select>
 </div>
 </div>

@@ -10,7 +10,7 @@ $id = stringdoang($_POST['id']);
 //QUERY HAPUS TBS 
 $query_hapus_tbs_hasil = $db->query("DELETE FROM tbs_aps_penjualan WHERE kode_jasa = '$kode_jasa' AND no_reg = '$no_reg' AND id = '$id' AND no_periksa_lab_inap = '$pemeriksaan_keberapa'");
 
-//$query_hapus_tbs_penjualan = $db->query("DELETE FROM tbs_penjualan WHERE kode_barang = '$kode_jasa' AND no_reg = '$no_reg'");
+$query_hapus_tbs_penjualan = $db->query("DELETE FROM tbs_penjualan WHERE kode_barang = '$kode_jasa' AND no_reg = '$no_reg'");
 
 $query_hapus_tbs_hasil_lab = $db->query("DELETE FROM tbs_hasil_lab WHERE kode_barang = '$kode_jasa' AND no_reg = '$no_reg'");
 
