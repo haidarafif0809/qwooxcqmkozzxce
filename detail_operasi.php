@@ -238,10 +238,22 @@ else{
   echo "<td> </td>";
 }
 
-if ($detail_sub_operasi['detail_sub_operasi_hapus'] > 0) {
-  echo "<td> <button class='btn btn-danger delete' data-id='". $data['id_detail_operasi'] ."'
+
+
+  //query jika hasil DETAIL operasi sudah di gunakan tidak bisa di hapus !!
+  $query_hasil_operasi = $db->query("SELECT id_detail_operasi FROM hasil_detail_operasi WHERE id_detail_operasi = '$data[id_detail_operasi]'");
+  $data_operasi = mysqli_num_rows($query_hasil_operasi);
+  if($data_operasi > 0){
+    $keterangan = 'Sudah dipakai';
+    echo " <td style='color: red'>". $keterangan." </td>";
+
+  }
+  else{
+    if ($detail_sub_operasi['detail_sub_operasi_hapus'] > 0) {
+    echo "<td> <button class='btn btn-danger delete' data-id='". $data['id_detail_operasi'] ."'
      data-nama='". $data['nama_detail_operasi'] ."'> <span class='glyphicon glyphicon-trash'> </span> Hapus </button> </td>";
-}
+    }
+  }
      
 echo "</tr>";
       }
