@@ -44,15 +44,16 @@ $query=mysqli_query($conn, $sql) or die("show_data_laporan_fee_produk.php: get e
 $data = array();
 while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 	$nestedData=array(); 
-
+$rp = 'Rp.';
 	$nestedData[] = $row["nama"];
 	$nestedData[] = $row["no_faktur"];
 	$nestedData[] = $row["kode_produk"];
 	$nestedData[] = $row["nama_produk"];
-	$nestedData[] = rp($row["jumlah_fee"]);
+	$nestedData[] = "<p align='right'>". koma(rp($row["jumlah_fee"]),2)."</p>";	
 	$nestedData[] = $row["tanggal"];
 	$nestedData[] = $row["jam"];	           
 	$data[] = $nestedData;
+
 }
 
 
