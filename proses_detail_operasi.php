@@ -49,7 +49,7 @@ $detail_sub_operasi = mysqli_fetch_array($pilih_akses_detail_sub_operasi);
 
             <td>". $data['nama_detail_operasi'] ."</td>
             <td>". $jabatan ."</td>
-            <td>". $data['jumlah_persentase'] ." %</td>";
+            <td>". koma($data['jumlah_persentase'],2) ." %</td>";
 
 
 if ($detail_sub_operasi['detail_sub_operasi_edit'] > 0) {

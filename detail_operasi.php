@@ -194,13 +194,14 @@ $detail_sub_operasi = mysqli_fetch_array($pilih_akses_detail_sub_operasi);
  
     <thead>
       <tr>
-          <th style='background-color: #4CAF50; color: white; width: 50%'>Nama Detail Operasi </th>
-          <th style='background-color: #4CAF50; color: white; width: 50%'>Jabatan </th>
-          <th style='background-color: #4CAF50; color: white; width: 50%'>Jumlah Persentase </th>
-          <th style='background-color: #4CAF50; color: white'>Edit</th>
-          <th style='background-color: #4CAF50; color: white'>Hapus</th>
 
-    </tr>
+      <th style='background-color: #4CAF50; color: white; width: 50%'>Nama Detail Operasi </th>
+      <th style='background-color: #4CAF50; color: white; width: 50%'>Jabatan </th>
+      <th style='background-color: #4CAF50; color: white; width: 50%'>Jumlah Persentase </th>
+      <th style='background-color: #4CAF50; color: white'>Edit</th>
+      <th style='background-color: #4CAF50; color: white'>Hapus</th>
+
+      </tr>
     </thead>
     <tbody id="tbody">
     
@@ -223,15 +224,14 @@ $detail_sub_operasi = mysqli_fetch_array($pilih_akses_detail_sub_operasi);
         }
         
       echo "<tr class='tr-id-".$data['id_detail_operasi']."'>
-
             <td>". $data['nama_detail_operasi'] ."</td>
             <td>". $jabatan ."</td>
-            <td>". $data['jumlah_persentase'] ." %</td>";
+            <td>". koma($data['jumlah_persentase'],2) ." %</td>";
 
 if ($detail_sub_operasi['detail_sub_operasi_edit'] > 0) {
   echo "<td> <button class='btn btn-warning btn-edit' data-id='". $data['id_detail_operasi'] ."'
   data-nama='". $data['nama_detail_operasi'] ."' data-jabatan='". $data['id_jabatan'] ."' 
-  data-persentase='". $data['jumlah_persentase'] ."'>
+  data-persentase='". koma($data['jumlah_persentase'],2) ."'>
   <span class='glyphicon glyphicon-edit'> </span> Edit </button> </td>";
 }
 else{
@@ -264,7 +264,8 @@ echo "</tr>";
   var nama_operasi = $("#nama_operasi").val();
   var id_sub_operasi = $("#id_sub_operasi").val();
   var jabatan = $("#jabatan").val();
-  var persentase = $("#persentase").val();
+  var persentase = gantiTitik($("#persentase").val());
+
 if(nama_operasi == '')
 {
   alert("Nama Detail Operasi Harus Di isi");
@@ -406,7 +407,8 @@ $.post('delete_detail_operasi.php',{id:id},function(data){
 		var id = $("#id_edit").val();
 		var nama = $("#nama_edit").val();
 		var jabatan = $("#jabatan_edit").val();
-		var persentase = $("#persentase_edit").val();
+    var persentase = gantiTitik($("#persentase_edit").val());
+
     var id_sub_operasi = '<?php echo $id_sub_operasi ?>';
 		if (nama == '')
     {

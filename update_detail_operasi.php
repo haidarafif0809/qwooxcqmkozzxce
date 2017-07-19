@@ -46,7 +46,7 @@ $query->execute();
 
             <td>". $data['nama_detail_operasi'] ."</td>
             <td>". $jabatan ."</td>
-            <td>". $data['jumlah_persentase'] ." %</td>";
+            <td>". koma($data['jumlah_persentase'],2) ." %</td>";
 
 if ($detail_sub_operasi['detail_sub_operasi_edit'] > 0) {
   echo "<td> <button class='btn btn-warning btn-edit' data-id='". $data['id_detail_operasi'] ."'

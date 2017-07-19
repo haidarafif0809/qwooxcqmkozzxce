@@ -261,16 +261,22 @@ $no_jurnal = no_jurnal();
     }
 
 
-    // FEE PETUGAS OPERASI
+  // FEE PETUGAS OPERASI
               
-    $fee_petugas_operasi = $db->query("SELECT tdp.no_reg,tdp.id_sub_operasi,do.jumlah_persentase,tdp.id_user,tdp.waktu,tp.harga_jual,do.id_detail_operasi,do.nama_detail_operasi FROM tbs_detail_operasi tdp LEFT JOIN sub_operasi tp ON tdp.id_sub_operasi = tp.id_sub_operasi LEFT JOIN detail_operasi do ON tdp.id_detail_operasi = do.id_detail_operasi WHERE tdp.no_reg = '$no_reg'");
-   while  ($data_fee_produk = mysqli_fetch_array($fee_petugas_operasi)){
+  $fee_petugas_operasi = $db->query("SELECT tdp.no_reg,tdp.id_sub_operasi,do.jumlah_persentase,tdp.id_user,tdp.waktu,tp.harga_jual,do.id_detail_operasi,do.nama_detail_operasi FROM tbs_detail_operasi tdp LEFT JOIN sub_operasi tp ON tdp.id_sub_operasi = tp.id_sub_operasi LEFT JOIN detail_operasi do ON tdp.id_detail_operasi = do.id_detail_operasi WHERE tdp.no_reg = '$no_reg'");
+  while($data_fee_produk = mysqli_fetch_array($fee_petugas_operasi)){
 
-          $jumlah_fee1 = ($data_fee_produk['jumlah_persentase'] * $data_fee_produk['harga_jual']) / 100;
-          $jumlah_fee = round($jumlah_fee1);
+    //data persen yang memiliki koma koma 
+    $persen = $data_fee_produk['jumlah_persentase'];
+    $persentase_fee = str_replace(',','.',$persen);
+    if($persentase_fee == ''){
+        $persentase_fee = 0;
+    }
+
+    $jumlah_fee1 = ($persentase_fee * $data_fee_produk['harga_jual']) / 100;
+    $jumlah_fee = round($jumlah_fee1);
     
-
-          $query10 = $db->query("INSERT INTO laporan_fee_produk (nama_petugas, no_faktur, kode_produk, nama_produk, jumlah_fee, tanggal, jam,no_reg,no_rm) VALUES ('$data_fee_produk[id_user]', '$no_faktur', '$data_fee_produk[id_detail_operasi]', '$data_fee_produk[nama_detail_operasi]  - $data_fee_produk[waktu]', '$jumlah_fee', '$tanggal_sekarang', '$jam_sekarang','$no_reg','$no_rm')");
+    $query10 = $db->query("INSERT INTO laporan_fee_produk (nama_petugas, no_faktur, kode_produk, nama_produk, jumlah_fee, tanggal, jam,no_reg,no_rm) VALUES ('$data_fee_produk[id_user]', '$no_faktur', '$data_fee_produk[id_detail_operasi]', '$data_fee_produk[nama_detail_operasi]  - $data_fee_produk[waktu]', '$jumlah_fee', '$tanggal_sekarang', '$jam_sekarang','$no_reg','$no_rm')");
 
   
     }
