@@ -49,7 +49,7 @@ $rp = 'Rp.';
 	$nestedData[] = $row["no_faktur"];
 	$nestedData[] = $row["kode_produk"];
 	$nestedData[] = $row["nama_produk"];
-	$nestedData[] = "<p align='right'>". koma(rp($row["jumlah_fee"]),2)."</p>";	
+	$nestedData[] = "<p align='right'>". koma($row["jumlah_fee"],2)."</p>";	
 	$nestedData[] = $row["tanggal"];
 	$nestedData[] = $row["jam"];	           
 	$data[] = $nestedData;
