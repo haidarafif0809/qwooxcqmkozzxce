@@ -201,7 +201,7 @@ include 'db.php';
           }
             else{ 
               //TABLE KOMISI PRODUK
-              var dataTable = $('#table_komisi_produk').DataTable( {
+              var dataTable = $('#table_komisi_faktur').DataTable( {
                 "processing": true,
                 "serverSide": true,
                 "info":     false,
@@ -220,7 +220,7 @@ include 'db.php';
                       type: "post",  // method  , by default get
                   error: function(){  // error handling
                     $(".tbody").html("");
-                    $("#table_komisi_produk").append('<tbody class="tbody"><tr><th colspan="3"></th></tr></tbody>');
+                    $("#table_komisi_faktur").append('<tbody class="tbody"><tr><th colspan="3"></th></tr></tbody>');
                     $("#tableuser_processing").css("display","none");
                     
                   }
@@ -229,7 +229,7 @@ include 'db.php';
               });
 
               ////TABLE KOMISI FAKTUR
-              var dataTable = $('#table_komisi_faktur').DataTable( {
+              var dataTable = $('#table_komisi_produk').DataTable( {
                 "processing": true,
                 "serverSide": true,
                 "info":     false,
@@ -248,7 +248,7 @@ include 'db.php';
                       type: "post",  // method  , by default get
                   error: function(){  // error handling
                     $(".tbody").html("");
-                    $("#table_komisi_faktur").append('<tbody class="tbody"><tr><th colspan="3"></th></tr></tbody>');
+                    $("#table_komisi_produk").append('<tbody class="tbody"><tr><th colspan="3"></th></tr></tbody>');
                     $("#tableuser_processing").css("display","none");
                     
                   }
