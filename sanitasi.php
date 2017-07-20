@@ -46,7 +46,11 @@ $rpp = $rp;
 return $rpp;
 }
 
-
+function gantiTitik($rupiah){
+$koma = str_replace(",",".", $rupiah);
+$titik = $koma;
+return $titik;
+}
 function emaildoang($email){
 
 $angka1 = filter_var($email, FILTER_SANITIZE_EMAIL);

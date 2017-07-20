@@ -141,14 +141,24 @@ tr:nth-child(even){background-color: #f2f2f2}
       echo "<td> </td>";
     }
 
-     if ($operasi['operasi_hapus'] > 0) {
-       echo "<td><button data-id='".$data['id_operasi']."' data-nama='".$data['nama_operasi']."' data-kode='".$data['kode_operasi']."' class='btn btn-danger delete'><span class='glyphicon glyphicon-trash'></span> Hapus </button>
-      </td>";
-     }
-     else{
-      echo "<td> </td>";
-     }
+  //query jika hasil operasi sudah di gunakan tidak bisa di hapus !!
+  $query_hasil_operasi = $db->query("SELECT operasi FROM hasil_operasi WHERE operasi = '$data[id_operasi]'");
+  $data_operasi = mysqli_num_rows($query_hasil_operasi);
+  if($data_operasi > 0){
+    $keterangan = 'Sudah dipakai';
+    echo " <td style='color: red'>". $keterangan." </td>";
 
+  }
+  else{
+
+    if ($operasi['operasi_hapus'] > 0) {
+      echo "<td><button data-id='".$data['id_operasi']."' data-nama='".$data['nama_operasi']."' data-kode='".$data['kode_operasi']."' class='btn btn-danger delete'><span class='glyphicon glyphicon-trash'></span> Hapus </button>
+        </td>";
+    }
+    else{
+      echo "<td> </td>";
+    }
+  }
 
       
 
