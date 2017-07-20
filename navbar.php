@@ -166,6 +166,17 @@ if ($lihat['penjualan_lihat'] > 0){
 </li>';
 }
 
+
+echo '<li><a class="collapsible-header waves-effect arrow-r"><i class="fa fa-list-alt"></i> Input Data <i class="fa fa-angle-down rotate-icon"></i></a>
+        <div class="collapsible-body">
+           <ul>
+            <li><a href="form_input_data_kasir.php" class="waves-effect"> Rawat Jalan</a></li>
+            <li><a href="form_input_data_ranap.php" class="waves-effect"> Rawat Inap</a></li>
+            <li><a href="form_input_data_ugd.php" class="waves-effect"> UGD</a></li>
+           </ul>
+        </div>
+      </li>';
+
 if ($lihat['pembelian_lihat'] > 0){
 
                 echo '<li><a href="pembelian.php" class="waves-effect"> <i class="fa fa-shopping-basket"></i> Pembelian </a></li>';
@@ -300,7 +311,7 @@ if ($lihat['daftar_pajak_lihat'] > 0){
 
 
 if ($lihat['pembayaran_lihat'] > 0){
-                    echo '<li><a class="collapsible-header waves-effect arrow-r"><i class="fa fa-credit-card"></i> Pembayaran <i class="fa fa-angle-down rotate-icon"></i></a>
+                    echo '<li><a class="collapsible-header waves-effect arrow-r"><i class="fa fa-money"></i> Pembayaran <i class="fa fa-angle-down rotate-icon"></i></a>
                         <div class="collapsible-body">
                             <ul>';
 }
