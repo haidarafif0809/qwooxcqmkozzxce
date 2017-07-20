@@ -21,19 +21,13 @@ include 'db.php';
 <table id="table_lap_fee_produk" class="table table-bordered">
             <thead>
 
-                  <th style="background-color: #4CAF50; color: white;"> Nama Petugas </th>
-                  <th style="background-color: #4CAF50; color: white;"> Nomor Faktur </th>
-                  <th style="background-color: #4CAF50; color: white;"> Kode Produk </th>
-                  <th style="background-color: #4CAF50; color: white;"> Nama Produk </th>
-                  <th style="background-color: #4CAF50; color: white;"> Jumlah Komisi </th>
-                  <th style="background-color: #4CAF50; color: white;"> Tanggal </th>
-                  <th style="background-color: #4CAF50; color: white;"> Jam </th>
-
-
-                  <?php 
-
-                  
-                  ?>
+                <th style="background-color: #4CAF50; color: white;"> Nama Petugas </th>
+                <th style="background-color: #4CAF50; color: white;"> Nomor Faktur </th>
+                <th style="background-color: #4CAF50; color: white;"> Kode Produk </th>
+                <th style="background-color: #4CAF50; color: white;"> Nama Produk </th>
+                <th style="background-color: #4CAF50; color: white;"> Jumlah Komisi </th>
+                <th style="background-color: #4CAF50; color: white;"> Tanggal </th>
+                <th style="background-color: #4CAF50; color: white;"> Jam </th>
                   
             </thead>
             

@@ -17,8 +17,9 @@ include 'sanitasi.php';
             $jumlah_kuantitas = 1;
         }
 
-        echo$harga_hpp = $harga_kel['total_nilai'] / $jumlah_kuantitas;
+        $harga_hpp = $harga_kel['total_nilai'] / $jumlah_kuantitas;
 
+        echo round($harga_hpp);
 
 //Untuk Memutuskan Koneksi Ke Database
 mysqli_close($db);   

@@ -128,38 +128,30 @@ padding-right: 5%;
 
     <input type="hidden" readonly="" style="font-size:15px; height:15px" name="total_lab" id="total_lab" value="" class="form-control" >
 
+
 <div class="col-xs-2">
-          <label> Gudang </label><br>
+    <label> Gudang </label><br>
           
-          <select name="kode_gudang" id="kode_gudang" class="form-control chosen"  >
-          <?php 
-          
-          // menampilkan seluruh data yang ada pada tabel suplier
-          $query_gudang = $db->query("SELECT default_sett,kode_gudang,nama_gudang FROM gudang ORDER BY id");
-          
-          // menyimpan data sementara yang ada pada $query_gudang
-          while($data_gudang = mysqli_fetch_array($query_gudang))
-          {
+      <select name="kode_gudang" id="kode_gudang" class="form-control chosen" >
+        <?php 
+        // menampilkan seluruh data yang ada pada tabel suplier
+        $query = $db->query("SELECT default_set, kode_gudang, nama_gudang FROM gudang ORDER BY id"); 
+        // menyimpan data sementara yang ada pada $query
+        while($data = mysqli_fetch_array($query)){
 
-            if ($data_gudang['default_sett'] == '1') {
+          if ($data['default_set'] == '1') {
 
-                echo "<option selected value='".$data_gudang['kode_gudang'] ."'>".$data_gudang['nama_gudang'] ."</option>";
+            echo "<option selected value='".$data['kode_gudang'] ."'>".$data['nama_gudang'] ."</option>";
               
-            }
-
-            else{
-
-                echo "<option value='".$data_gudang['kode_gudang'] ."'>".$data_gudang['nama_gudang'] ."</option>";
-
-            }
-          
           }
-          
-          
-          ?>
-          </select>
-</div>
+          else{
+            echo "<option value='".$data['kode_gudang'] ."'>".$data['nama_gudang'] ."</option>";
 
+          }
+        }
+        ?>
+    </select>
+</div>
 
 <div class="col-xs-2">
           <label>PPN</label>
