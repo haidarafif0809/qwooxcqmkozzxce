@@ -30,21 +30,21 @@ $columns = array(
 );
 
 // getting total number records without any search
-$sql =" SELECT kode_barang,lab_ke_berapa, nama_barang, jumlah_barang, harga, subtotal, potongan, tax, tanggal, jam, id";
-$sql.=" FROM tbs_penjualan ";
-$sql.=" WHERE no_reg = '$no_reg' AND lab = 'Laboratorium' AND no_faktur IS NULL ";
+$sql =" SELECT tp.kode_barang,tp.lab_ke_berapa, tp.nama_barang, tp.jumlah_barang, tp.harga, tp.subtotal, tp.potongan, tp.tax, tp.tanggal, tp.jam, tp.id, hp.hasil_pemeriksaan";
+$sql.=" FROM tbs_penjualan tp INNER JOIN hasil_lab hp ON tp.kode_barang = hp.kode_barang";
+$sql.=" WHERE tp.no_reg = '$no_reg' AND tp.lab = 'Laboratorium' AND tp.no_faktur IS NULL ";
 
 $query = mysqli_query($conn, $sql) or die("eror 1");
 $totalData = mysqli_num_rows($query);
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
-$sql =" SELECT kode_barang,lab_ke_berapa, nama_barang, jumlah_barang, harga, subtotal, potongan, tax, tanggal, jam, id";
-$sql.=" FROM tbs_penjualan ";
-$sql.=" WHERE no_reg = '$no_reg' AND lab = 'Laboratorium' AND no_faktur IS NULL ";
+$sql =" SELECT tp.kode_barang,tp.lab_ke_berapa, tp.nama_barang, tp.jumlah_barang, tp.harga, tp.subtotal, tp.potongan, tp.tax, tp.tanggal, tp.jam, tp.id, hp.hasil_pemeriksaan";
+$sql.=" FROM tbs_penjualan tp INNER JOIN hasil_lab hp ON tp.kode_barang = hp.kode_barang";
+$sql.=" WHERE tp.no_reg = '$no_reg' AND tp.lab = 'Laboratorium' AND tp.no_faktur IS NULL ";
 
-    $sql.=" AND (kode_barang LIKE '".$requestData['search']['value']."%'";  
-    $sql.=" OR nama_barang LIKE '".$requestData['search']['value']."%' )";
+    $sql.=" AND (tp.kode_barang LIKE '".$requestData['search']['value']."%'";  
+    $sql.=" OR tp.nama_barang LIKE '".$requestData['search']['value']."%' )";
 
 }
 
@@ -64,6 +64,7 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 
       $nestedData[] = $row["kode_barang"];
       $nestedData[] = $row["nama_barang"];
+      $nestedData[] = $row["hasil_pemeriksaan"];
 
       $kd = $db->query("SELECT f.nama_petugas, u.nama FROM tbs_fee_produk f LEFT JOIN user u ON f.nama_petugas = u.id WHERE f.kode_produk = '$row[kode_barang]' AND f.jam = '$row[jam]' ");
 
