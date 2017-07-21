@@ -54,6 +54,7 @@ $obat = $otoritas_produk['tipe_obat'];
     }
     </style>
 
+
 <!-- js untuk tombol shortcut -->
  <script src="shortcut.js"></script>
 <!-- js untuk tombol shortcut -->
@@ -80,7 +81,7 @@ $obat = $otoritas_produk['tipe_obat'];
  <div style="padding-left: 20%; padding-right: 20%">
   
 
-<div class="row">
+<div class="row card card-block">
 <h3> FORM INPUT DATA RAWAT JALAN </h3><hr>
 
  <!-- membuat form menjadi beberpa bagian -->
@@ -382,6 +383,33 @@ $obat = $otoritas_produk['tipe_obat'];
   </div>
 </div><!-- end of modal data barang  -->
 
+<!--MODAL HASIL LAB -->
+<div id="modal_detail" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title"><center><b>Detail Hasil Laboratorium</b></center></h4>
+      </div>
+
+      <div class="modal-body">
+        <div class="table-responsive">
+          <span id="span-detail">
+            
+          </span>
+        </div>
+       </div>
+
+      <div class="modal-footer">
+        <h6 style="text-align: left ; color: red"><i>* Edit Hasil Pemeriksaan Click 2x !!</i></h6>
+  <center> <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button></center> 
+      </div>
+    </div>
+
+  </div>
+</div>
 
 <!--tampilan modal loading form-->
 <div id="modal_loading_form" class="modal" role="dialog">
@@ -586,15 +614,9 @@ $obat = $otoritas_produk['tipe_obat'];
     <input style="height:15px;" type="text" class="form-control" name="tax" autocomplete="off" id="tax1" placeholder="Tax%" >
   </div>
 
-<div class="col-xs-4">
+<div class="col-xs-2">
 
   <button type="submit" id="submit_produk" class="btn btn-success" style="font-size:15px" > <i class="fa fa-plus"></i>Submit(F3)</button>
-
-  <button type="submit" id="transaksi_baru" class="btn btn-info" style="font-size:15px; display: none"> Transaksi Baru (Ctrl + M)</button>
-
-  <button type="submit" id="simpan_sementara"  class="btn btn-purple" style="font-size:15px; display: none">  Simpan (F10)</button>
-
-  <button type="submit" id="batal_penjualan"  class="btn btn-danger" style="font-size:15px; display: none">  Batal (Ctrl + B)</button>
 
 </div>
 
@@ -686,13 +708,12 @@ $obat = $otoritas_produk['tipe_obat'];
 
                 </span>
 
-<button class="btn btn-primary" id="btnLab" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample"><i class='fa fa-stethoscope'> </i>
-Laboratorium  </button>
 
-
-<button class="btn btn-primary" id="btnRadiologi" type="button" data-toggle="collapse" data-target="#collapseExampleRadiologi" aria-expanded="false" aria-controls="collapseExample"><i class='fa fa-universal-access'> </i>
-Radiologi  </button>
-
+    <button class="btn btn-primary" id="btnLab" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample"><i class='fa fa-stethoscope'> </i>
+    Laboratorium  </button>
+    
+    <button class="btn btn-primary" id="btnRadiologi" type="button" data-toggle="collapse" data-target="#collapseExampleRadiologi" aria-expanded="false" aria-controls="collapseExample"><i class='fa fa-universal-access'> </i>
+    Radiologi  </button>
 
 
             <div class="collapse" id="collapseExample">
@@ -704,7 +725,6 @@ Radiologi  </button>
                               
                               <th> Kode  </th>
                               <th> Nama </th>
-                              <th> Hasil Pemeriksaan </th>
                               <th> Nama Petugas</th>
                               <th> Jumlah </th>
                               <!--
@@ -712,6 +732,7 @@ Radiologi  </button>
                               <th> Subtotal </th>
                               -->
                               <th> Tanggal </th>
+                              <th> Hasil Lab. </th>
                           
                           </thead> <!-- tag penutup tabel -->
                     </table>
@@ -755,7 +776,13 @@ Radiologi  </button>
   
 
 
+<div align="right" class="BtnOnTop">    
+    <button type="submit" id="transaksi_baru" class="btn btn-info" style="font-size:15px; display: none"> <i class="fa fa-refresh"></i> Transaksi Baru (Ctrl + M)</button>
 
+    <button type="submit" id="simpan_sementara"  class="btn btn-purple" style="font-size:15px;"> <i class="fa fa-save"></i>  Simpan (F10)</button>
+
+    <button type="submit" id="batal_penjualan"  class="btn btn-danger" style="font-size:15px;"> <i class="fa fa-remove"></i>  Batal (Ctrl + B)</button>
+  </div>
 
 <div class="col-xs-4" style="display: none">
 
@@ -1400,9 +1427,7 @@ $(document).ready(function(){
               }
               else
               {
-                 $("#penjualan").show();
-                 $("#simpan_sementara").show();
-                 $("#batal_penjualan").show(); 
+                 $("#penjualan").show(); 
                  $("#cetak_langsung").show();
                  $("#piutang").show();
               }
@@ -1510,7 +1535,7 @@ var penjamin = $("#penjamin").val();
             "info":     false,
             "language": { "emptyTable":     "My Custom Message On Empty Table" },
             "ajax":{
-              url :"data_tbs_lab.php", // json datasource
+              url :"data_tbs_lab_input_data.php", // json datasource
                "data": function ( d ) {
                   d.no_reg = $("#no_reg").val();
                   // d.custom = $('#myInput').val();
@@ -1999,9 +2024,9 @@ $(document).ready(function(){
             $("#keterangan").val('');
             $("#penjualan").show();
             $("#cetak_langsung").show();
-            $("#simpan_sementara").show();
+            $("#simpan_sementara").hide();
             $("#piutang").show();
-            $("#batal_penjualan").show(); 
+            $("#batal_penjualan").hide(); 
             $("#transaksi_baru").hide();
             $("#alert_berhasil").hide();
             $("#alert_simpan_berhasil").hide();
@@ -2242,11 +2267,6 @@ else if (a > 0){
     $("#total2").val(tandaPemisahTitik(total_akhir1));
     $("#biaya_adm").val(tandaPemisahTitik(biaya_adm));
     $("#biaya_admin_persen").val(data_admin);
-    $("#submit_produk").hide()
-    $("#simpan_sementara").show()
-    $("#batal_penjualanshow").show()
-   
-
 
 
  $.post("proses_tbs_penjualan_raja.php",{id_user:id_user,penjamin:penjamin,asal_poli:asal_poli,level_harga:level_harga,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,no_reg:no_reg,no_rm:no_rm,dokter:dokter,petugas_kasir:petugas_kasir,kode_barang:kode_barang,nama_barang:nama_barang,jumlah_barang:jumlah_barang,harga:harga,potongan:potongan,tax:tax,satuan:satuan, ber_stok:ber_stok,ppn:ppn,dosis_obat:dosis_obat},function(data){
@@ -2304,9 +2324,6 @@ else if (stok < 0 && ber_stok == 'Barang' ) {
     $("#total2").val(tandaPemisahTitik(total_akhir1));
     $("#biaya_adm").val(tandaPemisahTitik(biaya_adm));
     $("#biaya_admin_persen").val(data_admin);
-    $("#submit_produk").hide();
-    $("#simpan_sementara").show();
-    $("#batal_penjualanshow").show();
    
 if (limit_stok > stok)
         {
@@ -2365,7 +2382,7 @@ alert("Kode barang harus terisi");
         $("#span_tbs_obat").show()
         $("#span_tbs_jasa").show()
 
-  });/// braket penutup submit_produk
+  });/// braket penutup 
 });
 
     $("#formtambahproduk").submit(function(){
@@ -2384,7 +2401,6 @@ alert("Kode barang harus terisi");
       $("#cetak_tunai").hide('');
       $("#cetak_tunai_besar").hide('');
       $("#cetak_piutang").hide('');
-      $("#submit_produk").show('');
 
       
       /* Act on the event */
@@ -2493,8 +2509,6 @@ alert("Silakan Isi Kolom Pembayaran  atau lakukan Bayar Piutang");
 
   $("#penjualan").hide();
   $("#cetak_langsung").hide();
-  $("#simpan_sementara").hide();
-  $("#batal_penjualan").hide(); 
   $("#piutang").hide();
   $("#transaksi_baru").show();
 
@@ -4179,9 +4193,8 @@ else
     $("#satuan_konversi").val(satuan);
     $("#limit_stok").val(limit_stok);
     $("#ber_stok").val(ber_stok);
-    $("#id_produk").val(id_barang);
+    $("#id_produk").val(id_barang); 
 
-    $("#submit_produk").show('');
 
 if (ber_stok == 'Barang') {
 
@@ -5599,6 +5612,25 @@ $(document).ready(function(){
 <!--Akhir Script Key Up Potongan Produk-->
 
 <!-- script untuk menampilkan data produk di tag select produk -->
+
+
+<!--HASIL LAB -->
+<script type="text/javascript">
+$(document).ready(function () {
+  $(document).on('click', '.hasil-lab', function (e) {
+
+    var kode_barang = $(this).attr('data-kode');
+    var no_reg = $(this).attr('data-reg');
+
+    $("#modal_detail").modal('show');
+
+    $.post("detail_hasil_lab_input_data.php",{kode_barang:kode_barang,no_reg:no_reg},function(data){
+      $("#span-detail").html(data);
+    });
+
+  });
+});
+</script>
 
 
 <?php include 'footer.php'; ?>
