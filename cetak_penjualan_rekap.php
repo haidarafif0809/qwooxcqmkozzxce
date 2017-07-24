@@ -14,16 +14,19 @@ $tanggal_sekarang = date('Y-m-d');
 if ($status_penjualan == "Semua") {
 $query_total_penjualan = $db->query("SELECT SUM(total) AS total_akhir, SUM(potongan) AS potongan_akhir, SUM(tax) AS tax_akhir, SUM(biaya_admin) AS biaya_admin_akhir, SUM(sisa) AS kembalian_akhir, SUM(kredit) AS kredit_akhir  FROM penjualan WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' ");
 $data_total_penjualan = mysqli_fetch_array($query_total_penjualan);
+$subtotal = $data_total_penjualan['total_akhir'] + $data_total_penjualan['potongan_akhir'] - $data_total_penjualan['tax_akhir'] - $data_total_penjualan['biaya_admin_akhir'];
 }
 
 elseif ($status_penjualan == "Lunas") {
 $query_total_penjualan = $db->query("SELECT SUM(total) AS total_akhir, SUM(potongan) AS potongan_akhir, SUM(tax) AS tax_akhir, SUM(biaya_admin) AS biaya_admin_akhir, SUM(sisa) AS kembalian_akhir, SUM(kredit) AS kredit_akhir  FROM penjualan WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' AND status = 'Lunas' ");
 $data_total_penjualan = mysqli_fetch_array($query_total_penjualan);
+$subtotal = $data_total_penjualan['total_akhir'] + $data_total_penjualan['potongan_akhir'] - $data_total_penjualan['tax_akhir'] - $data_total_penjualan['biaya_admin_akhir'];
 }
 
 elseif ($status_penjualan == "Piutang") {
 $query_total_penjualan = $db->query("SELECT SUM(total) AS total_akhir, SUM(potongan) AS potongan_akhir, SUM(tax) AS tax_akhir, SUM(biaya_admin) AS biaya_admin_akhir, SUM(sisa) AS kembalian_akhir, SUM(kredit) AS kredit_akhir  FROM penjualan WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' AND status = 'Piutang' ");
 $data_total_penjualan = mysqli_fetch_array($query_total_penjualan);
+$subtotal = $data_total_penjualan['total_akhir'] + $data_total_penjualan['potongan_akhir'] - $data_total_penjualan['tax_akhir'] - $data_total_penjualan['biaya_admin_akhir'];
 }
  ?>
 
@@ -69,6 +72,7 @@ $data_total_penjualan = mysqli_fetch_array($query_total_penjualan);
       <th style="background-color: #4CAF50; color: white;"> Jam </th>
       <th style="background-color: #4CAF50; color: white;"> User </th>
       <th style="background-color: #4CAF50; color: white;"> Status </th>
+      <th style="background-color: #4CAF50; color: white;"> Subtotal </th>
       <th style="background-color: #4CAF50; color: white;"> Potongan </th>
       <th style="background-color: #4CAF50; color: white;"> Tax </th>
       <th style="background-color: #4CAF50; color: white;"> Biaya Admin </th>
@@ -90,11 +94,15 @@ elseif ($status_penjualan == "Lunas") {
 }
 elseif ($status_penjualan == "Piutang") {
     $perintah = $db->query("SELECT id,tanggal,no_faktur,kode_pelanggan,total,jam,user,status,potongan,tax,sisa,kredit,biaya_admin FROM penjualan dp WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' AND status = 'Piutang'  ORDER BY tanggal DESC ");
+
 }
 
 
                 while ($data10 = mysqli_fetch_array($perintah))
                 {
+
+                 $query_subtotal = $db->query("SELECT SUM(subtotal) AS subtotal  FROM detail_penjualan WHERE no_faktur = '$data10[no_faktur]' ");
+                 $data_subtotal = mysqli_fetch_array($query_subtotal);
 
                   $query_pelanggan = $db->query("SELECT nama_pelanggan FROM pelanggan WHERE kode_pelanggan = '$data10[kode_pelanggan]' ");
                   $data_pelanggan = mysqli_fetch_array($query_pelanggan);
@@ -115,6 +123,7 @@ elseif ($status_penjualan == "Piutang") {
                   <td>". $data10['jam'] ."</td>
                   <td>". $data10['user'] ."</td>
                   <td>". $data10['status'] ."</td>
+                  <td align='right'>". rp($data_subtotal['subtotal']) ."</td>
                   <td align='right'>". rp($data10['potongan']) ."</td>
                   <td align='right'>". rp($data10['tax']) ."</td>
                   <td align='right'>". rp($data10['biaya_admin']) ."</td>
@@ -129,7 +138,8 @@ elseif ($status_penjualan == "Piutang") {
                   <td></td>
                   <td></td>
                   <td></td>
-                  <td></td>
+                  <td></td> 
+                  <td align='right' style='color:red'>".rp($subtotal)."</td>
                   <td align='right' style='color:red'>".rp($data_total_penjualan['potongan_akhir'])."</td>
                   <td align='right' style='color:red'>".rp($data_total_penjualan['tax_akhir'])."</td>
                   <td align='right' style='color:red'>".rp($data_total_penjualan['biaya_admin_akhir'])."</td>
