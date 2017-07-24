@@ -5,11 +5,35 @@ include 'db.php';
 
 $dari_tanggal = stringdoang($_POST['dari_tanggal']);
 $sampai_tanggal = stringdoang($_POST['sampai_tanggal']);
+$status_penjualan = stringdoang($_POST['status_penjualan']);
 
-$query_total_penjualan = $db->query("SELECT SUM(total) AS total_akhir, SUM(potongan) AS potongan_akhir, SUM(tax) AS tax_akhir, SUM(biaya_admin) AS biaya_admin_akhir, SUM(sisa) AS kembalian_akhir, SUM(kredit) AS kredit_akhir  FROM penjualan WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' ");
-$data_total_penjualan = mysqli_fetch_array($query_total_penjualan);
 
-$subtotal = $data_total_penjualan['total_akhir'] + $data_total_penjualan['potongan_akhir'] - $data_total_penjualan['tax_akhir'] - $data_total_penjualan['biaya_admin_akhir'];
+if ($status_penjualan == "Semua") {
+
+  $query_total_penjualan = $db->query("SELECT SUM(total) AS total_akhir, SUM(potongan) AS potongan_akhir, SUM(tax) AS tax_akhir, SUM(biaya_admin) AS biaya_admin_akhir, SUM(sisa) AS kembalian_akhir, SUM(kredit) AS kredit_akhir  FROM penjualan WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' ");
+  $data_total_penjualan = mysqli_fetch_array($query_total_penjualan);
+
+  $subtotal = $data_total_penjualan['total_akhir'] + $data_total_penjualan['potongan_akhir'] - $data_total_penjualan['tax_akhir'] - $data_total_penjualan['biaya_admin_akhir'];
+
+
+}
+elseif ($status_penjualan == "Lunas") {
+
+  $query_total_penjualan = $db->query("SELECT SUM(total) AS total_akhir, SUM(potongan) AS potongan_akhir, SUM(tax) AS tax_akhir, SUM(biaya_admin) AS biaya_admin_akhir, SUM(sisa) AS kembalian_akhir, SUM(kredit) AS kredit_akhir  FROM penjualan WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' AND status = 'Lunas' ");
+  $data_total_penjualan = mysqli_fetch_array($query_total_penjualan);
+
+  $subtotal = $data_total_penjualan['total_akhir'] + $data_total_penjualan['potongan_akhir'] - $data_total_penjualan['tax_akhir'] - $data_total_penjualan['biaya_admin_akhir'];
+
+
+}
+elseif ($status_penjualan == "Piutang"){
+
+  $query_total_penjualan = $db->query("SELECT SUM(total) AS total_akhir, SUM(potongan) AS potongan_akhir, SUM(tax) AS tax_akhir, SUM(biaya_admin) AS biaya_admin_akhir, SUM(sisa) AS kembalian_akhir, SUM(kredit) AS kredit_akhir  FROM penjualan WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' AND status = 'Piutang' ");
+  $data_total_penjualan = mysqli_fetch_array($query_total_penjualan);
+
+  $subtotal = $data_total_penjualan['total_akhir'] + $data_total_penjualan['potongan_akhir'] - $data_total_penjualan['tax_akhir'] - $data_total_penjualan['biaya_admin_akhir'];
+
+}
 
 
 // storing  request (ie, get/post) global array to a variable  
@@ -37,16 +61,42 @@ $columns = array(
 
 
 // getting total number records without any search
+
+if ($status_penjualan == "Semua") {
 $sql =" SELECT id,tanggal,no_faktur,kode_pelanggan,total,jam,user,status,potongan,tax,biaya_admin,sisa,kredit ";
-$sql.=" FROM penjualan WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' ";
+$sql.=" FROM penjualan WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal'";
+}
+
+elseif ($status_penjualan == "Lunas") {
+$sql =" SELECT id,tanggal,no_faktur,kode_pelanggan,total,jam,user,status,potongan,tax,biaya_admin,sisa,kredit ";
+$sql.=" FROM penjualan WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' AND status = 'Lunas' ";
+}
+
+elseif ($status_penjualan == "Piutang"){
+$sql =" SELECT id,tanggal,no_faktur,kode_pelanggan,total,jam,user,status,potongan,tax,biaya_admin,sisa,kredit ";
+$sql.=" FROM penjualan WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' AND status = 'Piutang' ";
+}
+
 
 $query=mysqli_query($conn, $sql) or die("eror 1");
 $totalData = mysqli_num_rows($query);
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
 
+if ($status_penjualan == "Semua") {
 $sql =" SELECT id,tanggal,no_faktur,kode_pelanggan,total,jam,user,status,potongan,tax,biaya_admin,sisa,kredit ";
 $sql.=" FROM penjualan WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' ";
+}
+
+elseif ($status_penjualan == "Lunas") {
+$sql =" SELECT id,tanggal,no_faktur,kode_pelanggan,total,jam,user,status,potongan,tax,biaya_admin,sisa,kredit ";
+$sql.=" FROM penjualan WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' AND status = 'Lunas' ";
+}
+
+elseif ($status_penjualan == "Piutang") {
+$sql =" SELECT id,tanggal,no_faktur,kode_pelanggan,total,jam,user,status,potongan,tax,biaya_admin,sisa,kredit ";
+$sql.=" FROM penjualan WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' AND status = 'Piutang' ";
+}
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
 $sql.=" AND ( no_faktur LIKE '".$requestData['search']['value']."%' ";
 $sql.=" OR tanggal LIKE '".$requestData['search']['value']."%' ";
@@ -67,7 +117,7 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 $query_subtotal = $db->query("SELECT SUM(subtotal) AS subtotal  FROM detail_penjualan WHERE no_faktur = '$row[no_faktur]' ");
 $data_subtotal = mysqli_fetch_array($query_subtotal);
 
-$query_pelanggan = $db_pasien->query("SELECT nama_pelanggan FROM pelanggan WHERE kode_pelanggan = '$row[kode_pelanggan]' ");
+$query_pelanggan = $db->query("SELECT nama_pelanggan FROM pelanggan WHERE kode_pelanggan = '$row[kode_pelanggan]' ");
 $data_pelanggan = mysqli_fetch_array($query_pelanggan);
 
       $nestedData[] = $row['no_faktur'];
