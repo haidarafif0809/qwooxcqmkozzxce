@@ -3067,7 +3067,8 @@ else if (a > 0){
       $("#biaya_admin").val(Math.round(biaya_admin));
       
 
-      if (limit_stok > stok)
+    var batas_stok = stok - limit_stok;
+    if (batas_stok < 0 && limit_stok != 0)
         {
           alert("Persediaan Barang Ini Sudah Mencapai Batas Limit Stok, Segera Lakukan Pembelian !");
         }

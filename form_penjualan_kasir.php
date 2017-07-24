@@ -2283,7 +2283,7 @@ else if (a > 0){
   } 
 
 
-else if (stok < 0 && ber_stok == 'Barang' ) {
+else if (stok < 0 && ber_stok == 'Barang') {
 
     alert ("Jumlah Melebihi Stok Barang !");
     $("#jumlah_barang").val('');
@@ -2301,8 +2301,10 @@ else if (stok < 0 && ber_stok == 'Barang' ) {
     $("#biaya_adm").val(tandaPemisahTitik(biaya_adm));
     $("#biaya_admin_persen").val(data_admin);
    
-if (limit_stok > stok)
+    var batas_stok = stok - limit_stok;
+    if (batas_stok < 0 && limit_stok != 0)
         {
+          console.log(limit_stok)
           alert("Persediaan Barang Ini Sudah Mencapai Batas Limit Stok, Segera Lakukan Pembelian !");
         }
 
