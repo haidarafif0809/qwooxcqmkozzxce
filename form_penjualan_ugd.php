@@ -347,7 +347,7 @@ $obat = $otoritas_produk['tipe_obat'];
 
 
 <!--tampilan modal-->
-<div id="myModal" class="modal fade" role="dialog">
+<div id="myModal" class="modal" role="dialog">
   <div class="modal-dialog ">
 
     <!-- isi modal-->
@@ -397,7 +397,7 @@ $obat = $otoritas_produk['tipe_obat'];
 
 
 <!-- Modal cari registrasi pasien-->
-<div id="modal_reg" class="modal fade" role="dialog">
+<div id="modal_reg" class="modal" role="dialog">
   <div class="modal-dialog">
 
     <!-- Modal content-->
@@ -435,7 +435,7 @@ $obat = $otoritas_produk['tipe_obat'];
 
 
 <!-- Modal Hapus data -->
-<div id="modal_hapus" class="modal fade" role="dialog">
+<div id="modal_hapus" class="modal" role="dialog">
   <div class="modal-dialog">
 
     <!-- Modal content-->
@@ -471,7 +471,7 @@ $obat = $otoritas_produk['tipe_obat'];
 </div><!-- end of modal hapus data  -->
 
 <!-- Modal edit data -->
-<div id="modal_edit" class="modal fade" role="dialog">
+<div id="modal_edit" class="modal" role="dialog">
   <div class="modal-dialog">
 
     <!-- Modal content-->
@@ -1936,7 +1936,8 @@ else if (a > 0){
 
   else{
 
-      if (limit_stok > stok)
+    var batas_stok = stok - limit_stok;
+    if (batas_stok < 0 && limit_stok != 0)
         {
           alert("Persediaan Barang Ini Sudah Mencapai Batas Limit Stok, Segera Lakukan Pembelian !");
         }
