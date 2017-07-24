@@ -5,18 +5,26 @@ include 'db.php';
 
 $dari_tanggal = stringdoang($_GET['dari_tanggal']);
 $sampai_tanggal = stringdoang($_GET['sampai_tanggal']);
+$status_penjualan = stringdoang($_GET['status_penjualan']);
 
 
 $tanggal_sekarang = date('Y-m-d');
 
-
-$query_perusahaan = $db->query("SELECT foto, nama_perusahaan, alamat_perusahaan, no_telp FROM perusahaan ");
-  $data_perusahaan = mysqli_fetch_array($query_perusahaan);
-
-
+ 
+if ($status_penjualan == "Semua") {
 $query_total_penjualan = $db->query("SELECT SUM(total) AS total_akhir, SUM(potongan) AS potongan_akhir, SUM(tax) AS tax_akhir, SUM(biaya_admin) AS biaya_admin_akhir, SUM(sisa) AS kembalian_akhir, SUM(kredit) AS kredit_akhir  FROM penjualan WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' ");
 $data_total_penjualan = mysqli_fetch_array($query_total_penjualan);
-    
+}
+
+elseif ($status_penjualan == "Lunas") {
+$query_total_penjualan = $db->query("SELECT SUM(total) AS total_akhir, SUM(potongan) AS potongan_akhir, SUM(tax) AS tax_akhir, SUM(biaya_admin) AS biaya_admin_akhir, SUM(sisa) AS kembalian_akhir, SUM(kredit) AS kredit_akhir  FROM penjualan WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' AND status = 'Lunas' ");
+$data_total_penjualan = mysqli_fetch_array($query_total_penjualan);
+}
+
+elseif ($status_penjualan == "Piutang") {
+$query_total_penjualan = $db->query("SELECT SUM(total) AS total_akhir, SUM(potongan) AS potongan_akhir, SUM(tax) AS tax_akhir, SUM(biaya_admin) AS biaya_admin_akhir, SUM(sisa) AS kembalian_akhir, SUM(kredit) AS kredit_akhir  FROM penjualan WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' AND status = 'Piutang' ");
+$data_total_penjualan = mysqli_fetch_array($query_total_penjualan);
+}
  ?>
 
 <div class="container">
@@ -72,11 +80,23 @@ $data_total_penjualan = mysqli_fetch_array($query_total_penjualan);
             <tbody>
             <?php
 
+ 
+if ($status_penjualan == "Semua") {
+
     $perintah = $db->query("SELECT id,tanggal,no_faktur,kode_pelanggan,total,jam,user,status,potongan,tax,sisa,kredit,biaya_admin FROM penjualan dp WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' ORDER BY tanggal DESC ");
+}
+elseif ($status_penjualan == "Lunas") {
+    $perintah = $db->query("SELECT id,tanggal,no_faktur,kode_pelanggan,total,jam,user,status,potongan,tax,sisa,kredit,biaya_admin FROM penjualan dp WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' AND status = 'Lunas'  ORDER BY tanggal DESC ");
+}
+elseif ($status_penjualan == "Piutang") {
+    $perintah = $db->query("SELECT id,tanggal,no_faktur,kode_pelanggan,total,jam,user,status,potongan,tax,sisa,kredit,biaya_admin FROM penjualan dp WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' AND status = 'Piutang'  ORDER BY tanggal DESC ");
+}
+
+
                 while ($data10 = mysqli_fetch_array($perintah))
                 {
 
-                  $query_pelanggan = $db_pasien->query("SELECT nama_pelanggan FROM pelanggan WHERE kode_pelanggan = '$data10[kode_pelanggan]' ");
+                  $query_pelanggan = $db->query("SELECT nama_pelanggan FROM pelanggan WHERE kode_pelanggan = '$data10[kode_pelanggan]' ");
                   $data_pelanggan = mysqli_fetch_array($query_pelanggan);
                   
                   echo "<tr>

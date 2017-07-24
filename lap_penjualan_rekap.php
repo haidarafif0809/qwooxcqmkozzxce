@@ -35,14 +35,23 @@ tr:nth-child(even){background-color: #f2f2f2}
 
 <form class="form-inline" role="form">
 				
-				  <div class="form-group"> 
+				  <div class="form-group">
+				    <select name="status_penjualan" id="status_penjualan" autocomplete="off" class="form-control chosen" >
+				    <option value="" style="display: none">Status Penjualan</option>
+				      <optgroup label="Status Penjualan">
+				        <option value="Semua">Semua</option>
+				        <option value="Lunas">Lunas</option>
+				        <option value="Piutang">Piutang</option>
+				      </optgroup>
+				    </select>
+				  </div>
 
-                  <input type="text" name="dari_tanggal" id="dari_tanggal" class="form-control" placeholder="Dari Tanggal" required="">
+				  <div class="form-group"> 
+               		   <input type="text" name="dari_tanggal" id="dari_tanggal" class="form-control" placeholder="Dari Tanggal" required="">
                   </div>
 
                   <div class="form-group"> 
-
-                  <input type="text" name="sampai_tanggal" id="sampai_tanggal" class="form-control" placeholder="Sampai Tanggal" value="<?php echo date("Y-m-d"); ?>" required="">
+                  		<input type="text" name="sampai_tanggal" id="sampai_tanggal" class="form-control" placeholder="Sampai Tanggal" value="<?php echo date("Y-m-d"); ?>" required="">
                   </div>
 
                   <button type="submit" name="submit" id="submit" class="btn btn-primary" ><i class="fa fa-eye"> </i> Tampil </button>
@@ -93,7 +102,13 @@ tr:nth-child(even){background-color: #f2f2f2}
 		
 		var dari_tanggal = $("#dari_tanggal").val();
 		var sampai_tanggal = $("#sampai_tanggal").val();
-		if (dari_tanggal == '') {
+ 	    var status_penjualan = $("#status_penjualan").val();  
+
+	    if (status_penjualan == '') {
+	        alert("Silakan Isi Kolom Status Penjualan Terlebih Dahulu");
+	        $("#status_penjualan").trigger('chosen:open');
+	    }
+		else if (dari_tanggal == '') {
 			alert("Silakan isi kolom dari tanggal terlebih dahulu.");
 			$("#dari_tanggal").focus();
 		}
@@ -114,6 +129,7 @@ tr:nth-child(even){background-color: #f2f2f2}
                 "ajax":{
                   url :"proses_lap_penjualan_rekap.php", // json datasource
                    "data": function ( d ) {
+                      d.status_penjualan = $("#status_penjualan").val();
                       d.dari_tanggal = $("#dari_tanggal").val();
                       d.sampai_tanggal = $("#sampai_tanggal").val();
                       // d.custom = $('#myInput').val();
@@ -132,7 +148,7 @@ tr:nth-child(even){background-color: #f2f2f2}
     
 
           $("#cetak").show();
-        $("#cetak_lap").attr("href", "cetak_penjualan_rekap.php?dari_tanggal="+dari_tanggal+"&sampai_tanggal="+sampai_tanggal+"");
+        $("#cetak_lap").attr("href", "cetak_penjualan_rekap.php?dari_tanggal="+dari_tanggal+"&sampai_tanggal="+sampai_tanggal+"&status_penjualan="+status_penjualan+"");
 		}
 		
 		});
@@ -148,6 +164,9 @@ tr:nth-child(even){background-color: #f2f2f2}
 		</script>
 
 
+<script type="text/javascript">
+  $(".chosen").chosen({no_results_text: "Maaf, Data Tidak Ada!",search_contains:true}); 
+</script>
 
 
 <?php 
