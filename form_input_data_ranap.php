@@ -430,7 +430,7 @@ padding-right: 5%;
 
 <!--tampilan modal-->
 <div id="myModal" class="modal" role="dialog">
-  <div class="modal-dialog modal-lg">
+  <div class="modal-dialog">
 
     <!-- isi modal-->
     <div class="modal-content">
@@ -973,8 +973,20 @@ Radiologi  </button>
                 <h6 style="text-align: left ;"><i><b> * Short Key (F2) untuk mencari Kode Produk atau Nama Produk.</b></i></h6>
 
   
-</div> <!-- / END COL SM 6 (1)-->
+      <div align="right" class="BtnOnTop">  
 
+          <!--Tombol Simpannya -->
+          <?php if ($data_otitas_penjualan_inap['tombol_simpan_inap'] > 0) { ?>  
+          <button type="submit" id="simpan_sementara" class="btn btn-purple " style="font-size:15px"><i class="fa fa-save"></i> Simpan (F10)</button>
+          <?php } ?>
+          
+            <?php if ($data_otitas_penjualan_inap['tombol_batal_inap'] > 0) { ?>
+            <button type="submit" id="batal_penjualan" class="btn btn-danger" style="font-size:15px"><i class="fa fa-remove"></i> Batal (Ctrl + B)</button>
+          <?php } ?>
+          
+      </div>
+
+</div> <!-- / END COL SM 6 (1)-->
 
 
 <div class="col-xs-4">
@@ -1232,22 +1244,7 @@ Radiologi  </button>
     </form>
       
     
-  
-    <div class="row" >
-      <div class="col-sm-7">
-        <div class="card card-block">
 
-          <!--Tombol Simpannya -->
-          <?php if ($data_otitas_penjualan_inap['tombol_simpan_inap'] > 0) { ?>  
-          <button type="submit" id="simpan_sementara" class="btn btn-purple " style="font-size:15px"><i class="fa fa-save"></i> Simpan (F10)</button>
-          <?php } ?>
-          
-            <?php if ($data_otitas_penjualan_inap['tombol_batal_inap'] > 0) { ?>
-            <button type="submit" id="batal_penjualan" class="btn btn-danger" style="font-size:15px"><i class="fa fa-cancel"></i> Batal (Ctrl + B)</button>
-          <?php } ?>
-        </div>
-      </div> <!--row 3-->
-    </div>
 
 </div><!-- / END COL SM 6 (2)-->
 
@@ -5639,21 +5636,21 @@ $(document).ready(function(){
              $(nRow).attr('class', "pilih");
               $(nRow).attr('data-kode', aData[0]);
               $(nRow).attr('nama-barang', aData[1]);
-              $(nRow).attr('harga', aData[2]);
-              $(nRow).attr('harga_level_2', aData[3]);
-              $(nRow).attr('harga_level_3', aData[4]);
-              $(nRow).attr('harga_level_4', aData[5]);
-              $(nRow).attr('harga_level_5', aData[6]);
-              $(nRow).attr('harga_level_6', aData[7]);
-              $(nRow).attr('harga_level_7', aData[8]);
-              $(nRow).attr('jumlah-barang', aData[9]);
-              $(nRow).attr('satuan', aData[17]);
+              $(nRow).attr('harga', aData[11]);
+              $(nRow).attr('harga_level_2', aData[12]);
+              $(nRow).attr('harga_level_3', aData[13]);
+              $(nRow).attr('harga_level_4', aData[14]);
+              $(nRow).attr('harga_level_5', aData[15]);
+              $(nRow).attr('harga_level_6', aData[16]);
+              $(nRow).attr('harga_level_7', aData[17]);
+              $(nRow).attr('jumlah-barang', aData[2]);
+              $(nRow).attr('satuan', aData[10]);
               $(nRow).attr('kategori', aData[11]);
-              $(nRow).attr('status', aData[16]);
-              $(nRow).attr('suplier', aData[12]);
-              $(nRow).attr('limit_stok', aData[13]);
-              $(nRow).attr('ber-stok', aData[14]);
-              $(nRow).attr('tipe_barang', aData[15]);
+              $(nRow).attr('status', aData[10]);
+              $(nRow).attr('suplier', aData[5]);
+              $(nRow).attr('limit_stok', aData[6]);
+              $(nRow).attr('ber-stok', aData[7]);
+              $(nRow).attr('tipe_barang', aData[8]);
               $(nRow).attr('id-barang', aData[18]);
 
 
