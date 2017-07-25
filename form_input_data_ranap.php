@@ -110,7 +110,7 @@ padding-right: 5%;
       </div>
       <div class="modal-body">
 
-      <h2>Sedang Menyiapkan Form Penjualan..</h2>
+      <h2>Sedang Menyiapkan Form Input Data ..</h2>
       <center><h4>Harap tunggu sebentar..</h4></center>
           <center><div class="loader"></div></center>
       </div> <!-- tag penutup modal-body-->
@@ -127,7 +127,7 @@ padding-right: 5%;
 
 <div class="padding" >
 
-  <h3> FORM PENJUALAN RAWAT INAP</h3>
+  <h3> FORM INPUT DATA RAWAT INAP</h3>
 
 
 <div class="row">
