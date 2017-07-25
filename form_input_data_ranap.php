@@ -983,6 +983,8 @@ Radiologi  </button>
             <?php if ($data_otitas_penjualan_inap['tombol_batal_inap'] > 0) { ?>
             <button type="submit" id="batal_penjualan" class="btn btn-danger" style="font-size:15px"><i class="fa fa-remove"></i> Batal (Ctrl + B)</button>
           <?php } ?>
+
+           <button type="submit" id="transaksi_baru" style="display: none" class="btn btn-info" style="font-size:15px;"> Input Data Baru (Ctrl + M)</button>  
           
       </div>
 
@@ -1201,11 +1203,6 @@ Radiologi  </button>
           <?php if ($data_otitas_penjualan_inap['tombol_bayar_inap'] > 0) { ?>
             <button type="submit" id="penjualan" class="btn btn-info" style="font-size:15px">Bayar (F8)</button>
            <?php } ?>
-         
-
-          <button type="submit" id="transaksi_baru" style="display: none" class="btn btn-info" style="font-size:15px;"> Transaksi Baru (Ctrl + M)</button>          
-        
-
           
             <?php if ($data_otitas_penjualan_inap['tombol_piutang_inap'] > 0) { ?>
           <button type="submit" id="piutang" class="btn btn-warning" style="font-size:15px">Piutang (F9)</button>

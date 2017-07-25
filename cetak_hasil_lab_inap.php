@@ -158,7 +158,7 @@ if($face_drop >= 1)
         {
 
         echo "<tr>";
-        echo "<td>  <li> ". $take['nama_pemeriksaan'] ."</li></td>";
+        echo "<td style='padding-left:25px'><li> ". $take['nama_pemeriksaan'] ."</li></td>";
         echo "<td>". $take['hasil_pemeriksaan'] ."</td>";
 
         $model_hitung = $take['model_hitung']; 

@@ -94,7 +94,7 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
         $nestedData[] = "<a class='btn btn-floating  btn-info detail-lab' data-periksa='".$row['lab_ke_berapa']."' data-kode-barang='".$row['kode_barang']."' data-reg='".$no_reg."'><i class='fa fa-list'></i></a>";
       }
       else{
-        $hasil_lab = 'Hasil Kosong';
+        $hasil_lab = 'Hasil Belum Ada';
         $nestedData[] = $hasil_lab;
       }
 

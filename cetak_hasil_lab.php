@@ -152,9 +152,9 @@ if($face_drop >= 1)
         while ($take = mysqli_fetch_array($show_one))
         {
 
-        echo "<tr>";
-        echo "<td>  <li> ". $take['nama_pemeriksaan'] ."</li></td>";
-        echo "<td>". $take['hasil_pemeriksaan'] ."</td>";
+        echo "<tr>
+        <td style='padding-left:25px'><li> ". $take['nama_pemeriksaan'] ."</li></td>
+        <td>". $take['hasil_pemeriksaan'] ."</td>";
 
         $model_hitung = $take['model_hitung']; 
         if($model_hitung == '')
