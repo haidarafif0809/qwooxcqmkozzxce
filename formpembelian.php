@@ -1383,9 +1383,11 @@ alert(" Kode Gudang Harus Diisi ");
      //perhitungan stok jumlah input + over stok
     var stok = parseInt(jumlah_barang,10) + parseInt(jumlahbarang,10);
 
-if(over_stok < stok ){
+    if( over_stok < stok && over_stok != 0 ){
 
       alert ("Persediaan Barang Ini Sudah Melebihi Batas Stok!");
+      $("#jumlah_barang").val('');
+      $("#jumlah_barang").focus('');
       
     }
 

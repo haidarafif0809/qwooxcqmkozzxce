@@ -361,6 +361,15 @@ $keterangan_hasil = angkadoang(isset($_POST['keterangan_hasil']));
 
 //RADIOLOGI
 
+//INPUT DATA
+
+$menu_input_data = angkadoang(isset($_POST['menu_input_data']));
+$input_rawat_jalan = angkadoang(isset($_POST['input_rawat_jalan']));
+$input_rawat_inap = angkadoang(isset($_POST['input_rawat_inap']));
+$input_ugd = angkadoang(isset($_POST['input_ugd']));
+
+//INPUT DATA
+
 //OTORITAS LABORATORIUM
 $update_otoritas_laboratorium = $db->prepare("UPDATE otoritas_laboratorium SET laboratorium_lihat = ?, input_jasa_lab = ?, input_hasil_lab = ? WHERE id_otoritas = ?");
 
@@ -588,6 +597,14 @@ $update_otoritas_transfer_stok->bind_param("iiiii",
     $transfer_stok_lihat,$transfer_stok_tambah,$transfer_stok_edit,$transfer_stok_hapus,$id);
 
 $update_otoritas_transfer_stok->execute();
+
+
+$update_otoritas_input_data = $db->prepare("UPDATE otoritas_input_data SET menu_input_data = ?, input_rawat_jalan = ?, input_rawat_inap = ?, input_ugd = ? WHERE id_otoritas = ?");
+
+$update_otoritas_input_data->bind_param("iiiii",
+    $menu_input_data,$input_rawat_jalan,$input_rawat_inap,$input_ugd,$id);
+
+$update_otoritas_input_data->execute();
 
                 echo '<META HTTP-EQUIV="Refresh" Content="0; URL=hak_otoritas.php">';
 

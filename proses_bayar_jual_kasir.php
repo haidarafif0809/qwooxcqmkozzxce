@@ -344,10 +344,10 @@ $hapus_detail_penjualan = $db->query("DELETE FROM detail_penjualan WHERE no_fakt
 $cek_lab = $db->query("SELECT no_reg FROM hasil_lab WHERE no_reg = '$no_reg'");
 $out_lab = mysqli_num_rows($cek_lab);
 if($out_lab > 0 ){
-  //Insert Data Pemeriksaannya 
+
   /*$query_insert_data_periksa = "INSERT INTO pemeriksaan_laboratorium 
-  (no_reg,no_rm,waktu,status,nama_pasien,status_pasien) VALUES 
-  ('$no_reg','$no_rm','$waktu','1','$nama_pasien','Rawat Jalan')";
+  (no_faktur,no_reg,no_rm,waktu,status,nama_pasien,status_pasien) VALUES 
+  ('$no_faktur','$no_reg','$no_rm','$waktu','1','$nama_pasien','Rawat Jalan')";
     if ($db->query($query_insert_data_periksa) === TRUE){
 
     }
@@ -355,9 +355,9 @@ if($out_lab > 0 ){
       echo "Error: " . $query_insert_data_periksa . "<br>" . $db->error;
       }*/
 
-  //Update no faktur di hasil labortoriumnya
   $update_hasilnya = $db->query("UPDATE hasil_lab SET no_faktur = '$no_faktur' WHERE no_reg = '$no_reg'");
 
+ $update_no_faktur_pemeriksaannya = $db->query("UPDATE pemeriksaan_laboratorium SET no_faktur = '$no_faktur' WHERE no_reg = '$no_reg'");
 }
 else
 {
@@ -368,9 +368,9 @@ else
   if($hasil == 0){
 
     //Input agar tampil di laporan laboratoriu (Tambahan sore hari belom di tes)
-    $insert_pemeriksaan_laboratorium = $db->query("INSERT INTO pemeriksaan_laboratorium (no_reg,no_rm,status,nama_pasien,waktu,status_pasien) VALUES ('$no_reg',
-      '$no_rm','1','$ambil_kode_pelanggan[nama_pelanggan]','$waktu','Rawat Jalan')");
-
+    /*$insert_pemeriksaan_laboratorium = $db->query("INSERT INTO pemeriksaan_laboratorium (no_faktur,no_reg,no_rm,status,nama_pasien,waktu,status_pasien) VALUES ('$no_faktur',
+      '$no_reg','$no_rm','1','$ambil_kode_pelanggan[nama_pelanggan]','$waktu','Rawat Jalan')");
+    */
     //ambil di tbs penjualan jasa labnya
     $taked_tbs = $db->query("SELECT kode_barang,nama_barang FROM tbs_penjualan WHERE no_reg = '$no_reg' AND lab = 'Laboratorium'");
     while ($out_tbs = mysqli_fetch_array($taked_tbs))

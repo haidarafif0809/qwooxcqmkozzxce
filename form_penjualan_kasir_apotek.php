@@ -69,7 +69,7 @@ $user = $_SESSION['nama'];
 
 
  <!-- Modal Untuk Confirm LAYANAN PERUSAHAAN-->
-<div id="detail" class="modal fade" role="dialog">
+<div id="detail" class="modal" role="dialog">
   <div class="modal-dialog modal-lg">
     <!-- Modal content-->
     <div class="modal-content">
@@ -286,7 +286,7 @@ $user = $_SESSION['nama'];
 
 
 <!--tampilan modal-->
-<div id="myModal" class="modal fade" role="dialog">
+<div id="myModal" class="modal" role="dialog">
   <div class="modal-dialog">
 
     <!-- isi modal-->
@@ -331,7 +331,7 @@ $user = $_SESSION['nama'];
 
 
 <!-- Modal Hapus data -->
-<div id="modal_barang_tidak_bisa_dijual" class="modal fade" role="dialog">
+<div id="modal_barang_tidak_bisa_dijual" class="modal" role="dialog">
   <div class="modal-dialog">
 
     <!-- Modal content-->
@@ -369,7 +369,7 @@ $user = $_SESSION['nama'];
 </div><!-- end of modal hapus data  -->
 
 <!-- Modal edit data -->
-<div id="modal_edit" class="modal fade" role="dialog">
+<div id="modal_edit" class="modal" role="dialog">
   <div class="modal-dialog">
 
     <!-- Modal content-->
@@ -1579,7 +1579,7 @@ else{
      /* $("#tax_rp").val(Math.round(hasil_tax));*/
 
 
-      if (limit_stok > stok)
+      if (limit_stok > stok && limit_stok != 0)
         {
           alert("Persediaan Barang Ini Sudah Mencapai Batas Limit Stok, Segera Lakukan Pembelian !");
         }

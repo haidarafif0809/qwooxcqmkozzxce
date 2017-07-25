@@ -73,12 +73,11 @@ $obat = $otoritas_produk['tipe_obat'];
 </div><!-- end of modal loading form  -->
 
 <!--untuk membuat agar tampilan form terlihat rapih dalam satu tempat -->
- <div style="padding-left: 5%; padding-right: 5%">
-  <h3> FORM PENJUALAN UGD </h3>
+ <div style="padding-left: 20%; padding-right: 20%">
 
-<div class="row">
+<div class="row card card-block">
 
-<div class="col-xs-8">
+  <h3> FORM INPUT DATA UGD </h3><hr>
 
  <!-- membuat form menjadi beberpa bagian -->
   <form enctype="multipart/form-data" role="form" action="formpenjualan.php" method="post ">
@@ -343,7 +342,7 @@ $obat = $otoritas_produk['tipe_obat'];
 
 <a href="form_pemeriksaan_radiologi.php" id="btnRujukRadiologi" target="" class="btn btn-purple" style="display: none"> <i class="fa fa-universal-access"></i> Rujuk Radiologi</a>
 
-<button type="button" class="btn btn-default" id="btnRefreshsubtotal"> <i class='fa fa-refresh'></i> Refresh Subtotal</button>
+<button type="button" class="btn btn-default" id="btnRefreshsubtotal" style="display: none"> <i class='fa fa-refresh'></i> Refresh Subtotal</button>
 
 
 <!--tampilan modal-->
@@ -363,18 +362,12 @@ $obat = $otoritas_produk['tipe_obat'];
 
 <div class="table-responsive">
 <span class="modal_baru">
+<center>
   <table id="tabel_cari" class="table table-bordered table-sm">
         <thead> <!-- untuk memberikan nama pada kolom tabel -->
         
             <th> Kode Barang </th>
             <th> Nama Barang </th>
-            <th> Harga Jual Level 1</th>
-            <th> Harga Jual Level 2</th>
-            <th> Harga Jual Level 3</th>
-            <th> Harga Jual Level 4 </th>
-            <th> Harga Jual Level 5</th>
-            <th> Harga Jual Level 6</th>
-            <th> Harga Jual Level 7</th>
             <th> Jumlah Barang </th>
             <th> Satuan </th>
             <th> Kategori </th>
@@ -382,6 +375,7 @@ $obat = $otoritas_produk['tipe_obat'];
         
         </thead> <!-- tag penutup tabel -->
   </table>
+</center>
   </span>
   </div>
 
@@ -432,6 +426,59 @@ $obat = $otoritas_produk['tipe_obat'];
 </div>
 
 <!-- Modal cari registrasi pasien-->
+
+
+<!--MODAL HASIL LAB -->
+<div id="modal_detail" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title"><center><b>Detail Hasil Laboratorium</b></center></h4>
+      </div>
+
+      <div class="modal-body">
+        <div class="table-responsive">
+          <span id="span-detail">
+            
+          </span>
+        </div>
+       </div>
+
+      <div class="modal-footer">
+        <h6 style="text-align: left ; color: red"><i>* Edit Hasil Pemeriksaan Click 2x !!</i></h6>
+  <center> <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button></center> 
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!--tampilan modal loading form-->
+<div id="modal_loading_form" class="modal" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- isi modal-->
+    <div class="modal-content">
+
+      <div class="modal-header">
+    
+      </div>
+      <div class="modal-body">
+
+      <h2>Sedang Menyiapkan Form Input Data..</h2>
+      <center><h4>Harap tunggu sebentar..</h4></center>
+          <center><div class="loader"></div></center>
+      </div> <!-- tag penutup modal-body-->
+      <div class="modal-footer">
+      
+      </div>
+    </div>
+
+  </div>
+</div><!-- end of modal loading form  -->
 
 
 <!-- Modal Hapus data -->
@@ -564,11 +611,11 @@ $obat = $otoritas_produk['tipe_obat'];
   </div>
 
 
-   <div class="col-xs-1">
+   <div class="col-xs-1" style="display: none">
     <input style="height:15px;" type="text" class="form-control" name="potongan" autocomplete="off" id="potongan1" data-toggle="tooltip" data-placement="top" title="Jika Ingin Potongan Dalam Bentuk Persen (%), input : 10%" placeholder="Diskon">
   </div>
 
-   <div class="col-xs-1">
+   <div class="col-xs-1" style="display: none">
     <input style="height:15px;" type="text" class="form-control" name="tax" autocomplete="off" id="tax1" placeholder="Tax%" >
   </div>
 
@@ -602,7 +649,7 @@ $obat = $otoritas_produk['tipe_obat'];
 
 
                 <!--untuk mendefinisikan sebuah bagian dalam dokumen-->  
-                <span id="span_tbs">            
+                <span id="span_tbs" style="display: none">            
                 
                   <div class="table-responsive">
                     <table id="tabel_tbs_penjualan" class="table table-bordered table-sm">
@@ -614,10 +661,6 @@ $obat = $otoritas_produk['tipe_obat'];
                               <th> Jumlah </th>
                               <th> Satuan </th>
                               <th> Dosis </th>
-                              <th  align="right"> Harga </th>
-                              <th  align="right"> Potongan </th>
-                              <th  align="right"> Pajak </th>
-                              <th  align="right"> Subtotal </th>
                               <th> Hapus </th>
                           
                           </thead> <!-- tag penutup tabel -->
@@ -626,8 +669,6 @@ $obat = $otoritas_produk['tipe_obat'];
 
                 </span>          
 
-                <h6 style="text-align: left ; color: red"><i> * Klik 2x pada kolom jumlah barang jika ingin mengedit.</i></h6>
-                <h6 style="text-align: left ;"><i><b> * Short Key (F2) untuk mencari Kode Produk atau Nama Produk.</b></i></h6>
 
 
 <button class="btn btn-primary" id="btnLab" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample"><i class='fa fa-stethoscope'> </i>
@@ -648,9 +689,8 @@ Radiologi  </button>
                               <th> Nama </th>
                               <th> Nama Petugas</th>
                               <th> Jumlah </th>
-                              <th> Harga </th>
-                              <th> Subtotal </th>
                               <th> Tanggal </th>
+                              <th> Hasil Lab. </th>
                           
                           </thead> <!-- tag penutup tabel -->
                     </table>
@@ -674,13 +714,6 @@ Radiologi  </button>
                               <th> Nama </th>
                               <th> Dokter Pengirim </th>
                               <th style="text-align: right" > Jumlah </th>
-                              <th style="text-align: right" > Harga </th>
-                              <!--
-                              <th style="text-align: right" > Potongan </th>
-                              <th style="text-align: right" > Pajak </th>
-                              -->
-                              <th style="text-align: right" > Subtotal </th>
-                          
                           </thead> <!-- tag penutup tabel -->
                     </table>
                   </div>
@@ -688,13 +721,21 @@ Radiologi  </button>
             </div>
 
 
-</div> <!-- / END COL SM 6 (1)-->
+                <h6 style="text-align: left ; color: red"><i> * Klik 2x pada kolom jumlah barang jika ingin mengedit.</i></h6>
+                <h6 style="text-align: left ;"><i><b> * Short Key (F2) untuk mencari Kode Produk atau Nama Produk.</b></i></h6>
+
+  <div align="right" class="BtnOnTop">    
+          <button type="submit" id="simpan_sementara" class="btn btn-purple" style="font-size:15px"> <i class="fa fa-save"></i> Simpan (F10)</button>
+          <button type="submit" id="transaksi_baru" class="btn btn-info" style="display: none"><i class="fa fa-refresh"></i> Transaksi Baru (Ctrl + M)</button>
+          <button type="submit" id="batal_penjualan" class="btn btn-danger" style="font-size:15px"> <i class="fa fa-remove"></i> Batal (Ctrl + B)</button>
+  </div>
 
 
+          <div class="alert alert-success" id="alert_simpan_berhasil" style="display:none">
+          <strong>Sukses!</strong> Simpan Berhasil
+          </div>
 
-
-
-<div class="col-xs-4">
+<div class="col-xs-4" style="display: none">
 
 
 
@@ -910,8 +951,7 @@ Radiologi  </button>
           <button type="submit" id="penjualan" class="btn btn-info" style="font-size:15px;">Bayar (F8)</button>
         <?php endif ?>
 
-          <button type="submit" id="transaksi_baru" class="btn btn-info" style="display: none"> Transaksi Baru (Ctrl + M)</button>
-          
+                    
         <?php if ($otoritas_tombol['tombol_piutang_ugd'] > 0):?>
           <button type="submit" id="piutang" class="btn btn-warning" style="font-size:15px">Piutang (F9)</button>
         <?php endif ?>
@@ -923,21 +963,9 @@ Radiologi  </button>
 
           <a href='cetak_penjualan_piutang.php' id="cetak_piutang" style="display: none;" class="btn btn-success" target="blank">Cetak Piutang  </a>
 
-        <?php if ($otoritas_tombol['tombol_simpan_ugd'] > 0):?>
-          <button type="submit" id="simpan_sementara" class="btn btn-primary" style="font-size:15px">  Simpan (F10)</button>
-        <?php endif ?>
-
-        <?php if ($otoritas_tombol['tombol_bayar_ugd'] > 0):?>
           <button type="submit" id="cetak_langsung" target="blank" class="btn btn-success" style="font-size:15px"> Bayar / Cetak (Ctrl + K) </button>
-        <?php endif ?>
 
-
-          <a href='cetak_penjualan_tunai.php' id="cetak_tunai" style="display: none;" class="btn btn-success" target="blank"> Cetak Tunai  </a>
-
-        <?php if ($otoritas_tombol['tombol_batal_ugd'] > 0):?>
-          <button type="submit" id="batal_penjualan" class="btn btn-danger" style="font-size:15px">  Batal (Ctrl + B)</button>
-        <?php endif ?>
-
+          <a href='cetak_penjualan_tunai.php' id="cetak_tunai" style="display: none;" class="btn btn-success" target="blank"> Cetak Tunai  </a>          
 
           <a href='cetak_penjualan_tunai_besar.php' id="cetak_tunai_besar" style="display: none;" class="btn btn-warning" target="blank"> Cetak Tunai  Besar </a>
           
@@ -948,10 +976,6 @@ Radiologi  </button>
           
           <div class="alert alert-success" id="alert_berhasil" style="display:none">
           <strong>Success!</strong> Pembayaran Berhasil
-          </div>
-
-          <div class="alert alert-success" id="alert_simpan_berhasil" style="display:none">
-          <strong>Sukses!</strong> Simpan Berhasil
           </div>
      
 
@@ -1397,7 +1421,7 @@ else if (level_harga == "harga_7") {
             "info":     false,
             "language": { "emptyTable":     "My Custom Message On Empty Table" },
             "ajax":{
-              url :"data_tbs_penjualan_ugd.php", // json datasource
+              url :"data_tbs_penjualan_ugd_input_data.php", // json datasource
                "data": function ( d ) {
                   d.no_reg = $("#no_reg").val();
                   // d.custom = $('#myInput').val();
@@ -1503,7 +1527,7 @@ $('#tabel_tbs_lab').DataTable().destroy();
             "info":     false,
             "language": { "emptyTable":     "My Custom Message On Empty Table" },
             "ajax":{
-              url :"data_tbs_lab.php", // json datasource
+              url :"data_tbs_lab_input_data.php", // json datasource
                "data": function ( d ) {
                   d.no_reg = $("#no_reg").val();
                   // d.custom = $('#myInput').val();
@@ -1936,8 +1960,7 @@ else if (a > 0){
 
   else{
 
-    var batas_stok = stok - limit_stok;
-    if (batas_stok < 0 && limit_stok != 0)
+      if (limit_stok > stok)
         {
           alert("Persediaan Barang Ini Sudah Mencapai Batas Limit Stok, Segera Lakukan Pembelian !");
         }
@@ -4983,7 +5006,7 @@ $(document).ready(function(){
           "processing": true,
           "serverSide": true,
           "ajax":{
-            url :"modal_jual_baru.php", // json datasource
+            url :"modal_input_data_rajal.php", // json datasource
             type: "post",  // method  , by default get
             error: function(){  // error handling
               $(".employee-grid-error").html("");
@@ -4995,24 +5018,24 @@ $(document).ready(function(){
 
           "fnCreatedRow": function( nRow, aData, iDataIndex ) {
 
-            $(nRow).attr('class', "pilih");
+              $(nRow).attr('class', "pilih");
               $(nRow).attr('data-kode', aData[0]);
               $(nRow).attr('nama-barang', aData[1]);
-              $(nRow).attr('harga', aData[2]);
-              $(nRow).attr('harga_level_2', aData[3]);
-              $(nRow).attr('harga_level_3', aData[4]);
-              $(nRow).attr('harga_level_4', aData[5]);
-              $(nRow).attr('harga_level_5', aData[6]);
-              $(nRow).attr('harga_level_6', aData[7]);
-              $(nRow).attr('harga_level_7', aData[8]);
-              $(nRow).attr('jumlah-barang', aData[9]);
-              $(nRow).attr('satuan', aData[17]);
+              $(nRow).attr('harga', aData[11]);
+              $(nRow).attr('harga_level_2', aData[12]);
+              $(nRow).attr('harga_level_3', aData[13]);
+              $(nRow).attr('harga_level_4', aData[14]);
+              $(nRow).attr('harga_level_5', aData[15]);
+              $(nRow).attr('harga_level_6', aData[16]);
+              $(nRow).attr('harga_level_7', aData[17]);
+              $(nRow).attr('jumlah-barang', aData[2]);
+              $(nRow).attr('satuan', aData[10]);
               $(nRow).attr('kategori', aData[11]);
-              $(nRow).attr('status', aData[16]);
-              $(nRow).attr('suplier', aData[12]);
-              $(nRow).attr('limit_stok', aData[13]);
-              $(nRow).attr('ber-stok', aData[14]);
-              $(nRow).attr('tipe_barang', aData[15]);
+              $(nRow).attr('status', aData[10]);
+              $(nRow).attr('suplier', aData[5]);
+              $(nRow).attr('limit_stok', aData[6]);
+              $(nRow).attr('ber-stok', aData[7]);
+              $(nRow).attr('tipe_barang', aData[8]);
               $(nRow).attr('id-barang', aData[18]);
 
 
@@ -5241,7 +5264,7 @@ $(document).ready(function() {
             "info":     false,
             "language": { "emptyTable":     "My Custom Message On Empty Table" },
             "ajax":{
-              url :"data_tbs_lab.php", // json datasource
+              url :"data_tbs_lab_input_data.php", // json datasource
                "data": function ( d ) {
                   d.no_reg = $("#no_reg").val();
                   // d.custom = $('#myInput').val();
@@ -5298,6 +5321,25 @@ $(document).ready(function() {
 
   });
 
+</script>
+
+
+<!--HASIL LAB -->
+<script type="text/javascript">
+$(document).ready(function () {
+  $(document).on('click', '.hasil-lab', function (e) {
+
+    var kode_barang = $(this).attr('data-kode');
+    var no_reg = $(this).attr('data-reg');
+
+    $("#modal_detail").modal('show');
+
+    $.post("detail_hasil_lab_input_data.php",{kode_barang:kode_barang,no_reg:no_reg},function(data){
+      $("#span-detail").html(data);
+    });
+
+  });
+});
 </script>
 
 <?php include 'footer.php'; ?>

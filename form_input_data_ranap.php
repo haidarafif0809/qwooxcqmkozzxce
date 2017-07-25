@@ -71,6 +71,32 @@ padding-right: 5%;
   });
   </script>
 
+<div id="modal_detail_input_ranap" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title"><center><b>Detail Hasil Laboratorium</b></center></h4>
+      </div>
+
+      <div class="modal-body">
+        <div class="table-responsive">
+          <span id="span-detail">
+            
+          </span>
+        </div>
+       </div>
+
+      <div class="modal-footer">
+        <h6 style="text-align: left ; color: red"><i>* Edit Hasil Pemeriksaan Click 2x !!</i></h6>
+  <center> <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button></center> 
+      </div>
+    </div>
+
+  </div>
+</div>
 
   <!--tampilan modal loading form-->
 <div id="modal_loading_form" class="modal" role="dialog">
@@ -84,7 +110,7 @@ padding-right: 5%;
       </div>
       <div class="modal-body">
 
-      <h2>Sedang Menyiapkan Form Penjualan..</h2>
+      <h2>Sedang Menyiapkan Form Input Data ..</h2>
       <center><h4>Harap tunggu sebentar..</h4></center>
           <center><div class="loader"></div></center>
       </div> <!-- tag penutup modal-body-->
@@ -101,12 +127,12 @@ padding-right: 5%;
 
 <div class="padding" >
 
-  <h3> FORM PENJUALAN RAWAT INAP</h3>
+  <h3> FORM INPUT DATA RAWAT INAP</h3>
 
 
 <div class="row">
 
-<div class="col-xs-8">
+<div class="col-xs-12">
 
 
  <!-- membuat form menjadi beberpa bagian -->
@@ -399,7 +425,7 @@ padding-right: 5%;
 
 <a href="form_penjualan_lab.php" id="btnRujukLab" class="btn btn-default" style="display: none"> <i class="fa fa-flask"></i> Rujuk Lab</a>
 <a href="form_pemeriksaan_radiologi.php" id="btnRujukRadiologi" class="btn btn-purple" style="display: none" target=""> <i class="fa fa-universal-access"></i> Rujuk Radiologi</a>  
-<button type="button" class="btn btn-danger" id="btnRefreshsubtotal"> <i class='fa fa-refresh'></i> Refresh Subtotal</button>
+<button style="display: none" type="button" class="btn btn-danger" id="btnRefreshsubtotal"> <i class='fa fa-refresh'></i> Refresh Subtotal</button>
 <button type="button" class="btn btn-success" id="btn-kamar" data-toggle="modal" ><i class="fa fa-search"></i> Cari Kamar (Alt + O)</button>
 
 <!--tampilan modal-->
@@ -411,10 +437,10 @@ padding-right: 5%;
 
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Data Barang</h4>
+        <center><h4 class="modal-title">Data Barang</h4></center>
       </div>
       <div class="modal-body">
-
+<center>
 <div class="table-responsive">
 <span class="modal_baru">
   <table id="tabel_cari" class="table table-bordered table-sm">
@@ -422,13 +448,14 @@ padding-right: 5%;
         
             <th> Kode Barang </th>
             <th> Nama Barang </th>
-            <th> Harga Jual Level 1</th>
-            <th> Harga Jual Level 2</th>
-            <th> Harga Jual Level 3</th>
-            <th> Harga Jual Level 4 </th>
-            <th> Harga Jual Level 5</th>
-            <th> Harga Jual Level 6</th>
-            <th> Harga Jual Level 7</th>
+
+            <!--<th > Harga Jual Level 1</th>
+            <th > Harga Jual Level 2</th>
+            <th > Harga Jual Level 3</th>
+            <th > Harga Jual Level 4 </th>
+            <th > Harga Jual Level 5</th>
+            <th > Harga Jual Level 6</th>
+            <th > Harga Jual Level 7</th>-->
             <th> Jumlah Barang </th>
             <th> Satuan </th>
             <th> Kategori </th>
@@ -438,6 +465,7 @@ padding-right: 5%;
   </table>
 </span>
   </div>
+  </center>
 </div> <!-- tag penutup modal-body-->
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -740,16 +768,16 @@ padding-right: 5%;
   </div>
 
 
-   <div class="col-xs-1">
-    <input style="height:15px;" type="text" class="form-control" name="potongan" autocomplete="off" id="potongan1" data-toggle="tooltip" data-placement="top" title="Jika Ingin Potongan Dalam Bentuk Persen (%), input : 10%" placeholder="Diskon">
-  </div>
-
-   <div class="col-xs-1">
-    <input style="height:15px;" type="text" class="form-control" name="tax" autocomplete="off" id="tax1" placeholder="Tax%" >
-  </div>
+    <input style="height:15px; display: none" type="text" class="form-control" name="potongan" autocomplete="off" id="potongan1" data-toggle="tooltip" data-placement="top" title="Jika Ingin Potongan Dalam Bentuk Persen (%), input : 10%" placeholder="Diskon">
 
 
+    <input style="display: none" style="height:15px;" type="text" class="form-control" name="tax" autocomplete="off" id="tax1" placeholder="Tax%" >
+ 
+
+
+   <div class="col-xs-2">
   <button type="submit" id="submit_produk" class="btn btn-success" style="font-size:15px" ><i class="fa fa-plus"></i> Submit (F3)</button>
+  </div>
 
 </div>
 <input type="hidden" class="form-control" name="disc_tbs" autocomplete="off" id="disc_tbs" placeholder="DISKONE TBS" >
@@ -789,10 +817,10 @@ padding-right: 5%;
                               <th> Jumlah </th>
                               <th> Satuan </th>
                               <th> Dosis </th>
-                              <th align="right"> Harga </th>
+                              <!--<th align="right"> Harga </th>
                               <th align="right"> Subtotal </th>
                               <th align="right"> Potongan </th>
-                              <th align="right"> Pajak </th>
+                              <th align="right"> Pajak </th>-->
                               <th align="right">Waktu</th>
                               <th> Hapus </th>
                           
@@ -817,10 +845,10 @@ padding-right: 5%;
                               <th> Jumlah </th>
                               <th> Satuan </th>
                               <th> Dosis </th>
-                              <th align="right"> Harga </th>
+                              <!--<th align="right"> Harga </th>
                               <th align="right"> Subtotal </th>
                               <th align="right"> Potongan </th>
-                              <th align="right"> Pajak </th>
+                              <th align="right"> Pajak </th>-->
                               <th align="right">Waktu</th>
                               <th> Hapus </th>
                           
@@ -844,10 +872,10 @@ padding-right: 5%;
                               <th> Jumlah </th>
                               <th> Satuan </th>
                               <th> Dosis </th>
-                              <th align="right"> Harga </th>
+                              <!--<th align="right"> Harga </th>
                               <th align="right"> Subtotal </th>
                               <th align="right"> Potongan </th>
-                              <th align="right"> Pajak </th>
+                              <th align="right"> Pajak </th>-->
                               <th align="right">Waktu</th>
                               <th> Hapus </th>
                           
@@ -879,7 +907,7 @@ Radiologi  </button>
                               
                               <th >No REG</th>
                               <th >Operasi</th>
-                              <th >Harga Jual</th>
+                              <!--<th >Harga Jual</th>-->
                               <th >Petugas Input</th> 
                               <th >Waktu</th>    
                               <th >Detail</th>
@@ -905,9 +933,10 @@ Radiologi  </button>
                               <th> Nama Jasa</th>
                               <th> Nama Petugas</th>
                               <th> Jumlah </th>
-                              <th> Harga </th>
-                              <th> Subtotal </th>
+                              <!--<th> Harga </th>
+                              <th> Subtotal </th>-->
                               <th> Tanggal </th>
+                              <th> Hasil </th>
                           </thead> <!-- tag penutup tabel -->
                     </table>
                   </div>
@@ -926,12 +955,13 @@ Radiologi  </button>
                               <th> Nama </th>
                               <th> Dokter Pengirim </th>
                               <th style="text-align: right" > Jumlah </th>
-                              <th style="text-align: right" > Harga </th>
+                              
                               <!--
+                              <th style="text-align: right" > Harga </th>
                               <th style="text-align: right" > Potongan </th>
                               <th style="text-align: right" > Pajak </th>
-                              -->
                               <th style="text-align: right" > Subtotal </th>
+                              -->
                           
                           </thead> <!-- tag penutup tabel -->
                     </table>
@@ -962,10 +992,10 @@ Radiologi  </button>
     </style>
 
   <div class="form-group">
-    <div class="card card-block">
+    <div class="card card-block" style= "display: none">
       
 
-      <div class="row">
+      <div class="row" >
 
         <div class="col-xs-6">          
            <label style="font-size:15px"> <b> Subtotal </b></label><br>
@@ -1154,7 +1184,7 @@ Radiologi  </button>
           <input type="hidden" name="ppn_input" id="ppn_input" value="Include" class="form-control" placeholder="ppn input">  
       
 
-          <div class="row">
+          <div class="row" style= "display: none">
  
           <?php if ($data_otitas_penjualan_inap['tombol_bayar_inap'] > 0) { ?>
             <button type="submit" id="penjualan" class="btn btn-info" style="font-size:15px">Bayar (F8)</button>
@@ -1172,9 +1202,8 @@ Radiologi  </button>
 
      
 
-          <?php if ($data_otitas_penjualan_inap['tombol_simpan_inap'] > 0) { ?>  
-        <button type="submit" id="simpan_sementara" class="btn btn-primary " style="font-size:15px">  Simpan (F10)</button>
-        <?php } ?>
+          
+
           <a href='cetak_penjualan_tunai.php' id="cetak_tunai" style="display: none;" class="btn btn-primary" target="blank"> Cetak Tunai  </a>
           <?php if ($data_otitas_penjualan_inap['tombol_bayar_inap'] > 0) { ?>
         <button type="submit" id="cetak_langsung" target="blank" class="btn btn-success" style="font-size:15px"> Bayar / Cetak (Ctrl + K) </button>
@@ -1201,13 +1230,29 @@ Radiologi  </button>
      
 
     </form>
+      
+    
+  
+    <div class="row" >
+      <div class="col-sm-7">
+        <div class="card card-block">
 
+          <!--Tombol Simpannya -->
+          <?php if ($data_otitas_penjualan_inap['tombol_simpan_inap'] > 0) { ?>  
+          <button type="submit" id="simpan_sementara" class="btn btn-purple " style="font-size:15px"><i class="fa fa-save"></i> Simpan (F10)</button>
+          <?php } ?>
+          
+            <?php if ($data_otitas_penjualan_inap['tombol_batal_inap'] > 0) { ?>
+            <button type="submit" id="batal_penjualan" class="btn btn-danger" style="font-size:15px"><i class="fa fa-cancel"></i> Batal (Ctrl + B)</button>
+          <?php } ?>
+        </div>
+      </div> <!--row 3-->
+    </div>
 
 </div><!-- / END COL SM 6 (2)-->
 
 
 </div><!-- end of row -->
-
 </div>
 
 <script>
@@ -1669,7 +1714,7 @@ $(document).ready(function(){
             "info":     false,
             "language": { "emptyTable":     "My Custom Message On Empty Table" },
             "ajax":{
-              url :"data_tbs_penjualan_inap.php", // json datasource
+              url :"data_tbs_input_kamar_rawat_inap.php", // json datasource
                "data": function ( d ) {
                   d.no_reg = $("#no_reg").val();
                   // d.custom = $('#myInput').val();
@@ -1695,7 +1740,7 @@ $(document).ready(function(){
             "info":     false,
             "language": { "emptyTable":     "My Custom Message On Empty Table" },
             "ajax":{
-              url :"data_tbs_penjualan_inap_obat.php", // json datasource
+              url :"data_tbs_input_obat_rawat_inap.php", // json datasource
                "data": function ( d ) {
                   d.no_reg = $("#no_reg").val();
                   // d.custom = $('#myInput').val();
@@ -1721,7 +1766,7 @@ $(document).ready(function(){
             "info":     false,
             "language": { "emptyTable":     "My Custom Message On Empty Table" },
             "ajax":{
-              url :"data_tbs_penjualan_inap_jasa.php", // json datasource
+              url :"data_tbs_penjualan_input_jasa_inap.php", // json datasource
                "data": function ( d ) {
                   d.no_reg = $("#no_reg").val();
                   // d.custom = $('#myInput').val();
@@ -3067,8 +3112,7 @@ else if (a > 0){
       $("#biaya_admin").val(Math.round(biaya_admin));
       
 
-    var batas_stok = stok - limit_stok;
-    if (batas_stok < 0 && limit_stok != 0)
+      if (limit_stok > stok)
         {
           alert("Persediaan Barang Ini Sudah Mencapai Batas Limit Stok, Segera Lakukan Pembelian !");
         }
@@ -5580,7 +5624,7 @@ $(document).ready(function(){
           "processing": true,
           "serverSide": true,
           "ajax":{
-            url :"modal_jual_baru.php", // json datasource
+            url :"modal_input_data_ranap.php", // json datasource
             type: "post",  // method  , by default get
             error: function(){  // error handling
               $(".employee-grid-error").html("");
@@ -5634,7 +5678,7 @@ $(document).ready(function(){
             "info":     false,
             "language": { "emptyTable":     "My Custom Message On Empty Table" },
             "ajax":{
-              url :"data_tbs_operasi.php", // json datasource
+              url :"data_tbs_operasi_input_ranap.php", // json datasource
                "data": function ( d ) {
                   d.no_reg = $("#no_reg").val();
                   // d.custom = $('#myInput').val();
@@ -5689,6 +5733,26 @@ $(document).on('dblclick','.edit-waktu-or',function(){
 </script>
 <!-- END EDIT WAKTU TBS OPERASI -->
 
+<!--Detail HASIL TBS LABORATORIUM-->
+<script type="text/javascript">
+$(document).ready(function () {
+  $(document).on('click', '.detail-lab', function (e) {
+
+    var kode_barang = $(this).attr('data-kode-barang');
+    var no_reg = $(this).attr('data-reg');
+    var pemeriksaan_laboratorium = $(this).attr('data-periksa');
+
+    $("#modal_detail_input_ranap").modal('show');
+
+    $.post("detail_tbs_laboratorium_input_ranap.php",{kode_barang:kode_barang,no_reg:no_reg,pemeriksaan_laboratorium:pemeriksaan_laboratorium},function(data){
+      $("#span-detail").html(data);
+    });
+
+  });
+});
+</script>
+<!--Detail HASIL TBS LABORATORIUM-->
+
  <script type="text/javascript" language="javascript" >
 
   $(document).ready(function() {
@@ -5700,7 +5764,7 @@ $(document).on('dblclick','.edit-waktu-or',function(){
             "info":     false,
             "language": { "emptyTable":     "My Custom Message On Empty Table" },
             "ajax":{
-              url :"data_tbs_lab_inap.php", // json datasource
+              url :"data_tbs_input_data_lab_ranap.php", // json datasource
                "data": function ( d ) {
                   d.no_reg = $("#no_reg").val();
                   // d.custom = $('#myInput').val();
@@ -5736,7 +5800,7 @@ $(document).on('dblclick','.edit-waktu-or',function(){
             "info":     false,
             "language": { "emptyTable":     "My Custom Message On Empty Table" },
             "ajax":{
-              url :"data_tbs_radiologi.php", // json datasource
+              url :"data_tbs_radiologi_input_ranap.php", // json datasource
                "data": function ( d ) {
                   d.no_reg = $("#no_reg").val();
                   // d.custom = $('#myInput').val();

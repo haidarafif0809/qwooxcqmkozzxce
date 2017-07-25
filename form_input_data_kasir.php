@@ -54,6 +54,7 @@ $obat = $otoritas_produk['tipe_obat'];
     }
     </style>
 
+
 <!-- js untuk tombol shortcut -->
  <script src="shortcut.js"></script>
 <!-- js untuk tombol shortcut -->
@@ -77,12 +78,11 @@ $obat = $otoritas_produk['tipe_obat'];
   </script>
 
 <!--untuk membuat agar tampilan form terlihat rapih dalam satu tempat -->
- <div style="padding-left: 5%; padding-right: 5%">
-  <h3> FORM PENJUALAN RAWAT JALAN </h3>
+ <div style="padding-left: 20%; padding-right: 20%">
+  
 
-<div class="row">
-
-<div class="col-xs-8">
+<div class="row card card-block">
+<h3> FORM INPUT DATA RAWAT JALAN </h3><hr>
 
  <!-- membuat form menjadi beberpa bagian -->
   <form enctype="multipart/form-data" role="form" action="formpenjualan.php" method="post ">
@@ -343,7 +343,7 @@ $obat = $otoritas_produk['tipe_obat'];
 <a href="form_penjualan_lab.php" id="btnRujukLab" class="btn btn-purple" style="display: none"> <i class="fa fa-flask"></i> Rujuk Lab</a>  
 <a href="form_pemeriksaan_radiologi.php" id="btnRujukRadiologi" class="btn btn-purple" style="display: none" target=""> <i class="fa fa-universal-access"></i> Rujuk Radiologi</a>  
   
-<button type="button" class="btn btn-default" id="btnRefreshsubtotal"> <i class='fa fa-refresh'></i> Refresh Subtotal</button>
+<button type="button" class="btn btn-default" id="btnRefreshsubtotal" style="display: none"> <i class='fa fa-refresh'></i> Refresh Subtotal</button>
 
 <!--tampilan modal-->
 <div id="myModal" class="modal " role="dialog">
@@ -359,19 +359,12 @@ $obat = $otoritas_produk['tipe_obat'];
       <div class="modal-body">
 
 <div class="table-responsive">
-
+<center>
   <table id="tabel_cari" class="table table-bordered table-sm">
         <thead> <!-- untuk memberikan nama pada kolom tabel -->
         
             <th> Kode Barang </th>
             <th> Nama Barang </th>
-            <th> Harga Jual Level 1</th>
-            <th> Harga Jual Level 2</th>
-            <th> Harga Jual Level 3</th>
-            <th> Harga Jual Level 4 </th>
-            <th> Harga Jual Level 5</th>
-            <th> Harga Jual Level 6</th>
-            <th> Harga Jual Level 7</th>
             <th> Jumlah Barang </th>
             <th> Satuan </th>
             <th> Kategori </th>
@@ -379,7 +372,7 @@ $obat = $otoritas_produk['tipe_obat'];
         
         </thead> <!-- tag penutup tabel -->
   </table>
-
+</center>
 </div>
 </div> <!-- tag penutup modal-body-->
       <div class="modal-footer">
@@ -390,32 +383,33 @@ $obat = $otoritas_produk['tipe_obat'];
   </div>
 </div><!-- end of modal data barang  -->
 
-<!--tampilan modal cetak tunai-->
-<div id="modal_cetak_tunai" class="modal " role="dialog">
-  <div class="modal-dialog">
+<!--MODAL HASIL LAB -->
+<div id="modal_detail" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg">
 
-    <!-- isi modal-->
+    <!-- Modal content-->
     <div class="modal-content">
-
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title"><center><b>Cetak Tunai</b></center></h4>
+        <h4 class="modal-title"><center><b>Detail Hasil Laboratorium</b></center></h4>
       </div>
-      <div class="modal-body">
-        <div id="draft_cetak_tunai">
-          
-        </div>
 
-      </div> <!-- tag penutup modal-body-->
+      <div class="modal-body">
+        <div class="table-responsive">
+          <span id="span-detail">
+            
+          </span>
+        </div>
+       </div>
+
       <div class="modal-footer">
-       <center> <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button></center>
+        <h6 style="text-align: left ; color: red"><i>* Edit Hasil Pemeriksaan Click 2x !!</i></h6>
+  <center> <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button></center> 
       </div>
     </div>
 
   </div>
 </div>
-<!-- end of modal cetak tunai -->
-
 
 <!--tampilan modal loading form-->
 <div id="modal_loading_form" class="modal" role="dialog">
@@ -429,7 +423,7 @@ $obat = $otoritas_produk['tipe_obat'];
       </div>
       <div class="modal-body">
 
-      <h2>Sedang Menyiapkan Form Penjualan..</h2>
+      <h2>Sedang Menyiapkan Form Input Data..</h2>
       <center><h4>Harap tunggu sebentar..</h4></center>
           <center><div class="loader"></div></center>
       </div> <!-- tag penutup modal-body-->
@@ -612,15 +606,16 @@ $obat = $otoritas_produk['tipe_obat'];
 </div>
 
 
-   <div class="col-xs-1">
+   <div class="col-xs-1" style="display: none">
     <input style="height:15px;" type="text" class="form-control" name="potongan" autocomplete="off" id="potongan1" data-toggle="tooltip" data-placement="top" title="Jika Ingin Potongan Dalam Bentuk Persen (%), input : 10%" placeholder="Diskon">
   </div>
 
-   <div class="col-xs-1">
+   <div class="col-xs-1" style="display: none">
     <input style="height:15px;" type="text" class="form-control" name="tax" autocomplete="off" id="tax1" placeholder="Tax%" >
   </div>
 
 <div class="col-xs-2">
+
   <button type="submit" id="submit_produk" class="btn btn-success" style="font-size:15px" > <i class="fa fa-plus"></i>Submit(F3)</button>
 
 </div>
@@ -669,10 +664,12 @@ $obat = $otoritas_produk['tipe_obat'];
                               <th> Jumlah </th>
                               <th> Satuan </th>
                               <th> Dosis </th>
+                              <!--
                               <th> Harga </th>
                               <th> Potongan </th>
                               <th> Pajak </th>
                               <th> Subtotal </th>
+                              -->
                               <th> Hapus </th>
                           
                           </thead> <!-- tag penutup tabel -->
@@ -697,10 +694,12 @@ $obat = $otoritas_produk['tipe_obat'];
                               <th> Jumlah </th>
                               <th> Satuan </th>
                               <th> Dosis </th>
+                              <!--
                               <th> Harga </th>
                               <th> Potongan </th>
                               <th> Pajak </th>
                               <th> Subtotal </th>
+                              -->
                               <th> Hapus </th>
                           
                           </thead> <!-- tag penutup tabel -->
@@ -709,13 +708,12 @@ $obat = $otoritas_produk['tipe_obat'];
 
                 </span>
 
-<button class="btn btn-primary" id="btnLab" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample"><i class='fa fa-stethoscope'> </i>
-Laboratorium  </button>
 
-
-<button class="btn btn-primary" id="btnRadiologi" type="button" data-toggle="collapse" data-target="#collapseExampleRadiologi" aria-expanded="false" aria-controls="collapseExample"><i class='fa fa-universal-access'> </i>
-Radiologi  </button>
-
+    <button class="btn btn-primary" id="btnLab" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample"><i class='fa fa-stethoscope'> </i>
+    Laboratorium  </button>
+    
+    <button class="btn btn-primary" id="btnRadiologi" type="button" data-toggle="collapse" data-target="#collapseExampleRadiologi" aria-expanded="false" aria-controls="collapseExample"><i class='fa fa-universal-access'> </i>
+    Radiologi  </button>
 
 
             <div class="collapse" id="collapseExample">
@@ -729,9 +727,12 @@ Radiologi  </button>
                               <th> Nama </th>
                               <th> Nama Petugas</th>
                               <th> Jumlah </th>
+                              <!--
                               <th> Harga </th>
                               <th> Subtotal </th>
+                              -->
                               <th> Tanggal </th>
+                              <th> Hasil Lab. </th>
                           
                           </thead> <!-- tag penutup tabel -->
                     </table>
@@ -755,12 +756,12 @@ Radiologi  </button>
                               <th> Nama </th>
                               <th> Dokter Pengirim </th>
                               <th style="text-align: right" > Jumlah </th>
-                              <th style="text-align: right" > Harga </th>
                               <!--
+                              <th style="text-align: right" > Harga </th>                              
                               <th style="text-align: right" > Potongan </th>
-                              <th style="text-align: right" > Pajak </th>
-                              -->
+                              <th style="text-align: right" > Pajak </th>                              
                               <th style="text-align: right" > Subtotal </th>
+                              -->
                           
                           </thead> <!-- tag penutup tabel -->
                     </table>
@@ -773,11 +774,17 @@ Radiologi  </button>
                 <h6 style="text-align: left ;"><i><b> * Short Key (F2) untuk mencari Kode Produk atau Nama Produk.</b></i></h6>
 
   
-</div> <!-- / END COL SM 6 (1)-->
 
 
+<div align="right" class="BtnOnTop">    
+    <button type="submit" id="transaksi_baru" class="btn btn-info" style="font-size:15px; display: none"> <i class="fa fa-refresh"></i> Transaksi Baru (Ctrl + M)</button>
 
-<div class="col-xs-4">
+    <button type="submit" id="simpan_sementara"  class="btn btn-purple" style="font-size:15px;"> <i class="fa fa-save"></i>  Simpan (F10)</button>
+
+    <button type="submit" id="batal_penjualan"  class="btn btn-danger" style="font-size:15px;"> <i class="fa fa-remove"></i>  Batal (Ctrl + B)</button>
+  </div>
+
+<div class="col-xs-4" style="display: none">
 
 
 
@@ -982,8 +989,6 @@ Radiologi  </button>
  
            <?php if ($otoritas_tombol['tombol_bayar'] > 0):?>              
           <button type="submit" id="penjualan" class="btn btn-info" style="font-size:15px;">Bayar (F8)</button>
-          <button type="submit" id="transaksi_baru" style="display: none" class="btn btn-info" style="font-size:15px;"> Transaksi Baru (Ctrl + M)</button>
-          <a class="btn btn-info" href="pasien_sudah_masuk.php" id="transaksi_baru" style="display: none">  Transaksi Baru (Ctrl + M)</a>
 
           <?php endif;?>
         
@@ -994,13 +999,9 @@ Radiologi  </button>
 
           <a href='cetak_penjualan_piutang.php' id="cetak_piutang" style="display: none;" class="btn btn-success btnPrint" target="blank">Cetak Piutang  </a>
 
-          <?php if ($otoritas_tombol['tombol_simpan'] > 0):?>  
+          
 
-          <button type="submit" id="simpan_sementara" class="btn btn-primary" style="font-size:15px">  Simpan (F10)</button>
-
-          <?php endif;?>
-
-          <button id="cetak_tunai" style="display: none;" class="btn btn-primary "  > Cetak Tunai  </button>
+          <a href='cetak_penjualan_tunai_rj.php' id="cetak_tunai" style="display: none;" class="btn btn-primary btnPrint" target="blank" > Cetak Tunai  </a>
 
            <?php if ($otoritas_tombol['tombol_bayar'] > 0):?>              
 
@@ -1010,9 +1011,7 @@ Radiologi  </button>
 
            <a href='cetak_penjualan_tunai_kategori_rj.php' id="cetak_tunai_kategori" style="display: none;" class="btn btn-warning btnPrint" target="blank"> Cetak Tunai/Kategori  </a>
 
-           <?php if ($otoritas_tombol['tombol_batal'] > 0):?>
-              <button type="submit" id="batal_penjualan" class="btn btn-danger" style="font-size:15px">  Batal (Ctrl + B)</button>
-           <?php endif;?>
+           
 
          
 
@@ -1027,9 +1026,7 @@ Radiologi  </button>
           <strong>Sukses!</strong> Pembayaran Berhasil
           </div>
           
-          <div class="alert alert-success" id="alert_simpan_berhasil" style="display:none">
-          <strong>Sukses!</strong> Simpan Berhasil
-          </div>
+
      
 
     </form>
@@ -1040,23 +1037,13 @@ Radiologi  </button>
 
 </div><!-- end of row -->
 
+
+          <div class="alert alert-success" id="alert_simpan_berhasil" style="display:none">
+          <strong>Sukses!</strong> Simpan Berhasil
+          </div>
+
 </div><!-- end of container -->
 
-
-
-<script type="text/javascript">
-  
-// script untuk cetak tunai
-
-
-$(document).ready(function(){
-  $("#cetak_tunai").click(function(){
-      $('#modal_cetak_tunai').modal('show');
-       $('#draft_cetak_tunai').printThis();
-  });
-});
-
-</script>
 
     
 <script>
@@ -1260,7 +1247,7 @@ $(document).ready(function(){
           "processing": true,
           "serverSide": true,
           "ajax":{
-            url :"modal_jual_baru.php", // json datasource
+            url :"modal_input_data_rajal.php", // json datasource
             type: "post",  // method  , by default get
             error: function(){  // error handling
               $(".employee-grid-error").html("");
@@ -1275,21 +1262,21 @@ $(document).ready(function(){
               $(nRow).attr('class', "pilih");
               $(nRow).attr('data-kode', aData[0]);
               $(nRow).attr('nama-barang', aData[1]);
-              $(nRow).attr('harga', aData[2]);
-              $(nRow).attr('harga_level_2', aData[3]);
-              $(nRow).attr('harga_level_3', aData[4]);
-              $(nRow).attr('harga_level_4', aData[5]);
-              $(nRow).attr('harga_level_5', aData[6]);
-              $(nRow).attr('harga_level_6', aData[7]);
-              $(nRow).attr('harga_level_7', aData[8]);
-              $(nRow).attr('jumlah-barang', aData[9]);
-              $(nRow).attr('satuan', aData[17]);
+              $(nRow).attr('harga', aData[11]);
+              $(nRow).attr('harga_level_2', aData[12]);
+              $(nRow).attr('harga_level_3', aData[13]);
+              $(nRow).attr('harga_level_4', aData[14]);
+              $(nRow).attr('harga_level_5', aData[15]);
+              $(nRow).attr('harga_level_6', aData[16]);
+              $(nRow).attr('harga_level_7', aData[17]);
+              $(nRow).attr('jumlah-barang', aData[2]);
+              $(nRow).attr('satuan', aData[10]);
               $(nRow).attr('kategori', aData[11]);
-              $(nRow).attr('status', aData[16]);
-              $(nRow).attr('suplier', aData[12]);
-              $(nRow).attr('limit_stok', aData[13]);
-              $(nRow).attr('ber-stok', aData[14]);
-              $(nRow).attr('tipe_barang', aData[15]);
+              $(nRow).attr('status', aData[10]);
+              $(nRow).attr('suplier', aData[5]);
+              $(nRow).attr('limit_stok', aData[6]);
+              $(nRow).attr('ber-stok', aData[7]);
+              $(nRow).attr('tipe_barang', aData[8]);
               $(nRow).attr('id-barang', aData[18]);
 
 
@@ -1371,7 +1358,7 @@ $(document).ready(function(){
             "info":     false,
             "language": { "emptyTable":     "My Custom Message On Empty Table" },
             "ajax":{
-              url :"data_tbs_penjualan.php", // json datasource
+              url :"data_tbs_penjualan_input_data.php", // json datasource
                "data": function ( d ) {
                   d.no_reg = $("#no_reg").val();
                   // d.custom = $('#myInput').val();
@@ -1397,7 +1384,7 @@ $(document).ready(function(){
             "info":     false,
             "language": { "emptyTable":     "My Custom Message On Empty Table" },
             "ajax":{
-              url :"data_tbs_penjualan_jasa.php", // json datasource
+              url :"data_tbs_penjualan_jasa_input_data.php", // json datasource
                "data": function ( d ) {
                   d.no_reg = $("#no_reg").val();
                   // d.custom = $('#myInput').val();
@@ -1440,9 +1427,7 @@ $(document).ready(function(){
               }
               else
               {
-                 $("#penjualan").show();
-                 $("#simpan_sementara").show();
-                 $("#batal_penjualan").show(); 
+                 $("#penjualan").show(); 
                  $("#cetak_langsung").show();
                  $("#piutang").show();
               }
@@ -1550,7 +1535,7 @@ var penjamin = $("#penjamin").val();
             "info":     false,
             "language": { "emptyTable":     "My Custom Message On Empty Table" },
             "ajax":{
-              url :"data_tbs_lab.php", // json datasource
+              url :"data_tbs_lab_input_data.php", // json datasource
                "data": function ( d ) {
                   d.no_reg = $("#no_reg").val();
                   // d.custom = $('#myInput').val();
@@ -2039,9 +2024,9 @@ $(document).ready(function(){
             $("#keterangan").val('');
             $("#penjualan").show();
             $("#cetak_langsung").show();
-            $("#simpan_sementara").show();
+            $("#simpan_sementara").hide();
             $("#piutang").show();
-            $("#batal_penjualan").show(); 
+            $("#batal_penjualan").hide(); 
             $("#transaksi_baru").hide();
             $("#alert_berhasil").hide();
             $("#alert_simpan_berhasil").hide();
@@ -2282,11 +2267,9 @@ else if (a > 0){
     $("#total2").val(tandaPemisahTitik(total_akhir1));
     $("#biaya_adm").val(tandaPemisahTitik(biaya_adm));
     $("#biaya_admin_persen").val(data_admin);
-   
 
 
-
- $.post("proses_tbs_penjualan_raja.php",{id_user:id_user,penjamin:penjamin,asal_poli:asal_poli,level_harga:level_harga,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,no_reg:no_reg,no_rm:no_rm,dokter:dokter,petugas_kasir:petugas_kasir,kode_barang:kode_barang,nama_barang:nama_barang,jumlah_barang:jumlah_barang,harga:harga,potongan:potongan,tax:tax,satuan:satuan, ber_stok:ber_stok,ppn:ppn},function(data){
+ $.post("proses_tbs_penjualan_raja.php",{id_user:id_user,penjamin:penjamin,asal_poli:asal_poli,level_harga:level_harga,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,no_reg:no_reg,no_rm:no_rm,dokter:dokter,petugas_kasir:petugas_kasir,kode_barang:kode_barang,nama_barang:nama_barang,jumlah_barang:jumlah_barang,harga:harga,potongan:potongan,tax:tax,satuan:satuan, ber_stok:ber_stok,ppn:ppn,dosis_obat:dosis_obat},function(data){
      
   
 
@@ -2324,7 +2307,7 @@ else if (a > 0){
   } 
 
 
-else if (stok < 0 && ber_stok == 'Barang') {
+else if (stok < 0 && ber_stok == 'Barang' ) {
 
     alert ("Jumlah Melebihi Stok Barang !");
     $("#jumlah_barang").val('');
@@ -2342,10 +2325,8 @@ else if (stok < 0 && ber_stok == 'Barang') {
     $("#biaya_adm").val(tandaPemisahTitik(biaya_adm));
     $("#biaya_admin_persen").val(data_admin);
    
-    var batas_stok = stok - limit_stok;
-    if (batas_stok < 0 && limit_stok != 0)
+if (limit_stok > stok)
         {
-          console.log(limit_stok)
           alert("Persediaan Barang Ini Sudah Mencapai Batas Limit Stok, Segera Lakukan Pembelian !");
         }
 
@@ -2401,7 +2382,7 @@ alert("Kode barang harus terisi");
         $("#span_tbs_obat").show()
         $("#span_tbs_jasa").show()
 
-  });/// braket penutup submit_produk
+  });/// braket penutup 
 });
 
     $("#formtambahproduk").submit(function(){
@@ -2420,6 +2401,7 @@ alert("Kode barang harus terisi");
       $("#cetak_tunai").hide('');
       $("#cetak_tunai_besar").hide('');
       $("#cetak_piutang").hide('');
+
       
       /* Act on the event */
       });
@@ -2527,8 +2509,6 @@ alert("Silakan Isi Kolom Pembayaran  atau lakukan Bayar Piutang");
 
   $("#penjualan").hide();
   $("#cetak_langsung").hide();
-  $("#simpan_sementara").hide();
-  $("#batal_penjualan").hide(); 
   $("#piutang").hide();
   $("#transaksi_baru").show();
 
@@ -2541,34 +2521,10 @@ if (data == 1) {
 
     if (result.status == 0) {
 
+      $("#cetak_tunai").attr('href', 'cetak_penjualan_tunai_rj.php?no_reg='+no_reg+'&sisa='+sisa_pembayaran+'&tunai='+pembayaran+'&total='+total+'&biaya_admin='+biaya_adm+'&potongan='+potongan+'&no_rm='+no_rm+'&nama_pasien='+nama_pasien+'');
 
+       window.open('cetak_penjualan_tunai_rj.php?no_reg='+no_reg+'&sisa='+sisa_pembayaran+'&tunai='+pembayaran+'&total='+total+'&biaya_admin='+biaya_adm+'&potongan='+potongan+'&no_rm='+no_rm+'&nama_pasien='+nama_pasien,'_blank');
 
-      var nama_perusahaan = '<?php echo $data_perusahaan['nama_perusahaan'] ?>';
-      var alamat_perusahaan = '<?php echo $data_perusahaan['alamat_perusahaan'] ?>';
-      var draft_cetak_tunai = nama_perusahaan + '<br>' + alamat_perusahaan + '<br><br>===================<br>';
-
-      draft_cetak_tunai += '<table><tbody><tr><td>No RM </td><td>&nbsp;:&nbsp;</td><td>'+no_rm+'</td></tr><tr>';
-      draft_cetak_tunai += '<td>Nama Pasien </td><td>&nbsp;:&nbsp;</td><td>'+ nama_pasien+'</td>';
-
-      draft_cetak_tunai += ' </tr>  </tbody></table>===================<br> <table>  <tbody>    <tr>  <td>No. REG</td><td>&nbsp;:&nbsp;</td><td> '+no_reg+'</td></tr><tr><td>Kasir </td><td>&nbsp;:&nbsp;</td><td> <?php echo $_SESSION['nama']; ?></td></tr></tbody></table>===================<br> <table>  <tbody id="tbody-detail">';
-
-      if ('<?php echo $status_print ?>' == 'Detail') {
-          $.each(result.data_detail, function(i, item) {
-
-           draft_cetak_tunai += '<tr><td width:"50%"> '+ result.data_detail[i].nama_barang+' </td><td style="padding:3px"> '+ result.data_detail[i].harga+'</td><td style="padding:3px"> '+ result.data_detail[i].jumlah_barang+'</td><td style="padding:3px"> '+ result.data_detail[i].subtotal+ ' </td></tr>';
-       });
-      } 
-      // end if jika setting printer nya detail
-    
-      var subtotal_item = total - biaya_adm + potongan;
-      draft_cetak_tunai += ' </tbody></table>    ===================<br> <table><tbody><tr><td width="50%">Subtotal</td> <td> :</td> <td>'+subtotal_item+'</tr><tr><td width="50%">Diskon</td> <td> :</td> <td>'+potongan+' </tr>      <tr><td  width="50%">Biaya Admin</td> <td> :</td> <td> '+biaya_adm+' </td></tr>      <tr><td width="50%">Total Penjualan</td> <td> :</td> <td>'+total+' </tr>      <tr><td  width="50%">Tunai</td> <td> :</td> <td> '+pembayaran+' </td></tr>      <tr><td  width="50%">Kembalian</td> <td> :</td> <td> '+sisa_pembayaran+'  </td></tr>  </tbody></table>    ===================<br>    ===================<br>    Tanggal : <?php echo $tanggal = date('d-m-Y');?><br>    ===================<br><br>    Terima Kasih<br>    Semoga Lekas Sembuh...<br>    Telp. <?php echo $data_perusahaan['no_telp']; ?><br>';
-
-      $("#draft_cetak_tunai").html(draft_cetak_tunai);
-
-      $("#cetak_tunai").click();
-
-
-      
        $("#cetak_tunai_besar").attr('href', 'cetak_penjualan_tunai_besar_rj.php?no_reg='+no_reg+'&sisa='+sisa_pembayaran+'&kredit='+sisa_kredit+'&tunai='+pembayaran+'&total='+total+'&biaya_admin='+biaya_adm+'&potongan='+potongan+'&no_rm='+no_rm+'&nama_pasien='+nama_pasien+'&keterangan='+keterangan+'&cara_bayar='+cara_bayar+'');
 
        $("#cetak_tunai_kategori").attr('href','cetak_penjualan_tunai_kategori_rj.php?no_reg='+no_reg+'&sisa='+sisa_pembayaran+'&tunai='+pembayaran+'&total='+total+'&biaya_admin='+biaya_adm+'&potongan='+potongan+'&no_rm='+no_rm+'&nama_pasien='+nama_pasien+'');            
@@ -3007,38 +2963,14 @@ alert("Silakan Bayar Piutang");
     $.getJSON("cek_status_stok_penjualan.php?no_reg="+no_reg, function(result){
 
         if (result.status == 0) {
+                  $("#cetak_tunai").attr('href', 'cetak_penjualan_tunai_rj.php?no_reg='+no_reg+'&sisa='+sisa_pembayaran+'&tunai='+pembayaran+'&total='+total+'&biaya_admin='+biaya_adm+'&potongan='+potongan+'&no_rm='+no_rm+'&nama_pasien='+nama_pasien+'');
+                   $("#cetak_tunai_besar").attr('href', 'cetak_penjualan_tunai_besar_rj.php?no_reg='+no_reg+'&sisa='+sisa_pembayaran+'&kredit='+sisa_kredit+'&tunai='+pembayaran+'&total='+total+'&biaya_admin='+biaya_adm+'&potongan='+potongan+'&no_rm='+no_rm+'&nama_pasien='+nama_pasien+'&keterangan='+keterangan+'&cara_bayar='+cara_bayar+'');
 
-
-      var nama_perusahaan = '<?php echo $data_perusahaan['nama_perusahaan'] ?>';
-      var alamat_perusahaan = '<?php echo $data_perusahaan['alamat_perusahaan'] ?>';
-      var draft_cetak_tunai = nama_perusahaan + '<br>' + alamat_perusahaan + '<br><br>===================<br>';
-
-      draft_cetak_tunai += '<table><tbody><tr><td>No RM </td><td>&nbsp;:&nbsp;</td><td>'+no_rm+'</td></tr><tr>';
-      draft_cetak_tunai += '<td>Nama Pasien </td><td>&nbsp;:&nbsp;</td><td>'+ nama_pasien+'</td>';
-
-      draft_cetak_tunai += ' </tr>  </tbody></table>===================<br> <table>  <tbody>    <tr>  <td>No. REG</td><td>&nbsp;:&nbsp;</td><td> '+no_reg+'</td></tr><tr><td>Kasir </td><td>&nbsp;:&nbsp;</td><td> <?php echo $_SESSION['nama']; ?></td></tr></tbody></table>===================<br> <table>  <tbody id="tbody-detail">';
-
-      if ('<?php echo $status_print ?>' == 'Detail') {
-          $.each(result.data_detail, function(i, item) {
-
-           draft_cetak_tunai += '<tr><td width:"50%"> '+ result.data_detail[i].nama_barang+' </td><td style="padding:3px"> '+ result.data_detail[i].harga+'</td><td style="padding:3px"> '+ result.data_detail[i].jumlah_barang+'</td><td style="padding:3px"> '+ result.data_detail[i].subtotal+ ' </td></tr>';
-       });
-      } 
-      // end if jika setting printer nya detail
-    
-      var subtotal_item = total - biaya_adm + potongan;
-      draft_cetak_tunai += ' </tbody></table>    ===================<br> <table><tbody><tr><td width="50%">Subtotal</td> <td> :</td> <td>'+subtotal_item+'</tr><tr><td width="50%">Diskon</td> <td> :</td> <td>'+potongan+' </tr>      <tr><td  width="50%">Biaya Admin</td> <td> :</td> <td> '+biaya_adm+' </td></tr>      <tr><td width="50%">Total Penjualan</td> <td> :</td> <td>'+total+' </tr>      <tr><td  width="50%">Tunai</td> <td> :</td> <td> '+pembayaran+' </td></tr>      <tr><td  width="50%">Kembalian</td> <td> :</td> <td> '+sisa_pembayaran+'  </td></tr>  </tbody></table>    ===================<br>    ===================<br>    Tanggal : <?php echo $tanggal = date('d-m-Y');?><br>    ===================<br><br>    Terima Kasih<br>    Semoga Lekas Sembuh...<br>    Telp. <?php echo $data_perusahaan['no_telp']; ?><br>';
-
-      $("#draft_cetak_tunai").html(draft_cetak_tunai);
-
-
-       $("#cetak_tunai_besar").attr('href', 'cetak_penjualan_tunai_besar_rj.php?no_reg='+no_reg+'&sisa='+sisa_pembayaran+'&kredit='+sisa_kredit+'&tunai='+pembayaran+'&total='+total+'&biaya_admin='+biaya_adm+'&potongan='+potongan+'&no_rm='+no_rm+'&nama_pasien='+nama_pasien+'&keterangan='+keterangan+'&cara_bayar='+cara_bayar+'');
-
-       $("#cetak_tunai_kategori").attr('href','cetak_penjualan_tunai_kategori_rj.php?no_reg='+no_reg+'&sisa='+sisa_pembayaran+'&tunai='+pembayaran+'&total='+total+'&biaya_admin='+biaya_adm+'&potongan='+potongan+'&no_rm='+no_rm+'&nama_pasien='+nama_pasien+'');            
-          
-       $("#cetak_tunai").show();
-       $("#cetak_tunai_kategori").show();
-       $("#cetak_tunai_besar").show('');
+                   $("#cetak_tunai_kategori").attr('href','cetak_penjualan_tunai_kategori_rj.php?no_reg='+no_reg+'&sisa='+sisa_pembayaran+'&tunai='+pembayaran+'&total='+total+'&biaya_admin='+biaya_adm+'&potongan='+potongan+'&no_rm='+no_rm+'&nama_pasien='+nama_pasien+'');            
+                      
+                   $("#cetak_tunai").show();
+                   $("#cetak_tunai_kategori").show();
+                   $("#cetak_tunai_besar").show('');
 
       $.post("proses_bayar_jual_kasir.php",{id_user:id_user,sisa_pembayaran:sisa_pembayaran, kredit:kredit,no_rm:no_rm,no_reg:no_reg,tanggal_jt:tanggal_jt,total:total,total2:total2,potongan:potongan,potongan_persen:potongan_persen,/*tax:tax,*/cara_bayar:cara_bayar,pembayaran:pembayaran,total_hpp:total_hpp,harga:harga,kode_gudang:kode_gudang,dokter:dokter,petugas_kasir:petugas_kasir,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,sisa:sisa,ppn:ppn,penjamin:penjamin,nama_pasien:nama_pasien,jenis_penjualan:jenis_penjualan,biaya_adm:biaya_adm,analis:analis},function(info) {
 
@@ -4261,7 +4193,8 @@ else
     $("#satuan_konversi").val(satuan);
     $("#limit_stok").val(limit_stok);
     $("#ber_stok").val(ber_stok);
-    $("#id_produk").val(id_barang);
+    $("#id_produk").val(id_barang); 
+
 
 if (ber_stok == 'Barang') {
 
@@ -5226,7 +5159,7 @@ $(document).ready(function(){
                             "processing": true,
                             "serverSide": true,
                             "ajax":{
-                              url :"data_tbs_penjualan.php", // json datasource
+                              url :"data_tbs_penjualan_input_data.php", // json datasource
                                "data": function ( d ) {
                                   d.no_reg = $("#no_reg").val();
                                   // d.custom = $('#myInput').val();
@@ -5256,7 +5189,7 @@ $(document).ready(function(){
                     "info":     false,
                     "language": { "emptyTable":     "My Custom Message On Empty Table" },
                     "ajax":{
-                      url :"data_tbs_penjualan_jasa.php", // json datasource
+                      url :"data_tbs_penjualan_jasa_input_data.php", // json datasource
                        "data": function ( d ) {
                           d.no_reg = $("#no_reg").val();
                           // d.custom = $('#myInput').val();
@@ -5451,7 +5384,7 @@ else{
             "info":     false,
             "language": { "emptyTable":     "My Custom Message On Empty Table" },
             "ajax":{
-              url :"data_tbs_penjualan.php", // json datasource
+              url :"data_tbs_penjualan_input_data.php", // json datasource
                "data": function ( d ) {
                   d.no_reg = $("#no_reg").val();
                   // d.custom = $('#myInput').val();
@@ -5477,7 +5410,7 @@ else{
                     "info":     false,
                     "language": { "emptyTable":     "My Custom Message On Empty Table" },
                     "ajax":{
-                      url :"data_tbs_penjualan_jasa.php", // json datasource
+                      url :"data_tbs_penjualan_jasa_input_data.php", // json datasource
                        "data": function ( d ) {
                           d.no_reg = $("#no_reg").val();
                           // d.custom = $('#myInput').val();
@@ -5679,6 +5612,25 @@ $(document).ready(function(){
 <!--Akhir Script Key Up Potongan Produk-->
 
 <!-- script untuk menampilkan data produk di tag select produk -->
+
+
+<!--HASIL LAB -->
+<script type="text/javascript">
+$(document).ready(function () {
+  $(document).on('click', '.hasil-lab', function (e) {
+
+    var kode_barang = $(this).attr('data-kode');
+    var no_reg = $(this).attr('data-reg');
+
+    $("#modal_detail").modal('show');
+
+    $.post("detail_hasil_lab_input_data.php",{kode_barang:kode_barang,no_reg:no_reg},function(data){
+      $("#span-detail").html(data);
+    });
+
+  });
+});
+</script>
 
 
 <?php include 'footer.php'; ?>
