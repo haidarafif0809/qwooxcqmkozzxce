@@ -77,15 +77,14 @@ $totalFiltered = $totalData;  // when there is no search parameter then total nu
 if ($requestData['tipe'] == 'barang') {
 	if ($requestData['kategori']  == 'semua' AND $tipe = 'barang') {
 
-		$sql = "SELECT s.id AS id_satuan,s.nama,b.id,b.nama_barang,b.kode_barang,b.harga_beli,b.harga_jual,b.harga_jual2,b.id,b.harga_jual3,b.harga_jual4,b.harga_jual5,b.harga_jual6,b.harga_jual7,b.berkaitan_dgn_stok,b.stok_barang,b.satuan,b.kategori,b.gudang";
+		$sql = "SELECT s.id AS id_satuan,s.nama,b.id,b.nama_barang,b.kode_barang,b.harga_beli,b.harga_jual,b.harga_jual2,b.id,b.harga_jual3,b.harga_jual4,b.harga_jual5,b.harga_jual6,b.harga_jual7,b.harga_jual_inap,b.harga_jual_inap2,b.id,b.harga_jual_inap3,b.harga_jual_inap4,b.harga_jual_inap5,b.harga_jual_inap6,b.harga_jual_inap7,b.berkaitan_dgn_stok,b.stok_barang,b.satuan,b.kategori,b.gudang";
 		$sql.=" FROM barang b INNER JOIN satuan s ON b.satuan = s.id WHERE 1=1 AND b.berkaitan_dgn_stok = '$requestData[tipe]' ";
 
 
 	}
 
 	else{
-		$sql = "SELECT s.id AS id_satuan,s.nama,b.id,b.nama_barang,b.kode_barang,b.harga_beli,b.harga_jual,b.harga_jual2,b.id,b.harga_jual3,b.harga_jual4,b.harga_jual5,b.harga_jual6,b.harga_jual7,b.berkaitan_dgn_stok,b.stok_barang,b.satuan,b.kategori,b.gudang";
-		$sql.=" FROM barang b INNER JOIN satuan s ON b.satuan = s.id";
+		$sql = "SELECT s.id AS id_satuan,s.nama,b.id,b.nama_barang,b.kode_barang,b.harga_beli,b.harga_jual,b.harga_jual2,b.id,b.harga_jual3,b.harga_jual4,b.harga_jual5,b.harga_jual6,b.harga_jual7,b.harga_jual_inap,b.harga_jual_inap2,b.id,b.harga_jual_inap3,b.harga_jual_inap4,b.harga_jual_inap5,b.harga_jual_inap6,b.harga_jual_inap7,b.berkaitan_dgn_stok,b.stok_barang,b.satuan,b.kategori,b.gudang";
 		$sql.="WHERE 1=1 AND b.kategori = '$kategori' AND b.berkaitan_dgn_stok = '$requestData[tipe]' ";
     }
 
@@ -94,13 +93,13 @@ if ($requestData['tipe'] == 'barang') {
 else
 {
 	if ($requestData['kategori'] == 'semua') {
-    	$sql = "SELECT s.id AS id_satuan,s.nama,b.id,b.nama_barang,b.kode_barang,b.harga_beli,b.harga_jual,b.harga_jual2,b.id,b.harga_jual3,b.harga_jual4,b.harga_jual5,b.harga_jual6,b.harga_jual7,b.berkaitan_dgn_stok,b.stok_barang,b.satuan,b.kategori,b.gudang";
+		$sql = "SELECT s.id AS id_satuan,s.nama,b.id,b.nama_barang,b.kode_barang,b.harga_beli,b.harga_jual,b.harga_jual2,b.id,b.harga_jual3,b.harga_jual4,b.harga_jual5,b.harga_jual6,b.harga_jual7,b.harga_jual_inap,b.harga_jual_inap2,b.id,b.harga_jual_inap3,b.harga_jual_inap4,b.harga_jual_inap5,b.harga_jual_inap6,b.harga_jual_inap7,b.berkaitan_dgn_stok,b.stok_barang,b.satuan,b.kategori,b.gudang";
 		$sql.=" FROM barang b INNER JOIN satuan s ON b.satuan = s.id";
     
     }
     
     else{
-    	$sql = "SELECT s.id AS id_satuan,s.nama,b.id,b.nama_barang,b.kode_barang,b.harga_beli,b.harga_jual,b.harga_jual2,b.id,b.harga_jual3,b.harga_jual4,b.harga_jual5,b.harga_jual6,b.harga_jual7,b.berkaitan_dgn_stok,b.stok_barang,b.satuan,b.kategori,b.gudang";
+		$sql = "SELECT s.id AS id_satuan,s.nama,b.id,b.nama_barang,b.kode_barang,b.harga_beli,b.harga_jual,b.harga_jual2,b.id,b.harga_jual3,b.harga_jual4,b.harga_jual5,b.harga_jual6,b.harga_jual7,b.harga_jual_inap,b.harga_jual_inap2,b.id,b.harga_jual_inap3,b.harga_jual_inap4,b.harga_jual_inap5,b.harga_jual_inap6,b.harga_jual_inap7,b.berkaitan_dgn_stok,b.stok_barang,b.satuan,b.kategori,b.gudang";
 		$sql.=" FROM barang b INNER JOIN satuan s ON b.satuan = s.id WHERE 1=1 AND b.kategori = '$requestData[kategori]'";
     }
 }
@@ -137,7 +136,8 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 
 
 		// perhitungan margin 
-		$margin = hitungMargin($row['harga_beli'],$row['harga_jual'],$row['berkaitan_dgn_stok']);
+		$margin_rj = hitungMargin($row['harga_beli'],$row['harga_jual'],$row['berkaitan_dgn_stok']);
+		$margin_ri = hitungMargin($row['harga_beli'],$row['harga_jual_inap'],$row['berkaitan_dgn_stok']);
            
         $stok_barang = cekStokHpp($row['kode_barang']);
 
@@ -175,23 +175,22 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 
 	$nestedData[] = $row["kode_barang"];
 	$nestedData[] = $row["nama_barang"];
-	$nestedData[] = $row["harga_beli"];
-	$nestedData[] = persen($margin);
-	$nestedData[] = $row["harga_jual"];
-	$nestedData[] = $row["harga_jual2"];
-	$nestedData[] = $row["harga_jual3"];
-	$nestedData[] = $row["harga_jual4"];
-	$nestedData[] = $row["harga_jual5"];
-	$nestedData[] = $row["harga_jual6"];
-	$nestedData[] = $row["harga_jual7"];
-	$nestedData[] = $total_hpp;
+	$nestedData[] = "<p align='right'>". rp($row["harga_beli"]) ."</p>";
+	$nestedData[] = persen($margin_rj);
+	$nestedData[] = "<p align='right'>". rp($row["harga_jual"]) ."</p>";
+	$nestedData[] = persen($margin_ri);
+	$nestedData[] = "<p align='right'>". rp($row["harga_jual_inap"]) ."</p>";
+
+	$nestedData[] = "<button class='btn btn-info btn-floating detail-harga' data-id='". $row['id'] ."'  data-nama='". $row['nama_barang'] ."' data-kode='". $row['kode_barang'] ."'> <span class='glyphicon glyphicon-trash'> </span> Rp</button> ";
+
+	$nestedData[] = "<p align='right'>".rp($total_hpp)."</p>";
 
 	if ($row['berkaitan_dgn_stok'] == 'Jasa') {
 
-       $nestedData[] = "0";
+       $nestedData[] = "<p align='right'>0</p>";
      }
      else {
-        $nestedData[] = $stok_barang;
+        $nestedData[] = "<p align='right'>".rp($stok_barang)."</p>";
       }
 
 	$nestedData[] = $row["nama"];

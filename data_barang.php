@@ -25,6 +25,15 @@ header('Content-Type: application/json');
 				"harga_jual5" =>$key['harga_jual5'],
 				"harga_jual6" =>$key['harga_jual6'],
 				"harga_jual7" =>$key['harga_jual7'],
+
+				 "harga_jual_inap" =>$key['harga_jual_inap'],
+				"harga_jual_inap2" =>$key['harga_jual_inap2'],
+				"harga_jual_inap3" =>$key['harga_jual_inap3'],
+				"harga_jual_inap4" =>$key['harga_jual_inap4'],
+				"harga_jual_inap5" =>$key['harga_jual_inap5'],
+				"harga_jual_inap6" =>$key['harga_jual_inap6'],
+				"harga_jual_inap7" =>$key['harga_jual_inap7'],
+
 				"satuan" =>$key['satuan'],
 				"kategori" =>$key['kategori'],
 				"status" =>$key['status'],

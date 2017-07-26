@@ -51,6 +51,7 @@ $koma = str_replace(",",".", $rupiah);
 $titik = $koma;
 return $titik;
 }
+
 function emaildoang($email){
 
 $angka1 = filter_var($email, FILTER_SANITIZE_EMAIL);
@@ -203,7 +204,11 @@ $kode_barang = stringdoang($kode_barang);
 
 }
 
-
+function tanpaKoma($rupiah){
+  $tanpaKoma = str_replace(".00","", $rupiah);
+  $titik = $tanpaKoma;
+  return $titik;
+}
 
 //NOMOR JURNAL
 

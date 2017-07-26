@@ -15,29 +15,29 @@ $id_produk =  stringdoang($_POST['id_produk']);
 $hasil = $jumlah_barang * $data['konversi'];
 
 
-$query = $db->query("SELECT harga_jual, harga_jual2, harga_jual3, harga_jual4, harga_jual5, harga_jual6, harga_jual7  FROM barang WHERE kode_barang = '$kode_barang'");
+$query = $db->query("SELECT harga_jual_inap, harga_jual_inap2, harga_jual_inap3, harga_jual_inap4, harga_jual_inap5, harga_jual_inap6, harga_jual_inap7  FROM barang WHERE kode_barang = '$kode_barang'");
 $data_harga = mysqli_fetch_array($query);
 
 if ($level_harga == 'harga_1') {
-	 $harga = $data_harga['harga_jual'];
+	 $harga = $data_harga['harga_jual_inap'];
 }
 elseif ($level_harga == 'harga_2') {
-	 $harga = $data_harga['harga_jual2'];
+	 $harga = $data_harga['harga_jual_inap2'];
 }
 elseif ($level_harga == 'harga_3') {
-	 $harga = $data_harga['harga_jual3'];
+	 $harga = $data_harga['harga_jual_inap3'];
 }
 elseif ($level_harga == 'harga_4') {
-	 $harga = $data_harga['harga_jual4'];
+	 $harga = $data_harga['harga_jual_inap4'];
 }
 elseif ($level_harga == 'harga_5') {
-	 $harga = $data_harga['harga_jual5'];
+	 $harga = $data_harga['harga_jual_inap5'];
 }
 elseif ($level_harga == 'harga_6') {
-	 $harga = $data_harga['harga_jual6'];
+	 $harga = $data_harga['harga_jual_inap6'];
 }
 elseif ($level_harga == 'harga_7') {
-	 $harga = $data_harga['harga_jual7'];
+	 $harga = $data_harga['harga_jual_inap7'];
 }
 
 if ($data['konversi'] == '') {
