@@ -352,10 +352,11 @@ $out_lab = mysqli_num_rows($cek_lab);
 if($out_lab > 0 ){
   
   //Input agar tampil di laporan laboratoriu (Tambahan sore hari belom di tes)
-    $insert_pemeriksaan_laboratorium = $db->query("INSERT INTO pemeriksaan_laboratorium (no_reg,no_faktur,no_rm,status,nama_pasien,status_pasien,waktu) VALUES ('$no_reg','$no_faktur',
-      '$no_rm','1','$nama_pasien','Rawat Inap','$waktu')");
+  //$insert_pemeriksaan_laboratorium = $db->query("INSERT INTO pemeriksaan_laboratorium (no_reg,no_faktur,no_rm,status,nama_pasien,status_pasien,waktu) VALUES ('$no_reg','$no_faktur','$no_rm','1','$nama_pasien','Rawat Inap','$waktu')");
 
   $update_hasilnya = $db->query("UPDATE hasil_lab SET no_faktur = '$no_faktur' WHERE no_reg = '$no_reg'");
+
+ $update_no_faktur_pemeriksaannya = $db->query("UPDATE pemeriksaan_laboratorium SET no_faktur = '$no_faktur' WHERE no_reg = '$no_reg'");
 }
 else{
   // Cek dulu setting, jika tidak di hubungkan akan jalankan ini

@@ -117,7 +117,7 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 $query_subtotal = $db->query("SELECT SUM(subtotal) AS subtotal  FROM detail_penjualan WHERE no_faktur = '$row[no_faktur]' ");
 $data_subtotal = mysqli_fetch_array($query_subtotal);
 
-$query_pelanggan = $db->query("SELECT nama_pelanggan FROM pelanggan WHERE kode_pelanggan = '$row[kode_pelanggan]' ");
+$query_pelanggan = $db_pasien->query("SELECT nama_pelanggan FROM pelanggan WHERE kode_pelanggan = '$row[kode_pelanggan]' ");
 $data_pelanggan = mysqli_fetch_array($query_pelanggan);
 
       $nestedData[] = $row['no_faktur'];

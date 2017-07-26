@@ -53,7 +53,7 @@ $data = array();
 while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 	$nestedData=array(); 
 
-if($row['status'] == '0')
+/*if($row['status'] == '0')
 {
 $jenis_penjualan = "Rawat Inap";
 
@@ -62,7 +62,7 @@ $nestedData[] = "<a href='cek_input_hasil_lab_inap.php?no_reg=". $row['no_reg'].
 else
 {
 	$nestedData[] = "<p style='color:red'> Selesai </p>";
-}
+}*/
 
 if($row['status'] == '0')
 {
