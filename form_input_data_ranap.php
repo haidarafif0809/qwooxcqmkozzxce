@@ -58,6 +58,19 @@ padding-right: 5%;
 
 </style>
 
+<!-- STYLE UNUTK PENUNJANG FOTO -->
+<style>
+img {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 5px;
+}
+
+img:hover {
+    box-shadow: 0 0 2px 1px rgba(0, 140, 186, 0.5);
+}
+</style>
+<!-- STYLE UNUTK PENUNJANG FOTO -->
 
 <script>
   $(function() {
@@ -71,7 +84,50 @@ padding-right: 5%;
   });
   </script>
 
-<div id="modal_detail_input_ranap" class="modal fade" role="dialog">
+<!--Awal Modal Radiologi-->
+<div id="modal_detail_radiologi_input_ranap" class="modal" role="dialog">
+  <div class="modal-dialog modal-sm">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title"><center><b>Hasil Radiologi</b></center></h4>
+      </div>
+
+      <center>
+        <div class="card-block">
+          <div class="row tampil_col">
+            <span id="span_foto"> </span>
+          </div>
+        </div>
+
+        <label for="keterangan_tampil"><u><b>Hasil Baca Radiografer</b></u></label><br>
+
+        <span id="span_ket" ></span>
+
+      </center>
+
+      <div class="modal-body">
+        <div class="table-responsive">
+          <span id="span-detail-radiologi">
+            
+          </span>
+        </div>
+       </div>
+
+      <div class="modal-footer">
+        
+  <center> <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-remove"></i> Close</button></center> 
+      </div>
+    </div>
+
+  </div>
+</div>
+<!--Akhir Modal Radiologi-->
+
+<!--Awal Modal Laboratorium-->
+<div id="modal_detail_input_ranap" class="modal" role="dialog">
   <div class="modal-dialog modal-lg">
 
     <!-- Modal content-->
@@ -80,6 +136,7 @@ padding-right: 5%;
         <button type="button" class="close" data-dismiss="modal">&times;</button>
         <h4 class="modal-title"><center><b>Detail Hasil Laboratorium</b></center></h4>
       </div>
+
 
       <div class="modal-body">
         <div class="table-responsive">
@@ -90,13 +147,14 @@ padding-right: 5%;
        </div>
 
       <div class="modal-footer">
-        <h6 style="text-align: left ; color: red"><i>* Edit Hasil Pemeriksaan Click 2x !!</i></h6>
-  <center> <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button></center> 
+        
+  <center> <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-remove"></i> Close</button></center> 
       </div>
     </div>
 
   </div>
 </div>
+<!--Akhir Modal Laboratorium-->
 
   <!--tampilan modal loading form-->
 <div id="modal_loading_form" class="modal" role="dialog">
@@ -430,7 +488,7 @@ padding-right: 5%;
 
 <!--tampilan modal-->
 <div id="myModal" class="modal" role="dialog">
-  <div class="modal-dialog modal-lg">
+  <div class="modal-dialog">
 
     <!-- isi modal-->
     <div class="modal-content">
@@ -955,6 +1013,7 @@ Radiologi  </button>
                               <th> Nama </th>
                               <th> Dokter Pengirim </th>
                               <th style="text-align: right" > Jumlah </th>
+                              <th> Hasil </th>
                               
                               <!--
                               <th style="text-align: right" > Harga </th>
@@ -973,8 +1032,22 @@ Radiologi  </button>
                 <h6 style="text-align: left ;"><i><b> * Short Key (F2) untuk mencari Kode Produk atau Nama Produk.</b></i></h6>
 
   
-</div> <!-- / END COL SM 6 (1)-->
+      <div align="right" class="BtnOnTop">  
 
+          <!--Tombol Simpannya -->
+          <?php if ($data_otitas_penjualan_inap['tombol_simpan_inap'] > 0) { ?>  
+          <button type="submit" id="simpan_sementara" class="btn btn-purple " style="font-size:15px"><i class="fa fa-save"></i> Simpan (F10)</button>
+          <?php } ?>
+          
+            <?php if ($data_otitas_penjualan_inap['tombol_batal_inap'] > 0) { ?>
+            <button type="submit" id="batal_penjualan" class="btn btn-danger" style="font-size:15px"><i class="fa fa-remove"></i> Batal (Ctrl + B)</button>
+          <?php } ?>
+
+           <button type="submit" id="transaksi_baru" style="display: none" class="btn btn-info" style="font-size:15px;"> Input Data Baru (Ctrl + M)</button>  
+          
+      </div>
+
+</div> <!-- / END COL SM 6 (1)-->
 
 
 <div class="col-xs-4">
@@ -1189,11 +1262,6 @@ Radiologi  </button>
           <?php if ($data_otitas_penjualan_inap['tombol_bayar_inap'] > 0) { ?>
             <button type="submit" id="penjualan" class="btn btn-info" style="font-size:15px">Bayar (F8)</button>
            <?php } ?>
-         
-
-          <button type="submit" id="transaksi_baru" style="display: none" class="btn btn-info" style="font-size:15px;"> Transaksi Baru (Ctrl + M)</button>          
-        
-
           
             <?php if ($data_otitas_penjualan_inap['tombol_piutang_inap'] > 0) { ?>
           <button type="submit" id="piutang" class="btn btn-warning" style="font-size:15px">Piutang (F9)</button>
@@ -1232,22 +1300,7 @@ Radiologi  </button>
     </form>
       
     
-  
-    <div class="row" >
-      <div class="col-sm-7">
-        <div class="card card-block">
 
-          <!--Tombol Simpannya -->
-          <?php if ($data_otitas_penjualan_inap['tombol_simpan_inap'] > 0) { ?>  
-          <button type="submit" id="simpan_sementara" class="btn btn-purple " style="font-size:15px"><i class="fa fa-save"></i> Simpan (F10)</button>
-          <?php } ?>
-          
-            <?php if ($data_otitas_penjualan_inap['tombol_batal_inap'] > 0) { ?>
-            <button type="submit" id="batal_penjualan" class="btn btn-danger" style="font-size:15px"><i class="fa fa-cancel"></i> Batal (Ctrl + B)</button>
-          <?php } ?>
-        </div>
-      </div> <!--row 3-->
-    </div>
 
 </div><!-- / END COL SM 6 (2)-->
 
@@ -5639,21 +5692,21 @@ $(document).ready(function(){
              $(nRow).attr('class', "pilih");
               $(nRow).attr('data-kode', aData[0]);
               $(nRow).attr('nama-barang', aData[1]);
-              $(nRow).attr('harga', aData[2]);
-              $(nRow).attr('harga_level_2', aData[3]);
-              $(nRow).attr('harga_level_3', aData[4]);
-              $(nRow).attr('harga_level_4', aData[5]);
-              $(nRow).attr('harga_level_5', aData[6]);
-              $(nRow).attr('harga_level_6', aData[7]);
-              $(nRow).attr('harga_level_7', aData[8]);
-              $(nRow).attr('jumlah-barang', aData[9]);
-              $(nRow).attr('satuan', aData[17]);
+              $(nRow).attr('harga', aData[11]);
+              $(nRow).attr('harga_level_2', aData[12]);
+              $(nRow).attr('harga_level_3', aData[13]);
+              $(nRow).attr('harga_level_4', aData[14]);
+              $(nRow).attr('harga_level_5', aData[15]);
+              $(nRow).attr('harga_level_6', aData[16]);
+              $(nRow).attr('harga_level_7', aData[17]);
+              $(nRow).attr('jumlah-barang', aData[2]);
+              $(nRow).attr('satuan', aData[10]);
               $(nRow).attr('kategori', aData[11]);
-              $(nRow).attr('status', aData[16]);
-              $(nRow).attr('suplier', aData[12]);
-              $(nRow).attr('limit_stok', aData[13]);
-              $(nRow).attr('ber-stok', aData[14]);
-              $(nRow).attr('tipe_barang', aData[15]);
+              $(nRow).attr('status', aData[10]);
+              $(nRow).attr('suplier', aData[5]);
+              $(nRow).attr('limit_stok', aData[6]);
+              $(nRow).attr('ber-stok', aData[7]);
+              $(nRow).attr('tipe_barang', aData[8]);
               $(nRow).attr('id-barang', aData[18]);
 
 
@@ -5788,6 +5841,72 @@ $(document).ready(function () {
   });
 
 </script>
+
+
+
+<!--Detail HASIL TBS Radiologi-->
+<script type="text/javascript">
+$(document).ready(function () {
+  $(document).on('click', '.detail-hasil-radiologi', function (e) {
+
+    var kode = $(this).attr('data-kode');
+    var no_reg = $(this).attr('data-reg');
+    var nama = $(this).attr('data-nama');
+    var status_periksa = $(this).attr('data-status');
+    var keterangan = $(this).attr('data-ket');
+
+    //Tampil Modal
+    $("#modal_detail_radiologi_input_ranap").modal('show');
+
+    //Tampilakan Keterangan Hasil Radiologi
+    $("#span_ket").html(keterangan);
+    $("#keterangan_tampil").val(keterangan);
+
+    // DESTROY ELEVATEZOOM 
+    $.removeData($('.zoom_foto'), 'elevateZoom');
+    $('.zoomContainer').remove();
+
+    $(".tampil_col").show();
+
+    $.post("tampil_foto.php",{no_reg:no_reg, kode:kode},function(data){
+
+        var jumlah_foto = JSON.parse(data);
+
+        $(".span-hapus").remove();
+
+    //PERULANGAN JIKA ADA LEBIH DARI 1 (SATU) DATA YANG DIAMBIL (SEPERTI WHILE)
+         
+        //$("#span_foto").prepend('<span class="span-hapus"> <button class="btn btn-danger btn-floating hapus" src="save_picture/'+nama_foto+'" data-kode="'+kode+'" data-nama="'+nama+'" data-reg="'+no_reg+'" data-status="'+status_periksa+'" style="font-size:15px"><i class="fa fa-trash"></i></button> </span>'); 
+
+        for (var foto = 0; foto < jumlah_foto.length; foto++) {
+        var nama_foto = jumlah_foto[foto];
+          if (nama_foto != "") {
+
+        //MENAMPILKAN FOTO
+
+          $("#span_foto").prepend('<span class="span-hapus"> <img src="save_picture/'+nama_foto+'" data-zoom-image="save_picture/'+nama_foto+'" class="zoom_foto" id="id-'+kode+'-'+nama_foto+'" height="250px" width="290px"> </span>');        
+
+          }
+
+        }
+
+    //PERULANGAN JIKA ADA LEBIH DARI 1 (SATU) DATA YANG DIAMBIL (SEPERTI WHILE)
+
+        //UNTUK MEMPERBESAR FOTO 
+           /* $('.zoom_foto').elevateZoom({
+            zoomType: "inner",
+            cursor: "crosshair",
+            zoomWindowFadeIn: 500,
+            zoomWindowFadeOut: 750,
+            scrollZoom : true
+            }); */
+        //UNTUK MEMPERBESAR FOTO 
+
+    });
+  });
+});
+</script>
+<!--Detail HASIL TBS Radiologi-->
 
 <script type="text/javascript" language="javascript" >
 

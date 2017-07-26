@@ -13,6 +13,7 @@ $requestData= $_REQUEST;
 $columns = array( 
 // datatable column index  => database column name
 
+
     0=>'kode_barang', 
     1=>'nama_barang',
     2=>'harga_jual',
@@ -118,13 +119,6 @@ while( $row=mysqli_fetch_array($query) ) {
 
     $nestedData[] = $row["kode_barang"];
     $nestedData[] = $row["nama_barang"];
-    /*$nestedData[] = $row["harga_jual"];
-    $nestedData[] = $row["harga_jual2"];
-    $nestedData[] = $row["harga_jual3"];
-    $nestedData[] = $row["harga_jual4"];
-    $nestedData[] = $row["harga_jual5"];
-    $nestedData[] = $row["harga_jual6"];
-    $nestedData[] = $row["harga_jual7"];*/
 
     if ($row["berkaitan_dgn_stok"] == "Jasa") {
         $nestedData[] = "0";
@@ -141,6 +135,13 @@ while( $row=mysqli_fetch_array($query) ) {
     $nestedData[] = $row["tipe_barang"];
     $nestedData[] = $row["status"];
     $nestedData[] = $row["satuan"];
+    $nestedData[] = $row["harga_jual"];
+    $nestedData[] = $row["harga_jual2"];
+    $nestedData[] = $row["harga_jual3"];
+    $nestedData[] = $row["harga_jual4"];
+    $nestedData[] = $row["harga_jual5"];
+    $nestedData[] = $row["harga_jual6"];
+    $nestedData[] = $row["harga_jual7"];
     $nestedData[] = $row["id"];
     
     $data[] = $nestedData;
