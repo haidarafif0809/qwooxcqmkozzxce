@@ -58,6 +58,19 @@ padding-right: 5%;
 
 </style>
 
+<!-- STYLE UNUTK PENUNJANG FOTO -->
+<style>
+img {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 5px;
+}
+
+img:hover {
+    box-shadow: 0 0 2px 1px rgba(0, 140, 186, 0.5);
+}
+</style>
+<!-- STYLE UNUTK PENUNJANG FOTO -->
 
 <script>
   $(function() {
@@ -71,7 +84,50 @@ padding-right: 5%;
   });
   </script>
 
-<div id="modal_detail_input_ranap" class="modal fade" role="dialog">
+<!--Awal Modal Radiologi-->
+<div id="modal_detail_radiologi_input_ranap" class="modal" role="dialog">
+  <div class="modal-dialog modal-sm">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title"><center><b>Hasil Radiologi</b></center></h4>
+      </div>
+
+      <center>
+        <div class="card-block">
+          <div class="row tampil_col">
+            <span id="span_foto"> </span>
+          </div>
+        </div>
+
+        <label for="keterangan_tampil"><u><b>Hasil Baca Radiografer</b></u></label><br>
+
+        <span id="span_ket" ></span>
+
+      </center>
+
+      <div class="modal-body">
+        <div class="table-responsive">
+          <span id="span-detail-radiologi">
+            
+          </span>
+        </div>
+       </div>
+
+      <div class="modal-footer">
+        
+  <center> <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-remove"></i> Close</button></center> 
+      </div>
+    </div>
+
+  </div>
+</div>
+<!--Akhir Modal Radiologi-->
+
+<!--Awal Modal Laboratorium-->
+<div id="modal_detail_input_ranap" class="modal" role="dialog">
   <div class="modal-dialog modal-lg">
 
     <!-- Modal content-->
@@ -80,6 +136,7 @@ padding-right: 5%;
         <button type="button" class="close" data-dismiss="modal">&times;</button>
         <h4 class="modal-title"><center><b>Detail Hasil Laboratorium</b></center></h4>
       </div>
+
 
       <div class="modal-body">
         <div class="table-responsive">
@@ -90,13 +147,14 @@ padding-right: 5%;
        </div>
 
       <div class="modal-footer">
-        <h6 style="text-align: left ; color: red"><i>* Edit Hasil Pemeriksaan Click 2x !!</i></h6>
-  <center> <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button></center> 
+        
+  <center> <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-remove"></i> Close</button></center> 
       </div>
     </div>
 
   </div>
 </div>
+<!--Akhir Modal Laboratorium-->
 
   <!--tampilan modal loading form-->
 <div id="modal_loading_form" class="modal" role="dialog">
@@ -955,6 +1013,7 @@ Radiologi  </button>
                               <th> Nama </th>
                               <th> Dokter Pengirim </th>
                               <th style="text-align: right" > Jumlah </th>
+                              <th> Hasil </th>
                               
                               <!--
                               <th style="text-align: right" > Harga </th>
@@ -5782,6 +5841,72 @@ $(document).ready(function () {
   });
 
 </script>
+
+
+
+<!--Detail HASIL TBS Radiologi-->
+<script type="text/javascript">
+$(document).ready(function () {
+  $(document).on('click', '.detail-hasil-radiologi', function (e) {
+
+    var kode = $(this).attr('data-kode');
+    var no_reg = $(this).attr('data-reg');
+    var nama = $(this).attr('data-nama');
+    var status_periksa = $(this).attr('data-status');
+    var keterangan = $(this).attr('data-ket');
+
+    //Tampil Modal
+    $("#modal_detail_radiologi_input_ranap").modal('show');
+
+    //Tampilakan Keterangan Hasil Radiologi
+    $("#span_ket").html(keterangan);
+    $("#keterangan_tampil").val(keterangan);
+
+    // DESTROY ELEVATEZOOM 
+    $.removeData($('.zoom_foto'), 'elevateZoom');
+    $('.zoomContainer').remove();
+
+    $(".tampil_col").show();
+
+    $.post("tampil_foto.php",{no_reg:no_reg, kode:kode},function(data){
+
+        var jumlah_foto = JSON.parse(data);
+
+        $(".span-hapus").remove();
+
+    //PERULANGAN JIKA ADA LEBIH DARI 1 (SATU) DATA YANG DIAMBIL (SEPERTI WHILE)
+         
+        //$("#span_foto").prepend('<span class="span-hapus"> <button class="btn btn-danger btn-floating hapus" src="save_picture/'+nama_foto+'" data-kode="'+kode+'" data-nama="'+nama+'" data-reg="'+no_reg+'" data-status="'+status_periksa+'" style="font-size:15px"><i class="fa fa-trash"></i></button> </span>'); 
+
+        for (var foto = 0; foto < jumlah_foto.length; foto++) {
+        var nama_foto = jumlah_foto[foto];
+          if (nama_foto != "") {
+
+        //MENAMPILKAN FOTO
+
+          $("#span_foto").prepend('<span class="span-hapus"> <img src="save_picture/'+nama_foto+'" data-zoom-image="save_picture/'+nama_foto+'" class="zoom_foto" id="id-'+kode+'-'+nama_foto+'" height="250px" width="290px"> </span>');        
+
+          }
+
+        }
+
+    //PERULANGAN JIKA ADA LEBIH DARI 1 (SATU) DATA YANG DIAMBIL (SEPERTI WHILE)
+
+        //UNTUK MEMPERBESAR FOTO 
+           /* $('.zoom_foto').elevateZoom({
+            zoomType: "inner",
+            cursor: "crosshair",
+            zoomWindowFadeIn: 500,
+            zoomWindowFadeOut: 750,
+            scrollZoom : true
+            }); */
+        //UNTUK MEMPERBESAR FOTO 
+
+    });
+  });
+});
+</script>
+<!--Detail HASIL TBS Radiologi-->
 
 <script type="text/javascript" language="javascript" >
 
