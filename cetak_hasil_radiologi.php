@@ -50,7 +50,9 @@ include 'db.php';
 
 
   <div class="row">
-    <div class="col-sm-9">
+    <div class="col-sm-1">
+    </div>
+    <div class="col-sm-6">
         
 
  <table>
@@ -67,12 +69,12 @@ include 'db.php';
 
     </div>
 
-    <div class="col-sm-3">
+    <div class="col-sm-5">
  <table>
   <tbody>
 
       <tr><td width="25%">Tanggal</td> <td> :&nbsp;</td> <td><?php echo tanggal($data_hasil['tanggal']); ?> </tr> 
-      <tr><td width="25%">Pasien</td> <td> :&nbsp;</td> <td><?php echo $data_hasil['jenis_pasien']; ?> </tr> 
+      <tr><td width="25%">Jenis Pasien</td> <td> :&nbsp;</td> <td><?php echo $data_hasil['jenis_pasien']; ?> </tr> 
       <tr><td width="25%">Poli</td> <td> :&nbsp;</td> <td><?php echo $data_hasil['poli']; ?> </tr> 
       <tr><td width="25%">Dokter </td> <td> :&nbsp;</td> <td><?php echo $data_hasil['dokter_sp_radiologi']; ?> </tr> 
 
