@@ -383,6 +383,39 @@ $obat = $otoritas_produk['tipe_obat'];
   </div>
 </div><!-- end of modal data barang  -->
 
+
+<!--Awal Modal Radiologi-->
+<div id="modal_detail_radiologi_input_rj" class="modal" role="dialog">
+  <div class="modal-dialog modal-sm">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title"><center><b>Hasil Radiologi</b></center></h4>
+      </div>
+
+        <div class="card-block">
+          <div class="row tampil_col">
+            <span id="span_foto"> </span>
+          </div>
+        </div>
+
+        <div class="card-block">
+          <h5><u><b>Hasil Baca Radiografer</b></u></h5>
+          <span id="span_ket"></span>
+        </div>
+
+      <div class="modal-footer">
+        
+  <center> <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-remove"></i> Close</button></center> 
+      </div>
+    </div>
+
+  </div>
+</div>
+<!--Akhir Modal Radiologi-->
+
 <!--MODAL HASIL LAB -->
 <div id="modal_detail" class="modal fade" role="dialog">
   <div class="modal-dialog modal-lg">
@@ -391,7 +424,7 @@ $obat = $otoritas_produk['tipe_obat'];
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title"><center><b>Detail Hasil Laboratorium</b></center></h4>
+        <h4 class="modal-title"><center><b> Hasil Laboratorium</b></center></h4>
       </div>
 
       <div class="modal-body">
@@ -732,7 +765,7 @@ $obat = $otoritas_produk['tipe_obat'];
                               <th> Subtotal </th>
                               -->
                               <th> Tanggal </th>
-                              <th> Hasil Lab. </th>
+                              <th> Hasil </th>
                           
                           </thead> <!-- tag penutup tabel -->
                     </table>
@@ -756,6 +789,7 @@ $obat = $otoritas_produk['tipe_obat'];
                               <th> Nama </th>
                               <th> Dokter Pengirim </th>
                               <th style="text-align: right" > Jumlah </th>
+                              <th> Hasil </th>
                               <!--
                               <th style="text-align: right" > Harga </th>                              
                               <th style="text-align: right" > Potongan </th>
@@ -1561,6 +1595,52 @@ var penjamin = $("#penjamin").val();
 </script>
 
 
+<!--Detail HASIL TBS Radiologi-->
+<script type="text/javascript">
+$(document).ready(function () {
+  $(document).on('click', '.detail-hasil-radiologi', function (e) {
+
+    var kode = $(this).attr('data-kode');
+    var no_reg = $(this).attr('data-reg');
+    var nama = $(this).attr('data-nama');
+    var keterangan = $(this).attr('data-ket');
+
+    //Tampil Modal
+    $("#modal_detail_radiologi_input_rj").modal('show');
+
+    //Tampilakan Keterangan Hasil Radiologi
+    $("#span_ket").html(keterangan);
+
+    $(".tampil_col").show();
+
+    $.post("tampil_foto.php",{no_reg:no_reg, kode:kode},function(data){
+
+        var jumlah_foto = JSON.parse(data);
+
+        $(".span-hapus").remove();
+
+    //PERULANGAN JIKA ADA LEBIH DARI 1 (SATU) DATA YANG DIAMBIL (SEPERTI WHILE)
+
+
+        for (var foto = 0; foto < jumlah_foto.length; foto++) {
+        var nama_foto = jumlah_foto[foto];
+          if (nama_foto != "") {
+
+        //MENAMPILKAN FOTO
+
+          $("#span_foto").prepend('<span class="span-hapus"> <img src="save_picture/'+nama_foto+'" data-zoom-image="save_picture/'+nama_foto+'" class="zoom_foto" id="id-'+kode+'-'+nama_foto+'" height="250px" width="290px"> </span>');        
+
+          }
+
+        }
+
+
+
+    });
+  });
+});
+</script>
+<!--Detail HASIL TBS Radiologi-->
 
 <script type="text/javascript" language="javascript" >
 

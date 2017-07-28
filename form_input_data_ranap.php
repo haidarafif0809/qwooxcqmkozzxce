@@ -2230,7 +2230,7 @@ $(document).ready(function(){
   var jumlah_barang = $("#jumlah_barang").val();
   var id_produk = $("#id_produk").val();
 $('#kolom_cek_harga').val('0');
-$.post("cek_level_harga_barang.php",{level_harga:level_harga,kode_barang:kode_barang,jumlah_barang:jumlah_barang,id_produk:id_produk,satuan_konversi:satuan_konversi},function(data){
+$.post("cek_level_harga_barang_inap.php",{level_harga:level_harga,kode_barang:kode_barang,jumlah_barang:jumlah_barang,id_produk:id_produk,satuan_konversi:satuan_konversi},function(data){
 
           $("#harga_produk").val(data);
           $("#harga_baru").val(data);
@@ -4165,7 +4165,7 @@ if (pesan_alert == true) {
             $("#span_tbs_jasa").show()
         
 
-              if (sisa_potongan == 0) {
+              if (total_akhir1 == 0) {
                 
                     $("#potongan_persen").val('0');
                     $("#ppn").val('Non');

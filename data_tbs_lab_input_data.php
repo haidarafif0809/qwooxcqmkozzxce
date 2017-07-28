@@ -89,7 +89,18 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 
       $nestedData[] = rp($row["jumlah_barang"]);
       $nestedData[] = $row["tanggal"];
-      $nestedData[] = "<button class='btn btn-floating  btn-info hasil-lab' data-reg='".$row['no_reg']."' data-kode='".$row['kode_barang']."'><i class='fa fa-list'></i></button>";
+
+      $query_hasil = $db->query("SELECT kode_barang FROM hasil_lab WHERE kode_barang = '$row[kode_barang]' AND no_reg = '$no_reg' ");
+      $data_hasil_lab = mysqli_num_rows($query_hasil);
+
+      if($data_hasil_lab > 0){
+        $nestedData[] = "<button class='btn btn-floating  btn-info hasil-lab' data-reg='".$row['no_reg']."' data-kode='".$row['kode_barang']."'><i class='fa fa-list'></i></button>";
+      }
+      else{
+        $hasil_lab = 'Hasil Belum Ada';
+        $nestedData[] = $hasil_lab;
+      }
+
       $nestedData[] = rp($row["harga"]);
       $nestedData[] = rp($row["subtotal"]);
 
