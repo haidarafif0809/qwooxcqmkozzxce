@@ -7,10 +7,10 @@
 
 
 
-       $query =$db->prepare("UPDATE barang SET nama_barang = ?, harga_beli = ?, harga_jual = ?, harga_jual2 = ?, harga_jual3 = ?,harga_jual4 = ?,harga_jual5 = ?,harga_jual6 = ?,harga_jual7 = ?, satuan = ?, gudang = ?, kategori = ?, status = ?,suplier = ?, limit_stok = ?, over_stok = ? , tipe_barang = ?, golongan = ?,berkaitan_dgn_stok = ? ,jenis_barang = ?  WHERE id = ? ");
+       $query =$db->prepare("UPDATE barang SET nama_barang = ?, harga_beli = ?, harga_jual = ?, harga_jual2 = ?, harga_jual3 = ?,harga_jual4 = ?,harga_jual5 = ?,harga_jual6 = ?,harga_jual7 = ?, harga_jual_inap = ?, harga_jual_inap2 = ?, harga_jual_inap3 = ?,harga_jual_inap4 = ?,harga_jual_inap5 = ?,harga_jual_inap6 = ?,harga_jual_inap7 = ?, satuan = ?, gudang = ?, kategori = ?, status = ?,suplier = ?, limit_stok = ?, over_stok = ? , tipe_barang = ?, golongan = ?,berkaitan_dgn_stok = ? ,jenis_barang = ?  WHERE id = ? ");
 
-       $query->bind_param("siiiiiiiiissssiissssi",
-        $nama_barang, $harga_beli, $harga_jual, $harga_jual_2, $harga_jual_3, $harga_jual_4, $harga_jual_5, $harga_jual_6, $harga_jual_7, $satuan, $gudang, $kategori_obat, $status, $suplier,$limit_stok, $over_stok, $tipe,$golongan_obat,$golongan_produk,$jenis_obat,$id);
+       $query->bind_param("siiiiiiiiiiiiiiiissssiissssi",
+        $nama_barang, $harga_beli, $harga_jual, $harga_jual_2, $harga_jual_3, $harga_jual_4, $harga_jual_5, $harga_jual_6, $harga_jual_7, $harga_jual_inap, $harga_jual_inap_2, $harga_jual_inap_3, $harga_jual_inap_4, $harga_jual_inap_5, $harga_jual_inap_6, $harga_jual_inap_7, $satuan, $gudang, $kategori_obat, $status, $suplier,$limit_stok, $over_stok, $tipe,$golongan_obat,$golongan_produk,$jenis_obat,$id);
 
            
            $nama_barang = stringdoang($_POST['nama_barang']);
@@ -21,6 +21,14 @@
            $harga_jual_5 = angkadoang($_POST['harga_jual_5']);
            $harga_jual_6 = angkadoang($_POST['harga_jual_6']);
            $harga_jual_7 = angkadoang($_POST['harga_jual_7']);
+
+           $harga_jual_inap = angkadoang($_POST['harga_jual_inap']);
+           $harga_jual_inap_2 = angkadoang($_POST['harga_jual_inap_2']);
+           $harga_jual_inap_3 = angkadoang($_POST['harga_jual_inap_3']);
+           $harga_jual_inap_4 = angkadoang($_POST['harga_jual_inap_4']);
+           $harga_jual_inap_5 = angkadoang($_POST['harga_jual_inap_5']);
+           $harga_jual_inap_6 = angkadoang($_POST['harga_jual_inap_6']);
+           $harga_jual_inap_7 = angkadoang($_POST['harga_jual_inap_7']);
 
            $satuan = stringdoang($_POST['satuan']);
            $status = stringdoang($_POST['status']);
@@ -89,6 +97,13 @@ else
               'harga_jual5' => $data['harga_jual5'],
               'harga_jual6' => $data['harga_jual6'],
               'harga_jual7' => $data['harga_jual7'],
+              'harga_jual_inap' => $data['harga_jual_inap'],
+              'harga_jual_inap2' => $data['harga_jual_inap2'],
+              'harga_jual_inap3' => $data['harga_jual_inap3'],
+              'harga_jual_inap4' => $data['harga_jual_inap4'],
+              'harga_jual_inap5' => $data['harga_jual_inap5'],
+              'harga_jual_inap6' => $data['harga_jual_inap6'],
+              'harga_jual_inap7' => $data['harga_jual_inap7'],
               'kategori' => $data['kategori'],
               'suplier' => $data['suplier'],
               'limit_stok' => $data['limit_stok'],

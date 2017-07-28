@@ -17,7 +17,7 @@ include 'navbar.php';
 
           db.version(2).stores({
              
-            barang : 'id,kode_barang,nama_barang,harga_jual,harga_jual2,harga_jual3,harga_jual4,harga_jual5,harga_jual6,harga_jual7,satuan,kategori,status,suplier,limit_stok,berkaitan_dgn_stok,tipe_barang'  
+            barang : 'id,kode_barang,nama_barang,harga_jual,harga_jual2,harga_jual3,harga_jual4,harga_jual5,harga_jual6,harga_jual7,harga_jual_inap,harga_jual_inap2,harga_jual_inap3,harga_jual_inap4,harga_jual_inap5,harga_jual_inap6,harga_jual_inap7,satuan,kategori,status,suplier,limit_stok,berkaitan_dgn_stok,tipe_barang'  
           });
 
 
@@ -30,7 +30,7 @@ include 'navbar.php';
                 $.each(data.result, function(i, item) {
 
                
-                  data_barang.push({id: data.result[i].id, kode_barang: data.result[i].kode_barang,nama_barang : data.result[i].nama_barang,harga_jual:  data.result[i].harga_jual,harga_jual2:  data.result[i].harga_jual2,harga_jual3:  data.result[i].harga_jual3,harga_jual4:  data.result[i].harga_jual4,harga_jual5:  data.result[i].harga_jual5,harga_jual6:  data.result[i].harga_jual6,harga_jual7:  data.result[i].harga_jual7,satuan:  data.result[i].satuan,kategori:  data.result[i].kategori,status:  data.result[i].status,suplier:  data.result[i].suplier,limit_stok:  data.result[i].limit_stok,berkaitan_dgn_stok:  data.result[i].berkaitan_dgn_stok,tipe_barang:  data.result[i].tipe_barang  });
+                  data_barang.push({id: data.result[i].id, kode_barang: data.result[i].kode_barang,nama_barang : data.result[i].nama_barang,harga_jual:  data.result[i].harga_jual,harga_jual2:  data.result[i].harga_jual2,harga_jual3:  data.result[i].harga_jual3,harga_jual4:  data.result[i].harga_jual4,harga_jual5:  data.result[i].harga_jual5,harga_jual6:  data.result[i].harga_jual6,harga_jual7:  data.result[i].harga_jual7,harga_jual_inap:  data.result[i].harga_jual_inap,harga_jual_inap2:  data.result[i].harga_jual_inap2,harga_jual_inap3:  data.result[i].harga_jual_inap3,harga_jual_inap4:  data.result[i].harga_jual_inap4,harga_jual_inap5:  data.result[i].harga_jual_inap5,harga_jual_inap6:  data.result[i].harga_jual_inap6,harga_jual_inap7:  data.result[i].harga_jual_inap7,satuan:  data.result[i].satuan,kategori:  data.result[i].kategori,status:  data.result[i].status,suplier:  data.result[i].suplier,limit_stok:  data.result[i].limit_stok,berkaitan_dgn_stok:  data.result[i].berkaitan_dgn_stok,tipe_barang:  data.result[i].tipe_barang  });
 
 
 
