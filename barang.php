@@ -463,13 +463,21 @@ echo '<br><button type="button" class="btn btn-info" data-toggle="modal" data-ta
   </div>
 </div>
 
-<div id="modal_detail" class="modal fade" role="dialog">
+<div id="modal_detail" class="modal" role="dialog">
   <div class="modal-dialog modal-lg">
 
     <!-- Modal content-->
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <div class="row">
+              <div class="col-sm-10">
+                <h4>Harga Jual Produk ( <span id="info-harga"></span> )</h4>                  
+              </div>
+
+              <div class="col-sm-2">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>                  
+              </div>
+          </div>
       </div>
 
       <div class="modal-body">
@@ -1272,9 +1280,12 @@ $("#tambah").click(function(){
 <script type="text/javascript">
 $(document).on("click", ".detail-harga", function(){
     var kode = $(this).attr('data-kode');
+    var nama = $(this).attr('data-nama');
     var id = $(this).attr('data-id');
+    var kode_nama = kode +  " " +nama;
 
     $("#modal_detail").modal('show');
+    $("#info-harga").html(kode_nama)
     $.post('detail_harga_produk.php',{kode:kode, id:id},function(info) {
         $("#modal-detail").html(info);
     });

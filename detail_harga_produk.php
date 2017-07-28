@@ -10,10 +10,9 @@ $kode_produk = stringdoang($_POST['kode']);
 
 <div class="container">		
 	<div class="table-responsive"> 
-
 		<div class="row">
 			<div class="col-sm-6 harga-rajal">
-				<h5><b>Harga Jual Rawat Jalan</b></h5><hr>
+				<h5><b>Rawat Jalan, UGD & Apotek </b></h5><hr>
 				<table id="table-rajal" class="table table-bordered table-sm">
 					<thead>
 						<th> Harga 1 </th>
@@ -48,7 +47,7 @@ $kode_produk = stringdoang($_POST['kode']);
 			</div>
 
 			<div class="col-sm-6 harga-ranap">
-				<h5><b>Harga Jual Rawat Inap</b></h5><hr>
+				<h5><b>Rawat Inap</b></h5><hr>
 				<table id="table-ranap" class="table table-bordered table-sm">
 					<thead>
 						<th> Harga 1 </th>
