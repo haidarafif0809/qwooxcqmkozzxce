@@ -86,7 +86,7 @@ include 'db.php';
 
 <span id="result">
 <div class="row 1">
-<h3><center><b>Komisi Faktur / Petugas</b></center></h3><br><br>
+<h3><center><b>Komisi Produk / Petugas</b></center></h3><br><br>
 <div class="table-responsive">
 <table id="table_komisi_faktur" class="table table-bordered table-sm">
             <thead>
@@ -105,7 +105,7 @@ include 'db.php';
 <br>
 
 <div class="row 2">
-<h3><center><b>Komisi Produk / Petugas</b></center></h3><br><br>
+<h3><center><b>Komisi Faktur / Petugas</b></center></h3><br><br>
 <div class="table-responsive">
 <table id="table_komisi_produk" class="table table-bordered table-sm">
             <thead>
@@ -209,7 +209,7 @@ include 'db.php';
               "emptyTable":   "My Custom Message On Empty Table"
           },
                 "ajax":{
-                  url :"datatable_komisi_produk_per_petugas.php", // json datasource
+                  url :"datatable_komisi_faktur_per_petugas.php", // json datasource
                    "data": function ( d ) {
                       d.nama_petugas = $("#nama_petugas").val();
                       d.dari_tanggal = $("#dari_tanggal").val();
@@ -237,7 +237,7 @@ include 'db.php';
               "emptyTable":   "My Custom Message On Empty Table"
           },
                 "ajax":{
-                  url :"datatable_komisi_faktur_per_petugas.php", // json datasource
+                  url :"datatable_komisi_produk_per_petugas.php", // json datasource
                    "data": function ( d ) {
                       d.nama_petugas = $("#nama_petugas").val();
                       d.dari_tanggal = $("#dari_tanggal").val();
