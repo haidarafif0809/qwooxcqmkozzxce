@@ -383,6 +383,39 @@ $obat = $otoritas_produk['tipe_obat'];
   </div>
 </div><!-- end of modal data barang  -->
 
+
+<!--Awal Modal Radiologi-->
+<div id="modal_detail_radiologi_input_rj" class="modal" role="dialog">
+  <div class="modal-dialog modal-sm">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title"><center><b>Hasil Radiologi</b></center></h4>
+      </div>
+
+        <div class="card-block">
+          <div class="row tampil_col">
+            <span id="span_foto"> </span>
+          </div>
+        </div>
+
+        <div class="card-block">
+          <h5><u><b>Hasil Baca Radiografer</b></u></h5>
+          <span id="span_ket"></span>
+        </div>
+
+      <div class="modal-footer">
+        
+  <center> <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-remove"></i> Close</button></center> 
+      </div>
+    </div>
+
+  </div>
+</div>
+<!--Akhir Modal Radiologi-->
+
 <!--MODAL HASIL LAB -->
 <div id="modal_detail" class="modal fade" role="dialog">
   <div class="modal-dialog modal-lg">
@@ -391,7 +424,7 @@ $obat = $otoritas_produk['tipe_obat'];
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title"><center><b>Detail Hasil Laboratorium</b></center></h4>
+        <h4 class="modal-title"><center><b> Hasil Laboratorium</b></center></h4>
       </div>
 
       <div class="modal-body">
@@ -732,7 +765,7 @@ $obat = $otoritas_produk['tipe_obat'];
                               <th> Subtotal </th>
                               -->
                               <th> Tanggal </th>
-                              <th> Hasil Lab. </th>
+                              <th> Hasil </th>
                           
                           </thead> <!-- tag penutup tabel -->
                     </table>
@@ -756,6 +789,7 @@ $obat = $otoritas_produk['tipe_obat'];
                               <th> Nama </th>
                               <th> Dokter Pengirim </th>
                               <th style="text-align: right" > Jumlah </th>
+                              <th> Hasil </th>
                               <!--
                               <th style="text-align: right" > Harga </th>                              
                               <th style="text-align: right" > Potongan </th>
@@ -1062,7 +1096,7 @@ $obat = $otoritas_produk['tipe_obat'];
     
            db.version(2).stores({
              
-            barang : 'id,kode_barang,nama_barang,harga_jual,harga_jual2,harga_jual3,harga_jual4,harga_jual5,harga_jual6,harga_jual7,satuan,kategori,status,suplier,limit_stok,berkaitan_dgn_stok,tipe_barang'  
+            barang : 'id,kode_barang,nama_barang,harga_jual,harga_jual2,harga_jual3,harga_jual4,harga_jual5,harga_jual6,harga_jual7,harga_jual_inap,harga_jual_inap2,harga_jual_inap3,harga_jual_inap4,harga_jual_inap5,harga_jual_inap6,harga_jual_inap7,satuan,kategori,status,suplier,limit_stok,berkaitan_dgn_stok,tipe_barang' 
           });
 
 
@@ -1081,7 +1115,7 @@ $obat = $otoritas_produk['tipe_obat'];
                 $.each(data.result, function(i, item) {
 
                  
-                    data_barang.push({id: data.result[i].id, kode_barang: data.result[i].kode_barang,nama_barang : data.result[i].nama_barang,harga_jual:  data.result[i].harga_jual,harga_jual2:  data.result[i].harga_jual2,harga_jual3:  data.result[i].harga_jual3,harga_jual4:  data.result[i].harga_jual4,harga_jual5:  data.result[i].harga_jual5,harga_jual6:  data.result[i].harga_jual6,harga_jual7:  data.result[i].harga_jual7,satuan:  data.result[i].satuan,kategori:  data.result[i].kategori,status:  data.result[i].status,suplier:  data.result[i].suplier,limit_stok:  data.result[i].limit_stok,berkaitan_dgn_stok:  data.result[i].berkaitan_dgn_stok,tipe_barang:  data.result[i].tipe_barang  });
+                    data_barang.push({id: data.result[i].id, kode_barang: data.result[i].kode_barang,nama_barang : data.result[i].nama_barang,harga_jual:  data.result[i].harga_jual,harga_jual2:  data.result[i].harga_jual2,harga_jual3:  data.result[i].harga_jual3,harga_jual4:  data.result[i].harga_jual4,harga_jual5:  data.result[i].harga_jual5,harga_jual6:  data.result[i].harga_jual6,harga_jual7:  data.result[i].harga_jual7,harga_jual_inap:  data.result[i].harga_jual_inap,harga_jual_inap2:  data.result[i].harga_jual_inap2,harga_jual_inap3:  data.result[i].harga_jual_inap3,harga_jual_inap4:  data.result[i].harga_jual_inap4,harga_jual_inap5:  data.result[i].harga_jual_inap5,harga_jual_inap6:  data.result[i].harga_jual_inap6,harga_jual_inap7:  data.result[i].harga_jual_inap7,satuan:  data.result[i].satuan,kategori:  data.result[i].kategori,status:  data.result[i].status,suplier:  data.result[i].suplier,limit_stok:  data.result[i].limit_stok,berkaitan_dgn_stok:  data.result[i].berkaitan_dgn_stok,tipe_barang:  data.result[i].tipe_barang  });
 
 
 
@@ -1118,7 +1152,7 @@ $obat = $otoritas_produk['tipe_obat'];
            function menampilkanDataBarangDiSelect(){
               return db.barang.each(function(data,i){
           
-                 var tr_barang = '<option id="opt-produk-'+ data.kode_barang+'" value="'+ data.kode_barang+'" data-kode="'+ data.kode_barang+'" nama-barang="'+ data.nama_barang+'" harga="'+ data.harga_jual+'" harga_jual_2="'+ data.harga_jual2+'" harga_jual_3="'+ data.harga_jual3+'" harga_jual_4="'+ data.harga_jual4+'" harga_jual_5="'+ data.harga_jual5+'" harga_jual_6="'+ data.harga_jual6+'" harga_jual_7="'+ data.harga_jual7+'" satuan="'+ data.satuan+'" kategori="'+ data.kategori+'" status="'+ data.status+'" suplier="'+ data.suplier+'" limit_stok="'+ data.limit_stok+'" ber-stok="'+ data.berkaitan_dgn_stok+'" tipe_barang="'+ data.tipe_barang+'" id-barang="'+ data.id+'" > '+ data.kode_barang+' ( '+ data.nama_barang+' ) </option>';
+                 var tr_barang = '<option id="opt-produk-'+ data.kode_barang+'" value="'+ data.kode_barang+'" data-kode="'+ data.kode_barang+'" nama-barang="'+ data.nama_barang+'" harga="'+ data.harga_jual+'" harga_jual_2="'+ data.harga_jual2+'" harga_jual_3="'+ data.harga_jual3+'" harga_jual_4="'+ data.harga_jual4+'" harga_jual_5="'+ data.harga_jual5+'" harga_jual_6="'+ data.harga_jual6+'" harga_jual_7="'+ data.harga_jual7+'" harga_inap="'+ data.harga_jual_inap+'" harga_jual_inap_2="'+ data.harga_jual_inap2+'" harga_jual_inap_3="'+ data.harga_jual_inap3+'" harga_jual_inap_4="'+ data.harga_jual_inap4+'" harga_jual_inap_5="'+ data.harga_jual_inap5+'" harga_jual_inap_6="'+ data.harga_jual_inap6+'" harga_jual_inap_7="'+ data.harga_jual_inap7+'" satuan="'+ data.satuan+'" kategori="'+ data.kategori+'" status="'+ data.status+'" suplier="'+ data.suplier+'" limit_stok="'+ data.limit_stok+'" ber-stok="'+ data.berkaitan_dgn_stok+'" tipe_barang="'+ data.tipe_barang+'" id-barang="'+ data.id+'" > '+ data.kode_barang+' ( '+ data.nama_barang+' ) </option>';
                      $("#kode_barang").append(tr_barang);
               }).then(function(){
 
@@ -1561,6 +1595,52 @@ var penjamin = $("#penjamin").val();
 </script>
 
 
+<!--Detail HASIL TBS Radiologi-->
+<script type="text/javascript">
+$(document).ready(function () {
+  $(document).on('click', '.detail-hasil-radiologi', function (e) {
+
+    var kode = $(this).attr('data-kode');
+    var no_reg = $(this).attr('data-reg');
+    var nama = $(this).attr('data-nama');
+    var keterangan = $(this).attr('data-ket');
+
+    //Tampil Modal
+    $("#modal_detail_radiologi_input_rj").modal('show');
+
+    //Tampilakan Keterangan Hasil Radiologi
+    $("#span_ket").html(keterangan);
+
+    $(".tampil_col").show();
+
+    $.post("tampil_foto.php",{no_reg:no_reg, kode:kode},function(data){
+
+        var jumlah_foto = JSON.parse(data);
+
+        $(".span-hapus").remove();
+
+    //PERULANGAN JIKA ADA LEBIH DARI 1 (SATU) DATA YANG DIAMBIL (SEPERTI WHILE)
+
+
+        for (var foto = 0; foto < jumlah_foto.length; foto++) {
+        var nama_foto = jumlah_foto[foto];
+          if (nama_foto != "") {
+
+        //MENAMPILKAN FOTO
+
+          $("#span_foto").prepend('<span class="span-hapus"> <img src="save_picture/'+nama_foto+'" data-zoom-image="save_picture/'+nama_foto+'" class="zoom_foto" id="id-'+kode+'-'+nama_foto+'" height="250px" width="290px"> </span>');        
+
+          }
+
+        }
+
+
+
+    });
+  });
+});
+</script>
+<!--Detail HASIL TBS Radiologi-->
 
 <script type="text/javascript" language="javascript" >
 

@@ -16,13 +16,13 @@ $columns = array(
 
     0=>'kode_barang', 
     1=>'nama_barang',
-    2=>'harga_jual',
-    3=>'harga_jual2',
-    4=>'harga_jual3',
-    5=>'harga_jual4', 
-    6=>'harga_jual5',
-    7=>'harga_jual6',
-    8=>'harga_jual7',
+    2=>'harga_jual_inap',
+    3=>'harga_jual_inap2',
+    4=>'harga_jual_inap3',
+    5=>'harga_jual_inap4', 
+    6=>'harga_jual_inap5',
+    7=>'harga_jual_inap6',
+    8=>'harga_jual_inap7',
     9=>'jumlah_barang',
     10=>'nama', 
     11=>'kategori',
@@ -38,7 +38,7 @@ $columns = array(
 );
 
 // getting total number records without any search
-$sql = "SELECT s.nama,b.kode_barang,b.tipe_barang,b.nama_barang,b.harga_beli,b.harga_jual,b.harga_jual2,b.harga_jual3,b.harga_jual4,b.harga_jual5,b.harga_jual6,b.harga_jual7,b.kategori,b.status,b.suplier,b.limit_stok,b.satuan,b.id,b.berkaitan_dgn_stok";
+$sql = "SELECT s.nama,b.kode_barang,b.tipe_barang,b.nama_barang,b.harga_beli,b.harga_jual_inap,b.harga_jual_inap2,b.harga_jual_inap3,b.harga_jual_inap4,b.harga_jual_inap5,b.harga_jual_inap6,b.harga_jual_inap7,b.kategori,b.status,b.suplier,b.limit_stok,b.satuan,b.id,b.berkaitan_dgn_stok";
 $sql.=" FROM barang b INNER JOIN satuan s ON b.satuan = s.id ";
 $sql.=" ";
 
@@ -47,7 +47,7 @@ $totalData = mysqli_num_rows($query);
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
-$sql = "SELECT s.nama,b.kode_barang,b.tipe_barang,b.nama_barang,b.harga_beli,b.harga_jual,b.harga_jual2,b.harga_jual3,b.harga_jual4,b.harga_jual5,b.harga_jual6,b.harga_jual7,b.kategori,b.status,b.suplier,b.limit_stok,b.satuan,b.id,b.berkaitan_dgn_stok";
+$sql = "SELECT s.nama,b.kode_barang,b.tipe_barang,b.nama_barang,b.harga_beli,b.harga_jual_inap,b.harga_jual_inap2,b.harga_jual_inap3,b.harga_jual_inap4,b.harga_jual_inap5,b.harga_jual_inap6,b.harga_jual_inap7,b.kategori,b.status,b.suplier,b.limit_stok,b.satuan,b.id,b.berkaitan_dgn_stok";
 $sql.=" FROM barang b INNER JOIN satuan s ON b.satuan = s.id ";
 $sql.=" WHERE ";
 
@@ -86,31 +86,31 @@ while( $row=mysqli_fetch_array($query) ) {
              $stok_barang = $ambil_masuk['jumlah_hpp_masuk'] - $ambil_keluar['jumlah_hpp_keluar'];
    
 
-            $harga1 = $row['harga_jual'];
+            $harga1 = $row['harga_jual_inap'];
             if ($harga1 == '') {
                 $harga1 =0;
             }
-            $harga2 = $row['harga_jual2'];
+            $harga2 = $row['harga_jual_inap2'];
             if ($harga2 == '') {
                 $harga2 =0;
             }
-            $harga3 = $row['harga_jual3'];
+            $harga3 = $row['harga_jual_inap3'];
             if ($harga3 == '') {
                 $harga3 =0;
             }
-            $harga4 = $row['harga_jual4'];
+            $harga4 = $row['harga_jual_inap4'];
             if ($harga4 == '') {
                 $harga4 =0;
             }
-            $harga5 = $row['harga_jual5'];
+            $harga5 = $row['harga_jual_inap5'];
             if ($harga5 == '') {
                 $harga5 =0;
             }
-            $harga6 = $row['harga_jual6'];
+            $harga6 = $row['harga_jual_inap6'];
             if ($harga6 == '') {
                 $harga6 =0;
             }
-            $harga7 = $row['harga_jual7'];
+            $harga7 = $row['harga_jual_inap7'];
             if ($harga7 == '') {
                 $harga7 =0;
             }
@@ -135,13 +135,13 @@ while( $row=mysqli_fetch_array($query) ) {
     $nestedData[] = $row["tipe_barang"];
     $nestedData[] = $row["status"];
     $nestedData[] = $row["satuan"];
-    $nestedData[] = $row["harga_jual"];
-    $nestedData[] = $row["harga_jual2"];
-    $nestedData[] = $row["harga_jual3"];
-    $nestedData[] = $row["harga_jual4"];
-    $nestedData[] = $row["harga_jual5"];
-    $nestedData[] = $row["harga_jual6"];
-    $nestedData[] = $row["harga_jual7"];
+    $nestedData[] = $row["harga_jual_inap"];
+    $nestedData[] = $row["harga_jual_inap2"];
+    $nestedData[] = $row["harga_jual_inap3"];
+    $nestedData[] = $row["harga_jual_inap4"];
+    $nestedData[] = $row["harga_jual_inap5"];
+    $nestedData[] = $row["harga_jual_inap6"];
+    $nestedData[] = $row["harga_jual_inap7"];
     $nestedData[] = $row["id"];
     
     $data[] = $nestedData;
