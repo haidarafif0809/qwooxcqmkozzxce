@@ -1006,6 +1006,14 @@ $(document).ready(function(){
   $(document).on('click', '.pilih', function (e) {
    
   document.getElementById("kode_barang").value = $(this).attr('data-kode');
+    if (!$("#kode_barang").val()){
+      window.alert("Barang yang pilih belum terdaftar , silakan kembali ke form penjualan !! ");
+      window.open('update_cache_browser_barang.php', '_blank');
+      location.reload();
+      $("#kode_barang").trigger('chosen:open')
+      console.log("barang tidak ada");  
+  }
+  
   $("#kode_barang").trigger('chosen:updated');
 
   document.getElementById("nama_barang").value = $(this).attr('nama-barang');
