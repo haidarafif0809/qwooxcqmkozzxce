@@ -1984,6 +1984,13 @@ var penjamin = $("#penjamin").val();
 
 
   document.getElementById("kode_barang").value = $(this).attr('data-kode');
+    if (!$("#kode_barang").val()){
+      window.alert("Barang yang pilih belum terdaftar , silakan kembali ke form penjualan !! ");
+      window.open('update_cache_browser_barang.php', '_blank');
+      location.reload();
+      $("#kode_barang").trigger('chosen:open')
+      console.log("barang tidak ada");  
+  }
     $("#kode_barang").trigger("chosen:updated");
 
   document.getElementById("nama_barang").value = $(this).attr('nama-barang');
@@ -6281,11 +6288,7 @@ var penjamin = $("#penjamin").val();
 </script>
 
 
-<script type="text/javascript">
-  $(window).bind('beforeunload', function(){
-  return 'Apakah Yakin Ingin Meninggalkan Halaman Ini ? Karena Akan Membutuhkan Beberapa Waktu Untuk Membuka Kembali Halaman Ini!';
-});
-</script>
+
 
 
 
