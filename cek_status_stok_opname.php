@@ -3,20 +3,16 @@ include 'db.php';
 include 'sanitasi.php';
 
 include 'persediaan.function.php';
-include 'cache.class.php';
-
-  $c = new Cache();
-  $c->setCache('detail_penjualan');
 
 $session_id = session_id();
 	
 
-	$query_tbs_penjualan = $db->query("SELECT kode_barang,nama_barang,selisih_fisik,fisik FROM tbs_stok_opname WHERE session_id = '$session_id' ");
+	$query_tbs_stok_opname = $db->query("SELECT kode_barang,nama_barang,selisih_fisik,fisik FROM tbs_stok_opname WHERE session_id = '$session_id' AND (no_faktur = '' OR no_faktur IS NULL)");
 
 
 $arr = array();
 $status_jual = 0;
-while ($data_tbs_stok_opname = mysqli_fetch_array($query_tbs_penjualan)) {
+while ($data_tbs_stok_opname = mysqli_fetch_array($query_tbs_stok_opname)) {
 	
 		$stok = cekStokHpp($data_tbs_stok_opname['kode_barang']);
 		$selisih = $data_tbs_stok_opname['selisih_fisik'] ;
