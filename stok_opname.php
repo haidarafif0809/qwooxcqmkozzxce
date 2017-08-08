@@ -22,6 +22,46 @@ $perintah = $db->query("SELECT * FROM stok_opname");
 
 <h3><b> DATA STOK OPNAME </b></h3><hr>
 
+
+<!-- Modal Barang jika stok melebih selisih -->
+<div id="modal_barang_tidak_bisa_dijual" class="modal " role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Produk Yang Tidak Bisa Di Jual</h4>
+      </div>
+      <div class="modal-body">
+            <center>
+            <table class="table table-bordered table-sm">
+                  <thead> <!-- untuk memberikan nama pada kolom tabel -->
+                  
+                      <th>Kode Produk</th>
+                      <th>Nama Produk</th>
+                      <th>Selisih Stok</th>
+                      <th>Stok Saat Ini</th>
+                  
+                  
+                  </thead> <!-- tag penutup tabel -->
+                  <tbody id="tbody-barang-jual">
+                    
+                  </tbody>
+            </table>
+            </center>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div><!-- end of modal Barang jika stok melebih selisih  -->
+
+
+
 <!-- Modal Hapus data -->
 <div id="modal_hapus" class="modal fade" role="dialog">
   <div class="modal-dialog">
@@ -161,7 +201,7 @@ echo '<button style="display:none" data-toggle="collapse tooltip" accesskey="k" 
 
 
 
-    <button type="submit" id="selesai" style="display:none;" class="btn btn-info"> <i class='fa fa-send'> </i> Selesai </button>
+    <button type="submit" id="selesai" style="display: none" class="btn btn-info"> <i class='fa fa-send'> </i> Selesai </button>
 
 
 </div>
@@ -215,7 +255,7 @@ echo '<button style="display:none" data-toggle="collapse tooltip" accesskey="k" 
 </span>
 <!--END FILTER DETAIl-->
 
-    <input type="hidden" class="form-control" style="font-size: 25px" name="total_selisih_harga" id="total_selisih_harga" readonly="" placeholder="Total Selisih Harga">
+    <input type="text" class="form-control" style="font-size: 25px" name="total_selisih_harga" id="total_selisih_harga" readonly="" placeholder="Total Selisih Harga">
 
 <div class="table-responsive">
 <span id="tabel_baru">
@@ -371,29 +411,34 @@ echo '<button style="display:none" data-toggle="collapse tooltip" accesskey="k" 
 
 
 <script>            
-    $(document).on('click', '#selesai', function () {
-                  var total_selisih_harga = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#total_selisih_harga").val()))));
-                  var keterangan = $("#keterangan").val();
-
+$(document).on('click', '#selesai', function () {
+  
+  var total_selisih_harga = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#total_selisih_harga").val()))));
+  var keterangan = $("#keterangan").val();
 
                  
-                  $.get('cek_kode_barang_tbs_stok_opname.php',function(json){
-      
-                  if(json == 0)
-                  {
-                    alert("Anda Belum Melakukan Stok Opname  ");
-                    $("#kode_barang").focus();
-                  }
-                  else{
-                  $.post("proses_selesai_stok_opname.php",{total_selisih_harga:total_selisih_harga,keterangan:keterangan},function(info) {
+  $.get('cek_kode_barang_tbs_stok_opname.php',function(json){
+
+    if(json == 0){
+      alert("Anda Belum Melakukan Stok Opname  ");
+      $("#kode_barang").focus();
+    }
+    else{
+
+      // Cek Status
+      $.getJSON("cek_status_stok_opname.php", function(result){
+
+      if (result.status == 0){
+
+        $.post("proses_selesai_stok_opname.php",{total_selisih_harga:total_selisih_harga,keterangan:keterangan},function(info) {
                   
-                  $("#result").hide();
-                  $("#total_selisih_harga").val(info);
-            $('#table_stok_opname').DataTable().destroy();
-            $('#tabel_tbs_stok_opname').DataTable().destroy();
+        $("#result").hide();
+        $("#total_selisih_harga").val(info);
+        $('#table_stok_opname').DataTable().destroy();
+        $('#tabel_tbs_stok_opname').DataTable().destroy();
 
 
-//pembaruan datatable data stok opname 
+        //pembaruan datatable data stok opname 
           var dataTable = $('#table_stok_opname').DataTable( {
           "processing": true,
           "serverSide": true,
@@ -406,16 +451,16 @@ echo '<button style="display:none" data-toggle="collapse tooltip" accesskey="k" 
               $("#table_stok_opname").append('<tbody class="employee-grid-error"><tr><th colspan="3">No data found in the server</th></tr></tbody>');
               $("#employee-grid_processing").css("display","none");
             }
-        },
+          },
             
             "fnCreatedRow": function( nRow, aData, iDataIndex ) {
                 $(nRow).attr('class','tr-id-'+aData[15]+'');
             },
         });
-//pembaruan datatable data stok opname 
+        //pembaruan datatable data stok opname 
 
-//pembaruan datatable data tbs stok opname 
-         var dataTable = $('#tabel_tbs_stok_opname').DataTable( {
+        //pembaruan datatable data tbs stok opname 
+        var dataTable = $('#tabel_tbs_stok_opname').DataTable( {
           "processing": true,
           "serverSide": true,
           "ajax":{
@@ -433,8 +478,7 @@ echo '<button style="display:none" data-toggle="collapse tooltip" accesskey="k" 
                 $(nRow).attr('class','tr-tbs-id-'+aData[7]+'');
             },
         });
-//pembaruan datatable data tbs stok opname 
-
+        //pembaruan datatable data tbs stok opname 
 
                   $("#alert_berhasil").show();
                   $("#kode_barang").show();
@@ -455,16 +499,33 @@ echo '<button style="display:none" data-toggle="collapse tooltip" accesskey="k" 
 
 
                   
-                  });
-                  
-                  // #result didapat dari tag span id=result
-                  //mengambil no_faktur pembelian agar berurutan
+          });
+      } //result.status
+      else{
+
+        alert("Tidak Bisa Di Jual, ada stok yang habis");
+
+          $("#tbody-barang-jual").find("tr").remove();
+          $.each(result.barang, function(i, item) {
+
+            var tr_barang = "<tr><td>"+ result.barang[i].kode_barang+"</td><td>"+ result.barang[i].nama_barang+"</td><td>"+ result.barang[i].jumlah_jual+"</td><td>"+ result.barang[i].stok+"</td></tr>"
+
+            $("#tbody-barang-jual").append(tr_barang);
+
+          });
+
+          $("#modal_barang_tidak_bisa_dijual").modal('show');
+
+
+      }
+      }); // #result didapat dari tag span id=result
+      //mengambil no_faktur pembelian agar berurutan
                
-                  $("form").submit(function(){
-                  return false;
-               });
-              }//ennd else kode barang
-          });  
+              $("form").submit(function(){
+                      return false;
+              });
+          }//ennd else kode barang
+        });  
    });                  
 </script>
 

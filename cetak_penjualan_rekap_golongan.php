@@ -18,7 +18,7 @@ $data_perusahaan = mysqli_fetch_array($query_perusahaan);
 
 if ($penjualan_closing == "sudah") {
 
-  $sum_detail_penjualan = $db->query("SELECT SUM(jumlah_barang) AS jumlah, SUM(subtotal) AS total FROM detail_penjualan WHERE tipe_produk = '$golongan' AND tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' AND ( no_faktur != no_reg  OR no_reg IS NULL)");
+  $sum_detail_penjualan = $db->query("SELECT SUM(jumlah_barang) AS jumlah, SUM(subtotal) AS total FROM detail_penjualan WHERE tipe_produk = '$golongan' AND date(waktu) >= '$dari_tanggal' AND date(waktu) <= '$sampai_tanggal' AND ( no_faktur != no_reg  OR no_reg IS NULL)");
   $data_detail_penjualan = mysqli_fetch_array($sum_detail_penjualan);
   
   $total_nilai = $data_detail_penjualan['total'];
@@ -27,7 +27,7 @@ if ($penjualan_closing == "sudah") {
 }
 elseif ($penjualan_closing == "belum") {
 
-  $sum_detail_penjualan = $db->query("SELECT SUM(jumlah_barang) AS jumlah, SUM(subtotal) AS total FROM detail_penjualan WHERE tipe_produk = '$golongan' AND tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal'  AND no_faktur = no_reg");
+  $sum_detail_penjualan = $db->query("SELECT SUM(jumlah_barang) AS jumlah, SUM(subtotal) AS total FROM detail_penjualan WHERE tipe_produk = '$golongan' AND date(waktu) >= '$dari_tanggal' AND date(waktu) <= '$sampai_tanggal'  AND no_faktur = no_reg");
   $data_detail_penjualan = mysqli_fetch_array($sum_detail_penjualan);
   
   $total_nilai = $data_detail_penjualan['total'];
@@ -36,7 +36,7 @@ elseif ($penjualan_closing == "belum") {
 }
 else{
 
-  $sum_detail_penjualan = $db->query("SELECT SUM(jumlah_barang) AS jumlah, SUM(subtotal) AS total FROM detail_penjualan WHERE tipe_produk = '$golongan' AND tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal'");
+  $sum_detail_penjualan = $db->query("SELECT SUM(jumlah_barang) AS jumlah, SUM(subtotal) AS total FROM detail_penjualan WHERE tipe_produk = '$golongan' AND date(waktu) >= '$dari_tanggal' AND date(waktu) <= '$sampai_tanggal'");
   $data_detail_penjualan = mysqli_fetch_array($sum_detail_penjualan);
   
   $total_nilai = $data_detail_penjualan['total'];
@@ -96,15 +96,15 @@ else{
 
               if ($penjualan_closing == "sudah") {
                 
-                $perintah = $db->query("SELECT SUM(jumlah_barang) AS jumlah, SUM(subtotal) AS total, nama_barang FROM detail_penjualan WHERE tipe_produk = '$golongan' AND tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' AND ( no_faktur != no_reg  OR no_reg IS NULL) GROUP BY kode_barang  ORDER BY kode_barang ASC ");
+                $perintah = $db->query("SELECT SUM(jumlah_barang) AS jumlah, SUM(subtotal) AS total, nama_barang FROM detail_penjualan WHERE tipe_produk = '$golongan' AND date(waktu) >= '$dari_tanggal' AND date(waktu) <= '$sampai_tanggal' AND ( no_faktur != no_reg  OR no_reg IS NULL) GROUP BY kode_barang  ORDER BY kode_barang ASC ");
               }
               elseif ($penjualan_closing == "belum") {
                 
-                $perintah = $db->query("SELECT SUM(jumlah_barang) AS jumlah, SUM(subtotal) AS total, nama_barang FROM detail_penjualan WHERE tipe_produk = '$golongan' AND tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal'  AND no_faktur = no_reg GROUP BY kode_barang  ORDER BY kode_barang ASC ");
+                $perintah = $db->query("SELECT SUM(jumlah_barang) AS jumlah, SUM(subtotal) AS total, nama_barang FROM detail_penjualan WHERE tipe_produk = '$golongan' AND date(waktu) >= '$dari_tanggal' AND date(waktu) <= '$sampai_tanggal'  AND no_faktur = no_reg GROUP BY kode_barang  ORDER BY kode_barang ASC ");
               }
               else{
 
-                $perintah = $db->query("SELECT SUM(jumlah_barang) AS jumlah, SUM(subtotal) AS total, nama_barang FROM detail_penjualan WHERE tipe_produk = '$golongan' AND tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' GROUP BY kode_barang  ORDER BY kode_barang ASC ");
+                $perintah = $db->query("SELECT SUM(jumlah_barang) AS jumlah, SUM(subtotal) AS total, nama_barang FROM detail_penjualan WHERE tipe_produk = '$golongan' AND date(waktu) >= '$dari_tanggal' AND date(waktu) <= '$sampai_tanggal' GROUP BY kode_barang  ORDER BY kode_barang ASC ");
               }
   
                   while ($data10 = mysqli_fetch_array($perintah)){
