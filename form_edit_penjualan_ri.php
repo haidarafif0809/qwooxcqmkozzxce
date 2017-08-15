@@ -825,7 +825,8 @@ Level 7
                           <thead> <!-- untuk memberikan nama pada kolom tabel -->
                               
                               <th> Kode  </th>
-                              <th> Nama </th>
+                              <th> Nama Kamar</th>
+                              <th> Nama Ruangan</th>
                               <th> Nama Pelaksana</th>
                               <th> Jumlah </th>
                               <th> Satuan </th>
@@ -1444,7 +1445,7 @@ $(document).ready(function(){
                             },
                                "fnCreatedRow": function( nRow, aData, iDataIndex ) {
 
-                                $(nRow).attr('class','tr-id-'+aData[11]+'');         
+                                $(nRow).attr('class','tr-id-'+aData[12]+'');         
 
                             }
                           });

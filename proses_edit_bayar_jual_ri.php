@@ -320,11 +320,11 @@ AND no_reg = '$no_reg'");
     }
 
 
-        $query2 = "INSERT INTO detail_penjualan (no_faktur,no_rm, no_reg, tanggal, jam, kode_barang, nama_barang, jumlah_barang, asal_satuan,satuan, harga, subtotal, potongan, tax, sisa,tipe_produk,lab) VALUES ('$no_faktur','$no_rm', '$no_reg',
+        $query2 = "INSERT INTO detail_penjualan (no_faktur,no_rm, no_reg, tanggal, jam, kode_barang, nama_barang, jumlah_barang, asal_satuan,satuan, harga, subtotal, potongan, tax, sisa,tipe_produk,lab, ruangan) VALUES ('$no_faktur','$no_rm', '$no_reg',
           '$tanggal_produk', '$data[jam]', '$data[kode_barang]',
           '$data[nama_barang]','$jumlah_barang','$satuan','$data[satuan]',
           '$harga','$data[subtotal]','$data[potongan]','$data[tax]',
-          '$jumlah_barang','$data[tipe_barang]','$data[lab]')";
+          '$jumlah_barang','$data[tipe_barang]','$data[lab]','$data[ruangan]')";
 
         if ($db->query($query2) === TRUE) {
         } 
