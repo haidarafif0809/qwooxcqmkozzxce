@@ -15,6 +15,8 @@ $tahun_terakhir = substr($tahun_sekarang, 2);
 $petugas_edit = $_SESSION['id'];
 $waktu = date('Y-m-d H:i:s');
 
+$waktu_edit = $tanggal_sekarang." ".$jam_sekarang;
+
 try {
     // First of all, let's begin a transaction
 $db->begin_transaction();
@@ -175,7 +177,7 @@ else{
             }
               
           
-              $query2 = "INSERT INTO detail_penjualan (no_faktur,no_rm, tanggal, jam, kode_barang, nama_barang, jumlah_barang, asal_satuan,satuan, harga, subtotal, potongan, tax, sisa,tipe_produk) VALUES ('$no_faktur','$no_rm', '$tanggal', '$jam', '$data[kode_barang]','$data[nama_barang]','$jumlah_barang','$satuan','$data[satuan]','$harga','$data[subtotal]','$data[potongan]','$data[tax]', '$jumlah_barang','$data[tipe_barang]')";
+              $query2 = "INSERT INTO detail_penjualan (no_faktur,no_rm, tanggal, jam, kode_barang, nama_barang, jumlah_barang, asal_satuan,satuan, harga, subtotal, potongan, tax, sisa,tipe_produk,waktu) VALUES ('$no_faktur','$no_rm', '$tanggal', '$jam', '$data[kode_barang]','$data[nama_barang]','$jumlah_barang','$satuan','$data[satuan]','$harga','$data[subtotal]','$data[potongan]','$data[tax]', '$jumlah_barang','$data[tipe_barang]','$waktu_edit')";
 
               if ($db->query($query2) === TRUE) {
               } 
