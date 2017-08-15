@@ -8,6 +8,9 @@ include 'sanitasi.php';
 
 $pilih_akses_tombol = $db->query("SELECT * FROM otoritas_penjualan_inap WHERE id_otoritas = '$_SESSION[otoritas_id]' ");
 $otoritas_tombol = mysqli_fetch_array($pilih_akses_tombol);
+
+$akses_registrasi = $db->query("SELECT tanggal_masuk FROM otoritas_registrasi WHERE id_otoritas = '$_SESSION[otoritas_id]' ");
+$data_akses = mysqli_fetch_array($akses_registrasi);
  
 $no_reg = stringdoang($_GET['no_reg']);
 $no_faktur = stringdoang($_GET['no_faktur']);
@@ -123,6 +126,7 @@ padding-right: 5%;
 <script>
   $(function() {
     $( "#tanggal" ).datepicker({dateFormat: "yy-mm-dd"});
+    $( "#tanggal_masuk" ).datepicker({dateFormat: "yy-mm-dd"});
     $( "#tanggal_jt" ).datepicker({dateFormat: "yy-mm-dd"});
   });
   </script>
@@ -1213,36 +1217,40 @@ Laboratorium  </button>
           </div> 
             
           <div class="row">
+            
+            <?php if ($data_akses['tanggal_masuk'] > 0): ?>
+              
+              <div class="col-xs-6">
+                <label> Tanggal Masuk</label>
+                <input type="text" name="tanggal_masuk" id="tanggal_masuk"  value="<?php echo $aray['tanggal_masuk']; ?>" style="height:15px;font-size:15px" placeholder="Tanggal Masuk" class="form-control" >
+              </div>
+              
+            <?php endif ?>
                 
+              <div class="col-xs-6">
+                <label> Tanggal Keluar</label>
+                <input type="text" name="tanggal" id="tanggal"  value="<?php echo $ambil_tanggal['tanggal']; ?>" style="height:15px;font-size:15px" placeholder="Tanggal Keluar" class="form-control" >
+              </div>
+
+          </div>
+
+          <div class="row">
+          
             <div class="col-xs-6">
-              <label> Tanggal</label>
-              <input type="text" name="tanggal" id="tanggal"  value="<?php echo $ambil_tanggal['tanggal']; ?>" style="height:15px;font-size:15px" placeholder="TanggaL" class="form-control" >
+            <label>Penyesuaian Tanggal</label>
+              <select type="text" name="penyesuaian_tanggal" id="penyesuaian_tanggal" class="form-control" required="" data-toggle="tooltip" data-placement="top" title="Jika Ingin Tanggal Data Barang/Produk Sesuai dengan Tanggal Di Atas, Pilih Ya !!">
+                <option value="Tidak">Tidak</option>
+                <option value="Ya">Ya</option>
+              </select>
             </div>
+            
 
             <div class="col-xs-6">             
-              <label> Keterangan </label><br>
+              <label> Keterangan </label>
               <textarea style="height:40px;font-size:15px" type="text" name="keterangan" id="keterangan" class="form-control"><?php echo $data_penj['keterangan']; ?> </textarea>
             </div>
 
           </div>
-          
-          <label>Penyesuaian Tanggal</label><br>
-
-          <div class="row">
-
-          <div class="col-sm-4">
-
-          <select type="text" name="penyesuaian_tanggal" id="penyesuaian_tanggal" class="form-control" required="" data-toggle="tooltip" data-placement="top" title="Jika Ingin Tanggal Data Barang/Produk Sesuai dengan Tanggal Di Atas, Pilih Ya !!">
-          <option value="Tidak">Tidak</option>
-          <option value="Ya">Ya</option>
-
-          </select>
-
-              </div>
-
-            
-
-            </div>
 
 
           </div>
@@ -1958,6 +1966,7 @@ $(document).ready(function(){
         var poli = $("#asal_poli").val();
         
         var penyesuaian_tanggal = $("#penyesuaian_tanggal").val();
+        var tanggal_masuk = $("#tanggal_masuk").val();
         
 
         var nama_pasien = $("#nama_pasien").val();
@@ -2016,7 +2025,7 @@ alert("Silakan Bayar Piutang");
 
 
 
- $.post("proses_edit_bayar_jual_ri.php",{penyesuaian_tanggal:penyesuaian_tanggal,total2:total2,sisa_pembayaran:sisa_pembayaran,kredit:kredit,no_rm:no_rm,tanggal:tanggal,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,cara_bayar:cara_bayar,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,total_hpp:total_hpp,harga:harga,sales:sales,kode_gudang:kode_gudang,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,nama_pasien:nama_pasien,no_reg:no_reg,dokter:dokter,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,penjamin:penjamin,bed:bed,group_bed:group_bed,biaya_admin:biaya_admin,no_faktur:'<?php echo $no_faktur; ?>'},function(info) {
+ $.post("proses_edit_bayar_jual_ri.php",{tanggal_masuk:tanggal_masuk,penyesuaian_tanggal:penyesuaian_tanggal,total2:total2,sisa_pembayaran:sisa_pembayaran,kredit:kredit,no_rm:no_rm,tanggal:tanggal,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,cara_bayar:cara_bayar,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,total_hpp:total_hpp,harga:harga,sales:sales,kode_gudang:kode_gudang,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,nama_pasien:nama_pasien,no_reg:no_reg,dokter:dokter,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,penjamin:penjamin,bed:bed,group_bed:group_bed,biaya_admin:biaya_admin,no_faktur:'<?php echo $no_faktur; ?>'},function(info) {
 
 if (info == 1)
 {
@@ -2127,6 +2136,7 @@ else{
         var poli = $("#asal_poli").val();
         var nama_pasien = $("#nama_pasien").val();
         var penyesuaian_tanggal = $("#penyesuaian_tanggal").val();
+        var tanggal_masuk = $("#tanggal_masuk").val();
 
         var biaya_admin = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#biaya_admin").val()))));
         if (biaya_admin == '')
@@ -2184,7 +2194,7 @@ alert("Silakan Bayar Piutang");
 
 
 
- $.post("proses_edit_bayar_jual_ri.php",{penyesuaian_tanggal:penyesuaian_tanggal,total2:total2,sisa_pembayaran:sisa_pembayaran,kredit:kredit,no_rm:no_rm,tanggal:tanggal,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,cara_bayar:cara_bayar,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,total_hpp:total_hpp,harga:harga,sales:sales,kode_gudang:kode_gudang,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,nama_pasien:nama_pasien,no_reg:no_reg,dokter:dokter,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,penjamin:penjamin,bed:bed,group_bed:group_bed,biaya_admin:biaya_admin,no_faktur:'<?php echo $no_faktur; ?>'},function(info) {
+ $.post("proses_edit_bayar_jual_ri.php",{tanggal_masuk:tanggal_masuk,penyesuaian_tanggal:penyesuaian_tanggal,total2:total2,sisa_pembayaran:sisa_pembayaran,kredit:kredit,no_rm:no_rm,tanggal:tanggal,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,cara_bayar:cara_bayar,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,total_hpp:total_hpp,harga:harga,sales:sales,kode_gudang:kode_gudang,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,nama_pasien:nama_pasien,no_reg:no_reg,dokter:dokter,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,penjamin:penjamin,bed:bed,group_bed:group_bed,biaya_admin:biaya_admin,no_faktur:'<?php echo $no_faktur; ?>'},function(info) {
 
 if (info == 1)
 {
@@ -2291,6 +2301,7 @@ else
         var petugas_lain = $("#petugas_lain").val();
         var bed = $("#bed").val();
         var penyesuaian_tanggal = $("#penyesuaian_tanggal").val();
+        var tanggal_masuk = $("#tanggal_masuk").val();
         var group_bed = $("#kamar").val();
         var penjamin = $("#penjamin").val();
         var poli = $("#asal_poli").val();
@@ -2334,7 +2345,7 @@ else
 
        
         
-       $.post("proses_edit_bayar_jual_ri.php",{penyesuaian_tanggal:penyesuaian_tanggal,total2:total2,sisa_pembayaran:sisa_pembayaran,kredit:kredit,no_rm:no_rm,tanggal:tanggal,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,cara_bayar:cara_bayar,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,total_hpp:total_hpp,sales:sales,kode_gudang:kode_gudang,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,nama_pasien:nama_pasien,no_reg:no_reg,dokter:dokter,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,penjamin:penjamin,bed:bed,group_bed:group_bed,biaya_admin:biaya_admin,no_faktur:'<?php echo $no_faktur; ?>',potongan_persen:potongan_persen},function(info) {
+       $.post("proses_edit_bayar_jual_ri.php",{tanggal_masuk:tanggal_masuk,penyesuaian_tanggal:penyesuaian_tanggal,total2:total2,sisa_pembayaran:sisa_pembayaran,kredit:kredit,no_rm:no_rm,tanggal:tanggal,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,cara_bayar:cara_bayar,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,total_hpp:total_hpp,sales:sales,kode_gudang:kode_gudang,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,nama_pasien:nama_pasien,no_reg:no_reg,dokter:dokter,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,penjamin:penjamin,bed:bed,group_bed:group_bed,biaya_admin:biaya_admin,no_faktur:'<?php echo $no_faktur; ?>',potongan_persen:potongan_persen},function(info) {
 
 if (info == 1)
 {

@@ -53,6 +53,8 @@ $tanggal = tanggal_mysql($_POST['tanggal']);
 
 $penyesuaian_tanggal = stringdoang($_POST['penyesuaian_tanggal']);
 
+$tanggal_masuk = tanggal_mysql($_POST['tanggal_masuk']);
+
 $nama_petugas = stringdoang($_SESSION['nama']);
 $kode_gudang = stringdoang($_POST['kode_gudang']);
 $ppn_input = stringdoang($_POST['ppn_input']);
@@ -309,8 +311,15 @@ AND no_reg = '$no_reg'");
     }
     else
     {
-      $tanggal_produk = $data['tanggal'];
+      if ($data['tipe_barang'] == 'Bed') {
+        $tanggal_produk = $tanggal_masuk;
+      }
+      else{
+        $tanggal_produk = $data['tanggal'];
+      }      
     }
+
+
         $query2 = "INSERT INTO detail_penjualan (no_faktur,no_rm, no_reg, tanggal, jam, kode_barang, nama_barang, jumlah_barang, asal_satuan,satuan, harga, subtotal, potongan, tax, sisa,tipe_produk,lab) VALUES ('$no_faktur','$no_rm', '$no_reg',
           '$tanggal_produk', '$data[jam]', '$data[kode_barang]',
           '$data[nama_barang]','$jumlah_barang','$satuan','$data[satuan]',
@@ -690,7 +699,7 @@ else
 
 
         
-    $update_registrasi = $db->query("UPDATE registrasi SET status = 'Sudah Pulang' WHERE no_reg ='$no_reg'");
+    $update_registrasi = $db->query("UPDATE registrasi SET status = 'Sudah Pulang', tanggal_masuk = '$tanggal_masuk' WHERE no_reg ='$no_reg'");
 
 // UPDATE KAMAR
 $query = $db->query("UPDATE bed SET sisa_bed = sisa_bed + 1 WHERE nama_kamar = '$bed' AND group_bed = '$group_bed'");

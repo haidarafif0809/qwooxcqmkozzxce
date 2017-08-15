@@ -370,6 +370,9 @@ $input_ugd = angkadoang(isset($_POST['input_ugd']));
 
 //INPUT DATA
 
+$tanggal_masuk_registrasi = angkadoang(isset($_POST['tanggal_masuk']));
+
+
 //OTORITAS LABORATORIUM
 $update_otoritas_laboratorium = $db->prepare("UPDATE otoritas_laboratorium SET laboratorium_lihat = ?, input_jasa_lab = ?, input_hasil_lab = ? WHERE id_otoritas = ?");
 
@@ -502,19 +505,18 @@ $update_otoritas_transaksi_kas->bind_param("ii",
 $update_otoritas_transaksi_kas->execute();
 
 
-$update_otoritas_registrasi = $db->prepare("UPDATE otoritas_registrasi SET registrasi_lihat = ?, registrasi_rj_lihat = ?, registrasi_rj_tambah = ?, registrasi_rj_edit = ?, registrasi_rj_hapus = ?, registrasi_ri_lihat = ?, registrasi_ri_tambah = ?, registrasi_ri_edit = ?, registrasi_ri_hapus = ?, registrasi_ugd_lihat = ?, registrasi_ugd_tambah = ?, registrasi_ugd_edit = ?, registrasi_ugd_hapus = ?, registrasi_aps_lihat = ?,
-	registrasi_aps_tambah = ?, registrasi_aps_edit = ?,
-	registrasi_aps_hapus = ? WHERE id_otoritas = ?");
+$update_otoritas_registrasi = $db->prepare("UPDATE otoritas_registrasi SET registrasi_lihat = ?, registrasi_rj_lihat = ?, registrasi_rj_tambah = ?, registrasi_rj_edit = ?, registrasi_rj_hapus = ?, registrasi_ri_lihat = ?, registrasi_ri_tambah = ?, registrasi_ri_edit = ?, registrasi_ri_hapus = ?, registrasi_ugd_lihat = ?, registrasi_ugd_tambah = ?, registrasi_ugd_edit = ?, registrasi_ugd_hapus = ?, registrasi_aps_lihat = ?,	registrasi_aps_tambah = ?, registrasi_aps_edit = ?,	registrasi_aps_hapus = ?, tanggal_masuk = ? WHERE id_otoritas = ?");
 
+echo "UPDATE otoritas_registrasi SET tanggal_masuk = '$tanggal_masuk_registrasi' WHERE id_otoritas = 'rik'";
 
-$update_otoritas_registrasi->bind_param("iiiiiiiiiiiiiiiiii",
+$update_otoritas_registrasi->bind_param("iiiiiiiiiiiiiiiiiii",
 	$registrasi_lihat, $registrasi_rj_lihat, $registrasi_rj_tambah,
 	$registrasi_rj_edit, $registrasi_rj_hapus, $registrasi_ri_lihat,
 	$registrasi_ri_tambah, $registrasi_ri_edit, $registrasi_ri_hapus,
 	$registrasi_ugd_lihat, $registrasi_ugd_tambah,
 	$registrasi_ugd_edit, $registrasi_ugd_hapus,
 	$registrasi_aps_lihat, $registrasi_aps_tambah,
-	$registrasi_aps_edit, $registrasi_aps_hapus, $id);
+	$registrasi_aps_edit, $registrasi_aps_hapus, $tanggal_masuk_registrasi, $id);
 
 $update_otoritas_registrasi->execute();
 
