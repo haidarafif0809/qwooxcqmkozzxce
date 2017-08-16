@@ -26,11 +26,11 @@ $perintah2 = $db->query("DELETE FROM tbs_penjualan WHERE no_faktur = '$no_faktur
 
 
 //menampilkan seluruh data yang ada pada tabel pembelian dalan DB
-$perintah = $db->query("SELECT kode_barang, nama_barang, jumlah_barang, satuan, harga, subtotal, tipe_produk, tanggal, jam, potongan, tax, hpp, lab FROM detail_penjualan WHERE no_faktur = '$no_faktur' AND no_reg = '$no_reg'");
+$perintah = $db->query("SELECT kode_barang, nama_barang, jumlah_barang, satuan, harga, subtotal, tipe_produk, tanggal, jam, potongan, tax, hpp, lab, ruangan FROM detail_penjualan WHERE no_faktur = '$no_faktur' AND no_reg = '$no_reg'");
 while ($data = mysqli_fetch_array($perintah)){
 
 
- $query6 = "INSERT INTO tbs_penjualan (no_faktur, no_reg,kode_barang,nama_barang,jumlah_barang,satuan,harga,subtotal,tipe_barang,tanggal,jam,potongan,tax,hpp,lab) VALUES ('$no_faktur','$no_reg','$data[kode_barang]','$data[nama_barang]','$data[jumlah_barang]','$data[satuan]','$data[harga]','$data[subtotal]','$data[tipe_produk]','$data[tanggal]','$data[jam]','$data[potongan]','$data[tax]','$data[hpp]','$data[lab]')";
+ $query6 = "INSERT INTO tbs_penjualan (no_faktur, no_reg,kode_barang,nama_barang,jumlah_barang,satuan,harga,subtotal,tipe_barang,tanggal,jam,potongan,tax,hpp,lab, ruangan) VALUES ('$no_faktur','$no_reg','$data[kode_barang]','$data[nama_barang]','$data[jumlah_barang]','$data[satuan]','$data[harga]','$data[subtotal]','$data[tipe_produk]','$data[tanggal]','$data[jam]','$data[potongan]','$data[tax]','$data[hpp]','$data[lab]','$data[ruangan]')";
 
 
 
