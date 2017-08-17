@@ -314,6 +314,15 @@ if ($potongan != "" || $potongan != 0 ) {
       }
        
 
+        $query2 = "INSERT INTO detail_pembelian (no_faktur, tanggal, jam, waktu, kode_barang, nama_barang, jumlah_barang, asal_satuan, satuan, harga, subtotal, potongan, tax, sisa) 
+    VALUES ('$no_faktur','$tanggal_sekarang','$jam_sekarang','$waktu','$data[kode_barang]','$data[nama_barang]','$jumlah_barang', '$satuan','$data[satuan]','$harga','$data[subtotal]','$data[potongan]','$data[tax]','$jumlah_barang')";
+
+        if ($db->query($query2) === TRUE) {
+        } 
+
+        else {
+        echo "Error: " . $query2 . "<br>" . $db->error;
+        }
 
       //PROSES UNTUK UPDATE HARGA BELI PADA PRODUK TERSEBUT 
       $query_barang = $db->query("SELECT harga_beli,satuan,kode_barang FROM barang WHERE kode_barang = '$data[kode_barang]' ");
@@ -399,15 +408,6 @@ if ($potongan != "" || $potongan != 0 ) {
       }
       //AKHIR PROSES UNTUK UPDATE HARGA BELI PADA PRODUK TERSEBUT 
 
-        $query2 = "INSERT INTO detail_pembelian (no_faktur, tanggal, jam, waktu, kode_barang, nama_barang, jumlah_barang, asal_satuan, satuan, harga, subtotal, potongan, tax, sisa) 
-		VALUES ('$no_faktur','$tanggal_sekarang','$jam_sekarang','$waktu','$data[kode_barang]','$data[nama_barang]','$jumlah_barang', '$satuan','$data[satuan]','$harga','$data[subtotal]','$data[potongan]','$data[tax]','$jumlah_barang')";
-
-        if ($db->query($query2) === TRUE) {
-        } 
-
-        else {
-        echo "Error: " . $query2 . "<br>" . $db->error;
-        }
         
     }
 // proses pemindahan data dari tbs -> detail pembelian
@@ -419,40 +419,6 @@ if ($potongan != "" || $potongan != 0 ) {
 // delete tsb pembelian yang sudah di di pindahkan ke detail pemebelian
     $query3 = $db->query("DELETE FROM tbs_pembelian WHERE session_id = '$session_id'");
 // delete tsb pembelian yang sudah di di pindahkan ke detail pemebelian
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 //Untuk Memutuskan Koneksi Ke Database

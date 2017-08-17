@@ -125,6 +125,18 @@ $ambil_suplier = mysqli_fetch_array($select_suplier);
             }
 
 
+
+            $query2 = "INSERT INTO detail_pembelian (no_faktur, tanggal, jam, waktu, kode_barang, nama_barang, jumlah_barang, asal_satuan, satuan, harga, subtotal, potongan, tax, sisa) 
+            VALUES ('$nomor_faktur','$tanggal','$jam_sekarang','$waktu','$data[kode_barang]','$data[nama_barang]','$jumlah_barang', '$satuan','$data[satuan]','$harga','$data[subtotal]','$data[potongan]','$data[tax]','$sisa_barang')";
+
+
+                       if ($db->query($query2) === TRUE) {
+                       } 
+                       
+                       else {
+                       echo "Error: " . $query2 . "<br>" . $db->error;
+                       }
+
             //PROSES UNTUK UPDATE HARGA BELI PADA PRODUK TERSEBUT 
                   $query_barang = $db->query("SELECT harga_beli,satuan,kode_barang FROM barang WHERE kode_barang = '$data[kode_barang]' ");
                   $data_barang = mysqli_fetch_array($query_barang);
@@ -209,18 +221,6 @@ $ambil_suplier = mysqli_fetch_array($select_suplier);
                   }
                   //AKHIR PROSES UNTUK UPDATE HARGA BELI PADA PRODUK TERSEBUT 
 
-
-
-            $query2 = "INSERT INTO detail_pembelian (no_faktur, tanggal, jam, waktu, kode_barang, nama_barang, jumlah_barang, asal_satuan, satuan, harga, subtotal, potongan, tax, sisa) 
-            VALUES ('$nomor_faktur','$tanggal','$jam_sekarang','$waktu','$data[kode_barang]','$data[nama_barang]','$jumlah_barang', '$satuan','$data[satuan]','$harga','$data[subtotal]','$data[potongan]','$data[tax]','$sisa_barang')";
-
-
-                       if ($db->query($query2) === TRUE) {
-                       } 
-                       
-                       else {
-                       echo "Error: " . $query2 . "<br>" . $db->error;
-                       }
             
             }
 
