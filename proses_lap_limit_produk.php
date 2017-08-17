@@ -28,8 +28,6 @@ $array = array();
 $sql ="SELECT kode_barang, nama_barang, limit_stok, over_stok, status ";
 $sql.="FROM barang WHERE berkaitan_dgn_stok = 'Barang' ";
 $query=mysqli_query($conn, $sql) or die("datatable_satuan.php: get employees");
-$totalData = mysqli_num_rows($query);
-$totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
 
@@ -39,8 +37,9 @@ if( !empty($requestData['search']['value']) ) {   // if there is a search parame
   $sql.=" OR kode_barang LIKE '".$requestData['search']['value']."%' )";
 
   $query=mysqli_query($conn, $sql) or die("datatable_satuan.phpppp: get employees");
-  $totalFiltered = mysqli_num_rows($query); // when there is a search parameter then we have to modify total number filtered rows as per search result. 
+
 }
+
 
 $sql.= " ORDER BY id DESC LIMIT ".$requestData['start']." ,".$requestData['length']." ";
 
@@ -73,8 +72,17 @@ while ($data_barang = mysqli_fetch_array($query)) {
 
 }
 
+$jumlah_data = array_slice($array,$requestData['start'],$requestData['length']);
+$totalData = COUNT($array);
+$totalFiltered = COUNT($array);
+
+if( !empty($requestData['search']['value']) ) {
+  $totalFiltered = COUNT($jumlah_data);
+}
+
+
 $data = array();
-foreach ($array as $arrays) {
+foreach ($jumlah_data as $arrays) {
 
         $nestedData = array();
 
