@@ -27,6 +27,9 @@ $id_user_edit = $_SESSION['id'];
     $jam = date('H:i:s');
     $waktu_edit = date('Y-m-d H:i:s');
 
+
+    $waktu = $tanggal." ".$jam;
+
 //Ambil Nama Pelanggan
 $query_pelanggan = $db_pasien->query("SELECT nama_pelanggan FROM pelanggan WHERE kode_pelanggan = 
   '$no_rm'");
@@ -58,9 +61,9 @@ $total_tbs = ($total_harga_tbs - $diskon_rupiah) + $biaya_admin;
 
           //MULAI INSERT DARI TBS APS KE DETAIL PENJUALAN
           $query_insert_detail_penjualan = "INSERT INTO detail_penjualan (no_faktur,no_rm,no_reg,
-          kode_barang,nama_barang,jumlah_barang,harga,subtotal,sisa,tipe_produk,tanggal,jam)
+          kode_barang,nama_barang,jumlah_barang,harga,subtotal,sisa,tipe_produk,tanggal,jam,waktu)
           SELECT '$no_faktur','$no_rm',no_reg, kode_jasa, nama_jasa, '1', harga, harga, '1',
-          'Jasa', tanggal, jam FROM tbs_aps_penjualan WHERE no_reg = '$no_reg' AND 
+          'Jasa', tanggal, jam, '$waktu' FROM tbs_aps_penjualan WHERE no_reg = '$no_reg' AND 
           no_faktur = '$no_faktur'";
               if ($db->query($query_insert_detail_penjualan) === TRUE) {
             
