@@ -12,7 +12,7 @@ $penjualan_closing = stringdoang($_POST['closing']);
 
 if ($penjualan_closing == "sudah") {
 
-  $sum_detail_penjualan = $db->query("SELECT SUM(jumlah_barang) AS jumlah, SUM(subtotal) AS total FROM detail_penjualan WHERE tipe_produk = '$golongan' AND date(waktu) >= '$dari_tanggal' AND date(waktu) <= '$sampai_tanggal' AND ( no_faktur != no_reg  OR no_reg IS NULL)");
+  $sum_detail_penjualan = $db->query("SELECT SUM(jumlah_barang) AS jumlah, SUM(subtotal) AS total FROM detail_penjualan WHERE tipe_produk = '$golongan' AND tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' AND ( no_faktur != no_reg  OR no_reg IS NULL)");
   $data_detail_penjualan = mysqli_fetch_array($sum_detail_penjualan);
   
   $total_nilai = $data_detail_penjualan['total'];
@@ -21,7 +21,7 @@ if ($penjualan_closing == "sudah") {
 }
 elseif ($penjualan_closing == "belum") {
 
-  $sum_detail_penjualan = $db->query("SELECT SUM(jumlah_barang) AS jumlah, SUM(subtotal) AS total FROM detail_penjualan WHERE tipe_produk = '$golongan' AND date(waktu) >= '$dari_tanggal' AND date(waktu) <= '$sampai_tanggal'  AND no_faktur = no_reg");
+  $sum_detail_penjualan = $db->query("SELECT SUM(jumlah_barang) AS jumlah, SUM(subtotal) AS total FROM detail_penjualan WHERE tipe_produk = '$golongan' AND tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal'  AND no_faktur = no_reg");
   $data_detail_penjualan = mysqli_fetch_array($sum_detail_penjualan);
   
   $total_nilai = $data_detail_penjualan['total'];
@@ -30,7 +30,7 @@ elseif ($penjualan_closing == "belum") {
 }
 else{
 
-  $sum_detail_penjualan = $db->query("SELECT SUM(jumlah_barang) AS jumlah, SUM(subtotal) AS total FROM detail_penjualan WHERE tipe_produk = '$golongan' AND date(waktu) >= '$dari_tanggal' AND date(waktu) <= '$sampai_tanggal'");
+  $sum_detail_penjualan = $db->query("SELECT SUM(jumlah_barang) AS jumlah, SUM(subtotal) AS total FROM detail_penjualan WHERE tipe_produk = '$golongan' AND tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal'");
   $data_detail_penjualan = mysqli_fetch_array($sum_detail_penjualan);
   
   $total_nilai = $data_detail_penjualan['total'];
@@ -57,19 +57,19 @@ $columns = array(
 if ($penjualan_closing == "sudah") {
 
   $sql =" SELECT SUM(jumlah_barang) AS jumlah, SUM(subtotal) AS total, nama_barang ";
-  $sql.=" FROM detail_penjualan WHERE tipe_produk = '$golongan' AND date(waktu) >= '$dari_tanggal' AND date(waktu) <= '$sampai_tanggal' AND ( no_faktur != no_reg  OR no_reg IS NULL) GROUP BY kode_barang ";
+  $sql.=" FROM detail_penjualan WHERE tipe_produk = '$golongan' AND tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' AND ( no_faktur != no_reg  OR no_reg IS NULL) GROUP BY kode_barang ";
 
 }
 elseif ($penjualan_closing == "belum") {
 
   $sql =" SELECT SUM(jumlah_barang) AS jumlah, SUM(subtotal) AS total, nama_barang ";
-  $sql.=" FROM detail_penjualan WHERE tipe_produk = '$golongan' AND date(waktu) >= '$dari_tanggal' AND date(waktu) <= '$sampai_tanggal' AND no_faktur = no_reg GROUP BY kode_barang ";
+  $sql.=" FROM detail_penjualan WHERE tipe_produk = '$golongan' AND tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' AND no_faktur = no_reg GROUP BY kode_barang ";
 
 }
 else{
 
   $sql =" SELECT SUM(jumlah_barang) AS jumlah, SUM(subtotal) AS total, nama_barang ";
-  $sql.=" FROM detail_penjualan WHERE tipe_produk = '$golongan' AND date(waktu) >= '$dari_tanggal' AND date(waktu) <= '$sampai_tanggal' GROUP BY kode_barang ";
+  $sql.=" FROM detail_penjualan WHERE tipe_produk = '$golongan' AND tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' GROUP BY kode_barang ";
 
 }
 
@@ -81,19 +81,19 @@ $totalFiltered = $totalData;  // when there is no search parameter then total nu
 if ($penjualan_closing == "sudah") {
 
   $sql =" SELECT SUM(jumlah_barang) AS jumlah, SUM(subtotal) AS total, nama_barang ";
-  $sql.=" FROM detail_penjualan WHERE tipe_produk = '$golongan' AND date(waktu) >= '$dari_tanggal' AND date(waktu) <= '$sampai_tanggal' AND ( no_faktur != no_reg  OR no_reg IS NULL) ";
+  $sql.=" FROM detail_penjualan WHERE tipe_produk = '$golongan' AND tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' AND ( no_faktur != no_reg  OR no_reg IS NULL) ";
 
 }
 elseif ($penjualan_closing == "belum") {
 
   $sql =" SELECT SUM(jumlah_barang) AS jumlah, SUM(subtotal) AS total, nama_barang ";
-  $sql.=" FROM detail_penjualan WHERE tipe_produk = '$golongan' AND date(waktu) >= '$dari_tanggal' AND date(waktu) <= '$sampai_tanggal' AND no_faktur = no_reg ";
+  $sql.=" FROM detail_penjualan WHERE tipe_produk = '$golongan' AND tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' AND no_faktur = no_reg ";
 
 }
 else{
 
   $sql =" SELECT SUM(jumlah_barang) AS jumlah, SUM(subtotal) AS total, nama_barang ";
-  $sql.=" FROM detail_penjualan WHERE tipe_produk = '$golongan' AND date(waktu) >= '$dari_tanggal' AND date(waktu) <= '$sampai_tanggal' ";
+  $sql.=" FROM detail_penjualan WHERE tipe_produk = '$golongan' AND tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' ";
 
 }
 
