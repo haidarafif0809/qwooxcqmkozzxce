@@ -65,7 +65,7 @@ tr:nth-child(even){background-color: #f2f2f2}
 
 </span>
 <span id="cetak" style="display: none;">
-  <a href='cetak_lap_limit_produk.php' target="blank" id="cetak_lap" class='btn btn-danger'><i class='fa fa-print'> </i> Cetak Penjualan / Golongan</a>
+  <a href='cetak_lap_limit_produk.php' target="blank" id="cetak_lap" class='btn btn-danger'><i class='fa fa-print'> </i> Cetak Laporan</a>
   <a href='export_lap_limit_produk.php' target="blank" id="export_lap" class='btn btn-primary'><i class='fa fa-download'> </i> Export Excel</a>
 </span>
 
