@@ -390,6 +390,32 @@ $obat = $otoritas_produk['tipe_obat'];
   </div>
 </div><!-- end of modal data barang  -->
 
+<!--tampilan modal cetak tunai-->
+<div id="modal_cetak_tunai" class="modal " role="dialog">
+  <div class="modal-dialog">
+
+    <!-- isi modal-->
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title"><center><b>Cetak Tunai</b></center></h4>
+      </div>
+      <div class="modal-body">
+        <div id="draft_cetak_tunai">
+          
+        </div>
+
+      </div> <!-- tag penutup modal-body-->
+      <div class="modal-footer">
+       <center> <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button></center>
+      </div>
+    </div>
+
+  </div>
+</div>
+<!-- end of modal cetak tunai -->
+
 
 <!--tampilan modal loading form-->
 <div id="modal_loading_form" class="modal" role="dialog">
@@ -974,7 +1000,7 @@ Radiologi  </button>
 
           <?php endif;?>
 
-          <a href='cetak_penjualan_tunai_rj.php' id="cetak_tunai" style="display: none;" class="btn btn-primary btnPrint" target="blank" > Cetak Tunai  </a>
+          <button id="cetak_tunai" style="display: none;" class="btn btn-primary "  > Cetak Tunai  </button>
 
            <?php if ($otoritas_tombol['tombol_bayar'] > 0):?>              
 
@@ -1017,6 +1043,21 @@ Radiologi  </button>
 </div><!-- end of container -->
 
 
+
+<script type="text/javascript">
+  
+// script untuk cetak tunai
+
+
+$(document).ready(function(){
+  $("#cetak_tunai").click(function(){
+      $('#modal_cetak_tunai').modal('show');
+       $('#draft_cetak_tunai').printThis();
+  });
+});
+
+</script>
+
     
 <script>
 
@@ -1034,7 +1075,7 @@ Radiologi  </button>
     
            db.version(2).stores({
              
-            barang : 'id,kode_barang,nama_barang,harga_jual,harga_jual2,harga_jual3,harga_jual4,harga_jual5,harga_jual6,harga_jual7,satuan,kategori,status,suplier,limit_stok,berkaitan_dgn_stok,tipe_barang'  
+            barang : 'id,kode_barang,nama_barang,harga_jual,harga_jual2,harga_jual3,harga_jual4,harga_jual5,harga_jual6,harga_jual7,harga_jual_inap,harga_jual_inap2,harga_jual_inap3,harga_jual_inap4,harga_jual_inap5,harga_jual_inap6,harga_jual_inap7,satuan,kategori,status,suplier,limit_stok,berkaitan_dgn_stok,tipe_barang'  
           });
 
 
@@ -1053,7 +1094,7 @@ Radiologi  </button>
                 $.each(data.result, function(i, item) {
 
                  
-                    data_barang.push({id: data.result[i].id, kode_barang: data.result[i].kode_barang,nama_barang : data.result[i].nama_barang,harga_jual:  data.result[i].harga_jual,harga_jual2:  data.result[i].harga_jual2,harga_jual3:  data.result[i].harga_jual3,harga_jual4:  data.result[i].harga_jual4,harga_jual5:  data.result[i].harga_jual5,harga_jual6:  data.result[i].harga_jual6,harga_jual7:  data.result[i].harga_jual7,satuan:  data.result[i].satuan,kategori:  data.result[i].kategori,status:  data.result[i].status,suplier:  data.result[i].suplier,limit_stok:  data.result[i].limit_stok,berkaitan_dgn_stok:  data.result[i].berkaitan_dgn_stok,tipe_barang:  data.result[i].tipe_barang  });
+                    data_barang.push({id: data.result[i].id, kode_barang: data.result[i].kode_barang,nama_barang : data.result[i].nama_barang,harga_jual:  data.result[i].harga_jual,harga_jual2:  data.result[i].harga_jual2,harga_jual3:  data.result[i].harga_jual3,harga_jual4:  data.result[i].harga_jual4,harga_jual5:  data.result[i].harga_jual5,harga_jual6:  data.result[i].harga_jual6,harga_jual7:  data.result[i].harga_jual7,harga_jual_inap:  data.result[i].harga_jual_inap,harga_jual_inap2:  data.result[i].harga_jual_inap2,harga_jual_inap3:  data.result[i].harga_jual_inap3,harga_jual_inap4:  data.result[i].harga_jual_inap4,harga_jual_inap5:  data.result[i].harga_jual_inap5,harga_jual_inap6:  data.result[i].harga_jual_inap6,harga_jual_inap7:  data.result[i].harga_jual_inap7,satuan:  data.result[i].satuan,kategori:  data.result[i].kategori,status:  data.result[i].status,suplier:  data.result[i].suplier,limit_stok:  data.result[i].limit_stok,berkaitan_dgn_stok:  data.result[i].berkaitan_dgn_stok,tipe_barang:  data.result[i].tipe_barang  });
 
 
 
@@ -1090,7 +1131,7 @@ Radiologi  </button>
            function menampilkanDataBarangDiSelect(){
               return db.barang.each(function(data,i){
           
-                 var tr_barang = '<option id="opt-produk-'+ data.kode_barang+'" value="'+ data.kode_barang+'" data-kode="'+ data.kode_barang+'" nama-barang="'+ data.nama_barang+'" harga="'+ data.harga_jual+'" harga_jual_2="'+ data.harga_jual2+'" harga_jual_3="'+ data.harga_jual3+'" harga_jual_4="'+ data.harga_jual4+'" harga_jual_5="'+ data.harga_jual5+'" harga_jual_6="'+ data.harga_jual6+'" harga_jual_7="'+ data.harga_jual7+'" satuan="'+ data.satuan+'" kategori="'+ data.kategori+'" status="'+ data.status+'" suplier="'+ data.suplier+'" limit_stok="'+ data.limit_stok+'" ber-stok="'+ data.berkaitan_dgn_stok+'" tipe_barang="'+ data.tipe_barang+'" id-barang="'+ data.id+'" > '+ data.kode_barang+' ( '+ data.nama_barang+' ) </option>';
+                 var tr_barang = '<option id="opt-produk-'+ data.kode_barang+'" value="'+ data.kode_barang+'" data-kode="'+ data.kode_barang+'" nama-barang="'+ data.nama_barang+'" harga="'+ data.harga_jual+'" harga_jual_2="'+ data.harga_jual2+'" harga_jual_3="'+ data.harga_jual3+'" harga_jual_4="'+ data.harga_jual4+'" harga_jual_5="'+ data.harga_jual5+'" harga_jual_6="'+ data.harga_jual6+'" harga_jual_7="'+ data.harga_jual7+'" harga_inap="'+ data.harga_jual_inap+'" harga_jual_inap_2="'+ data.harga_jual_inap2+'" harga_jual_inap_3="'+ data.harga_jual_inap3+'" harga_jual_inap_4="'+ data.harga_jual_inap4+'" harga_jual_inap_5="'+ data.harga_jual_inap5+'" harga_jual_inap_6="'+ data.harga_jual_inap6+'" harga_jual_inap_7="'+ data.harga_jual_inap7+'" satuan="'+ data.satuan+'" kategori="'+ data.kategori+'" status="'+ data.status+'" suplier="'+ data.suplier+'" limit_stok="'+ data.limit_stok+'" ber-stok="'+ data.berkaitan_dgn_stok+'" tipe_barang="'+ data.tipe_barang+'" id-barang="'+ data.id+'" > '+ data.kode_barang+' ( '+ data.nama_barang+' ) </option>';
                      $("#kode_barang").append(tr_barang);
               }).then(function(){
 
@@ -1616,7 +1657,20 @@ var penjamin = $("#penjamin").val();
 
 
   document.getElementById("kode_barang").value = $(this).attr('data-kode');
+
+  if (!$("#kode_barang").val()){
+      window.alert("Barang yang pilih belum terdaftar , silakan kembali ke form penjualan !! ");
+      window.open('update_cache_browser_barang.php', '_blank');
+      location.reload();
+      $("#kode_barang").trigger('chosen:open')
+      console.log("barang tidak ada");  
+  }
+
     $("#kode_barang").trigger('chosen:updated');
+
+
+
+
 
   document.getElementById("nama_barang").value = $(this).attr('nama-barang');
   document.getElementById("limit_stok").value = $(this).attr('limit_stok');
@@ -2283,7 +2337,7 @@ else if (a > 0){
   } 
 
 
-else if (stok < 0 && ber_stok == 'Barang' ) {
+else if (stok < 0 && ber_stok == 'Barang') {
 
     alert ("Jumlah Melebihi Stok Barang !");
     $("#jumlah_barang").val('');
@@ -2301,8 +2355,10 @@ else if (stok < 0 && ber_stok == 'Barang' ) {
     $("#biaya_adm").val(tandaPemisahTitik(biaya_adm));
     $("#biaya_admin_persen").val(data_admin);
    
-if (limit_stok > stok)
+    var batas_stok = stok - limit_stok;
+    if (batas_stok < 0 && limit_stok != 0)
         {
+          console.log(limit_stok)
           alert("Persediaan Barang Ini Sudah Mencapai Batas Limit Stok, Segera Lakukan Pembelian !");
         }
 
@@ -2498,10 +2554,34 @@ if (data == 1) {
 
     if (result.status == 0) {
 
-      $("#cetak_tunai").attr('href', 'cetak_penjualan_tunai_rj.php?no_reg='+no_reg+'&sisa='+sisa_pembayaran+'&tunai='+pembayaran+'&total='+total+'&biaya_admin='+biaya_adm+'&potongan='+potongan+'&no_rm='+no_rm+'&nama_pasien='+nama_pasien+'');
 
-       window.open('cetak_penjualan_tunai_rj.php?no_reg='+no_reg+'&sisa='+sisa_pembayaran+'&tunai='+pembayaran+'&total='+total+'&biaya_admin='+biaya_adm+'&potongan='+potongan+'&no_rm='+no_rm+'&nama_pasien='+nama_pasien,'_blank');
 
+      var nama_perusahaan = '<?php echo $data_perusahaan['nama_perusahaan'] ?>';
+      var alamat_perusahaan = '<?php echo $data_perusahaan['alamat_perusahaan'] ?>';
+      var draft_cetak_tunai = nama_perusahaan + '<br>' + alamat_perusahaan + '<br><br>===================<br>';
+
+      draft_cetak_tunai += '<table><tbody><tr><td>No RM </td><td>&nbsp;:&nbsp;</td><td>'+no_rm+'</td></tr><tr>';
+      draft_cetak_tunai += '<td>Nama Pasien </td><td>&nbsp;:&nbsp;</td><td>'+ nama_pasien+'</td>';
+
+      draft_cetak_tunai += ' </tr>  </tbody></table>===================<br> <table>  <tbody>    <tr>  <td>No. REG</td><td>&nbsp;:&nbsp;</td><td> '+no_reg+'</td></tr><tr><td>Kasir </td><td>&nbsp;:&nbsp;</td><td> <?php echo $_SESSION['nama']; ?></td></tr></tbody></table>===================<br> <table>  <tbody id="tbody-detail">';
+
+      if ('<?php echo $status_print ?>' == 'Detail') {
+          $.each(result.data_detail, function(i, item) {
+
+           draft_cetak_tunai += '<tr><td width:"50%"> '+ result.data_detail[i].nama_barang+' </td><td style="padding:3px"> '+ result.data_detail[i].harga+'</td><td style="padding:3px"> '+ result.data_detail[i].jumlah_barang+'</td><td style="padding:3px"> '+ result.data_detail[i].subtotal+ ' </td></tr>';
+       });
+      } 
+      // end if jika setting printer nya detail
+    
+      var subtotal_item = total - biaya_adm + potongan;
+      draft_cetak_tunai += ' </tbody></table>    ===================<br> <table><tbody><tr><td width="50%">Subtotal</td> <td> :</td> <td>'+subtotal_item+'</tr><tr><td width="50%">Diskon</td> <td> :</td> <td>'+potongan+' </tr>      <tr><td  width="50%">Biaya Admin</td> <td> :</td> <td> '+biaya_adm+' </td></tr>      <tr><td width="50%">Total Penjualan</td> <td> :</td> <td>'+total+' </tr>      <tr><td  width="50%">Tunai</td> <td> :</td> <td> '+pembayaran+' </td></tr>      <tr><td  width="50%">Kembalian</td> <td> :</td> <td> '+sisa_pembayaran+'  </td></tr>  </tbody></table>    ===================<br>    ===================<br>    Tanggal : <?php echo $tanggal = date('d-m-Y');?><br>    ===================<br><br>    Terima Kasih<br>    Semoga Lekas Sembuh...<br>    Telp. <?php echo $data_perusahaan['no_telp']; ?><br>';
+
+      $("#draft_cetak_tunai").html(draft_cetak_tunai);
+
+      $("#cetak_tunai").click();
+
+
+      
        $("#cetak_tunai_besar").attr('href', 'cetak_penjualan_tunai_besar_rj.php?no_reg='+no_reg+'&sisa='+sisa_pembayaran+'&kredit='+sisa_kredit+'&tunai='+pembayaran+'&total='+total+'&biaya_admin='+biaya_adm+'&potongan='+potongan+'&no_rm='+no_rm+'&nama_pasien='+nama_pasien+'&keterangan='+keterangan+'&cara_bayar='+cara_bayar+'');
 
        $("#cetak_tunai_kategori").attr('href','cetak_penjualan_tunai_kategori_rj.php?no_reg='+no_reg+'&sisa='+sisa_pembayaran+'&tunai='+pembayaran+'&total='+total+'&biaya_admin='+biaya_adm+'&potongan='+potongan+'&no_rm='+no_rm+'&nama_pasien='+nama_pasien+'');            
@@ -2514,16 +2594,13 @@ if (data == 1) {
 
  $.post("proses_bayar_jual_kasir.php",{id_user:id_user,sisa_pembayaran:sisa_pembayaran, kredit:kredit,no_rm:no_rm,no_reg:no_reg,tanggal_jt:tanggal_jt,total:total,total2:total2,potongan:potongan,potongan_persen:potongan_persen,/*tax:tax,*/cara_bayar:cara_bayar,pembayaran:pembayaran,total_hpp:total_hpp,harga:harga,kode_gudang:kode_gudang,dokter:dokter,petugas_kasir:petugas_kasir,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,sisa:sisa,ppn:ppn,penjamin:penjamin,nama_pasien:nama_pasien,jenis_penjualan:jenis_penjualan,biaya_adm:biaya_adm,analis:analis,petugas_radiologi:petugas_radiologi},function(info) {
 
-        if (info == 1)
+        if (info.status_jual == 1)
         {
             alert("Maaf Subtotal Penjualan Tidak Sesuai, Silakan Tunggu Sebentar!");       
                 window.location.href="form_penjualan_kasir.php";
         } 
         else
         {
-        	info = info.replace(/\s/g, '');
-             $("#table-baru").html(info);
-             var no_faktur = info;
              $("#alert_berhasil").show();
              $("#pembayaran_penjualan").val('');
              $("#sisa_pembayaran_penjualan").val('');
@@ -2943,24 +3020,46 @@ alert("Silakan Bayar Piutang");
     $.getJSON("cek_status_stok_penjualan.php?no_reg="+no_reg, function(result){
 
         if (result.status == 0) {
-                  $("#cetak_tunai").attr('href', 'cetak_penjualan_tunai_rj.php?no_reg='+no_reg+'&sisa='+sisa_pembayaran+'&tunai='+pembayaran+'&total='+total+'&biaya_admin='+biaya_adm+'&potongan='+potongan+'&no_rm='+no_rm+'&nama_pasien='+nama_pasien+'');
-                   $("#cetak_tunai_besar").attr('href', 'cetak_penjualan_tunai_besar_rj.php?no_reg='+no_reg+'&sisa='+sisa_pembayaran+'&kredit='+sisa_kredit+'&tunai='+pembayaran+'&total='+total+'&biaya_admin='+biaya_adm+'&potongan='+potongan+'&no_rm='+no_rm+'&nama_pasien='+nama_pasien+'&keterangan='+keterangan+'&cara_bayar='+cara_bayar+'');
 
-                   $("#cetak_tunai_kategori").attr('href','cetak_penjualan_tunai_kategori_rj.php?no_reg='+no_reg+'&sisa='+sisa_pembayaran+'&tunai='+pembayaran+'&total='+total+'&biaya_admin='+biaya_adm+'&potongan='+potongan+'&no_rm='+no_rm+'&nama_pasien='+nama_pasien+'');            
-                      
-                   $("#cetak_tunai").show();
-                   $("#cetak_tunai_kategori").show();
-                   $("#cetak_tunai_besar").show('');
+
+      var nama_perusahaan = '<?php echo $data_perusahaan['nama_perusahaan'] ?>';
+      var alamat_perusahaan = '<?php echo $data_perusahaan['alamat_perusahaan'] ?>';
+      var draft_cetak_tunai = nama_perusahaan + '<br>' + alamat_perusahaan + '<br><br>===================<br>';
+
+      draft_cetak_tunai += '<table><tbody><tr><td>No RM </td><td>&nbsp;:&nbsp;</td><td>'+no_rm+'</td></tr><tr>';
+      draft_cetak_tunai += '<td>Nama Pasien </td><td>&nbsp;:&nbsp;</td><td>'+ nama_pasien+'</td>';
+
+      draft_cetak_tunai += ' </tr>  </tbody></table>===================<br> <table>  <tbody>    <tr>  <td>No. REG</td><td>&nbsp;:&nbsp;</td><td> '+no_reg+'</td></tr><tr><td>Kasir </td><td>&nbsp;:&nbsp;</td><td> <?php echo $_SESSION['nama']; ?></td></tr></tbody></table>===================<br> <table>  <tbody id="tbody-detail">';
+
+      if ('<?php echo $status_print ?>' == 'Detail') {
+          $.each(result.data_detail, function(i, item) {
+
+           draft_cetak_tunai += '<tr><td width:"50%"> '+ result.data_detail[i].nama_barang+' </td><td style="padding:3px"> '+ result.data_detail[i].harga+'</td><td style="padding:3px"> '+ result.data_detail[i].jumlah_barang+'</td><td style="padding:3px"> '+ result.data_detail[i].subtotal+ ' </td></tr>';
+       });
+      } 
+      // end if jika setting printer nya detail
+    
+      var subtotal_item = total - biaya_adm + potongan;
+      draft_cetak_tunai += ' </tbody></table>    ===================<br> <table><tbody><tr><td width="50%">Subtotal</td> <td> :</td> <td>'+subtotal_item+'</tr><tr><td width="50%">Diskon</td> <td> :</td> <td>'+potongan+' </tr>      <tr><td  width="50%">Biaya Admin</td> <td> :</td> <td> '+biaya_adm+' </td></tr>      <tr><td width="50%">Total Penjualan</td> <td> :</td> <td>'+total+' </tr>      <tr><td  width="50%">Tunai</td> <td> :</td> <td> '+pembayaran+' </td></tr>      <tr><td  width="50%">Kembalian</td> <td> :</td> <td> '+sisa_pembayaran+'  </td></tr>  </tbody></table>    ===================<br>    ===================<br>    Tanggal : <?php echo $tanggal = date('d-m-Y');?><br>    ===================<br><br>    Terima Kasih<br>    Semoga Lekas Sembuh...<br>    Telp. <?php echo $data_perusahaan['no_telp']; ?><br>';
+
+      $("#draft_cetak_tunai").html(draft_cetak_tunai);
+
+
+       $("#cetak_tunai_besar").attr('href', 'cetak_penjualan_tunai_besar_rj.php?no_reg='+no_reg+'&sisa='+sisa_pembayaran+'&kredit='+sisa_kredit+'&tunai='+pembayaran+'&total='+total+'&biaya_admin='+biaya_adm+'&potongan='+potongan+'&no_rm='+no_rm+'&nama_pasien='+nama_pasien+'&keterangan='+keterangan+'&cara_bayar='+cara_bayar+'');
+
+       $("#cetak_tunai_kategori").attr('href','cetak_penjualan_tunai_kategori_rj.php?no_reg='+no_reg+'&sisa='+sisa_pembayaran+'&tunai='+pembayaran+'&total='+total+'&biaya_admin='+biaya_adm+'&potongan='+potongan+'&no_rm='+no_rm+'&nama_pasien='+nama_pasien+'');            
+          
+       $("#cetak_tunai").show();
+       $("#cetak_tunai_kategori").show();
+       $("#cetak_tunai_besar").show('');
 
       $.post("proses_bayar_jual_kasir.php",{id_user:id_user,sisa_pembayaran:sisa_pembayaran, kredit:kredit,no_rm:no_rm,no_reg:no_reg,tanggal_jt:tanggal_jt,total:total,total2:total2,potongan:potongan,potongan_persen:potongan_persen,/*tax:tax,*/cara_bayar:cara_bayar,pembayaran:pembayaran,total_hpp:total_hpp,harga:harga,kode_gudang:kode_gudang,dokter:dokter,petugas_kasir:petugas_kasir,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,sisa:sisa,ppn:ppn,penjamin:penjamin,nama_pasien:nama_pasien,jenis_penjualan:jenis_penjualan,biaya_adm:biaya_adm,analis:analis},function(info) {
 
-        if (info == 1) {
+        if (info.status_jual == 1) {
            alert("Maaf Subtotal Penjualan Tidak Sesuai, Silakan Tunggu Sebentar! (2) ");       
                 window.location.href="form_penjualan_kasir.php";
         }
         else {
-             $("#table-baru").html(info);
-             var no_faktur = info;
              $("#alert_berhasil").show();
              $("#pembayaran_penjualan").val('');
              $("#sisa_pembayaran_penjualan").val('');
@@ -3146,7 +3245,7 @@ $("#tbody-barang-jual").find("tr").remove();
 
      $.post("proses_bayar_jual_kasir.php",{id_user:id_user,sisa_pembayaran:sisa_pembayaran, kredit:kredit,no_rm:no_rm,no_reg:no_reg,tanggal_jt:tanggal_jt,total:total,total2:total2,potongan:potongan,potongan_persen:potongan_persen,/*tax:tax,*/cara_bayar:cara_bayar,pembayaran:pembayaran,total_hpp:total_hpp,harga:harga,kode_gudang:kode_gudang,dokter:dokter,petugas_kasir:petugas_kasir,petugas_paramedik:petugas_paramedik,petugas_farmasi:petugas_farmasi,petugas_lain:petugas_lain,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input,sisa:sisa,ppn:ppn,penjamin:penjamin,nama_pasien:nama_pasien,jenis_penjualan:jenis_penjualan,biaya_adm:biaya_adm,analis:analis},function(info) {
 
-    if (info == 1)
+    if (info.status_jual == 1)
     {
        alert("Maaf Subtotal Penjualan Tidak Sesuai, Silakan Tunggu Sebentar! (2) ");       
             window.location.href="form_penjualan_kasir.php";
@@ -3155,8 +3254,7 @@ $("#tbody-barang-jual").find("tr").remove();
     {
 
 
-                $("#table-baru").html(info);
-                var no_faktur = info;
+                var no_faktur = info.no_faktur;
                 $("#cetak_piutang").attr('href', 'cetak_penjualan_piutang.php?no_faktur='+no_faktur+'&no_reg='+no_reg);
                   $("#cetak_piutang").show();
                 $("#table-baru").html(info);
@@ -5530,12 +5628,6 @@ var penjamin = $("#penjamin").val();
     sortField: 'text'
   });
 
-</script>
-
-<script type="text/javascript">
-  $(window).bind('beforeunload', function(){
-  return 'Apakah Yakin Ingin Meninggalkan Halaman Ini ? Karena Akan Membutuhkan Beberapa Waktu Untuk Membuka Kembali Halaman Ini!';
-});
 </script>
 
 

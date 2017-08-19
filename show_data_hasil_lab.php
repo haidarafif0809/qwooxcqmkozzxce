@@ -2,10 +2,6 @@
 include 'db.php';
 include 'sanitasi.php';
 
-$otoritas_laboratorium = $db->query("SELECT input_hasil_lab FROM otoritas_laboratorium WHERE id_otoritas = '$_SESSION[otoritas_id]'");
-$take_lab = mysqli_fetch_array($otoritas_laboratorium);
-$input_hasil_lab = $take_lab['input_hasil_lab'];
-
 // storing  request (ie, get/post) global array to a variable  
 $requestData= $_REQUEST;
 
@@ -62,36 +58,33 @@ $data = array();
 while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 	$nestedData=array(); 
 
-if($input_hasil_lab > 0){
-	if($row['status'] != '1')
-	{
-		$nestedData[] = "<a href='input_hasil_lab.php?no_faktur=". $row['no_faktur']."&nama_pasien=". $row['nama_pasien']."' class='btn btn-success'> Input </a>";
-	}
-	else
-	{
-		$nestedData[] = "<p style='color:green'> Selesai </p>";
-	}
-}
+$query_hasil_lab = $db->query("SELECT no_reg FROM hasil_lab WHERE no_reg = '$row[no_reg]' AND hasil_pemeriksaan != '' ");
+$data_hasil = mysqli_num_rows($query_hasil_lab);
 
-if($row['status'] == '1' AND $row['no_faktur'] != '')
-{
-	if($row['status_pasien'] == 'Rawat Inap'){
-		$nestedData[] = "<p style='color:green'>Klik Detail</p>";
+if($data_hasil > 0 ){
+	if($row['status'] == '1' AND $row['no_faktur'] != ''){
+		if($row['status_pasien'] == 'Rawat Inap'){
+			$nestedData[] = "<p style='color:green'>Klik Detail</p>";
+		}
+		else{
+			$nestedData[] = "<a href='cetak_laporan_hasil_lab.php?no_faktur=".$row['no_faktur']."' target='blank' class='btn btn-floating btn-primary' data-target='blank'> <i class='fa fa-print'></i> </a>";
+		}
 	}
 	else{
-$nestedData[] = "<a href='cetak_laporan_hasil_lab.php?no_faktur=".$row['no_faktur']."' target='blank' class='btn btn-floating btn-primary' data-target='blank'> <i class='fa fa-print'></i> </a>";
+		$nestedData[] = "<p style='color:red'> Belum Bisa Cetak</p>";
 	}
 }
-else
-{
-	$nestedData[] = "<p style='color:red'> Belum Bisa Cetak</p>";
+else{
+	$nestedData[] = "<p style='color:red'>Tidak Ada Hasil</p>";
 }
+
+
 
 	$nestedData[] = $row["no_rm"];
 	$nestedData[] = $row["no_reg"];
 
-if($row["no_faktur"] == '')
-{
+if($row["no_faktur"] == ''){
+
 	$nestedData[] = "<p style='color:red'> Belum Penjualan</p>";
 	$nestedData[] = $row["nama_pasien"];
 	$nestedData[] = $row["dokter"];
@@ -101,8 +94,8 @@ if($row["no_faktur"] == '')
 	$nestedData[] = "<p style='color:red'>Belum Penjualan</p>";
 
 }
-else
-{
+else{
+
 	$nestedData[] = $row["no_faktur"];
 	$nestedData[] = $row["nama_pasien"];
 	$nestedData[] = $row["dokter"];
@@ -110,19 +103,24 @@ else
 	$nestedData[] = $row["status_pasien"];
 	$nestedData[] = $row["tanggal"];
 
-	if($row['status_pasien'] == 'Rawat Inap'){
+	if($data_hasil > 0 ){
+		//Start Detail
+		if($row['status_pasien'] == 'Rawat Inap'){
 
-	$nestedData[] = '<a href="detail_laboratorium_inap.php?faktur='.$row["no_faktur"].'&no_reg='.$row["no_reg"].'&nama='.$row["nama_pasien"].'&no_rm='.$row["no_rm"].'" class="btn btn-floating btn-info">
-		<i class="fa fa-list"></i></a>'; 
+		$nestedData[] = '<a href="detail_laboratorium_inap.php?faktur='.$row["no_faktur"].'&no_reg='.$row["no_reg"].'&nama='.$row["nama_pasien"].'&no_rm='.$row["no_rm"].'" class="btn btn-floating btn-info">
+			<i class="fa fa-list"></i></a>'; 
+		}
+		else{
 
-		
+		$nestedData[] = "<a class='btn btn-floating  btn-info detail-lab' data-faktur='".$row['no_faktur']."' data-reg='".$row['no_reg']."'><i class='fa fa-list'></i></a>";
 
+		}
+		//Akhir Detail
 	}
 	else{
+		$nestedData[] = "<p style='color:red'>Tidak Ada Hasil</p>";
+	}
 
-	$nestedData[] = "<a class='btn btn-floating  btn-info detail-lab' data-faktur='".$row['no_faktur']."' data-reg='".$row['no_reg']."'><i class='fa fa-list'></i></a>";
-
-	}	
 }
 	$nestedData[] = $row["id"];
 

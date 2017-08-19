@@ -1330,41 +1330,16 @@ $(document).ready(function(){
 $(document).ready(function(){
 // Mulai Transaksi Baru
     $(document).on('click','#transaksi_baru',function(e){
-       $('#tabel_cari_pasien').DataTable().destroy();
-        var dataTable = $('#tabel_cari_pasien').DataTable( {
-          "processing": true,
-          "serverSide": true,
-          "ajax":{
-            url :"modal_pasien_penjualan_aps.php", // json datasource
-            type: "post",  // method  , by default get
-            error: function(){  // error handling
-              $(".employee-grid-error").html("");
-              $("#tabel_cari_pasien").append('<tbody class="employee-grid-error"><tr><th colspan="3">Data Tidak Ditemukan.. !!</th></tr></tbody>');
-              $("#employee-grid_processing").css("display","none");
-              
-            }
-          },
 
-          "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+       var table_pasien = $('#tabel_cari_pasien').DataTable();
+       table_pasien.draw();
+        //DATA
 
-              $(nRow).attr('class', "pilih-reg");
-              $(nRow).attr('no_reg', aData[0]);
-              $(nRow).attr('no_rm', aData[1]+" | "+aData[2]+"");
-              $(nRow).attr('nama_pasien', aData[2]);
-              $(nRow).attr('penjamin', aData[5]);
-              $(nRow).attr('aps_periksa', aData[6]);
-              $(nRow).attr('dokter', aData[7]);
-              $(nRow).attr('level_harga', aData[8]);
-
-
-          }
-
-        });  
-        	//DATA
             $("#pembayaran_penjualan").val('');
             $("#sisa_pembayaran_penjualan").val('');
             $("#kredit").val('');
             $("#potongan_penjualan").val('');
+            $("#aps_periksa").val('');
             $("#diskon_persen").val('');
             $("#tanggal_jt").val('');
             $("#subtotal").val('');

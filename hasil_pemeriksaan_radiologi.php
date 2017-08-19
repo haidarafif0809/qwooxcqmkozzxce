@@ -1219,7 +1219,9 @@ $(document).on('click','#btnSimpanUpdate',function(e){
           $(".edit-keterangan").hide();
 
       $.post("input_keterangan_hasil_radiologi.php",{keterangan:keterangan, no_reg_ket:no_reg_ket, kode_ket:kode_ket},function(data){
-          
+      
+
+          $("#keterangan").val('');
 
        var tabel_tbs_radiologi = $('#tabel_tbs_radiologi').DataTable();
            tabel_tbs_radiologi.draw();

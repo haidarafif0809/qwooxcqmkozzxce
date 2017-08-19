@@ -87,7 +87,7 @@ $no_faktur = stringdoang($_GET['faktur']);
 <table id="table_lab" class="table table-bordered table-sm">
 		<thead>
 
-<th style="background-color: #4CAF50; color: white;"> Input Hasil</th>
+<!--<th style="background-color: #4CAF50; color: white;"> Input Hasil</th>-->
 <th style="background-color: #4CAF50; color: white;"> Cetak</th>
 <th style="background-color: #4CAF50; color: white;"> No Periksa</th>
 <th style="background-color: #4CAF50; color: white;"> Dokter</th>

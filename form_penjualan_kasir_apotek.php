@@ -69,7 +69,7 @@ $user = $_SESSION['nama'];
 
 
  <!-- Modal Untuk Confirm LAYANAN PERUSAHAAN-->
-<div id="detail" class="modal fade" role="dialog">
+<div id="detail" class="modal" role="dialog">
   <div class="modal-dialog modal-lg">
     <!-- Modal content-->
     <div class="modal-content">
@@ -286,7 +286,7 @@ $user = $_SESSION['nama'];
 
 
 <!--tampilan modal-->
-<div id="myModal" class="modal fade" role="dialog">
+<div id="myModal" class="modal" role="dialog">
   <div class="modal-dialog">
 
     <!-- isi modal-->
@@ -331,7 +331,7 @@ $user = $_SESSION['nama'];
 
 
 <!-- Modal Hapus data -->
-<div id="modal_barang_tidak_bisa_dijual" class="modal fade" role="dialog">
+<div id="modal_barang_tidak_bisa_dijual" class="modal" role="dialog">
   <div class="modal-dialog">
 
     <!-- Modal content-->
@@ -369,7 +369,7 @@ $user = $_SESSION['nama'];
 </div><!-- end of modal hapus data  -->
 
 <!-- Modal edit data -->
-<div id="modal_edit" class="modal fade" role="dialog">
+<div id="modal_edit" class="modal" role="dialog">
   <div class="modal-dialog">
 
     <!-- Modal content-->
@@ -796,7 +796,7 @@ $user = $_SESSION['nama'];
     
            db.version(2).stores({
              
-            barang : 'id,kode_barang,nama_barang,harga_jual,harga_jual2,harga_jual3,harga_jual4,harga_jual5,harga_jual6,harga_jual7,satuan,kategori,status,suplier,limit_stok,berkaitan_dgn_stok,tipe_barang'  
+            barang : 'id,kode_barang,nama_barang,harga_jual,harga_jual2,harga_jual3,harga_jual4,harga_jual5,harga_jual6,harga_jual7,harga_jual_inap,harga_jual_inap2,harga_jual_inap3,harga_jual_inap4,harga_jual_inap5,harga_jual_inap6,harga_jual_inap7,satuan,kategori,status,suplier,limit_stok,berkaitan_dgn_stok,tipe_barang'  
           });
 
            db.barang.count(function (count) { 
@@ -814,7 +814,7 @@ $user = $_SESSION['nama'];
                 $.each(data.result, function(i, item) {
 
                  
-                    data_barang.push({id: data.result[i].id, kode_barang: data.result[i].kode_barang,nama_barang : data.result[i].nama_barang,harga_jual:  data.result[i].harga_jual,harga_jual2:  data.result[i].harga_jual2,harga_jual3:  data.result[i].harga_jual3,harga_jual4:  data.result[i].harga_jual4,harga_jual5:  data.result[i].harga_jual5,harga_jual6:  data.result[i].harga_jual6,harga_jual7:  data.result[i].harga_jual7,satuan:  data.result[i].satuan,kategori:  data.result[i].kategori,status:  data.result[i].status,suplier:  data.result[i].suplier,limit_stok:  data.result[i].limit_stok,berkaitan_dgn_stok:  data.result[i].berkaitan_dgn_stok,tipe_barang:  data.result[i].tipe_barang  });
+                    data_barang.push({id: data.result[i].id, kode_barang: data.result[i].kode_barang,nama_barang : data.result[i].nama_barang,harga_jual:  data.result[i].harga_jual,harga_jual2:  data.result[i].harga_jual2,harga_jual3:  data.result[i].harga_jual3,harga_jual4:  data.result[i].harga_jual4,harga_jual5:  data.result[i].harga_jual5,harga_jual6:  data.result[i].harga_jual6,harga_jual7:  data.result[i].harga_jual7,harga_jual_inap:  data.result[i].harga_jual_inap,harga_jual_inap2:  data.result[i].harga_jual_inap2,harga_jual_inap3:  data.result[i].harga_jual_inap3,harga_jual_inap4:  data.result[i].harga_jual_inap4,harga_jual_inap5:  data.result[i].harga_jual_inap5,harga_jual_inap6:  data.result[i].harga_jual_inap6,harga_jual_inap7:  data.result[i].harga_jual_inap7,satuan:  data.result[i].satuan,kategori:  data.result[i].kategori,status:  data.result[i].status,suplier:  data.result[i].suplier,limit_stok:  data.result[i].limit_stok,berkaitan_dgn_stok:  data.result[i].berkaitan_dgn_stok,tipe_barang:  data.result[i].tipe_barang  });
 
 
 
@@ -849,7 +849,7 @@ $user = $_SESSION['nama'];
            function menampilkanDataBarangDiSelect(){
               return db.barang.each(function(data,i){
           
-                 var tr_barang = '<option id="opt-produk-'+ data.kode_barang+'" value="'+ data.kode_barang+'" data-kode="'+ data.kode_barang+'" nama-barang="'+ data.nama_barang+'" harga="'+ data.harga_jual+'" harga_jual_2="'+ data.harga_jual2+'" harga_jual_3="'+ data.harga_jual3+'" harga_jual_4="'+ data.harga_jual4+'" harga_jual_5="'+ data.harga_jual5+'" harga_jual_6="'+ data.harga_jual6+'" harga_jual_7="'+ data.harga_jual7+'" satuan="'+ data.satuan+'" kategori="'+ data.kategori+'" status="'+ data.status+'" suplier="'+ data.suplier+'" limit_stok="'+ data.limit_stok+'" ber-stok="'+ data.berkaitan_dgn_stok+'" tipe_barang="'+ data.tipe_barang+'" id-barang="'+ data.id+'" > '+ data.kode_barang+' ( '+ data.nama_barang+' ) </option>';
+                 var tr_barang = '<option id="opt-produk-'+ data.kode_barang+'" value="'+ data.kode_barang+'" data-kode="'+ data.kode_barang+'" nama-barang="'+ data.nama_barang+'" harga="'+ data.harga_jual+'" harga_jual_2="'+ data.harga_jual2+'" harga_jual_3="'+ data.harga_jual3+'" harga_jual_4="'+ data.harga_jual4+'" harga_jual_5="'+ data.harga_jual5+'" harga_jual_6="'+ data.harga_jual6+'" harga_jual_7="'+ data.harga_jual7+'" harga_inap="'+ data.harga_jual_inap+'" harga_jual_inap_2="'+ data.harga_jual_inap2+'" harga_jual_inap_3="'+ data.harga_jual_inap3+'" harga_jual_inap_4="'+ data.harga_jual_inap4+'" harga_jual_inap_5="'+ data.harga_jual_inap5+'" harga_jual_inap_6="'+ data.harga_jual_inap6+'" harga_jual_inap_7="'+ data.harga_jual_inap7+'" satuan="'+ data.satuan+'" kategori="'+ data.kategori+'" status="'+ data.status+'" suplier="'+ data.suplier+'" limit_stok="'+ data.limit_stok+'" ber-stok="'+ data.berkaitan_dgn_stok+'" tipe_barang="'+ data.tipe_barang+'" id-barang="'+ data.id+'" > '+ data.kode_barang+' ( '+ data.nama_barang+' ) </option>';
                      $("#kode_barang").append(tr_barang);
               }).then(function(){
 
@@ -1006,6 +1006,14 @@ $(document).ready(function(){
   $(document).on('click', '.pilih', function (e) {
    
   document.getElementById("kode_barang").value = $(this).attr('data-kode');
+    if (!$("#kode_barang").val()){
+      window.alert("Barang yang pilih belum terdaftar , silakan kembali ke form penjualan !! ");
+      window.open('update_cache_browser_barang.php', '_blank');
+      location.reload();
+      $("#kode_barang").trigger('chosen:open')
+      console.log("barang tidak ada");  
+  }
+  
   $("#kode_barang").trigger('chosen:updated');
 
   document.getElementById("nama_barang").value = $(this).attr('nama-barang');
@@ -1579,7 +1587,7 @@ else{
      /* $("#tax_rp").val(Math.round(hasil_tax));*/
 
 
-      if (limit_stok > stok)
+      if (limit_stok > stok && limit_stok != 0)
         {
           alert("Persediaan Barang Ini Sudah Mencapai Batas Limit Stok, Segera Lakukan Pembelian !");
         }

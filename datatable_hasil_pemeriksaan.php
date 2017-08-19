@@ -34,7 +34,7 @@ $jenis_kelamin = $data_jenis_kelamin['jenis_kelamin'];
     <tbody id="tbody">
     
    <?php 
-  $query = $db->query("SELECT th.id_sub_header AS nama_header,th.no_rm,th.harga,th.no_reg,th.kode_barang,th.dokter AS id_dokter,th.analis AS id_analis,th.id,th.nama_pemeriksaan,th.hasil_pemeriksaan,th.model_hitung,th.nilai_normal_lk,th.satuan_nilai_normal,th.nilai_normal_pr,u.nama AS dokter,us.nama AS analis FROM tbs_hasil_lab th LEFT JOIN user u ON 
+  $query = $db->query("SELECT th.normal_lk2, th.normal_pr2, th.id_sub_header AS nama_header,th.no_rm,th.harga,th.no_reg,th.kode_barang,th.dokter AS id_dokter,th.analis AS id_analis,th.id,th.nama_pemeriksaan,th.hasil_pemeriksaan,th.model_hitung,th.nilai_normal_lk,th.satuan_nilai_normal,th.nilai_normal_pr,u.nama AS dokter,us.nama AS analis FROM tbs_hasil_lab th LEFT JOIN user u ON 
     th.dokter = u.id LEFT JOIN user us ON th.analis = us.id WHERE 
     no_reg = '$no_reg' AND no_rm = '$no_rm' ORDER BY id ASC");
    while($data = mysqli_fetch_array($query)){

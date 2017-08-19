@@ -86,7 +86,7 @@ include 'db.php';
 
 <span id="result">
 <div class="row 1">
-<h3><center><b>Komisi Faktur / Petugas</b></center></h3><br><br>
+<h3><center><b>Komisi Produk / Petugas</b></center></h3><br><br>
 <div class="table-responsive">
 <table id="table_komisi_faktur" class="table table-bordered table-sm">
             <thead>
@@ -105,7 +105,7 @@ include 'db.php';
 <br>
 
 <div class="row 2">
-<h3><center><b>Komisi Produk / Petugas</b></center></h3><br><br>
+<h3><center><b>Komisi Faktur / Petugas</b></center></h3><br><br>
 <div class="table-responsive">
 <table id="table_komisi_produk" class="table table-bordered table-sm">
             <thead>
@@ -201,34 +201,6 @@ include 'db.php';
           }
             else{ 
               //TABLE KOMISI PRODUK
-              var dataTable = $('#table_komisi_produk').DataTable( {
-                "processing": true,
-                "serverSide": true,
-                "info":     false,
-                "language": {
-              "emptyTable":   "My Custom Message On Empty Table"
-          },
-                "ajax":{
-                  url :"datatable_komisi_produk_per_petugas.php", // json datasource
-                   "data": function ( d ) {
-                      d.nama_petugas = $("#nama_petugas").val();
-                      d.dari_tanggal = $("#dari_tanggal").val();
-                      d.sampai_tanggal = $("#sampai_tanggal").val();
-                      // d.custom = $('#myInput').val();
-                      // etc
-                  },
-                      type: "post",  // method  , by default get
-                  error: function(){  // error handling
-                    $(".tbody").html("");
-                    $("#table_komisi_produk").append('<tbody class="tbody"><tr><th colspan="3"></th></tr></tbody>');
-                    $("#tableuser_processing").css("display","none");
-                    
-                  }
-                }
-          
-              });
-
-              ////TABLE KOMISI FAKTUR
               var dataTable = $('#table_komisi_faktur').DataTable( {
                 "processing": true,
                 "serverSide": true,
@@ -249,6 +221,34 @@ include 'db.php';
                   error: function(){  // error handling
                     $(".tbody").html("");
                     $("#table_komisi_faktur").append('<tbody class="tbody"><tr><th colspan="3"></th></tr></tbody>');
+                    $("#tableuser_processing").css("display","none");
+                    
+                  }
+                }
+          
+              });
+
+              ////TABLE KOMISI FAKTUR
+              var dataTable = $('#table_komisi_produk').DataTable( {
+                "processing": true,
+                "serverSide": true,
+                "info":     false,
+                "language": {
+              "emptyTable":   "My Custom Message On Empty Table"
+          },
+                "ajax":{
+                  url :"datatable_komisi_produk_per_petugas.php", // json datasource
+                   "data": function ( d ) {
+                      d.nama_petugas = $("#nama_petugas").val();
+                      d.dari_tanggal = $("#dari_tanggal").val();
+                      d.sampai_tanggal = $("#sampai_tanggal").val();
+                      // d.custom = $('#myInput').val();
+                      // etc
+                  },
+                      type: "post",  // method  , by default get
+                  error: function(){  // error handling
+                    $(".tbody").html("");
+                    $("#table_komisi_produk").append('<tbody class="tbody"><tr><th colspan="3"></th></tr></tbody>');
                     $("#tableuser_processing").css("display","none");
                     
                   }

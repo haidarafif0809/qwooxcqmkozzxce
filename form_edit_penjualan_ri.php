@@ -691,13 +691,13 @@ Level 7
        <option value="">SILAKAN PILIH</option>
         <?php 
 
-        include 'cache.class.php';
+        include_once 'cache.class.php';
           $c = new Cache();
           $c->setCache('produk');
           $data_c = $c->retrieveAll();
 
           foreach ($data_c as $key) {
-            echo '<option id="opt-produk-'.$key['kode_barang'].'" value="'.$key['kode_barang'].'" data-kode="'.$key['kode_barang'].'" nama-barang="'.$key['nama_barang'].'" harga="'.$key['harga_jual'].'" harga_jual_2="'.$key['harga_jual2'].'" harga_jual_3="'.$key['harga_jual3'].'" harga_jual_4="'.$key['harga_jual4'].'" harga_jual_5="'.$key['harga_jual5'].'" harga_jual_6="'.$key['harga_jual6'].'" harga_jual_7="'.$key['harga_jual7'].'" satuan="'.$key['satuan'].'" kategori="'.$key['kategori'].'" status="'.$key['status'].'" suplier="'.$key['suplier'].'" limit_stok="'.$key['limit_stok'].'" ber-stok="'.$key['berkaitan_dgn_stok'].'" tipe_barang="'.$key['tipe_barang'].'" id-barang="'.$key['id'].'" > '. $key['kode_barang'].' ( '.$key['nama_barang'].' ) </option>';
+            echo '<option id="opt-produk-'.$key['kode_barang'].'" value="'.$key['kode_barang'].'" data-kode="'.$key['kode_barang'].'" nama-barang="'.$key['nama_barang'].'" harga="'.$key['harga_jual'].'" harga_jual_2="'.$key['harga_jual2'].'" harga_jual_3="'.$key['harga_jual3'].'" harga_jual_4="'.$key['harga_jual4'].'" harga_jual_5="'.$key['harga_jual5'].'" harga_jual_6="'.$key['harga_jual6'].'" harga_jual_7="'.$key['harga_jual7'].'" harga_inap="'.$key['harga_jual_inap'].'" harga_jual_inap_2="'.$key['harga_jual_inap2'].'" harga_jual_inap_3="'.$key['harga_jual_inap3'].'" harga_jual_inap_4="'.$key['harga_jual_inap4'].'" harga_jual_inap_5="'.$key['harga_jual_inap5'].'" harga_jual_inap_6="'.$key['harga_jual_inap6'].'" harga_jual_inap_7="'.$key['harga_jual_inap7'].'" satuan="'.$key['satuan'].'" kategori="'.$key['kategori'].'" status="'.$key['status'].'" suplier="'.$key['suplier'].'" limit_stok="'.$key['limit_stok'].'" ber-stok="'.$key['berkaitan_dgn_stok'].'" tipe_barang="'.$key['tipe_barang'].'" id-barang="'.$key['id'].'" > '. $key['kode_barang'].' ( '.$key['nama_barang'].' ) </option>';
           }
 
         ?>
@@ -1756,7 +1756,7 @@ $(document).ready(function(){
   var jumlah_barang = $("#jumlah_barang").val();
   var id_produk = $("#id_produk").val();
 
-$.post("cek_level_harga_barang.php",
+$.post("cek_level_harga_barang_inap.php",
         {level_harga:level_harga,kode_barang:kode_barang,jumlah_barang:jumlah_barang,id_produk:id_produk,satuan_konversi:satuan_konversi},function(data){
 
           $("#harga_produk").val(data);
@@ -3491,13 +3491,13 @@ $(document).on('click','.btn-hapus-tbs',function(e){
 
     var kode_barang = $(this).val();
     var nama_barang = $('#opt-produk-'+kode_barang).attr("nama-barang");
-    var harga_jual = $('#opt-produk-'+kode_barang).attr("harga");
-    var harga_jual2 = $('#opt-produk-'+kode_barang).attr('harga_jual_2');  
-    var harga_jual3 = $('#opt-produk-'+kode_barang).attr('harga_jual_3');
-    var harga_jual4 = $('#opt-produk-'+kode_barang).attr('harga_jual_4');
-    var harga_jual5 = $('#opt-produk-'+kode_barang).attr('harga_jual_5');  
-    var harga_jual6 = $('#opt-produk-'+kode_barang).attr('harga_jual_6');
-    var harga_jual7 = $('#opt-produk-'+kode_barang).attr('harga_jual_7');
+    var harga_jual = $('#opt-produk-'+kode_barang).attr("hargainap");
+    var harga_jual2 = $('#opt-produk-'+kode_barang).attr('harga_jual_inap_2');  
+    var harga_jual3 = $('#opt-produk-'+kode_barang).attr('harga_jual_inap_3');
+    var harga_jual4 = $('#opt-produk-'+kode_barang).attr('harga_jual_inap_4');
+    var harga_jual5 = $('#opt-produk-'+kode_barang).attr('harga_jual_inap_5');  
+    var harga_jual6 = $('#opt-produk-'+kode_barang).attr('harga_jual_inap_6');
+    var harga_jual7 = $('#opt-produk-'+kode_barang).attr('harga_jual_inap_7');
     var jumlah_barang = $('#opt-produk-'+kode_barang).attr("jumlah-barang");
     var satuan = $('#opt-produk-'+kode_barang).attr("satuan");
     var kategori = $('#opt-produk-'+kode_barang).attr("kategori");
@@ -4865,7 +4865,7 @@ $(document).ready(function(){
           "processing": true,
           "serverSide": true,
           "ajax":{
-            url :"modal_edit_penjualan.php", // json datasource
+            url :"modal_edit_penjualan_inap.php", // json datasource
             "data": function ( d ) {
                 d.no_faktur = $("#no_faktur").val();
                 // d.custom = $('#myInput').val();

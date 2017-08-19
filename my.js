@@ -88,5 +88,15 @@ function bersihPemisah(ini){
 	return a;
 }
 
+function gantiTitik(ini){
+	a = ini.toString().replace(",",".");
+	//a = a.replace(".","");
+	return a;
+}
 
-      
+
+function gantiKoma(ini){
+	a = ini.toString().replace(".",",");
+	//a = a.replace(".","");
+	return a;
+}

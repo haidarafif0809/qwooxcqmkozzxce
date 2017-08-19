@@ -140,7 +140,7 @@ while( $row=mysqli_fetch_array($query) ) {
             $nestedData[] =  $row["kategori"];
             $nestedData[] =  $row["suplier"];
             $nestedData[] =  $row["nama"];
-            $nestedData[] =  $harga_hpp;
+            $nestedData[] =  round($harga_hpp);
             $nestedData[] =  $row["satuan"];
 
     

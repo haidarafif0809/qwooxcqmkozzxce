@@ -20,7 +20,6 @@ $jenis_kelamin = $data_jenis_kelamin['jenis_kelamin'];
         <th> Nama Pemeriksaan </th>
         <th> Hasil Pemeriksaan </th>
         <th> Nilai Normal  </th>
-        <th> Status Rawat </th>
            
       </thead>
         
@@ -149,7 +148,7 @@ while($trace = mysqli_fetch_array($selectui)){
           }
         }  
 
-        echo " <td>". $data_hasil_lab['status_pasien'] ."</td>
+        echo " 
         </tr>";
 
       } //END WHILE $data_hasil_lab
@@ -241,7 +240,6 @@ while ($data_hasil_lab_tunggal = mysqli_fetch_array($query_hasil_lab_tunggal)){
     }
   }  
       echo " 
-      <td>". $data_hasil_lab_tunggal['status_pasien'] ."</td>
       </tr>";
 } //END WHILE $data_hasil_lab_tunggal
 //ending untuk yang sendirian / yang tidak ber HEADER/INDUX

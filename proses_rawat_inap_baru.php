@@ -21,7 +21,7 @@ if ($token == '')
 }
 else
 {
-$username = $_SESSION['user_name'];
+$username = $_SESSION['nama'];
 $ruangan = angkadoang($_POST['ruangan']);
 $no_rm_lama = stringdoang($_POST['no_rm_lama']);
 $nama_lengkap = stringdoang($_POST['nama_lengkap']);
@@ -152,10 +152,10 @@ $insert_1->execute();
 
 
 $insert_2 = $db->prepare("INSERT INTO rekam_medik_inap
-(group_bed,alergi,no_reg,no_rm,nama,alamat,umur,jenis_kelamin,sistole_distole,suhu,berat_badan,tinggi_badan,nadi,respiratory,poli,tanggal_periksa,jam,dokter,kondisi,rujukan,dokter_penanggung_jawab,bed,ruangan)
-VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+(group_bed,alergi,no_reg,no_rm,nama,alamat,umur,jenis_kelamin,sistole_distole,suhu,berat_badan,tinggi_badan,nadi,respiratory,poli,tanggal_periksa,jam,dokter,kondisi,rujukan,dokter_penanggung_jawab,bed,ruangan,petugas)
+VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
-$insert_2->bind_param("ssssssssssssssssssssssi", $group_bed,$alergi,$no_reg,$no_rm,$nama_lengkap,$alamat_sekarang,$umur,$jenis_kelamin,$sistole_distole,$suhu,$berat_badan,$tinggi_badan,$nadi,$respiratory_rate,$poli,$tanggal_sekarang,$jam,$dokter,$kondisi,$rujukan,$dokter_penanggung_jawab,$bed,$ruangan);
+$insert_2->bind_param("ssssssssssssssssssssssis", $group_bed,$alergi,$no_reg,$no_rm,$nama_lengkap,$alamat_sekarang,$umur,$jenis_kelamin,$sistole_distole,$suhu,$berat_badan,$tinggi_badan,$nadi,$respiratory_rate,$poli,$tanggal_sekarang,$jam,$dokter,$kondisi,$rujukan,$dokter_penanggung_jawab,$bed,$ruangan,$username);
 
 
 $insert_2->execute();

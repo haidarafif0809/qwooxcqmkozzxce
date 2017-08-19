@@ -49,13 +49,13 @@ $detail_sub_operasi = mysqli_fetch_array($pilih_akses_detail_sub_operasi);
 
             <td>". $data['nama_detail_operasi'] ."</td>
             <td>". $jabatan ."</td>
-            <td>". $data['jumlah_persentase'] ." %</td>";
+            <td>". koma($data['jumlah_persentase'],2) ." %</td>";
 
 
 if ($detail_sub_operasi['detail_sub_operasi_edit'] > 0) {
   echo "<td> <button class='btn btn-warning btn-edit' data-id='". $data['id_detail_operasi'] ."'
   data-nama='". $data['nama_detail_operasi'] ."' data-jabatan='". $data['id_jabatan'] ."' 
-  data-persentase='". $data['jumlah_persentase'] ."'>
+  data-persentase='". koma($data['jumlah_persentase'],2) ."'>
   <span class='glyphicon glyphicon-edit'> </span> Edit </button> </td>";
 }
 else{

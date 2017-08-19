@@ -72,6 +72,7 @@ tr:nth-child(even){background-color: #f2f2f2}
          <th style='background-color: #4CAF50; color: white'>Nama Pasien</th>
          <th style='background-color: #4CAF50; color: white'>Tanggal Periksa</th>
          <th style='background-color: #4CAF50; color: white'>Nama Dokter</th>
+         <th style='background-color: #4CAF50; color: white'>Petugas</th>
          <th style='background-color: #4CAF50; color: white'>Poli</th>
     </thead>
 
@@ -142,7 +143,7 @@ $(document).on('click','#submit',function(e) {
            "fnCreatedRow": function( nRow, aData, iDataIndex ) {
 
               $(nRow).attr('class','rekam-medik-inap');
-              $(nRow).attr('data-no', aData[5]);           
+              $(nRow).attr('data-no', aData[6]);           
 
           }
     

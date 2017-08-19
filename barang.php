@@ -13,7 +13,7 @@ $tipe = stringdoang($_GET['tipe']);
     ?>
 
 
-<div class="container">
+ <div style="padding-left: 15%; padding-right: 15%">
 <h3><b>DATA ITEM</b></h3><hr>
 
 
@@ -105,7 +105,7 @@ echo '<br><button type="button" class="btn btn-info" data-toggle="modal" data-ta
                         <div class="form-group">
                             <label>Nama Barang </label>
                             <br>
-                            <input type="text" placeholder="Nama Barang" name="nama_barang" id="nama_barang" class="form-control" autocomplete="off" required="">
+                            <input type="text" style="height: 15px" placeholder="Nama Barang" name="nama_barang" id="nama_barang" class="form-control" autocomplete="off" required="">
                         </div>
 
 
@@ -185,47 +185,115 @@ echo '<br><button type="button" class="btn btn-info" data-toggle="modal" data-ta
                         <div class="form-group">
                             <label> Harga Beli </label>
                             <br>
-                            <input type="text" placeholder="Harga Beli" name="harga_beli" id="harga_beli" class="form-control" autocomplete="off">
+                            <input type="text" style="height: 15px" placeholder="Harga Beli" name="harga_beli" id="harga_beli" class="form-control" autocomplete="off">
+                        </div>
+
+                <div class="row row-harga">
+                    <div class="col-sm-5">
+                        <label>HARGA JUAL RAWAT JALAN</label>
+                        <div class="form-group">
+                            <input type="text" style="height: 15px" placeholder="Harga Level 1" name="harga_jual" id="harga_jual" class="form-control" autocomplete="off" required="" onkeydown="return numbersonly(this, event);" onkeyup="javascript:tandaPemisahTitik(this);">
                         </div>
                         <div class="form-group">
-                            <label> Harga Jual Level 1</label>
-                            <br>
-                            <input type="text" placeholder="Harga Jual Level 1" name="harga_jual" id="harga_jual" class="form-control" autocomplete="off" required="">
-                        </div>
-                        <div class="form-group">
-                            <label> Harga Jual Level 2</label>
-                            <br>
-                            <input type="text" placeholder="Harga Jual Level 2" name="harga_jual_2" id="harga_jual2" class="form-control" autocomplete="off">
+                            <input type="text" style="height: 15px" placeholder="Harga Level 2" name="harga_jual_2" id="harga_jual2" class="form-control" autocomplete="off" onkeydown="return numbersonly(this, event);" onkeyup="javascript:tandaPemisahTitik(this);">
                         </div>
 
                         <div class="form-group">
-                            <label> Harga Jual Level 3</label>
-                            <br>
-                            <input type="text" placeholder="Harga Jual Level 3" name="harga_jual_3" id="harga_jual3" class="form-control" autocomplete="off">
+                            <input type="text" style="height: 15px" placeholder="Harga Level 3" name="harga_jual_3" id="harga_jual3" class="form-control" autocomplete="off" onkeydown="return numbersonly(this, event);" onkeyup="javascript:tandaPemisahTitik(this);">
                         </div>
 
                         <div class="form-group">
-                            <label> Harga Jual Level 4</label>
-                            <br>
-                            <input type="text" placeholder="Harga Jual Level 4" name="harga_jual_4" id="harga_jual4" class="form-control" autocomplete="off">
+                            <input type="text" style="height: 15px" placeholder="Harga Level 4" name="harga_jual_4" id="harga_jual4" class="form-control" autocomplete="off" onkeydown="return numbersonly(this, event);" onkeyup="javascript:tandaPemisahTitik(this);">
                         </div>
                         <div class="form-group">
-                            <label> Harga Jual Level 5</label>
-                            <br>
-                            <input type="text" placeholder="Harga Jual Level 5" name="harga_jual_5" id="harga_jual5" class="form-control" autocomplete="off">
+                            <input type="text" style="height: 15px" placeholder="Harga Level 5" name="harga_jual_5" id="harga_jual5" class="form-control" autocomplete="off" onkeydown="return numbersonly(this, event);" onkeyup="javascript:tandaPemisahTitik(this);">
                         </div>
                         <div class="form-group">
-                            <label> Harga Jual Level 6</label>
-                            <br>
-                            <input type="text" placeholder="Harga Jual Level 6" name="harga_jual_6" id="harga_jual6" class="form-control" autocomplete="off">
+                            <input type="text" style="height: 15px" placeholder="Harga Level 6" name="harga_jual_6" id="harga_jual6" class="form-control" autocomplete="off" onkeydown="return numbersonly(this, event);" onkeyup="javascript:tandaPemisahTitik(this);">
                         </div>
                         <div class="form-group">
-                            <label> Harga Jual Level 7</label>
-                            <br>
-                            <input type="text" placeholder="Harga Jual Level 7" name="harga_jual_7" id="harga_jual7" class="form-control" autocomplete="off">
+                            <input type="text" style="height: 15px" placeholder="Harga Level 7" name="harga_jual_7" id="harga_jual7" class="form-control" autocomplete="off" onkeydown="return numbersonly(this, event);" onkeyup="javascript:tandaPemisahTitik(this);">
+                        </div>      
+                    </div>
+
+                    <div class="col-sm-2">
+                    <br><br>
+                        <fieldset class="form-group">
+                            <input class="checkbox-copy" type="checkbox"  data-toogle="0" id="copy1">
+                            <label for="copy1" style="color: blue"><i class="fa fa-copy"></i></label>
+                        </fieldset>
+                        
+                        <fieldset class="form-group">
+                            <input class="checkbox-copy" type="checkbox"  data-toogle="0" id="copy2">
+                            <label for="copy2" style="color: blue"><i class="fa fa-copy"></i></label>
+                        </fieldset>
+                        
+                        <fieldset class="form-group">
+                            <input class="checkbox-copy" type="checkbox"  data-toogle="0" id="copy3">
+                            <label for="copy3" style="color: blue"><i class="fa fa-copy"></i></label>
+                        </fieldset>
+                        
+                        <fieldset class="form-group">
+                            <input class="checkbox-copy" type="checkbox"  data-toogle="0" id="copy4">
+                            <label for="copy4" style="color: blue"><i class="fa fa-copy"></i></label>
+                        </fieldset>
+                        
+                        <fieldset class="form-group">
+                            <input class="checkbox-copy" type="checkbox"  data-toogle="0" id="copy5">
+                            <label for="copy5" style="color: blue"><i class="fa fa-copy"></i></label>
+                        </fieldset>
+                        
+                        <fieldset class="form-group">
+                            <input class="checkbox-copy" type="checkbox"  data-toogle="0" id="copy6">
+                            <label for="copy6" style="color: blue"><i class="fa fa-copy"></i></label>
+                        </fieldset>
+                        
+                        <fieldset class="form-group">
+                            <input class="checkbox-copy" type="checkbox"  data-toogle="0" id="copy7">
+                            <label for="copy7" style="color: blue"><i class="fa fa-copy"></i></label>
+                        </fieldset>
+                    </div>
+
+                    <div class="col-sm-5">
+                        <label>HARGA JUAL RAWAT INAP</label>
+                        <div class="form-group">
+                            <input type="text" style="height: 15px" placeholder="Harga Level 1" name="harga_jual_inap" id="harga_jual_inap" class="form-control" autocomplete="off" required="" onkeydown="return numbersonly(this, event);" onkeyup="javascript:tandaPemisahTitik(this);">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" style="height: 15px" placeholder="Harga Level 2" name="harga_jual_inap_2" id="harga_jual_inap2" class="form-control" autocomplete="off" onkeydown="return numbersonly(this, event);" onkeyup="javascript:tandaPemisahTitik(this);">
                         </div>
 
-                   <div class="form-group">
+                        <div class="form-group">
+                            <input type="text" style="height: 15px" placeholder="Harga Level 3" name="harga_jual_inap_3" id="harga_jual_inap3" class="form-control" autocomplete="off" onkeydown="return numbersonly(this, event);" onkeyup="javascript:tandaPemisahTitik(this);">
+                        </div>
+
+                        <div class="form-group">
+                            <input type="text" style="height: 15px" placeholder="Harga Level 4" name="harga_jual_inap_4" id="harga_jual_inap4" class="form-control" autocomplete="off" onkeydown="return numbersonly(this, event);" onkeyup="javascript:tandaPemisahTitik(this);">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" style="height: 15px" placeholder="Harga Level 5" name="harga_jual_inap_5" id="harga_jual_inap5" class="form-control" autocomplete="off" onkeydown="return numbersonly(this, event);" onkeyup="javascript:tandaPemisahTitik(this);">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" style="height: 15px" placeholder="Harga Level 6" name="harga_jual_inap_6" id="harga_jual_inap6" class="form-control" autocomplete="off" onkeydown="return numbersonly(this, event);" onkeyup="javascript:tandaPemisahTitik(this);">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" style="height: 15px" placeholder="Harga Level 7" name="harga_jual_inap_7" id="harga_jual_inap7" class="form-control" autocomplete="off" onkeydown="return numbersonly(this, event);" onkeyup="javascript:tandaPemisahTitik(this);">
+                        </div>    
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-5">
+                    </div>
+                    <div class="col-sm-5">
+                        <fieldset class="form-group">
+                            <input type="checkbox" class="copy-all" data-toogle="0" id="copy-all">
+                            <label for="copy-all" style="color: blue"><i class="fa fa-copy"></i> Copy All</label>
+                        </fieldset>
+                    </div>
+                </div>
+
+                            <div class="form-group">
                             <label> Satuan </label>
                             <br>
                             <select type="text" name="satuan" class="form-control" required="">
@@ -316,12 +384,12 @@ echo '<br><button type="button" class="btn btn-info" data-toggle="modal" data-ta
                         <div class="form-group">
                             <label> Limit Stok </label>
                             <br>
-                            <input type="text" placeholder="Limit Stok" name="limit_stok" id="limit_stok" class="form-control" autocomplete="off">
+                            <input type="text" style="height: 15px" placeholder="Limit Stok" name="limit_stok" id="limit_stok" class="form-control" autocomplete="off">
                         </div>
                         <div class="form-group">
                             <label> Over Stok </label>
                             <br>
-                            <input type="text" placeholder="Over Stok" name="over_stok" id="over_stok" class="form-control" autocomplete="off">
+                            <input type="text" style="height: 15px" placeholder="Over Stok" name="over_stok" id="over_stok" class="form-control" autocomplete="off">
                         </div>
                             
                             
@@ -395,6 +463,34 @@ echo '<br><button type="button" class="btn btn-info" data-toggle="modal" data-ta
   </div>
 </div>
 
+<div id="modal_detail" class="modal" role="dialog">
+  <div class="modal-dialog modal-lg">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+          <div class="row">
+              <div class="col-sm-10">
+                <h4>Harga Jual Produk ( <span id="info-harga"></span> )</h4>                  
+              </div>
+
+              <div class="col-sm-2">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>                  
+              </div>
+          </div>
+      </div>
+
+      <div class="modal-body">
+      <div class="table-responsive">
+      <span id="modal-detail"> </span>
+      </div>
+
+     </div>
+
+    </div>
+
+  </div>
+</div>
 
 <!-- Modal Hapus data -->
 <div id="modal_hapus" class="modal fade" role="dialog">
@@ -509,14 +605,11 @@ th {
             <th style='background-color: #4CAF50; color: white'> Kode Barang </th>
             <th style='background-color: #4CAF50; color: white'> Nama Barang </th>
             <th style='background-color: #4CAF50; color: white'> Harga Beli </th>
-            <th style='background-color: #4CAF50; color: white'> Margin</th>
-            <th style='background-color: #4CAF50; color: white'> Harga Jual Level 1</th>
-            <th style='background-color: #4CAF50; color: white'> Harga Jual Level 2</th>
-            <th style='background-color: #4CAF50; color: white'> Harga Jual Level 3</th>
-            <th style='background-color: #4CAF50; color: white'> Harga Jual Level 4</th>
-            <th style='background-color: #4CAF50; color: white'> Harga Jual Level 5</th>
-            <th style='background-color: #4CAF50; color: white'> Harga Jual Level 6</th>
-            <th style='background-color: #4CAF50; color: white'> Harga Jual Level 7</th>
+            <th style='background-color: #4CAF50; color: white'> Margin R. Jalan</th>
+            <th style='background-color: #4CAF50; color: white'> Harga R. Jalan</th>
+            <th style='background-color: #4CAF50; color: white'> Margin R. Inap</th>
+            <th style='background-color: #4CAF50; color: white'> Harga R. Inap</th>
+            <th style='background-color: #4CAF50; color: white'> Detail Harga</th>
             <th style='background-color: #4CAF50; color: white'> HPP</th>
             <th style='background-color: #4CAF50; color: white'> Jumlah Barang </th>
             <th style='background-color: #4CAF50; color: white'> Satuan </th>
@@ -657,24 +750,25 @@ th {
 
 
 <script type="text/javascript">
-   $("#tambah").click(function(){
+$("#tambah").click(function(){
 
-var harga_beli = $("#harga_beli").val();
-var harga_jual1 = $("#harga_jual").val();
-var harga_jual2 = $("#harga_jual2").val();
-var harga_jual3 = $("#harga_jual3").val();
-var harga_jual4 = $("#harga_jual4").val();
-var harga_jual5 = $("#harga_jual5").val();
-var harga_jual6 = $("#harga_jual6").val();
-var harga_jual7 = $("#harga_jual7").val();
+    var harga_beli = $("#harga_beli").val();
+    var harga_jual1 = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#harga_jual").val()))));
+    var harga_jual_inap1 = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#harga_jual_inap").val()))));
+
+    var range_harga_rj = parseInt(harga_jual1) - parseInt(harga_beli);
+    var range_harga_ri = parseInt(harga_jual_inap1) - parseInt(harga_beli);
 
 
-if (harga_jual1 < harga_beli)
-{
-    alert("Harga Jual 1 lebih kecil dari harga beli");
-}
+    if (range_harga_rj < 0){
+        alert("Harga Jual Rawat Jalan Level 1 Lebih Kecil dari Harga Beli");
+    }
 
-   });
+    if (range_harga_ri < 0){
+        alert("Harga Jual Rawat Inap Level 1 Lebih Kecil dari Harga Beli");
+    }
+
+});
 </script>
 
 
@@ -1182,6 +1276,21 @@ if (harga_jual1 < harga_beli)
 
                              </script>
 
+<!--menampilkan detail harga-->
+<script type="text/javascript">
+$(document).on("click", ".detail-harga", function(){
+    var kode = $(this).attr('data-kode');
+    var nama = $(this).attr('data-nama');
+    var id = $(this).attr('data-id');
+    var kode_nama = kode +  " " +nama;
+
+    $("#modal_detail").modal('show');
+    $("#info-harga").html(kode_nama)
+    $.post('detail_harga_produk.php',{kode:kode, id:id},function(info) {
+        $("#modal-detail").html(info);
+    });
+});
+</script>
 
                              
 <!--DATA TABLE MENGGUNAKAN AJAX-->
@@ -1221,5 +1330,186 @@ if (harga_jual1 < harga_beli)
 
       } );
     </script>
+
+
+<script>
+
+// COPY HARGA JUAL 1
+$(document).on('click','#copy1',function(e){
+
+    var data_toogle = $(this).attr('data-toogle');
+    var harga_jual_rj = $("#harga_jual").val();
+
+        if (data_toogle == 0) {              
+            $(this).attr("data-toogle", 1);
+            $("#harga_jual_inap").val(harga_jual_rj);
+        }
+        else{                  
+            $(this).attr("data-toogle", 0);
+            $("#harga_jual_inap").val('');
+        }
+
+});
+
+</script>
+
+<script>
+// COPY HARGA JUAL 2 
+$(document).on('click','#copy2',function(e){
+
+    var data_toogle = $(this).attr('data-toogle');
+    var harga_jual_rj2 = $("#harga_jual2").val();
+
+        if (data_toogle == 0) {              
+            $(this).attr("data-toogle", 1);
+            $("#harga_jual_inap2").val(harga_jual_rj2);
+        }
+        else{                  
+            $(this).attr("data-toogle", 0);
+            $("#harga_jual_inap2").val('');
+        }
+});
+
+</script>
+
+<script>
+// COPY HARGA JUAL 3 
+$(document).on('click','#copy3',function(e){
+
+    var data_toogle = $(this).attr('data-toogle');
+    var harga_jual_rj3 = $("#harga_jual3").val();
+
+        if (data_toogle == 0) {              
+            $(this).attr("data-toogle", 1);
+            $("#harga_jual_inap3").val(harga_jual_rj3);
+        }
+        else{                  
+            $(this).attr("data-toogle", 0);
+            $("#harga_jual_inap3").val('');
+        }
+});
+
+</script> 
+
+<script>
+// COPY HARGA JUAL 4 
+$(document).on('click','#copy4',function(e){
+
+    var data_toogle = $(this).attr('data-toogle');
+    var harga_jual_rj4 = $("#harga_jual4").val();
+
+        if (data_toogle == 0) {              
+            $(this).attr("data-toogle", 1);
+            $("#harga_jual_inap4").val(harga_jual_rj4);
+        }
+        else{                  
+            $(this).attr("data-toogle", 0);
+            $("#harga_jual_inap4").val('');
+        }
+});
+
+</script> 
+
+<script>
+// COPY HARGA JUAL 5 
+$(document).on('click','#copy5',function(e){
+
+    var data_toogle = $(this).attr('data-toogle');
+    var harga_jual_rj5 = $("#harga_jual5").val();
+
+        if (data_toogle == 0) {              
+            $(this).attr("data-toogle", 1);
+            $("#harga_jual_inap5").val(harga_jual_rj5);
+        }
+        else{                  
+            $(this).attr("data-toogle", 0);
+            $("#harga_jual_inap5").val('');
+        }
+});
+
+</script> 
+
+<script>
+// COPY HARGA JUAL 6
+$(document).on('click','#copy6',function(e){
+
+    var data_toogle = $(this).attr('data-toogle');
+    var harga_jual_rj6 = $("#harga_jual6").val();
+
+        if (data_toogle == 0) {              
+            $(this).attr("data-toogle", 1);
+            $("#harga_jual_inap6").val(harga_jual_rj6);
+        }
+        else{                  
+            $(this).attr("data-toogle", 0);
+            $("#harga_jual_inap6").val('');
+        }
+});
+
+</script> 
+
+<script>
+// COPY HARGA JUAL 7
+$(document).on('click','#copy7',function(e){
+
+    var data_toogle = $(this).attr('data-toogle');
+    var harga_jual_rj7 = $("#harga_jual7").val();
+
+        if (data_toogle == 0) {              
+            $(this).attr("data-toogle", 1);
+            $("#harga_jual_inap7").val(harga_jual_rj7);
+        }
+        else{                  
+            $(this).attr("data-toogle", 0);
+            $("#harga_jual_inap7").val('');
+        }
+});
+
+</script>
+
+<script>
+// COPY SEMUA HARGA JUAL
+$(document).on('click','#copy-all',function(e){
+
+    var data_toogle = $(this).attr('data-toogle');
+    var harga_jual_rj = $("#harga_jual").val();
+    var harga_jual_rj2 = $("#harga_jual2").val();
+    var harga_jual_rj3 = $("#harga_jual3").val();
+    var harga_jual_rj4 = $("#harga_jual4").val();
+    var harga_jual_rj5 = $("#harga_jual5").val();
+    var harga_jual_rj6 = $("#harga_jual6").val();
+    var harga_jual_rj7 = $("#harga_jual7").val();
+
+        if (data_toogle == 0) {              
+            $(this).attr("data-toogle", 1);
+            $("#harga_jual_inap").val(harga_jual_rj);
+            $("#harga_jual_inap2").val(harga_jual_rj2);
+            $("#harga_jual_inap3").val(harga_jual_rj3);
+            $("#harga_jual_inap4").val(harga_jual_rj4);
+            $("#harga_jual_inap5").val(harga_jual_rj5);
+            $("#harga_jual_inap6").val(harga_jual_rj6);
+            $("#harga_jual_inap7").val(harga_jual_rj7);
+        }
+        else{                  
+            $(this).attr("data-toogle", 0);
+            $("#harga_jual_inap").val('');
+            $("#harga_jual_inap2").val('');
+            $("#harga_jual_inap3").val('');
+            $("#harga_jual_inap4").val('');
+            $("#harga_jual_inap5").val('');
+            $("#harga_jual_inap6").val('');
+            $("#harga_jual_inap7").val('');
+        }
+});
+
+</script>
+
+<script type="text/javascript">
+$(function() {
+    $('.copy-all').click(function() {
+        $('.checkbox-copy').prop('checked', this.checked);
+    });
+});
+</script>
 
 <?php  include 'footer.php'; ?>

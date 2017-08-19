@@ -90,7 +90,7 @@ $no_jurnal = $nomor."/JR/".$data_bulan_terakhir."/".$tahun_terakhir;
 
 					<div class="form-group col-sm-4">
 					<label> Tanggal </label><br>
-					<input type="text" name="tanggal" id="tanggal" placeholder="Tanggal" value="<?php echo date("Y/m/d"); ?>" class="form-control" required="" >
+					<input type="text" name="tanggal" id="tanggal" placeholder="Tanggal" value="<?php echo date("Y-m-d"); ?>" class="form-control" required="" >
 					</div>
 
 					<input type="hidden" name="session_id" id="session_id" class="form-control" readonly="" value="<?php echo $session_id; ?>" required="" >

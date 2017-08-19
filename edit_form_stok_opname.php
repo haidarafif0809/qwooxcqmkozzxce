@@ -141,7 +141,7 @@ $data_stok_opname = mysqli_fetch_array($perintah3);
     <option value="">SILAKAN PILIH...</option>
        <?php 
 
-        include 'cache.class.php';
+        include_once 'cache.class.php';
           $c = new Cache();
           $c->setCache('produk');
           $data_c = $c->retrieveAll();

@@ -18,8 +18,11 @@ include 'sanitasi.php';
  $ops = mysqli_fetch_array($sql);
  $t_ops = $ops['total_ops'];
 
+$query_radiologi = $db->query("SELECT SUM(subtotal) AS jumlah FROM tbs_penjualan_radiologi WHERE no_reg = '$no_reg' AND status_periksa = '1' AND radiologi = 'Radiologi' AND (no_faktur IS NULL OR no_faktur = '')");
+$data_hasil_radiologi = mysqli_fetch_array($query_radiologi);
+$jumlah_radiologi = $data_hasil_radiologi['jumlah'];
 
-echo$tt = $total + $t_ops;
+echo $tt = $total + $t_ops + $jumlah_radiologi;
 
 
 

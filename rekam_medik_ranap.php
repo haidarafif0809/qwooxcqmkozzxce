@@ -69,6 +69,7 @@ tr:nth-child(even){background-color: #f2f2f2}
          <th style='background-color: #4CAF50; color: white' >Kamar</th>
          <th style='background-color: #4CAF50; color: white' >Jam</th>
          <th style='background-color: #4CAF50; color: white' >Tanggal Periksa</th>
+         <th style='background-color: #4CAF50; color: white' >Petugas</th>
          <th style='background-color: #4CAF50; color: white' >Aksi Rekam Medik</th>
          <th style='background-color: #4CAF50; color: white' >Selesai</th>
     </tr>

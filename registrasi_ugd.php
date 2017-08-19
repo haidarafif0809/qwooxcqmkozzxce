@@ -1002,6 +1002,28 @@ $(document).on('click', '.rujuk_ri', function (e) {
                     
                      $("#modal_pulang").modal('hide');
                     $.post("proses_pulang_rumah.php",{reg:reg, keterangan:keterangan},function(data){
+                      if(data== 1){
+                           $('#table_ugd').DataTable().destroy();
+                          var dataTable = $('#table_ugd').DataTable( {
+                              "processing": true,
+                              "serverSide": true,
+                              "ajax":{
+                                url :"datatable_registrasi_ugd.php", // json datasource
+                                type: "post",  // method  , by default get
+                                error: function(){  // error handling
+                                  $(".employee-grid-error").html("");
+                                  $("#table_ugd").append('<tbody class="employee-grid-error"><tr><th colspan="3">No data found in the server</th></tr></tbody>');
+                                  $("#employee-grid_processing").css("display","none");
+                                  
+                                }
+                              },
+                                "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+                                  $(nRow).attr('class','tr-id-'+aData[20]+'');
+
+                                },
+
+                            });
+                      }
                     });
                     
         }); 

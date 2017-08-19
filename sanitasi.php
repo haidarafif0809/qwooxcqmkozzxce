@@ -46,6 +46,11 @@ $rpp = $rp;
 return $rpp;
 }
 
+function gantiTitik($rupiah){
+$koma = str_replace(",",".", $rupiah);
+$titik = $koma;
+return $titik;
+}
 
 function emaildoang($email){
 
@@ -199,7 +204,11 @@ $kode_barang = stringdoang($kode_barang);
 
 }
 
-
+function tanpaKoma($rupiah){
+  $tanpaKoma = str_replace(".00","", $rupiah);
+  $titik = $tanpaKoma;
+  return $titik;
+}
 
 //NOMOR JURNAL
 
