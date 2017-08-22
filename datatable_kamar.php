@@ -55,6 +55,13 @@ $data = array();
 while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 	$nestedData=array(); 
 
+
+   $query_hitung_kamar = $db->query("SELECT COUNT(menginap) as hitung_kamar FROM registrasi WHERE jenis_pasien = 'Rawat Inap' AND bed = '$row[nama_kamar]' AND status = 'menginap' ");
+   	$data_hitung_kamar = mysqli_fetch_array($query_hitung_kamar);
+
+    $sisa_bed = $row['jumlah_bed'] - $data_hitung_kamar['hitung_kamar'];
+
+
 	$nestedData[] = $row["nama"];
 	$nestedData[] = $row["nama_ruangan"];
 	$nestedData[] = $row["nama_kamar"];
@@ -68,7 +75,7 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 	$nestedData[] = $row["tarif_7"];
 	$nestedData[] = $row["fasilitas"];
 	$nestedData[] = $row["jumlah_bed"];
-	$nestedData[] = $row["sisa_bed"];
+	$nestedData[] = $sisa_bed;
 	
 	//edit
 	$pilih_akses_kamar_edit = $db->query("SELECT kamar_edit FROM otoritas_master_data WHERE id_otoritas = '$_SESSION[otoritas_id]' AND kamar_edit = '1' ");
@@ -76,13 +83,13 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 
           if ($kamar_edit > 0){
 
-            if ($row['jumlah_bed'] == $row['sisa_bed'])
+            if ($row['jumlah_bed'] == $sisa_bed)
 	          {
 	            $nestedData[] = "<a href='edit_kamar.php?id=".$row['id']."' class='btn btn-warning'><span class='glyphicon glyphicon-wrench'></span> Edit </a>";
 	          }
 	          else
 	          {
-	            $nestedData[] = "Tidak ada akses";
+	            $nestedData[] = "X";
 	          }
 	      }
 	      //hapus
@@ -91,14 +98,14 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 
           if ($kamar_hapus > 0){
 
-            if ($row['jumlah_bed'] == $row['sisa_bed'])
+            if ($row['jumlah_bed'] == $sisa_bed)
 	          {
 	            $nestedData[] = '<button class="btn btn-danger btn-hapus" data-id="'.$row['id'].'">
 	            <span class="glyphicon glyphicon-trash"> </span> Hapus </button>';
 	          }
 	          else
 	          {
-	            $nestedData[] = "Tidak ada akses";
+	            $nestedData[] = "X";
 	          }
 	      }
 	$nestedData[] = $row["id"];

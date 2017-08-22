@@ -743,12 +743,19 @@ $(".btn-alert-hapus").click(function(){
     var potongan = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#potongan1").val()))));
     var tax = $("#tax1").val();
     var jumlahbarang = $("#jumlahbarang").val();
-    var satuan = $("#satuan_produk").val();
+    var satuan = $("#satuan_konversi").val();
     var kode_gudang = $("#kode_gudang").val();
     var ppn = $("#ppn").val();
     var total = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#total_pembelian1").val()))));
 
 
+    if (harga == harga_baru) {
+      harga = harga;
+
+    }
+    else{
+      harga = harga_baru;
+    }
                               
     if (total == '') 
     {
@@ -809,7 +816,6 @@ $(".btn-alert-hapus").click(function(){
         $("#total_pembelian").val(tandaPemisahTitik(t_total));
         $("#total_pembelian1").val(tandaPemisahTitik(total_akhir));
 
- 
     $.post("proses_tbs_edit_pembelian.php",{no_faktur:no_faktur,kode_barang:kode_barang,nama_barang:nama_barang,jumlah_barang:jumlah_barang,harga:harga,harga_baru:harga_baru,potongan:potongan,tax:tax,satuan:satuan},function(data){
       
       $("#tbody").prepend(data);    
@@ -899,211 +905,201 @@ $(".btn-alert-hapus").click(function(){
        $("#zxzx").val(x);
 
 
- if (sisa_pembayaran < 0)
- {
-
-  alert("Jumlah Pembayaran Tidak Mencukupi");
-  $("#pembayaran_pembelian").val('');
-  $("#pembayaran_pembelian").focus();
+ if (sisa_pembayaran < 0){
+    alert("Jumlah Pembayaran Tidak Mencukupi");
+    $("#pembayaran_pembelian").val('');
+    $("#pembayaran_pembelian").focus();
  }
-
-
- else if (suplier1 == "") 
- {
-
-alert("Suplier Harus Di Isi");
-
+ else if (suplier1 == ""){
+    alert("Suplier Harus Di Isi");
  }
-else if (pembayaran == "") 
- {
-
-alert("Pembayaran Harus Di Isi");
-
+ else if (pembayaran == ""){
+    alert("Pembayaran Harus Di Isi");
  }
-
- else if (sisa < 0) 
- {
-
-alert("Silakan Bayar Hutang");
-
+ else if (sisa < 0){
+    alert("Silakan Bayar Hutang");
  }
-
-   else if ((total_1 ==  0 && total ==  0 && potongan_persen != 100 && pembayaran == 0) || (total_1 ==  "" && total == "" &&potongan_persen != 100 && pembayaran == ""))
- {
-
-alert(" Anda Belum Melakukan Pembelian ");
-
+ else if ((total_1 ==  0 && total ==  0 && potongan_persen != 100 && pembayaran == 0) || (total_1 ==  "" && total == "" &&potongan_persen != 100 && pembayaran == "")){
+    alert(" Anda Belum Melakukan Pembelian ");
  }
-
- else if (jumlah_bayar_lama == 0)
- {
-
-       $("#pembayaran").hide();
-       $("#batal").hide();
-       $("#hutang").hide();
-       $("#transaksi_baru").show(); 
-       
-       $.post("proses_bayar_edit_pembelian.php",{total_1:total_1,no_faktur:no_faktur,sisa_pembayaran:sisa_pembayaran,kredit:kredit,suplier:suplier1,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,tax1:tax1,cara_bayar:cara_bayar,jumlah_barang:jumlah_barang,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,tanggal:tanggal,total_1:total_1,jumlah_kredit_baru:jumlah_kredit_baru,x:x,ppn:ppn,ppn_input:ppn_input,no_faktur_suplier:no_faktur_suplier},function(info) {
-       
-       
-       $("#alert_berhasil").show();
-       $("#result").html();
-       $("#cetak_tunai").show();
-        $("#result").hide();
-
-       
-       });
- }
-
-else
- {
-
-
-      if (x > total)
-      {
-      
-      var no_faktur = $(this).attr("data-faktur");
-      
-      $.post('alert_hutang_pembelian.php',{no_faktur:no_faktur},function(data){
-      
-      
-      $("#modal_alert").modal('show');
-      $("#span_modal_alert").html(data);
-      
-      });
-      
-      }
-
-}
-
-
- $("form").submit(function(){
-    return false;
-});
-
+ else if (jumlah_bayar_lama == 0){
     
+        //Cek untuk perubahan harga beli
+        $.post("cek_perubahan_harga_edit_pembelian.php",{no_faktur:no_faktur},function(hasil){
+          if(hasil == 1){
+            var pesan_alert = confirm("Harga Barang melebihi harga jual, yakin akan merubah harga beli tersebut? ");
+          }
+          else if(hasil == 2){
+            var pesan_alert = confirm("Ada perubahan pada harga beli, anda yakin ?");
+          }
 
-  });
-            
+          else if(hasil == 3){
+            var pesan_alert = confirm("Harga beli produk tidak ada perubahan, lanjutkan transaksi ?");
+          }
+          else{
+            var pesan_alert = confirm("Ada perubahan pada harga beli, anda yakin ?");
+          }
 
+          if(pesan_alert == true){
 
-            
-  
+              $("#pembayaran").hide();
+              $("#batal").hide();
+              $("#hutang").hide();
+              $("#transaksi_baru").show(); 
+       
+              $.post("proses_bayar_edit_pembelian.php",{total_1:total_1,no_faktur:no_faktur,sisa_pembayaran:sisa_pembayaran,kredit:kredit,suplier:suplier1,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,tax1:tax1,cara_bayar:cara_bayar,jumlah_barang:jumlah_barang,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,tanggal:tanggal,total_1:total_1,jumlah_kredit_baru:jumlah_kredit_baru,x:x,ppn:ppn,ppn_input:ppn_input,no_faktur_suplier:no_faktur_suplier},function(info) {
+               
+               
+                 $("#alert_berhasil").show();
+                 $("#result").html();
+                 $("#cetak_tunai").show();
+                 $("#result").hide();
+
+               
+               });
+          }
+          else{
+
+          }// akhir else if pada alert true
+
+      }); //Akhir Cek untuk perubahan harga beli
+ }
+ else{
+
+      if (x > total){
+      
+        var no_faktur = $(this).attr("data-faktur");
         
-  </script>
-
-   <script>
-       //perintah javascript yang diambil dari form proses_bayar_beli.php dengan id=form_beli
-       $("#hutang").click(function(){
-       
-       var no_faktur = $("#nomorfaktur").val();
-       var no_faktur_suplier = $("#no_faktur_suplier").val();
-       var sisa_pembayaran = $("#sisa_pembayaran_pembelian").val();
-       var kredit = $("#kredit").val();
-       var suplier = $("#nama_suplier").val();
-       var tanggal_jt = $("#tanggal_jt").val();
-       var total = $("#total_pembelian").val();
-       var potongan = $("#potongan_pembelian").val();
-       var potongan_persen = $("#potongan_persen").val();
-       var tax = $("#tax").val();
-       var cara_bayar = $("#carabayar1").val();
-       var jumlah_barang = $("#jumlah_barang").val();
-       var pembayaran = $("#pembayaran_pembelian").val();
-       var tanggal = $("#tanggal").val();
-       var total_1 = $("#total_pembelian1").val();
-       var jumlah_bayar_lama = $("#jumlah_bayar_lama").val();
-       var tax1 = $("#tax1").val();
-       var ppn = $("#ppn").val();
-       var ppn_input = $("#ppn_input").val();
-       
-       var sisa = pembayaran - total;
-       var sisa_kredit = total - pembayaran; 
-
-       var jumlah_kredit_baru = parseInt(kredit,10) - parseInt(jumlah_bayar_lama,10);
-       var x = parseInt(jumlah_bayar_lama,10) + parseInt(pembayaran,10);
-       $("#zxzx").val(x);
-
-
-      if (kredit == "" )
-      {
-
-        alert ("Jumlah Pembayaran Tidak Mencukupi");
+        $.post('alert_hutang_pembelian.php',{no_faktur:no_faktur},function(data){
+      
+        
+          $("#modal_alert").modal('show');
+          $("#span_modal_alert").html(data);
+      
+        });
+      
       }
 
-       else if (suplier == "") 
-       {
-       
-       alert("Suplier Harus Di Isi");
-       
-       }
-       else if (tanggal_jt == "")
-       {
-
-        alert ("Tanggal Jatuh Tempo Harus Di Isi");
-      $("#tanggal_jt").focus();
-       }
-
-  else if ((total_1 ==  0 && total ==  0 && potongan_persen != 100 && pembayaran == 0) || (total_1 ==  "" && total == "" &&potongan_persen != 100 && pembayaran == ""))
- {
-
-alert(" Anda Belum Melakukan Pembelian ");
-
  }
-       
- else if (jumlah_bayar_lama == 0 || x <= total)
- {
 
 
-          $("#pembayaran").hide();
-          $("#batal").hide();
-          $("#hutang").hide();
-          $("#transaksi_baru").show();
-       
-       $.post("proses_bayar_edit_pembelian.php",{total_1:total_1,tax1:tax1,tanggal:tanggal,no_faktur:no_faktur,sisa_pembayaran:sisa_pembayaran,kredit:kredit,suplier:suplier,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,cara_bayar:cara_bayar,jumlah_barang:jumlah_barang,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,total_1:total_1,jumlah_kredit_baru:jumlah_kredit_baru,x:x,ppn:ppn,ppn_input:ppn_input,no_faktur_suplier:no_faktur_suplier},function(info) {
+  $("form").submit(function(){
+      return false;
+  });
 
+});
+</script>
+
+
+<script>
+$("#hutang").click(function(){
        
-       $("#alert_berhasil").show();
-        $("#result").hide();
-       $("#result").html(info);
-       $("#cetak_hutang").show();
-       $("#sisa_pembayaran_pembelian").val('');
-       $("#tanggal_jt").val('');
-       
-       
-       
-       });
-        // #result didapat dari tag span id=result
+  var no_faktur = $("#nomorfaktur").val();
+  var no_faktur_suplier = $("#no_faktur_suplier").val();
+  var sisa_pembayaran = $("#sisa_pembayaran_pembelian").val();
+  var kredit = $("#kredit").val();
+  var suplier = $("#nama_suplier").val();
+  var tanggal_jt = $("#tanggal_jt").val();
+  var total = $("#total_pembelian").val();
+  var potongan = $("#potongan_pembelian").val();
+  var potongan_persen = $("#potongan_persen").val();
+  var tax = $("#tax").val();
+  var cara_bayar = $("#carabayar1").val();
+  var jumlah_barang = $("#jumlah_barang").val();
+  var pembayaran = $("#pembayaran_pembelian").val();
+  var tanggal = $("#tanggal").val();
+  var total_1 = $("#total_pembelian1").val();
+  var jumlah_bayar_lama = $("#jumlah_bayar_lama").val();
+  var tax1 = $("#tax1").val();
+  var ppn = $("#ppn").val();
+  var ppn_input = $("#ppn_input").val();
+  var sisa = pembayaran - total;
+  var sisa_kredit = total - pembayaran;
+  var jumlah_kredit_baru = parseInt(kredit,10) - parseInt(jumlah_bayar_lama,10);
+  var x = parseInt(jumlah_bayar_lama,10) + parseInt(pembayaran,10);
+    
+    $("#zxzx").val(x);
+
+  if (kredit == "" ){
+
+      alert ("Jumlah Pembayaran Tidak Mencukupi");
   }
+  else if (suplier == ""){
+      alert("Suplier Harus Di Isi"); 
+  }
+  else if (tanggal_jt == ""){
+      alert ("Tanggal Jatuh Tempo Harus Di Isi");
+      $("#tanggal_jt").focus();
+  }
+  else if ((total_1 ==  0 && total ==  0 && potongan_persen != 100 && pembayaran == 0) || (total_1 ==  "" && total == "" &&potongan_persen != 100 && pembayaran == "")){
 
-else
- {
+      alert(" Anda Belum Melakukan Pembelian ");
+  }     
+  else if (jumlah_bayar_lama == 0 || x <= total){
+    
+        //Cek untuk perubahan harga beli
+        $.post("cek_perubahan_harga_edit_pembelian.php",{no_faktur:no_faktur},function(hasil){
+          if(hasil == 1){
+            var pesan_alert = confirm("Harga Barang melebihi harga jual, yakin akan merubah harga beli tersebut? ");
+          }
+          else if(hasil == 2){
+            var pesan_alert = confirm("Ada perubahan pada harga beli, anda yakin ?");
+          }
+          else if(hasil == 3){
+            var pesan_alert = confirm("Harga beli produk tidak ada perubahan, lanjutkan transaksi ?");
+          }
 
+          if(pesan_alert == true){
 
-      if (x > total)
-      {
+                  $("#pembayaran").hide();
+                  $("#batal").hide();
+                  $("#hutang").hide();
+                  $("#transaksi_baru").show();
+               
+               $.post("proses_bayar_edit_pembelian.php",{total_1:total_1,tax1:tax1,tanggal:tanggal,no_faktur:no_faktur,sisa_pembayaran:sisa_pembayaran,kredit:kredit,suplier:suplier,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,cara_bayar:cara_bayar,jumlah_barang:jumlah_barang,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,total_1:total_1,jumlah_kredit_baru:jumlah_kredit_baru,x:x,ppn:ppn,ppn_input:ppn_input,no_faktur_suplier:no_faktur_suplier},function(info) {
+
+               
+               $("#alert_berhasil").show();
+                $("#result").hide();
+               $("#result").html(info);
+               $("#cetak_hutang").show();
+               $("#sisa_pembayaran_pembelian").val('');
+               $("#tanggal_jt").val('');
+               
+               
+               
+               });
+                // #result didapat dari tag span id=result
+          }
+          else{
+
+          }// akhir else if pada alert true
+
+      }); //Akhir Cek untuk perubahan harga beli
+  }
+  else{
+
+      if (x > total){
       
-      var no_faktur = $(this).attr("data-faktur");
-      
-      $.post('alert_hutang_pembelian.php',{no_faktur:no_faktur},function(data){
-      
-      
-      $("#modal_alert").modal('show');
-      $("#span_modal_alert").html(data);
-      
-      });
+        var no_faktur = $(this).attr("data-faktur");
+        
+        $.post('alert_hutang_pembelian.php',{no_faktur:no_faktur},function(data){
+        
+          $("#modal_alert").modal('show');
+          $("#span_modal_alert").html(data);
+        
+        });
       
       }
 
 }
       
+    $("form").submit(function(){
+           return false;
+    });
 
-
- $("form").submit(function(){
-       return false;
-       });
-
-  });    
-  </script>
+});    
+</script>
 
 <script type="text/javascript">
   $(document).ready(function(){

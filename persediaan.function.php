@@ -100,4 +100,25 @@ function hitungMargin($harga_beli,$harga_jual,$tipe_barang){
 
 
 
+function cekStokPertanggal($kode_barang, $tanggal)
+{
+
+  include 'db.php';
+  
+  $query_hpp_masuk = $db->query("SELECT SUM(jumlah_kuantitas) AS jumlah FROM hpp_masuk WHERE kode_barang = '$kode_barang' AND tanggal <= '$tanggal'");
+
+  $query_hpp_keluar = $db->query("SELECT SUM(jumlah_kuantitas) AS jumlah FROM hpp_keluar WHERE kode_barang = '$kode_barang' AND tanggal <= '$tanggal'");
+
+
+ $data_hpp_masuk = mysqli_fetch_array($query_hpp_masuk);
+
+ $data_hpp_keluar = mysqli_fetch_array($query_hpp_keluar);
+
+ $stok = $data_hpp_masuk['jumlah'] - $data_hpp_keluar['jumlah'];
+
+ return $stok;
+
+
+}
+
  ?>

@@ -526,6 +526,7 @@ if ($lihat['laporan_laboratorium_lihat'] > 0){
     echo '<li><a href="lap_kunjungan_ugd.php" class="waves-effect">Lap. Kunjungan UGD</a></li>';
  }
 
+    echo '<li><a href="menu_lap_limit_stok.php" class="waves-effect">Lap. Limit Stok Produk</a></li>';
 
 ?>
 

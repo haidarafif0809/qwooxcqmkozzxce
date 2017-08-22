@@ -124,6 +124,8 @@ $ambil_suplier = mysqli_fetch_array($select_suplier);
             $sisa_barang = $jumlah_barang - $jumlah_keluar;
             }
 
+
+
             $query2 = "INSERT INTO detail_pembelian (no_faktur, tanggal, jam, waktu, kode_barang, nama_barang, jumlah_barang, asal_satuan, satuan, harga, subtotal, potongan, tax, sisa) 
             VALUES ('$nomor_faktur','$tanggal','$jam_sekarang','$waktu','$data[kode_barang]','$data[nama_barang]','$jumlah_barang', '$satuan','$data[satuan]','$harga','$data[subtotal]','$data[potongan]','$data[tax]','$sisa_barang')";
 
@@ -134,6 +136,91 @@ $ambil_suplier = mysqli_fetch_array($select_suplier);
                        else {
                        echo "Error: " . $query2 . "<br>" . $db->error;
                        }
+
+            //PROSES UNTUK UPDATE HARGA BELI PADA PRODUK TERSEBUT 
+                  $query_barang = $db->query("SELECT harga_beli,satuan,kode_barang FROM barang WHERE kode_barang = '$data[kode_barang]' ");
+                  $data_barang = mysqli_fetch_array($query_barang);
+
+
+                  if($data['harga'] != $data_barang['harga_beli']){
+
+                      //Cek apakah barang tersebut memiliki Konversi ?
+                      $query_cek_satuan_konversi = $db->query("SELECT konversi FROM satuan_konversi WHERE kode_produk = '$data[kode_barang]' AND id_satuan = '$data[satuan]'");
+                      $data_jumlah_konversi = mysqli_fetch_array($query_cek_satuan_konversi);
+                      $data_jumlah = mysqli_num_rows($query_cek_satuan_konversi);
+
+
+                      if($data_jumlah > 0){
+                        $hasil_konversi = $data['harga'] / $data_jumlah_konversi['konversi'];
+                        //Jika Iya maka ambil harga setelah di bagi dengan jumlah barang yang sebenarnya di konversi !!
+                        $harga_beli_sebenarnya = $hasil_konversi;
+                        //Update Harga Pokok pada konversi
+                        $query_update_harga_konversi  = $db->query("UPDATE satuan_konversi SET harga_pokok = '$data[harga]' WHERE kode_produk = '$data[kode_barang]'");
+                       
+                      }
+                      else{
+                        //Jika Tidak ambil harga yang sebenarnya dari TBS !!
+                        $harga_beli_sebenarnya = $data['harga'];
+                      }
+
+
+                      $query_update_harga_beli  = $db->query("UPDATE barang SET harga_beli = '$harga_beli_sebenarnya' WHERE kode_barang = '$data[kode_barang]'");
+
+
+                      //UPDATE CACHE PRODUK TERSEBUT
+                      include 'cache.class.php';
+
+                          $c = new Cache();
+                          
+                          $c->setCache('produk_obat');
+
+                          $c->eraseAll();
+
+
+                      $query_cache = $db->query("SELECT * FROM barang WHERE kode_barang = '$data_barang[kode_barang]' ");
+                      while ($data = $query_cache->fetch_array()) {
+                       # code...
+                          // store an array
+                          $c->store($data['kode_barang'], array(
+                              'kode_barang' => $data['kode_barang'],
+                              'nama_barang' => $data['nama_barang'],
+                              'harga_beli' => $data['harga_beli'],
+                              'harga_jual' => $data['harga_jual'],
+                              'harga_jual2' => $data['harga_jual2'],
+                              'harga_jual3' => $data['harga_jual3'],
+                              'harga_jual4' => $data['harga_jual4'],
+                              'harga_jual5' => $data['harga_jual5'],
+                              'harga_jual6' => $data['harga_jual6'],
+                              'harga_jual7' => $data['harga_jual7'],
+                              
+                              
+                              "harga_jual_inap" =>$data['harga_jual_inap'],
+                              "harga_jual_inap2" =>$data['harga_jual_inap2'],
+                              "harga_jual_inap3" =>$data['harga_jual_inap3'],
+                              "harga_jual_inap4" =>$data['harga_jual_inap4'],
+                              "harga_jual_inap5" =>$data['harga_jual_inap5'],
+                              "harga_jual_inap6" =>$data['harga_jual_inap6'],
+                              "harga_jual_inap7" =>$data['harga_jual_inap7'],
+                              
+                              'kategori' => $data['kategori'],
+                              'suplier' => $data['suplier'],
+                              'limit_stok' => $data['limit_stok'],
+                              'over_stok' => $data['over_stok'],
+                              'berkaitan_dgn_stok' => $data['berkaitan_dgn_stok'],
+                              'tipe_barang' => $data['tipe_barang'],
+                              'status' => $data['status'],
+                              'satuan' => $data['satuan'],
+                              'id' => $data['id'],
+
+                          ));
+
+                      }
+
+                      $c->retrieveAll();
+                      // AKHIR DARI UPDATE CHACHE PRODUK TERSEBUT
+                  }
+                  //AKHIR PROSES UNTUK UPDATE HARGA BELI PADA PRODUK TERSEBUT 
+
             
             }
 

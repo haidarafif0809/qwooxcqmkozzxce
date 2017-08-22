@@ -614,6 +614,7 @@ $biaya_admin = angkadoang($_POST['biaya_adm']);
    
 }
 
+    $update_registrasi = $db->query("UPDATE registrasi SET status = 'Sudah Pulang' WHERE no_reg ='$no_reg'");
 
 
 // coding untuk memasukan history_tbs dan menghapus tbs
@@ -637,7 +638,6 @@ $biaya_admin = angkadoang($_POST['biaya_adm']);
 
 
 
-    $update_registrasi = $db->query("UPDATE registrasi SET status = 'Sudah Pulang' WHERE no_reg ='$no_reg'");
 
 
 
