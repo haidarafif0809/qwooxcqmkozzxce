@@ -1,0 +1,8 @@
+
+
+Table 		: Registrasi
+
+				ALTER TABLE registrasi ADD id_dokter INT(100) NOT NULL AFTER ruangan, ADD level_harga VARCHAR(100) NOT NULL AFTER id_dokter
+
+Programmer	: - Riko Pernando
+Tanggal		: - 23 Agustus 2017
