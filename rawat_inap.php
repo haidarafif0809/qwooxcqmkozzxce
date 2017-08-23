@@ -454,7 +454,7 @@ else
       <?php 
       $query_ruangan = $db->query("SELECT id,nama_ruangan FROM ruangan ORDER BY id");
       while ( $data_ruangan = mysqli_fetch_array($query_ruangan)) {
-      echo "<option value='".$data_ruangan['id']."'>".$data_ruangan['nama_ruangan']."</option>";
+      echo "<option value='".$data_ruangan['id']."-".$data_ruangan['nama_ruangan']."'>".$data_ruangan['nama_ruangan']."</option>";
       }
       ?>
   </select>
@@ -718,13 +718,31 @@ else
 <div class="form-group">
           <label for="alamat">Dokter Penanggung Jawab:</label>
           <select class="form-control" id="dokter_pengirim" name="dokter_pengirim"  autocomplete="off">
-           <option value="<?php echo $data_penetapan_petugas['nama_dokter'];?>"><?php echo $data_penetapan_petugas['nama_dokter'];?></option>
-                  <?php 
-                  $query = $db->query("SELECT nama FROM user WHERE tipe = '1' ");
-                  while ( $data = mysqli_fetch_array($query)) {
-                  echo "<option value='".$data['nama']."'>".$data['nama']."</option>";
-                  }
-                  ?>
+ <?php 
+    
+    //untuk menampilkan semua data pada tabel pelanggan dalam DB
+    $query01 = $db->query("SELECT id,nama FROM user WHERE tipe = '1'");
+    
+      $petugas = $db->query("SELECT nama_dokter FROM penetapan_petugas");
+        $data_petugas = mysqli_fetch_array($petugas);
+
+    //untuk menyimpan data sementara yang ada pada $query
+    while($data012 = mysqli_fetch_array($query01))
+    {   
+      
+
+    if ($data012['nama'] == $data_petugas['nama_dokter']) {
+     echo "<option selected value='".$data012['id']."-".$data012['nama']."'>".$data012['nama'] ."</option>";
+    }
+    else{
+      echo "<option value='".$data012['id']."-".$data012['nama']."'>".$data012['nama'] ."</option>";
+    }
+
+    
+    }
+    
+    
+    ?>
           </select>
 </div>
 
@@ -745,12 +763,31 @@ else
 <div class="form-group">
     <label for="alamat">Dokter Pelaksana:</label>
     <select class="form-control" id="dokter_penanggung_jawab" name="dokter_penanggung_jawab"  autocomplete="off">
-          <option value="<?php echo $data_penetapan_petugas['nama_dokter'];?>"><?php echo $data_penetapan_petugas['nama_dokter'];?></option>
-    <?php 
-    $query = $db->query("SELECT nama FROM user WHERE tipe = '1' ");
-    while ( $data = mysqli_fetch_array($query)) {
-    echo "<option value='".$data['nama']."'>".$data['nama']."</option>";
+
+ <?php 
+    
+    //untuk menampilkan semua data pada tabel pelanggan dalam DB
+    $query01 = $db->query("SELECT id,nama FROM user WHERE tipe = '1'");
+    
+      $petugas = $db->query("SELECT nama_dokter FROM penetapan_petugas");
+        $data_petugas = mysqli_fetch_array($petugas);
+
+    //untuk menyimpan data sementara yang ada pada $query
+    while($data01 = mysqli_fetch_array($query01))
+    {   
+      
+
+    if ($data01['nama'] == $data_petugas['nama_dokter']) {
+     echo "<option selected value='".$data01['id']."-".$data01['nama'] ."'>".$data01['nama'] ."</option>";
     }
+    else{
+      echo "<option value='".$data01['id']."-".$data01['nama'] ."'>".$data01['nama'] ."</option>";
+    }
+
+    
+    }
+    
+    
     ?>
   </select>
 </div>
@@ -973,14 +1010,12 @@ tr:nth-child(even){background-color: #f2f2f2}
 <script type="text/javascript">
   // cari kamar seuai dengan ruangannya
     $(document).on('click','#cari_kamar',function() {
+
+
+    var ruangan_split = $("#ruangan").val();
+    var ruangan_split = ruangan_split.split("-");// memisahkan string
+    var ruangan = ruangan_split[0];// memisahkan string
   
-    /*var ruangan = $("#ruangan").val();
-    if (ruangan == '') {  
-      alert("Silakan pilih ruangan terlebih dahulu.");
-      $("#ruangan").focus();
-    }
-    else
-    {*/
         $("#myModal1").modal('show');
         $('#table_kamar').DataTable().destroy();
 
@@ -994,7 +1029,7 @@ tr:nth-child(even){background-color: #f2f2f2}
           "ajax":{
             url :"datatable_cari_kamar_dirawat_inap.php", // json datasource
              "data": function ( d ) {
-                d.ruangan = $("#ruangan").val();
+                d.ruangan = ruangan;
                 // d.custom = $('#myInput').val();
                 // etc
             },
@@ -1011,7 +1046,7 @@ tr:nth-child(even){background-color: #f2f2f2}
               $(nRow).attr('class', "pilih2 tr-id-"+aData[7]+"");
               $(nRow).attr('data-nama', aData[1]);
               $(nRow).attr('data-group-bed', aData[2]);
-              $(nRow).attr('data-ruangan', aData[8]);
+              $(nRow).attr('data-ruangan', aData[8]+"-"+aData[3]);
 
           } 
 
@@ -1044,7 +1079,6 @@ else
    <script type="text/javascript">
    //untuk menampilkan data yang diambil pada form tbs penjualan berdasarkan id=formtambahproduk
   $("#daftar").click(function(){
-    var ruangan = $("#ruangan").val();
     var group_bed = $("#group_bed").val();
     var bed = $("#bed").val();
     var rujukan = $("#rujukan").val();
@@ -1068,9 +1102,9 @@ else
     var no_hp_penanggung = $("#no_hp_penanggung").val();
     var pekerjaan_penanggung = $("#pekerjaan_penanggung").val();
     var hubungan_dengan_pasien = $("#hubungan_dengan_pasien").val();
-    var dokter_pengirim = $("#dokter_pengirim").val();
+
     var poli = $("#poli").val();
-    var dokter_penanggung_jawab = $("#dokter_penanggung_jawab").val(); 
+    
     var sistole_distole = $("#sistole_distole").val();
    
     var respiratory_rate = $("#respiratory_rate").val();
@@ -1088,6 +1122,21 @@ else
 
     var token = $("#token").val();
     var cari_migrasi = $("#cari_migrasi").val();
+
+    var dokter_pj = $("#dokter_penanggung_jawab").val();
+    var dokter_pj = dokter_pj.split("-");// memisahkan string
+    var id_dokter_pj = dokter_pj[0];// memisahkan string
+    var dokter_penanggung_jawab = dokter_pj[1];// memisahkan string
+
+    var dokter_kirim = $("#dokter_pengirim").val();
+    var dokter_kirim = dokter_kirim.split("-");// memisahkan string
+    var id_dokter_pengirim = dokter_kirim[0];// memisahkan string
+    var dokter_pengirim = dokter_kirim[1];// memisahkan string
+
+    var ruangan_split = $("#ruangan").val();
+    var ruangan_split = ruangan_split.split("-");// memisahkan string
+    var ruangan = ruangan_split[0];// memisahkan string
+    var nama_ruangan = ruangan_split[1];// memisahkan string
 
     $("#kembali").hide();
     $("#daftar").show();
@@ -1148,7 +1197,7 @@ $("#surat_jaminan").focus();
 
 else{
   $("#coba").show();
- $.post("proses_rawat_inap.php",{ruangan:ruangan,group_bed:group_bed,bed:bed,rujukan:rujukan,penjamin:penjamin,no_rm:no_rm,nama_lengkap:nama_lengkap,jenis_kelamin:jenis_kelamin,tanggal_lahir:tanggal_lahir,umur:umur,alamat:alamat,hp_pasien:hp_pasien,penanggung_jawab:penanggung_jawab,alamat_penanggung:alamat_penanggung,no_hp_penanggung:no_hp_penanggung,pekerjaan_penanggung:pekerjaan_penanggung,hubungan_dengan_pasien:hubungan_dengan_pasien,perkiraan_menginap:perkiraan_menginap,surat_jaminan:surat_jaminan,dokter_pengirim:dokter_pengirim,poli:poli,dokter_penanggung_jawab:dokter_penanggung_jawab,kondisi:kondisi,sistole_distole:sistole_distole,respiratory_rate:respiratory_rate,suhu:suhu,nadi:nadi,berat_badan:berat_badan,tinggi_badan:tinggi_badan,alergi:alergi,token:token},function(data){
+ $.post("proses_rawat_inap.php",{nama_ruangan:nama_ruangan,ruangan:ruangan,group_bed:group_bed,bed:bed,rujukan:rujukan,penjamin:penjamin,no_rm:no_rm,nama_lengkap:nama_lengkap,jenis_kelamin:jenis_kelamin,tanggal_lahir:tanggal_lahir,umur:umur,alamat:alamat,hp_pasien:hp_pasien,penanggung_jawab:penanggung_jawab,alamat_penanggung:alamat_penanggung,no_hp_penanggung:no_hp_penanggung,pekerjaan_penanggung:pekerjaan_penanggung,hubungan_dengan_pasien:hubungan_dengan_pasien,perkiraan_menginap:perkiraan_menginap,surat_jaminan:surat_jaminan,dokter_pengirim:dokter_pengirim,poli:poli,dokter_penanggung_jawab:dokter_penanggung_jawab,kondisi:kondisi,sistole_distole:sistole_distole,respiratory_rate:respiratory_rate,suhu:suhu,nadi:nadi,berat_badan:berat_badan,tinggi_badan:tinggi_badan,alergi:alergi,token:token,id_dokter_pj:id_dokter_pj,id_dokter_pengirim:id_dokter_pengirim},function(data){
      
      $("#demo").hide();
 
