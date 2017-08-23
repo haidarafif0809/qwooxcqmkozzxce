@@ -143,6 +143,7 @@
 		 <script src="https://unpkg.com/dexie@latest/dist/dexie.js"></script>
 
 		   <script src="js/printThis.js" type="text/javascript"></script>
+		   <script src="js/jquery.print.min.js" type="text/javascript"></script>
 
                
 </head>

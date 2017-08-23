@@ -402,6 +402,7 @@ $obat = $otoritas_produk['tipe_obat'];
         <h4 class="modal-title"><center><b>Cetak Tunai</b></center></h4>
       </div>
       <div class="modal-body">
+      <button id="cetak_ulang_tunai" class="btn btn-default">Cetak Ulang</button>
         <div id="draft_cetak_tunai">
           
         </div>
@@ -1052,7 +1053,12 @@ Radiologi  </button>
 $(document).ready(function(){
   $("#cetak_tunai").click(function(){
       $('#modal_cetak_tunai').modal('show');
-       $('#draft_cetak_tunai').printThis();
+      $("#draft_cetak_tunai").print(/*options*/);
+       // $('#draft_cetak_tunai').printThis();
+  });
+
+  $("#cetak_ulang_tunai").click(function(){
+    $("#draft_cetak_tunai").print(/*options*/);
   });
 });
 
