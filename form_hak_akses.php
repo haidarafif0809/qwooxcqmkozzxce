@@ -744,6 +744,26 @@ else{
 
 </div> <!-- / of otoritas MENU APS -->
 
+<!-- start otoritas Tanggal Masuk Pasien Inap -->
+<div class="form-group col-sm-2"> 
+<label>Tanggal Registrasi Pasien</label><br>
+
+<?php 
+
+if ($data_otoritas['tanggal_masuk'] == '1'){
+    echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="checkbox_tanggal_masuk" name="tanggal_masuk" checked="">
+    <label for="checkbox_tanggal_masuk">Lihat</label> <br>';
+}
+
+else{
+    echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="checkbox_tanggal_masuk" name="tanggal_masuk">
+    <label for="checkbox_tanggal_masuk">Lihat</label> <br>';  
+}
+
+ ?>
+
+</div> <!-- / of otoritas Tanggal Masuk Pasien Inap -->
+
 
 <div class="form-group col-sm-12">
     

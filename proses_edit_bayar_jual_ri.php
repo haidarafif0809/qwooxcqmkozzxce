@@ -1,8 +1,7 @@
-<?php 
+<?php  include_once 'session_login.php';
 include 'db.php';
 include_once 'sanitasi.php';
 
-session_start();
 $tahun_sekarang = date('Y');
 $bulan_sekarang = date('m');
 $tanggal_sekarang = date('Y-m-d');
@@ -53,6 +52,22 @@ $tanggal = tanggal_mysql($_POST['tanggal']);
 
 $penyesuaian_tanggal = stringdoang($_POST['penyesuaian_tanggal']);
 
+
+$akses_registrasi = $db->query("SELECT tanggal_masuk FROM otoritas_registrasi WHERE id_otoritas = '$_SESSION[otoritas_id]' ");
+$data_akses = mysqli_fetch_array($akses_registrasi);
+
+if ($data_akses['tanggal_masuk'] > 0) {
+
+$tanggal_masuk = tanggal_mysql($_POST['tanggal_masuk']); 
+
+}else{
+
+$tanggal_masuk = $tanggal; 
+
+}
+
+
+
 $nama_petugas = stringdoang($_SESSION['nama']);
 $kode_gudang = stringdoang($_POST['kode_gudang']);
 $ppn_input = stringdoang($_POST['ppn_input']);
@@ -76,6 +91,7 @@ $pembayaran = angkadoang($_POST['pembayaran']);
 $bed = stringdoang($_POST['bed']);
 $group_bed = stringdoang($_POST['group_bed']);
 
+$waktu_edit = $tanggal." ".$jam_sekarang;
 
 $no_jurnal = no_jurnal();
 
@@ -309,13 +325,18 @@ AND no_reg = '$no_reg'");
     }
     else
     {
-      $tanggal_produk = $data['tanggal'];
+            if ($data['tipe_barang'] == 'Bed') { 
+              $tanggal_produk = $tanggal_masuk; 
+            } 
+            else{ 
+              $tanggal_produk = $data['tanggal']; 
+            } 
     }
-        $query2 = "INSERT INTO detail_penjualan (no_faktur,no_rm, no_reg, tanggal, jam, kode_barang, nama_barang, jumlah_barang, asal_satuan,satuan, harga, subtotal, potongan, tax, sisa,tipe_produk,lab) VALUES ('$no_faktur','$no_rm', '$no_reg',
+        $query2 = "INSERT INTO detail_penjualan (no_faktur,no_rm, no_reg, tanggal, jam, kode_barang, nama_barang, jumlah_barang, asal_satuan,satuan, harga, subtotal, potongan, tax, sisa,tipe_produk,lab,ruangan,waktu) VALUES ('$no_faktur','$no_rm', '$no_reg',
           '$tanggal_produk', '$data[jam]', '$data[kode_barang]',
           '$data[nama_barang]','$jumlah_barang','$satuan','$data[satuan]',
           '$harga','$data[subtotal]','$data[potongan]','$data[tax]',
-          '$jumlah_barang','$data[tipe_barang]','$data[lab]')";
+          '$jumlah_barang','$data[tipe_barang]','$data[lab]','$data[ruangan]','$waktu_edit')";
 
         if ($db->query($query2) === TRUE) {
         } 
@@ -624,7 +645,7 @@ else
 
       }
 
-
+   $update_registrasi = $db->query("UPDATE registrasi SET status = 'Sudah Pulang', tanggal_masuk = '$tanggal_masuk' WHERE no_reg ='$no_reg'"); 
 
 
    // history tbs penjulan 
@@ -689,9 +710,7 @@ else
 // end
 
 
-        
-    $update_registrasi = $db->query("UPDATE registrasi SET status = 'Sudah Pulang' WHERE no_reg ='$no_reg'");
-
+      
 // UPDATE KAMAR
 $query = $db->query("UPDATE bed SET sisa_bed = sisa_bed + 1 WHERE nama_kamar = '$bed' AND group_bed = '$group_bed'");
 // END UPDATE KAMAR
