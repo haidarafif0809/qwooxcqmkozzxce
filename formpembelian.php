@@ -993,6 +993,37 @@ $("#submit_produk").show('');
           else if(hasil == 2){
             var pesan_alert = confirm("Ada perubahan pada harga beli, anda yakin ?");
           }
+          else{
+            
+            $("#pembayaran").hide();
+              $("#hutang").hide();
+              $("#batal").hide();
+              $("#transaksi_baru").show();  
+              $("#cetak_tunai").show();     
+              $("#pembayaran_pembelian").val('');
+              $("#sisa_pembayaran_pembelian").val('');
+              $("#kredit").val('');
+              $("#potongan_pembelian").val('');
+              $("#potongan_persen").val('');
+              $("#nama_suplier").val('');
+
+
+              $.post("proses_bayar_beli.php",{no_faktur_suplier:no_faktur_suplier,total_1:total_1,kode_gudang:kode_gudang,session_id:session_id,no_faktur:no_faktur,sisa_pembayaran:sisa_pembayaran,kredit:kredit,suplier:suplier1,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,tax1:tax1,cara_bayar:cara_bayar,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,ppn:ppn,ppn_input:ppn_input,tax_rp:tax_rp},function(info) {
+    
+
+                  var no_faktur = info;
+                  $("#cetak_tunai").attr('href', 'cetak_pembelian_tunai.php?no_faktur='+no_faktur+'');
+                  $("#tax").val('');
+                  $("#alert_berhasil").show();
+                  $("#pembayaran_pembelian").val('');
+                  $("#sisa_pembayaran_pembelian").val('');
+                  $("#tax").val('');
+                  $("#result").hide();
+    
+       
+              });
+
+          }
           if(pesan_alert == true){
 
               $("#pembayaran").hide();
