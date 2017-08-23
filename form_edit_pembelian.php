@@ -1072,6 +1072,9 @@ $("#hutang").click(function(){
                $("#cetak_hutang").show();
                $("#sisa_pembayaran_pembelian").val('');
                $("#tanggal_jt").val('');
+
+             });
+                  
           }
 
           if(pesan_alert == true){
