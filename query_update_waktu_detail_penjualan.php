@@ -11,7 +11,7 @@
 		$waktu_penjualan = $data_penjualan['tanggal']." ".$data_penjualan['jam'];
 
 
-		$update_waktu_detail_penjualan = $db->query("UPDATE detail_penjualan SET waktu = '$waktu_penjualan' WHERE no_faktur = '$data_penjualan[no_faktur]' AND DATE(waktu) != '$data_penjualan[tanggal]' ");
+		$update_waktu_detail_penjualan = $db->query("UPDATE detail_penjualan SET waktu = '$waktu_penjualan' WHERE no_faktur = '$data_penjualan[no_faktur]'");
 	}
 
 	echo "SELESAI UPDATE WAKTU DETAIL PENJUALAN";
