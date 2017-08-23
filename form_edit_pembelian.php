@@ -1045,9 +1045,6 @@ $("#hutang").click(function(){
           else if(hasil == 2){
             var pesan_alert = confirm("Ada perubahan pada harga beli, anda yakin ?");
           }
-          else if(hasil == 3){
-            var pesan_alert = confirm("Harga beli produk tidak ada perubahan, lanjutkan transaksi ?");
-          }
 
           if(pesan_alert == true){
 
