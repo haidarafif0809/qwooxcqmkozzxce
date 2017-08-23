@@ -932,12 +932,23 @@ $(".btn-alert-hapus").click(function(){
           else if(hasil == 2){
             var pesan_alert = confirm("Ada perubahan pada harga beli, anda yakin ?");
           }
-
-          else if(hasil == 3){
-            var pesan_alert = confirm("Harga beli produk tidak ada perubahan, lanjutkan transaksi ?");
-          }
           else{
-            var pesan_alert = confirm("Ada perubahan pada harga beli, anda yakin ?");
+
+              $("#pembayaran").hide();
+              $("#batal").hide();
+              $("#hutang").hide();
+              $("#transaksi_baru").show(); 
+       
+              $.post("proses_bayar_edit_pembelian.php",{total_1:total_1,no_faktur:no_faktur,sisa_pembayaran:sisa_pembayaran,kredit:kredit,suplier:suplier1,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,tax1:tax1,cara_bayar:cara_bayar,jumlah_barang:jumlah_barang,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,tanggal:tanggal,total_1:total_1,jumlah_kredit_baru:jumlah_kredit_baru,x:x,ppn:ppn,ppn_input:ppn_input,no_faktur_suplier:no_faktur_suplier},function(info) {
+               
+               
+                 $("#alert_berhasil").show();
+                 $("#result").html();
+                 $("#cetak_tunai").show();
+                 $("#result").hide();
+
+               
+               });
           }
 
           if(pesan_alert == true){
@@ -1045,8 +1056,25 @@ $("#hutang").click(function(){
           else if(hasil == 2){
             var pesan_alert = confirm("Ada perubahan pada harga beli, anda yakin ?");
           }
-          else if(hasil == 3){
-            var pesan_alert = confirm("Harga beli produk tidak ada perubahan, lanjutkan transaksi ?");
+          else {
+
+                  $("#pembayaran").hide();
+                  $("#batal").hide();
+                  $("#hutang").hide();
+                  $("#transaksi_baru").show();
+               
+                  $.post("proses_bayar_edit_pembelian.php",{total_1:total_1,tax1:tax1,tanggal:tanggal,no_faktur:no_faktur,sisa_pembayaran:sisa_pembayaran,kredit:kredit,suplier:suplier,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,cara_bayar:cara_bayar,jumlah_barang:jumlah_barang,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,total_1:total_1,jumlah_kredit_baru:jumlah_kredit_baru,x:x,ppn:ppn,ppn_input:ppn_input,no_faktur_suplier:no_faktur_suplier},function(info) {
+
+               
+               $("#alert_berhasil").show();
+                $("#result").hide();
+               $("#result").html(info);
+               $("#cetak_hutang").show();
+               $("#sisa_pembayaran_pembelian").val('');
+               $("#tanggal_jt").val('');
+
+             });
+                  
           }
 
           if(pesan_alert == true){
