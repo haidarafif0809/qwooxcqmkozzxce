@@ -173,13 +173,12 @@ $data_setting_registerasi = mysqli_fetch_array($query_setting_registerasi);
    
    <option value="">Silakan Pilih</option>
 
- <?php 
-  $query = $db->query("SELECT id,nama_ruangan FROM ruangan ORDER BY id "); 
-  while ( $data = mysqli_fetch_array($query)) 
-  {
-  echo "<option value='".$data['id']."'>".$data['nama_ruangan']."</option>";
-  }
-?>
+      <?php 
+      $query_ruangan = $db->query("SELECT id,nama_ruangan FROM ruangan ORDER BY id");
+      while ( $data_ruangan = mysqli_fetch_array($query_ruangan)) {
+      echo "<option value='".$data_ruangan['id']."-".$data_ruangan['nama_ruangan']."'>".$data_ruangan['nama_ruangan']."</option>";
+      }
+      ?>
   </select>
 </div>
 
@@ -354,28 +353,61 @@ $data_setting_registerasi = mysqli_fetch_array($query_setting_registerasi);
 <div class="form-group">
   <label for="sel1">Dokter Penanggung Jawab</label>
   <select class="form-control ss" id="dokter" name="dokter" required="" autocomplete="off">
-    <option value="<?php echo $nama_dokter; ?>"><?php echo $nama_dokter; ?></option>
-            <option value="Tidak Ada">Tidak Ada</option>
  <?php 
-  $query = $db->query("SELECT nama FROM user WHERE tipe = '1'  "); 
- while ( $data = mysqli_fetch_array($query))
-  {
-  echo "<option value='".$data['nama']."'>".$data['nama']."</option>";
-  }
-  ?>
+    
+    //untuk menampilkan semua data pada tabel pelanggan dalam DB
+    $query01 = $db->query("SELECT id,nama FROM user WHERE tipe = '1'");
+    
+      $petugas = $db->query("SELECT nama_dokter FROM penetapan_petugas");
+        $data_petugas = mysqli_fetch_array($petugas);
+
+    //untuk menyimpan data sementara yang ada pada $query
+    while($data012 = mysqli_fetch_array($query01))
+    {   
+      
+
+    if ($data012['nama'] == $data_petugas['nama_dokter']) {
+     echo "<option selected value='".$data012['id']."-".$data012['nama'] ."'>".$data012['nama'] ."</option>";
+    }
+    else{
+      echo "<option value='".$data012['id']."-".$data012['nama'] ."'>".$data012['nama'] ."</option>";
+    }
+
+    
+    }
+    
+    
+    ?>
   </select>
 </div>
 
 <div class="form-group">
     <label for="alamat">Dokter Pelaksana:</label>
     <select class="form-control ss" id="dokter_penanggung_jawab" name="dokter_penanggung_jawab" required="" autocomplete="off">
-  <option value="<?php echo $ss['nama_dokter'];?>"><?php echo $ss['nama_dokter'];?></option>
-                  <option value="Tidak Ada">Tidak Ada</option>
-    <?php 
-    $query = $db->query("SELECT nama FROM user WHERE tipe = '1' ");
-    while ( $data = mysqli_fetch_array($query)) {
-    echo "<option value='".$data['nama']."'>".$data['nama']."</option>";
+  <?php 
+    
+    //untuk menampilkan semua data pada tabel pelanggan dalam DB
+    $query01 = $db->query("SELECT id,nama FROM user WHERE tipe = '1'");
+    
+      $petugas = $db->query("SELECT nama_dokter FROM penetapan_petugas");
+        $data_petugas = mysqli_fetch_array($petugas);
+
+    //untuk menyimpan data sementara yang ada pada $query
+    while($data01 = mysqli_fetch_array($query01))
+    {   
+      
+
+    if ($data01['nama'] == $data_petugas['nama_dokter']) {
+     echo "<option selected value='".$data01['id']."-".$data01['nama'] ."'>".$data01['nama'] ."</option>";
     }
+    else{
+      echo "<option value='".$data01['id']."-".$data01['nama'] ."'>".$data01['nama'] ."</option>";
+    }
+
+    
+    }
+    
+    
     ?>
   </select>
 </div>
@@ -835,13 +867,11 @@ else
   // cari kamar seuai dengan ruangannya
     $(document).on('click','#cari_kamar',function() {
   
-    /*var ruangan = $("#ruangan").val();
-    if (ruangan == '') {  
-      alert("Silakan pilih ruangan terlebih dahulu.");
-      $("#ruangan").focus();
-    }
-    else
-    {*/
+    var ruangan_split = $("#ruangan").val();
+    var ruangan_split = ruangan_split.split("-");// memisahkan string
+    var ruangan = ruangan_split[0];// memisahkan string
+
+      
         $("#myModal1").modal('show');
         $('#table_kamar').DataTable().destroy();
 
@@ -855,7 +885,7 @@ else
           "ajax":{
             url :"datatable_cari_kamar_dirawat_inap.php", // json datasource
              "data": function ( d ) {
-                d.ruangan = $("#ruangan").val();
+                d.ruangan = ruangan;
                 // d.custom = $('#myInput').val();
                 // etc
             },
@@ -872,7 +902,7 @@ else
               $(nRow).attr('class', "pilih2 tr-id-"+aData[7]+"");
               $(nRow).attr('data-nama', aData[1]);
               $(nRow).attr('data-group-bed', aData[2]);
-              $(nRow).attr('data-ruangan', aData[8]);
+              $(nRow).attr('data-ruangan', aData[8]+"-"+aData[3]);
 
           } 
 

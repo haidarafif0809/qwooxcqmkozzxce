@@ -22,7 +22,6 @@ if ($token == '')
 else
 {
 $username = $_SESSION['user_name'];
-$ruangan = angkadoang($_POST['ruangan']);
 $no_rm_lama = stringdoang($_POST['no_rm_lama']);
 $nama_lengkap = stringdoang($_POST['nama_lengkap']);
 $no_ktp = stringdoang($_POST['no_ktp']);
@@ -49,7 +48,6 @@ if ($penjamin == '')
 }
 $gol_darah = stringdoang($_POST['gol_darah']);
 $poli = stringdoang($_POST['poli']);
-$dokter = stringdoang($_POST['dokter']);
 $kondisi = stringdoang($_POST['kondisi']);
 $rujukan = stringdoang($_POST['rujukan']);
 $sistole_distole = stringdoang($_POST['sistole_distole']);
@@ -66,6 +64,22 @@ $bed = stringdoang($_POST['bed']);
 $perkiraan_menginap = angkadoang($_POST['perkiraan_menginap']);
 $surat_jaminan = stringdoang($_POST['surat_jaminan']);
 $dokter_penanggung_jawab = stringdoang($_POST['dokter_penanggung_jawab']);
+
+$dokter_jg = stringdoang($_POST['dokter']);
+$dokter_jg = explode("-", $dokter_jg); 
+$id_dokter = $dokter_jg[0]; 
+$dokter = $dokter_jg[1]; 
+
+$dokter_pj = stringdoang($_POST['dokter_penanggung_jawab']);
+$dokter_pj = explode("-", $dokter_pj); 
+$id_dokter_penanggung_jawab = $dokter_pj[0]; 
+$dokter_penanggung_jawab = $dokter_pj[1]; 
+
+
+$ruangan_split = stringdoang($_POST['ruangan']);
+$ruangan_split = explode("-", $ruangan_split); 
+$id_ruangan = $ruangan_split[0]; 
+$ruangan = $ruangan_split[1]; 
 
 
 $ambil_satuan = $db->query("SELECT id FROM satuan WHERE nama = 'HARI'");
@@ -135,12 +149,15 @@ $nomor = 1 + $ambil_nomor ;
  // Akhir ambil no reg
  // ENDING — UNTUK AMBIL NO REG NYA LEWAT PROSES SAJA
 
-
+// ambil bahan untuk kamar 
+$query_penjamin = $db->query(" SELECT harga FROM penjamin WHERE nama = '$penjamin'");
+$data_penjamin  = mysqli_fetch_array($query_penjamin);
+$level_harga = $data_penjamin['harga'];
 
 // insert ke registrasi
-$insert_1 = $db->prepare("INSERT INTO registrasi (alergi,rujukan,nama_pasien,jam,penjamin,status,no_reg,no_rm,tanggal_masuk,kondisi,petugas,alamat_pasien,umur_pasien,hp_pasien,bed,group_bed,menginap,dokter,dokter_pengirim,penanggung_jawab, alamat_penanggung_jawab,hp_penanggung_jawab,pekerjaan_penanggung_jawab,hubungan_dengan_pasien, jenis_kelamin,poli,jenis_pasien,tanggal,ruangan) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+$insert_1 = $db->prepare("INSERT INTO registrasi (alergi,rujukan,nama_pasien,jam,penjamin,status,no_reg,no_rm,tanggal_masuk,kondisi,petugas,alamat_pasien,umur_pasien,hp_pasien,bed,group_bed,menginap,dokter,dokter_pengirim,penanggung_jawab, alamat_penanggung_jawab,hp_penanggung_jawab,pekerjaan_penanggung_jawab,hubungan_dengan_pasien, jenis_kelamin,poli,jenis_pasien,tanggal,ruangan,nama_ruangan,id_dokter,id_dokter_pengirim,level_harga) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
-$insert_1->bind_param("ssssssssssssssssssssssssssssi",$alergi,$rujukan,$nama_lengkap,$jam,$penjamin,$menginap_status,$no_reg,$no_rm,$tanggal_sekarang,$kondisi,$username,$alamat_sekarang,$umur,$no_telepon,$bed,$group_bed,$perkiraan_menginap,$dokter,$dokter_penanggung_jawab,$nama_penanggungjawab,$alamat_penanggung,$no_hp_penanggung,$pekerjaan_penanggung,$hubungan_dengan_pasien,$jenis_kelamin,$poli,$rw_inap,$tanggal_sekarang,$ruangan);
+$insert_1->bind_param("ssssssssssssssssssssssssssssissss",$alergi,$rujukan,$nama_lengkap,$jam,$penjamin,$menginap_status,$no_reg,$no_rm,$tanggal_sekarang,$kondisi,$username,$alamat_sekarang,$umur,$no_telepon,$bed,$group_bed,$perkiraan_menginap,$dokter,$dokter_penanggung_jawab,$nama_penanggungjawab,$alamat_penanggung,$no_hp_penanggung,$pekerjaan_penanggung,$hubungan_dengan_pasien,$jenis_kelamin,$poli,$rw_inap,$tanggal_sekarang,$id_ruangan,$ruangan,$id_dokter,$id_dokter_penanggung_jawab,$level_harga);
 
 
 $menginap_status = "menginap";
@@ -200,10 +217,6 @@ $query_insert_pelanggan_lagi->execute();
 $query = $db->query("UPDATE bed SET sisa_bed = sisa_bed - 1 WHERE nama_kamar = '$bed' AND group_bed = '$group_bed'");
 // END UPDATE KAMAR
 
-// ambil bahan untuk kamar 
-$query_penjamin = $db->query(" SELECT harga FROM penjamin WHERE nama = '$penjamin'");
-$data_penjamin  = mysqli_fetch_array($query_penjamin);
-$level_harga = $data_penjamin['harga'];
 
 $query_kamar_bed = $db->query("SELECT tarif,tarif_2,tarif_3,tarif_4,tarif_5,tarif_6,tarif_7 FROM bed WHERE nama_kamar = '$bed' AND group_bed = '$group_bed' ");
 $data_kamar_bed = mysqli_fetch_array($query_kamar_bed);
