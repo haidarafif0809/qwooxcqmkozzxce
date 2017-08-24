@@ -2,6 +2,7 @@
 
     include 'sanitasi.php';
     include 'db.php';
+    include 'cache.class.php';
 
 $tahun_sekarang = date('Y');
 $bulan_sekarang = date('m');
@@ -167,57 +168,39 @@ $ambil_suplier = mysqli_fetch_array($select_suplier);
                       $query_update_harga_beli  = $db->query("UPDATE barang SET harga_beli = '$harga_beli_sebenarnya' WHERE kode_barang = '$data[kode_barang]'");
 
 
-                      //UPDATE CACHE PRODUK TERSEBUT
-                      include 'cache.class.php';
+                      // UPDATE CACHE
+                      $query_id_barang = $db->query("SELECT * FROM barang WHERE kode_barang = '$data[kode_barang]'");  
+                      $data_id_barang = mysqli_fetch_array($query_id_barang);  
+                        
+                       // setup 'default' cache  
+                          $c = new Cache();  
+                          $c->setCache('produk');  
+                        
+                          $c->store($data['kode_barang'], array(     
+                            'kode_barang' => $data_id_barang['kode_barang'],
+                            'nama_barang' => $data_id_barang['nama_barang'],  
+                            'harga_beli' => $data_id_barang['harga_beli'],  
+                            'harga_jual' => $data_id_barang['harga_jual'],  
+                            'harga_jual2' => $data_id_barang['harga_jual2'],  
+                            'harga_jual3' => $data_id_barang['harga_jual3'],  
+                            'harga_jual4' => $data_id_barang['harga_jual4'],  
+                            'harga_jual5' => $data_id_barang['harga_jual5'],  
+                            'harga_jual6' => $data_id_barang['harga_jual6'],  
+                            'harga_jual7' => $data_id_barang['harga_jual7'],     
+                            'kategori' => $data_id_barang['kategori'],  
+                            'suplier' => $data_id_barang['suplier'],  
+                            'limit_stok' => $data_id_barang['limit_stok'],  
+                            'over_stok' => $data_id_barang['over_stok'],  
+                            'berkaitan_dgn_stok' => $data_id_barang['berkaitan_dgn_stok'],  
+                            'tipe_barang' => $data_id_barang['tipe_barang'],  
+                            'status' => $data_id_barang['status'],  
+                            'gudang' => $data_id_barang['gudang'], 
+                            'satuan' => $data_id_barang['satuan'],  
+                            'id' => $data_id_barang['id'] ,  
+                        
+                          ));  
+                      // AKHIR UPDATE CHACHE
 
-                          $c = new Cache();
-                          
-                          $c->setCache('produk_obat');
-
-                          $c->eraseAll();
-
-
-                      $query_cache = $db->query("SELECT * FROM barang WHERE kode_barang = '$data_barang[kode_barang]' ");
-                      while ($data = $query_cache->fetch_array()) {
-                       # code...
-                          // store an array
-                          $c->store($data['kode_barang'], array(
-                              'kode_barang' => $data['kode_barang'],
-                              'nama_barang' => $data['nama_barang'],
-                              'harga_beli' => $data['harga_beli'],
-                              'harga_jual' => $data['harga_jual'],
-                              'harga_jual2' => $data['harga_jual2'],
-                              'harga_jual3' => $data['harga_jual3'],
-                              'harga_jual4' => $data['harga_jual4'],
-                              'harga_jual5' => $data['harga_jual5'],
-                              'harga_jual6' => $data['harga_jual6'],
-                              'harga_jual7' => $data['harga_jual7'],
-                              
-                              
-                              "harga_jual_inap" =>$data['harga_jual_inap'],
-                              "harga_jual_inap2" =>$data['harga_jual_inap2'],
-                              "harga_jual_inap3" =>$data['harga_jual_inap3'],
-                              "harga_jual_inap4" =>$data['harga_jual_inap4'],
-                              "harga_jual_inap5" =>$data['harga_jual_inap5'],
-                              "harga_jual_inap6" =>$data['harga_jual_inap6'],
-                              "harga_jual_inap7" =>$data['harga_jual_inap7'],
-                              
-                              'kategori' => $data['kategori'],
-                              'suplier' => $data['suplier'],
-                              'limit_stok' => $data['limit_stok'],
-                              'over_stok' => $data['over_stok'],
-                              'berkaitan_dgn_stok' => $data['berkaitan_dgn_stok'],
-                              'tipe_barang' => $data['tipe_barang'],
-                              'status' => $data['status'],
-                              'satuan' => $data['satuan'],
-                              'id' => $data['id'],
-
-                          ));
-
-                      }
-
-                      $c->retrieveAll();
-                      // AKHIR DARI UPDATE CHACHE PRODUK TERSEBUT
                   }
                   //AKHIR PROSES UNTUK UPDATE HARGA BELI PADA PRODUK TERSEBUT 
 
