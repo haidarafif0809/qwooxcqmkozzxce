@@ -327,6 +327,8 @@
 <!--HIDEN HIDDEN HIDDEN HIDDEN -->
         
         
+<!-- UNTUK PERINGTAN AJIKA HARGA BELI YANG DIUBAH LEBI BESAR DARI HARGA JUAL -->
+          <input type="hidden" id="harga_jual" name="harga_jual" class="form-control" placeholder="Harga Jual" required="">
    
 
         </form>
@@ -747,6 +749,7 @@ $(".btn-alert-hapus").click(function(){
     var kode_gudang = $("#kode_gudang").val();
     var ppn = $("#ppn").val();
     var total = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#total_pembelian1").val()))));
+    var harga_jual = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#harga_jual").val()))));
 
 
     if (harga == harga_baru) {
@@ -807,35 +810,125 @@ $(".btn-alert-hapus").click(function(){
   }    else if (tax > 100){
   alert("Tax Tidak Boleh Lebih Dari 100%");
   }
+  else { // BREAKET A
 
+        var harga_awal = $("#harga_produk").val();
+        var harga_terbaru = $("#harga_baru").val();
+//Start Perubahan Harga
+        if(harga_awal != harga_terbaru){ // if perubahan A
 
-  
-  else {
+          var pesan_alert = confirm("Ada perubahan Harga, Tetap Lanjutkan ?");
+          if (pesan_alert == true){ // if alert true A
 
-
-        $("#total_pembelian").val(tandaPemisahTitik(t_total));
-        $("#total_pembelian1").val(tandaPemisahTitik(total_akhir));
-
-    $.post("proses_tbs_edit_pembelian.php",{no_faktur:no_faktur,kode_barang:kode_barang,nama_barang:nama_barang,jumlah_barang:jumlah_barang,harga:harga,harga_baru:harga_baru,potongan:potongan,tax:tax,satuan:satuan},function(data){
+              var selisih_harga = parseInt(harga_jual,10) - parseInt(harga_baru,10); //Perhitungan Selisih jika melebihi harga jual
       
-      $("#tbody").prepend(data);    
-      $("#kode_barang").val('').trigger("chosen:updated");
-      $("#kode_barang").trigger('chosen:open');
-      $("#ppn").attr("disabled", true);
-      $("#no_faktur_suplier").attr("disabled", true);
-      $("#nama_barang").val('');
-      $("#kode_barang").val('');
-      $("#jumlah_barang").val('');
-      $("#potongan1").val('');
-      $("#tax1").val('');  
-      $("#harga_produk").val('');
-      $("#harga_baru").val(''); 
+              if (selisih_harga < 0){ //IF jika perubahan tidak melebihi harga jual 
 
-    });
-}
+                  var pesan_alert = confirm("Total Harga '"+nama_barang+"' Lebih Besar Dari Harga Jual. Tetap Lanjutkan ?");
+                  if (pesan_alert == true) {
+                    //PROSES INSERT KE TBS SAAT HARGA DI KONFIRMASI YA 
+                    //PROSES--------------------->
+                        //atribut harga di masukan dengan harga yang terbaru
+                        $('#opt-produk-'+kode_barang).attr("harga_beli",harga_baru);
+                        
+                    $("#total_pembelian").val(tandaPemisahTitik(t_total));
+                    $("#total_pembelian1").val(tandaPemisahTitik(total_akhir));
+
+                    $.post("proses_tbs_edit_pembelian.php",{no_faktur:no_faktur,kode_barang:kode_barang,nama_barang:nama_barang,jumlah_barang:jumlah_barang,harga:harga,harga_baru:harga_baru,potongan:potongan,tax:tax,satuan:satuan},function(data){
+                
+                      $("#tbody").prepend(data);    
+                      $("#kode_barang").val('').trigger("chosen:updated");
+                      $("#kode_barang").trigger('chosen:open');
+                      $("#ppn").attr("disabled", true);
+                      $("#no_faktur_suplier").attr("disabled", true);
+                      $("#nama_barang").val('');
+                      $("#kode_barang").val('');
+                      $("#jumlah_barang").val('');
+                      $("#potongan1").val('');
+                      $("#tax1").val('');  
+                      $("#harga_produk").val('');
+                      $("#harga_baru").val(''); 
+
+                    });
+                    //AKHIR PROSES INSERT KE TBS SAAT HARGA DI KONFIRMASI YA 
+                  }
+                  else{
+                    $("#harga_baru").val(harga_awal);
+                    //$("#submit_produk").show();
+                  }
+
+              }//AKHIR IF jika perubahan tidak melebihi harga jual
+              else{ //ELSE jika perubahan tidak melebihi harga jual
+
+                    //PROSES INSERT KE TBS SAAT HARGA DI KONFIRMASI YA 
+                    //PROSES--------------------->
+                        //atribut harga di masukan dengan harga yang terbaru
+                        $('#opt-produk-'+kode_barang).attr("harga_beli",harga_baru); 
+
+                    $("#total_pembelian").val(tandaPemisahTitik(t_total));
+                    $("#total_pembelian1").val(tandaPemisahTitik(total_akhir));
+
+                    $.post("proses_tbs_edit_pembelian.php",{no_faktur:no_faktur,kode_barang:kode_barang,nama_barang:nama_barang,jumlah_barang:jumlah_barang,harga:harga,harga_baru:harga_baru,potongan:potongan,tax:tax,satuan:satuan},function(data){
+                
+                      $("#tbody").prepend(data);    
+                      $("#kode_barang").val('').trigger("chosen:updated");
+                      $("#kode_barang").trigger('chosen:open');
+                      $("#ppn").attr("disabled", true);
+                      $("#no_faktur_suplier").attr("disabled", true);
+                      $("#nama_barang").val('');
+                      $("#kode_barang").val('');
+                      $("#jumlah_barang").val('');
+                      $("#potongan1").val('');
+                      $("#tax1").val('');  
+                      $("#harga_produk").val('');
+                      $("#harga_baru").val(''); 
+
+                    });
+
+                    //AKHIR PROSES INSERT KE TBS SAAT HARGA DI KONFIRMASI YA 
+
+              }//AKHIR ELSE jika perubahan tidak melebihi harga jual
+
+          } //Akhir if alert true A
+          else{ // lanjutan dari if trua A ke else true A
+              $("#harga_baru").val(harga_awal);
+              //$("#submit_produk").show();
+          } //akhir else true A
+
+        } //akhir if perubahan A
+        else{ //else lanjutkan dari perubahan A
+
+            //PROSES INSERT KE TBS SAAT HARGA DI KONFIRMASI YA 
+            //PROSES--------------------->  
+          $("#total_pembelian").val(tandaPemisahTitik(t_total));
+          $("#total_pembelian1").val(tandaPemisahTitik(total_akhir));
+
+          $.post("proses_tbs_edit_pembelian.php",{no_faktur:no_faktur,kode_barang:kode_barang,nama_barang:nama_barang,jumlah_barang:jumlah_barang,harga:harga,harga_baru:harga_baru,potongan:potongan,tax:tax,satuan:satuan},function(data){
+      
+            $("#tbody").prepend(data);    
+            $("#kode_barang").val('').trigger("chosen:updated");
+            $("#kode_barang").trigger('chosen:open');
+            $("#ppn").attr("disabled", true);
+            $("#no_faktur_suplier").attr("disabled", true);
+            $("#nama_barang").val('');
+            $("#kode_barang").val('');
+            $("#jumlah_barang").val('');
+            $("#potongan1").val('');
+            $("#tax1").val('');  
+            $("#harga_produk").val('');
+            $("#harga_baru").val(''); 
+
+          });
+
+            //AKHIR PROSES INSERT KE TBS SAAT HARGA DI KONFIRMASI YA 
+
+        }//Akhir else lanjutkan dari perubahan A (BERAKHIRNYA BREAKET PERUBAHAN HARGA!!)
+
+ 
+ } // AKHIR BREAKET A
     
       
-  });
+});
               
      $("#formtambahproduk").submit(function(){
      return false;
@@ -923,16 +1016,6 @@ $(".btn-alert-hapus").click(function(){
     alert(" Anda Belum Melakukan Pembelian ");
  }
  else if (jumlah_bayar_lama == 0){
-    
-        //Cek untuk perubahan harga beli
-        $.post("cek_perubahan_harga_edit_pembelian.php",{no_faktur:no_faktur},function(hasil){
-          if(hasil == 1){
-            var pesan_alert = confirm("Harga Barang melebihi harga jual, yakin akan merubah harga beli tersebut? ");
-          }
-          else if(hasil == 2){
-            var pesan_alert = confirm("Ada perubahan pada harga beli, anda yakin ?");
-          }
-          else{
 
               $("#pembayaran").hide();
               $("#batal").hide();
@@ -949,31 +1032,6 @@ $(".btn-alert-hapus").click(function(){
 
                
                });
-          }
-
-          if(pesan_alert == true){
-
-              $("#pembayaran").hide();
-              $("#batal").hide();
-              $("#hutang").hide();
-              $("#transaksi_baru").show(); 
-       
-              $.post("proses_bayar_edit_pembelian.php",{total_1:total_1,no_faktur:no_faktur,sisa_pembayaran:sisa_pembayaran,kredit:kredit,suplier:suplier1,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,tax1:tax1,cara_bayar:cara_bayar,jumlah_barang:jumlah_barang,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,tanggal:tanggal,total_1:total_1,jumlah_kredit_baru:jumlah_kredit_baru,x:x,ppn:ppn,ppn_input:ppn_input,no_faktur_suplier:no_faktur_suplier},function(info) {
-               
-               
-                 $("#alert_berhasil").show();
-                 $("#result").html();
-                 $("#cetak_tunai").show();
-                 $("#result").hide();
-
-               
-               });
-          }
-          else{
-
-          }// akhir else if pada alert true
-
-      }); //Akhir Cek untuk perubahan harga beli
  }
  else{
 
@@ -1048,36 +1106,6 @@ $("#hutang").click(function(){
   }     
   else if (jumlah_bayar_lama == 0 || x <= total){
     
-        //Cek untuk perubahan harga beli
-        $.post("cek_perubahan_harga_edit_pembelian.php",{no_faktur:no_faktur},function(hasil){
-          if(hasil == 1){
-            var pesan_alert = confirm("Harga Barang melebihi harga jual, yakin akan merubah harga beli tersebut? ");
-          }
-          else if(hasil == 2){
-            var pesan_alert = confirm("Ada perubahan pada harga beli, anda yakin ?");
-          }
-          else {
-
-                  $("#pembayaran").hide();
-                  $("#batal").hide();
-                  $("#hutang").hide();
-                  $("#transaksi_baru").show();
-               
-                  $.post("proses_bayar_edit_pembelian.php",{total_1:total_1,tax1:tax1,tanggal:tanggal,no_faktur:no_faktur,sisa_pembayaran:sisa_pembayaran,kredit:kredit,suplier:suplier,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,cara_bayar:cara_bayar,jumlah_barang:jumlah_barang,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,total_1:total_1,jumlah_kredit_baru:jumlah_kredit_baru,x:x,ppn:ppn,ppn_input:ppn_input,no_faktur_suplier:no_faktur_suplier},function(info) {
-
-               
-               $("#alert_berhasil").show();
-                $("#result").hide();
-               $("#result").html(info);
-               $("#cetak_hutang").show();
-               $("#sisa_pembayaran_pembelian").val('');
-               $("#tanggal_jt").val('');
-
-             });
-                  
-          }
-
-          if(pesan_alert == true){
 
                   $("#pembayaran").hide();
                   $("#batal").hide();
@@ -1098,12 +1126,6 @@ $("#hutang").click(function(){
                
                });
                 // #result didapat dari tag span id=result
-          }
-          else{
-
-          }// akhir else if pada alert true
-
-      }); //Akhir Cek untuk perubahan harga beli
   }
   else{
 
@@ -2031,7 +2053,7 @@ $(document).ready(function(){
     $("#harga_produk").val(harga_beli);
     $("#harga_lama").val(harga_beli);
     $("#harga_baru").val(harga_beli);
-        
+    $("#harga_jual").val(harga_jual);
 
 
 if (ber_stok == 'Barang') {
