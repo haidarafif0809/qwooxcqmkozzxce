@@ -57,7 +57,7 @@ else {
 }
 $query=mysqli_query($conn_pasien, $sql) or die("eror 2");
 $totalFiltered = mysqli_num_rows($query); // when there is a search parameter then we have to modify total number filtered rows as per search result. 
-$sql.=" ORDER BY ". $columns[$requestData['order'][0]['column']]."   ".$requestData['order'][0]['dir']."  LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
+$sql.=" ORDER BY id DESC LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
 /* $requestData['order'][0]['column'] contains colmun index, $requestData['order'][0]['dir'] contains order such as asc/desc  */	
 $query=mysqli_query($conn_pasien, $sql) or die("eror 3");
 
@@ -86,6 +86,19 @@ $json_data = array(
 			"data"            => $data   // total data array
 			);
 
-echo json_encode($json_data);  // send data as json format
+
+if (isset($_GET['callback'])) {
+	// Validate the JSONP to make use it is an okay Javascript function to execute
+	$jsonp = preg_match('/^[$A-Z_][0-9A-Z_$]*$/i', $_GET['callback']) ?
+	    $_GET['callback'] :
+	    false;
+	 
+	if ( $jsonp ) {
+	    echo $jsonp.'('.json_encode($json_data).');';
+	}
+}
+else{
+	echo json_encode($json_data);  // send data as json format	
+}
 
 ?>
