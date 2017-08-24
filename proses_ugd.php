@@ -150,11 +150,11 @@ else
 
 
 $query11 = $db->prepare("INSERT INTO rekam_medik_ugd (tanggal,jam,no_reg,no_rm,nama,jenis_kelamin,umur,alamat,eye,verbal,motorik,rujukan,
-  pengantar,alergi,keadaan_umum,dokter)
-  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+  pengantar,alergi,keadaan_umum,dokter,petugas)
+  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
-$query11->bind_param("ssssssssssssssss", $tanggal_sekarang,$jam,$no_reg,$no_rm,$nama_pasien,$jenis_kelamin,$umur,$alamat,$eye,$verbal,$motorik,
-  $rujukan,$pengantar,$alergi,$kondisi,$dokter_jaga);
+$query11->bind_param("sssssssssssssssss", $tanggal_sekarang,$jam,$no_reg,$no_rm,$nama_pasien,$jenis_kelamin,$umur,$alamat,$eye,$verbal,$motorik,
+  $rujukan,$pengantar,$alergi,$kondisi,$dokter_jaga,$petugas);
 
 $query11->execute();
 

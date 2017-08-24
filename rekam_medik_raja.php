@@ -111,6 +111,7 @@ th {
          <th style='background-color: #4CAF50; color: white'>Dokter</th>
          <th style='background-color: #4CAF50; color: white'>Jam</th>
          <th style='background-color: #4CAF50; color: white'>Tanggal Periksa</th> 
+         <th style='background-color: #4CAF50; color: white'>Petugas</th>
          <th style='background-color: #4CAF50; color: white'>Aksi Rekam Medik</th>
         <th style='background-color: #4CAF50; color: white'>Selesai</th>
     </tr>

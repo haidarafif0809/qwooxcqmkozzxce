@@ -104,7 +104,7 @@ echo "
 }
 else 
 {
-$query21 = $db->query("SELECT dp.nama_barang,dp.dosis,dp.jumlah_barang FROM tbs_penjualan dp LEFT JOIN barang b ON dp.kode_barang = b.kode_barang WHERE no_reg = '$data[no_reg]' AND (dp.tipe_produk = 'Obat Obatan' OR b.tipe_barang = 'Obat Obatan') ");
+$query21 = $db->query("SELECT dp.nama_barang,dp.dosis,dp.jumlah_barang FROM tbs_penjualan dp LEFT JOIN barang b ON dp.kode_barang = b.kode_barang WHERE no_reg = '$data[no_reg]' AND  b.tipe_barang = 'Obat Obatan' ");
 
 while($muncul = mysqli_fetch_array($query21))
   {
