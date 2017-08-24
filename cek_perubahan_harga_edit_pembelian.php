@@ -25,10 +25,6 @@
 				        		}
 
 			        	}
-			        	else{
-			        		echo 3; // tidak ada perubahan harga 
-			        	}
-
 
 		        }
 		        else{
@@ -48,10 +44,6 @@
 							else{
 								echo 2; // ada perubahan di bawah harga sebelumnya
 							}
-						}
-						else{
-
-							echo 3; // tidak ada perubahan harga 
 						}
 
 					}

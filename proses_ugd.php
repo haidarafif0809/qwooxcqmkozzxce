@@ -51,6 +51,7 @@ $eye = stringdoang($_POST['eye']);
 $verbal = stringdoang($_POST['verbal']);
 $motorik = stringdoang($_POST['motorik']);
 $alergi = stringdoang($_POST['alergi']);
+$id_dokter_jaga = stringdoang($_POST['id_dokter_jaga']);
 
 
 
@@ -113,17 +114,21 @@ $nomor = 1 + $ambil_nomor ;
  // AKHIR UNTUK NO REG
                       // END UNTUK AMBIL NO REG LEWAT PROSES SAJA
 
+$query_penjamin = $db->query("SELECT harga FROM penjamin WHERE nama = '$penjamin' ");
+$data_penjamin = mysqli_fetch_array($query_penjamin);
 
+
+$level_harga = $data_penjamin['harga'];
 
 
 $sql6 = $db->prepare("INSERT INTO registrasi (eye,verbal,motorik,alergi,nama_pasien,jam,penjamin,status,no_reg,no_rm,tanggal,
 	kondisi,petugas,alamat_pasien,umur_pasien,jenis_kelamin,rujukan,keterangan,dokter,pengantar_pasien,
-	nama_pengantar,hp_pengantar,alamat_pengantar,hubungan_dengan_pasien,hp_pasien,jenis_pasien)
-	 VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+	nama_pengantar,hp_pengantar,alamat_pengantar,hubungan_dengan_pasien,hp_pasien,jenis_pasien,id_dokter,level_harga)
+	 VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
- $sql6->bind_param("ssssssssssssssssssssssssss", $eye,$verbal,$motorik,$alergi,$nama_pasien,$jam,$penjamin,$ug_stat,$no_reg,$no_rm,$tanggal_sekarang,$kondisi,$petugas,$alamat,$umur,$jenis_kelamin,$rujukan,$keterangan,$dokter_jaga,$pengantar,$nama_pengantar,
+ $sql6->bind_param("ssssssssssssssssssssssssssss", $eye,$verbal,$motorik,$alergi,$nama_pasien,$jam,$penjamin,$ug_stat,$no_reg,$no_rm,$tanggal_sekarang,$kondisi,$petugas,$alamat,$umur,$jenis_kelamin,$rujukan,$keterangan,$dokter_jaga,$pengantar,$nama_pengantar,
   $hp_pengantar,$alamat_pengantar,
-  $hubungan_dengan_pasien,$no_hp,$ug_me);
+  $hubungan_dengan_pasien,$no_hp,$ug_me,$id_dokter_jaga,$level_harga);
 
  $ug_me = 'UGD';
  $ug_stat = 'Masuk Ruang UGD';

@@ -9,6 +9,8 @@ include 'db.php';
 $requestData= $_REQUEST;
 
 
+$totalData = 0;
+$totalFiltered = 0;
 
 $columns = array( 
 // datatable column index  => database column name
@@ -26,13 +28,12 @@ $columns = array(
 );
 
 // getting total number records without any search
-$sql = "SELECT r.aps_periksa,r.no_reg, r.no_rm, r.nama_pasien, r.jenis_pasien, r.tanggal, r.penjamin, r.poli, r.dokter, r.id, u.id  AS id_dokter, p.harga AS level_harga";
-$sql.=" FROM registrasi r LEFT JOIN user u ON r.dokter = u.nama LEFT JOIN penjamin p ON r.penjamin = p.nama LEFT JOIN penjualan penj ON r.no_reg = penj.no_reg ";
-$sql.=" WHERE r.jenis_pasien = 'APS' AND r.status = 'aps_masuk' AND penj.no_faktur IS NULL ";
+$sql = "SELECT aps_periksa,no_reg, no_rm, nama_pasien, jenis_pasien, tanggal, penjamin, poli, dokter, id, id_dokter, level_harga";
+$sql.=" FROM registrasi ";
+$sql.=" WHERE jenis_pasien = 'APS' AND status = 'aps_masuk'";
 
 $query = mysqli_query($conn, $sql) or die("eror 1");
-$totalData = mysqli_num_rows($query);
-$totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
+
 
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
 
@@ -50,16 +51,15 @@ else {
 }
 
 
-    $sql.=" AND (r.no_reg = '".$requestData['search']['value']."'";  
-    $sql.=" OR r.no_rm = '".$requestData['search']['value']."' ";
-    $sql.=" OR r.nama_pasien LIKE '".$requestData['search']['value']."%'";   
-    $sql.=" OR r.tanggal = '".$tanggal_cari."' )";
+    $sql.=" AND (no_reg = '".$requestData['search']['value']."'";  
+    $sql.=" OR no_rm = '".$requestData['search']['value']."' ";
+    $sql.=" OR nama_pasien LIKE '".$requestData['search']['value']."%'";   
+    $sql.=" OR tanggal = '".$tanggal_cari."' )";
 
 }
 
 
 $query=mysqli_query($conn, $sql) or die("eror 2");
-$totalFiltered = mysqli_num_rows($query); // when there is a search parameter then we have to modify total number filtered rows as per search result. 
         
 $sql.=" ORDER BY id ".$requestData['order'][0]['dir']."  LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
 
@@ -70,6 +70,9 @@ $query=mysqli_query($conn, $sql) or die("eror 3");
 $data = array();
 while( $row=mysqli_fetch_array($query) ) {  // preparing an array
   $nestedData=array(); 
+
+      $totalData = $totalData + 1;
+      $totalFiltered = $totalData;
 
       //$nestedData[] = '<p style="width:150">'.$row["nama_pasien"].'</p>';
       $nestedData[] = $row["no_reg"];

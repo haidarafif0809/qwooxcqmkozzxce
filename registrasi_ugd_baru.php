@@ -353,15 +353,31 @@ $ss = mysqli_fetch_array($qertu);
 <div class="form-group">
     <label for="sel1">Dokter Jaga</label>
     <select class="form-control" id="dokter_jaga" name="dokter_jaga" required="" autocomplete="off">
-      <option value="<?php echo $ss['nama_dokter'];?>"><?php echo $ss['nama_dokter'];?></option>
-              <option value="Tidak Ada">Tidak Ada</option>
-        <?php 
-        $query = $db->query("SELECT nama FROM user WHERE tipe = '1' ");
-        while ( $data = mysqli_fetch_array($query)) 
-        {
-          echo "<option value='".$data['nama']."'>".$data['nama']."</option>";
-        }
-        ?>
+<?php 
+    
+    //untuk menampilkan semua data pada tabel pelanggan dalam DB
+    $query01 = $db->query("SELECT id,nama FROM user WHERE tipe = '1'");
+    
+      $petugas = $db->query("SELECT nama_dokter FROM penetapan_petugas");
+        $data_petugas = mysqli_fetch_array($petugas);
+
+    //untuk menyimpan data sementara yang ada pada $query
+    while($data01 = mysqli_fetch_array($query01))
+    {   
+      
+
+    if ($data01['nama'] == $data_petugas['nama_dokter']) {
+     echo "<option selected value='".$data01['id']."-".$data01['nama'] ."'>".$data01['nama'] ."</option>";
+    }
+    else{
+      echo "<option value='".$data01['id']."-".$data01['nama'] ."'>".$data01['nama'] ."</option>";
+    }
+
+    
+    }
+    
+    
+    ?>
     </select>
 </div>
   <center><h4>Glassgow Coma Scale (GCS)</h4></center>

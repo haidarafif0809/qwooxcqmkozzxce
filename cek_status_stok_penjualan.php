@@ -1,12 +1,8 @@
 <?php 
 include 'db.php';
 include 'sanitasi.php';
-
 include 'persediaan.function.php';
-include 'cache.class.php';
 
-  $c = new Cache();
-  $c->setCache('detail_penjualan');
 
 
 $no_reg = stringdoang($_GET['no_reg']);
@@ -17,6 +13,8 @@ $no_reg = stringdoang($_GET['no_reg']);
  $data_detail = array();
 $arr = array();
 $status_jual = 0;
+
+
 while ($data_tbs_penjualan = mysqli_fetch_array($query_tbs_penjualan)) {
 	
 
@@ -58,11 +56,12 @@ array_push($data_detail, ['kode_barang' => $data_tbs_penjualan['kode_barang'],
 	} //endwhile
 // masukkan array yang berisi detail penjualan ke cache
 
-   $c->store($no_reg, $data_detail);
 
 	$data = json_encode($arr);
 
-echo '{ "status": "'.$status_jual.'" ,"barang": '.$data.'}';
+	$data_detail =  json_encode($data_detail);
+
+echo '{ "status": "'.$status_jual.'" ,"barang": '.$data.',"data_detail":'.$data_detail.'}';
 
 
  ?>

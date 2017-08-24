@@ -27,7 +27,14 @@ try {
 	$agama = stringdoang($_POST['agama']);
 	$alergi = stringdoang($_POST['alergi']);
 	$kondisi = stringdoang($_POST['kondisi']);
-	$dokter = angkadoang($_POST['dokter']);
+
+
+		$dokter_jg = stringdoang($_POST['dokter']);
+		$dokter_jg = explode("-", $dokter_jg);
+		$id_dokter = $dokter_jg[0];
+		$dokter = $dokter_jg[1];
+
+
 	$periksa = stringdoang($_POST['periksa']);
 
 	$jam =  date("H:i:s");
@@ -80,8 +87,8 @@ try {
 $query_insert_registrasi = $db->prepare("INSERT INTO registrasi 
 	(no_rm,no_reg,nama_pasien,jenis_kelamin,umur_pasien,gol_darah,alamat_pasien,hp_pasien,
 	kondisi,alergi,dokter_pengirim,tanggal,jam,
-	jenis_pasien,status,petugas,aps_periksa) 
-	VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+	jenis_pasien,status,petugas,aps_periksa,id_dokter) 
+	VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
 	$nama_lengkap = stringdoang($_POST['nama_lengkap']);
 	$jenis_kelamin = stringdoang($_POST['jenis_kelamin']);
@@ -91,7 +98,6 @@ $query_insert_registrasi = $db->prepare("INSERT INTO registrasi
 	$no_telepon = stringdoang($_POST['no_telepon']);
 	$kondisi = stringdoang($_POST['kondisi']);
 	$alergi = stringdoang($_POST['alergi']);
-	$dokter = stringdoang($_POST['dokter']);
 	$tanggal_sekarang = date("Y-m-d");
 	$jam =  date("H:i:s");
 	$jenis_pasien = 'APS';
@@ -99,10 +105,10 @@ $query_insert_registrasi = $db->prepare("INSERT INTO registrasi
 	$petugas = $_SESSION['nama'];
 	$periksa = stringdoang($_POST['periksa']);
 
-$query_insert_registrasi->bind_param("ssssssssssssssssi",$no_rm,$no_reg,
+$query_insert_registrasi->bind_param("ssssssssssssssssis",$no_rm,$no_reg,
 	$nama_lengkap,$jenis_kelamin, $umur, $gol_darah, $alamat, $no_telepon,
 	$kondisi, $alergi,$dokter, $tanggal_sekarang,$jam,
-	$jenis_pasien,$status, $petugas, $periksa);
+	$jenis_pasien,$status, $petugas, $periksa,$id_dokter);
 
 $query_insert_registrasi->execute();
 

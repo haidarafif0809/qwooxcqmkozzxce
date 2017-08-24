@@ -65,7 +65,7 @@ $umur = stringdoang($_POST['umur']);
 $alergi = stringdoang($_POST['alergi']);
 $tanggal_lahir = stringdoang($_POST['tanggal_lahir']);
 $tanggal_lahir = tanggal_mysql($tanggal_lahir);
-
+$id_dokter = angkadoang($_POST['id_dokter']);
 
 
 $no_urut = 1;
@@ -113,10 +113,13 @@ $nomor = 1 + $ambil_nomor ;
 
  }
 
+$query_penjamin = $db->query("SELECT harga FROM penjamin WHERE nama = '$penjamin' ");
+$data_penjamin = mysqli_fetch_array($query_penjamin);
 
 
+$level_harga = $data_penjamin['harga'];
 
-$query= $db->query("SELECT * FROM registrasi WHERE tanggal = '$tanggal_sekarang' AND poli = '$poli' ORDER BY no_urut DESC LIMIT 1");
+$query= $db->query("SELECT no_urut FROM registrasi WHERE tanggal = '$tanggal_sekarang' AND poli = '$poli' ORDER BY no_urut DESC LIMIT 1");
 $jumlah = mysqli_num_rows($query);
 $data = mysqli_fetch_array($query);
 
@@ -128,9 +131,9 @@ if($jumlah > 0)
 $no_urut_terakhir = $no_urut + $data['no_urut'];
 
 $sql6 = $db->prepare("INSERT INTO registrasi (alergi,poli,no_urut,nama_pasien,jam,hp_pasien,penjamin,dokter,status,
-  no_reg,no_rm,tanggal,kondisi,petugas,alamat_pasien,umur_pasien,jenis_kelamin,rujukan,jenis_pasien)
-   VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
-$sql6->bind_param("sssssssssssssssssss",$alergi,$poli,$no_urut_terakhir,$nama_lengkap,$jam,$hp,$penjamin,$petugas_dokter,$menunggu,$no_reg,$no_rm,$tanggal_sekarang,$kondisi,$username,$alamat,$umur,$jenis_kelamin,$rujukan,$rawat_jalanjalan);
+  no_reg,no_rm,tanggal,kondisi,petugas,alamat_pasien,umur_pasien,jenis_kelamin,rujukan,jenis_pasien,id_dokter,level_harga)
+   VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+$sql6->bind_param("sssssssssssssssssssss",$alergi,$poli,$no_urut_terakhir,$nama_lengkap,$jam,$hp,$penjamin,$petugas_dokter,$menunggu,$no_reg,$no_rm,$tanggal_sekarang,$kondisi,$username,$alamat,$umur,$jenis_kelamin,$rujukan,$rawat_jalanjalan,$id_dokter,$level_harga);
 
 
 $menunggu = 'menunggu';
@@ -157,9 +160,9 @@ else {
 echo "2";
 
 $sql7 = $db->prepare("INSERT INTO registrasi (alergi,poli,no_urut,nama_pasien,jam,hp_pasien,penjamin,dokter,status,
-  no_reg,no_rm,tanggal,kondisi,petugas,alamat_pasien,umur_pasien,jenis_kelamin,rujukan,jenis_pasien)
-   VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
-$sql7->bind_param("sssssssssssssssssss",$alergi,$poli,$no_urut,$nama_lengkap,$jam,$hp,$penjamin,$petugas_dokter,$menunggu,$no_reg,$no_rm,$tanggal_sekarang,$kondisi,$username,$alamat,$umur,$jenis_kelamin,$rujukan,$rawat_jalanjalan);
+  no_reg,no_rm,tanggal,kondisi,petugas,alamat_pasien,umur_pasien,jenis_kelamin,rujukan,jenis_pasien,id_dokter,level_harga)
+   VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+$sql7->bind_param("sssssssssssssssssssss",$alergi,$poli,$no_urut,$nama_lengkap,$jam,$hp,$penjamin,$petugas_dokter,$menunggu,$no_reg,$no_rm,$tanggal_sekarang,$kondisi,$username,$alamat,$umur,$jenis_kelamin,$rujukan,$rawat_jalanjalan,$id_dokter,$level_harga);
 
 
 $menunggu = 'menunggu';

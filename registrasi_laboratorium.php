@@ -201,22 +201,31 @@ $dokter = $data_petugas_jaga['nama_dokter'];
         <div class="form-group">
             <label for="sel1">Dokter </label>
             <select class="form-control" id="dokter" name="dokter" required="" autocomplete="off">
-              <option value="<?php echo $dokter;?>"><?php echo $dokter;?></option>
-                      <option value="Tidak Ada">Tidak Ada</option>
-                <?php 
-                $query = $db->query("SELECT id,nama FROM user WHERE tipe = '1' ");
-                while ( $data = mysqli_fetch_array($query)) 
-                {   
-                      if ($dokter == $data['nama']) {
-                        # code...
-                          echo "<option selected value='".$data['id']."'>".$data['nama']."</option>";
-                      }
-                      else {
-                          echo "<option value='".$data['id']."'>".$data['nama']."</option>";
-                      }
-                  
-                }
-                ?>
+<?php 
+    
+    //untuk menampilkan semua data pada tabel pelanggan dalam DB
+    $query01 = $db->query("SELECT id,nama FROM user WHERE tipe = '1'");
+    
+      $petugas = $db->query("SELECT nama_dokter FROM penetapan_petugas");
+        $data_petugas = mysqli_fetch_array($petugas);
+
+    //untuk menyimpan data sementara yang ada pada $query
+    while($data01 = mysqli_fetch_array($query01))
+    {   
+      
+
+    if ($data01['nama'] == $data_petugas['nama_dokter']) {
+     echo "<option selected value='".$data01['id']."-".$data01['nama'] ."'>".$data01['nama'] ."</option>";
+    }
+    else{
+      echo "<option value='".$data01['id']."-".$data01['nama'] ."'>".$data01['nama'] ."</option>";
+    }
+
+    
+    }
+    
+    
+    ?>
             </select>
         </div>
 
@@ -491,8 +500,12 @@ $(document).on('click', '#registrasi_pasien', function (e) {
   var alergi = $("#alergi").val();
   var kondisi = $("#kondisi").val();
   var agama = $("#agama").val();
-  var dokter = $("#dokter").val();
   var periksa = $("#periksa").val();
+
+  var petugasdokter = $("#dokter").val();
+  var petugas_dokter = petugasdokter.split("-");// memisahkan string
+  var id_dokter = petugas_dokter[0];// memisahkan string
+  var dokter = petugas_dokter[1];// memisahkan string
 
   if (no_rm == ""){
     alert("Pasien Belum Ada!");
@@ -531,7 +544,7 @@ $(document).on('click', '#registrasi_pasien', function (e) {
     $("#kembali").hide(); // Tombol Kembali
 
 
-    $.post("proses_aps.php",{no_rm:no_rm,token:token,nama_lengkap:nama_lengkap,jenis_kelamin:jenis_kelamin,tanggal_lahir:tanggal_lahir,umur:umur,gol_darah:gol_darah,no_telepon:no_telepon,alamat:alamat,alergi:alergi,kondisi:kondisi,agama:agama,dokter:dokter,periksa:periksa},function(data){
+    $.post("proses_aps.php",{id_dokter:id_dokter,no_rm:no_rm,token:token,nama_lengkap:nama_lengkap,jenis_kelamin:jenis_kelamin,tanggal_lahir:tanggal_lahir,umur:umur,gol_darah:gol_darah,no_telepon:no_telepon,alamat:alamat,alergi:alergi,kondisi:kondisi,agama:agama,dokter:dokter,periksa:periksa},function(data){
 
       var table_aps = $('#table_aps').DataTable();
       table_aps.draw();
