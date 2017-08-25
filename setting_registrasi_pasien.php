@@ -9,22 +9,51 @@
 
 ?>
 
-<div class="container">
+<style type="text/css">
+	th{
+		background-color: #4CAF50;
+		color: white;
+		width: 25%
+	}
+</style>
+
+<div style="padding-left: 21%; padding-right: 21%">
 	<h3>REGISTRASI ONLINE - OFFLINE</h3><hr>
 
-	<div class="table-responsive">
-		<table id="tableuser" class="table table-bordered table-sm">
-			<thead>
-				<th style='background-color: #4CAF50; color: white'> No. </th>	
-				<th style='background-color: #4CAF50; color: white'> Cari Pasien</th>	
-				<th style='background-color: #4CAF50; color: white'> Data Pasien</th>				
-			</thead>			
-		</table>
+	<div class="card card-block">
+
+		<div class="table-responsive">
+			<table id="tableuser" class="table table-bordered table-sm">
+				<thead>
+					<tr>
+						<th style='background-color: #4CAF50; color: white;'> Cari Pasien</th>
+						<?php 
+						  $query = $db->query("SELECT id, url_cari_pasien FROM setting_registrasi_pasien");
+						  while($data = mysqli_fetch_array($query)) {
+						    echo "<td class='edit-cari' data-id='".$data['id']."'><span id='text-cari-".$data['id']."'>". $data['url_cari_pasien'] ."</span> <input type='hidden' id='input-cari-".$data['id']."' value='".$data['url_cari_pasien']."' class='input_cari' data-id='".$data['id']."' data-cari='".$data['url_cari_pasien']."' autofocus=''></td>";
+						  }
+						?>	
+					</tr>		
+				</thead>
+				<thead>
+					<tr>
+						<th style='background-color: #4CAF50; color: white;'> Data Pasien</th>
+						<?php 
+						  $query = $db->query("SELECT id, url_data_pasien FROM setting_registrasi_pasien");
+						  while($data = mysqli_fetch_array($query)) {
+						    echo "<td class='edit-data' data-id='".$data['id']."'><span id='text-data-".$data['id']."'>". $data['url_data_pasien'] ."</span> <input type='hidden' id='input-data-".$data['id']."' value='".$data['url_data_pasien']."' class='input_data' data-id='".$data['id']."' data-data='".$data['url_data_pasien']."' autofocus=''></td>";
+						  }
+						?>	
+					</tr>		
+				</thead>	
+			</table>
+		</div>	
+		
 	</div>
 	<h6 style="text-align: left ; color: red"><i> * Klik 2x Pada Kolom Yang Ingin Diubah.</i></h6>
 </div>
 
-<!--DATA TABLE MENGGUNAKAN AJAX-->
+<!--DATA TABLE MENGGUNAKAN AJAX
 <script type="text/javascript">
       $(document).ready(function() {
 
@@ -49,6 +78,10 @@
 
       } );
 </script>
+-->
+
+
+
 
 <!-- URL CARI PASIEN -->
 <script type="text/javascript">
