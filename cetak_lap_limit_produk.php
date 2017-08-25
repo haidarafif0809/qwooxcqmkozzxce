@@ -10,7 +10,9 @@ $array = array();
 $query_perusahaan = $db->query("SELECT foto, nama_perusahaan, alamat_perusahaan, no_telp FROM perusahaan ");
 $data_perusahaan = mysqli_fetch_array($query_perusahaan);
 
-$query_barang = $db->query("SELECT kode_barang, nama_barang, limit_stok, over_stok, status FROM barang WHERE berkaitan_dgn_stok = 'Barang' ");
+
+
+$query_barang = $db->query("SELECT kode_barang, nama_barang, limit_stok, over_stok, status FROM barang WHERE berkaitan_dgn_stok = 'Barang' AND limit_stok != '0' OR over_stok != '0' ");
 while ($data_barang = mysqli_fetch_array($query_barang)) {
   $stok_barang = cekStokPertanggal($data_barang['kode_barang'],$sampai_tanggal);
 
@@ -39,8 +41,6 @@ while ($data_barang = mysqli_fetch_array($query_barang)) {
   }
 
 }
-
-
     
 ?>
 
@@ -91,6 +91,20 @@ while ($data_barang = mysqli_fetch_array($query_barang)) {
           <td><?php echo $data_array['kode_barang']; ?></td>
           <td><?php echo $data_array['nama_barang']; ?></td>
           <td><?php echo $data_array['stok_barang']; ?></td>
+       <?php 
+            if ($status_stok == '0') {
+              $status_stok = 'SEMUA';
+            }
+            else if ($status_stok == '1') {
+              $status_stok = 'CUKUP';
+            }
+            else if ($status_stok == '2') {
+              $status_stok = 'LIMIT';
+            }
+            else if ($status_stok == '3') {
+              $status_stok = 'OVER STOK';
+            }
+       ?>    
           <td><?php echo $status_stok; ?></td>
           <td><?php echo $data_array['limit_stok']; ?></td>
           <td><?php echo $data_array['over_stok']; ?></td>
@@ -110,13 +124,13 @@ while ($data_barang = mysqli_fetch_array($query_barang)) {
 
 </div> <!--end container-->
 
- <script>
+ <!--<script>
 $(document).ready(function(){
   window.print();
 });
 </script>
 
 
-
+-->
 
 <?php include 'footer.php'; ?>
