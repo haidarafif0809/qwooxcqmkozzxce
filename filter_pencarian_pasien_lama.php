@@ -3,8 +3,8 @@
 include 'db.php';
 include 'sanitasi.php';
 
-$nama_lengkap_pasien = stringdoang($_POST['nama_lengkap_pasien']);
-$alamat_pasien = stringdoang($_POST['alamat_pasien']);
+$nama_lengkap_pasien = stringdoang($_GET['nama_lengkap_pasien']);
+$alamat_pasien = stringdoang($_GET['alamat_pasien']);
 
 // storing  request (ie, get/post) global array to a variable  
 $requestData= $_REQUEST;
@@ -60,16 +60,16 @@ $sql.=" FROM pelanggan WHERE 1=1 AND kode_pelanggan != '' AND nama_pelanggan LIK
 
 }
 
-if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
-	$sql.=" AND ( kode_pelanggan LIKE '".$requestData['search']['value']."%' ";    
-	$sql.=" OR nama_pelanggan LIKE '".$requestData['search']['value']."%' ";  
-	$sql.=" OR alamat_sekarang LIKE '".$requestData['search']['value']."%' ";  
-	$sql.=" OR tgl_lahir LIKE '".$requestData['search']['value']."%' ";
-	$sql.=" OR penjamin LIKE '".$requestData['search']['value']."%' )";
+if( !empty(urldecode($requestData['search_value'])) ) {   // if there is a search parameter, urldecode($requestData['search_value']) contains search parameter
+	$sql.=" AND ( kode_pelanggan LIKE '".urldecode($requestData['search_value'])."%' ";    
+	$sql.=" OR nama_pelanggan LIKE '".urldecode($requestData['search_value'])."%' ";  
+	$sql.=" OR alamat_sekarang LIKE '".urldecode($requestData['search_value'])."%' ";  
+	$sql.=" OR tgl_lahir LIKE '".urldecode($requestData['search_value'])."%' ";
+	$sql.=" OR penjamin LIKE '".urldecode($requestData['search_value'])."%' )";
 }
 $query=mysqli_query($conn_pasien, $sql) or die("eror 2");
 $totalFiltered = mysqli_num_rows($query); // when there is a search parameter then we have to modify total number filtered rows as per search result. 
-$sql.=" ORDER BY ". $columns[$requestData['order'][0]['column']]."   ".$requestData['order'][0]['dir']."  LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
+$sql.=" ORDER BY id DESC LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
 /* $requestData['order'][0]['column'] contains colmun index, $requestData['order'][0]['dir'] contains order such as asc/desc  */	
 $query=mysqli_query($conn_pasien, $sql) or die("eror 3");
 
@@ -98,6 +98,18 @@ $json_data = array(
 			"data"            => $data   // total data array
 			);
 
-echo json_encode($json_data);  // send data as json format
+if (isset($_GET['callback'])) {
+	// Validate the JSONP to make use it is an okay Javascript function to execute
+	$jsonp = preg_match('/^[$A-Z_][0-9A-Z_$]*$/i', $_GET['callback']) ?
+	    $_GET['callback'] :
+	    false;
+	 
+	if ( $jsonp ) {
+	    echo $jsonp.'('.json_encode($json_data).');';
+	}
+}
+else{
+	echo json_encode($json_data);  // send data as json format	
+}
 
 ?>
