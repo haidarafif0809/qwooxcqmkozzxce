@@ -53,7 +53,7 @@ else {
 	$sql.=" OR penjamin LIKE '".urldecode($requestData['search_value'])."%' )";
 }
 
-echo $sql;
+
 $query=mysqli_query($conn_pasien, $sql) or die("eror 2");
 $totalFiltered = mysqli_num_rows($query); // when there is a search parameter then we have to modify total number filtered rows as per search result. 
 $sql.=" ORDER BY id DESC LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
