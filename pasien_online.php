@@ -2,7 +2,7 @@
 include 'db.php';
 
 //SELECT UNTUK MENGAMBIL SETTING URL U/ PENCARIAN PASIEN
-$query_setting_registrasi_pasien = $db->query("SELECT url_cari_pasien FROM setting_registrasi_pasien ");
+$query_setting_registrasi_pasien = $db->query("SELECT url_cari_pasien FROM setting_registrasi_pasien WHERE id = '1' ");
 $data_reg_pasien = mysqli_fetch_array($query_setting_registrasi_pasien );
 
 $url = $data_reg_pasien['url_cari_pasien'];

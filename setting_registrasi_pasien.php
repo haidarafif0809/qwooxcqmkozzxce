@@ -15,7 +15,8 @@
 	<div class="table-responsive">
 		<table id="tableuser" class="table table-bordered table-sm">
 			<thead>
-				<th style='background-color: #4CAF50; color: white'> Cari Pasien</th>
+				<th style='background-color: #4CAF50; color: white'> No. </th>	
+				<th style='background-color: #4CAF50; color: white'> Cari Pasien</th>	
 				<th style='background-color: #4CAF50; color: white'> Data Pasien</th>				
 			</thead>			
 		</table>

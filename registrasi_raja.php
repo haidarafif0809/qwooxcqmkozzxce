@@ -1098,7 +1098,8 @@ $("#form_cari").submit(function(){
           "processing": true,
           "serverSide": true,
           "ajax":{
-            url :"filter_pencarian_pasien_lama.php", // json datasource
+            url :"filter_pasien_online_rj.php", // json datasource
+            type: "post",  // method  , by default get
             "data": function ( d ) {
                 d.nama_lengkap_pasien = $("#nama_lengkap_pasien").val();
                 d.alamat_pasien = $("#alamat_pasien").val();

@@ -64,7 +64,6 @@ if( !empty(urldecode($requestData['search_value'])) ) {   // if there is a searc
 	$sql.=" AND ( kode_pelanggan LIKE '".urldecode($requestData['search_value'])."%' ";    
 	$sql.=" OR nama_pelanggan LIKE '".urldecode($requestData['search_value'])."%' ";  
 	$sql.=" OR alamat_sekarang LIKE '".urldecode($requestData['search_value'])."%' ";  
-	$sql.=" OR tgl_lahir LIKE '".urldecode($requestData['search_value'])."%' ";
 	$sql.=" OR penjamin LIKE '".urldecode($requestData['search_value'])."%' )";
 }
 $query=mysqli_query($conn_pasien, $sql) or die("eror 2");

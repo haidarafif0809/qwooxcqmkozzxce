@@ -30,14 +30,16 @@ if( !empty($requestData['search']['value']) ) {   // if there is a search parame
 }
 $query=mysqli_query($conn, $sql) or die("employee-grid-data.php: get employees");
 $totalFiltered = mysqli_num_rows($query); // when there is a search parameter then we have to modify total number filtered rows as per search result. 
-$sql.=" ORDER BY ". $columns[$requestData['order'][0]['column']]."   ".$requestData['order'][0]['dir']."  LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
+$sql.=" ORDER BY id ASC LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
 /* $requestData['order'][0]['column'] contains colmun index, $requestData['order'][0]['dir'] contains order such as asc/desc  */	
 $query=mysqli_query($conn, $sql) or die("employee-grid-data.php: get employees");
 
 $data = array();
+$no_urut = 1;
 while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 	$nestedData=array(); 
 
+		$nestedData[] = $no_urut++.".";
 		$nestedData[] = "<p class='edit-cari' data-id='".$row['id']."'><span id='text-cari-".$row['id']."'>". $row['url_cari_pasien'] ."</span> <input type='hidden' id='input-cari-".$row['id']."' value='".$row['url_cari_pasien']."' class='input_cari' data-id='".$row['id']."' data-cari='".$row['url_cari_pasien']."' autofocus=''></p>";
 		$nestedData[] = "<p class='edit-data' data-id='".$row['id']."'><span id='text-data-".$row['id']."'>". $row['url_data_pasien'] ."</span> <input type='hidden' id='input-data-".$row['id']."' value='".$row['url_data_pasien']."' class='input_data' data-id='".$row['id']."' data-data='".$row['url_data_pasien']."' autofocus=''></p>";	
 
