@@ -255,7 +255,7 @@ echo '<button style="display:none" data-toggle="collapse tooltip" accesskey="k" 
 </span>
 <!--END FILTER DETAIl-->
 
-    <input type="text" class="form-control" style="font-size: 25px" name="total_selisih_harga" id="total_selisih_harga" readonly="" placeholder="Total Selisih Harga">
+    <input type="hidden" class="form-control" style="font-size: 25px" name="total_selisih_harga" id="total_selisih_harga" readonly="" placeholder="Total Selisih Harga">
 
 <div class="table-responsive">
 <span id="tabel_baru">
