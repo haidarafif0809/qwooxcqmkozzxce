@@ -38,6 +38,11 @@ $sql.=" WHERE jenis_pasien = 'Rawat Inap' AND status = 'menginap' AND status != 
 
 $query = mysqli_query($conn, $sql) or die("eror 1");
 
+while( $row_data=mysqli_fetch_array($query) ) {  // preparing an array
+      $totalData = $totalData + 1;
+
+    }
+
 
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, 
 
@@ -48,7 +53,13 @@ if( !empty($requestData['search']['value']) ) {   // if there is a search parame
 
 }
 $query=mysqli_query($conn, $sql) or die("eror 2");
-        
+
+while($row_filter=mysqli_fetch_array($query) ) {  // preparing an array
+     
+      $totalFiltered = $totalFiltered + 1; 
+
+    }
+      
 $sql.=" ORDER BY id ".$requestData['order'][0]['dir']."  LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
 
 /* $requestData['order'][0]['column'] contains colmun index, $requestData['order'][0]['dir'] contains order such as asc/desc  */    
@@ -59,8 +70,7 @@ $data = array();
 while( $row=mysqli_fetch_array($query) ) {  // preparing an array
   $nestedData=array(); 
 
-      $totalData = $totalData + 1;
-      $totalFiltered = $totalData; 
+
       
       $nestedData[] = $row["no_reg"];
       $nestedData[] = $row["no_rm"];
