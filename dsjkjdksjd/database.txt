@@ -1,0 +1,6 @@
+Table 		:
+				- setting_registrasi_pasien
+Programmer	: 
+				- Rindang
+Tanggal		:
+				- 24 Agustus 2017

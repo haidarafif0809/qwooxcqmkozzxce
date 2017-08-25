@@ -6,13 +6,13 @@ include_once 'sanitasi.php';
 
 $tanggal = date("Y-m-d");
 
-
-
 $sett_registrasi= $db->query("SELECT * FROM setting_registrasi ");
 $data_sett = mysqli_fetch_array($sett_registrasi);
 
 $pilih_akses_registrasi_rj = $db->query("SELECT registrasi_rj_lihat, registrasi_rj_tambah, registrasi_rj_edit, registrasi_rj_hapus FROM otoritas_registrasi WHERE id_otoritas = '$_SESSION[otoritas_id]'");
 $registrasi_rj = mysqli_fetch_array($pilih_akses_registrasi_rj);
+
+
 
 ?>
 
@@ -1060,8 +1060,8 @@ $("#form_cari").submit(function(){
           "processing": true,
           "serverSide": true,
           "ajax":{
-            url :"cek_pasien_lama_reg.php", // json datasource
-            type: "post",  // method  , by default get
+            url :"pasien_online.php", // json datasource
+            type: "get",  // method  , by default get
             error: function(){  // error handling
               $(".employee-grid-error").html("");
               $("#pasien_lama").append('<tbody class="employee-grid-error"><tr><th colspan="3">No data found in the server</th></tr></tbody>');

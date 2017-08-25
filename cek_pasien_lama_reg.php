@@ -7,7 +7,6 @@ include 'sanitasi.php';
 // storing  request (ie, get/post) global array to a variable  
 $requestData= $_REQUEST;
 
-
 $columns = array( 
 // datatable column index  => database column name
 	0 =>'kode_pelanggan', 
@@ -35,26 +34,26 @@ $totalFiltered = $totalData;  // when there is no search parameter then total nu
 
 $sql = "SELECT penjamin,kode_pelanggan,nama_pelanggan,jenis_kelamin,alamat_sekarang,tgl_lahir,no_telp,gol_darah ";
 $sql.=" FROM pelanggan WHERE 1=1 AND kode_pelanggan != '' ";
-if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
-
-$cek_tanggal =   validateDate($requestData['search']['value']);
+if( !empty(urldecode($requestData['search_value'])) ) {   // if there is a search parameter, urldecode($requestData['search_value']) contains search parameter
+$cek_tanggal =   validateDate(urldecode($requestData['search_value']));
 
 if ($cek_tanggal == true) {
 	# code...
 
-	 $tanggal_cari = tanggal_mysql($requestData['search']['value']);
+	 $tanggal_cari = tanggal_mysql(urldecode($requestData['search_value']));
 
 
 }
 else {
-	 $tanggal_cari = $requestData['search']['value'];
+	 $tanggal_cari = urldecode($requestData['search_value']);
 }
-	$sql.=" AND ( kode_pelanggan LIKE '".$requestData['search']['value']."%' ";    
-	$sql.=" OR nama_pelanggan LIKE '".$requestData['search']['value']."%' ";  
-	$sql.=" OR alamat_sekarang LIKE '".$requestData['search']['value']."%' ";  
-	$sql.=" OR tgl_lahir = '".$tanggal_cari."' ";
-	$sql.=" OR penjamin LIKE '".$requestData['search']['value']."%' )";
+	$sql.=" AND ( kode_pelanggan LIKE '".urldecode($requestData['search_value'])."%' ";    
+	$sql.=" OR nama_pelanggan LIKE '".urldecode($requestData['search_value'])."%' ";  
+	$sql.=" OR alamat_sekarang LIKE '".urldecode($requestData['search_value'])."%' ";  
+	$sql.=" OR penjamin LIKE '".urldecode($requestData['search_value'])."%' )";
 }
+
+echo $sql;
 $query=mysqli_query($conn_pasien, $sql) or die("eror 2");
 $totalFiltered = mysqli_num_rows($query); // when there is a search parameter then we have to modify total number filtered rows as per search result. 
 $sql.=" ORDER BY id DESC LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
