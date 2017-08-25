@@ -26,13 +26,13 @@ $array = array();
 // getting total number records without any search
 
 $sql ="SELECT kode_barang, nama_barang, limit_stok, over_stok, status ";
-$sql.="FROM barang WHERE berkaitan_dgn_stok = 'Barang' ";
+$sql.="FROM barang WHERE berkaitan_dgn_stok = 'Barang' AND (limit_stok != '0' OR limit_stok != '') AND (over_stok != '0' OR over_stok != '') ";
 $query=mysqli_query($conn, $sql) or die("datatable_satuan.php: get employees");
 
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
 
   $sql ="SELECT kode_barang, nama_barang, limit_stok, over_stok, status ";
-  $sql.="FROM barang WHERE berkaitan_dgn_stok = 'Barang' ";
+  $sql.="FROM barang WHERE berkaitan_dgn_stok = 'Barang' AND (limit_stok != '0' OR limit_stok != '') AND (over_stok != '0' OR over_stok != '') ";
   $sql.=" AND ( nama_barang LIKE '".$requestData['search']['value']."%' "; 
   $sql.=" OR kode_barang LIKE '".$requestData['search']['value']."%' )";
 
