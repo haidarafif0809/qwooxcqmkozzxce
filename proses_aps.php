@@ -31,6 +31,7 @@ try {
 	$periksa = stringdoang($_POST['periksa']);
 	$tanggal_lahir = angkadoang($_POST['tanggal_lahir']);
 	$agama = angkadoang($_POST['agama']);
+	$id_dokter = stringdoang($_POST['id_dokter']);
 
 	//times sekarang
 	$jam =  date("H:i:s");
@@ -65,7 +66,7 @@ try {
 
 		else{
 
-		$nomor = 1 + $ambil_nomor ;
+		$nomor = 1 + $ambil_nomor;
 
 		$no_reg = $nomor."-REG-".$bulan_php."-".$tahun_terakhir;
 
@@ -77,13 +78,13 @@ try {
 $query_insert_registrasi = $db->prepare("INSERT INTO registrasi 
 	(no_rm,no_reg,nama_pasien,jenis_kelamin,umur_pasien,gol_darah,
 	alamat_pasien,hp_pasien,kondisi,alergi,dokter_pengirim,tanggal,jam,
-	jenis_pasien,status,petugas,aps_periksa) 
-	VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+	jenis_pasien,status,petugas,aps_periksa,id_dokter_pengirim) 
+	VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
-$query_insert_registrasi->bind_param("ssssssssssssssssi",$no_rm,$no_reg,
+$query_insert_registrasi->bind_param("ssssssssssssssssii",$no_rm,$no_reg,
 	$nama_lengkap,$jenis_kelamin, $umur, $gol_darah, $alamat, $no_telepon,
 	$kondisi, $alergi,$dokter, $tanggal_sekarang,$jam,
-	$jenis_pasien,$status, $petugas, $periksa);
+	$jenis_pasien,$status, $petugas, $periksa,$id_dokter);
 
 $query_insert_registrasi->execute();
 

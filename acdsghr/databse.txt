@@ -1,0 +1,12 @@
+
+
+Table 		: Registrasi
+
+				ALTER TABLE registrasi ADD id_dokter INT(100) NOT NULL AFTER ruangan, ADD level_harga VARCHAR(100) NOT NULL AFTER id_dokter
+
+				ALTER TABLE registrasi ADD id_dokter_pengirim INT(100)  NULL AFTER level_harga;
+
+				ALTER TABLE registrasi ADD nama_ruangan VARCHAR(100) NULL DEFAULT NULL AFTER id_dokter_pengirim;
+
+Programmer	: - Riko Pernando
+Tanggal		: - 23 Agustus 2017

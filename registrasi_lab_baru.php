@@ -155,12 +155,12 @@ $dokter = $data_petugas_jaga['nama_dokter'];
 				        {
 							 if ($dokter == $data['nama']) {
 	               
-	                          echo "<option selected value='".$data['id']."'>".$data['nama']."</option>";
+	                          echo "<option selected value='".$data['id']."-".$data['nama']."'>".$data['nama']."</option>";
 
 		                      }
 		                      else {
 
-		                          echo "<option value='".$data['id']."'>".$data['nama']."</option>";
+		                          echo "<option value='".$data['id']."-".$data['nama']."'>".$data['nama']."</option>";
 
 		                      }
 				        }

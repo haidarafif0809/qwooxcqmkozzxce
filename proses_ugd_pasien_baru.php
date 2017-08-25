@@ -44,7 +44,12 @@ if ($penjamin == '')
   $penjamin = 'PERSONAL';
 }
 $gol_darah = stringdoang($_POST['gol_darah']);
-$dokter_jaga = stringdoang($_POST['dokter_jaga']);
+
+$dokter_jg = stringdoang($_POST['dokter_jaga']);
+$dokter_jg = explode("-", $dokter_jg);
+$id_dokter_jaga = $dokter_jg[0];
+$dokter_jaga = $dokter_jg[1];
+
 $kondisi = stringdoang($_POST['kondisi']);
 $rujukan = stringdoang($_POST['rujukan']);
 $pengantar = stringdoang($_POST['pengantar']);
@@ -125,17 +130,21 @@ $nomor = 1 + $ambil_nomor ;
 
 
  }
+
+ $query_penjamin = $db->query("SELECT harga FROM penjamin WHERE nama = '$penjamin'");
+$data_penjamin  = mysqli_fetch_array($query_penjamin);
+$level_harga = $data_penjamin['harga'];
  // AKHIR UNTUK NO REG
                       // ENDING -- UNTUK AMBIL NO REG NYA LEWAT PROSES SAJA
 
 $sql6 = $db->prepare("INSERT INTO registrasi (eye,verbal,motorik,alergi,nama_pasien,jam,penjamin,status,
   no_reg,no_rm,tanggal,kondisi,petugas,alamat_pasien,umur_pasien,jenis_kelamin,rujukan,jenis_pasien,
-  gol_darah,status_nikah,pekerjaan_pasien,pengantar_pasien,nama_pengantar,hp_pengantar,alamat_pengantar,keterangan,hubungan_dengan_pasien,dokter,hp_pasien) 
-  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+  gol_darah,status_nikah,pekerjaan_pasien,pengantar_pasien,nama_pengantar,hp_pengantar,alamat_pengantar,keterangan,hubungan_dengan_pasien,dokter,hp_pasien,id_dokter,level_harga) 
+  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
-$sql6->bind_param("sssssssssssssssssssssssssssss",$eye,$verbal,$motorik,$alergi,$nama_lengkap
+$sql6->bind_param("sssssssssssssssssssssssssssssss",$eye,$verbal,$motorik,$alergi,$nama_lengkap
   ,$jam,$penjamin,$sig_in_ugd,$no_reg,$no_rm,$tanggal_sekarang,$kondisi,$username,$alamat_ktp,$umur
-  ,$jenis_kelamin,$rujukan,$ugd_ku,$gol_darah,$status_kawin,$pekerjaan_pasien,$pengantar,$nama_pengantar,$hp_pengantar,$alamat_pengantar,$keterangan,$hubungan_dengan_pasien,$dokter_jaga,$no_telepon);
+  ,$jenis_kelamin,$rujukan,$ugd_ku,$gol_darah,$status_kawin,$pekerjaan_pasien,$pengantar,$nama_pengantar,$hp_pengantar,$alamat_pengantar,$keterangan,$hubungan_dengan_pasien,$dokter_jaga,$no_telepon,$id_dokter_jaga,$level_harga);
 
 $sig_in_ugd = 'Masuk Ruang UGD';
 $ugd_ku = 'UGD';

@@ -370,22 +370,21 @@ if ($registrasi_rj['registrasi_rj_lihat'] > 0) {
  <?php 
     
     //untuk menampilkan semua data pada tabel pelanggan dalam DB
-    $query01 = $db->query("SELECT nama FROM user WHERE tipe = '1'");
+    $query01 = $db->query("SELECT id,nama FROM user WHERE tipe = '1'");
     
       $petugas = $db->query("SELECT nama_dokter FROM penetapan_petugas");
         $data_petugas = mysqli_fetch_array($petugas);
 
     //untuk menyimpan data sementara yang ada pada $query
     while($data01 = mysqli_fetch_array($query01))
-    {
-    
+    {   
       
 
     if ($data01['nama'] == $data_petugas['nama_dokter']) {
-     echo "<option selected value='".$data01['nama'] ."'>".$data01['nama'] ."</option>";
+     echo "<option selected value='".$data01['id']."-".$data01['nama'] ."'>".$data01['nama'] ."</option>";
     }
     else{
-      echo "<option value='".$data01['nama'] ."'>".$data01['nama'] ."</option>";
+      echo "<option value='".$data01['id']."-".$data01['nama'] ."'>".$data01['nama'] ."</option>";
     }
 
     
@@ -393,6 +392,7 @@ if ($registrasi_rj['registrasi_rj_lihat'] > 0) {
     
     
     ?>
+
 
 </select>
 </div> 
@@ -539,9 +539,6 @@ tr:nth-child(even){background-color: #f2f2f2}
 
 </div> <!--container-->
 
-
-
-
 <!--   script untuk Batal-->
 <script type="text/javascript">
      $(document).on('click', '.pilih2', function (e) {  
@@ -670,7 +667,6 @@ else
     {
       penjamin = 'PERSONAL';
     }
-    var petugas_dokter = $("#petugas_dokter").val();
     var rujukan = $("#rujukan").val();
     var poli = $("#poli").val();
     var umur = $("#umur").val();
@@ -683,6 +679,13 @@ else
     var alergi = $("#alergi").val();
     var tanggal_lahir = $("#tanggal_lahir").val();
     var token = $("#token").val();
+
+    var dokter = $("#petugas_dokter").val();
+    var dokter = dokter.split("-");// memisahkan string
+    var id_dokter = dokter[0];// memisahkan string
+    var petugas_dokter = dokter[1];// memisahkan string
+
+
 
 
               if ( no_rm == ""){
@@ -750,7 +753,7 @@ else{
   $("#kembali").hide();
    $("#coba").show();
    $("#demo").hide();
- $.post("proses_rawat_jalan.php",{no_rm:no_rm,nama_lengkap:nama_lengkap,alamat:alamat,jenis_kelamin:jenis_kelamin,hp:hp,kondisi:kondisi,penjamin:penjamin,rujukan:rujukan,poli:poli,umur:umur,sistole_distole:sistole_distole,respiratory_rate:respiratory_rate,suhu:suhu,nadi:nadi,berat_badan:berat_badan,tinggi_badan:tinggi_badan,alergi:alergi,tanggal_lahir:tanggal_lahir, token:token, petugas_dokter:petugas_dokter},function(data){
+ $.post("proses_rawat_jalan.php",{no_rm:no_rm,nama_lengkap:nama_lengkap,alamat:alamat,jenis_kelamin:jenis_kelamin,hp:hp,kondisi:kondisi,penjamin:penjamin,rujukan:rujukan,poli:poli,umur:umur,sistole_distole:sistole_distole,respiratory_rate:respiratory_rate,suhu:suhu,nadi:nadi,berat_badan:berat_badan,tinggi_badan:tinggi_badan,alergi:alergi,tanggal_lahir:tanggal_lahir, token:token, petugas_dokter:petugas_dokter,id_dokter:id_dokter},function(data){
      
      $('#table_rawat_jalan').DataTable().draw();
      

@@ -519,15 +519,31 @@ opacity: 0.9;
 <div class="form-group">
   <label for="sel1">Dokter Jaga</label>
   <select class="form-control" id="dokter_jaga" name="dokter_jaga"  autocomplete="off">
-  <option value="<?php echo $ss['nama_dokter'];?>"><?php echo $ss['nama_dokter'];?></option>
-          <option value="Tidak Ada">Tidak Ada</option>
- <?php 
-  $query = $db->query("SELECT nama FROM user WHERE tipe = '1'");
-while ( $data = mysqli_fetch_array($query))
- {
-  echo "<option value='".$data['nama']."'>".$data['nama']."</option>";
- }
-   ?>
+<?php 
+    
+    //untuk menampilkan semua data pada tabel pelanggan dalam DB
+    $query01 = $db->query("SELECT id,nama FROM user WHERE tipe = '1'");
+    
+      $petugas = $db->query("SELECT nama_dokter FROM penetapan_petugas");
+        $data_petugas = mysqli_fetch_array($petugas);
+
+    //untuk menyimpan data sementara yang ada pada $query
+    while($data01 = mysqli_fetch_array($query01))
+    {   
+      
+
+    if ($data01['nama'] == $data_petugas['nama_dokter']) {
+     echo "<option selected value='".$data01['id']."-".$data01['nama'] ."'>".$data01['nama'] ."</option>";
+    }
+    else{
+      echo "<option value='".$data01['id']."-".$data01['nama'] ."'>".$data01['nama'] ."</option>";
+    }
+
+    
+    }
+    
+    
+    ?>
   </select>
 </div>
  
@@ -637,7 +653,12 @@ tr:nth-child(even){background-color: #f2f2f2}
     var alamat_pengantar = $("#alamat_pengantar").val();
     var hp_pengantar = $("#hp_pengantar").val();
     var keterangan = $("#keterangan").val();
-    var dokter_jaga = $("#dokter_jaga").val();
+
+    var dokter_jg = $("#dokter_jaga").val();
+    var dokter_jg = dokter_jg.split("-");// memisahkan string
+    var id_dokter_jaga = dokter_jg[0];// memisahkan string
+    var dokter_jaga = dokter_jg[1];// memisahkan string
+
     var cari_migrasi = $("#cari_migrasi").val();
 
        if ( no_rm == ""){
@@ -706,7 +727,7 @@ else{
      $("#kembali").hide();
      $("#coba").show();
      $("#demo").hide();
- $.post("proses_ugd.php",{no_rm:no_rm,rujukan:rujukan,token:token,penjamin:penjamin,nama_pasien:nama_pasien,jenis_kelamin:jenis_kelamin,tanggal_lahir:tanggal_lahir,umur:umur,gol_darah:gol_darah,no_hp:no_hp,alamat:alamat,alergi:alergi,kondisi:kondisi,eye:eye,verbal:verbal,motorik:motorik,pengantar:pengantar,hubungan_dengan_pasien:hubungan_dengan_pasien,nama_pengantar:nama_pengantar,alamat_pengantar:alamat_pengantar,hp_pengantar:hp_pengantar,keterangan:keterangan,dokter_jaga:dokter_jaga},function(data){
+ $.post("proses_ugd.php",{no_rm:no_rm,rujukan:rujukan,token:token,penjamin:penjamin,nama_pasien:nama_pasien,jenis_kelamin:jenis_kelamin,tanggal_lahir:tanggal_lahir,umur:umur,gol_darah:gol_darah,no_hp:no_hp,alamat:alamat,alergi:alergi,kondisi:kondisi,eye:eye,verbal:verbal,motorik:motorik,pengantar:pengantar,hubungan_dengan_pasien:hubungan_dengan_pasien,nama_pengantar:nama_pengantar,alamat_pengantar:alamat_pengantar,hp_pengantar:hp_pengantar,keterangan:keterangan,dokter_jaga:dokter_jaga,id_dokter_jaga:id_dokter_jaga},function(data){
      
      window.location.href = 'registrasi_ugd.php';
      $('#table_ugd').DataTable().destroy();

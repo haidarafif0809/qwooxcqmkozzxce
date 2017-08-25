@@ -8,7 +8,8 @@ $otoritas_laboratorium = $db->query("SELECT input_jasa_lab, input_hasil_lab FROM
 $take_lab = mysqli_fetch_array($otoritas_laboratorium);
 $input_jasa_lab = $take_lab['input_jasa_lab'];
 $input_hasil_lab = $take_lab['input_hasil_lab'];
-
+$totalData = 0;
+$totalFiltered = 0;
 
 // storing  request (ie, get/post) global array to a variable  
 $requestData= $_REQUEST;
@@ -33,17 +34,10 @@ $columns = array(
 );
 
 // getting total number records without any search
-$sql = "SELECT r.id,r.no_reg,r.no_rm,r.nama_pasien,r.jenis_kelamin,r.umur_pasien,u.nama AS dokter_pengirim,r.tanggal,r.aps_periksa";
-$sql.=" FROM registrasi r INNER JOIN user u ON r.dokter_pengirim = u.id  WHERE r.jenis_pasien = 'APS' AND r.status = 'aps_masuk' AND r.status != 'Batal APS'";
+$sql = "SELECT id,no_reg,no_rm,nama_pasien,jenis_kelamin,umur_pasien,dokter_pengirim,tanggal,aps_periksa";
+$sql.=" FROM registrasi WHERE jenis_pasien = 'APS' AND status = 'aps_masuk' AND status != 'Batal APS'";
 
 $query=mysqli_query($conn, $sql) or die("EROR 1");
-$totalData = mysqli_num_rows($query);
-$totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
-
-
-$sql = "SELECT r.id,r.no_reg,r.no_rm,r.nama_pasien,r.jenis_kelamin,r.umur_pasien,u.nama AS dokter_pengirim,r.tanggal,r.aps_periksa";
-$sql.=" FROM registrasi r INNER JOIN user u ON r.dokter_pengirim = u.id  WHERE r.jenis_pasien = 'APS' AND r.status = 'aps_masuk' AND r.status != 'Batal APS'";
-
 
 
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
@@ -54,7 +48,6 @@ if( !empty($requestData['search']['value']) ) {   // if there is a search parame
 
 }
 $query=mysqli_query($conn, $sql) or die("EROR 2");
-$totalFiltered = mysqli_num_rows($query); // when there is a search parameter then we have to modify total number filtered rows as per search result. 
 $sql.=" ORDER BY id DESC LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
 /* $requestData['order'][0]['column'] contains colmun index, $requestData['order'][0]['dir'] contains order such as asc/desc  */	
 $query=mysqli_query($conn, $sql) or die("EROR 3");
@@ -63,6 +56,11 @@ $query=mysqli_query($conn, $sql) or die("EROR 3");
 $data = array();
 while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 	$nestedData=array(); 
+
+
+
+      $totalData = $totalData + 1;
+      $totalFiltered = $totalData;
 
 	$query_cek_status = $db->query("SELECT status,no_faktur,nama,kode_gudang FROM penjualan WHERE no_reg = '$row[no_reg]' ");
     $data_status = mysqli_fetch_array($query_cek_status);

@@ -18,7 +18,8 @@ $columns = array(
 	4 => 'fasilitas',
 	5 => 'jumlah_bed',
 	6 => 'sisa_bed',
-	7 => 'kelas'
+	7 => 'kelas',
+	8 => 'id_ruangan'
 );
 
 // getting total number records without any search
@@ -87,7 +88,7 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
           }
         };
 
-	$nestedData[] = "$kelas";
+	$nestedData[] = $kelas;
 	$nestedData[] = $row["nama_kamar"];
 	$nestedData[] = $row["group_bed"];
 	if ($row["ruangan"] == 0) {

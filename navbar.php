@@ -590,19 +590,26 @@ if ($lihat['setting_lihat'] > 0){
      <ul>';
     }
 
-if ($lihat['setting_laboratorium_lihat'] > 0){
+     if ($lihat['set_akun_lihat'] > 0){
+         echo '<li><a href="setting_akun_data_item.php" class="waves-effect"> Akun</a></li>';
+     }
+
+    if ($lihat['set_perusahaan_lihat'] > 0){
+         echo '<li><a href="setting_perusahaan.php" class="waves-effect"> Data Perusahaan</a></li>';
+     }
+
+     if ($lihat['set_diskon_tax_lihat'] > 0){
+         echo '<li><a href="set_diskon_tax.php" class="waves-effect"> Diskon Penjualan</a></li>';
+     }
+
+     if ($lihat['setting_laboratorium_lihat'] > 0){
         echo '<li><a href="setting_laboratorium.php" class="waves-effect">Laboratorium</a></li>';
      }
-
-     if ($lihat['setting_registrasi_lihat'] > 0){
-        echo '<li><a href="setting_registrasi.php" class="waves-effect">Registrasi</a></li>';
-     }
-
-          if ($lihat['kamar_lihat'] > 0){
-        echo '<li><a href="setting_kamar.php" class="waves-effect">Proses Kamar</a></li>';
-     }
-
      
+     if ($lihat['setting_registrasi_lihat'] > 0){
+        echo '<li><a href="setting_registrasi.php" class="waves-effect">Menu Registrasi</a></li>';
+     }
+
      if ($lihat['penetapan_petugas_lihat'] > 0){
         echo '<li><a href="penetapan_petugas.php" class="waves-effect"> Penetapan Petugas</a></li>';
      }
@@ -610,20 +617,12 @@ if ($lihat['setting_laboratorium_lihat'] > 0){
      if ($lihat['printer_lihat'] > 0){
         echo '<li><a href="setting_printer.php" class="waves-effect"> Printer</a></li>';
      }
-     
 
+     if ($lihat['kamar_lihat'] > 0){
+        echo '<li><a href="setting_kamar.php" class="waves-effect">Proses Kamar</a></li>';
+     }
 
-     if ($lihat['set_akun_lihat'] > 0){
-            echo '<li><a href="setting_akun_data_item.php" class="waves-effect"> Akun</a></li>';
-    }
-
-    if ($lihat['set_perusahaan_lihat'] > 0){
-            echo '<li><a href="setting_perusahaan.php" class="waves-effect"> Data Perusahaan</a></li>';
-    }
-
-    if ($lihat['set_diskon_tax_lihat'] > 0){
-                                echo '<li><a href="set_diskon_tax.php" class="waves-effect"> Diskon Penjualan</a></li>';
-    }
+      echo '<li><a href="setting_registrasi_pasien.php" class="waves-effect">Registrasi Pasien</a></li>';
 
 ?>
 

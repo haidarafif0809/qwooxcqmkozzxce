@@ -50,7 +50,13 @@ if ($penjamin == '')
 }
 $gol_darah = stringdoang($_POST['gol_darah']);
 $poli = stringdoang($_POST['poli']);
-$dokter = stringdoang($_POST['dokter']);
+$dokter_jg = stringdoang($_POST['dokter']);
+$dokter_jg = explode("-", $dokter_jg); 
+$id_dokter = $dokter_jg[0]; 
+$dokter = $dokter_jg[1]; 
+
+
+
 $kondisi = stringdoang($_POST['kondisi']);
 $rujukan = stringdoang($_POST['rujukan']);
 $sistole_distole = stringdoang($_POST['sistole_distole']);
@@ -128,7 +134,9 @@ $nomor = 1 + $ambil_nomor ;
  // AKHIR UNTUK NO REG
                       // ENDING -- UNTUK AMBIL NO REG NYA LEWAT PROSES SAJA
 
-
+ $query_penjamin = $db->query("SELECT harga FROM penjamin WHERE nama = '$penjamin'"); 
+$data_penjamin  = mysqli_fetch_array($query_penjamin); 
+$level_harga = $data_penjamin['harga']; 
 
 $query80 = $db->query("SELECT * FROM registrasi WHERE tanggal = '$tanggal_sekarang' AND poli = '$poli' ORDER BY no_urut DESC LIMIT 1 ");
 $jumlah = mysqli_num_rows($query80);
@@ -145,11 +153,11 @@ $no_urut_terakhir = $no_urut + $data['no_urut'];
 $stmt = $db->prepare("INSERT INTO registrasi 
   (alergi,no_kk,nama_kk,poli,no_urut,nama_pasien,jam,penjamin,dokter,status,
   no_reg,no_rm,tanggal,kondisi,petugas,alamat_pasien,umur_pasien,jenis_kelamin,rujukan,jenis_pasien,
-  gol_darah,penanggung_jawab,alamat_penanggung_jawab,hp_penanggung_jawab,status_nikah,pekerjaan_pasien) 
+  gol_darah,penanggung_jawab,alamat_penanggung_jawab,hp_penanggung_jawab,status_nikah,pekerjaan_pasien,id_dokter,level_harga) 
   VALUES
-  (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
- $stmt->bind_param("ssssssssssssssssssssssssss",$alergi,$no_kk,$nama_kk,$poli,$no_urut_terakhir,
-  $nama_lengkap,$jam,$penjamin,$dokter,$menunggu,$no_reg,$no_rm,$tanggal_sekarang,$kondisi,$username,$alamat_sekarang,$umur,$jenis_kelamin,$rujukan, $rawat_jalan_nya,$gol_darah,$nama_penanggungjawab,$alamat_penanggung,$no_hp_penanggung,$status_kawin,$pekerjaan_pasien);
+  (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+ $stmt->bind_param("ssssssssssssssssssssssssssss",$alergi,$no_kk,$nama_kk,$poli,$no_urut_terakhir,
+  $nama_lengkap,$jam,$penjamin,$dokter,$menunggu,$no_reg,$no_rm,$tanggal_sekarang,$kondisi,$username,$alamat_sekarang,$umur,$jenis_kelamin,$rujukan, $rawat_jalan_nya,$gol_darah,$nama_penanggungjawab,$alamat_penanggung,$no_hp_penanggung,$status_kawin,$pekerjaan_pasien,$id_dokter,$level_harga);
 
 $menunggu = 'menunggu';
 $rawat_jalan_nya = 'Rawat Jalan';
@@ -207,12 +215,12 @@ else // else if > 0
 $sql7 = $db->prepare("INSERT INTO registrasi 
   (alergi,no_kk,nama_kk,poli,no_urut,nama_pasien,jam,penjamin,dokter,status,
   no_reg,no_rm,tanggal,kondisi,petugas,alamat_pasien,umur_pasien,jenis_kelamin,rujukan,jenis_pasien,
-  gol_darah,penanggung_jawab,alamat_penanggung_jawab,hp_penanggung_jawab,status_nikah,pekerjaan_pasien) 
+  gol_darah,penanggung_jawab,alamat_penanggung_jawab,hp_penanggung_jawab,status_nikah,pekerjaan_pasien,id_dokter,level_harga) 
   VALUES
-  (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
- $sql7->bind_param("ssssssssssssssssssssssssss", $alergi,$no_kk,$nama_kk,$poli,$no_urut,
+  (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+ $sql7->bind_param("ssssssssssssssssssssssssssss", $alergi,$no_kk,$nama_kk,$poli,$no_urut,
   $nama_lengkap,$jam,$penjamin,$dokter,$menunggu2,$no_reg,$no_rm,$tanggal_sekarang,$kondisi,$username,$alamat_sekarang,$umur,$jenis_kelamin,$rujukan,
- $rawat_jalan_nya2,$gol_darah,$nama_penanggungjawab,$alamat_penanggung,$no_hp_penanggung,$status_kawin,$pekerjaan_pasien);
+ $rawat_jalan_nya2,$gol_darah,$nama_penanggungjawab,$alamat_penanggung,$no_hp_penanggung,$status_kawin,$pekerjaan_pasien,$id_dokter,$level_harga);
 
 
 $menunggu2 = 'menunggu';

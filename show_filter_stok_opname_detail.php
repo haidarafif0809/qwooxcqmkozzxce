@@ -13,18 +13,7 @@ if (!isset($_GET['dari_tanggal'])) {
 $dari_tanggal = stringdoang($_GET['dari_tanggal']);
 $sampai_tanggal= stringdoang($_GET['sampai_tanggal']);
 
-$query = $db->query("SELECT no_faktur ,
-					kode_barang ,
-					nama_barang ,
-					stok_sekarang ,
-					fisik ,
-					selisih_fisik ,
-					hpp ,
-					selisih_harga 
-					FROM detail_stok_opname 
-					WHERE tanggal >= '$dari_tanggal'
-					AND tanggal <= '$sampai_tanggal' 
-					order by tanggal asc");
+$query = $db->query("SELECT no_faktur, kode_barang , nama_barang , stok_sekarang , fisik , selisih_fisik , hpp , selisih_harga FROM detail_stok_opname WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' ORDER BY tanggal ASC");
 
 ?>
 <div class="container"><!--start of container-->
@@ -131,10 +120,32 @@ tr:nth-child(even){background-color: #f2f2f2}
 			<td>". $data1['stok_sekarang'] ."</td>
 			<td>". rp($data1['fisik']) ."</td>
 			<td>". rp($data1['selisih_fisik']) ."</td>
-			<td>". rp($data1['hpp']) ."</td>
-			<td>". rp($data1['selisih_harga']) ."</td>
+			<td>". rp($data1['hpp']) ."</td>";
 
-			</tr>";
+
+
+
+
+		if($data1["selisih_harga"] < 0){
+			$sum_hpp_keluar = $db->query("SELECT SUM(total_nilai) AS total FROM hpp_keluar WHERE no_faktur = '$data1[no_faktur]'");
+			$ambil_sum = mysqli_fetch_array($sum_hpp_keluar);
+			echo " <td>(-)". rp($ambil_sum['total']) ."</td>";
+
+		}
+		else{
+			$sum_hpp_masuk = $db->query("SELECT SUM(total_nilai) AS total FROM hpp_masuk WHERE no_faktur = '$data1[no_faktur]'");
+			$ambil_sum_masuk = mysqli_fetch_array($sum_hpp_masuk);
+			echo " <td>(+) ". rp($ambil_sum_masuk['total']) ."</td>";
+		}
+			
+
+
+
+			//<td>". rp($data1['selisih_harga']) ."</td>
+
+
+
+			echo "</tr>";
 			}
 
 			//Untuk Memutuskan Koneksi Ke Database
