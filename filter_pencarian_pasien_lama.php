@@ -60,12 +60,12 @@ $sql.=" FROM pelanggan WHERE 1=1 AND kode_pelanggan != '' AND nama_pelanggan LIK
 
 }
 
-if( !empty($requestData['search_value']) ) {   // if there is a search parameter, $requestData['search_value'] contains search parameter
-	$sql.=" AND ( kode_pelanggan LIKE '".$requestData['search_value']."%' ";    
-	$sql.=" OR nama_pelanggan LIKE '".$requestData['search_value']."%' ";  
-	$sql.=" OR alamat_sekarang LIKE '".$requestData['search_value']."%' ";  
-	$sql.=" OR tgl_lahir LIKE '".$requestData['search_value']."%' ";
-	$sql.=" OR penjamin LIKE '".$requestData['search_value']."%' )";
+if( !empty(urldecode($requestData['search_value'])) ) {   // if there is a search parameter, urldecode($requestData['search_value']) contains search parameter
+	$sql.=" AND ( kode_pelanggan LIKE '".urldecode($requestData['search_value'])."%' ";    
+	$sql.=" OR nama_pelanggan LIKE '".urldecode($requestData['search_value'])."%' ";  
+	$sql.=" OR alamat_sekarang LIKE '".urldecode($requestData['search_value'])."%' ";  
+	$sql.=" OR tgl_lahir LIKE '".urldecode($requestData['search_value'])."%' ";
+	$sql.=" OR penjamin LIKE '".urldecode($requestData['search_value'])."%' )";
 }
 $query=mysqli_query($conn_pasien, $sql) or die("eror 2");
 $totalFiltered = mysqli_num_rows($query); // when there is a search parameter then we have to modify total number filtered rows as per search result. 
