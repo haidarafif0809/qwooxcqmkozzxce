@@ -52,6 +52,7 @@ $sql.=" AND kode_pelanggan != '' ";
 if( !empty(urldecode($requestData['search_value'])) ) {   // if there is a search parameter, urldecode($requestData['search_value']) contains search parameter
   $sql.=" AND ( kode_pelanggan LIKE '".urldecode($requestData['search_value'])."%' ";    
   $sql.=" OR nama_pelanggan LIKE '".urldecode($requestData['search_value'])."%' ";
+  $sql.=" OR alamat_sekarang LIKE '".urldecode($requestData['search_value'])."%' ";
   $sql.=" OR penjamin LIKE '".urldecode($requestData['search_value'])."%' )";
 }
 
