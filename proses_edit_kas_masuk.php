@@ -53,11 +53,6 @@ $hapus_jurnal = $db->query("DELETE FROM jurnal_trans WHERE no_faktur = '$no_fakt
     while ($ambil = mysqli_fetch_array($ambil_tbs))
     {
 
-            $pilih = $db->query("SELECT dk.ke_akun, da.nama_daftar_akun, jt.kode_akun_jurnal FROM detail_kas_masuk dk INNER JOIN daftar_akun da ON dk.ke_akun = da.kode_daftar_akun INNER JOIN jurnal_trans jt ON dk.ke_akun = jt.kode_akun_jurnal");
-            $ke_akun_select = mysqli_fetch_array($pilih);
-
-            $pilih = $db->query("SELECT dk.dari_akun, da.nama_daftar_akun, jt.kode_akun_jurnal FROM detail_kas_masuk dk INNER JOIN daftar_akun da ON dk.dari_akun = da.kode_daftar_akun INNER JOIN jurnal_trans jt ON dk.dari_akun = jt.kode_akun_jurnal WHERE jt.kode_akun_jurnal = '$ambil[dari_akun]'");
-            $dari_akun_select = mysqli_fetch_array($pilih);
 
 
         $insert_jurnal = $db->query("INSERT INTO jurnal_trans (nomor_jurnal,waktu_jurnal,keterangan_jurnal,kode_akun_jurnal,debit,kredit,jenis_transaksi,no_faktur,approved,user_buat,user_edit) VALUES ('".no_jurnal()."', '$tanggal $jam', 'Transaksi Kas Masuk - $ambil[keterangan]','$ambil[ke_akun]', '$ambil[jumlah]', '0', 'Kas Masuk', '$no_faktur','1', '$user', '$user')");
