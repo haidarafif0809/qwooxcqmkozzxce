@@ -1,0 +1,76 @@
+<?php 
+include 'db.php';
+include 'sanitasi.php';
+
+//SELECT UNTUK MENGAMBIL SETTING URL U/ DATA PASIEN BARU RJ
+$query_setting_registrasi_pasien = $db->query("SELECT url_data_pasien FROM setting_registrasi_pasien WHERE id = '1' ");
+$data_reg_pasien = mysqli_fetch_array($query_setting_registrasi_pasien );
+
+$url = $data_reg_pasien['url_data_pasien'];
+
+//DATA YANG DIBUTUHKAN DI PROSES PENDAFTARAN PASIEN BARU
+	$no_rm_lama = stringdoang(urldecode($_GET['no_rm_lama']));
+	$nama_lengkap = stringdoang(urldecode($_GET['nama_lengkap']));
+	$no_ktp = stringdoang(urldecode($_GET['no_ktp']));
+	$tempat_lahir = stringdoang(urldecode($_GET['tempat_lahir']));
+	$tanggal_lahir = stringdoang(urldecode($_GET['tanggal_lahir']));
+	$tanggal_lahir = tanggal_mysql($tanggal_lahir);
+	$umur = stringdoang(urldecode($_GET['umur']));
+	$alamat_sekarang = stringdoang(urldecode($_GET['alamat_sekarang']));
+	$alamat_ktp = stringdoang(urldecode($_GET['alamat_ktp']));
+	$no_telepon = stringdoang(urldecode($_GET['no_telepon']));
+	$nama_suamiortu = stringdoang(urldecode($_GET['nama_suamiortu']));
+	$pekerjaan_pasien = stringdoang(urldecode($_GET['pekerjaan_pasien']));
+	$nama_penanggungjawab = stringdoang(urldecode($_GET['nama_penanggungjawab']));
+	$hubungan_dengan_pasien = stringdoang(urldecode($_GET['hubungan_dengan_pasien']));
+	$no_hp_penanggung = stringdoang(urldecode($_GET['no_hp_penanggung']));
+	$alamat_penanggung = stringdoang(urldecode($_GET['alamat_penanggung']));
+	$jenis_kelamin = stringdoang(urldecode($_GET['jenis_kelamin']));
+	$status_kawin = stringdoang(urldecode($_GET['status_kawin']));
+	$pendidikan_terakhir = stringdoang(urldecode($_GET['pendidikan_terakhir']));
+	$agama = stringdoang(urldecode($_GET['agama']));
+	$penjamin = stringdoang(urldecode($_GET['penjamin']));
+	if ($penjamin == ''){
+	  $penjamin = 'PERSONAL';
+	}
+
+	$gol_darah = stringdoang(urldecode($_GET['gol_darah']));
+	$poli = stringdoang(urldecode($_GET['poli']));
+	$dokter = stringdoang(urldecode($_GET['dokter']));
+
+	$kondisi = stringdoang(urldecode($_GET['kondisi']));
+	$rujukan = stringdoang(urldecode($_GET['rujukan']));
+	$sistole_distole = stringdoang(urldecode($_GET['sistole_distole']));
+	$respiratory_rate = stringdoang(urldecode($_GET['respiratory_rate']));
+	$suhu = stringdoang(urldecode($_GET['suhu']));
+	$nadi = stringdoang(urldecode($_GET['nadi']));
+	$berat_badan = stringdoang(urldecode($_GET['berat_badan']));
+	$tinggi_badan = stringdoang(urldecode($_GET['tinggi_badan']));
+	$alergi = stringdoang(urldecode($_GET['alergi']));
+	$no_kk = stringdoang(urldecode($_GET['no_kk']));
+	$nama_kk = stringdoang(urldecode($_GET['nama_kk']));
+	$token = stringdoang(urldecode($_GET['token']));
+
+if ($no_rm_lama != ''){
+
+	$sql9991 = $db_pasien->prepare("INSERT INTO pelanggan (alergi,no_kk,nama_kk,kode_pelanggan,nama_pelanggan,tempat_lahir,tgl_lahir,umur,alamat_sekarang,alamat_ktp,no_telp,no_ktp,nama_suamiortu,pekerjaan_suamiortu,nama_penanggungjawab,hubungan_dengan_pasien,alamat_penanggung,no_hp_penanggung,jenis_kelamin,pendidikan_terakhir,status_kawin,agama,penjamin,gol_darah,tanggal,no_rm_lama) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+
+	$sql9991->bind_param("ssssssssssssssssssssssssss",$alergi,$no_kk,$nama_kk,$no_rm,$nama_lengkap,$tempat_lahir,$tanggal_lahir,$umur,$alamat_sekarang,$alamat_ktp,$no_telepon,$no_ktp,$nama_suamiortu,$pekerjaan_pasien,$nama_penanggungjawab,$hubungan_dengan_pasien,$alamat_penanggung,$no_hp_penanggung,$jenis_kelamin,$pendidikan_terakhir,$status_kawin,$agama,$penjamin,$gol_darah,$tanggal_sekarang,$no_rm_lama);
+
+	$sql9991->execute();
+
+	$delete_one1 = $db_pasien->query("DELETE FROM pelanggan WHERE no_rm_lama = '$no_rm_lama' AND (kode_pelanggan IS NULL OR kode_pelanggan = 0)  ");
+}
+else{
+
+	$sql5 = $db_pasien->prepare("INSERT INTO pelanggan (alergi,no_kk,nama_kk,kode_pelanggan,nama_pelanggan,tempat_lahir,tgl_lahir,umur,alamat_sekarang,alamat_ktp,no_telp,no_ktp,nama_suamiortu,pekerjaan_suamiortu,nama_penanggungjawab,hubungan_dengan_pasien,alamat_penanggung,no_hp_penanggung,jenis_kelamin,pendidikan_terakhir,status_kawin,agama,penjamin,gol_darah,tanggal)
+	   VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+
+	$sql5->bind_param("sssssssssssssssssssssssss",$alergi,$no_kk,$nama_kk,$no_rm,$nama_lengkap,$tempat_lahir,$tanggal_lahir,$umur,$alamat_sekarang,$alamat_ktp,$no_telepon,$no_ktp,$nama_suamiortu,$pekerjaan_pasien,$nama_penanggungjawab,$hubungan_dengan_pasien,$alamat_penanggung,$no_hp_penanggung,$jenis_kelamin,$pendidikan_terakhir,$status_kawin,$agama,$penjamin,$gol_darah,$tanggal_sekarang);
+
+	$sql5->execute();
+
+
+}
+
+?>
