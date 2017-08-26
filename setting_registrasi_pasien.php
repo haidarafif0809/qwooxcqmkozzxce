@@ -20,36 +20,60 @@
 <div style="padding-left: 21%; padding-right: 21%">
 	<h3>REGISTRASI ONLINE - OFFLINE</h3><hr>
 
-	<div class="card card-block">
 
 		<div class="table-responsive">
 			<table id="tableuser" class="table table-bordered table-sm">
 				<thead>
-					<tr>
-						<th style='background-color: #4CAF50; color: white;'> Cari Pasien</th>
 						<?php 
-						  $query = $db->query("SELECT id, url_cari_pasien FROM setting_registrasi_pasien");
+						  $query = $db->query("SELECT id, url_cari_pasien FROM setting_registrasi_pasien WHERE id = '1'");
 						  while($data = mysqli_fetch_array($query)) {
-						    echo "<td class='edit-cari' data-id='".$data['id']."'><span id='text-cari-".$data['id']."'>". $data['url_cari_pasien'] ."</span> <input type='hidden' id='input-cari-".$data['id']."' value='".$data['url_cari_pasien']."' class='input_cari' data-id='".$data['id']."' data-cari='".$data['url_cari_pasien']."' autofocus=''></td>";
+						    echo "
+						    <tr>
+						    	<th style='background-color: #4CAF50; color: white;'>Pasien Rawat Jalan</th>
+								<td td class='edit-cari' data-id='".$data['id']."'><span id='text-cari-".$data['id']."'>". $data['url_cari_pasien'] ."</span> <input type='hidden' id='input-cari-".$data['id']."' value='".$data['url_cari_pasien']."' class='input_cari' data-id='".$data['id']."' data-cari='".$data['url_cari_pasien']."' autofocus=''></td>
+						    </tr>";
 						  }
-						?>	
-					</tr>		
+						?>		
 				</thead>
 				<thead>
-					<tr>
-						<th style='background-color: #4CAF50; color: white;'> Data Pasien</th>
 						<?php 
-						  $query = $db->query("SELECT id, url_data_pasien FROM setting_registrasi_pasien");
+						  $query = $db->query("SELECT id, url_cari_pasien FROM setting_registrasi_pasien WHERE id = '3'");
 						  while($data = mysqli_fetch_array($query)) {
-						    echo "<td class='edit-data' data-id='".$data['id']."'><span id='text-data-".$data['id']."'>". $data['url_data_pasien'] ."</span> <input type='hidden' id='input-data-".$data['id']."' value='".$data['url_data_pasien']."' class='input_data' data-id='".$data['id']."' data-data='".$data['url_data_pasien']."' autofocus=''></td>";
+						    echo "
+						    <tr>
+						    	<th style='background-color: #4CAF50; color: white;'>Pasien Rawat Inap</th>
+								<td td class='edit-cari' data-id='".$data['id']."'><span id='text-cari-".$data['id']."'>". $data['url_cari_pasien'] ."</span> <input type='hidden' id='input-cari-".$data['id']."' value='".$data['url_cari_pasien']."' class='input_cari' data-id='".$data['id']."' data-cari='".$data['url_cari_pasien']."' autofocus=''></td>
+						    </tr>";
 						  }
-						?>	
-					</tr>		
+						?>		
+				</thead>
+				<thead>
+						<?php 
+						  $query = $db->query("SELECT id, url_cari_pasien FROM setting_registrasi_pasien WHERE id = '4'");
+						  while($data = mysqli_fetch_array($query)) {
+						    echo "
+						    <tr>
+						    	<th style='background-color: #4CAF50; color: white;'>Pasien UGD</th>
+								<td td class='edit-cari' data-id='".$data['id']."'><span id='text-cari-".$data['id']."'>". $data['url_cari_pasien'] ."</span> <input type='hidden' id='input-cari-".$data['id']."' value='".$data['url_cari_pasien']."' class='input_cari' data-id='".$data['id']."' data-cari='".$data['url_cari_pasien']."' autofocus=''></td>
+						    </tr>";
+						  }
+						?>		
+				</thead>
+				<thead>
+						<?php 
+						  $query = $db->query("SELECT id, url_cari_pasien FROM setting_registrasi_pasien WHERE id = '2'");
+						  while($data = mysqli_fetch_array($query)) {
+						    echo "
+						    <tr>
+						    	<th style='background-color: #4CAF50; color: white;'>Filter Pencarian Pasien Rawat Jalan</th>
+								<td td class='edit-cari' data-id='".$data['id']."'><span id='text-cari-".$data['id']."'>". $data['url_cari_pasien'] ."</span> <input type='hidden' id='input-cari-".$data['id']."' value='".$data['url_cari_pasien']."' class='input_cari' data-id='".$data['id']."' data-cari='".$data['url_cari_pasien']."' autofocus=''></td>
+						    </tr>";
+						  }
+						?>		
 				</thead>	
 			</table>
 		</div>	
 		
-	</div>
 	<h6 style="text-align: left ; color: red"><i> * Klik 2x Pada Kolom Yang Ingin Diubah.</i></h6>
 </div>
 
@@ -79,8 +103,6 @@
       } );
 </script>
 -->
-
-
 
 
 <!-- URL CARI PASIEN -->
