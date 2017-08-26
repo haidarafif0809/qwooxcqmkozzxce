@@ -37,14 +37,14 @@ $columns = array(
 );
 
 // getting total number records without any search
-$sql = "SELECT no_faktur,kredit, kode_pelanggan, no_reg, dokter, penjamin, tanggal, user, total, jenis_penjualan, status, jam, potongan, id";
+$sql = "SELECT sisa,nilai_kredit, tunai, biaya_admin,nama,keterangan,cara_bayar,no_faktur,kredit, kode_pelanggan, no_reg, dokter, penjamin, tanggal, user, total, jenis_penjualan, status, jam, potongan, id";
 $sql.=" FROM penjualan";
 $query = mysqli_query($conn, $sql) or die("show_data_penjualan.php: get employees");
 $totalData = mysqli_num_rows($query);
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
 
-$sql = "SELECT no_faktur,kredit, kode_pelanggan, no_reg, dokter, penjamin, tanggal, user, total, jenis_penjualan, status, jam, potongan, id";
+$sql = "SELECT sisa,nilai_kredit, tunai, biaya_admin,nama,keterangan,cara_bayar,no_faktur,kredit, kode_pelanggan, no_reg, dokter, penjamin, tanggal, user, total, jenis_penjualan, status, jam, potongan, id";
 $sql.=" FROM penjualan ";
 $sql.=" WHERE 1=1 ";
 
@@ -284,7 +284,8 @@ else{
 
             <a class="dropdown-item" href="cetak_penjualan_tunai.php?no_faktur='.$row["no_faktur"].'">Print Penjualan Post</a>
 
-           <a class="dropdown-item" href="cetak_penjualan_tunai_besar_apotek.php?no_faktur='.$row["no_faktur"].'">Print Penjualan Besar</a>
+           <a class="dropdown-item" href="cetak_penjualan_tunai_besar_rj.php?no_reg='.$row["no_reg"].'&sisa='.$row['sisa'].'&kredit='.$row['nilai_kredit'].'&tunai='.$row['tunai'].'&total='.$row['total'].'&biaya_admin='.$row['biaya_admin'].'&potongan='.$row['potongan'].'&no_rm='.$row['kode_pelanggan'].'&nama_pasien='.$row['nama'].'&keterangan='.$row['keterangan'].'&cara_bayar='.$row['cara_bayar'].'">Print Penjualan Besar</a>
+
         </div>
     </div>
      </td>';
