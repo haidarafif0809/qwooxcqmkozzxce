@@ -53,7 +53,6 @@ else {
 
 	$sql.=" AND ( kode_pelanggan LIKE '".urldecode($requestData['search_value'])."%' ";    
 	$sql.=" OR nama_pelanggan LIKE '".urldecode($requestData['search_value'])."%' ";  
-	$sql.=" OR tgl_lahir = '".$tanggal_cari."%' ";  
 	$sql.=" OR alamat_sekarang LIKE '".urldecode($requestData['search_value'])."%' ";
 	$sql.=" OR penjamin LIKE '".urldecode($requestData['search_value'])."%' )";
 }
