@@ -2019,9 +2019,13 @@ $(document).on('click','.pilih-header',function(e){
       });
     }
     else{
+
       $(this).attr("data-toogle", 1);
 
       $.post("hapus_data_header_edit_penjualan.php",{no_faktur:no_faktur,kode_jasa_lab:kode_jasa_lab,no_reg:no_reg},function(data){
+      
+      //ubah data toogle menjadi 2 yang detail !!
+      $(".pilih-detail-dari-header").attr("data-toogle", 2);
 
       });
     }
