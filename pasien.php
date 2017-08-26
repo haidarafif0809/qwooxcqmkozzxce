@@ -180,7 +180,7 @@ $( "#tanggal_lahir" ).datepicker({
         "emptyTable":     "My Custom Message On Empty Table"
     },
           "ajax":{
-            url :"cek_data_pasien_lama.php", // json datasource
+            url :"data_pasien_online.php", // json datasource
              "data": function ( d ) {
                 d.cari = $("#cari_migrasi").val();
                 // d.custom = $('#myInput').val();
