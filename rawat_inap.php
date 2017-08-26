@@ -967,7 +967,7 @@ tr:nth-child(even){background-color: #f2f2f2}
         "emptyTable":     "My Custom Message On Empty Table"
     },
           "ajax":{
-            url :"filter_pasien_online_rj.php", // json datasource
+            url :"filter_pasien_online_ri.php", // json datasource
              "data": function ( d ) {
                 d.cari = $("#cari_migrasi").val();
                 d.alamat = $("#alamat_pasien_lama").val();
