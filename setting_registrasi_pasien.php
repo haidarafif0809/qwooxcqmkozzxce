@@ -25,6 +25,18 @@
 			<table id="tableuser" class="table table-bordered table-sm">
 				<thead>
 						<?php 
+						  $query = $db->query("SELECT id, url_cari_pasien FROM setting_registrasi_pasien WHERE id = '6'");
+						  while($data = mysqli_fetch_array($query)) {
+						    echo "
+						    <tr>
+						    	<th style='background-color: #4CAF50; color: white;'>Master Data Pasien</th>
+								<td td class='edit-cari' data-id='".$data['id']."'><span id='text-cari-".$data['id']."'>". $data['url_cari_pasien'] ."</span> <input type='hidden' id='input-cari-".$data['id']."' value='".$data['url_cari_pasien']."' class='input_cari' data-id='".$data['id']."' data-cari='".$data['url_cari_pasien']."' autofocus=''></td>
+						    </tr>";
+						  }
+						?>		
+				</thead>
+				<thead>
+						<?php 
 						  $query = $db->query("SELECT id, url_cari_pasien FROM setting_registrasi_pasien WHERE id = '1'");
 						  while($data = mysqli_fetch_array($query)) {
 						    echo "
