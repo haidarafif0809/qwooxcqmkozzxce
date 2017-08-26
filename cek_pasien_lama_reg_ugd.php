@@ -28,40 +28,39 @@ $columns = array(
 
 $sql = "SELECT penjamin,kode_pelanggan,nama_pelanggan,jenis_kelamin,alamat_sekarang,tgl_lahir,no_telp,gol_darah ";
 $sql.=" FROM pelanggan WHERE kode_pelanggan != ''";
-$query=mysqli_query($conn_pasien, $sql) or die("cek_pasien_lama_reg_ugd.php: get employees");
+$query=mysqli_query($conn_pasien, $sql) or die("cek_pasien_lama_reg_ugd.php: get employees1");
 $totalData = mysqli_num_rows($query);
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
 
 $sql = "SELECT penjamin,kode_pelanggan,nama_pelanggan,jenis_kelamin,alamat_sekarang,tgl_lahir,no_telp,gol_darah ";
 $sql.=" FROM pelanggan WHERE 1=1 AND kode_pelanggan != ''";
-if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
+if( !empty(urldecode($requestData['search_value'])) ) {   // if there is a search parameter, urldecode($requestData['search_value']) contains search parameter
 
 
-$cek_tanggal =   validateDate($requestData['search']['value']);
+$cek_tanggal =   validateDate(urldecode($requestData['search_value']));
 
 if ($cek_tanggal == true) {
   # code...
 
-   $tanggal_cari = tanggal_mysql($requestData['search']['value']);
+   $tanggal_cari = tanggal_mysql(urldecode($requestData['search_value']));
 
 
 }
 else {
-   $tanggal_cari = $requestData['search']['value'];
+   $tanggal_cari = urldecode($requestData['search_value']);
 }
 
-	$sql.=" AND ( kode_pelanggan LIKE '".$requestData['search']['value']."%' ";    
-	$sql.=" OR nama_pelanggan LIKE '".$requestData['search']['value']."%' ";  
-	$sql.=" OR tgl_lahir = '".$tanggal_cari."%' ";  
-	$sql.=" OR alamat_sekarang LIKE '".$requestData['search']['value']."%' ";
-	$sql.=" OR penjamin LIKE '".$requestData['search']['value']."%' )";
+	$sql.=" AND ( kode_pelanggan LIKE '".urldecode($requestData['search_value'])."%' ";    
+	$sql.=" OR nama_pelanggan LIKE '".urldecode($requestData['search_value'])."%' ";  
+	$sql.=" OR alamat_sekarang LIKE '".urldecode($requestData['search_value'])."%' ";
+	$sql.=" OR penjamin LIKE '".urldecode($requestData['search_value'])."%' )";
 }
-$query=mysqli_query($conn_pasien, $sql) or die("cek_pasien_lama_reg_ugd.php: get employees");
+$query=mysqli_query($conn_pasien, $sql) or die("cek_pasien_lama_reg_ugd.php: get employees2");
 $totalFiltered = mysqli_num_rows($query); // when there is a search parameter then we have to modify total number filtered rows as per search result. 
-$sql.=" ORDER BY ". $columns[$requestData['order'][0]['column']]."   ".$requestData['order'][0]['dir']."  LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
+$sql.=" ORDER BY id DESC  LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
 /* $requestData['order'][0]['column'] contains colmun index, $requestData['order'][0]['dir'] contains order such as asc/desc  */	
-$query=mysqli_query($conn_pasien, $sql) or die("cek_pasien_lama_reg_ugd.php: get employees");
+$query=mysqli_query($conn_pasien, $sql) or die("cek_pasien_lama_reg_ugd.php: get employees3");
 
 $data = array();
 while( $row=mysqli_fetch_array($query) ) {  // preparing an array
@@ -80,7 +79,6 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 }
 
 
-
 $json_data = array(
 			"draw"            => intval( $requestData['draw'] ),   // for every request/draw by clientside , they send a number as a parameter, when they recieve a response/data they first check the draw number, so we are sending same number in draw. 
 			"recordsTotal"    => intval( $totalData ),  // total number of records
@@ -88,6 +86,18 @@ $json_data = array(
 			"data"            => $data   // total data array
 			);
 
-echo json_encode($json_data);  // send data as json format
+if (isset($_GET['callback'])) {
+	// Validate the JSONP to make use it is an okay Javascript function to execute
+	$jsonp = preg_match('/^[$A-Z_][0-9A-Z_$]*$/i', $_GET['callback']) ?
+	    $_GET['callback'] :
+	    false;
+	 
+	if ( $jsonp ) {
+	    echo $jsonp.'('.json_encode($json_data).');';
+	}
+}
+else{
+	echo json_encode($json_data);  // send data as json format	
+}
 
 ?>
