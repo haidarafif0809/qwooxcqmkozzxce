@@ -10,7 +10,6 @@ $url = $data_reg_pasien['url_data_pasien'];
 
 //DATA YANG DIBUTUHKAN DI PROSES PENDAFTARAN PASIEN BARU
 	$no_rm_lama = stringdoang(urldecode($_GET['no_rm_lama']));
-	$no_rm = stringdoang(urldecode($_GET['no_rm']));
 	$nama_lengkap = stringdoang(urldecode($_GET['nama_lengkap']));
 	$no_ktp = stringdoang(urldecode($_GET['no_ktp']));
 	$tempat_lahir = stringdoang(urldecode($_GET['tempat_lahir']));
@@ -51,6 +50,10 @@ $url = $data_reg_pasien['url_data_pasien'];
 	$no_kk = stringdoang(urldecode($_GET['no_kk']));
 	$nama_kk = stringdoang(urldecode($_GET['nama_kk']));
 	$token = stringdoang(urldecode($_GET['token']));
+
+	$ambil_rm = $db_pasien->query("SELECT kode_pelanggan FROM pelanggan WHERE kode_pelanggan != 0 ORDER BY id DESC LIMIT 1 ");
+	$no_ter = mysqli_fetch_array($ambil_rm);
+	echo $no_rm = urldecode($no_ter['kode_pelanggan'] + 1);
 
 if ($no_rm_lama != ''){
 

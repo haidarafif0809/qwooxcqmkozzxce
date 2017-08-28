@@ -74,9 +74,7 @@ if ($keluar['nama_pasien'] == $nama_lengkap ){
 header('location:rawat_jalan_lama.php');
 }
 else{
-$ambil_rm = $db_pasien->query("SELECT kode_pelanggan FROM pelanggan WHERE kode_pelanggan != 0 ORDER BY id DESC LIMIT 1 ");
-$no_ter = mysqli_fetch_array($ambil_rm);
-$no_rm = $no_ter['kode_pelanggan'] + 1;
+
 
 
 // START UNTUK AMBIL NO REG NYA LEWAT PROSES SAJA
@@ -126,6 +124,15 @@ if($jumlah > 0 ){
 
   $no_urut_terakhir = $no_urut + $data['no_urut'];  
 
+//PROSES INPUT PASIEN KE DB ONLINE
+  $url = $data_reg_pasien['url_data_pasien'];
+  $data_url = $url.'?no_rm_lama='.$no_rm_lama.'&nama_lengkap='.$nama_lengkap.'&no_ktp='.$no_ktp.'&tempat_lahir='.$tempat_lahir.'&tanggal_lahir='.$tanggal_lahir.'&umur='.$umur.'&alamat_sekarang='.$alamat_sekarang.'&alamat_ktp='.$alamat_ktp.'&no_telepon='.$no_telepon.'&nama_suamiortu='.$nama_suamiortu.'&pekerjaan_pasien='.$pekerjaan_pasien.'&nama_penanggungjawab='.$nama_penanggungjawab.'&hubungan_dengan_pasien='.$hubungan_dengan_pasien.'&no_hp_penanggung='.$no_hp_penanggung.'&alamat_penanggung='.$alamat_penanggung.'&jenis_kelamin='.$jenis_kelamin.'&status_kawin='.$status_kawin.'&pendidikan_terakhir='.$pendidikan_terakhir.'&agama='.$agama.'&penjamin='.$penjamin.'&gol_darah='.$gol_darah.'&poli='.$poli.'&dokter='.$dokter.'&kondisi='.$kondisi.'&rujukan='.$rujukan.'&sistole_distole='.$sistole_distole.'&respiratory_rate='.$respiratory_rate.'&suhu='.$suhu.'&nadi='.$nadi.'&berat_badan='.$berat_badan.'&tinggi_badan='.$tinggi_badan.'&alergi='.$alergi.'&no_kk='.$no_kk.'&nama_kk='.$nama_kk.'&token='.$token;
+
+  $file_get = file_get_contents($data_url);
+
+//ambil no rm dari DB online
+  $no_rm = $file_get;
+
 // masukin ke registrasi
   $stmt = $db->prepare("INSERT INTO registrasi 
     (alergi,no_kk,nama_kk,poli,no_urut,nama_pasien,jam,penjamin,dokter,status,no_reg,no_rm,tanggal,kondisi,petugas,alamat_pasien,umur_pasien,jenis_kelamin,rujukan,jenis_pasien,gol_darah,penanggung_jawab,alamat_penanggung_jawab,hp_penanggung_jawab,status_nikah,pekerjaan_pasien,id_dokter,level_harga) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
@@ -136,15 +143,19 @@ if($jumlah > 0 ){
 
   $stmt->execute();
 
-//PROSES INPUT PASIEN KE DB ONLINE
-  $url = $data_reg_pasien['url_data_pasien'];
-  $data_url = $url.'?no_rm_lama='.$no_rm_lama.'&nama_lengkap='.$nama_lengkap.'&no_ktp='.$no_ktp.'&tempat_lahir='.$tempat_lahir.'&tanggal_lahir='.$tanggal_lahir.'&umur='.$umur.'&alamat_sekarang='.$alamat_sekarang.'&alamat_ktp='.$alamat_ktp.'&no_telepon='.$no_telepon.'&nama_suamiortu='.$nama_suamiortu.'&pekerjaan_pasien='.$pekerjaan_pasien.'&nama_penanggungjawab='.$nama_penanggungjawab.'&hubungan_dengan_pasien='.$hubungan_dengan_pasien.'&no_hp_penanggung='.$no_hp_penanggung.'&alamat_penanggung='.$alamat_penanggung.'&jenis_kelamin='.$jenis_kelamin.'&status_kawin='.$status_kawin.'&pendidikan_terakhir='.$pendidikan_terakhir.'&agama='.$agama.'&penjamin='.$penjamin.'&gol_darah='.$gol_darah.'&poli='.$poli.'&dokter='.$dokter.'&kondisi='.$kondisi.'&rujukan='.$rujukan.'&sistole_distole='.$sistole_distole.'&respiratory_rate='.$respiratory_rate.'&suhu='.$suhu.'&nadi='.$nadi.'&berat_badan='.$berat_badan.'&tinggi_badan='.$tinggi_badan.'&alergi='.$alergi.'&no_kk='.$no_kk.'&nama_kk='.$nama_kk.'&token='.$token.'&no_rm='.$no_rm;
-
-  $file_get = file_get_contents($data_url);
-
 }//end if($jumlah > 0 )
 
 else {// else if > 0
+
+//PROSES INPUT PASIEN KE DB ONLINE
+  $url = $data_reg_pasien['url_data_pasien'];
+  $data_url = $url.'?no_rm_lama='.$no_rm_lama.'&nama_lengkap='.$nama_lengkap.'&no_ktp='.$no_ktp.'&tempat_lahir='.$tempat_lahir.'&tanggal_lahir='.$tanggal_lahir.'&umur='.$umur.'&alamat_sekarang='.$alamat_sekarang.'&alamat_ktp='.$alamat_ktp.'&no_telepon='.$no_telepon.'&nama_suamiortu='.$nama_suamiortu.'&pekerjaan_pasien='.$pekerjaan_pasien.'&nama_penanggungjawab='.$nama_penanggungjawab.'&hubungan_dengan_pasien='.$hubungan_dengan_pasien.'&no_hp_penanggung='.$no_hp_penanggung.'&alamat_penanggung='.$alamat_penanggung.'&jenis_kelamin='.$jenis_kelamin.'&status_kawin='.$status_kawin.'&pendidikan_terakhir='.$pendidikan_terakhir.'&agama='.$agama.'&penjamin='.$penjamin.'&gol_darah='.$gol_darah.'&poli='.$poli.'&dokter='.$dokter.'&kondisi='.$kondisi.'&rujukan='.$rujukan.'&sistole_distole='.$sistole_distole.'&respiratory_rate='.$respiratory_rate.'&suhu='.$suhu.'&nadi='.$nadi.'&berat_badan='.$berat_badan.'&tinggi_badan='.$tinggi_badan.'&alergi='.$alergi.'&no_kk='.$no_kk.'&nama_kk='.$nama_kk.'&token='.$token;
+
+  $file_get = file_get_contents($data_url);
+
+//ambil no rm dari DB
+  $no_rm = $file_get;
+
   $sql7 = $db->prepare("INSERT INTO registrasi (alergi,no_kk,nama_kk,poli,no_urut,nama_pasien,jam,penjamin,dokter,status,no_reg,no_rm,tanggal,kondisi,petugas,alamat_pasien,umur_pasien,jenis_kelamin,rujukan,jenis_pasien,
   gol_darah,penanggung_jawab,alamat_penanggung_jawab,hp_penanggung_jawab,status_nikah,pekerjaan_pasien,id_dokter,level_harga) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
   $sql7->bind_param("ssssssssssssssssssssssssssss", urldecode($alergi),urldecode($no_kk),urldecode($nama_kk),urldecode($poli),urldecode($no_urut),urldecode($nama_lengkap),urldecode($jam),urldecode($penjamin),urldecode($dokter),$menunggu2,urldecode($no_reg),urldecode($no_rm),urldecode($tanggal_sekarang),urldecode($kondisi),urldecode($username),urldecode($alamat_sekarang),urldecode($umur),urldecode($jenis_kelamin),urldecode($rujukan),$rawat_jalan_nya2,urldecode($gol_darah),urldecode($nama_penanggungjawab),urldecode($alamat_penanggung),urldecode($no_hp_penanggung),urldecode($status_kawin),urldecode($pekerjaan_pasien),urldecode($id_dokter),urldecode($level_harga));
@@ -154,12 +165,10 @@ else {// else if > 0
 
  $sql7->execute();
 
-//PROSES INPUT PASIEN KE DB ONLINE
-  $url = $data_reg_pasien['url_data_pasien'];
-  $data_url = $url.'?no_rm_lama='.$no_rm_lama.'&nama_lengkap='.$nama_lengkap.'&no_ktp='.$no_ktp.'&tempat_lahir='.$tempat_lahir.'&tanggal_lahir='.$tanggal_lahir.'&umur='.$umur.'&alamat_sekarang='.$alamat_sekarang.'&alamat_ktp='.$alamat_ktp.'&no_telepon='.$no_telepon.'&nama_suamiortu='.$nama_suamiortu.'&pekerjaan_pasien='.$pekerjaan_pasien.'&nama_penanggungjawab='.$nama_penanggungjawab.'&hubungan_dengan_pasien='.$hubungan_dengan_pasien.'&no_hp_penanggung='.$no_hp_penanggung.'&alamat_penanggung='.$alamat_penanggung.'&jenis_kelamin='.$jenis_kelamin.'&status_kawin='.$status_kawin.'&pendidikan_terakhir='.$pendidikan_terakhir.'&agama='.$agama.'&penjamin='.$penjamin.'&gol_darah='.$gol_darah.'&poli='.$poli.'&dokter='.$dokter.'&kondisi='.$kondisi.'&rujukan='.$rujukan.'&sistole_distole='.$sistole_distole.'&respiratory_rate='.$respiratory_rate.'&suhu='.$suhu.'&nadi='.$nadi.'&berat_badan='.$berat_badan.'&tinggi_badan='.$tinggi_badan.'&alergi='.$alergi.'&no_kk='.$no_kk.'&nama_kk='.$nama_kk.'&token='.$token.'&no_rm='.$no_rm;
-
-  $file_get = file_get_contents($data_url);
 }
+
+//ambil no rm dari DB online
+  $no_rm = $file_get;
 
 // masukin ke rekam medik 
   $sql0 = $db->prepare("INSERT INTO rekam_medik
