@@ -10,6 +10,7 @@ $url = $data_reg_pasien['url_data_pasien'];
 
 //DATA YANG DIBUTUHKAN DI PROSES PENDAFTARAN PASIEN BARU
 	$no_rm_lama = stringdoang(urldecode($_GET['no_rm_lama']));
+	$no_rm = stringdoang(urldecode($_GET['no_rm']));
 	$nama_lengkap = stringdoang(urldecode($_GET['nama_lengkap']));
 	$no_ktp = stringdoang(urldecode($_GET['no_ktp']));
 	$tempat_lahir = stringdoang(urldecode($_GET['tempat_lahir']));
