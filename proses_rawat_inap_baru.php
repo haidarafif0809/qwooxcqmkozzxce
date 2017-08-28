@@ -16,7 +16,7 @@ try {
  // begin data
 
 if ($token == ''){
-  //echo '<META HTTP-EQUIV="Refresh" Content="0; URL=rawat_inap.php">';
+  echo '<META HTTP-EQUIV="Refresh" Content="0; URL=rawat_inap.php">';
 }
 else{
 
@@ -115,7 +115,7 @@ $keluar = mysqli_fetch_array($select_to);
 
 if ($keluar['nama_pasien'] == $nama_lengkap )
 {
-//echo '<META HTTP-EQUIV="Refresh" Content="0; URL=rawat_inap.php">';
+echo '<META HTTP-EQUIV="Refresh" Content="0; URL=rawat_inap.php">';
 }
 else{
 
@@ -278,7 +278,7 @@ else{
 } // biar gak double pasiennya
 } // token
 
-//echo '<META HTTP-EQUIV="Refresh" Content="0; URL=rawat_inap.php">';
+echo '<META HTTP-EQUIV="Refresh" Content="0; URL=rawat_inap.php">';
 // Countinue data 
    // If we arrive here, it means that no exception was thrown
     // i.e. no query has failed, and we can commit the transaction
