@@ -123,7 +123,7 @@ else{
 
   $query_penjamin = $db->query("SELECT harga FROM penjamin WHERE nama = '$penjamin'"); 
   $data_penjamin  = mysqli_fetch_array($query_penjamin); 
-  $level_harga = $data_penjamin['harga']; 
+  $level_harga = $data_penjamin['harga'];
 
   $query_no_urut = $db->query("SELECT no_urut FROM registrasi WHERE tanggal = '$tanggal_sekarang' AND poli = '$poli' ORDER BY no_urut DESC LIMIT 1 ");
   $row_no_urut = mysqli_num_rows($query_no_urut);

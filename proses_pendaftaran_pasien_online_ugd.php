@@ -2,11 +2,6 @@
 include 'db.php';
 include 'sanitasi.php';
 
-//SELECT UNTUK MENGAMBIL SETTING URL U/ DATA PASIEN BARU RJ
-$query_setting_registrasi_pasien = $db->query("SELECT url_data_pasien FROM setting_registrasi_pasien WHERE id = '1' ");
-$data_reg_pasien = mysqli_fetch_array($query_setting_registrasi_pasien );
-
-$url = $data_reg_pasien['url_data_pasien'];
 
 //DATA YANG DIBUTUHKAN DI PROSES PENDAFTARAN PASIEN BARU
   $no_rm_lama = stringdoang(urldecode($_GET['no_rm_lama']));
