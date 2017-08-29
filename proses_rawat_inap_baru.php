@@ -5,15 +5,15 @@
   $token = stringdoang(urlencode($_POST['token']));
   $session_id = session_id();
 
-  $query_setting_registerasi = $db->query("SELECT tampil_data_pasien_umum FROM setting_registrasi");
+  $query_setting_registerasi = $db->query("SELECT tampil_data_pasien_umum, tampil_ttv FROM setting_registrasi");
   $data_setting_registerasi = mysqli_fetch_array($query_setting_registerasi);
 
 // start data agar tetap masuk 
 try {
 // First of all, let's begin a transaction
   $db->begin_transaction();
-    // A set of queries; if one fails, an exception should be thrown
- // begin data
+// A set of queries; if one fails, an exception should be thrown
+// begin data
 
 if ($token == ''){
   echo '<META HTTP-EQUIV="Refresh" Content="0; URL=rawat_inap.php">';
@@ -73,12 +73,26 @@ else{
   $poli = stringdoang(urlencode($_POST['poli']));
   $kondisi = stringdoang(urlencode($_POST['kondisi']));
   $rujukan = stringdoang(urlencode($_POST['rujukan']));
-  $sistole_distole = stringdoang(urlencode($_POST['sistole_distole']));
-  $respiratory_rate = stringdoang(urlencode($_POST['respiratory_rate']));
-  $suhu = stringdoang(urlencode($_POST['suhu']));
-  $nadi = stringdoang(urlencode($_POST['nadi']));
-  $berat_badan = stringdoang(urlencode($_POST['berat_badan']));
-  $tinggi_badan = stringdoang(urlencode($_POST['tinggi_badan']));
+
+  if ($data_setting_registerasi['tampil_ttv'] == 1) { 
+
+    $sistole_distole = stringdoang(urlencode($_POST['sistole_distole']));
+    $respiratory_rate = stringdoang(urlencode($_POST['respiratory_rate']));
+    $suhu = stringdoang(urlencode($_POST['suhu']));
+    $nadi = stringdoang(urlencode($_POST['nadi']));
+    $berat_badan = stringdoang(urlencode($_POST['berat_badan']));
+    $tinggi_badan = stringdoang(urlencode($_POST['tinggi_badan']));
+  }
+  else{
+
+    $sistole_distole = "";
+    $respiratory_rate = "";
+    $suhu = "";
+    $nadi = "";
+    $berat_badan = "";
+    $tinggi_badan = "";
+  }
+
   $alergi = stringdoang(urlencode($_POST['alergi']));
   $group_bed = stringdoang(urlencode($_POST['group_bed']));
   $bed = stringdoang(urlencode($_POST['bed']));
@@ -100,9 +114,9 @@ else{
   $id_ruangan = $ruangan_split[0]; 
   $ruangan = $ruangan_split[1]; 
 
-  $ambil_satuan = $db->query("SELECT id FROM satuan WHERE nama = 'HARI'");
-  $b = mysqli_fetch_array($ambil_satuan);
-  $satuan_bed = $b['id'];
+  $query_satuan = $db->query("SELECT id FROM satuan WHERE nama = 'HARI'");
+  $data_satuan = mysqli_fetch_array($query_satuan);
+  $satuan_bed = $data_satuan['id'];
 
   $no_urut = 1;
   $jam =  date("H:i:s");
@@ -160,69 +174,35 @@ else{
   $data_reg_pasien = mysqli_fetch_array($query_setting_registrasi_pasien );
 
 
-
-// INSERT PASIEN NYA
-if ($no_rm_lama != ''){
-
-
 //PROSES INPUT PASIEN KE DB ONLINE
   $url = $data_reg_pasien['url_data_pasien'];
   $data_url = $url.'?no_rm_lama='.$no_rm_lama.'&nama_lengkap='.$nama_lengkap.'&no_ktp='.$no_ktp.'&tempat_lahir='.$tempat_lahir.'&tanggal_lahir='.$tanggal_lahir.'&umur='.$umur.'&alamat_sekarang='.$alamat_sekarang.'&alamat_ktp='.$alamat_ktp.'&no_telepon='.$no_telepon.'&pekerjaan_penanggung='.$pekerjaan_penanggung.'&nama_penanggungjawab='.$nama_penanggungjawab.'&hubungan_dengan_pasien='.$hubungan_dengan_pasien.'&no_hp_penanggung='.$no_hp_penanggung.'&alamat_penanggung='.$alamat_penanggung.'&jenis_kelamin='.$jenis_kelamin.'&status_kawin='.$status_kawin.'&pendidikan_terakhir='.$pendidikan_terakhir.'&agama='.$agama.'&penjamin='.$penjamin.'&gol_darah='.$gol_darah.'&poli='.$poli.'&kondisi='.$kondisi.'&rujukan='.$rujukan.'&sistole_distole='.$sistole_distole.'&respiratory_rate='.$respiratory_rate.'&sistole_distole='.$sistole_distole.'&respiratory_rate='.$respiratory_rate.'&suhu='.$suhu.'&nadi='.$nadi.'&berat_badan='.$berat_badan.'&tinggi_badan='.$tinggi_badan.'&alergi='.$alergi.'&no_kk='.$no_kk.'&nama_kk='.$nama_kk.'&token='.$token.'&group_bed='.$group_bed.'&bed='.$bed.'&perkiraan_menginap='.$perkiraan_menginap.'&surat_jaminan='.$surat_jaminan.'&dokter='.$dokter.'&dokter_penanggung_jawab='.$dokter_penanggung_jawab.'&ruangan='.$ruangan;
 
   $file_get = file_get_contents($data_url);
-
-//ambil no rm dari DB online
-  $no_rm = $file_get;
-
-
-}
-
-else{
-
-//PROSES INPUT PASIEN KE DB ONLINE
-  $url = $data_reg_pasien['url_data_pasien'];
-  $data_url = $url.'?no_rm_lama='.$no_rm_lama.'&nama_lengkap='.$nama_lengkap.'&no_ktp='.$no_ktp.'&tempat_lahir='.$tempat_lahir.'&tanggal_lahir='.$tanggal_lahir.'&umur='.$umur.'&alamat_sekarang='.$alamat_sekarang.'&alamat_ktp='.$alamat_ktp.'&no_telepon='.$no_telepon.'&pekerjaan_penanggung='.$pekerjaan_penanggung.'&nama_penanggungjawab='.$nama_penanggungjawab.'&hubungan_dengan_pasien='.$hubungan_dengan_pasien.'&no_hp_penanggung='.$no_hp_penanggung.'&alamat_penanggung='.$alamat_penanggung.'&jenis_kelamin='.$jenis_kelamin.'&status_kawin='.$status_kawin.'&pendidikan_terakhir='.$pendidikan_terakhir.'&agama='.$agama.'&penjamin='.$penjamin.'&gol_darah='.$gol_darah.'&poli='.$poli.'&kondisi='.$kondisi.'&rujukan='.$rujukan.'&sistole_distole='.$sistole_distole.'&respiratory_rate='.$respiratory_rate.'&sistole_distole='.$sistole_distole.'&respiratory_rate='.$respiratory_rate.'&suhu='.$suhu.'&nadi='.$nadi.'&berat_badan='.$berat_badan.'&tinggi_badan='.$tinggi_badan.'&alergi='.$alergi.'&no_kk='.$no_kk.'&nama_kk='.$nama_kk.'&token='.$token.'&group_bed='.$group_bed.'&bed='.$bed.'&perkiraan_menginap='.$perkiraan_menginap.'&surat_jaminan='.$surat_jaminan.'&dokter='.$dokter.'&dokter_penanggung_jawab='.$dokter_penanggung_jawab.'&ruangan='.$ruangan;
-
-  $file_get = file_get_contents($data_url);
-
-//ambil no rm dari DB online
-  $no_rm = $file_get;
-
-}
-// END UPDATE PASIEN
 
 //ambil no rm dari DB online
   $no_rm = $file_get;
 
 
 // INSERT KE REGISTRASI
-  $insert_1 = $db->prepare("INSERT INTO registrasi (alergi,rujukan,nama_pasien,jam,penjamin,status,no_reg,no_rm,tanggal_masuk,kondisi,petugas,alamat_pasien,umur_pasien,hp_pasien,bed,group_bed,menginap,dokter,dokter_pengirim,penanggung_jawab, alamat_penanggung_jawab,hp_penanggung_jawab,pekerjaan_penanggung_jawab,hubungan_dengan_pasien, jenis_kelamin,poli,jenis_pasien,tanggal,ruangan,nama_ruangan,id_dokter,id_dokter_pengirim,level_harga) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+  $query_insert_regisrasi = $db->prepare("INSERT INTO registrasi (alergi,rujukan,nama_pasien,jam,penjamin,status,no_reg,no_rm,tanggal_masuk,kondisi,petugas,alamat_pasien,umur_pasien,hp_pasien,bed,group_bed,menginap,dokter,dokter_pengirim,penanggung_jawab, alamat_penanggung_jawab,hp_penanggung_jawab,pekerjaan_penanggung_jawab,hubungan_dengan_pasien,jenis_kelamin,poli,jenis_pasien,tanggal,ruangan,nama_ruangan,id_dokter,id_dokter_pengirim,level_harga) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
-  $insert_1->bind_param("ssssssssssssssssssssssssssssissss",urldecode($alergi),urldecode($rujukan),urldecode($nama_lengkap),urldecode($jam),urldecode($penjamin),$menginap_status,urldecode($no_reg),urldecode($no_rm),urldecode($tanggal_sekarang),urldecode($kondisi),urldecode($username),urldecode($alamat_sekarang),urldecode($umur),urldecode($no_telepon),urldecode($bed),urldecode($group_bed),urldecode($perkiraan_menginap),urldecode($dokter),urldecode($dokter_penanggung_jawab),urldecode($nama_penanggungjawab),urldecode($alamat_penanggung),urldecode($no_hp_penanggung),urldecode($pekerjaan_penanggung),urldecode($hubungan_dengan_pasien),urldecode($jenis_kelamin),urldecode($poli),$rw_inap,urldecode($tanggal_sekarang),urldecode($id_ruangan),urldecode($ruangan),urldecode($id_dokter),urldecode($id_dokter_penanggung_jawab),urldecode($level_harga));
+  $query_insert_regisrasi->bind_param("ssssssssssssssssssssssssssssissss",urldecode($alergi),urldecode($rujukan),urldecode($nama_lengkap),urldecode($jam),urldecode($penjamin),$menginap_status,urldecode($no_reg),urldecode($no_rm),urldecode($tanggal_sekarang),urldecode($kondisi),urldecode($username),urldecode($alamat_sekarang),urldecode($umur),urldecode($no_telepon),urldecode($bed),urldecode($group_bed),urldecode($perkiraan_menginap),urldecode($dokter),urldecode($dokter_penanggung_jawab),urldecode($nama_penanggungjawab),urldecode($alamat_penanggung),urldecode($no_hp_penanggung),urldecode($pekerjaan_penanggung),urldecode($hubungan_dengan_pasien),urldecode($jenis_kelamin),urldecode($poli),$rw_inap,urldecode($tanggal_sekarang),urldecode($id_ruangan),urldecode($ruangan),urldecode($id_dokter),urldecode($id_dokter_penanggung_jawab),urldecode($level_harga));
 
+    $menginap_status = "menginap";
+    $rw_inap = urldecode("Rawat Inap");
 
-  $menginap_status = "menginap";
-  $rw_inap = urldecode("Rawat Inap");
+  $query_insert_regisrasi->execute();
 
+// INSERT KE REKAM MEDIK
+  $query_insert_rm = $db->prepare("INSERT INTO rekam_medik_inap (group_bed,alergi,no_reg,no_rm,nama,alamat,umur,jenis_kelamin,sistole_distole,suhu,berat_badan,tinggi_badan,nadi,respiratory,poli,tanggal_periksa,jam,dokter,kondisi,rujukan,dokter_penanggung_jawab,bed,ruangan,petugas) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
-  $insert_1->execute();
+  $query_insert_rm->bind_param("ssssssssssssssssssssssis", $group_bed,$alergi,$no_reg,$no_rm,$nama_lengkap,$alamat_sekarang,$umur,$jenis_kelamin,$sistole_distole,$suhu,$berat_badan,$tinggi_badan,$nadi,$respiratory_rate,$poli,$tanggal_sekarang,$jam,$dokter,$kondisi,$rujukan,$dokter_penanggung_jawab,$bed,$ruangan,$username);
 
-
-  $insert_2 = $db->prepare("INSERT INTO rekam_medik_inap
-  (group_bed,alergi,no_reg,no_rm,nama,alamat,umur,jenis_kelamin,sistole_distole,suhu,berat_badan,tinggi_badan,nadi,respiratory,poli,tanggal_periksa,jam,dokter,kondisi,rujukan,dokter_penanggung_jawab,bed,ruangan,petugas)
-  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
-
-  $insert_2->bind_param("ssssssssssssssssssssssis", $group_bed,$alergi,$no_reg,$no_rm,$nama_lengkap,$alamat_sekarang,$umur,$jenis_kelamin,$sistole_distole,$suhu,$berat_badan,$tinggi_badan,$nadi,$respiratory_rate,$poli,$tanggal_sekarang,$jam,$dokter,$kondisi,$rujukan,$dokter_penanggung_jawab,$bed,$ruangan,$username);
-
-
-  $insert_2->execute();
-
-
+  $query_insert_rm->execute();
 
 // UPDATE KAMAR
   $query = $db->query("UPDATE bed SET sisa_bed = sisa_bed - 1 WHERE nama_kamar = '$bed' AND group_bed = '$group_bed'");
-// END UPDATE KAMAR
-
 
   $query_kamar_bed = $db->query("SELECT tarif,tarif_2,tarif_3,tarif_4,tarif_5,tarif_6,tarif_7 FROM bed WHERE nama_kamar = '$bed' AND group_bed = '$group_bed' ");
   $data_kamar_bed = mysqli_fetch_array($query_kamar_bed);
@@ -234,34 +214,32 @@ else{
   $harga_kamar6 = $data_kamar_bed['tarif_6'];
   $harga_kamar7 = $data_kamar_bed['tarif_7'];
 
-  //end bahan untuk kamar
-
 
   // HARGA KAMAR
   if ($level_harga == 'harga_1') {
-  $subtotal = $perkiraan_menginap * $harga_kamar1;
+    $subtotal = $perkiraan_menginap * $harga_kamar1;
   }
   else if ($level_harga == 'harga_2') {
-  $subtotal = $perkiraan_menginap * $harga_kamar2;
+    $subtotal = $perkiraan_menginap * $harga_kamar2;
   }
   else if ($level_harga == 'harga_3') {
-  $subtotal = $perkiraan_menginap * $harga_kamar3;
+    $subtotal = $perkiraan_menginap * $harga_kamar3;
   }
   else if ($level_harga == 'harga_4') {
-  $subtotal = $perkiraan_menginap * $harga_kamar4;
+    $subtotal = $perkiraan_menginap * $harga_kamar4;
   }
   else if ($level_harga == 'harga_5') {
-  $subtotal = $perkiraan_menginap * $harga_kamar5;
+    $subtotal = $perkiraan_menginap * $harga_kamar5;
   }
   else if ($level_harga == 'harga_6') {
-  $subtotal = $perkiraan_menginap * $harga_kamar6;
+    $subtotal = $perkiraan_menginap * $harga_kamar6;
   }
   else {
-  $subtotal = $perkiraan_menginap * $harga_kamar7;
+    $subtotal = $perkiraan_menginap * $harga_kamar7;
   }
 
 
-  $query_set_kamar = $db->query(" SELECT proses_kamar FROM setting_kamar ");
+  $query_set_kamar = $db->query("SELECT proses_kamar FROM setting_kamar ");
   $data_sett_kamar  = mysqli_fetch_array($query_set_kamar);
 
   if ($data_sett_kamar['proses_kamar'] == 1){
