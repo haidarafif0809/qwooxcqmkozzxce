@@ -16,7 +16,7 @@ try {
 // begin data
 
 if ($token == ''){
-  echo '<META HTTP-EQUIV="Refresh" Content="0; URL=rawat_inap.php">';
+    echo '<META HTTP-EQUIV="Refresh" Content="0; URL=rawat_inap.php">';
 }
 else{
 
@@ -36,6 +36,7 @@ else{
     $penjamin = 'PERSONAL';
   }
 
+//JIKA KOLOM DATA PASIEN DI TAMPILKAN, SAAT REGISTRASI PASIEN BARU
 if ($data_setting_registerasi['tampil_data_pasien_umum'] == 1) {
 
     $no_kk = stringdoang(urlencode($_POST['no_kk']));
@@ -74,6 +75,7 @@ else{
   $kondisi = stringdoang(urlencode($_POST['kondisi']));
   $rujukan = stringdoang(urlencode($_POST['rujukan']));
 
+//JIKA KOLOM TTV DI TAMPILKAN, SAAT REGISTRASI PASIEN BARU
   if ($data_setting_registerasi['tampil_ttv'] == 1) { 
 
     $sistole_distole = stringdoang(urlencode($_POST['sistole_distole']));
@@ -114,9 +116,8 @@ else{
   $id_ruangan = $ruangan_split[0]; 
   $ruangan = $ruangan_split[1]; 
 
-  $query_satuan = $db->query("SELECT id FROM satuan WHERE nama = 'HARI'");
-  $data_satuan = mysqli_fetch_array($query_satuan);
-  $satuan_bed = $data_satuan['id'];
+  $query_satuan = $db->query("SELECT id FROM satuan WHERE nama = 'HARI'")->fetch_array();
+  $satuan_bed = $query_satuan['id'];
 
   $no_urut = 1;
   $jam =  date("H:i:s");
@@ -124,12 +125,11 @@ else{
   $bulan_php = date('m');
   $tahun_php = date('Y');
 
-$select_to = $db->query("SELECT nama_pasien FROM registrasi  WHERE jenis_pasien = 'Rawat Jalan'  ORDER BY id DESC LIMIT 1 ");
-$keluar = mysqli_fetch_array($select_to);
+$query_registrasi = $db->query("SELECT nama_pasien FROM registrasi  WHERE jenis_pasien = 'Rawat Jalan'  ORDER BY id DESC LIMIT 1 ")->fetch_array();
 
-if ($keluar['nama_pasien'] == $nama_lengkap )
+if ($query_registrasi['nama_pasien'] == $nama_lengkap )
 {
-echo '<META HTTP-EQUIV="Refresh" Content="0; URL=rawat_inap.php">';
+  echo '<META HTTP-EQUIV="Refresh" Content="0; URL=rawat_inap.php">';
 }
 else{
 
@@ -165,11 +165,10 @@ else{
 // ENDING — UNTUK AMBIL NO REG NYA LEWAT PROSES SAJA
 
 // ambil bahan untuk kamar 
-  $query_penjamin = $db->query(" SELECT harga FROM penjamin WHERE nama = '$penjamin'");
-  $data_penjamin  = mysqli_fetch_array($query_penjamin);
-  $level_harga = $data_penjamin['harga'];
+  $query_penjamin = $db->query(" SELECT harga FROM penjamin WHERE nama = '$penjamin'")->fetch_array();
+  $level_harga = $query_penjamin['harga'];
 
-//SELECT UNTUK MENGAMBIL SETTING URL U/ DATA PASIEN BARU RJ
+//SELECT UNTUK MENGAMBIL SETTING URL U/ DATA PASIEN BARU RI
   $query_setting_registrasi_pasien = $db->query("SELECT url_data_pasien FROM setting_registrasi_pasien WHERE id = '3' ");
   $data_reg_pasien = mysqli_fetch_array($query_setting_registrasi_pasien );
 
@@ -187,24 +186,24 @@ else{
 // INSERT KE REGISTRASI
   $query_insert_regisrasi = $db->prepare("INSERT INTO registrasi (alergi,rujukan,nama_pasien,jam,penjamin,status,no_reg,no_rm,tanggal_masuk,kondisi,petugas,alamat_pasien,umur_pasien,hp_pasien,bed,group_bed,menginap,dokter,dokter_pengirim,penanggung_jawab, alamat_penanggung_jawab,hp_penanggung_jawab,pekerjaan_penanggung_jawab,hubungan_dengan_pasien,jenis_kelamin,poli,jenis_pasien,tanggal,ruangan,nama_ruangan,id_dokter,id_dokter_pengirim,level_harga) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
-  $query_insert_regisrasi->bind_param("ssssssssssssssssssssssssssssissss",urldecode($alergi),urldecode($rujukan),urldecode($nama_lengkap),urldecode($jam),urldecode($penjamin),$menginap_status,urldecode($no_reg),urldecode($no_rm),urldecode($tanggal_sekarang),urldecode($kondisi),urldecode($username),urldecode($alamat_sekarang),urldecode($umur),urldecode($no_telepon),urldecode($bed),urldecode($group_bed),urldecode($perkiraan_menginap),urldecode($dokter),urldecode($dokter_penanggung_jawab),urldecode($nama_penanggungjawab),urldecode($alamat_penanggung),urldecode($no_hp_penanggung),urldecode($pekerjaan_penanggung),urldecode($hubungan_dengan_pasien),urldecode($jenis_kelamin),urldecode($poli),$rw_inap,urldecode($tanggal_sekarang),urldecode($id_ruangan),urldecode($ruangan),urldecode($id_dokter),urldecode($id_dokter_penanggung_jawab),urldecode($level_harga));
+  $query_insert_regisrasi->bind_param("ssssssssssssssssssssssssssssissss",urldecode($alergi),urldecode($rujukan),urldecode($nama_lengkap),urldecode($jam),urldecode($penjamin),$status,urldecode($no_reg),urldecode($no_rm),urldecode($tanggal_sekarang),urldecode($kondisi),urldecode($username),urldecode($alamat_sekarang),urldecode($umur),urldecode($no_telepon),urldecode($bed),urldecode($group_bed),urldecode($perkiraan_menginap),urldecode($dokter),urldecode($dokter_penanggung_jawab),urldecode($nama_penanggungjawab),urldecode($alamat_penanggung),urldecode($no_hp_penanggung),urldecode($pekerjaan_penanggung),urldecode($hubungan_dengan_pasien),urldecode($jenis_kelamin),urldecode($poli),$jenis_pasien,urldecode($tanggal_sekarang),urldecode($id_ruangan),urldecode($ruangan),urldecode($id_dokter),urldecode($id_dokter_penanggung_jawab),urldecode($level_harga));
 
-    $menginap_status = "menginap";
-    $rw_inap = urldecode("Rawat Inap");
-
+    $jenis_pasien = 'Rawat Inap';
+    $status = 'menginap';
   $query_insert_regisrasi->execute();
 
 // INSERT KE REKAM MEDIK
   $query_insert_rm = $db->prepare("INSERT INTO rekam_medik_inap (group_bed,alergi,no_reg,no_rm,nama,alamat,umur,jenis_kelamin,sistole_distole,suhu,berat_badan,tinggi_badan,nadi,respiratory,poli,tanggal_periksa,jam,dokter,kondisi,rujukan,dokter_penanggung_jawab,bed,ruangan,petugas) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
-  $query_insert_rm->bind_param("ssssssssssssssssssssssis", $group_bed,$alergi,$no_reg,$no_rm,$nama_lengkap,$alamat_sekarang,$umur,$jenis_kelamin,$sistole_distole,$suhu,$berat_badan,$tinggi_badan,$nadi,$respiratory_rate,$poli,$tanggal_sekarang,$jam,$dokter,$kondisi,$rujukan,$dokter_penanggung_jawab,$bed,$ruangan,$username);
+  $query_insert_rm->bind_param("ssssssssssssssssssssssis", urldecode($group_bed),urldecode($alergi),urldecode($no_reg),urldecode($no_rm),urldecode($nama_lengkap),urldecode($alamat_sekarang),urldecode($umur),urldecode($jenis_kelamin),urldecode($sistole_distole),urldecode($suhu),urldecode($berat_badan),urldecode($tinggi_badan),urldecode($nadi),urldecode($respiratory_rate),urldecode($poli),urldecode($tanggal_sekarang),urldecode($jam),urldecode($dokter),urldecode($kondisi),urldecode($rujukan),urldecode($dokter_penanggung_jawab),urldecode($bed),urldecode($ruangan),$username);
 
   $query_insert_rm->execute();
 
 // UPDATE KAMAR
-  $query = $db->query("UPDATE bed SET sisa_bed = sisa_bed - 1 WHERE nama_kamar = '$bed' AND group_bed = '$group_bed'");
 
-  $query_kamar_bed = $db->query("SELECT tarif,tarif_2,tarif_3,tarif_4,tarif_5,tarif_6,tarif_7 FROM bed WHERE nama_kamar = '$bed' AND group_bed = '$group_bed' ");
+  $query = $db->query("UPDATE bed SET sisa_bed = sisa_bed - 1 WHERE nama_kamar = '".urldecode($bed)."' AND group_bed = '".urldecode($group_bed)."'");
+
+  $query_kamar_bed = $db->query("SELECT tarif,tarif_2,tarif_3,tarif_4,tarif_5,tarif_6,tarif_7 FROM bed WHERE nama_kamar = '".urldecode($bed)."' AND group_bed = '".urldecode($group_bed)."' ");
   $data_kamar_bed = mysqli_fetch_array($query_kamar_bed);
   $harga_kamar1 = $data_kamar_bed['tarif'];
   $harga_kamar2 = $data_kamar_bed['tarif_2'];
@@ -244,7 +243,7 @@ else{
 
   if ($data_sett_kamar['proses_kamar'] == 1){
 
-    $query_insert_tbs_penjualan = "INSERT INTO tbs_penjualan(session_id,no_reg,kode_barang,nama_barang,jumlah_barang,harga,subtotal,tipe_barang,potongan,tax,satuan,jam,tanggal,ruangan) VALUES ('$session_id','$no_reg','$bed','$group_bed','$perkiraan_menginap','$harga_kamar1','$subtotal','Bed','0','0','$satuan_bed','$jam','$tanggal_sekarang','$ruangan')";
+    $query_insert_tbs_penjualan = "INSERT INTO tbs_penjualan(session_id,no_reg,kode_barang,nama_barang,jumlah_barang,harga,subtotal,tipe_barang,potongan,tax,satuan,jam,tanggal,ruangan) VALUES ('$session_id','$no_reg','".urldecode($bed)."','".urldecode($group_bed)."','".urldecode($perkiraan_menginap)."','$harga_kamar1','$subtotal','Bed','0','0','$satuan_bed','$jam','$tanggal_sekarang','".urldecode($ruangan)."')";
     if ($db->query($query_insert_tbs_penjualan) === TRUE) {
     }
     else {
@@ -256,7 +255,7 @@ else{
 } // biar gak double pasiennya
 } // token
 
-echo '<META HTTP-EQUIV="Refresh" Content="0; URL=rawat_inap.php">';
+  echo '<META HTTP-EQUIV="Refresh" Content="0; URL=rawat_inap.php">';
 // Countinue data 
    // If we arrive here, it means that no exception was thrown
     // i.e. no query has failed, and we can commit the transaction

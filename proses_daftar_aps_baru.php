@@ -94,7 +94,7 @@ try {
 
 //INSERT PEMERIKSAAN
 		if($periksa == '1'){	
-			$query_insert_data_periksa = "INSERT INTO pemeriksaan_laboratorium (no_reg,no_rm,waktu,status,nama_pasien,status_pasien) VALUES ('$no_reg','$no_rm','$waktu','0','$nama_lengkap','APS')";
+			$query_insert_data_periksa = "INSERT INTO pemeriksaan_laboratorium (no_reg,no_rm,waktu,status,nama_pasien,status_pasien) VALUES ('".urldecode($no_reg)."','".urldecode($no_rm)."','$waktu','0','".urldecode($nama_lengkap)."','APS')";
 				if ($db->query($query_insert_data_periksa) === TRUE){
 				}
 				else{

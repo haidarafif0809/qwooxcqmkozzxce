@@ -57,6 +57,7 @@ else{
   $no_kk = stringdoang(urlencode($_POST['no_kk']));
   $nama_kk = stringdoang(urlencode($_POST['nama_kk']));
 
+//JIKA KOLOM TTV TIDAK DITAMPILKAN MAKA DATA YG DIKIRIM KOSONG
 if ($datasett['tampil_ttv'] == 1) {
   
   $sistole_distole = stringdoang(urlencode($_POST['sistole_distole']));
@@ -82,10 +83,9 @@ else{
   $bulan_php = date('m');
   $tahun_php = date('Y');
 
-  $select_to = $db->query("SELECT nama_pasien FROM registrasi  WHERE jenis_pasien = 'Rawat Jalan'  ORDER BY id DESC LIMIT 1 ");
-  $keluar = mysqli_fetch_array($select_to);
+  $query_registrasi = $db->query("SELECT nama_pasien FROM registrasi  WHERE jenis_pasien = 'Rawat Jalan'  ORDER BY id DESC LIMIT 1 ")->fetch_array();
 
-if ($keluar['nama_pasien'] == $nama_lengkap ){
+if ($query_registrasi['nama_pasien'] == $nama_lengkap ){
   header('location:rawat_jalan_lama.php');
 }
 else{
@@ -121,21 +121,18 @@ else{
 // AKHIR UNTUK NO REG
 // ENDING -- UNTUK AMBIL NO REG NYA LEWAT PROSES SAJA
 
-  $query_penjamin = $db->query("SELECT harga FROM penjamin WHERE nama = '$penjamin'"); 
-  $data_penjamin  = mysqli_fetch_array($query_penjamin); 
-  $level_harga = $data_penjamin['harga'];
+  $query_penjamin = $db->query("SELECT harga FROM penjamin WHERE nama = '$penjamin'")->fetch_array(); 
+  $level_harga = $query_penjamin['harga'];
 
   $query_no_urut = $db->query("SELECT no_urut FROM registrasi WHERE tanggal = '$tanggal_sekarang' AND poli = '$poli' ORDER BY no_urut DESC LIMIT 1 ");
   $row_no_urut = mysqli_num_rows($query_no_urut);
   $data_no_urut = mysqli_fetch_array($query_no_urut);
 
 //SELECT UNTUK MENGAMBIL SETTING URL U/ DATA PASIEN BARU RJ
-  $query_setting_registrasi_pasien = $db->query("SELECT url_data_pasien FROM setting_registrasi_pasien WHERE id = '1' ");
-  $data_reg_pasien = mysqli_fetch_array($query_setting_registrasi_pasien );
-
+  $query_setting_registrasi_pasien = $db->query("SELECT url_data_pasien FROM setting_registrasi_pasien WHERE id = '1' ")->fetch_array();
 
 //PROSES INPUT PASIEN KE DB ONLINE
-  $url = $data_reg_pasien['url_data_pasien'];
+  $url = $query_setting_registrasi_pasien['url_data_pasien'];
   $data_url = $url.'?no_rm_lama='.$no_rm_lama.'&nama_lengkap='.$nama_lengkap.'&no_ktp='.$no_ktp.'&tempat_lahir='.$tempat_lahir.'&tanggal_lahir='.$tanggal_lahir.'&umur='.$umur.'&alamat_sekarang='.$alamat_sekarang.'&alamat_ktp='.$alamat_ktp.'&no_telepon='.$no_telepon.'&nama_suamiortu='.$nama_suamiortu.'&pekerjaan_pasien='.$pekerjaan_pasien.'&nama_penanggungjawab='.$nama_penanggungjawab.'&hubungan_dengan_pasien='.$hubungan_dengan_pasien.'&no_hp_penanggung='.$no_hp_penanggung.'&alamat_penanggung='.$alamat_penanggung.'&jenis_kelamin='.$jenis_kelamin.'&status_kawin='.$status_kawin.'&pendidikan_terakhir='.$pendidikan_terakhir.'&agama='.$agama.'&penjamin='.$penjamin.'&gol_darah='.$gol_darah.'&poli='.$poli.'&dokter='.$dokter.'&kondisi='.$kondisi.'&rujukan='.$rujukan.'&sistole_distole='.$sistole_distole.'&respiratory_rate='.$respiratory_rate.'&suhu='.$suhu.'&nadi='.$nadi.'&berat_badan='.$berat_badan.'&tinggi_badan='.$tinggi_badan.'&alergi='.$alergi.'&no_kk='.$no_kk.'&nama_kk='.$nama_kk.'&token='.$token;
 
   $file_get = file_get_contents($data_url);
@@ -150,10 +147,10 @@ if($row_no_urut > 0 ){
 // masukin ke registrasi
   $query_insert_regisrasi = $db->prepare("INSERT INTO registrasi (alergi,no_kk,nama_kk,poli,no_urut,nama_pasien,jam,penjamin,dokter,status,no_reg,no_rm,tanggal,kondisi,petugas,alamat_pasien,umur_pasien,jenis_kelamin,rujukan,jenis_pasien,gol_darah,penanggung_jawab,alamat_penanggung_jawab,hp_penanggung_jawab,status_nikah,pekerjaan_pasien,id_dokter,level_harga) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
-  $query_insert_regisrasi->bind_param("ssssssssssssssssssssssssssss",urldecode($alergi),urldecode($no_kk),urldecode($nama_kk),urldecode($poli),urldecode($no_urut_terakhir),urldecode($nama_lengkap),urldecode($jam),urldecode($penjamin),urldecode($dokter),$menunggu,urldecode($no_reg),urldecode($no_rm),urldecode($tanggal_sekarang),urldecode($kondisi),urldecode($username),urldecode($alamat_sekarang),urldecode($umur),urldecode($jenis_kelamin),urldecode($rujukan), $rawat_jalan_nya,urldecode($gol_darah),urldecode($nama_penanggungjawab),urldecode($alamat_penanggung),urldecode($no_hp_penanggung),urldecode($status_kawin),urldecode($pekerjaan_pasien),urldecode($id_dokter),urldecode($level_harga));
+  $query_insert_regisrasi->bind_param("ssssssssssssssssssssssssssss",urldecode($alergi),urldecode($no_kk),urldecode($nama_kk),urldecode($poli),urldecode($no_urut_terakhir),urldecode($nama_lengkap),urldecode($jam),urldecode($penjamin),urldecode($dokter),$status,urldecode($no_reg),urldecode($no_rm),urldecode($tanggal_sekarang),urldecode($kondisi),urldecode($username),urldecode($alamat_sekarang),urldecode($umur),urldecode($jenis_kelamin),urldecode($rujukan), $jenis_pasien,urldecode($gol_darah),urldecode($nama_penanggungjawab),urldecode($alamat_penanggung),urldecode($no_hp_penanggung),urldecode($status_kawin),urldecode($pekerjaan_pasien),urldecode($id_dokter),urldecode($level_harga));
 
-    $menunggu = 'menunggu';
-    $rawat_jalan_nya = urldecode('Rawat Jalan');
+    $status = 'menunggu';
+    $jenis_pasien = urldecode('Rawat Jalan');
 
   $query_insert_regisrasi->execute();
 
@@ -163,10 +160,10 @@ else {// else if > 0
 
   $query_insert_regisrasi = $db->prepare("INSERT INTO registrasi (alergi,no_kk,nama_kk,poli,no_urut,nama_pasien,jam,penjamin,dokter,status,no_reg,no_rm,tanggal,kondisi,petugas,alamat_pasien,umur_pasien,jenis_kelamin,rujukan,jenis_pasien,
   gol_darah,penanggung_jawab,alamat_penanggung_jawab,hp_penanggung_jawab,status_nikah,pekerjaan_pasien,id_dokter,level_harga) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
-  $query_insert_regisrasi->bind_param("ssssssssssssssssssssssssssss", urldecode($alergi),urldecode($no_kk),urldecode($nama_kk),urldecode($poli),urldecode($no_urut),urldecode($nama_lengkap),urldecode($jam),urldecode($penjamin),urldecode($dokter),$menunggu2,urldecode($no_reg),urldecode($no_rm),urldecode($tanggal_sekarang),urldecode($kondisi),urldecode($username),urldecode($alamat_sekarang),urldecode($umur),urldecode($jenis_kelamin),urldecode($rujukan),$rawat_jalan_nya2,urldecode($gol_darah),urldecode($nama_penanggungjawab),urldecode($alamat_penanggung),urldecode($no_hp_penanggung),urldecode($status_kawin),urldecode($pekerjaan_pasien),urldecode($id_dokter),urldecode($level_harga));
+  $query_insert_regisrasi->bind_param("ssssssssssssssssssssssssssss", urldecode($alergi),urldecode($no_kk),urldecode($nama_kk),urldecode($poli),urldecode($no_urut),urldecode($nama_lengkap),urldecode($jam),urldecode($penjamin),urldecode($dokter),$status,urldecode($no_reg),urldecode($no_rm),urldecode($tanggal_sekarang),urldecode($kondisi),urldecode($username),urldecode($alamat_sekarang),urldecode($umur),urldecode($jenis_kelamin),urldecode($rujukan),$jenis_pasien,urldecode($gol_darah),urldecode($nama_penanggungjawab),urldecode($alamat_penanggung),urldecode($no_hp_penanggung),urldecode($status_kawin),urldecode($pekerjaan_pasien),urldecode($id_dokter),urldecode($level_harga));
 
-    $menunggu2 = 'menunggu';
-    $rawat_jalan_nya2 = urldecode('Rawat Jalan');
+    $status = 'menunggu';
+    $jenis_pasien = urldecode('Rawat Jalan');
 
   $query_insert_regisrasi->execute();
 
@@ -175,7 +172,7 @@ else {// else if > 0
 // INSERT REKAM MEDIK 
   $query_insert_rm = $db->prepare("INSERT INTO rekam_medik (alergi,no_kk,nama_kk,no_reg,no_rm,nama,alamat,umur,jenis_kelamin,sistole_distole,suhu,berat_badan,tinggi_badan,nadi,respiratory,poli,tanggal_periksa,jam,dokter,kondisi,rujukan,petugas) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
-  $query_insert_rm->bind_param("ssssssssssssssssssssss",$alergi,$no_kk,$nama_kk,$no_reg,$no_rm,$nama_lengkap,$alamat_sekarang,$umur,$jenis_kelamin,$sistole_distole,$suhu,$berat_badan,$tinggi_badan,$nadi,$respiratory_rate,$poli,$tanggal_sekarang,$jam,$dokter,$kondisi,$rujukan,$username);
+  $query_insert_rm->bind_param("ssssssssssssssssssssss",urldecode($alergi),urldecode($no_kk),urldecode($nama_kk),urldecode($no_reg),urldecode($no_rm),urldecode($nama_lengkap),urldecode($alamat_sekarang),urldecode($umur),urldecode($jenis_kelamin),urldecode($sistole_distole),urldecode($suhu),urldecode($berat_badan),urldecode($tinggi_badan),urldecode($nadi),urldecode($respiratory_rate),urldecode($poli),urldecode($tanggal_sekarang),urldecode($jam),urldecode($dokter),urldecode($kondisi),urldecode($rujukan),$username);
 
   $query_insert_rm->execute();
 // ENDING UNTUK AMBIL NO FAKTUR (PENJUALAN)

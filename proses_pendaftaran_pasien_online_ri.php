@@ -50,32 +50,24 @@ include 'sanitasi.php';
   $ruangan_split = stringdoang(urldecode($_GET['ruangan']));
 	$token = stringdoang(urldecode($_GET['token']));
 
-	$ambil_rm = $db_pasien->query("SELECT kode_pelanggan FROM pelanggan WHERE kode_pelanggan != 0 ORDER BY id DESC LIMIT 1 ");
-	$no_ter = mysqli_fetch_array($ambil_rm);
-	echo $no_rm = urldecode($no_ter['kode_pelanggan'] + 1);
+	$query_pelanggan = $db_pasien->query("SELECT kode_pelanggan FROM pelanggan WHERE kode_pelanggan != 0 ORDER BY id DESC LIMIT 1 ")->fetch_array();
+	echo $no_rm = $query_pelanggan['kode_pelanggan'] + 1;
 
-// INSERT PASIEN NYA
+//JIKA ADA MIGRASI PASIEN
 if ($no_rm_lama != ''){
-
-	$query_insert_pelanggan = $db_pasien->prepare("INSERT INTO pelanggan(alergi,no_kk,nama_kk,kode_pelanggan,nama_pelanggan,tempat_lahir,tgl_lahir,umur,alamat_sekarang,alamat_ktp,no_telp,no_ktp,nama_penanggungjawab,hubungan_dengan_pasien,alamat_penanggung,no_hp_penanggung,jenis_kelamin,pendidikan_terakhir,status_kawin,agama,penjamin,gol_darah,tanggal,no_rm_lama) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
-
-	$query_insert_pelanggan->bind_param("ssssssssssssssssssssssss",$alergi,$no_kk,$nama_kk,$no_rm,$nama_lengkap,$tempat_lahir,$tanggal_lahir,$umur,$alamat_sekarang,$alamat_ktp,$no_telepon,$no_ktp,$nama_penanggungjawab,$hubungan_dengan_pasien,$alamat_penanggung,$no_hp_penanggung,$jenis_kelamin,$pendidikan_terakhir,$status_kawin,$agama,$penjamin,$gol_darah,$tanggal_sekarang,$no_rm_lama);
-
-	$query_insert_pelanggan->execute();
-
+  $no_rm_lama = stringdoang(urldecode($_GET['no_rm_lama']));
 	$query_delete = $db_pasien->query("DELETE FROM pelanggan WHERE no_rm_lama = '$no_rm_lama' AND (kode_pelanggan IS NULL OR kode_pelanggan = 0)  ");
-
-
 }
 else{
-
-	$query_insert_pelanggan_lagi = $db_pasien->prepare("INSERT INTO pelanggan (alergi,no_kk,nama_kk,kode_pelanggan,nama_pelanggan,tempat_lahir,tgl_lahir,umur,alamat_sekarang,alamat_ktp,no_telp,no_ktp,nama_penanggungjawab,hubungan_dengan_pasien,alamat_penanggung,no_hp_penanggung,jenis_kelamin,pendidikan_terakhir,status_kawin,agama,penjamin,gol_darah,tanggal) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
-
-	$query_insert_pelanggan_lagi->bind_param("sssssssssssssssssssssss",$alergi,$no_kk,$nama_kk,$no_rm,$nama_lengkap,$tempat_lahir,$tanggal_lahir,$umur,$alamat_sekarang,$alamat_ktp,$no_telepon,$no_ktp,$nama_penanggungjawab,$hubungan_dengan_pasien,$alamat_penanggung,$no_hp_penanggung,$jenis_kelamin,$pendidikan_terakhir,$status_kawin,$agama,$penjamin,$gol_darah,$tanggal_sekarang);
-
-	$query_insert_pelanggan_lagi->execute();
-
+  $no_rm_lama = "";
 }
+
+//INSERT DATA PASIEN BARU
+  $query_insert_pelanggan = $db_pasien->prepare("INSERT INTO pelanggan(alergi,no_kk,nama_kk,kode_pelanggan,nama_pelanggan,tempat_lahir,tgl_lahir,umur,alamat_sekarang,alamat_ktp,no_telp,no_ktp,nama_penanggungjawab,hubungan_dengan_pasien,alamat_penanggung,no_hp_penanggung,jenis_kelamin,pendidikan_terakhir,status_kawin,agama,penjamin,gol_darah,tanggal,no_rm_lama) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+
+  $query_insert_pelanggan->bind_param("ssssssssssssssssssssssss",$alergi,$no_kk,$nama_kk,$no_rm,$nama_lengkap,$tempat_lahir,$tanggal_lahir,$umur,$alamat_sekarang,$alamat_ktp,$no_telepon,$no_ktp,$nama_penanggungjawab,$hubungan_dengan_pasien,$alamat_penanggung,$no_hp_penanggung,$jenis_kelamin,$pendidikan_terakhir,$status_kawin,$agama,$penjamin,$gol_darah,$tanggal_sekarang,$no_rm_lama);
+
+  $query_insert_pelanggan->execute();
 // END UPDATE PASIEN
 
 ?>

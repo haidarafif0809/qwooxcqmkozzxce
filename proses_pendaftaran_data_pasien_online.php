@@ -42,8 +42,5 @@ include 'sanitasi.php';
       die('Query Error : '.$db_pasien->errno.
       ' - '.$db_pasien->error);
     }
-  else { 
-    
-  }
 
 ?>

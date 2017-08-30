@@ -25,139 +25,59 @@
 			<table id="tableuser" class="table table-bordered table-sm">
 				<thead>
 						<?php 
-						  $query = $db->query("SELECT id, url_cari_pasien FROM setting_registrasi_pasien WHERE id = '6'");
+						  $query = $db->query("SELECT id, url_cari_pasien, url_data_pasien FROM setting_registrasi_pasien ");
 						  while($data = mysqli_fetch_array($query)) {
 						    echo "
-						    <tr>
-						    	<th style='background-color: #4CAF50; color: white;'>Master Data Pasien</th>
-								<td style='background-color:#90caf9;cursor:pointer;' class='edit-cari' data-id='".$data['id']."'><span id='text-cari-".$data['id']."'>". $data['url_cari_pasien'] ."</span> <input type='hidden' id='input-cari-".$data['id']."' value='".$data['url_cari_pasien']."' class='input_cari' data-id='".$data['id']."' data-cari='".$data['url_cari_pasien']."' autofocus=''></td>
-						    </tr>";
-						  }
-						?>		
-				</thead>
-				<thead>
-						<?php 
-						  $query = $db->query("SELECT id, url_cari_pasien FROM setting_registrasi_pasien WHERE id = '1'");
-						  while($data = mysqli_fetch_array($query)) {
-						    echo "
-						    <tr>
-						    	<th style='background-color: #4CAF50; color: white;'>Pasien Rawat Jalan</th>
-								<td style='background-color:#90caf9;cursor:pointer;' class='edit-cari' data-id='".$data['id']."'><span id='text-cari-".$data['id']."'>". $data['url_cari_pasien'] ."</span> <input type='hidden' id='input-cari-".$data['id']."' value='".$data['url_cari_pasien']."' class='input_cari' data-id='".$data['id']."' data-cari='".$data['url_cari_pasien']."' autofocus=''></td>
-						    </tr>";
-						  }
-						?>		
-				</thead>
-				<thead>
-						<?php 
-						  $query = $db->query("SELECT id, url_cari_pasien FROM setting_registrasi_pasien WHERE id = '3'");
-						  while($data = mysqli_fetch_array($query)) {
-						    echo "
-						    <tr>
-						    	<th style='background-color: #4CAF50; color: white;'>Pasien Rawat Inap</th>
-								<td style='background-color:#90caf9;cursor:pointer;' class='edit-cari' data-id='".$data['id']."'><span id='text-cari-".$data['id']."'>". $data['url_cari_pasien'] ."</span> <input type='hidden' id='input-cari-".$data['id']."' value='".$data['url_cari_pasien']."' class='input_cari' data-id='".$data['id']."' data-cari='".$data['url_cari_pasien']."' autofocus=''></td>
-						    </tr>";
-						  }
-						?>		
-				</thead>
-				<thead>
-						<?php 
-						  $query = $db->query("SELECT id, url_cari_pasien FROM setting_registrasi_pasien WHERE id = '4'");
-						  while($data = mysqli_fetch_array($query)) {
-						    echo "
-						    <tr>
-						    	<th style='background-color: #4CAF50; color: white;'>Pasien UGD</th>
-								<td style='background-color:#90caf9;cursor:pointer;' class='edit-cari' data-id='".$data['id']."'><span id='text-cari-".$data['id']."'>". $data['url_cari_pasien'] ."</span> <input type='hidden' id='input-cari-".$data['id']."' value='".$data['url_cari_pasien']."' class='input_cari' data-id='".$data['id']."' data-cari='".$data['url_cari_pasien']."' autofocus=''></td>
-						    </tr>";
-						  }
-						?>		
-				</thead>
-				<thead>
-						<?php 
-						  $query = $db->query("SELECT id, url_cari_pasien FROM setting_registrasi_pasien WHERE id = '5'");
-						  while($data = mysqli_fetch_array($query)) {
-						    echo "
-						    <tr>
-						    	<th style='background-color: #4CAF50; color: white;'>Pasien APS</th>
-								<td style='background-color:#90caf9;cursor:pointer;' class='edit-cari' data-id='".$data['id']."'><span id='text-cari-".$data['id']."'>". $data['url_cari_pasien'] ."</span> <input type='hidden' id='input-cari-".$data['id']."' value='".$data['url_cari_pasien']."' class='input_cari' data-id='".$data['id']."' data-cari='".$data['url_cari_pasien']."' autofocus=''></td>
-						    </tr>";
-						  }
-						?>		
-				</thead>
-				<thead>
-						<?php 
-						  $query = $db->query("SELECT id, url_cari_pasien FROM setting_registrasi_pasien WHERE id = '2'");
-						  while($data = mysqli_fetch_array($query)) {
-						    echo "
-						    <tr>
-						    	<th style='background-color: #4CAF50; color: white;'>Filter Pencarian Pasien Rawat Jalan</th>
-								<td style='background-color:#90caf9;cursor:pointer;' class='edit-cari' data-id='".$data['id']."'><span id='text-cari-".$data['id']."'>". $data['url_cari_pasien'] ."</span> <input type='hidden' id='input-cari-".$data['id']."' value='".$data['url_cari_pasien']."' class='input_cari' data-id='".$data['id']."' data-cari='".$data['url_cari_pasien']."' autofocus=''></td>
-						    </tr>";
-						  }
-						?>		
-				</thead>
+						    <tr>";
+						    if ($data['id'] == 6) {
+						    	echo "<th style='background-color: #4CAF50; color: white;'>Master Data Pasien</th>";
+						    }
+						    if ($data['id'] == 1) {
+						    	echo "<th style='background-color: #4CAF50; color: white;'>Pasien Rawat Jalan</th>";
+						    }
+						    if ($data['id'] == 3) {
+						    	echo "<th style='background-color: #4CAF50; color: white;'>Pasien Rawat Inap</th>";
+						    }
+						    if ($data['id'] == 4) {
+						    	echo "<th style='background-color: #4CAF50; color: white;'>Pasien UGD</th>";
+						    }
+						    if ($data['id'] == 5) {
+						    	echo "<th style='background-color: #4CAF50; color: white;'>Pasien APS</th>";
+						    }
+						    if ($data['id'] == 2) {
+						    	echo "<th style='background-color: #4CAF50; color: white;'>Filter Pencarian Pasien Rawat Jalan</th>";
+						    }
 
-<!-- --><!-- --><!-- --><!-- --><!-- --><!-- --><!-- --><!-- --><!-- -->
+						    echo "<td style='cursor:pointer;' class='edit-cari' data-id='".$data['id']."'><span id='text-cari-".$data['id']."'>".$data['url_cari_pasien']."</span> <input type='hidden' id='input-cari-".$data['id']."' value='".$data['url_cari_pasien']."' class='input_cari' data-id='".$data['id']."' data-cari='".$data['url_cari_pasien']."' autofocus=''></td>
+						    </tr>";
 
-				<thead>
-						<?php 
-						  $query = $db->query("SELECT id, url_data_pasien FROM setting_registrasi_pasien WHERE id = '6'");
-						  while($data = mysqli_fetch_array($query)) {
 						    echo "
-						    <tr>
-						    	<th style='background-color: #4CAF50; color: white;'>Master Data Pasien Baru</th>
-								<td style='background-color:#90caf9;cursor:pointer;' class='edit-data' data-id='".$data['id']."'><span id='text-data-".$data['id']."'>". $data['url_data_pasien'] ."</span> <input type='hidden' id='input-data-".$data['id']."' value='".$data['url_data_pasien']."' class='input_data' data-id='".$data['id']."' data-data='".$data['url_data_pasien']."' autofocus=''></td>
-						    </tr>";
+						    <tr>";
+						    if ($data['id'] == 6) {
+						    	echo "<th style='background-color: #4CAF50; color: white;'>Master Data Pasien Baru</th>";
+						    }
+						    if ($data['id'] == 1) {
+						    	echo "<th style='background-color: #4CAF50; color: white;'>Pasien Baru Rawat Jalan</th>";
+						    }
+						    if ($data['id'] == 3) {
+						    	echo "<th style='background-color: #4CAF50; color: white;'>Pasien Baru Rawat Inap</th>";
+						    }
+						    if ($data['id'] == 4) {
+						    	echo "<th style='background-color: #4CAF50; color: white;'>Pasien Baru UGD</th>";
+						    }
+						    if ($data['id'] == 5) {
+						    	echo "<th style='background-color: #4CAF50; color: white;'>Pasien Baru APS</th>";
+						    }
+
+						    if ($data['url_data_pasien'] != NULL) {						    	
+							   	echo "<td style='cursor:pointer;' class='edit-data' data-id='".$data['id']."'><span id='text-data-".$data['id']."'>".$data['url_data_pasien']."</span> <input type='hidden' id='input-data-".$data['id']."' value='".$data['url_data_pasien']."' class='input_data' data-id='".$data['id']."' data-data='".$data['url_data_pasien']."' autofocus=''></td>
+							    </tr>";
+						    }
+						    
 						  }
 						?>		
 				</thead>
-				<thead>
-						<?php 
-						  $query = $db->query("SELECT id, url_data_pasien FROM setting_registrasi_pasien WHERE id = '1'");
-						  while($data = mysqli_fetch_array($query)) {
-						    echo "
-						    <tr>
-						    	<th style='background-color: #4CAF50; color: white;'>Pasien Baru Rawat Jalan</th>
-								<td style='background-color:#90caf9;cursor:pointer;' class='edit-data' data-id='".$data['id']."'><span id='text-data-".$data['id']."'>". $data['url_data_pasien'] ."</span> <input type='hidden' id='input-data-".$data['id']."' value='".$data['url_data_pasien']."' class='input_data' data-id='".$data['id']."' data-data='".$data['url_data_pasien']."' autofocus=''></td>
-						    </tr>";
-						  }
-						?>		
-				</thead>
-				<thead>
-						<?php 
-						  $query = $db->query("SELECT id, url_data_pasien FROM setting_registrasi_pasien WHERE id = '3'");
-						  while($data = mysqli_fetch_array($query)) {
-						    echo "
-						    <tr>
-						    	<th style='background-color: #4CAF50; color: white;'>Pasien Baru Rawat Inap</th>
-								<td style='background-color:#90caf9;cursor:pointer;' class='edit-data' data-id='".$data['id']."'><span id='text-data-".$data['id']."'>". $data['url_data_pasien'] ."</span> <input type='hidden' id='input-data-".$data['id']."' value='".$data['url_data_pasien']."' class='input_data' data-id='".$data['id']."' data-data='".$data['url_data_pasien']."' autofocus=''></td>
-						    </tr>";
-						  }
-						?>		
-				</thead>
-				<thead>
-						<?php 
-						  $query = $db->query("SELECT id, url_data_pasien FROM setting_registrasi_pasien WHERE id = '4'");
-						  while($data = mysqli_fetch_array($query)) {
-						    echo "
-						    <tr>
-						    	<th style='background-color: #4CAF50; color: white;'>Pasien Baru UGD</th>
-								<td style='background-color:#90caf9;cursor:pointer;' class='edit-data' data-id='".$data['id']."'><span id='text-data-".$data['id']."'>". $data['url_data_pasien'] ."</span> <input type='hidden' id='input-data-".$data['id']."' value='".$data['url_data_pasien']."' class='input_data' data-id='".$data['id']."' data-data='".$data['url_data_pasien']."' autofocus=''></td>
-						    </tr>";
-						  }
-						?>		
-				</thead>
-				<thead>
-						<?php 
-						  $query = $db->query("SELECT id, url_data_pasien FROM setting_registrasi_pasien WHERE id = '5'");
-						  while($data = mysqli_fetch_array($query)) {
-						    echo "
-						    <tr>
-						    	<th style='background-color: #4CAF50; color: white;'>Pasien Baru APS</th>
-								<td style='background-color:#90caf9;cursor:pointer;' class='edit-data' data-id='".$data['id']."'><span id='text-data-".$data['id']."'>". $data['url_data_pasien'] ."</span> <input type='hidden' id='input-data-".$data['id']."' value='".$data['url_data_pasien']."' class='input_data' data-id='".$data['id']."' data-data='".$data['url_data_pasien']."' autofocus=''></td>
-						    </tr>";
-						  }
-						?>		
-				</thead>	
+					
 			</table>
 		</div>	
 		
@@ -205,6 +125,9 @@ $(document).on('blur','.input_cari',function(e){
 	var id = $(this).attr("data-id");
 	var input_cari = $(this).val();
 
+var pesan_alert = confirm("Apakah Anda Yakin Ingin Mengubah Data Ini?");
+if (pesan_alert == true) {
+
 	if (input_cari == '') {
 		alert('Data Tidak Boleh Kosong.');
 	}	    
@@ -222,6 +145,14 @@ $(document).on('blur','.input_cari',function(e){
 
     } // end else breket
 
+}
+else{
+			$("#text-cari-"+id+"").show();
+			$("#text-cari-"+id+"").text(input_cari);
+			$("#input-cari-"+id+"").attr("type", "hidden");           
+			$("#input-cari-"+id+"").val(input_cari);
+			$("#input-cari-"+id+"").attr("data-cari",input_cari);
+}
 
 });
 </script>
@@ -239,6 +170,9 @@ $(document).on('blur','.input_data',function(e){
 	var id = $(this).attr("data-id");
 	var input_data = $(this).val();
 
+var pesan_alert = confirm("Apakah Anda Yakin Ingin Mengubah Data Ini?");
+if (pesan_alert == true) {
+
 	if (input_data == '') {
 		alert('Data Tidak Boleh Kosong.');
 	}	    
@@ -255,6 +189,15 @@ $(document).on('blur','.input_data',function(e){
       	}); // end post dari cek data
 
     } // end else breket
+
+}
+else{
+			$("#text-data-"+id+"").show();
+			$("#text-data-"+id+"").text(input_data);
+			$("#input-data-"+id+"").attr("type", "hidden");           
+			$("#input-data-"+id+"").val(input_data);
+			$("#input-data-"+id+"").attr("data-data",input_data);
+}
 
 
 });

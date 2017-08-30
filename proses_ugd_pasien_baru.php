@@ -123,17 +123,17 @@ jika tidak maka nomor terakhir ditambah dengan 1
 // INSERT KE REGISTRASI
   $query_insert_regisrasi = $db->prepare("INSERT INTO registrasi (eye,verbal,motorik,alergi,nama_pasien,jam,penjamin,status,no_reg,no_rm,tanggal,kondisi,petugas,alamat_pasien,umur_pasien,jenis_kelamin,rujukan,jenis_pasien,gol_darah,status_nikah,pekerjaan_pasien,pengantar_pasien,nama_pengantar,hp_pengantar,alamat_pengantar,keterangan,hubungan_dengan_pasien,dokter,hp_pasien,id_dokter,level_harga) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
-  $query_insert_regisrasi->bind_param("sssssssssssssssssssssssssssssss",urldecode($eye),urldecode($verbal),urldecode($motorik),urldecode($alergi),urldecode($nama_lengkap),urldecode($jam),urldecode($penjamin),$sig_in_ugd,urldecode($no_reg),urldecode($no_rm),urldecode($tanggal_sekarang),urldecode($kondisi),urldecode($username),urldecode($alamat_ktp),urldecode($umur),urldecode($jenis_kelamin),urldecode($rujukan),$ugd_ku,urldecode($gol_darah),urldecode($status_kawin),urldecode($pekerjaan_pasien),urldecode($pengantar),urldecode($nama_pengantar),urldecode($hp_pengantar),urldecode($alamat_pengantar),urldecode($keterangan),urldecode($hubungan_dengan_pasien),urldecode($dokter_jaga),urldecode($no_telepon),urldecode($id_dokter_jaga),urldecode($level_harga));
+  $query_insert_regisrasi->bind_param("sssssssssssssssssssssssssssssss",urldecode($eye),urldecode($verbal),urldecode($motorik),urldecode($alergi),urldecode($nama_lengkap),urldecode($jam),urldecode($penjamin),$jenis_pasien,urldecode($no_reg),urldecode($no_rm),urldecode($tanggal_sekarang),urldecode($kondisi),urldecode($username),urldecode($alamat_ktp),urldecode($umur),urldecode($jenis_kelamin),urldecode($rujukan),$status,urldecode($gol_darah),urldecode($status_kawin),urldecode($pekerjaan_pasien),urldecode($pengantar),urldecode($nama_pengantar),urldecode($hp_pengantar),urldecode($alamat_pengantar),urldecode($keterangan),urldecode($hubungan_dengan_pasien),urldecode($dokter_jaga),urldecode($no_telepon),urldecode($id_dokter_jaga),urldecode($level_harga));
 
-    $sig_in_ugd = urldecode('Masuk Ruang UGD');
-    $ugd_ku = urldecode('UGD');
+    $jenis_pasien = urldecode('Masuk Ruang UGD');
+    $status = urldecode('UGD');
 
   $query_insert_regisrasi->execute();
 
 // INSERT KE REKAM MEDIK
   $query_insert_rekam_medik = $db->prepare("INSERT INTO rekam_medik_ugd (tanggal,jam,no_reg,no_rm,nama,jenis_kelamin,umur,alamat,eye,verbal,motorik,rujukan,pengantar,alergi,keadaan_umum,dokter,petugas) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
-  $query_insert_rekam_medik->bind_param("sssssssssssssssss", $tanggal_sekarang,$jam,$no_reg,$no_rm,$nama_lengkap,$jenis_kelamin,$umur,$alamat_sekarang,$eye,$verbal, $motorik,$rujukan,$pengantar,$alergi,$kondisi,$dokter_jaga,$username);
+  $query_insert_rekam_medik->bind_param("sssssssssssssssss", urldecode($tanggal_sekarang),urldecode($jam),urldecode($no_reg),urldecode($no_rm),urldecode($nama_lengkap),urldecode($jenis_kelamin),urldecode($umur),urldecode($alamat_sekarang),urldecode($eye),urldecode($verbal), urldecode($motorik),urldecode($rujukan),urldecode($pengantar),urldecode($alergi),urldecode($kondisi),urldecode($dokter_jaga),$username);
 
   $query_insert_rekam_medik->execute();
 
