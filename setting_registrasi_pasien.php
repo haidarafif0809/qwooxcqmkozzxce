@@ -4,8 +4,6 @@
 	include 'navbar.php';
 	include 'db.php';
 
-//menampilkan seluruh data yang ada pada tabel penjualan
-	$perintah = $db->query("SELECT id, url_cari_pasien, url_data_pasien FROM setting_registrasi_pasien");
 
 ?>
 
@@ -84,33 +82,6 @@
 	<h6 style="text-align: left ; color: red"><i> * Klik 2x Pada Kolom Yang Ingin Diubah.</i></h6>
 </div>
 
-<!--DATA TABLE MENGGUNAKAN AJAX
-<script type="text/javascript">
-      $(document).ready(function() {
-
-          var dataTable = $('#tableuser').DataTable( {
-          "processing": true,
-          "serverSide": true,
-          "ajax":{
-            url :"datatable_registrasi_pasien.php", //  json datasource           
-            type: "post",  // method  , by default get
-            error: function(){  // error handling
-              $(".employee-grid-error").html("");
-              $("#tableuser").append('<tbody class="employee-grid-error"><tr><th colspan="3">No data found in the server</th></tr></tbody>');
-              $("#employee-grid_processing").css("display","none");
-            }
-        },
-            
-            "fnCreatedRow": function( nRow, aData, iDataIndex ) {
-                $(nRow).attr('class','tr-id-'+aData[5]+'');
-            },
-        });
-
-
-      } );
-</script>
--->
-
 
 <!-- URL CARI PASIEN -->
 <script type="text/javascript">
@@ -157,7 +128,7 @@ else{
 });
 </script>
 
-<!-- URL DATA PASIEN -->
+<!-- URL UNTUK LINK PORSES TAMBAH PASIEN -->
 <script type="text/javascript">
 $(document).on('dblclick','.edit-data',function(e){
 	var id = $(this).attr("data-id");

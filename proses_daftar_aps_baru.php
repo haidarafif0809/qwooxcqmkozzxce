@@ -41,8 +41,7 @@ try {
 	$bulan_php = date('m');
 	$tahun_php = date('Y');
 
-	$query_cek_pasien = $db->query("SELECT nama_pasien,no_rm FROM registrasi WHERE jenis_pasien = 'APS'  ORDER BY id DESC LIMIT 1 ");
-	$data_nama_pasien = mysqli_fetch_array($query_cek_pasien);
+	$data_nama_pasien = $db->query("SELECT nama_pasien,no_rm FROM registrasi WHERE jenis_pasien = 'APS'  ORDER BY id DESC LIMIT 1 ")->fetch_array();
 
 	if ($data_nama_pasien['nama_pasien'] == $nama_lengkap AND $data_nama_pasien['no_rm'] == $no_rm_lama){
 		echo '<META HTTP-EQUIV="Refresh" Content="0; URL=registrasi_laboratorium.php">';
@@ -51,14 +50,10 @@ try {
 // START NO. REG PASIEN
 		$tahun_terakhir = substr($tahun_php, 2);
 
-		$bulan_terakhir = $db->query("SELECT MONTH(tanggal) as bulan FROM registrasi ORDER BY id DESC LIMIT 1");
-		$v_bulan_terakhir = mysqli_fetch_array($bulan_terakhir);
-		$bulan_terakhir_reg = $v_bulan_terakhir['bulan'];
-		
-		//ambil nomor  dari penjualan terakhir
-		$no_terakhir = $db->query("SELECT no_reg FROM registrasi ORDER BY id DESC LIMIT 1");
-		$v_no_terakhir = mysqli_fetch_array($no_terakhir);
-		$ambil_nomor = substr($v_no_terakhir['no_reg'],0,-8);
+		$data_bulan_no_reg = $db->query("SELECT MONTH(tanggal) as bulan, no_reg FROM registrasi ORDER BY id DESC LIMIT 1")->fetch_array();
+		$bulan_terakhir_reg = $data_bulan_no_reg['bulan'];
+		$ambil_nomor = substr($data_bulan_no_reg['no_reg'],0,-8);
+
 
 		if ($bulan_terakhir_reg != $bulan_php) {
 			$no_reg = "1-REG-".$bulan_php."-".$tahun_terakhir;
@@ -70,8 +65,7 @@ try {
 // AKHIR UNTUK NO REG
 
 //SELECT UNTUK MENGAMBIL SETTING URL U/ DATA PASIEN BARU UGD
-  $query_setting_registrasi_pasien = $db->query("SELECT url_data_pasien FROM setting_registrasi_pasien WHERE id = '5' ");
-  $data_reg_pasien = mysqli_fetch_array($query_setting_registrasi_pasien );
+  $data_reg_pasien = $db->query("SELECT url_data_pasien FROM setting_registrasi_pasien WHERE id = '5' ")->fetch_array();
 
 //PROSES INPUT PASIEN KE DB ONLINE
   $url = $data_reg_pasien['url_data_pasien'];

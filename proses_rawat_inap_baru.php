@@ -141,14 +141,9 @@ else{
   $tahun_terakhir = substr($tahun_php, 2);
 
 //ambil bulan dari tanggal penjualan terakhir
-  $bulan_terakhir = $db->query("SELECT MONTH(tanggal) as bulan FROM registrasi ORDER BY id DESC LIMIT 1");
-  $v_bulan_terakhir = mysqli_fetch_array($bulan_terakhir);
-  $bulan_terakhir_reg = $v_bulan_terakhir['bulan'];
-
-//ambil nomor  dari penjualan terakhir
-  $no_terakhir = $db->query("SELECT no_reg FROM registrasi ORDER BY id DESC LIMIT 1");
-  $v_no_terakhir = mysqli_fetch_array($no_terakhir);
-  $ambil_nomor = substr($v_no_terakhir['no_reg'],0,-8);
+  $data_bulan_no_reg = $db->query("SELECT MONTH(tanggal) as bulan, no_reg FROM registrasi ORDER BY id DESC LIMIT 1")->fetch_array();
+  $bulan_terakhir_reg = $data_bulan_no_reg['bulan'];
+  $ambil_nomor = substr($data_bulan_no_reg['no_reg'],0,-8);
 
 /*jika bulan terakhir dari penjualan tidak sama dengan bulan sekarang, 
 maka nomor nya kembali mulai dari 1 ,
@@ -169,8 +164,7 @@ else{
   $level_harga = $query_penjamin['harga'];
 
 //SELECT UNTUK MENGAMBIL SETTING URL U/ DATA PASIEN BARU RI
-  $query_setting_registrasi_pasien = $db->query("SELECT url_data_pasien FROM setting_registrasi_pasien WHERE id = '3' ");
-  $data_reg_pasien = mysqli_fetch_array($query_setting_registrasi_pasien );
+  $data_reg_pasien = $db->query("SELECT url_data_pasien FROM setting_registrasi_pasien WHERE id = '3' ")->fetch_array();
 
 
 //PROSES INPUT PASIEN KE DB ONLINE
@@ -203,8 +197,7 @@ else{
 
   $query = $db->query("UPDATE bed SET sisa_bed = sisa_bed - 1 WHERE nama_kamar = '".urldecode($bed)."' AND group_bed = '".urldecode($group_bed)."'");
 
-  $query_kamar_bed = $db->query("SELECT tarif,tarif_2,tarif_3,tarif_4,tarif_5,tarif_6,tarif_7 FROM bed WHERE nama_kamar = '".urldecode($bed)."' AND group_bed = '".urldecode($group_bed)."' ");
-  $data_kamar_bed = mysqli_fetch_array($query_kamar_bed);
+  $data_kamar_bed = $db->query("SELECT tarif,tarif_2,tarif_3,tarif_4,tarif_5,tarif_6,tarif_7 FROM bed WHERE nama_kamar = '".urldecode($bed)."' AND group_bed = '".urldecode($group_bed)."' ")->fetch_array();
   $harga_kamar1 = $data_kamar_bed['tarif'];
   $harga_kamar2 = $data_kamar_bed['tarif_2'];
   $harga_kamar3 = $data_kamar_bed['tarif_3'];

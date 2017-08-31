@@ -26,9 +26,8 @@ include 'sanitasi.php';
   $gol_darah = stringdoang(urldecode($_GET['gol_darah']));
   $penjamin = stringdoang(urldecode($_GET['penjamin']));
 
-	$ambil_rm = $db_pasien->query("SELECT kode_pelanggan FROM pelanggan WHERE kode_pelanggan != 0 ORDER BY id DESC LIMIT 1 ");
-	$no_ter = mysqli_fetch_array($ambil_rm);
-	$no_rm = urldecode($no_ter['kode_pelanggan'] + 1);
+	$query_pelanggan = $db_pasien->query("SELECT kode_pelanggan FROM pelanggan WHERE kode_pelanggan != 0 ORDER BY id DESC LIMIT 1 ")->fetch_array();
+	$no_rm = $query_pelanggan['kode_pelanggan'] + 1;
 
 // INSERT PASIEN NYA
   $query_insert_pasien = $db_pasien->prepare("INSERT INTO pelanggan (kode_pelanggan, nama_pelanggan, jenis_kelamin, tgl_lahir, umur, tempat_lahir, alamat_sekarang, no_ktp, alamat_ktp, no_telp, status_kawin, pendidikan_terakhir, agama, nama_suamiortu, pekerjaan_suamiortu, nama_penanggungjawab, hubungan_dengan_pasien, no_hp_penanggung, alamat_penanggung, no_kk, nama_kk, gol_darah, penjamin, tanggal) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
