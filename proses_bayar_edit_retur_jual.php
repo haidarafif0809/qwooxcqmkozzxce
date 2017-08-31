@@ -14,19 +14,15 @@
     $jam_sekarang = date('H:i:s');
     $tahun_terakhir = substr($tahun_sekarang, 2);
 
-    
-
-
     $perintah1 = $db->query("DELETE FROM detail_retur_penjualan WHERE no_faktur_retur = '$no_faktur_retur'");
 
-
-  // buat prepared statements
+    // buat prepared statements
         $stmt = $db->prepare("UPDATE retur_penjualan SET no_faktur_retur = ?, kode_pelanggan = ?, total = ?, potongan = ?, tax = ?, tanggal = ?, user_edit = ?, tanggal_edit = ?, jam = ?, cara_bayar = ?, tunai = ?, sisa = ?, ppn = ? WHERE no_faktur_retur = ?");
-  // hubungkan "data" dengan prepared statements
+    // hubungkan "data" dengan prepared statements
         $stmt->bind_param("ssiiisssssiiss", 
         $no_faktur_retur, $kode_pelanggan, $total, $potongan, $tax_jadi, $tanggal, $user_edit, $tanggal_sekarang, $jam_sekarang, $cara_bayar, $pembayaran, $sisa, $ppn_input, $no_faktur_retur);        
 
-  // siapkan "data" query
+    // siapkan "data" query
     $no_faktur_retur = stringdoang($_POST['no_faktur_retur']);
     $kode_pelanggan = stringdoang($_POST['kode_pelanggan']);
     $total = angkadoang($_POST['total']);
@@ -55,17 +51,13 @@
     die('Query Error : '.$db->errno.
     ' - '.$db->error);
     }
-    else {
-    
-    }
-
 
 
     $query = $db->query("SELECT * FROM tbs_retur_penjualan WHERE no_faktur_retur = '$no_faktur_retur'");
     while ($data = mysqli_fetch_array($query))
     {
 
-      $update_sisa_barang_in_hpp = $db->query("UPDATE hpp_keluar SET sisa_barang = jumlah_kuantitas WHERE no_faktur = '$data[no_faktur_penjualan]' AND kode_barang = '$data[kode_barang]'");
+      $update_sisa_barang_hpp = $db->query("UPDATE hpp_keluar SET sisa_barang = jumlah_kuantitas WHERE no_faktur = '$data[no_faktur_penjualan]' AND kode_barang = '$data[kode_barang]'");
 
       $hasil_sisa = $data['jumlah_beli'] - $data['jumlah_retur'];
 
@@ -95,53 +87,45 @@
 
 
 
+//PROSES MASUKAN JURNAL UMUM 
 
+$ambil_setting = $db->query("SELECT persediaan,hpp_penjualan,total_penjualan,pajak_retur_jual,potongan_retur_jual FROM setting_akun")->fetch_array();
 
-$select_setting_akun = $db->query("SELECT * FROM setting_akun");
-$ambil_setting = mysqli_fetch_array($select_setting_akun);
-
-$sum_tax_tbs = $db->query("SELECT SUM(tax) AS total_tax FROM tbs_retur_penjualan WHERE no_faktur_retur = '$no_faktur_retur'");
-$jumlah_tax = mysqli_fetch_array($sum_tax_tbs);
+$jumlah_tax = $db->query("SELECT SUM(tax) AS total_tax FROM tbs_retur_penjualan WHERE no_faktur_retur = '$no_faktur_retur'")->fetch_array();
 $total_tax = $jumlah_tax['total_tax'];
 
     $select_kode_pelanggan = $db->query("SELECT nama_pelanggan FROM pelanggan WHERE kode_pelanggan = '$kode_pelanggan'");
     $ambil_kode_pelanggan = mysqli_fetch_array($select_kode_pelanggan);
 
-$select = $db->query("SELECT SUM(total_nilai) AS total_hpp FROM hpp_masuk WHERE no_faktur = '$no_faktur_retur'");
-$ambil = mysqli_fetch_array($select);
-$total_hpp = $ambil['total_hpp'];
+  $data_total_hpp = $db->query("SELECT SUM(total_nilai) AS total_hpp FROM hpp_masuk WHERE no_faktur = '$no_faktur_retur'")->fetch_array();
+  $total_hpp = $data_total_hpp['total_hpp'];
 
-
-$ppn_input = stringdoang($_POST['ppn_input']);
-   
+  $ppn_input = stringdoang($_POST['ppn_input']);
    $persediaan = $total_hpp;
    $total_akhir = $total;
 
 
 
   //PERSEDIAAN    
-        $insert_jurnal = $db->query("INSERT INTO jurnal_trans (nomor_jurnal,waktu_jurnal,keterangan_jurnal,kode_akun_jurnal,debit,kredit,jenis_transaksi,no_faktur,approved,user_buat, user_edit) VALUES ('".no_jurnal()."', '$tanggal_sekarang $jam_sekarang', 'Retur Penjualan - $ambil_kode_pelanggan[nama_pelanggan]', '$ambil_setting[persediaan]', '$persediaan', '0', 'Retur Penjualan', '$no_faktur_retur','1', '$user_edit', '$user_edit')");
+        $insert_jurnal = $db->query("INSERT INTO jurnal_trans (nomor_jurnal,waktu_jurnal,keterangan_jurnal,kode_akun_jurnal,debit,kredit,jenis_transaksi,no_faktur,approved,user_buat, user_edit) VALUES ('".no_jurnal()."', '$tanggal $jam_sekarang', 'Retur Penjualan - $ambil_kode_pelanggan[nama_pelanggan]', '$ambil_setting[persediaan]', '$persediaan', '0', 'Retur Penjualan', '$no_faktur_retur','1', '$user_edit', '$user_edit')");
 
 
 
 //HPP    
-      $insert_juranl1 = $db->query("INSERT INTO jurnal_trans (nomor_jurnal,waktu_jurnal,keterangan_jurnal,kode_akun_jurnal,debit,kredit,jenis_transaksi,no_faktur,approved,user_buat, user_edit) VALUES ('".no_jurnal()."', '$tanggal_sekarang $jam_sekarang', 'Retur Penjualan - $ambil_kode_pelanggan[nama_pelanggan]', '$ambil_setting[hpp_penjualan]', '0', '$persediaan', 'Retur Penjualan', '$no_faktur_retur','1', '$user_edit', '$user_edit')");
+      $insert_juranl1 = $db->query("INSERT INTO jurnal_trans (nomor_jurnal,waktu_jurnal,keterangan_jurnal,kode_akun_jurnal,debit,kredit,jenis_transaksi,no_faktur,approved,user_buat, user_edit) VALUES ('".no_jurnal()."', '$tanggal $jam_sekarang', 'Retur Penjualan - $ambil_kode_pelanggan[nama_pelanggan]', '$ambil_setting[hpp_penjualan]', '0', '$persediaan', 'Retur Penjualan', '$no_faktur_retur','1', '$user_edit', '$user_edit')");
 
 
  //KAS
-        $insert_juranl = $db->query("INSERT INTO jurnal_trans (nomor_jurnal,waktu_jurnal,keterangan_jurnal,kode_akun_jurnal,debit,kredit,jenis_transaksi,no_faktur,approved,user_buat, user_edit) VALUES ('".no_jurnal()."', '$tanggal_sekarang $jam_sekarang', 'Retur Penjualan - $ambil_kode_pelanggan[nama_pelanggan]', '$cara_bayar', '0', '$total', 'Retur Penjualan', '$no_faktur_retur','1', '$user_edit', '$user_edit')");
+        $insert_juranl = $db->query("INSERT INTO jurnal_trans (nomor_jurnal,waktu_jurnal,keterangan_jurnal,kode_akun_jurnal,debit,kredit,jenis_transaksi,no_faktur,approved,user_buat, user_edit) VALUES ('".no_jurnal()."', '$tanggal $jam_sekarang', 'Retur Penjualan - $ambil_kode_pelanggan[nama_pelanggan]', '$cara_bayar', '0', '$total', 'Retur Penjualan', '$no_faktur_retur','1', '$user_edit', '$user_edit')");
 
 
 
 if ($ppn_input == "Non") {  
 
- 
-
   $total_penjualan = $total1;  
 
-
  //Total Penjualan
-        $insert_juranl = $db->query("INSERT INTO jurnal_trans (nomor_jurnal,waktu_jurnal,keterangan_jurnal,kode_akun_jurnal,debit,kredit,jenis_transaksi,no_faktur,approved,user_buat, user_edit) VALUES ('".no_jurnal()."', '$tanggal_sekarang $jam_sekarang', 'Retur Penjualan - $ambil_kode_pelanggan[nama_pelanggan]', '$ambil_setting[total_penjualan]', '$total_penjualan', '0', 'Penjualan', '$no_faktur_retur','1', '$user_edit', '$user_edit')");
+        $insert_juranl = $db->query("INSERT INTO jurnal_trans (nomor_jurnal,waktu_jurnal,keterangan_jurnal,kode_akun_jurnal,debit,kredit,jenis_transaksi,no_faktur,approved,user_buat, user_edit) VALUES ('".no_jurnal()."', '$tanggal $jam_sekarang', 'Retur Penjualan - $ambil_kode_pelanggan[nama_pelanggan]', '$ambil_setting[total_penjualan]', '$total_penjualan', '0', 'Penjualan', '$no_faktur_retur','1', '$user_edit', '$user_edit')");
 
 } 
 
@@ -153,42 +137,41 @@ else if ($ppn_input == "Include") {
 
 if ($pajak != "" || $pajak != 0) {
 //PAJAK
-        $insert_juranl = $db->query("INSERT INTO jurnal_trans (nomor_jurnal,waktu_jurnal,keterangan_jurnal,kode_akun_jurnal,debit,kredit,jenis_transaksi,no_faktur,approved,user_buat, user_edit) VALUES ('".no_jurnal()."', '$tanggal_sekarang $jam_sekarang', 'Retur Penjualan - $ambil_kode_pelanggan[nama_pelanggan]', '$ambil_setting[pajak_retur_jual]', '$pajak', '0', 'Retur Penjualan', '$no_faktur_retur','1', '$user_edit', '$user_edit')");
+        $insert_juranl = $db->query("INSERT INTO jurnal_trans (nomor_jurnal,waktu_jurnal,keterangan_jurnal,kode_akun_jurnal,debit,kredit,jenis_transaksi,no_faktur,approved,user_buat, user_edit) VALUES ('".no_jurnal()."', '$tanggal $jam_sekarang', 'Retur Penjualan - $ambil_kode_pelanggan[nama_pelanggan]', '$ambil_setting[pajak_retur_jual]', '$pajak', '0', 'Retur Penjualan', '$no_faktur_retur','1', '$user_edit', '$user_edit')");
       }
 
- //Total Penjualan
-        $insert_juranl = $db->query("INSERT INTO jurnal_trans (nomor_jurnal,waktu_jurnal,keterangan_jurnal,kode_akun_jurnal,debit,kredit,jenis_transaksi,no_faktur,approved,user_buat, user_edit) VALUES ('".no_jurnal()."', '$tanggal_sekarang $jam_sekarang', 'Retur Penjualan - $ambil_kode_pelanggan[nama_pelanggan]', '$ambil_setting[total_penjualan]', '$total_penjualan', '0', 'Penjualan', '$no_faktur_retur','1', '$user_edit', '$user_edit')");
-
-
-
-}
+      //Total Penjualan
+        $insert_juranl = $db->query("INSERT INTO jurnal_trans (nomor_jurnal,waktu_jurnal,keterangan_jurnal,kode_akun_jurnal,debit,kredit,jenis_transaksi,no_faktur,approved,user_buat, user_edit) VALUES ('".no_jurnal()."', '$tanggal $jam_sekarang', 'Retur Penjualan - $ambil_kode_pelanggan[nama_pelanggan]', '$ambil_setting[total_penjualan]', '$total_penjualan', '0', 'Penjualan', '$no_faktur_retur','1', '$user_edit', '$user_edit')");
+  }
 
 else {
-//ppn == Exclude
+  //ppn == Exclude
   $total_penjualan = $total1;
   $pajak = $tax_jadi;
     
-if ($pajak != "" || $pajak != 0) {
-//PAJAK
-        $insert_juranl = $db->query("INSERT INTO jurnal_trans (nomor_jurnal,waktu_jurnal,keterangan_jurnal,kode_akun_jurnal,debit,kredit,jenis_transaksi,no_faktur,approved,user_buat, user_edit) VALUES ('".no_jurnal()."', '$tanggal_sekarang $jam_sekarang', 'Retur Penjualan - $ambil_kode_pelanggan[nama_pelanggan]', '$ambil_setting[pajak_retur_jual]', '$pajak', '0', 'Retur Penjualan', '$no_faktur_retur','1', '$user_edit', '$user_edit')");
-      }
+        if ($pajak != "" || $pajak != 0) {
+        //PAJAK
+          $insert_juranl = $db->query("INSERT INTO jurnal_trans ( nomor_jurnal,waktu_jurnal,keterangan_jurnal,kode_akun_jurnal,debit,kredit,jenis_transaksi,no_faktur,approved,user_buat, user_edit) VALUES ('".no_jurnal()."', '$tanggal $jam_sekarang', 'Retur Penjualan - $ambil_kode_pelanggan[nama_pelanggan]', '$ambil_setting[pajak_retur_jual]', '$pajak', '0', 'Retur Penjualan', '$no_faktur_retur','1', '$user_edit', '$user_edit')");
+        }
       
 
- //Total Penjualan
-        $insert_juranl = $db->query("INSERT INTO jurnal_trans (nomor_jurnal,waktu_jurnal,keterangan_jurnal,kode_akun_jurnal,debit,kredit,jenis_transaksi,no_faktur,approved,user_buat, user_edit) VALUES ('".no_jurnal()."', '$tanggal_sekarang $jam_sekarang', 'Retur Penjualan - $ambil_kode_pelanggan[nama_pelanggan]', '$ambil_setting[total_penjualan]', '$total_penjualan', '0', 'Penjualan', '$no_faktur_retur','1', '$user_edit', '$user_edit')");
+        //Total Penjualan
+        $insert_juranl = $db->query("INSERT INTO jurnal_trans (nomor_jurnal,waktu_jurnal,keterangan_jurnal,kode_akun_jurnal,debit,kredit,jenis_transaksi,no_faktur,approved,user_buat, user_edit) VALUES ('".no_jurnal()."', '$tanggal $jam_sekarang', 'Retur Penjualan - $ambil_kode_pelanggan[nama_pelanggan]', '$ambil_setting[total_penjualan]', '$total_penjualan', '0', 'Penjualan', '$no_faktur_retur','1', '$user_edit', '$user_edit')");
+        }
 
 
-}
-
-
-if ($potongan != "" || $potongan != 0 ) {
-//POTONGAN
-        $insert_juranl = $db->query("INSERT INTO jurnal_trans (nomor_jurnal,waktu_jurnal,keterangan_jurnal,kode_akun_jurnal,debit,kredit,jenis_transaksi,no_faktur,approved,user_buat, user_edit) VALUES ('".no_jurnal()."', '$tanggal_sekarang $jam_sekarang', 'Retur Penjualan - $ambil_kode_pelanggan[nama_pelanggan]', '$ambil_setting[potongan_retur_jual]', '0', '$potongan', 'Retur Penjualan', '$no_faktur_retur','1', '$user_edit', '$user_edit')");
-}
+          if ($potongan != "" || $potongan != 0 ) {
+          //POTONGAN
+          $insert_juranl = $db->query("INSERT INTO jurnal_trans (nomor_jurnal,waktu_jurnal,keterangan_jurnal,kode_akun_jurnal,debit,kredit,jenis_transaksi,no_faktur,approved,user_buat, user_edit) VALUES ('".no_jurnal()."', '$tanggal $jam_sekarang', 'Retur Penjualan - $ambil_kode_pelanggan[nama_pelanggan]', '$ambil_setting[potongan_retur_jual]', '0', '$potongan', 'Retur Penjualan', '$no_faktur_retur','1', '$user_edit', '$user_edit')");
+          }
+//PROSES MASUKAN JURNAL UMUM 
 
 
     $query3 = $db->query("DELETE  FROM tbs_retur_penjualan WHERE no_faktur_retur = '$no_faktur_retur'");
     echo "Success";
+
+    echo '<script>window.location.href="retur_penjualan.php";</script>';
+
 
 //Untuk Memutuskan Koneksi Ke Database
 mysqli_close($db);       
