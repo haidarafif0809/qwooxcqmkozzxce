@@ -76,6 +76,7 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
   $nestedData[] = tanggal_terbalik($row["tgl_lahir"]); 
   $nestedData[] = $row["no_telp"];
   $nestedData[] = tanggal_terbalik($row["tanggal"]);
+  $nestedData[] = $row["penjamin"];
   
   $nestedData[] = "<button data-id='".$row['id']."' class='btn btn-danger delete'><i class='fa fa-trash'></i> Hapus </button>";
   $nestedData[] = "<a href='edit_data_pasien.php?id=".$row['id']."'class='btn btn-warning'><i class='fa fa-edit'></i> Edit </a>";

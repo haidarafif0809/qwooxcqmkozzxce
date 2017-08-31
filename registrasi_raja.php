@@ -1080,7 +1080,7 @@ $("#form_cari").submit(function(){
               $(nRow).attr('data-lahir', aData[4]);
               $(nRow).attr('data-darah', aData[5]);
               $(nRow).attr('data-hp', aData[6]);
-              $(nRow).attr('data-penjamin', aData[7]);
+              $(nRow).attr('data-penjamin', aData[8]);
 
           }
 
@@ -1125,7 +1125,7 @@ $("#form_cari").submit(function(){
               $(nRow).attr('data-lahir', aData[4]);
               $(nRow).attr('data-darah', aData[5]);
               $(nRow).attr('data-hp', aData[6]);
-              $(nRow).attr('data-penjamin', aData[7]);
+              $(nRow).attr('data-penjamin', aData[8]);
 
           }
 
