@@ -443,11 +443,12 @@ else{
 
                     while ($data_kontras = mysqli_fetch_array($select_pemriksaan_kontras)) {
 
-                    $query_pemeriksaan = $db->query("SELECT kode_barang FROM tbs_penjualan_radiologi WHERE kode_barang = '$data_kontras[kode_pemeriksaan]' AND no_pemeriksaan = '$no_pemeriksaan' AND no_reg = '$no_reg'");
+                    $query_pemeriksaan = $db->query("SELECT kode_barang FROM tbs_penjualan_radiologi WHERE kode_barang = '$data_kontras[kode_pemeriksaan]' AND no_pemeriksaan = 'SUM($no_pemeriksaan - 1)' AND no_reg = '$no_reg'");
 
                     $jumlah_pemeriksaan = mysqli_num_rows($query_pemeriksaan);
 
                       if ($jumlah_pemeriksaan > 0) {
+
                       
                           echo '<input type="checkbox" class="cekcbox-1 filled-in" id="pemeriksaan-'.$data_kontras['id'].'" name="pakai_kontras" value="'.$data_kontras['kode_pemeriksaan'].'" checked="true" >
                           <label for="pemeriksaan-'.$data_kontras['id'].'"
@@ -455,11 +456,12 @@ else{
                           data-kode="'.$data_kontras['kode_pemeriksaan'].'"
                           data-nama="'.$data_kontras['nama_pemeriksaan'].'"
                           data-kontras="'.$data_kontras['kontras'].'"
-                          data-harga="'.$data_kontras['harga_1'].'" class="insert-tbs" data-toogle="0" id="label-'.$data_kontras['id'].'"
+                          data-harga="'.$data_kontras['harga_1'].'" class="insert-tbs" data-toogle="1" id="label-'.$data_kontras['id'].'"
                            checked="true" >'.$data_kontras['nama_pemeriksaan'].'</label> <br>';
 
                       }
                       else{
+
                       
                           echo '<input type="checkbox" class="cekcbox-1 filled-in" id="pemeriksaan-'.$data_kontras['id'].'" name="pakai_kontras" value="'.$data_kontras['kode_pemeriksaan'].'">
                           <label for="pemeriksaan-'.$data_kontras['id'].'"
@@ -490,7 +492,7 @@ else{
 
                     while ($data_tanpa_kontras = mysqli_fetch_array($select_pemriksaan_tanpa_kontras)) {
 
-                      $query_pemeriksaan = $db->query("SELECT kode_barang FROM tbs_penjualan_radiologi WHERE kode_barang = '$data_tanpa_kontras[kode_pemeriksaan]' AND no_reg = '$no_reg' AND no_pemeriksaan = '$no_pemeriksaan' ");
+                      $query_pemeriksaan = $db->query("SELECT kode_barang FROM tbs_penjualan_radiologi WHERE kode_barang = '$data_tanpa_kontras[kode_pemeriksaan]' AND no_reg = '$no_reg' AND no_pemeriksaan = 'SUM($no_pemeriksaan - 1)' ");
 
                       $jumlah_pemeriksaan = mysqli_num_rows($query_pemeriksaan);
 
@@ -503,7 +505,7 @@ else{
                             data-kode="'.$data_tanpa_kontras['kode_pemeriksaan'].'"
                             data-nama="'.$data_tanpa_kontras['nama_pemeriksaan'].'"
                             data-kontras="'.$data_tanpa_kontras['kontras'].'"
-                            data-harga="'.$data_tanpa_kontras['harga_1'].'" class="insert-tbs" data-toogle="0" id="label-'.$data_tanpa_kontras['id'].'"
+                            data-harga="'.$data_tanpa_kontras['harga_1'].'" class="insert-tbs" data-toogle="1" id="label-'.$data_tanpa_kontras['id'].'"
                              checked="true"  >'.$data_tanpa_kontras['nama_pemeriksaan'].'</label> <br>';
                         }
                         else{
