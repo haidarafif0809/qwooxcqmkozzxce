@@ -2014,14 +2014,20 @@ $(document).on('click','.pilih-header',function(e){
       $(this).attr("data-toogle", 11);
 
       $.post("proses_input_data_header_edit_penjualan.php",{tanggal:tanggal,no_faktur:no_faktur,id_periksa:id_periksa,kode_jasa_lab:kode_jasa_lab,no_rm:no_rm,no_reg:no_reg,analis:analis,dokter:dokter,nama_pasien:nama_pasien,tipe_barang:tipe_barang,jenis_penjualan:jenis_penjualan,jenis_kelamin:jenis_kelamin},function(data){
- 
+
+       $(".pilih-detail-dari-header").attr("data-toogle", 22);
+
 
       });
     }
     else{
+
       $(this).attr("data-toogle", 1);
 
       $.post("hapus_data_header_edit_penjualan.php",{no_faktur:no_faktur,kode_jasa_lab:kode_jasa_lab,no_reg:no_reg},function(data){
+      
+      //ubah data toogle menjadi 2 yang detail !!
+      $(".pilih-detail-dari-header").attr("data-toogle", 2);
 
       });
     }

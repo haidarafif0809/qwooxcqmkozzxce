@@ -1184,7 +1184,7 @@ else
           "processing": true,
           "serverSide": true,
           "ajax":{
-            url :"cek_pasien_lama_reg_ugd.php", // json datasource
+            url :"pasien_online_ugd.php", // json datasource
             type: "post",  // method  , by default get
             error: function(){  // error handling
               $(".employee-grid-error").html("");
