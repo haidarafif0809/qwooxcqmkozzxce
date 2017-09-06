@@ -6,8 +6,7 @@ include_once 'sanitasi.php';
 
 $no_reg = stringdoang($_GET['no_reg']);
 
-$select_registrasi = $db->query("SELECT no_rm,nama_pasien,jenis_kelamin,hp_pasien,aps_periksa,gol_darah,dokter_pengirim,kondisi,alergi FROM registrasi WHERE no_reg = '$no_reg' AND jenis_pasien = 'APS' ");
-$data_registrasi = mysqli_fetch_array($select_registrasi);
+$data_registrasi = $db->query("SELECT no_rm,nama_pasien,jenis_kelamin,hp_pasien,aps_periksa,gol_darah,dokter_pengirim,kondisi,alergi FROM registrasi WHERE no_reg = '$no_reg' AND jenis_pasien = 'APS' ")->fetch_array();
 $no_rm = $data_registrasi['no_rm'];
 $nama_pasien = $data_registrasi['nama_pasien'];
 $jenis_kelamin = $data_registrasi['jenis_kelamin'];
@@ -18,15 +17,21 @@ $alergi = $data_registrasi['alergi'];
 $hp_pasien = $data_registrasi['hp_pasien'];
 $aps_periksa = $data_registrasi['aps_periksa'];//1 = Lab, 2 = Radiologi
 
-$select_pelanggan = $db_pasien->query("SELECT tgl_lahir,alamat_sekarang, agama FROM pelanggan WHERE kode_pelanggan = '$no_rm'");
-$data_pelanggan = mysqli_fetch_array($select_pelanggan);
-$tanggal_lahir = $data_pelanggan['tgl_lahir'];
-$alamat = $data_pelanggan['alamat_sekarang'];
-$agama = $data_pelanggan['agama'];
 
-$query_petugas = $db->query("SELECT nama_dokter,nama_paramedik,nama_farmasi FROM penetapan_petugas ");
-$data_petugas = mysqli_fetch_array($query_petugas);
-$dokter = $data_petugas['nama_dokter'];
+//SELECT UNTUK MENGAMBIL SETTING URL U/ DATA PASIEN BARU UGD
+  $data_reg_pasien = $db->query("SELECT url_cari_pasien FROM setting_registrasi_pasien WHERE id = '10' ")->fetch_array();
+
+//PROSES INPUT PASIEN KE DB ONLINE
+  $url = $data_reg_pasien['url_cari_pasien'];
+  $data_url = $url.'?kode_pelanggan='.urlencode($no_rm);
+
+ $file_get = file_get_contents($data_url);
+ $data_pelanggan = json_decode($file_get);
+//PROSES INPUT PASIEN KE DB ONLINE
+
+
+$data_penetapan_petugas = $db->query("SELECT nama_dokter,nama_paramedik,nama_farmasi FROM penetapan_petugas ")->fetch_array();
+$dokter = $data_penetapan_petugas['nama_dokter'];
 
  ?>
 
@@ -71,7 +76,7 @@ $dokter = $data_petugas['nama_dokter'];
 
         <div class="form-group">
             <label for="tanggal_lahir">Tanggal Lahir:</label>
-            <input style="height: 20px;" type="text" class="form-control" value="<?php echo $tanggal_lahir ?>" id="tanggal_lahir" data-format="dd-mm-yyyy" name="tanggal_lahir" required="" autocomplete="off">
+            <input style="height: 20px;" type="text" class="form-control" value="<?php echo $data_pelanggan->tgl_lahir; ?>" id="tanggal_lahir" data-format="dd-mm-yyyy" name="tanggal_lahir" required="" autocomplete="off">
         </div>
 
         <div class="form-group">
@@ -103,7 +108,7 @@ $dokter = $data_petugas['nama_dokter'];
 
         <div class="form-group">
             <label for="alamat">Alamat :</label>
-            <textarea class="form-control" id="alamat" name="alamat" required="" autocomplete="off"><?php echo $alamat ?></textarea>
+            <textarea class="form-control" id="alamat" name="alamat" required="" autocomplete="off"><?php echo $data_pelanggan->alamat_sekarang; ?></textarea>
         </div>
 
         <div class="form-group">
@@ -111,109 +116,19 @@ $dokter = $data_petugas['nama_dokter'];
             <input style="height:20px;" value="<?php echo $hp_pasien ?>" onkeypress="return isNumberKey(event)" type="text" class="form-control" id="no_telepon" name="no_telepon"  autocomplete="off">
         </div>
 
-        <div class="form-group">
-          <label for="sel1">Agama</label>
-          <select class="form-control" id="agama" name="agama" autocomplete="off">
-
-          <?php if ($agama == '-'): ?>
-
-            <option selected value="-">Islam</option>
-            <option value="islam">Islam</option>
-            <option value="khatolik">Khatolik</option>
-            <option value="kristen">Kristen</option>
-            <option value="hindu">Hindu</option>
-            <option value="budha">Budha</option>
-            <option value="khonghucu">Khonghucu</option>
-            <option value="lain - lain">Lain - Lain</option>
-            
-          <?php endif ?>
-
-          <?php if ($agama == 'islam'): ?>
-
-            <option selected value="islam">Islam</option>
-            <option value="khatolik">Khatolik</option>
-            <option value="kristen">Kristen</option>
-            <option value="hindu">Hindu</option>
-            <option value="budha">Budha</option>
-            <option value="khonghucu">Khonghucu</option>
-            <option value="lain - lain">Lain - Lain</option>
-            
-          <?php endif ?>
-
-          <?php if ($agama == 'khatolik'): ?>
-
-            <option value="islam">Islam</option>
-            <option selected value="khatolik">Khatolik</option>
-            <option value="kristen">Kristen</option>
-            <option value="hindu">Hindu</option>
-            <option value="budha">Budha</option>
-            <option value="khonghucu">Khonghucu</option>
-            <option value="lain - lain">Lain - Lain</option>
-            
-          <?php endif ?>
-
-          <?php if ($agama == 'kristen'): ?>
-
-            <option value="islam">Islam</option>
-            <option value="khatolik">Khatolik</option>
-            <option selected value="kristen">Kristen</option>
-            <option value="hindu">Hindu</option>
-            <option value="budha">Budha</option>
-            <option value="khonghucu">Khonghucu</option>
-            <option value="lain - lain">Lain - Lain</option>
-            
-          <?php endif ?>
-
-          <?php if ($agama == 'hindu'): ?>
-
-            <option value="islam">Islam</option>
-            <option value="khatolik">Khatolik</option>
-            <option value="kristen">Kristen</option>
-            <option selected value="hindu">Hindu</option>
-            <option value="budha">Budha</option>
-            <option value="khonghucu">Khonghucu</option>
-            <option value="lain - lain">Lain - Lain</option>
-            
-          <?php endif ?>
-
-          <?php if ($agama == 'budha'): ?>
-
-            <option value="islam">Islam</option>
-            <option value="khatolik">Khatolik</option>
-            <option value="kristen">Kristen</option>
-            <option value="hindu">Hindu</option>
-            <option selected value="budha">Budha</option>
-            <option value="khonghucu">Khonghucu</option>
-            <option value="lain - lain">Lain - Lain</option>
-            
-          <?php endif ?>
-
-          <?php if ($agama == 'khonghucu'): ?>
-
-            <option value="islam">Islam</option>
-            <option value="khatolik">Khatolik</option>
-            <option value="kristen">Kristen</option>
-            <option value="hindu">Hindu</option>
-            <option value="budha">Budha</option>
-            <option selected value="khonghucu">Khonghucu</option>
-            <option value="lain - lain">Lain - Lain</option>
-            
-          <?php endif ?>
-
-          <?php if ($agama == 'lain - lain'): ?>
-
-            <option value="islam">Islam</option>
-            <option value="khatolik">Khatolik</option>
-            <option value="kristen">Kristen</option>
-            <option value="hindu">Hindu</option>
-            <option value="budha">Budha</option>
-            <option value="khonghucu">Khonghucu</option>
-            <option selected value="lain - lain">Lain - Lain</option>
-            
-          <?php endif ?>
-          </select>
-        </div>
-
+       <div class="form-group">
+  <label for="sel1">Agama</label>
+  <select class="form-control" id="agama" name="agama" autocomplete="off">
+  <option value="<?php echo $data_pelanggan->agama; ?>"><?php echo $data_pelanggan->agama; ?></option>
+    <option value="islam">Islam</option>
+    <option value="khatolik">Khatolik</option>
+    <option value="kristen">Kristen</option>
+    <option value="hindu">Hindu</option>
+    <option value="budha">Budha</option>
+    <option value="khonghucu">Khonghucu</option>
+    <option value="lain - lain">Lain - Lain</option>
+  </select>
+</div>
 
       <br><br><br><!--agar panjang cardbkok sesuai dg pertama-->
       <!--Mulai Card Blok Kedua-->
