@@ -6,16 +6,25 @@ include_once 'sanitasi.php';
 
 $no_reg = stringdoang($_GET['no_reg']);
 
-$select = $db->query("SELECT * FROM registrasi WHERE no_reg = '$no_reg' AND jenis_pasien = 'UGD' ");
-$out = mysqli_fetch_array($select);
-$no_rm = $out['no_rm'];
-
-$select_pelanggan = $db_pasien->query("SELECT * FROM pelanggan WHERE kode_pelanggan = '$no_rm'");
-$pelanggan = mysqli_fetch_array($select_pelanggan);
+$query_data_registrasi = $db->query("SELECT rujukan,penjamin,nama_pasien,jenis_kelamin,pengantar_pasien,hubungan_dengan_pasien,nama_pengantar,hp_pengantar,alamat_pengantar,keterangan,alergi,kondisi,eye,verbal,motorik,no_rm FROM registrasi WHERE no_reg = '$no_reg' AND jenis_pasien = 'UGD' ")->fetch_array();
+$no_rm = $query_data_registrasi['no_rm'];
 
 
-$qertu= $db->query("SELECT nama_dokter,nama_paramedik,nama_farmasi FROM penetapan_petugas ");
-$ss = mysqli_fetch_array($qertu);
+//SELECT UNTUK MENGAMBIL SETTING URL U/ DATA PASIEN BARU UGD
+  $query_setting_registrasi_pasien = $db->query("SELECT url_cari_pasien FROM setting_registrasi_pasien WHERE id = '8' ");
+  $data_reg_pasien = mysqli_fetch_array($query_setting_registrasi_pasien );
+
+//PROSES CARI PASIEN KE DB ONLINE
+  $url = $data_reg_pasien['url_cari_pasien'];
+    $data_url = $url.'?kode_pelanggan='.urlencode($no_rm);
+  $file_get = file_get_contents($data_url);
+  $pelanggan = json_decode($file_get);
+
+//PROSES CARI PASIEN KE DB ONLINE
+
+//ambil penetapan petugas
+$data_penetapan_petugas= $db->query("SELECT nama_dokter,nama_paramedik,nama_farmasi FROM penetapan_petugas ")->fetch_array();
+//ambil penetapan petugas
 
 
 ?>
@@ -73,7 +82,6 @@ $ss = mysqli_fetch_array($qertu);
               <th style='background-color: #4CAF50; color: white' >Jenis Kelamin</th>
               <th style='background-color: #4CAF50; color: white' >Alamat Sekarang </th>
               <th style='background-color: #4CAF50; color: white' >Tanggal Lahir </th>
-              <th style='background-color: #4CAF50; color: white' >No. Telp </th>
             </tr>
           </thead>
 </table>
@@ -93,7 +101,7 @@ $ss = mysqli_fetch_array($qertu);
 <div class="form-group">
     <label for="sel1">Perujuk</label>
     <select class="form-control" id="rujukan" name="rujukan" required="" autocomplete="off">  
-       <option value="<?php echo $out['rujukan']; ?>"><?php echo $out['rujukan']; ?></option>
+       <option value="<?php echo $query_data_registrasi['rujukan']; ?>"><?php echo $query_data_registrasi['rujukan']; ?></option>
 
         <option value="Non Rujukan">Non Rujukan</option>
               <?php 
@@ -109,7 +117,7 @@ $ss = mysqli_fetch_array($qertu);
 <div class="form-group">
     <label for="sel1">Penjamin</label>
     <select class="form-control" id="penjamin" name="penjamin" required="" autocomplete="off">
-       <option value="<?php echo $out['penjamin']; ?>"><?php echo $out['penjamin']; ?></option>
+       <option value="<?php echo $query_data_registrasi['penjamin']; ?>"><?php echo $query_data_registrasi['penjamin']; ?></option>
 
           <?php 
           $query = $db->query("SELECT nama FROM penjamin WHERE status = 'Aktif' ORDER BY id ASC ");
@@ -134,7 +142,7 @@ $ss = mysqli_fetch_array($qertu);
 
 <div class="form-group">
     <label for="nama_lengkap">Nama Lengkap Pasien</label>
-    <input style="height: 20px;" type="text" class="form-control" value="<?php echo $out['nama_pasien']; ?>" id="nama_lengkap" name="nama_lengkap" required="" autocomplete="off">
+    <input style="height: 20px;" type="text" class="form-control" value="<?php echo $query_data_registrasi['nama_pasien']; ?>" id="nama_lengkap" name="nama_lengkap" required="" autocomplete="off">
 
   <input type="hidden" class="form-control" value="<?php echo $no_reg; ?>" id="no_reg" name="no_reg" required="" autocomplete="off">
 
@@ -144,7 +152,7 @@ $ss = mysqli_fetch_array($qertu);
 <div class="form-group">
   <label for="sel1">Jenis Kelamin</label>
   <select class="form-control" id="jenis_kelamin" name="jenis_kelamin" required="" autocomplete="off">
-   <option value="<?php echo $out['jenis_kelamin']; ?>"><?php echo $out['jenis_kelamin']; ?></option>
+   <option value="<?php echo $query_data_registrasi['jenis_kelamin']; ?>"><?php echo $query_data_registrasi['jenis_kelamin']; ?></option>
     <option value="laki-laki">Laki-Laki</option>
     <option value="perempuan">Perempuan</option> 
   </select>
@@ -152,24 +160,24 @@ $ss = mysqli_fetch_array($qertu);
 
 <div class="form-group">
     <label for="tempat_lahir">Tempat Lahir</label>
-    <input style="height: 20px;" type="text" class="form-control" value="<?php echo $pelanggan['tempat_lahir'];?>" id="tempat_lahir" name="tempat_lahir" required="" autocomplete="off">
+    <input style="height: 20px;" type="text" class="form-control" value="<?php echo $pelanggan->tempat_lahir;?>" id="tempat_lahir" name="tempat_lahir" required="" autocomplete="off">
 </div>
 
 <div class="form-group">
     <label for="tanggal_lahir">Tanggal Lahir</label>
-    <input style="height: 20px;" type="text" class="form-control" value="<?php echo $pelanggan['tgl_lahir'];?>" id="tanggal_lahir" data-format="dd-mm-yyyy" name="tanggal_lahir" required="" autocomplete="off">
+    <input style="height: 20px;" type="text" class="form-control" value="<?php echo $pelanggan->tgl_lahir;?>" id="tanggal_lahir" data-format="dd-mm-yyyy" name="tanggal_lahir" required="" autocomplete="off">
 </div>
 
 
 <div class="form-group">
     <label for="umur">Umur</label>
-    <input style="height: 20px;" type="text" required="" value="<?php echo $pelanggan['umur'];?>" class="form-control" id="umur" name="umur" autocomplete="off">
+    <input style="height: 20px;" type="text" required="" value="<?php echo $pelanggan->umur;?>" class="form-control" id="umur" name="umur" autocomplete="off">
 </div>
 
 <div class="form-group">
   <label for="sel1">Golongan Darah</label>
   <select class="form-control" id="gol_darah" name="gol_darah" autocomplete="off">
-    <option value="<?php echo $pelanggan['gol_darah']; ?>"><?php echo $pelanggan['gol_darah']; ?></option>
+    <option value="<?php echo $pelanggan->gol_darah; ?>"><?php echo $pelanggan->gol_darah; ?></option>
   <option value="-">-</option>
     <option value="A">A</option>
     <option value="B">B</option>
@@ -189,37 +197,37 @@ $ss = mysqli_fetch_array($qertu);
 
 <div class="form-group">
     <label for="alamat_sekarang">Alamat Sekarang</label>
-    <textarea class="form-control" id="alamat_sekarang" name="alamat_sekarang" required="" value="<?php echo $pelanggan['alamat_sekarang']; ?>" autocomplete="off">
-        <?php echo $pelanggan['alamat_sekarang']; ?>
+    <textarea class="form-control" id="alamat_sekarang" name="alamat_sekarang" required="" value="<?php echo $pelanggan->alamat_sekarang; ?>" autocomplete="off">
+        <?php echo $pelanggan->alamat_sekarang; ?>
     </textarea>
 </div>
 
  
 <div class="form-group">
     <label for="no_telepon">No Telpon / HP</label>
-    <input style="height: 20px;" onkeypress="return isNumberKey(event)" type="text" class="form-control" id="no_telepon" name="no_telepon" value="<?php echo $pelanggan['no_telp']; ?>" autocomplete="off">
+    <input style="height: 20px;" onkeypress="return isNumberKey(event)" type="text" class="form-control" id="no_telepon" name="no_telepon" value="<?php echo $pelanggan->no_telp; ?>" autocomplete="off">
 </div>
 
 
 <div class="form-group">
     <label for="no_ktp">No Keluarga</label>
-    <input style="height: 20px;" value="<?php echo $pelanggan['no_kk']; ?>" onkeypress="return isNumberKey(event)" type="text" class="form-control" id="no_kk" name="no_kk" autocomplete="off">
+    <input style="height: 20px;" value="<?php echo $pelanggan->no_kk; ?>" onkeypress="return isNumberKey(event)" type="text" class="form-control" id="no_kk" name="no_kk" autocomplete="off">
   </div>
 
   <div class="form-group">
     <label for="no_ktp">Nama KK</label>
-    <input style="height: 20px;" type="text" value="<?php echo $pelanggan['nama_kk']; ?>" class="form-control" id="nama_kk" name="nama_kk" autocomplete="off">
+    <input style="height: 20px;" type="text" value="<?php echo $pelanggan->nama_kk; ?>" class="form-control" id="nama_kk" name="nama_kk" autocomplete="off">
   </div>
   
 <div class="form-group">
     <label for="no_ktp">No KTP</label>
-    <input style="height: 20px;" onkeypress="return isNumberKey(event)" value="<?php echo $pelanggan['no_ktp']; ?>" type="text" class="form-control" id="no_ktp" name="no_ktp"  autocomplete="off">
+    <input style="height: 20px;" onkeypress="return isNumberKey(event)" value="<?php echo $pelanggan->no_ktp; ?>" type="text" class="form-control" id="no_ktp" name="no_ktp"  autocomplete="off">
 </div>
 
 <div class="form-group">
     <label for="alamat_ktp">Alamat KTP</label>
-    <textarea style="height: 85px;" class="form-control" id="alamat_ktp" value="<?php echo $pelanggan['alamat_ktp']; ?>" name="alamat_ktp"  autocomplete="off">
-      <?php echo $pelanggan['alamat_ktp']; ?>
+    <textarea style="height: 85px;" class="form-control" id="alamat_ktp" value="<?php echo $pelanggan->alamat_ktp; ?>" name="alamat_ktp"  autocomplete="off">
+      <?php echo $pelanggan->alamat_ktp; ?>
     </textarea>
 </div>
 
@@ -227,7 +235,7 @@ $ss = mysqli_fetch_array($qertu);
 <div class="form-group">
   <label for="sel1">Status Perkawinan</label>
   <select class="form-control" id="status_kawin" name="status_kawin" autocomplete="off">
-    <option value="<?php echo $pelanggan['status_kawin']; ?>"><?php echo $pelanggan['status_kawin']; ?></option>
+    <option value="<?php echo $pelanggan->status_kawin; ?>"><?php echo $pelanggan->status_kawin; ?></option>
   <option value="-">-</option>
   <option value="belum menikah">Belum Menikah</option>
   <option value="menikah">Menikah</option>
@@ -239,7 +247,7 @@ $ss = mysqli_fetch_array($qertu);
 <div class="form-group">
   <label for="sel1">Pendidikan Terakhir</label>
   <select class="form-control" id="pendidikan_terakhir" name="pendidikan_terakhir" autocomplete="off">
-  <option value="<?php echo $pelanggan['pendidikan_terakhir']; ?>"><?php echo $pelanggan['pendidikan_terakhir']; ?></option>
+  <option value="<?php echo $pelanggan->pendidikan_terakhir; ?>"><?php echo $pelanggan->pendidikan_terakhir; ?></option>
   <option value="-">-</option>
     <option value="tidak sekolah">Tidak Sekolah</option>
     <option value="sd">SD</option>
@@ -272,7 +280,7 @@ $ss = mysqli_fetch_array($qertu);
 <div class="form-group">
   <label for="sel1">Agama</label>
   <select class="form-control" id="agama" name="agama" autocomplete="off">
-  <option value="<?php echo $pelanggan['agama']; ?>"><?php echo $pelanggan['agama']; ?></option>
+  <option value="<?php echo $pelanggan->agama; ?>"><?php echo $pelanggan->agama; ?></option>
     <option value="islam">Islam</option>
     <option value="khatolik">Khatolik</option>
     <option value="kristen">Kristen</option>
@@ -289,26 +297,26 @@ $ss = mysqli_fetch_array($qertu);
      
 <div class="form-group">
     <label for="nama_suamiortu">Nama Suami / Orangtua </label>
-    <input style="height: 20px;" type="text" class="form-control" value="<?php echo $pelanggan['nama_suamiortu']; ?>" id="nama_suamiortu" name="nama_suamiortu" autocomplete="off">
+    <input style="height: 20px;" type="text" class="form-control" value="<?php echo $pelanggan->nama_suamiortu; ?>" id="nama_suamiortu" name="nama_suamiortu" autocomplete="off">
 </div>
 
 
 <div class="form-group">
     <label for="alamat_penanggung">Alamat Penanggung Jawab</label>
-    <textarea style="height: 115px;" class="form-control" value="<?php echo $pelanggan['alamat_penanggung']; ?>" id="alamat_penanggung" name="alamat_penanggung" autocomplete="off">
-    <?php echo $pelanggan['alamat_penanggung']; ?>
+    <textarea style="height: 115px;" class="form-control" value="<?php echo $pelanggan->alamat_penanggung; ?>" id="alamat_penanggung" name="alamat_penanggung" autocomplete="off">
+    <?php echo $pelanggan->alamat_penanggung; ?>
     </textarea>
 </div>
 
 <div class="form-group">
     <label for="pekerjaan_pasien">Pekerjaan Pasien/Ortu </label>
-    <input style="height: 20px;" type="text" class="form-control" value="<?php echo $pelanggan['pekerjaan_suamiortu']; ?>" id="pekerjaan_pasien" name="pekerjaan_pasien"  autocomplete="off">
+    <input style="height: 20px;" type="text" class="form-control" value="<?php echo $pelanggan->pekerjaan_suamiortu; ?>" id="pekerjaan_pasien" name="pekerjaan_pasien"  autocomplete="off">
 </div>
 
 <div class="form-group" >
   <label for="umur">Pengantar</label>
   <select id="pengantar" class="form-control " name="pengantar" required="" autocomplete="off">
-    <option value="<?php echo $out['pengantar_pasien']; ?>"><?php echo $out['pengantar_pasien']; ?></option>
+    <option value="<?php echo $query_data_registrasi['pengantar_pasien']; ?>"><?php echo $query_data_registrasi['pengantar_pasien']; ?></option>
 
       <option value="Datang Sendiri">Datang Sendiri</option>
       <option value="Diantar Keluarga/Family">Diantar Keluarga/Family</option>
@@ -321,7 +329,7 @@ $ss = mysqli_fetch_array($qertu);
 <div class="form-group">
   <label for="umur">Hubungan Dengan Pasien</label>
   <select id="hubungan_dengan_pasien" class="form-control " name="hubungan_dengan_pasien" autocomplete="off">
-  <option value="<?php echo $out['hubungan_dengan_pasien']; ?>"><?php echo $out['hubungan_dengan_pasien']; ?></option>
+  <option value="<?php echo $query_data_registrasi['hubungan_dengan_pasien']; ?>"><?php echo $query_data_registrasi['hubungan_dengan_pasien']; ?></option>
  <option value="Orang Tua">Orang Tua</option>
      <option value="Suami/Istri">Suami/Istri</option>
       <option value="Anak">Anak</option>
@@ -334,12 +342,12 @@ $ss = mysqli_fetch_array($qertu);
 
 <div class="form-group" >
    <label for="umur">Nama Pengantar</label>
-   <input style="height: 20px;" type="text" class="form-control" value="<?php echo $out['nama_pengantar']; ?>" id="nama_pengantar" name="nama_pengantar" autocomplete="off">
+   <input style="height: 20px;" type="text" class="form-control" value="<?php echo $query_data_registrasi['nama_pengantar']; ?>" id="nama_pengantar" name="nama_pengantar" autocomplete="off">
 </div> 
 
 <div class="form-group" >
   <label for="umur">No Telphone / HP Pengantar</label>
-  <input style="height: 20px;" onkeypress="return isNumberKey(event)" value="<?php echo $out['hp_pengantar']; ?>" type="text" class="form-control" id="hp_pengantar" name="hp_pengantar" autocomplete="off">
+  <input style="height: 20px;" onkeypress="return isNumberKey(event)" value="<?php echo $query_data_registrasi['hp_pengantar']; ?>" type="text" class="form-control" id="hp_pengantar" name="hp_pengantar" autocomplete="off">
 </div>
 
 </div>
@@ -355,25 +363,25 @@ $ss = mysqli_fetch_array($qertu);
 
 <div class="form-group">
     <label for="alamat">Alamat Pengantar</label>
-    <textarea class="form-control " value="<?php echo $out['alamat_pengantar']; ?>" id="alamat_pengantar" name="alamat_pengantar"  autocomplete="off">
-    <?php echo $out['alamat_pengantar']; ?>
+    <textarea class="form-control " value="<?php echo $query_data_registrasi['alamat_pengantar']; ?>" id="alamat_pengantar" name="alamat_pengantar"  autocomplete="off">
+    <?php echo $query_data_registrasi['alamat_pengantar']; ?>
     </textarea>
 </div>
 
 <div class="form-group" >
   <label for="umur">Keterangan</label>
-  <input style="height: 20px;" type="text" value="<?php echo $out['keterangan']; ?>" class="form-control " id="keterangan" name="keterangan" autocomplete="off">
+  <input style="height: 20px;" type="text" value="<?php echo $query_data_registrasi['keterangan']; ?>" class="form-control " id="keterangan" name="keterangan" autocomplete="off">
 </div>
 
 <div class="form-group ">
   <label ><u>A</u>lergi Obat *</label>
-  <input style="height: 20px;" type="text" class="form-control" value="<?php echo $out['alergi']; ?>" accesskey="a" id="alergi" name="alergi" value="Tidak Ada" required="" placeholder="Wajib Isi" autocomplete="off"> 
+  <input style="height: 20px;" type="text" class="form-control" value="<?php echo $query_data_registrasi['alergi']; ?>" accesskey="a" id="alergi" name="alergi" value="Tidak Ada" required="" placeholder="Wajib Isi" autocomplete="off"> 
 </div>
 
 <div class="form-group">
   <label for="sel1">Keadaan Umum Pasien</label>
   <select class="form-control" id="kondisi" name="kondisi" required="" autocomplete="off">
-    <option value="<?php echo $out['kondisi']; ?>"><?php echo $out['kondisi']; ?></option>
+    <option value="<?php echo $query_data_registrasi['kondisi']; ?>"><?php echo $query_data_registrasi['kondisi']; ?></option>
 
     <option value="Tampak Normal">Tampak Normal</option>
     <option value="Pucat dan Lemas">Pucat dan Lemas</option>
@@ -386,7 +394,7 @@ $ss = mysqli_fetch_array($qertu);
 <div class="form-group">
     <label for="sel1">Dokter Jaga</label>
     <select class="form-control" id="dokter_jaga" name="dokter_jaga" required="" autocomplete="off">
-      <option value="<?php echo $ss['nama_dokter'];?>"><?php echo $ss['nama_dokter'];?></option>
+      <option value="<?php echo $data_penetapan_petugas['nama_dokter'];?>"><?php echo $data_penetapan_petugas['nama_dokter'];?></option>
         <option value="Tidak Ada">Tidak Ada</option>
         <?php 
         $query = $db->query("SELECT nama FROM user WHERE tipe = '1' ");
@@ -402,7 +410,7 @@ $ss = mysqli_fetch_array($qertu);
 <div class="form-group">
   <label for="sel1">Respon Mata (Eye)</label>
   <select class="form-control" id="eye" name="eye" required="" autocomplete="off">
-            <option value="<?php echo $out['eye']; ?>"><?php echo $out['eye']; ?></option>
+            <option value="<?php echo $query_data_registrasi['eye']; ?>"><?php echo $query_data_registrasi['eye']; ?></option>
 
     <option value="Tidak ada Respon (Meski Dicubit)">Tidak ada Respon (Meski Dicubit)</option>
      <option value="Respon Terhadap nyeri (Dicubit)">Respon Terhadap nyeri (Dicubit)</option>
@@ -415,7 +423,7 @@ $ss = mysqli_fetch_array($qertu);
 <div class="form-group">
   <label for="sel1">Respon Ucapan (Verbal)</label>
   <select class="form-control" id="verbal" name="verbal" required="" autocomplete="off">
-            <option value="<?php echo $out['verbal']; ?>"><?php echo $out['verbal']; ?></option>
+            <option value="<?php echo $query_data_registrasi['verbal']; ?>"><?php echo $query_data_registrasi['verbal']; ?></option>
 
     <option value="Tidak ada Suara">Tidak ada Suara</option>
      <option value="Suara Tidak Jelas (Tanpa Arti, Mengeranga)">Suara Tidak Jelas (Tanpa Arti, Mengeranga)</option>
@@ -429,7 +437,7 @@ $ss = mysqli_fetch_array($qertu);
 <div class="form-group">
   <label for="sel1">Respon Gerak (Motorik)</label>
   <select class="form-control" id="motorik" name="motorik" required="" autocomplete="off">
-            <option value="<?php echo $out['motorik']; ?>"><?php echo $out['motorik']; ?></option>
+            <option value="<?php echo $query_data_registrasi['motorik']; ?>"><?php echo $query_data_registrasi['motorik']; ?></option>
 
     <option value="Tidak Ada (flasid)">Tidak Ada (flasid)</option>
      <option value="Exstensi Abnormal">Exstensi Abnormal</option>
@@ -731,7 +739,7 @@ return val;
           "processing": true,
           "serverSide": true,
           "ajax":{
-            url :"cek_pasien_lama_reg_ugd.php", // json datasource
+            url :"pasien_online_ugd.php", // json datasource
             type: "post",  // method  , by default get
             error: function(){  // error handling
               $(".employee-grid-error").html("");
