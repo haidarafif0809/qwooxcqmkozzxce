@@ -3,6 +3,8 @@ include 'db.php';
 include_once 'sanitasi.php';
 
 $token = stringdoang(urlencode($_POST['token']));
+$settt = $db->query("SELECT tampil_ttv FROM setting_registrasi");
+$datasett = mysqli_fetch_array($settt);
 
 // start data agar tetap masuk 
 try {
@@ -44,12 +46,23 @@ else{
   $dokter = stringdoang(urlencode($_POST['dokter']));
   $kondisi = stringdoang(urlencode($_POST['kondisi']));
   $rujukan = stringdoang(urlencode($_POST['rujukan']));
-  $sistole_distole = stringdoang(urlencode($_POST['sistole_distole']));
-  $respiratory_rate = stringdoang(urlencode($_POST['respiratory_rate']));
-  $suhu = stringdoang(urlencode($_POST['suhu']));
-  $nadi = stringdoang(urlencode($_POST['nadi']));
-  $berat_badan = stringdoang(urlencode($_POST['berat_badan']));
-  $tinggi_badan = stringdoang(urlencode($_POST['tinggi_badan']));
+
+  if ($datasett['tampil_ttv'] == 1) {
+      $sistole_distole = stringdoang(urlencode($_POST['sistole_distole']));
+      $respiratory_rate = stringdoang(urlencode($_POST['respiratory_rate']));
+      $suhu = stringdoang(urlencode($_POST['suhu']));
+      $nadi = stringdoang(urlencode($_POST['nadi']));
+      $berat_badan = stringdoang(urlencode($_POST['berat_badan']));
+      $tinggi_badan = stringdoang(urlencode($_POST['tinggi_badan']));  }
+  else{
+      $sistole_distole = "";
+      $respiratory_rate = "";
+      $suhu = "";
+      $nadi = "";
+      $berat_badan = "";
+      $tinggi_badan = "";
+  }
+
   $alergi = stringdoang(urlencode($_POST['alergi']));
   $no_kk = stringdoang(urlencode($_POST['no_kk']));
   $nama_kk = stringdoang(urlencode($_POST['nama_kk']));
