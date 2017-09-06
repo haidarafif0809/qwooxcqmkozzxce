@@ -69,8 +69,8 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 	$nestedData[] = $row["jenis_kelamin"];	
 	$nestedData[] = $row["alamat_sekarang"];
 	$nestedData[] = tanggal_terbalik($row["tgl_lahir"]);
-	$nestedData[] = $row["gol_darah"];	
 	$nestedData[] = $row["no_telp"];
+	$nestedData[] = $row["gol_darah"];	
 	$nestedData[] = $row["penjamin"];
 	
 	$data[] = $nestedData;

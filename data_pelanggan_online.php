@@ -3,7 +3,7 @@ include 'db.php';
 include 'sanitasi.php';
 
 
-//DATA YANG DIBUTUHKAN DI PROSES PENDAFTARAN PASIEN BARU
+//DATA YANG DIBUTUHKAN DI PROSES UPDATE PASIEN REG RJ
   $kode_pelanggan = stringdoang(urldecode($_GET['kode_pelanggan']));
 
 // SELECT PASIEN NYA

@@ -45,6 +45,15 @@
 						    if ($data['id'] == 2) {
 						    	echo "<th style='background-color: #4CAF50; color: white;'>Filter Pencarian Pasien Rawat Jalan</th>";
 						    }
+						    if ($data['id'] == 7) {
+						    	echo "<th style='background-color: #4CAF50; color: white;'>Data Pasien Rawat Jalan</th>";
+						    }
+						    if ($data['id'] == 9) {
+						    	echo "<th style='background-color: #4CAF50; color: white;'>Data Pasien Rawat Inap</th>";
+						    }
+						    if ($data['id'] == 8) {
+						    	echo "<th style='background-color: #4CAF50; color: white;'>Data Pasien UGD</th>";
+						    }
 
 						    echo "<td style='cursor:pointer;' class='edit-cari' data-id='".$data['id']."'><span id='text-cari-".$data['id']."'>".$data['url_cari_pasien']."</span> <input type='hidden' id='input-cari-".$data['id']."' value='".$data['url_cari_pasien']."' class='input_cari' data-id='".$data['id']."' data-cari='".$data['url_cari_pasien']."' autofocus=''></td>
 						    </tr>";
@@ -65,6 +74,15 @@
 						    }
 						    if ($data['id'] == 5) {
 						    	echo "<th style='background-color: #4CAF50; color: white;'>Pasien Baru APS</th>";
+						    }
+						    if ($data['id'] == 7) {
+						    	echo "<th style='background-color: #4CAF50; color: white;'>Edit Data Pasien Rawat Jalan</th>";
+						    }
+						    if ($data['id'] == 9) {
+						    	echo "<th style='background-color: #4CAF50; color: white;'>Edit Data Pasien Rawat Inap</th>";
+						    }
+						    if ($data['id'] == 8) {
+						    	echo "<th style='background-color: #4CAF50; color: white;'>Edit Data Pasien UGD</th>";
 						    }
 
 						    if ($data['url_data_pasien'] != NULL) {						    	

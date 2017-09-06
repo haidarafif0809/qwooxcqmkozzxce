@@ -82,7 +82,7 @@ else{
 
   $rawat_jalan_nya = urlencode('Rawat Jalan');
    
-  $stmt = $db->query("UPDATE registrasi SET alergi = '".urldecode($alergi)."', no_kk = '".urldecode($no_kk)."', nama_kk = '".urldecode($nama_kk)."', poli = '".urldecode($poli)."', no_urut = '".urldecode($no_urut)."', nama_pasien = '".urldecode($nama_lengkap)."', jam = '$jam', penjamin = '".urldecode($penjamin)."', dokter = '".urldecode($dokter)."', status = '$menunggu', no_reg = '".urldecode($no_reg)."', no_rm = '".urldecode($no_rm)."', tanggal = '$tanggal_sekarang', kondisi = '".urldecode($kondisi)."', petugas = '".urldecode($username)."', alamat_pasien = '".urldecode($alamat_ktp)."', umur_pasien = '".urldecode($umur)."', jenis_kelamin = '".urldecode($jenis_kelamin)."', rujukan = '".urldecode($rujukan)."', jenis_pasien = '".urldecode($rawat_jalan_nya)."', gol_darah = '".urldecode($gol_darah)."', penanggung_jawab = '".urldecode($nama_penanggungjawab)."', alamat_penanggung_jawab = '".urldecode($alamat_penanggung)."', hp_penanggung_jawab = '".urldecode($no_hp_penanggung)."', status_nikah = '".urldecode($status_kawin)."', pekerjaan_pasien = '".urldecode($pekerjaan_pasien)."' WHERE no_reg = '".urldecode($no_reg)."' ");
+  $query_update_reg = $db->query("UPDATE registrasi SET alergi = '".urldecode($alergi)."', no_kk = '".urldecode($no_kk)."', nama_kk = '".urldecode($nama_kk)."', poli = '".urldecode($poli)."', no_urut = '".urldecode($no_urut)."', nama_pasien = '".urldecode($nama_lengkap)."', jam = '$jam', penjamin = '".urldecode($penjamin)."', dokter = '".urldecode($dokter)."', status = '$menunggu', no_reg = '".urldecode($no_reg)."', no_rm = '".urldecode($no_rm)."', tanggal = '$tanggal_sekarang', kondisi = '".urldecode($kondisi)."', petugas = '".urldecode($username)."', alamat_pasien = '".urldecode($alamat_ktp)."', umur_pasien = '".urldecode($umur)."', jenis_kelamin = '".urldecode($jenis_kelamin)."', rujukan = '".urldecode($rujukan)."', jenis_pasien = '".urldecode($rawat_jalan_nya)."', gol_darah = '".urldecode($gol_darah)."', penanggung_jawab = '".urldecode($nama_penanggungjawab)."', alamat_penanggung_jawab = '".urldecode($alamat_penanggung)."', hp_penanggung_jawab = '".urldecode($no_hp_penanggung)."', status_nikah = '".urldecode($status_kawin)."', pekerjaan_pasien = '".urldecode($pekerjaan_pasien)."' WHERE no_reg = '".urldecode($no_reg)."' ");
 
 // masukin ke rekam medik 
 
@@ -90,12 +90,12 @@ else{
 // insert rekam medik 
   $hapus_rekam_medik = $db->query("DELETE FROM rekam_medik WHERE no_reg = '".urldecode($no_reg)."'");
 
-  $sql0 = $db->prepare("INSERT INTO rekam_medik(alergi,no_kk,nama_kk,no_reg,no_rm,nama,alamat,umur,jenis_kelamin,sistole_distole,suhu,berat_badan,tinggi_badan,
+  $query_insert_rm = $db->prepare("INSERT INTO rekam_medik(alergi,no_kk,nama_kk,no_reg,no_rm,nama,alamat,umur,jenis_kelamin,sistole_distole,suhu,berat_badan,tinggi_badan,
     nadi,respiratory,poli,tanggal_periksa,jam,dokter,kondisi,rujukan)
      VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
-  $sql0->bind_param("sssssssssssssssssssss",urldecode($alergi),urldecode($no_kk),urldecode($nama_kk),urldecode($no_reg),urldecode($no_rm),urldecode($nama_lengkap),urldecode($alamat_sekarang),urldecode($umur),urldecode($jenis_kelamin),urldecode($sistole_distole),urldecode($suhu),urldecode($berat_badan),urldecode($tinggi_badan),urldecode($nadi),urldecode($respiratory_rate),urldecode($poli),$tanggal_sekarang,$jam,urldecode($dokter),urldecode($kondisi),urldecode($rujukan));
+  $query_insert_rm->bind_param("sssssssssssssssssssss",urldecode($alergi),urldecode($no_kk),urldecode($nama_kk),urldecode($no_reg),urldecode($no_rm),urldecode($nama_lengkap),urldecode($alamat_sekarang),urldecode($umur),urldecode($jenis_kelamin),urldecode($sistole_distole),urldecode($suhu),urldecode($berat_badan),urldecode($tinggi_badan),urldecode($nadi),urldecode($respiratory_rate),urldecode($poli),$tanggal_sekarang,$jam,urldecode($dokter),urldecode($kondisi),urldecode($rujukan));
 
-  $sql0->execute();
+  $query_insert_rm->execute();
   //insert rekam medik
 
 //SELECT UNTUK MENGAMBIL SETTING URL U/ DATA PASIEN BARU RJ

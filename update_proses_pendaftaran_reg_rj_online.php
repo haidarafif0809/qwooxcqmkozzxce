@@ -26,6 +26,3 @@ include 'sanitasi.php';
 // UPDATE PASIEN 
 
 ?>
-
-
-  
