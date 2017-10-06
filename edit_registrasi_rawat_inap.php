@@ -13,27 +13,25 @@ $tahun_php = date('Y');
 $no_reg = stringdoang($_GET['no_reg']);
 
 
-
 $query_registrasi = $db->query("SELECT reg.ruangan, reg.no_rm, reg.no_reg, reg.bed, reg.group_bed, reg.rujukan, reg.penjamin, reg.nama_pasien, reg.jenis_kelamin, reg.gol_darah, reg.alamat_pasien, reg.hp_pasien, reg.menginap, reg.surat_jaminan, reg.kondisi, reg.poli, reg.dokter, reg.alergi, reg.no_kk, reg.nama_kk, reg.status_nikah, reg.penanggung_jawab, reg.hubungan_dengan_pasien, reg.pekerjaan_penanggung_jawab, reg.hp_penanggung_jawab, reg.alamat_penanggung_jawab, r.nama_ruangan FROM registrasi reg LEFT JOIN ruangan r ON reg.ruangan = r.id WHERE reg.no_reg = '$no_reg' ");
 $data_registrasi = mysqli_fetch_array($query_registrasi);
 
+//SELECT UNTUK MENGAMBIL SETTING URL U/ DATA PASIEN BARU RJ
+  $query_setting_registrasi_pasien = $db->query("SELECT url_cari_pasien FROM setting_registrasi_pasien WHERE id = '9' ")->fetch_array();
 
-$query8 = $db->query("SELECT * FROM pelanggan WHERE kode_pelanggan = '$data_registrasi[no_rm]' ");
-$pelanggan = mysqli_fetch_array($query8);
+//PROSES UPDATE PASIEN KE DB ONLINE
+  $url = $query_setting_registrasi_pasien['url_cari_pasien'];
+  $data_url = $url.'?kode_pelanggan='.urlencode($data_registrasi['no_rm']);
 
+  $file_get = file_get_contents($data_url);
+  $data_pelanggan = json_decode($file_get);
 
-$query9 = $db->query("SELECT * FROM rekam_medik_inap WHERE no_reg = '$no_reg' ");
-$rekam = mysqli_fetch_array($query9);
+$data_rekam_medik = $db->query("SELECT sistole_distole, respiratory, suhu, nadi, berat_badan, tinggi_badan FROM rekam_medik_inap WHERE no_reg = '$no_reg' ")->fetch_array();
 
-$qertu= $db->query("SELECT nama_dokter,nama_paramedik,nama_farmasi FROM penetapan_petugas ");
-$ss = mysqli_fetch_array($qertu);
+$query_sett_penetapan_petugas = $db->query("SELECT nama_dokter FROM penetapan_petugas")->fetch_array();
+$nama_dokter  = $query_sett_penetapan_petugas['nama_dokter'];
 
-$q_penetapan = $db->query("SELECT * FROM penetapan_petugas");
-$v_penetapan = mysqli_fetch_array($q_penetapan);
-$nama_dokter  = $v_penetapan['nama_dokter'];
-
-$q = $db->query("SELECT tampil_ttv,tampil_data_pasien_umum FROM setting_registrasi");
-$dq = mysqli_fetch_array($q);
+$query_setting_reg = $db->query("SELECT tampil_ttv,tampil_data_pasien_umum FROM setting_registrasi")->fetch_array();
 
 ?>
 <style>
@@ -81,36 +79,6 @@ $dq = mysqli_fetch_array($q);
           <th> Sisa Bed </th>                         
           </tr>
           </thead>
-          <tbody>
-          <?php
-          //Data mentah yang ditampilkan ke tabel    
-         /* include 'db.php';
-          $hasil = $db->query("SELECT * FROM bed WHERE sisa_bed != 0 ");
-                                        
-          while ($data =  $hasil->fetch_assoc()) {
-             $select_kelas = $db->query("SELECT id,nama FROM kelas_kamar");
-        while($out_kelas = mysqli_fetch_array($select_kelas))
-        {
-          if($data['kelas'] == $out_kelas['id'])
-          {
-            $kelas = $out_kelas['nama'];
-          }
-        }
-          
-          <tr class="pilih2" 
-          data-nama="$data['nama_kamar'];" 
-          data-group-bed="$data['group_bed'];">
-          <td>$kelas;</td>
-          <td>$data['nama_kamar'];</td>
-          <td>$data['group_bed'];</td>
-          <td>$data['fasilitas'];</td>
-        <td>$data['jumlah_bed'];</td>         
-          <td>$data['sisa_bed'];</td>
-                                        
-          </tr>
-          }*/
-          ?>
-          </tbody>
           </table>  
        </div> <!-- table responsive  -->
         </div>
@@ -170,8 +138,6 @@ $dq = mysqli_fetch_array($q);
               <th style='background-color: #4CAF50; color: white' >Jenis Kelamin</th>
               <th style='background-color: #4CAF50; color: white' >Alamat Sekarang </th>
               <th style='background-color: #4CAF50; color: white' >Tanggal Lahir </th>
-              <th style='background-color: #4CAF50; color: white' >No HP</th>
-              <th style='background-color: #4CAF50; color: white' >Tanggal Terdaftar </th>
             
             </tr>
           </thead>
@@ -195,6 +161,7 @@ $dq = mysqli_fetch_array($q);
 
   <input style="height: 20px;" type="hidden" class="form-control" id="bed_lama" value="<?php echo $data_registrasi['group_bed'];?>" name="bed_lama" autocomplete="off">
 
+<input style="height: 20px;" type="hidden"  class="form-control" id="no_reg" value="<?php echo $no_reg;?>" name="no_reg" autocomplete="off"> 
 
 <div class="form-group">
   <label for="sel1">Ruangan:</label>
@@ -283,17 +250,17 @@ $dq = mysqli_fetch_array($q);
 
 <div class="form-group">
     <label for="tempat_lahir">Tempat Lahir:</label>
-    <input style="height: 20px;" type="text" class="form-control" id="tempat_lahir" value="<?php echo $pelanggan['tempat_lahir'];?>" name="tempat_lahir" required="" autocomplete="off">
+    <input style="height: 20px;" type="text" class="form-control" id="tempat_lahir" value="<?php echo $data_pelanggan->tempat_lahir ?>" name="tempat_lahir" required="" autocomplete="off">
   </div>
 
 <div class="form-group">
     <label for="tanggal_lahir">Tanggal Lahir:</label>
-    <input style="height: 20px;" type="text" class="form-control" id="tanggal_lahir" name="tanggal_lahir" value="<?php echo $pelanggan['tgl_lahir'];?>" required="" autocomplete="off">
+    <input style="height: 20px;" type="text" class="form-control" id="tanggal_lahir" name="tanggal_lahir" value="<?php echo $data_pelanggan->tgl_lahir ?>" required="" autocomplete="off">
 </div>
 
 <div class="form-group">
     <label for="umur">Umur:</label>
-    <input style="height: 20px;" type="text" required="" class="form-control" id="umur" name="umur" value="<?php echo $pelanggan['umur'];?>" autocomplete="off">
+    <input style="height: 20px;" type="text" required="" class="form-control" id="umur" name="umur" value="<?php echo $data_pelanggan->umur ?>" autocomplete="off">
 </div>
 
 
@@ -413,7 +380,7 @@ $dq = mysqli_fetch_array($q);
 </div>
 
 
-<?php if ($dq['tampil_ttv'] == 0 AND $dq['tampil_data_pasien_umum'] == 0 ): ?>
+<?php if ($query_setting_reg['tampil_ttv'] == 0 AND $query_setting_reg['tampil_data_pasien_umum'] == 0 ): ?>
   
 
 <center><button accesskey="d" type="submit" id="submit_daftar" class="btn btn-info hug"><i class="fa fa-plus"></i> <u>D</u>aftar Rawat Inap</button></center>
@@ -428,7 +395,7 @@ $dq = mysqli_fetch_array($q);
 
 
 
-  <?php if ($dq['tampil_data_pasien_umum'] == 1): ?>
+  <?php if ($query_setting_reg['tampil_data_pasien_umum'] == 1): ?>
 
 <div class="col-sm-3">
 
@@ -454,14 +421,14 @@ $dq = mysqli_fetch_array($q);
 
 <div class="form-group">
     <label for="no_ktp">No KTP:</label>
-    <input style="height: 20px;" type="text" onkeypress="return isNumberKey(event)" value="<?php echo $pelanggan['no_ktp'];?>" class="form-control" id="no_ktp" name="no_ktp" autocomplete="off">
+    <input style="height: 20px;" type="text" onkeypress="return isNumberKey(event)" value="<?php echo $data_pelanggan->no_ktp?>" class="form-control" id="no_ktp" name="no_ktp" autocomplete="off">
   </div>
 
 
 
 <div class="form-group">
     <label for="alamat_ktp">Alamat KTP:</label>
-    <textarea class="form-control" id="alamat_ktp" name="alamat_ktp" value="<?php echo $pelanggan['alamat_ktp'];?>" autocomplete="off"></textarea>
+    <textarea class="form-control" id="alamat_ktp" name="alamat_ktp" value="<?php echo $data_pelanggan->alamat_ktp?>" autocomplete="off"></textarea>
 </div>
   <div class="form-group">
   <label for="sel1">Status Perkawinan</label>
@@ -476,7 +443,7 @@ $dq = mysqli_fetch_array($q);
 
 <div class="form-group">
   <label for="sel1">Pendidikan Terakhir</label>
-  <select class="form-control ss" id="sel1" name="pendidikan_terakhir" value="<?php echo $pelanggan['pendidikan'];?>" autocomplete="off">
+  <select class="form-control ss" id="sel1" name="pendidikan_terakhir" value="<?php echo $data_pelanggan->pendidikan?>" autocomplete="off">
     <option value="-">-</option>
     <option value="tidak sekolah">Tidak Sekolah</option>
     <option value="sd">SD</option>
@@ -493,7 +460,7 @@ $dq = mysqli_fetch_array($q);
 
 <div class="form-group">
   <label for="sel1">Agama</label>
-  <select class="form-control ss" id="sel1" name="agama" value="<?php echo $pelanggan['agama'];?>" autocomplete="off">
+  <select class="form-control ss" id="sel1" name="agama" value="<?php echo $data_pelanggan->agama ?>" autocomplete="off">
     <option value="islam">Islam</option>
     <option value="khatolik">Khatolik</option>
     <option value="kristen">Kristen</option>
@@ -543,7 +510,7 @@ $dq = mysqli_fetch_array($q);
 
 
 
-<?php if ($dq['tampil_ttv'] == 0 ): ?>
+<?php if ($query_setting_reg['tampil_ttv'] == 0 ): ?>
   
 
 <center><button accesskey="d" type="submit" id="submit_daftar" class="btn btn-info hug"><i class="fa fa-plus"></i> <u>D</u>aftar Rawat Inap</button></center>
@@ -562,7 +529,7 @@ $dq = mysqli_fetch_array($q);
 
 <div class="col-sm-3">
 
-<?php if ($dq['tampil_ttv'] == 1): ?>  
+<?php if ($query_setting_reg['tampil_ttv'] == 1): ?>  
 
 
 <br><br><br>
@@ -571,40 +538,40 @@ $dq = mysqli_fetch_array($q);
 <center><h4>Tanda Tanda Vital</h4></center>
 <div class="form-group">
  <label >Sistole / Diastole (mmHg)</label>
-  <input style="height: 20px;" type="text"  class="form-control" id="sistole_distole" value="<?php echo $rekam['sistole_distole'];?>" name="sistole_distole" autocomplete="off"> 
+  <input style="height: 20px;" type="text"  class="form-control" id="sistole_distole" value="<?php echo $data_rekam_medik['sistole_distole'];?>" name="sistole_distole" autocomplete="off"> 
 </div>
 
 
 <div class="form-group ">
   <label >Frekuensi Pernapasan (kali/menit)</label>
-  <input style="height: 20px;" type="text"  class="form-control" id="respiratory_rate" value="<?php echo $rekam['respiratory'];?>" name="respiratory_rate" autocomplete="off"> 
+  <input style="height: 20px;" type="text"  class="form-control" id="respiratory_rate" value="<?php echo $data_rekam_medik['respiratory'];?>" name="respiratory_rate" autocomplete="off"> 
 </div>
  
 
 <div class="form-group">
   <label >Suhu (°C)</label>
-  <input style="height: 20px;" type="text"  class="form-control" id="suhu" name="suhu" value="<?php echo $rekam['suhu'];?>" autocomplete="off"> 
+  <input style="height: 20px;" type="text"  class="form-control" id="suhu" name="suhu" value="<?php echo $data_rekam_medik['suhu'];?>" autocomplete="off"> 
 </div>
   
 
 <div class="form-group ">
    <label >Nadi (kali/menit)</label>
-  <input style="height: 20px;" type="text"  class="form-control" id="nadi" name="nadi" value="<?php echo $rekam['nadi'];?>" autocomplete="off"> 
+  <input style="height: 20px;" type="text"  class="form-control" id="nadi" name="nadi" value="<?php echo $data_rekam_medik['nadi'];?>" autocomplete="off"> 
 </div>
 
 
 <div class="form-group ">
   <label >Berat Badan (kg)</label>
-  <input style="height: 20px;" type="text"  class="form-control" id="berat_badan" value="<?php echo $rekam['berat_badan'];?>" name="berat_badan" autocomplete="off"> 
+  <input style="height: 20px;" type="text"  class="form-control" id="berat_badan" value="<?php echo $data_rekam_medik['berat_badan'];?>" name="berat_badan" autocomplete="off"> 
 </div>
 
 <div class="form-group ">
   <label >Tinggi Badan (cm)</label>
-  <input style="height: 20px;" type="text"  class="form-control" id="tinggi_badan" value="<?php echo $rekam['tinggi_badan'];?>" name="tinggi_badan" autocomplete="off"> 
+  <input style="height: 20px;" type="text"  class="form-control" id="tinggi_badan" value="<?php echo $data_rekam_medik['tinggi_badan'];?>" name="tinggi_badan" autocomplete="off"> 
 </div>
 
 
-  <input style="height: 20px;" type="hidden"  class="form-control" id="no_reg" value="<?php echo $no_reg;?>" name="no_reg" autocomplete="off"> 
+  
 
 <center><button accesskey="d" type="submit" id="submit_daftar" class="btn btn-info hug"><i class="fa fa-plus"></i> <u>D</u>aftar Rawat Inap</button></center>
 
@@ -693,6 +660,7 @@ script end chossen-->
               document.getElementById("alamat_sekarang").value = $(this).attr('data-alamat');
               document.getElementById("jenis_kelamin").value = $(this).attr('data-jenis-kelamin');
               document.getElementById("no_telepon").value = $(this).attr('data-hp');
+              document.getElementById("penjamin").value = $(this).attr('data-penjamin');
               $('#hasil_migrasi').html(''); 
               $("#nama_lengkap").focus();
 // untuk update umur ketika sudah beda bulan dan tahun
@@ -893,7 +861,7 @@ return val;
         "emptyTable":     "My Custom Message On Empty Table"
     },
           "ajax":{
-            url :"show_data_pasien_edit.php", // json datasource
+            url :"pasien_online.php", // json datasource
                 type: "post",  // method  , by default get
             error: function(){  // error handling
               $(".tbody").html("");
@@ -904,15 +872,14 @@ return val;
           },
               "fnCreatedRow": function( nRow, aData, iDataIndex ) {
 
-              $(nRow).attr('class', "pilih tr-id-"+aData[9]+"");
+              $(nRow).attr('class', "pilih");
               $(nRow).attr('data-no', aData[0]);
               $(nRow).attr('data-nama', aData[1]);
               $(nRow).attr('data-jenis-kelamin', aData[2]);
               $(nRow).attr('data-alamat', aData[3]);
               $(nRow).attr('data-lahir', aData[4]);
-              $(nRow).attr('data-darah', aData[7]);
               $(nRow).attr('data-hp', aData[5]);
-              $(nRow).attr('data-penjamin', aData[8]);
+              $(nRow).attr('data-penjamin', aData[7]);
 
           } 
 

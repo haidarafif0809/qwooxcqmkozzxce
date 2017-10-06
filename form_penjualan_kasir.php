@@ -875,7 +875,7 @@ Radiologi  </button>
         <div class="col-xs-6">
             <label style="font-size:15px"> <b> Cara Bayar (F4) </b> </label><br>
                       <select type="text" name="cara_bayar" id="carabayar1" class="form-control"  style="font-size: 15px" >
-                      <option value=""> Silahkan Pilih </option>
+                     
                          <?php 
                          
                          

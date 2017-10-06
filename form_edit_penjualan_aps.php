@@ -471,7 +471,7 @@ echo '
                     <div class="col-xs-6">
                         <label style="font-size:15px"> <b> Cara Bayar (F4) </b> </label><br>
                             <select type="text" name="cara_bayar" id="cara_bayar" class="form-control chosen"  style="font-size: 15px" >
-                            <option value=""> Silahkan Pilih </option>
+                    
                             <?php
                                 $query_data_kas = $db->query("SELECT nama_daftar_akun, kode_daftar_akun FROM daftar_akun WHERE tipe_akun = 'Kas & Bank'");
                                 while($data_kas = mysqli_fetch_array($query_data_kas)){

@@ -1052,7 +1052,7 @@ Radiologi  </button>
         <div class="col-xs-6">
             <label style="font-size:15px"> <b> Cara Bayar (F4) </b> </label><br>
                 <select type="text" name="cara_bayar" id="carabayar1" class="form-control"   style="font-size: 15px" >
-                      <option value=""> Silahkan Pilih </option>
+                    
                          <?php 
 
                          $sett_akun = $db->query("SELECT sa.kas, da.nama_daftar_akun FROM setting_akun sa INNER JOIN daftar_akun da ON sa.kas = da.kode_daftar_akun");

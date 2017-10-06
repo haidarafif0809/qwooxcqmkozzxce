@@ -11,14 +11,19 @@ $status_registrasi = stringdoang($_GET['status_registrasi']);
 $settt = $db->query("SELECT tampil_ttv FROM setting_registrasi");
 $datasett = mysqli_fetch_array($settt);
 
-$select_reg = $db->query("SELECT * FROM registrasi WHERE no_reg = '$no_reg'");
-$data_reg = mysqli_fetch_array($select_reg);
+$data_reg = $db->query("SELECT hp_pasien, no_rm, nama_pasien, rujukan, penjamin, jenis_kelamin, umur_pasien, gol_darah, no_kk, nama_kk, kondisi, poli, dokter FROM registrasi WHERE no_reg = '$no_reg'")->fetch_array();
 
-$select_pelanggan = $db_pasien->query("SELECT * FROM pelanggan WHERE kode_pelanggan = '$data_reg[no_rm]' AND nama_pelanggan = '$data_reg[nama_pasien]' ");
-$data_pelanggan = mysqli_fetch_array($select_pelanggan);
+//SELECT UNTUK MENGAMBIL SETTING URL U/ DATA PASIEN BARU RJ
+  $query_setting_registrasi_pasien = $db->query("SELECT url_cari_pasien FROM setting_registrasi_pasien WHERE id = '7' ")->fetch_array();
 
-$select_rekam_medik = $db->query("SELECT * FROM rekam_medik WHERE no_reg = '$no_reg' ");
-$data_rekam_medik = mysqli_fetch_array($select_rekam_medik);
+//PROSES UPDATE PASIEN KE DB ONLINE
+  $url = $query_setting_registrasi_pasien['url_cari_pasien'];
+  $data_url = $url.'?kode_pelanggan='.urlencode($data_reg['no_rm']);
+
+  $file_get = file_get_contents($data_url);
+  $data_pelanggan = json_decode($file_get);
+
+$data_rekam_medik = $db->query("SELECT sistole_distole, respiratory, suhu, nadi, berat_badan, tinggi_badan FROM rekam_medik WHERE no_reg = '$no_reg' ")->fetch_array();
 
 ?>
 <script type="text/javascript">
@@ -174,12 +179,12 @@ Cari  </button>
 
 <div class="form-group">
     <label for="tempat_lahir">Tempat Lahir:</label>
-    <input style="height: 20px;" type="text" class="form-control" id="tempat_lahir" name="tempat_lahir" required="" autocomplete="off" value="<?php echo $data_pelanggan['tempat_lahir']; ?>">
+    <input style="height: 20px;" type="text" class="form-control" id="tempat_lahir" name="tempat_lahir" required="" autocomplete="off" value="<?php echo $data_pelanggan->tempat_lahir; ?>">
   </div>
 
 <div class="form-group">
     <label for="tanggal_lahir">Tanggal Lahir:</label>
-    <input style="height: 20px;" type="text" required="" class="form-control" id="tanggal_lahir" name="tanggal_lahir" autocomplete="off" value="<?php echo $data_pelanggan['tgl_lahir']; ?>" >
+    <input style="height: 20px;" type="text" required="" class="form-control" id="tanggal_lahir" name="tanggal_lahir" autocomplete="off" value="<?php echo $data_pelanggan->tgl_lahir ?>" >
 </div>
 
 <div class="form-group">
@@ -204,7 +209,7 @@ Cari  </button>
 
 <div class="form-group">
     <label for="alamat_sekarang">Alamat Sekarang:</label>
-    <textarea class="form-control" id="alamat_sekarang" name="alamat_sekarang" required="" autocomplete="off" value="<?php echo $data_pelanggan['alamat_sekarang']; ?>" > <?php echo $data_pelanggan['alamat_sekarang']; ?> </textarea>
+    <textarea class="form-control" id="alamat_sekarang" name="alamat_sekarang" required="" autocomplete="off" value="<?php echo $data_pelanggan->alamat_sekarang ?>" > <?php echo $data_pelanggan->alamat_sekarang ?> </textarea>
 </div>
 
 
@@ -238,20 +243,20 @@ Cari  </button>
 
 <div class="form-group">
     <label for="no_ktp">No KTP:</label>
-    <input style="height: 20px;" type="text" onkeypress="return isNumberKey(event)" class="form-control" id="no_ktp" name="no_ktp" autocomplete="off" value="<?php echo $data_pelanggan['no_ktp']; ?>">
+    <input style="height: 20px;" type="text" onkeypress="return isNumberKey(event)" class="form-control" id="no_ktp" name="no_ktp" autocomplete="off" value="<?php echo $data_pelanggan->no_ktp ?>">
   </div>
 
 
 
 <div class="form-group">
     <label for="alamat_ktp">Alamat KTP:</label>
-    <textarea class="form-control" id="alamat_ktp" name="alamat_ktp" autocomplete="off" value="<?php echo $data_pelanggan['alamat_ktp']; ?>"> <?php echo $data_pelanggan['alamat_ktp']; ?> </textarea>
+    <textarea class="form-control" id="alamat_ktp" name="alamat_ktp" autocomplete="off" value="<?php echo $data_pelanggan->alamat_ktp ?>"> <?php echo $data_pelanggan->alamat_ktp ?> </textarea>
 </div>
 
   <div class="form-group">
   <label for="sel1">Status Perkawinan</label>
   <select class="form-control ss" id="sel1" name="status_kawin" autocomplete="off">
-  <option value="<?php echo $data_pelanggan['status_kawin']; ?>"><?php echo $data_pelanggan['status_kawin']; ?></option>
+  <option value="<?php echo $data_pelanggan->status_kawin ?>"><?php echo $data_pelanggan->status_kawin ?></option>
      <option value="-">-</option>
    <option value="belum menikah">Belum Menikah</option>
     <option value="menikah">Menikah</option>
@@ -263,7 +268,7 @@ Cari  </button>
 <div class="form-group">
   <label for="sel1">Pendidikan Terakhir</label>
   <select class="form-control ss" id="sel1" name="pendidikan_terakhir" autocomplete="off">
-    <option value="<?php echo $data_pelanggan['pendidikan_terakhir']; ?>"><?php echo $data_pelanggan['pendidikan_terakhir']; ?></option>
+    <option value="<?php echo $data_pelanggan->pendidikan_terakhir ?>"><?php echo $data_pelanggan->pendidikan_terakhir ?></option>
     <option value="-">-</option>
     <option value="tidak sekolah">Tidak Sekolah</option>
     <option value="sd">SD</option>
@@ -281,7 +286,7 @@ Cari  </button>
 <div class="form-group">
   <label for="sel1">Agama</label>
   <select class="form-control ss" id="sel1" name="agama"  autocomplete="off">
-    <option value="<?php echo $data_pelanggan['agama']; ?>"><?php echo $data_pelanggan['agama']; ?></option>
+    <option value="<?php echo $data_pelanggan->agama ?>"><?php echo $data_pelanggan->agama ?></option>
       <option value="-">-</option>
     <option value="islam">Islam</option>
     <option value="khatolik">Khatolik</option>
@@ -295,13 +300,13 @@ Cari  </button>
      
      <div class="form-group">
     <label for="nama_suamiortu">Nama Suami / Orangtua :</label>
-    <input style="height: 20px;" type="text" class="form-control" id="nama_suamiortu" name="nama_suamiortu" autocomplete="off" value="<?php echo $data_pelanggan['nama_suamiortu']; ?>" >
+    <input style="height: 20px;" type="text" class="form-control" id="nama_suamiortu" name="nama_suamiortu" autocomplete="off" value="<?php echo $data_pelanggan->nama_suamiortu ?>" >
 </div>
 
 
 <div class="form-group">
     <label for="pekerjaan_pasien">Pekerjaan Pasien/Ortu :</label>
-    <input style="height: 20px;" type="text" class="form-control" id="pekerjaan_pasien" name="pekerjaan_pasien" autocomplete="off" value="<?php echo $data_pelanggan['pekerjaan_suamiortu']; ?>" >
+    <input style="height: 20px;" type="text" class="form-control" id="pekerjaan_pasien" name="pekerjaan_pasien" autocomplete="off" value="<?php echo $data_pelanggan->pekerjaan_suamiortu ?>" >
 </div>
 
   </div><!--penutup div colsm2-->
@@ -315,14 +320,14 @@ Cari  </button>
 
 <div class="form-group">
     <label for="pekerjaan_pasien">Nama Penganggung Jawab :</label>
-    <input style="height: 20px;" type="text" class="form-control" id="nama_penanggungjawab" name="nama_penanggungjawab" autocomplete="off" value="<?php echo $data_pelanggan['nama_penanggungjawab']; ?>">
+    <input style="height: 20px;" type="text" class="form-control" id="nama_penanggungjawab" name="nama_penanggungjawab" autocomplete="off" value="<?php echo $data_pelanggan->nama_penanggungjawab ?>">
 </div>
 
 
   <div class="form-group" >
   <label for="umur">Hubungan Dengan Pasien</label>
   <select id="hubungan_dengan_pasien" class="form-control ss" name="hubungan_dengan_pasien" autocomplete="off">
-  <option value="<?php echo $data_pelanggan['hubungan_dengan_pasien']; ?>"><?php echo $data_pelanggan['hubungan_dengan_pasien']; ?></option>
+  <option value="<?php echo $data_pelanggan->hubungan_dengan_pasien ?>"><?php echo $data_pelanggan->hubungan_dengan_pasien ?></option>
       <option value="-">-</option>
   <option value="Orang Tua">Orang Tua</option>
   <option value="Suami/Istri">Suami/Istri</option>
@@ -336,12 +341,12 @@ Cari  </button>
 
 <div class="form-group">
     <label for="no_hp_penanggung">No Hp Penganggung Jawab :</label>
-    <input style="height: 20px;" type="text" onkeypress="return isNumberKey(event)" class="form-control" id="no_hp_penanggung" name="no_hp_penanggung" autocomplete="off" value="<?php echo $data_pelanggan['no_hp_penanggung']; ?>">
+    <input style="height: 20px;" type="text" onkeypress="return isNumberKey(event)" class="form-control" id="no_hp_penanggung" name="no_hp_penanggung" autocomplete="off" value="<?php echo $data_pelanggan->no_hp_penanggung ?>">
 </div>
 
 <div class="form-group">
     <label for="alamat_penanggung">Alamat Penanggung Jawab:</label>
-    <input class="form-control" id="alamat_penanggung" name="alamat_penanggung" autocomplete="off" value="<?php echo $data_pelanggan['alamat_penanggung']; ?>" >
+    <input class="form-control" id="alamat_penanggung" name="alamat_penanggung" autocomplete="off" value="<?php echo $data_pelanggan->alamat_penanggung; ?>" >
 </div>
 
   
@@ -359,7 +364,7 @@ Cari  </button>
 
 <div class="form-group ">
   <label >Alergi Obat *</label>
-  <input style="height: 20px;" type="text" class="form-control" id="alergi" name="alergi" required="" value="Tidak Ada" placeholder="Wajib Isi" autocomplete="off" value="<?php echo $data_pelanggan['alergi']; ?>"> 
+  <input style="height: 20px;" type="text" class="form-control" id="alergi" name="alergi" required="" value="Tidak Ada" placeholder="Wajib Isi" autocomplete="off" value="<?php echo $data_pelanggan->alergi ?>"> 
 </div>
 
 
@@ -669,7 +674,7 @@ return val;
           "processing": true,
           "serverSide": true,
           "ajax":{
-            url :"cek_pasien_lama_reg.php", // json datasource
+            url :"pasien_online.php", // json datasource
             type: "post",  // method  , by default get
             error: function(){  // error handling
               $(".employee-grid-error").html("");

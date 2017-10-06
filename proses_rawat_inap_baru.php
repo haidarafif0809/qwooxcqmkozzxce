@@ -127,7 +127,7 @@ else{
 
 $query_registrasi = $db->query("SELECT nama_pasien FROM registrasi  WHERE jenis_pasien = 'Rawat Jalan'  ORDER BY id DESC LIMIT 1 ")->fetch_array();
 
-if ($query_registrasi['nama_pasien'] == $nama_lengkap )
+if ($query_registrasi['nama_pasien'] == urldecode($nama_lengkap) )
 {
   echo '<META HTTP-EQUIV="Refresh" Content="0; URL=rawat_inap.php">';
 }
