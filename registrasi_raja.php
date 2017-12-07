@@ -1067,13 +1067,13 @@ $("#form_cari").submit(function(){
 
               $(nRow).attr('class', "pilih");
               $(nRow).attr('data-no', aData[0]);
-              $(nRow).attr('data-nama', aData[1]);
-              $(nRow).attr('data-jenis-kelamin', aData[2]);
-              $(nRow).attr('data-alamat', aData[3]);
-              $(nRow).attr('data-lahir', aData[4]);
-              $(nRow).attr('data-darah', aData[5]);
-              $(nRow).attr('data-hp', aData[6]);
-              $(nRow).attr('data-penjamin', aData[7]);
+              $(nRow).attr('data-nama', aData[2]);
+              $(nRow).attr('data-jenis-kelamin', aData[3]);
+              $(nRow).attr('data-alamat', aData[4]);
+              $(nRow).attr('data-lahir', aData[5]);
+              $(nRow).attr('data-darah', aData[6]);
+              $(nRow).attr('data-hp', aData[7]);
+              $(nRow).attr('data-penjamin', aData[8]);
 
           }
 
