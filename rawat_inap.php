@@ -973,15 +973,15 @@ tr:nth-child(even){background-color: #f2f2f2}
           },
               "fnCreatedRow": function( nRow, aData, iDataIndex ) {
 
-              $(nRow).attr('class', "pilih tr-id-"+aData[9]+"");
+              $(nRow).attr('class', "pilih tr-id-"+aData[10]+"");
               $(nRow).attr('data-no', aData[0]);
-              $(nRow).attr('data-nama', aData[1]);
-              $(nRow).attr('data-jenis-kelamin', aData[2]);
-              $(nRow).attr('data-alamat', aData[3]);
-              $(nRow).attr('data-lahir', aData[4]);
-              $(nRow).attr('data-darah', aData[7]);
-              $(nRow).attr('data-hp', aData[5]);
-              $(nRow).attr('data-penjamin', aData[8]);
+              $(nRow).attr('data-nama', aData[2]);
+              $(nRow).attr('data-jenis-kelamin', aData[3]);
+              $(nRow).attr('data-alamat', aData[4]);
+              $(nRow).attr('data-lahir', aData[5]);
+              $(nRow).attr('data-darah', aData[8]);
+              $(nRow).attr('data-hp', aData[6]);
+              $(nRow).attr('data-penjamin', aData[9]);
 
           }
 
