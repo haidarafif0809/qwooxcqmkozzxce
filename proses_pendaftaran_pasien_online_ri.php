@@ -50,6 +50,7 @@ $dokter_jg          = stringdoang(urldecode($_GET['dokter']));
 $ruangan_split      = stringdoang(urldecode($_GET['ruangan']));
 $token              = stringdoang(urldecode($_GET['token']));
 
+$perusahaan      = $db->query("SELECT nama_perusahaan FROM perusahaan LIMIT 1")->fetch_array();
 $kode_klinik_reg = $db->query("SELECT kode_klinik FROM kode_klinik_reg LIMIT 1 ")->fetch_array();
 $query_pelanggan = $db_pasien->query("SELECT kode_pelanggan FROM pelanggan WHERE (kode_pelanggan != '0' OR kode_pelanggan IS NULL OR kode_pelanggan != '') AND kode_klinik =  '" . $kode_klinik_reg["kode_klinik"] . "' ORDER BY id DESC LIMIT 1 ")->fetch_array();
 
@@ -66,9 +67,9 @@ if ($no_rm_lama != '') {
 }
 
 //INSERT DATA PASIEN BARU
-$query_insert_pelanggan = $db_pasien->prepare("INSERT INTO pelanggan(alergi,no_kk,nama_kk,kode_pelanggan,nama_pelanggan,tempat_lahir,tgl_lahir,umur,alamat_sekarang,alamat_ktp,no_telp,no_ktp,nama_penanggungjawab,hubungan_dengan_pasien,alamat_penanggung,no_hp_penanggung,jenis_kelamin,pendidikan_terakhir,status_kawin,agama,penjamin,gol_darah,tanggal,no_rm_lama,kode_klinik) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+$query_insert_pelanggan = $db_pasien->prepare("INSERT INTO pelanggan(alergi,no_kk,nama_kk,kode_pelanggan,nama_pelanggan,tempat_lahir,tgl_lahir,umur,alamat_sekarang,alamat_ktp,no_telp,no_ktp,nama_penanggungjawab,hubungan_dengan_pasien,alamat_penanggung,no_hp_penanggung,jenis_kelamin,pendidikan_terakhir,status_kawin,agama,penjamin,gol_darah,tanggal,no_rm_lama,kode_klinik,daftar_awal) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
-$query_insert_pelanggan->bind_param("sssssssssssssssssssssssss", $alergi, $no_kk, $nama_kk, $no_rm, $nama_lengkap, $tempat_lahir, $tanggal_lahir, $umur, $alamat_sekarang, $alamat_ktp, $no_telepon, $no_ktp, $nama_penanggungjawab, $hubungan_dengan_pasien, $alamat_penanggung, $no_hp_penanggung, $jenis_kelamin, $pendidikan_terakhir, $status_kawin, $agama, $penjamin, $gol_darah, $tanggal_sekarang, $no_rm_lama, $kode_klinik_reg['kode_klinik']);
+$query_insert_pelanggan->bind_param("ssssssssssssssssssssssssss", $alergi, $no_kk, $nama_kk, $no_rm, $nama_lengkap, $tempat_lahir, $tanggal_lahir, $umur, $alamat_sekarang, $alamat_ktp, $no_telepon, $no_ktp, $nama_penanggungjawab, $hubungan_dengan_pasien, $alamat_penanggung, $no_hp_penanggung, $jenis_kelamin, $pendidikan_terakhir, $status_kawin, $agama, $penjamin, $gol_darah, $tanggal_sekarang, $no_rm_lama, $kode_klinik_reg['kode_klinik'], $perusahaan['nama_perusahaan']);
 
 $query_insert_pelanggan->execute();
 // END UPDATE PASIEN
