@@ -218,14 +218,18 @@ if ($registrasi_rj['registrasi_rj_lihat'] > 0) {
 <div id="demo" class="collapse">
 
 
- <div class="collapse" id="collapseExample">
+ <div class="" id="collapseExample">
 
     <div class="row">
       <div class="col-sm-2">
-        <label>Nama Lengkap Pasien </label>
+        <label>Nama Pasien </label>
         <input style="height: 20px;" type="text" class="form-control" id="nama_lengkap_pasien" name="nama_lengkap_pasien" autocomplete="off"  >
       </div>
       <div class="col-sm-3">
+        <label>Tanggal Lahir Pasien </label>
+        <input style="height: 20px;" type="text" class="form-control" id="tanggal_lahir_pasien" name="tanggal_lahir_pasien" autocomplete="off"  >
+      </div>
+       <div class="col-sm-3">
         <label>Alamat Pasien </label>
         <input style="height: 20px;" type="text" class="form-control" id="alamat_pasien" name="alamat_pasien" autocomplete="off"  >
       </div>
@@ -236,7 +240,7 @@ if ($registrasi_rj['registrasi_rj_lihat'] > 0) {
 
  </div> <!--END collapseExample -->
 
-<span id="span_pasien_lama">
+<span id="span_pasien_lama" style="display: none;">
 <table id="pasien_lama" class="display table-sm table-bordered" width="100%">
           <thead>
             <tr>
@@ -1047,7 +1051,7 @@ $("#form_cari").submit(function(){
 
 
 <!-- DATATABLE AJAX PASIEN LAMA-->
-    <script type="text/javascript" language="javascript" >
+  <!--   <script type="text/javascript" language="javascript" >
       $(document).ready(function() {
         var dataTable = $('#pasien_lama').DataTable( {
           "processing": true,
@@ -1079,7 +1083,7 @@ $("#form_cari").submit(function(){
 
         });
       });
-    </script>
+    </script> -->
 <!-- / DATATABLE AJAX PASIEN LAMA-->
 
 <!-- START DATATABLE AJAX PASIEN LAMA / FILTER PASIEN-->
@@ -1096,6 +1100,7 @@ $("#form_cari").submit(function(){
             "data": function ( d ) {
                 d.nama_lengkap_pasien = $("#nama_lengkap_pasien").val();
                 d.alamat_pasien = $("#alamat_pasien").val();
+                d.tanggal_lahir_pasien = $("#tanggal_lahir_pasien").val();
                 // d.custom = $('#myInput').val();
                 // etc
             },
