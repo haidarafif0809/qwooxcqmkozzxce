@@ -4,13 +4,20 @@ include 'db.php';
 include 'sanitasi.php';
 
 $nama_lengkap_pasien  = stringdoang($_GET['nama_lengkap_pasien']);
+$no_rm_pasien         = stringdoang($_GET['no_rm_pasien']);
 $alamat_pasien        = stringdoang($_GET['alamat_pasien']);
 $tanggal_lahir_pasien = stringdoang($_GET['tanggal_lahir_pasien']) != "" ? tanggal_mysql($_GET['tanggal_lahir_pasien']) : "";
 
-function queryPencarian($nama_lengkap_pasien, $alamat_pasien, $tanggal_lahir_pasien)
+function queryPencarian($nama_lengkap_pasien, $alamat_pasien, $tanggal_lahir_pasien, $no_rm_pasien)
 {
     $sql_pencarian = "";
+    if ($no_rm_pasien != "") {
+        $sql_pencarian .= "kode_pelanggan LIKE '%$no_rm_pasien%'";
+    }
     if ($nama_lengkap_pasien != "") {
+        if ($no_rm_pasien != "") {
+            $sql_pencarian .= " AND ";
+        }
         $sql_pencarian .= "nama_pelanggan LIKE '%$nama_lengkap_pasien%'";
     }
     if ($alamat_pasien != "") {
@@ -49,7 +56,7 @@ $columns = array(
 // getting total number records without any search
 $sql = "SELECT COUNT(*) AS jumlah_pasien ";
 $sql .= " FROM pelanggan WHERE kode_pelanggan != '' AND ";
-$sql_pencarian = queryPencarian($nama_lengkap_pasien, $alamat_pasien, $tanggal_lahir_pasien);
+$sql_pencarian = queryPencarian($nama_lengkap_pasien, $alamat_pasien, $tanggal_lahir_pasien, $no_rm_pasien);
 $sql .= $sql_pencarian;
 $query         = mysqli_query($conn_pasien, $sql) or die("eror 1");
 $totalData     = mysqli_fetch_array($query);
