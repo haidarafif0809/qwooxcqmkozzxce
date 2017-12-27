@@ -106,7 +106,7 @@ echo $data_perusahaan['nama_perusahaan'];
 
     	<script type="text/javascript" src="js/jquery-2.2.3.min.js"></script>		<script src="my.js"></script>
 		<script src="datatables/jquery.dataTables.js"></script>
-		<script src="datatables/dataTables.bootstrap.js"></script>
+		<script src="datatables/dataTables.bootstrap4.min.js"></script>
 		<script type="text/javascript" src="jquery.ui.timepicker.js?v=0.3.3"></script>
 
 
