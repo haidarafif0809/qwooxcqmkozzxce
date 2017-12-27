@@ -222,6 +222,10 @@ if ($registrasi_rj['registrasi_rj_lihat'] > 0) {
 
     <div class="row">
       <div class="col-sm-2">
+        <label>No Rm Pasien </label>
+        <input style="height: 20px;" type="text" class="form-control" id="no_rm_pasien" name="no_rm_pasien" autocomplete="off"  >
+      </div>
+      <div class="col-sm-2">
         <label>Nama Pasien </label>
         <input style="height: 20px;" type="text" class="form-control" id="nama_lengkap_pasien" name="nama_lengkap_pasien" autocomplete="off"  >
       </div>
@@ -1098,6 +1102,7 @@ $("#form_cari").submit(function(){
             url :"filter_pasien_online_rj.php", // json datasource
             type: "post",  // method  , by default get
             "data": function ( d ) {
+                d.no_rm_pasien = $("#no_rm_pasien").val();
                 d.nama_lengkap_pasien = $("#nama_lengkap_pasien").val();
                 d.alamat_pasien = $("#alamat_pasien").val();
                 d.tanggal_lahir_pasien = $("#tanggal_lahir_pasien").val();

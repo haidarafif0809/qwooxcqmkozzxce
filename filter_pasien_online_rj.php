@@ -13,11 +13,12 @@ $search_value         = urlencode($requestData['search']['value']);
 $start                = $requestData['start'];
 $length               = $requestData['length'];
 $draw                 = $requestData['draw'];
+$no_rm_pasien         = urlencode(stringdoang($_POST['no_rm_pasien']));
 $nama_lengkap_pasien  = urlencode(stringdoang($_POST['nama_lengkap_pasien']));
 $alamat_pasien        = urlencode(stringdoang($_POST['alamat_pasien']));
 $tanggal_lahir_pasien = urlencode(stringdoang($_POST['tanggal_lahir_pasien']));
 
-$data_url = '' . $url . '?search_value=' . $search_value . '&start=' . $start . '&length=' . $length . '&draw=' . $draw . '&nama_lengkap_pasien=' . $nama_lengkap_pasien . '&alamat_pasien=' . $alamat_pasien . '&tanggal_lahir_pasien=' . $tanggal_lahir_pasien;
+$data_url = '' . $url . '?search_value=' . $search_value . '&start=' . $start . '&length=' . $length . '&draw=' . $draw . '&nama_lengkap_pasien=' . $nama_lengkap_pasien . '&alamat_pasien=' . $alamat_pasien . '&tanggal_lahir_pasien=' . $tanggal_lahir_pasien . '&no_rm_pasien=' . $no_rm_pasien;
 //$data_url = 'https://www.google.co.id/';alamat_pasien
 $file_get = file_get_contents($data_url);
 echo $file_get;
