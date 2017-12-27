@@ -3,41 +3,46 @@
 <head>
 
 	<title>
-	<?php
+	<?php 
+	include_once 'db.php';
+	include_once 'cache.class.php';
 
-include_once 'db.php';
-include_once 'cache.class.php';
+    $c = new Cache();
 
-$c = new Cache();
+    $c->setCache('data_perusahaan');
+    if (!$c->isCached('data')) {
+	$query1 = $db->query("SELECT * FROM perusahaan ");
+	$data1 = mysqli_fetch_array($query1);
 
-$c->setCache('data_perusahaan');
-if (!$c->isCached('data')) {
-    $query1 = $db->query("SELECT * FROM perusahaan ");
-    $data1  = mysqli_fetch_array($query1);
+	
+    $c->store('data',array('nama_perusahaan' => $data1['nama_perusahaan'],'alamat_perusahaan' => $data1['alamat_perusahaan'],'singkatan_perusahaan' => $data1['singkatan_perusahaan'],'foto' => $data1['foto'],'no_telp' => $data1['no_telp']));
+    	
+    }	
 
-    $c->store('data', array('nama_perusahaan' => $data1['nama_perusahaan'], 'alamat_perusahaan' => $data1['alamat_perusahaan'], 'singkatan_perusahaan' => $data1['singkatan_perusahaan'], 'foto' => $data1['foto'], 'no_telp' => $data1['no_telp']));
+    $cache_printer = new Cache();
 
-}
 
-$cache_printer = new Cache();
+	$cache_printer->setCache('setting_printer');
 
-$cache_printer->setCache('setting_printer');
+	if (!$cache_printer->isCached('data')) {
 
-if (!$cache_printer->isCached('data')) {
+		$query_printer = $db->query("SELECT nama_print,status_print FROM setting_printer ");
+		$data_printer = mysqli_fetch_array($query_printer);
 
-    $query_printer = $db->query("SELECT nama_print,status_print FROM setting_printer ");
-    $data_printer  = mysqli_fetch_array($query_printer);
 
-    $cache_printer->store('data', array('nama_print' => $data_printer['nama_print'], 'status_print' => $data_printer['status_print']));
+		  $cache_printer->store('data',array('nama_print' => $data_printer['nama_print'],'status_print' => $data_printer['status_print']));
 
-}
+		
+	}
+  
+         
+ 	$data_setting_printer = $cache_printer->retrieve('data');
 
-$data_setting_printer = $cache_printer->retrieve('data');
+	$data_perusahaan = $c->retrieve('data');
+	echo $data_perusahaan['nama_perusahaan'];
 
-$data_perusahaan = $c->retrieve('data');
-echo $data_perusahaan['nama_perusahaan'];
 
-?>
+	 ?>
 	</title>
 
 	<style>
@@ -91,7 +96,7 @@ echo $data_perusahaan['nama_perusahaan'];
 		<!-- Material Design Bootstrap -->
 		<link href="css/mdb.min.css" rel="stylesheet">
 
-
+		
 		<link rel="stylesheet" href="datatables/dataTables.bootstrap.css">
 
 		<link rel="icon" href="save_picture/Andaglos-UKM.jpg" type="image/x-icon">
@@ -100,16 +105,16 @@ echo $data_perusahaan['nama_perusahaan'];
 		<link rel="stylesheet" href="jquery-ui/jquery-ui.css">
 		<link rel="stylesheet" href="chosen/chosen.css">
 		<link rel="stylesheet" href="pos.css">
-
+		
 		<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Quicksand" />
 
 
     	<script type="text/javascript" src="js/jquery-2.2.3.min.js"></script>		<script src="my.js"></script>
-		<script src="datatables/jquery.dataTables.js"></script>
-		<script src="datatables/dataTables.bootstrap.js"></script>
+		<script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+		<script src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap4.min.js"></script>
 		<script type="text/javascript" src="jquery.ui.timepicker.js?v=0.3.3"></script>
-
-
+		
+		
 
 		<script src="chosen/chosen.jquery.js"></script>
 
@@ -118,7 +123,7 @@ echo $data_perusahaan['nama_perusahaan'];
          <script src="bootstrap-master/dist/bootstrap-wysihtml5-0.0.2.js"></script>
        <script src="bootstrap-master/lib/js/wysihtml5-0.3.0.js"></script>
        <script src="bootstrap-master/src/bootstrap3-wysihtml5.js"></script>
-
+       
              <link rel="stylesheet" href="bootstrap-master/src/bootstrap-wysihtml5.css" >
              <link rel="stylesheet" href="bootstrap-master/lib/css/bootstrap3-wysiwyg5.css" >
           <link rel="stylesheet" href="bootstrap-master/dist/bootstrap-wysihtml5-0.0.2.css" >
@@ -129,18 +134,18 @@ echo $data_perusahaan['nama_perusahaan'];
 		<link rel="stylesheet" href="css/selectize.css">
 
 		<script src="js/selectize.js"></script>
-
-
+		
+		
 
 		<script src="ckeditor/ckeditor.js"></script>
 		<script src='jquery.elevatezoom.js'></script>
 		<!-- untuk operasi indexeddb -->
-		 <script src="js/dexie.js"></script>
+		 <script src="https://unpkg.com/dexie@latest/dist/dexie.js"></script>
 
 		   <script src="js/printThis.js" type="text/javascript"></script>
 		   <script src="js/jquery.print.min.js" type="text/javascript"></script>
 
-
+               
 </head>
 <body class="hidden-sn blue-skin" >
 
