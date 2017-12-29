@@ -11,6 +11,7 @@ while ($data = mysqli_fetch_array($barang)) {
     if ($db->query($update_produk) === true) {
         echo "SUKSES";
         echo "<br>";
+        echo $data = mysqli_num_rows($barang);
     } else {
         echo "Error: " . $update_produk . "<br>" . $db->error;
     }
