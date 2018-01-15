@@ -35,7 +35,7 @@
 
             <!-- Logo -->
             <li>
-                <div class="logo-wrapper waves-light">
+                <div class="">
                     <a href="http://www.andaglos.com"><img src="save_picture/andaglos_logo.png" class="img-fluid flex-center"></a>
                 </div>
             </li>
