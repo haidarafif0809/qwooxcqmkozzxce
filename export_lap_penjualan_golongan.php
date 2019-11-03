@@ -77,15 +77,15 @@ tr:nth-child(even){background-color: #f2f2f2}
                     
 			                    echo "<tr>
 			                    <td>". $data10['nama_barang'] ."</td>
-			                    <td align='right'>". $data10['jumlah'] ."</td>
-			                    <td align='right'>". $data10['total'] ."</td>
+			                    <td align='right'>". rp($data10['jumlah']) ."</td>
+			                    <td align='right'>". rp($data10['total']) ."</td>
 			                    </tr>";
 			                }
 
 			                    echo "<tr>
 			                    <td style=' color:red'> TOTAL </td>
-			                    <td style=' color:red' align='right'>".$jumlah_produk."</td>
-			                    <td style=' color:red' align='right'>".$total_nilai."</td>
+			                    <td style=' color:red' align='right'>".rp($jumlah_produk)."</td>
+			                    <td style=' color:red' align='right'>".rp($total_nilai)."</td>
 			                    </tr>";
 
 
